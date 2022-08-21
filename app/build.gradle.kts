@@ -28,12 +28,11 @@ dependencies {
 
 application {
     mainClass.set("com.github.johypark97.varchivemacro.Main")
-    mainModule.set("varchivemacro")
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(8))
     }
 }
 
@@ -77,7 +76,7 @@ tasks.register<Copy>("copyResources-buildProfile") {
 }
 
 tasks.register("runProduction") {
-    dependsOn(tasks.run)
+    dependsOn(tasks.runShadow)
 
     description = "Run with production profile"
     group = "application"

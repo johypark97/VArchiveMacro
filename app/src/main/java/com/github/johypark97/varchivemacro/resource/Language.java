@@ -40,9 +40,10 @@ public class Language {
 
     private ResourceBundle createBundle() {
         try {
-            return ResourceBundle.getBundle(BASE_NAME, locale);
+            return ResourceBundle.getBundle(BASE_NAME, locale, new XMLResourceBundle.Control());
         } catch (MissingResourceException e) {
-            return ResourceBundle.getBundle(BASE_NAME, Locale.KOREAN);
+            return ResourceBundle.getBundle(BASE_NAME, Locale.KOREAN,
+                    new XMLResourceBundle.Control());
         }
     }
 }
