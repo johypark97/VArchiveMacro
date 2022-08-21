@@ -1,7 +1,9 @@
 import edu.sc.seis.launch4j.tasks.DefaultLaunch4jTask
 
-val applicationVersion = "0.0.0"
-val outFilename = "out"
+val applicationVersion = "1.0.0"
+val outFilename = "VArchive Macro"
+
+var buildProfile = "development"
 
 plugins {
     application
@@ -19,6 +21,9 @@ dependencies {
 
     // This dependency is used by the application.
     // implementation("com.google.guava:guava:31.0.1-jre")
+
+    implementation("com.github.kwhat:jnativehook:2.2.2")
+    implementation("com.google.code.gson:gson:2.9.1")
 }
 
 application {
@@ -38,6 +43,7 @@ java {
 
 tasks.jar {
     manifest {
+        attributes["Implementation-Version"] = applicationVersion
         attributes["Main-Class"] = application.mainClass.get()
     }
 }
@@ -46,7 +52,44 @@ tasks.withType<DefaultLaunch4jTask> {
     outfile = "$outFilename v$applicationVersion.exe"
 
     headerType = "gui"
+    icon = "$projectDir/src/main/resources/icon.ico"
     mainClassName = application.mainClass.get()
 
+    copyright = "johypark97"
+    fileDescription = rootProject.name
+    language = "KOREAN"
+    productName = rootProject.name
+    textVersion = applicationVersion
+    version = applicationVersion
+
     jarTask = tasks.shadowJar.get()
+}
+
+tasks.processResources {
+    dependsOn(tasks.named("copyResources-buildProfile"))
+}
+
+tasks.register<Copy>("copyResources-buildProfile") {
+    description = "Copy resources located in resources-(buildProfile)"
+
+    from("src/main/resources-$buildProfile")
+    into("$buildDir/resources/main")
+}
+
+tasks.register("runProduction") {
+    dependsOn(tasks.run)
+
+    description = "Run with production profile"
+    group = "application"
+
+    buildProfile = "production"
+}
+
+tasks.register("createProductionExe") {
+    dependsOn(tasks.createExe)
+
+    description = "Create an executable with production profile"
+    group = "launch4j"
+
+    buildProfile = "production"
 }
