@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.config;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -45,7 +44,7 @@ public class ConfigManager implements IConfigObservable {
     public void notifyObservers(NotifyType type) {
         IConfigObserver[] localObservers;
         synchronized (this) {
-            localObservers = observers.toArray(new IConfigObserver[0]);
+            localObservers = observers.toArray(IConfigObserver[]::new);
         }
 
         for (IConfigObserver observer : localObservers) {
@@ -75,7 +74,7 @@ public class ConfigManager implements IConfigObservable {
         ResourceBundle bundle = ResourceBundle.getBundle(RESOURCE_BASE_NAME);
         String dirPath = System.getProperty(bundle.getString(RESOURCE_PATH));
         String filename = bundle.getString(RESOURCE_FILENAME);
-        configPath = Paths.get(dirPath, filename);
+        configPath = Path.of(dirPath, filename);
     }
 
     public ConfigData getData() {
@@ -103,12 +102,11 @@ public class ConfigManager implements IConfigObservable {
 
     public synchronized void save() throws IOException {
         notifyObservers(NotifyType.WILL_BE_SAVED);
-        Files.write(configPath, convertDataToJson().getBytes());
+        Files.writeString(configPath, convertDataToJson());
     }
 
     public synchronized void load() throws IOException, JsonSyntaxException {
-        String text = new String(Files.readAllBytes(configPath));
-        ConfigData loaded = convertJsonToData(text);
+        ConfigData loaded = convertJsonToData(Files.readString(configPath));
         if (loaded != null)
             data = loaded;
 

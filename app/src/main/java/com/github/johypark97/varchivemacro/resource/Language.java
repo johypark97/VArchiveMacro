@@ -1,9 +1,12 @@
 package com.github.johypark97.varchivemacro.resource;
 
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
+import com.github.johypark97.varchivemacro.Main;
 
+// TODO: change to use the ResourceBundle
 public class Language {
     // singleton
     private Language() {}
@@ -17,33 +20,30 @@ public class Language {
     }
 
     // instance
-    private static final String BASE_NAME = "language";
+    private static final String DEFAULT_VALUE = "ERROR";
 
-    private volatile Locale locale = Locale.getDefault();
-    private ResourceBundle bundle;
+    private Properties properties;
 
     public String get(String key) {
-        if (bundle == null) {
+        if (properties == null) {
             synchronized (this) {
-                if (bundle == null)
-                    bundle = createBundle();
+                if (properties == null)
+                    create();
             }
         }
 
-        return bundle.getString(key);
+        return properties.getProperty(key, DEFAULT_VALUE);
     }
 
-    public synchronized void changeLocale(Locale locale) {
-        this.locale = locale;
-        bundle = createBundle();
-    }
+    private void create() {
+        properties = new Properties();
 
-    private ResourceBundle createBundle() {
-        try {
-            return ResourceBundle.getBundle(BASE_NAME, locale, new XMLResourceBundle.Control());
-        } catch (MissingResourceException e) {
-            return ResourceBundle.getBundle(BASE_NAME, Locale.KOREAN,
-                    new XMLResourceBundle.Control());
+        URL url = Main.class.getClassLoader().getResource("language_ko.xml");
+        if (url != null) {
+            try (InputStream stream = url.openStream()) {
+                properties.loadFromXML(stream);
+            } catch (IOException e) {
+            }
         }
     }
 }
