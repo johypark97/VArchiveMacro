@@ -7,36 +7,26 @@ class AnalyzeKeyConverter {
         if (key == null)
             throw new NullPointerException();
 
-        switch (key) {
-            case ALT_F11:
-                return IMacro.View.AnalyzeKey.ALT_F11;
-            case ALT_F12:
-                return IMacro.View.AnalyzeKey.ALT_F12;
-            case ALT_HOME:
-                return IMacro.View.AnalyzeKey.ALT_HOME;
-            case ALT_INS:
-                return IMacro.View.AnalyzeKey.ALT_INS;
-            default:
-                throw new RuntimeException("unknown key");
-        }
+        return switch (key) {
+            case ALT_F11 -> IMacro.View.AnalyzeKey.ALT_F11;
+            case ALT_F12 -> IMacro.View.AnalyzeKey.ALT_F12;
+            case ALT_HOME -> IMacro.View.AnalyzeKey.ALT_HOME;
+            case ALT_INS -> IMacro.View.AnalyzeKey.ALT_INS;
+            default -> throw new RuntimeException("unknown key");
+        };
     }
 
     public static MacroData.AnalyzeKey view2data(IMacro.View.AnalyzeKey key) {
         if (key == null)
             throw new NullPointerException();
 
-        switch (key) {
-            case ALT_F11:
-                return MacroData.AnalyzeKey.ALT_F11;
-            case ALT_F12:
-                return MacroData.AnalyzeKey.ALT_F12;
-            case ALT_HOME:
-                return MacroData.AnalyzeKey.ALT_HOME;
-            case ALT_INS:
-                return MacroData.AnalyzeKey.ALT_INS;
-            default:
-                throw new RuntimeException("unknown key");
-        }
+        return switch (key) {
+            case ALT_F11 -> MacroData.AnalyzeKey.ALT_F11;
+            case ALT_F12 -> MacroData.AnalyzeKey.ALT_F12;
+            case ALT_HOME -> MacroData.AnalyzeKey.ALT_HOME;
+            case ALT_INS -> MacroData.AnalyzeKey.ALT_INS;
+            default -> throw new RuntimeException("unknown key");
+        };
     }
 }
 
@@ -46,27 +36,21 @@ class DirectionKeyConverter {
         if (key == null)
             throw new NullPointerException();
 
-        switch (key) {
-            case DOWN:
-                return IMacro.View.DirectionKey.DOWN;
-            case UP:
-                return IMacro.View.DirectionKey.UP;
-            default:
-                throw new RuntimeException("unknown key");
-        }
+        return switch (key) {
+            case DOWN -> IMacro.View.DirectionKey.DOWN;
+            case UP -> IMacro.View.DirectionKey.UP;
+            default -> throw new RuntimeException("unknown key");
+        };
     }
 
     public static MacroData.DirectionKey view2data(IMacro.View.DirectionKey key) {
         if (key == null)
             throw new NullPointerException();
 
-        switch (key) {
-            case DOWN:
-                return MacroData.DirectionKey.DOWN;
-            case UP:
-                return MacroData.DirectionKey.UP;
-            default:
-                throw new RuntimeException("unknown key");
-        }
+        return switch (key) {
+            case DOWN -> MacroData.DirectionKey.DOWN;
+            case UP -> MacroData.DirectionKey.UP;
+            default -> throw new RuntimeException("unknown key");
+        };
     }
 }

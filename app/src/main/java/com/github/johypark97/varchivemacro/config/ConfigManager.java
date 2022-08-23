@@ -49,14 +49,9 @@ public class ConfigManager implements IConfigObservable {
 
         for (IConfigObserver observer : localObservers) {
             switch (type) {
-                case IS_LOADED:
-                    observer.configIsLoaded(getData());
-                    break;
-                case WILL_BE_SAVED:
-                    observer.configWillBeSaved(getData());
-                    break;
-                default:
-                    break;
+                case IS_LOADED -> observer.configIsLoaded(getData());
+                case WILL_BE_SAVED -> observer.configWillBeSaved(getData());
+                default -> throw new RuntimeException("unknown notify type");
             }
         }
     }

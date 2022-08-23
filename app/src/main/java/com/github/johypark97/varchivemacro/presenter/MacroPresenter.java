@@ -250,33 +250,19 @@ class MacroRobotRunner implements Runnable {
     }
 
     private void getKeyCode() {
-        switch (data.analyzeKey) {
-            case ALT_F11:
-                analyzeKeyCode = KeyEvent.VK_F11;
-                break;
-            case ALT_F12:
-                analyzeKeyCode = KeyEvent.VK_F12;
-                break;
-            case ALT_HOME:
-                analyzeKeyCode = KeyEvent.VK_HOME;
-                break;
-            case ALT_INS:
-                analyzeKeyCode = KeyEvent.VK_INSERT;
-                break;
-            default:
-                throw new RuntimeException("unknown analyze key");
-        }
+        analyzeKeyCode = switch (data.analyzeKey) {
+            case ALT_F11 -> KeyEvent.VK_F11;
+            case ALT_F12 -> KeyEvent.VK_F12;
+            case ALT_HOME -> KeyEvent.VK_HOME;
+            case ALT_INS -> KeyEvent.VK_INSERT;
+            default -> throw new RuntimeException("unknown analyze key");
+        };
 
-        switch (data.directionKey) {
-            case DOWN:
-                directionKeyCode = KeyEvent.VK_DOWN;
-                break;
-            case UP:
-                directionKeyCode = KeyEvent.VK_UP;
-                break;
-            default:
-                throw new RuntimeException("unknown direction key");
-        }
+        directionKeyCode = switch (data.directionKey) {
+            case DOWN -> KeyEvent.VK_DOWN;
+            case UP -> KeyEvent.VK_UP;
+            default -> throw new RuntimeException("unknown direction key");
+        };
     }
 
     @Override

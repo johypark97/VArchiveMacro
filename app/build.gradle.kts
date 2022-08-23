@@ -34,7 +34,7 @@ application {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
@@ -73,7 +73,7 @@ tasks.register<Launch4jLibraryTask>("createExe_localJre") {
 
     outfile = "$outFilename local v$applicationVersion.exe"
 
-    bundledJrePath = "jre11"
+    bundledJrePath = "jre17"
 }
 
 tasks.processResources {
