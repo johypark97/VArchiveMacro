@@ -1,4 +1,5 @@
 import edu.sc.seis.launch4j.tasks.DefaultLaunch4jTask
+import edu.sc.seis.launch4j.tasks.Launch4jLibraryTask
 
 val applicationVersion = "1.0.0"
 val outFilename = "VArchive Macro"
@@ -62,33 +63,41 @@ tasks.withType<DefaultLaunch4jTask> {
     textVersion = applicationVersion
     version = applicationVersion
 
+    copyConfigurable = emptyList<Object>()
     jarTask = tasks.shadowJar.get()
 }
 
-tasks.processResources {
-    dependsOn(tasks.named("copyResources-buildProfile"))
+tasks.register<Launch4jLibraryTask>("createExe_localJre") {
+    description = "Create an executable using local JRE"
+    group = "launch4j"
+
+    outfile = "$outFilename local v$applicationVersion.exe"
+
+    bundledJrePath = "jre11"
 }
 
-tasks.register<Copy>("copyResources-buildProfile") {
+tasks.processResources {
+    dependsOn(tasks.named("copyResources_buildProfile"))
+}
+
+tasks.register<Copy>("copyResources_buildProfile") {
     description = "Copy resources located in resources-(buildProfile)"
 
     from("src/main/resources-$buildProfile")
     into("$buildDir/resources/main")
 }
 
-tasks.register("runProduction") {
+tasks.register("run_production") {
     dependsOn(tasks.run)
-
     description = "Run with production profile"
     group = "application"
 
     buildProfile = "production"
 }
 
-tasks.register("createProductionExe") {
-    dependsOn(tasks.createExe)
-
-    description = "Create an executable with production profile"
+tasks.register("createAllExecutables_production") {
+    dependsOn(tasks.createAllExecutables)
+    description = "Create all executables with production profile"
     group = "launch4j"
 
     buildProfile = "production"
