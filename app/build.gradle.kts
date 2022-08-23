@@ -102,3 +102,16 @@ tasks.register("createAllExecutables_production") {
 
     buildProfile = "production"
 }
+
+tasks.register<Zip>("releaseProduction") {
+    dependsOn(tasks.named("createAllExecutables_production"))
+    description = "Create an archive file to release"
+    group = "distribution"
+
+    archiveBaseName.set(outFilename)
+    archiveVersion.set(applicationVersion)
+
+    var launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
+    from("$buildDir/${launch4jTask.outputDir}")
+    into("$outFilename v$applicationVersion")
+}
