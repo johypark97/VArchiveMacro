@@ -4,18 +4,22 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import com.github.johypark97.varchivemacro.config.ConfigManager;
 import com.github.johypark97.varchivemacro.model.LicenseModel;
-import com.github.johypark97.varchivemacro.model.MacroModel;
+import com.github.johypark97.varchivemacro.model.SettingsModel;
 import com.github.johypark97.varchivemacro.presenter.LicensePresenter;
 import com.github.johypark97.varchivemacro.presenter.MacroPresenter;
 import com.github.johypark97.varchivemacro.view.LicenseView;
 import com.github.johypark97.varchivemacro.view.MacroView;
 
 public class Main {
-    private MacroModel macroModel = new MacroModel();
+    // model
+    private LicenseModel licenseModel = new LicenseModel();
+    private SettingsModel settingsModel = new SettingsModel();
+
+    // macro
     private MacroView macroView = new MacroView();
     private MacroPresenter macroPresenter = new MacroPresenter();
 
-    private LicenseModel licenseModel = new LicenseModel();
+    // license
     private LicenseView licenseView = new LicenseView();
     private LicensePresenter licensePresenter = new LicensePresenter();
 
@@ -36,17 +40,17 @@ public class Main {
     }
 
     private Main() {
-        macroPresenter.model = macroModel;
-        macroPresenter.view = macroView;
+        settingsModel.subscribe(ConfigManager.getInstance());
+
+        macroPresenter.settingsModel = settingsModel;
+        macroPresenter.licenseView = licenseView;
+        macroPresenter.macroView = macroView;
         macroView.presenter = macroPresenter;
 
-        macroPresenter.licenseView = licenseView;
-
-        macroModel.subscribe(ConfigManager.getInstance());
-        macroPresenter.prepareView();
-
-        licensePresenter.model = licenseModel;
-        licensePresenter.view = licenseView;
+        licensePresenter.licenseModel = licenseModel;
+        licensePresenter.licenseView = licenseView;
         licenseView.presenter = licensePresenter;
+
+        macroPresenter.prepareView();
     }
 }

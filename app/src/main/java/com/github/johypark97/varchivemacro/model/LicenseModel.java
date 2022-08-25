@@ -4,29 +4,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LicenseModel {
-    private static final Map<String, String> licneses;
     private static final String NEWLINE = System.lineSeparator();
     private static final String PATH = "/licenses/";
 
-    static {
-        licneses = new HashMap<>();
-        licneses.put("Shadow", PATH + "shadow.txt");
-        licneses.put("Gson", PATH + "gson.txt");
-        licneses.put("JNativeHook", PATH + "jnativehook.txt");
-        licneses.put("Launch4j", PATH + "launch4j.txt");
-    }
+    private static final Map<String, String> LICNESES = Map.ofEntries(
+            Map.entry("Gson", PATH + "gson.txt"),
+            Map.entry("JNativeHook", PATH + "jnativehook.txt"),
+            Map.entry("Launch4j", PATH + "launch4j.txt"), Map.entry("Shadow", PATH + "shadow.txt"));
 
     public String[] getList() {
-        return licneses.keySet().stream().sorted().toArray(String[]::new);
+        return LICNESES.keySet().stream().sorted().toArray(String[]::new);
     }
 
     public String getText(String key) throws IOException {
-        String path = licneses.get(key);
+        String path = LICNESES.get(key);
         if (path == null)
             return "ERROR: invalid key";
 

@@ -2,22 +2,23 @@ package com.github.johypark97.varchivemacro.model;
 
 import com.github.johypark97.varchivemacro.config.ConfigData;
 import com.github.johypark97.varchivemacro.config.IConfigObserver;
+import com.github.johypark97.varchivemacro.model.datastruct.SettingsData;
 
-public class MacroModel implements IConfigObserver {
-    private MacroData data;
+public class SettingsModel implements IConfigObserver {
+    private SettingsData data;
 
-    public MacroData getData() {
+    public SettingsData getData() {
         if (data == null) {
             synchronized (this) {
                 if (data == null)
-                    data = new MacroData();
+                    data = new SettingsData();
             }
         }
 
         return data;
     }
 
-    public synchronized void setData(MacroData data) {
+    public synchronized void setData(SettingsData data) {
         this.data = data;
     }
 

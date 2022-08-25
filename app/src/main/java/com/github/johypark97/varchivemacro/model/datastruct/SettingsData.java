@@ -1,8 +1,8 @@
-package com.github.johypark97.varchivemacro.model;
+package com.github.johypark97.varchivemacro.model.datastruct;
 
 import com.google.gson.annotations.Expose;
 
-public class MacroData {
+public class SettingsData {
     public enum AnalyzeKey {
         ALT_F11, ALT_F12, ALT_HOME, ALT_INS
     }
@@ -11,8 +11,8 @@ public class MacroData {
         DOWN, UP
     }
 
-    public @Expose AnalyzeKey analyzeKey = MacroData.AnalyzeKey.ALT_F11;
-    public @Expose DirectionKey directionKey = MacroData.DirectionKey.DOWN;
+    public @Expose AnalyzeKey analyzeKey = SettingsData.AnalyzeKey.ALT_F11;
+    public @Expose DirectionKey directionKey = SettingsData.DirectionKey.DOWN;
     public @Expose int captureDuration = 20;
     public @Expose int count = 100;
     public @Expose int inputDuration = 20;

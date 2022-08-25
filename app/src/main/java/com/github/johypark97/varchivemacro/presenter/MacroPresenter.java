@@ -10,8 +10,10 @@ import java.util.function.Consumer;
 import javax.swing.JOptionPane;
 import com.github.johypark97.varchivemacro.config.ConfigManager;
 import com.github.johypark97.varchivemacro.hook.HookManager;
-import com.github.johypark97.varchivemacro.model.MacroData;
-import com.github.johypark97.varchivemacro.model.MacroModel;
+import com.github.johypark97.varchivemacro.model.SettingsModel;
+import com.github.johypark97.varchivemacro.model.datastruct.SettingsData;
+import com.github.johypark97.varchivemacro.presenter.converter.AnalyzeKeyConverter;
+import com.github.johypark97.varchivemacro.presenter.converter.DirectionKeyConverter;
 import com.github.johypark97.varchivemacro.resource.Language;
 import com.github.johypark97.varchivemacro.view.LicenseView;
 import com.github.kwhat.jnativehook.NativeHookException;
@@ -27,32 +29,34 @@ public class MacroPresenter implements IMacro.Presenter {
     private MacroRobot robot = new MacroRobot(this);
     protected Language lang = Language.getInstance();
 
-    public IMacro.View view;
-    public MacroModel model;
+    // model
+    public SettingsModel settingsModel;
 
+    // view
+    public IMacro.View macroView;
     public LicenseView licenseView;
 
     public void prepareView() {
-        MacroData data = new MacroData();
-        view.setSliderDefault(data.count, data.movingDelay, data.captureDuration,
+        SettingsData data = new SettingsData();
+        macroView.setSliderDefault(data.count, data.movingDelay, data.captureDuration,
                 data.inputDuration);
         updateView(data);
     }
 
-    private void updateView(MacroData data) {
-        view.setValues(data.count, data.movingDelay, data.captureDuration, data.inputDuration,
+    private void updateView(SettingsData data) {
+        macroView.setValues(data.count, data.movingDelay, data.captureDuration, data.inputDuration,
                 AnalyzeKeyConverter.data2view(data.analyzeKey),
                 DirectionKeyConverter.data2view(data.directionKey));
     }
 
-    private MacroData getDataFromView() {
-        MacroData data = new MacroData();
-        data.analyzeKey = AnalyzeKeyConverter.view2data(view.getAnalyzeKey());
-        data.captureDuration = view.getCaptureDuration();
-        data.count = view.getCount();
-        data.directionKey = DirectionKeyConverter.view2data(view.getDirectionKey());
-        data.inputDuration = view.getInputDuration();
-        data.movingDelay = view.getMovingDelay();
+    private SettingsData getSettingsDataFromView() {
+        SettingsData data = new SettingsData();
+        data.analyzeKey = AnalyzeKeyConverter.view2data(macroView.getAnalyzeKey());
+        data.captureDuration = macroView.getCaptureDuration();
+        data.count = macroView.getCount();
+        data.directionKey = DirectionKeyConverter.view2data(macroView.getDirectionKey());
+        data.inputDuration = macroView.getInputDuration();
+        data.movingDelay = macroView.getMovingDelay();
         return data;
     }
 
@@ -61,18 +65,18 @@ public class MacroPresenter implements IMacro.Presenter {
     }
 
     public void selectUp() {
-        view.setDirectionKey(IMacro.View.DirectionKey.UP);
+        macroView.setDirectionKey(IMacro.View.DirectionKey.UP);
     }
 
     public void selectDown() {
-        view.setDirectionKey(IMacro.View.DirectionKey.DOWN);
+        macroView.setDirectionKey(IMacro.View.DirectionKey.DOWN);
     }
 
     public void startCapture() {
         try {
-            robot.capture(getDataFromView());
+            robot.capture(getSettingsDataFromView());
         } catch (AWTException e) {
-            view.showDialog(lang.get("p.macro_dialog.title"),
+            macroView.showDialog(lang.get("p.macro_dialog.title"),
                     new String[] {lang.get("p.macro_dialog.msg"), lang.get("p.macro_dialog.msg2")},
                     JOptionPane.ERROR_MESSAGE);
             return;
@@ -93,7 +97,7 @@ public class MacroPresenter implements IMacro.Presenter {
         builder.append("] ");
         builder.append(message);
 
-        view.addLog(builder.toString());
+        macroView.addLog(builder.toString());
     }
 
     @Override
@@ -111,34 +115,36 @@ public class MacroPresenter implements IMacro.Presenter {
 
             if (config.isConfigExists()) {
                 config.load();
-                updateView(model.getData());
+                updateView(settingsModel.getData());
             }
         } catch (NativeHookException e) {
-            view.showDialog(lang.get("p.hook_dialog.title"),
+            macroView.showDialog(lang.get("p.hook_dialog.title"),
                     new String[] {lang.get("p.hook_dialog.msg"), lang.get("p.hook_dialog.msg2")},
                     JOptionPane.ERROR_MESSAGE);
         } catch (IOException e) {
-            view.showDialog(lang.get("p.config.read_dialog.title"),
-                    new String[] {lang.get("p.config.read_dialog.error_msg"),
-                            lang.get("p.config.read_dialog.default")},
-                    JOptionPane.ERROR_MESSAGE);
+            macroView
+                    .showDialog(lang.get("p.config.read_dialog.title"),
+                            new String[] {lang.get("p.config.read_dialog.error_msg"),
+                                    lang.get("p.config.read_dialog.default")},
+                            JOptionPane.ERROR_MESSAGE);
         } catch (JsonSyntaxException e) {
-            view.showDialog(lang.get("p.config.read_dialog.title"),
-                    new String[] {lang.get("p.config.read_dialog.syntax_msg"),
-                            lang.get("p.config.read_dialog.default")},
-                    JOptionPane.ERROR_MESSAGE);
+            macroView
+                    .showDialog(lang.get("p.config.read_dialog.title"),
+                            new String[] {lang.get("p.config.read_dialog.syntax_msg"),
+                                    lang.get("p.config.read_dialog.default")},
+                            JOptionPane.ERROR_MESSAGE);
         }
     }
 
     @Override
     public void viewClosed() {
         robot.forceStop();
-        model.setData(getDataFromView());
+        settingsModel.setData(getSettingsDataFromView());
         try {
             config.save();
             HookManager.unregister();
         } catch (IOException e) {
-            view.showDialog(lang.get("p.config.write_dialog.title"),
+            macroView.showDialog(lang.get("p.config.write_dialog.title"),
                     new String[] {lang.get("p.config.write_dialog.msg")},
                     JOptionPane.ERROR_MESSAGE);
         } catch (NativeHookException e) {
@@ -195,13 +201,13 @@ class MacroRobot {
         this.presenter = presenter;
     }
 
-    public synchronized void capture(MacroData data) throws AWTException {
+    public synchronized void capture(SettingsData settingsData) throws AWTException {
         if (thread != null) {
             presenter.addLog(presenter.lang.get("p.capture_is_running"));
             return;
         }
 
-        thread = new Thread(new MacroRobotRunner(presenter, data, (isDone) -> {
+        thread = new Thread(new MacroRobotRunner(presenter, settingsData, (isDone) -> {
             synchronized (this) {
                 thread = null;
             }
@@ -210,7 +216,8 @@ class MacroRobot {
                 presenter.addLog(presenter.lang.get("p.capture_is_done"));
         }));
 
-        presenter.addLog(String.format(presenter.lang.get("p.capture_has_started"), data.count));
+        presenter.addLog(
+                String.format(presenter.lang.get("p.capture_has_started"), settingsData.count));
         thread.start();
     }
 
@@ -232,25 +239,25 @@ class MacroRobot {
 
 
 class MacroRobotRunner implements Runnable {
-    private MacroData data;
+    private Consumer<Boolean> onReturn;
     private MacroPresenter presenter;
     private Robot robot;
-    private Consumer<Boolean> onReturn;
+    private SettingsData settingsData;
     private int analyzeKeyCode;
     private int directionKeyCode;
 
-    public MacroRobotRunner(MacroPresenter presenter, MacroData data, Consumer<Boolean> onReturn)
-            throws AWTException {
-        this.data = data;
+    public MacroRobotRunner(MacroPresenter presenter, SettingsData settingsData,
+            Consumer<Boolean> onReturn) throws AWTException {
         this.onReturn = onReturn;
         this.presenter = presenter;
+        this.settingsData = settingsData;
         robot = new Robot();
 
         getKeyCode();
     }
 
     private void getKeyCode() {
-        analyzeKeyCode = switch (data.analyzeKey) {
+        analyzeKeyCode = switch (settingsData.analyzeKey) {
             case ALT_F11 -> KeyEvent.VK_F11;
             case ALT_F12 -> KeyEvent.VK_F12;
             case ALT_HOME -> KeyEvent.VK_HOME;
@@ -258,7 +265,7 @@ class MacroRobotRunner implements Runnable {
             default -> throw new RuntimeException("unknown analyze key");
         };
 
-        directionKeyCode = switch (data.directionKey) {
+        directionKeyCode = switch (settingsData.directionKey) {
             case DOWN -> KeyEvent.VK_DOWN;
             case UP -> KeyEvent.VK_UP;
             default -> throw new RuntimeException("unknown direction key");
@@ -267,23 +274,22 @@ class MacroRobotRunner implements Runnable {
 
     @Override
     public void run() {
-        if (data.count > 0) {
-            int movingDelay = data.movingDelay - (data.inputDuration << 2);
-            if (movingDelay < 0)
-                movingDelay = 0;
+        if (settingsData.count > 0) {
+            int movingDelay = settingsData.movingDelay - (settingsData.inputDuration << 2);
 
             try {
                 int i = 1;
                 while (true) {
-                    pressKeyWithMod(KeyEvent.VK_ALT, KeyEvent.VK_PRINTSCREEN, data.captureDuration);
+                    pressKeyWithMod(KeyEvent.VK_ALT, KeyEvent.VK_PRINTSCREEN,
+                            settingsData.captureDuration);
 
-                    if (i < data.count)
-                        pressKey(directionKeyCode, data.inputDuration);
+                    if (i < settingsData.count)
+                        pressKey(directionKeyCode, settingsData.inputDuration);
 
-                    pressKeyWithMod(KeyEvent.VK_ALT, analyzeKeyCode, data.inputDuration);
-                    presenter.addLog(String.format("(%d/%d)", i, data.count));
+                    pressKeyWithMod(KeyEvent.VK_ALT, analyzeKeyCode, settingsData.inputDuration);
+                    presenter.addLog(String.format("(%d/%d)", i, settingsData.count));
 
-                    if (i >= data.count)
+                    if (i >= settingsData.count)
                         break;
 
                     ++i;
