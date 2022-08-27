@@ -1,14 +1,17 @@
 import edu.sc.seis.launch4j.tasks.DefaultLaunch4jTask
 import edu.sc.seis.launch4j.tasks.Launch4jLibraryTask
 
+// distribution settings
 val applicationVersion = "1.0.0"
 val outFilename = "VArchive Macro"
 
+// build settings
 var buildProfile = "development"
 
 plugins {
+    // id("com.github.johnrengelman.shadow") version "7.1.2"
+
     application
-    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("edu.sc.seis.launch4j") version "2.5.3"
 }
 
@@ -63,8 +66,8 @@ tasks.withType<DefaultLaunch4jTask> {
     textVersion = applicationVersion
     version = applicationVersion
 
-    copyConfigurable = emptyList<Object>()
-    jarTask = tasks.shadowJar.get()
+    // copyConfigurable = emptyList<Any>()
+    // jarTask = tasks.shadowJar.get()
 }
 
 tasks.register<Launch4jLibraryTask>("createExe_localJre") {

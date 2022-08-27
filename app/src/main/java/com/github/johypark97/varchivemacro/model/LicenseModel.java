@@ -11,10 +11,10 @@ public class LicenseModel {
     private static final String NEWLINE = System.lineSeparator();
     private static final String PATH = "/licenses/";
 
-    private static final Map<String, String> LICNESES = Map.ofEntries(
-            Map.entry("Gson", PATH + "gson.txt"),
-            Map.entry("JNativeHook", PATH + "jnativehook.txt"),
-            Map.entry("Launch4j", PATH + "launch4j.txt"), Map.entry("Shadow", PATH + "shadow.txt"));
+    private static final Map<String, String> LICNESES =
+            Map.ofEntries(Map.entry("Gson", PATH + "gson.txt"),
+                    Map.entry("JNativeHook", PATH + "jnativehook.txt"),
+                    Map.entry("Launch4j", PATH + "launch4j.txt"));
 
     public String[] getList() {
         return LICNESES.keySet().stream().sorted().toArray(String[]::new);
