@@ -4,5 +4,5 @@
 # Ignore Gradle build output directory
 build
 
-# Ignore Gradle binary output directory
+# Ignore VSCode binary output directory
 bin
