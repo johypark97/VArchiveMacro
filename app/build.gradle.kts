@@ -13,7 +13,8 @@ plugins {
     // id("com.github.johnrengelman.shadow") version "7.1.2"
 
     application
-    id("edu.sc.seis.launch4j") version "2.5.3"
+    id("edu.sc.seis.launch4j") version "2.5.4"
+    id("org.bytedeco.gradle-javacpp-platform") version("1.5.8")
 }
 
 repositories {
@@ -28,7 +29,8 @@ dependencies {
     // implementation("com.google.guava:guava:31.0.1-jre")
 
     implementation("com.github.kwhat:jnativehook:2.2.2")
-    implementation("com.google.code.gson:gson:2.9.1")
+    implementation("com.google.code.gson:gson:2.10")
+    implementation("org.bytedeco:tesseract-platform:5.2.0-1.5.8")
 }
 
 application {
@@ -38,11 +40,10 @@ application {
     applicationName = outFilename.filter { !it.isWhitespace() }
     executableDir = ""
 
-    // For future use.
     // Include "$projectDir/data" directory in archive files of the distribution task.
-    // applicationDistribution.into("data") {
-    //     from("data")
-    // }
+    applicationDistribution.into("data") {
+        from("data")
+    }
 }
 
 // Another way to include the "$projectDir/data" directory.
@@ -90,17 +91,16 @@ tasks.jar {
     archiveVersion.set(applicationVersion)
 }
 
-// For future use.
-// tasks.register<Copy>("copyDataDirectory") {
-//     description = "Copy \"\$projectDir/data\" directory to launch4j outputDir."
+tasks.register<Copy>("copyDataDirectory") {
+    description = "Copy \"\$projectDir/data\" directory to launch4j outputDir."
 
-//     val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
-//     from("data")
-//     into("$buildDir/${launch4jTask.outputDir}/data")
-// }
+    val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
+    from("data")
+    into("$buildDir/${launch4jTask.outputDir}/data")
+}
 
 tasks.withType<DefaultLaunch4jTask> {
-    // dependsOn(tasks.named("copyDataDirectory"))
+    dependsOn(tasks.named("copyDataDirectory"))
 
     outfile = "$outFilename v$applicationVersion.exe"
 
