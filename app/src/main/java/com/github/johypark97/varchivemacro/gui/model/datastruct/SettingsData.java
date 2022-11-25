@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.model.datastruct;
+package com.github.johypark97.varchivemacro.gui.model.datastruct;
 
 import com.google.gson.annotations.Expose;
 

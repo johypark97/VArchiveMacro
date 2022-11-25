@@ -1,6 +1,6 @@
 module varchivemacro {
     requires java.logging;
-    requires transitive java.desktop;
+    requires java.desktop;
 
     requires com.github.kwhat.jnativehook;
     requires com.google.gson;
@@ -12,7 +12,7 @@ module varchivemacro {
     requires org.bytedeco.tesseract;
 
     exports com.github.johypark97.varchivemacro.config to com.google.gson;
-    exports com.github.johypark97.varchivemacro.model.datastruct to com.google.gson;
+    exports com.github.johypark97.varchivemacro.gui.model.datastruct to com.google.gson;
 
     exports com.github.johypark97.varchivemacro;
 }

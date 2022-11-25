@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.model;
+package com.github.johypark97.varchivemacro.gui.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;

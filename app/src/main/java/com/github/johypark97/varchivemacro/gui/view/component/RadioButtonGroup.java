@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.view.component;
+package com.github.johypark97.varchivemacro.gui.view.component;
 
 import java.util.HashMap;
 import java.util.Iterator;

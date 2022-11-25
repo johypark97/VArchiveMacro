@@ -1,7 +1,7 @@
-package com.github.johypark97.varchivemacro.presenter.converter;
+package com.github.johypark97.varchivemacro.gui.presenter.converter;
 
-import com.github.johypark97.varchivemacro.model.datastruct.SettingsData;
-import com.github.johypark97.varchivemacro.presenter.IMacro;
+import com.github.johypark97.varchivemacro.gui.model.datastruct.SettingsData;
+import com.github.johypark97.varchivemacro.gui.presenter.IMacro;
 
 public class AnalyzeKeyConverter {
     public static IMacro.View.AnalyzeKey data2view(SettingsData.AnalyzeKey key) {

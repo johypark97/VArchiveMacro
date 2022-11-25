@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.view.component;
+package com.github.johypark97.varchivemacro.gui.view.component;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;

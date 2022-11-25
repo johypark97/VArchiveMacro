@@ -1,7 +1,7 @@
-package com.github.johypark97.varchivemacro.presenter;
+package com.github.johypark97.varchivemacro.gui.presenter;
 
 public interface IMacro {
-    public interface Presenter {
+    interface Presenter {
         void addLog(String message);
 
         void showLicense();
@@ -11,7 +11,7 @@ public interface IMacro {
         void viewClosed();
     }
 
-    public interface View {
+    interface View {
         enum SliderKey {
             CAPTURE_DURATION, COUNT, INPUT_DURATION, MOVING_DELAY
         }

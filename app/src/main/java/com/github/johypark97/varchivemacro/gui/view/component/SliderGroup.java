@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.view.component;
+package com.github.johypark97.varchivemacro.gui.view.component;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
-import com.github.johypark97.varchivemacro.util.ComponentSize;
+import com.github.johypark97.varchivemacro.gui.view.util.ComponentSize;
 
 public class SliderGroup<T> extends JPanel {
     private Map<T, SliderSet> sliders = new LinkedHashMap<>();

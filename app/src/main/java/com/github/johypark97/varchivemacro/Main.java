@@ -3,12 +3,12 @@ package com.github.johypark97.varchivemacro;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import com.github.johypark97.varchivemacro.config.ConfigManager;
-import com.github.johypark97.varchivemacro.model.LicenseModel;
-import com.github.johypark97.varchivemacro.model.SettingsModel;
-import com.github.johypark97.varchivemacro.presenter.LicensePresenter;
-import com.github.johypark97.varchivemacro.presenter.MacroPresenter;
-import com.github.johypark97.varchivemacro.view.LicenseView;
-import com.github.johypark97.varchivemacro.view.MacroView;
+import com.github.johypark97.varchivemacro.gui.model.LicenseModel;
+import com.github.johypark97.varchivemacro.gui.model.SettingsModel;
+import com.github.johypark97.varchivemacro.gui.presenter.LicensePresenter;
+import com.github.johypark97.varchivemacro.gui.presenter.MacroPresenter;
+import com.github.johypark97.varchivemacro.gui.view.LicenseView;
+import com.github.johypark97.varchivemacro.gui.view.MacroView;
 
 public class Main {
     // model

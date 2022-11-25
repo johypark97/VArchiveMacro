@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.view;
+package com.github.johypark97.varchivemacro.gui.view;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -15,7 +15,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import com.github.johypark97.varchivemacro.presenter.ILicense;
+import com.github.johypark97.varchivemacro.gui.presenter.ILicense;
 
 public class LicenseView extends JFrame implements ILicense.View {
     private static final String TITLE = "Open Source License";
