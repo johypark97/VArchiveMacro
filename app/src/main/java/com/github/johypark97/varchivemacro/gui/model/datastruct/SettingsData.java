@@ -11,10 +11,21 @@ public class SettingsData {
         DOWN, UP
     }
 
-    public @Expose AnalyzeKey analyzeKey = SettingsData.AnalyzeKey.ALT_F11;
-    public @Expose DirectionKey directionKey = SettingsData.DirectionKey.DOWN;
-    public @Expose int captureDuration = 20;
-    public @Expose int count = 100;
-    public @Expose int inputDuration = 20;
-    public @Expose int movingDelay = 500;
+    @Expose
+    public AnalyzeKey analyzeKey = SettingsData.AnalyzeKey.ALT_F11;
+
+    @Expose
+    public DirectionKey directionKey = SettingsData.DirectionKey.DOWN;
+
+    @Expose
+    public int captureDuration = 20;
+
+    @Expose
+    public int count = 100;
+
+    @Expose
+    public int inputDuration = 20;
+
+    @Expose
+    public int movingDelay = 500;
 }
