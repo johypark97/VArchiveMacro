@@ -208,11 +208,11 @@ public class MacroView extends JFrame implements IMacro.View {
         movingDelay.getSlider().setMajorTickSpacing(MOVING_DELAY_SLIDER_TICK_MAJOR);
         movingDelay.getSlider().setMinorTickSpacing(MOVING_DELAY_SLIDER_TICK_MINOR);
         generalSliderGroup.setupLayout();
-        generalSliderGroup.forEachSliders(x -> {
+        generalSliderGroup.forEachSliders((x) -> {
             x.setPaintLabels(true);
             x.setPaintTicks(true);
         });
-        generalSliderGroup.forEachTextFields(x -> {
+        generalSliderGroup.forEachTextFields((x) -> {
             x.setColumns(SLIDER_GROUP_TEXT_FIELD_COLUMNS);
             x.setHorizontalAlignment(JTextField.RIGHT);
             ComponentSize.preventExpand(x);
@@ -264,11 +264,11 @@ public class MacroView extends JFrame implements IMacro.View {
         inputDuration.getSlider().setMajorTickSpacing(INPUT_DURATION_SLIDER_TICK_MAJOR);
         inputDuration.getSlider().setMinorTickSpacing(INPUT_DURATION_SLIDER_TICK_MINOR);
         advancedSliderGroup.setupLayout();
-        advancedSliderGroup.forEachSliders(x -> {
+        advancedSliderGroup.forEachSliders((x) -> {
             x.setPaintLabels(true);
             x.setPaintTicks(true);
         });
-        advancedSliderGroup.forEachTextFields(x -> {
+        advancedSliderGroup.forEachTextFields((x) -> {
             x.setColumns(SLIDER_GROUP_TEXT_FIELD_COLUMNS);
             x.setHorizontalAlignment(JTextField.RIGHT);
             ComponentSize.preventExpand(x);
@@ -393,11 +393,11 @@ public class MacroView extends JFrame implements IMacro.View {
         inputDuration.setText(lang.get("v.slider.input_duration"));
         inputDuration.setToolTipText(lang.get("v.slider.input_duration.tooltip"));
 
-        generalSliderGroup.forEachSliders(x -> {
+        generalSliderGroup.forEachSliders((x) -> {
             x.setToolTipText(lang.get("v.right_click_reset"));
         });
 
-        advancedSliderGroup.forEachSliders(x -> {
+        advancedSliderGroup.forEachSliders((x) -> {
             x.setToolTipText(lang.get("v.right_click_reset"));
         });
 
