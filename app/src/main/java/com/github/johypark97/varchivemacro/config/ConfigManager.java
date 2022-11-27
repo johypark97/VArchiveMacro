@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
+import com.github.johypark97.varchivemacro.util.CustomGsonBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -62,7 +63,7 @@ public class ConfigManager implements IConfigObservable {
     private static final String RESOURCE_PATH = "config.path";
 
     private ConfigData data;
-    private Gson gson = ConfigGsonBuilder.create();
+    private Gson gson = CustomGsonBuilder.create();
     private Path configPath;
 
     private void init() {

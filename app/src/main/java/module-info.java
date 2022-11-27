@@ -1,6 +1,6 @@
 module varchivemacro {
-    requires java.logging;
     requires java.desktop;
+    requires java.logging;
 
     requires com.github.kwhat.jnativehook;
     requires com.google.gson;

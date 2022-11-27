@@ -33,8 +33,8 @@ import com.github.johypark97.varchivemacro.gui.view.component.RadioButtonGroup;
 import com.github.johypark97.varchivemacro.gui.view.component.SliderGroup;
 import com.github.johypark97.varchivemacro.gui.view.component.SliderSet;
 import com.github.johypark97.varchivemacro.gui.view.util.ComponentSize;
-import com.github.johypark97.varchivemacro.resource.Language;
-import com.github.johypark97.varchivemacro.resource.Version;
+import com.github.johypark97.varchivemacro.util.Language;
+import com.github.johypark97.varchivemacro.util.Version;
 
 public class MacroView extends JFrame implements IMacro.View {
     private static final String TITLE = "V-ARCHIVE Macro";

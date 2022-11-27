@@ -1,9 +1,9 @@
-package com.github.johypark97.varchivemacro.config;
+package com.github.johypark97.varchivemacro.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-class ConfigGsonBuilder {
+public class CustomGsonBuilder {
     public static Gson create() {
         GsonBuilder builder = new GsonBuilder();
 

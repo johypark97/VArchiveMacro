@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.resource;
+package com.github.johypark97.varchivemacro.util;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.hook;
+package com.github.johypark97.varchivemacro.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
