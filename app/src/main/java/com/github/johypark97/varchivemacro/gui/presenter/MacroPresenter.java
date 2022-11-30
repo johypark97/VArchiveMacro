@@ -14,7 +14,7 @@ import com.github.johypark97.varchivemacro.gui.model.datastruct.SettingsData;
 import com.github.johypark97.varchivemacro.gui.presenter.converter.AnalyzeKeyConverter;
 import com.github.johypark97.varchivemacro.gui.presenter.converter.DirectionKeyConverter;
 import com.github.johypark97.varchivemacro.gui.view.LicenseView;
-import com.github.johypark97.varchivemacro.util.HookManager;
+import com.github.johypark97.varchivemacro.lib.hook.HookWrapper;
 import com.github.johypark97.varchivemacro.util.Language;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.NativeInputEvent;
@@ -61,7 +61,7 @@ public class MacroPresenter implements IMacro.Presenter {
     }
 
     private void enableKeyListener() {
-        HookManager.addKeyListener(new MacroNativeKeyListener(this));
+        HookWrapper.addKeyListener(new MacroNativeKeyListener(this));
     }
 
     public void selectUp() {
@@ -107,10 +107,10 @@ public class MacroPresenter implements IMacro.Presenter {
 
     @Override
     public void viewOpened() {
-        HookManager.disableLogging();
-        HookManager.setSwingEventDispatcher();
+        HookWrapper.disableLogging();
+        HookWrapper.setSwingEventDispatcher();
         try {
-            HookManager.register();
+            HookWrapper.register();
             enableKeyListener();
 
             if (config.isConfigExists()) {
@@ -142,7 +142,7 @@ public class MacroPresenter implements IMacro.Presenter {
         settingsModel.setData(getSettingsDataFromView());
         try {
             config.save();
-            HookManager.unregister();
+            HookWrapper.unregister();
         } catch (IOException e) {
             macroView.showDialog(lang.get("p.config.write_dialog.title"),
                     new String[] {lang.get("p.config.write_dialog.msg")},

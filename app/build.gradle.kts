@@ -2,42 +2,32 @@ import java.time.ZonedDateTime
 import edu.sc.seis.launch4j.tasks.DefaultLaunch4jTask
 import edu.sc.seis.launch4j.tasks.Launch4jLibraryTask
 
-// distribution settings
-val applicationVersion = "1.0.0"
-val outFilename = "VArchive Macro"
+val appName = "VArchive Macro"
+val buildBasename = "app"
+val buildVersion = "1.0.0"
 
-// build settings
 var buildProfile = "development"
 
 plugins {
-    // id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("project.java-application-conventions")
 
-    application
+    // id("com.github.johnrengelman.shadow") version "7.1.2"
     id("edu.sc.seis.launch4j") version "2.5.4"
     id("org.bytedeco.gradle-javacpp-platform") version("1.5.8")
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    // Use JUnit Jupiter for testing.
-    // testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    implementation(project(":lib:hook"))
+    implementation(project(":lib:json"))
 
-    // This dependency is used by the application.
-    // implementation("com.google.guava:guava:31.0.1-jre")
-
-    implementation("com.github.kwhat:jnativehook:2.2.2")
-    implementation("com.google.code.gson:gson:2.10")
     implementation("org.bytedeco:tesseract-platform:5.2.0-1.5.8")
 }
 
 application {
     mainClass.set("com.github.johypark97.varchivemacro.Main")
-    mainModule.set("varchivemacro")
+    mainModule.set("varchivemacro.app")
 
-    applicationName = outFilename.filter { !it.isWhitespace() }
+    applicationName = appName
     executableDir = ""
 
     // Include "$projectDir/data" directory in archive files of the distribution task.
@@ -51,22 +41,12 @@ application {
 //     from("data")
 // }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
-}
-
-// tasks.named<Test>("test") {
-//     useJUnitPlatform()
-// }
-
 tasks.register<WriteProperties>("processResources_buildProperties") {
     description = "Create a properties file containing build information."
 
     outputFile = File(sourceSets.main.get().output.resourcesDir, "build.properties")
     property("build.date", ZonedDateTime.now().withNano(0))
-    property("build.version", applicationVersion)
+    property("build.version", buildVersion)
 }
 
 tasks.register<Copy>("processResources_res_buildProfile") {
@@ -83,12 +63,12 @@ tasks.processResources {
 
 tasks.jar {
     manifest {
-        attributes["Implementation-Version"] = applicationVersion
+        attributes["Implementation-Version"] = buildVersion
         attributes["Main-Class"] = application.mainClass.get()
     }
 
-    archiveBaseName.set("main")
-    archiveVersion.set(applicationVersion)
+    archiveBaseName.set(buildBasename)
+    archiveVersion.set(buildVersion)
 }
 
 tasks.register<Copy>("copyDataDirectory") {
@@ -102,7 +82,7 @@ tasks.register<Copy>("copyDataDirectory") {
 tasks.withType<DefaultLaunch4jTask> {
     dependsOn(tasks.named("copyDataDirectory"))
 
-    outfile = "$outFilename v$applicationVersion.exe"
+    outfile = "$appName v$buildVersion.exe"
 
     headerType = "gui"
     icon = "$projectDir/src/main/resources/icon.ico"
@@ -112,8 +92,8 @@ tasks.withType<DefaultLaunch4jTask> {
     fileDescription = rootProject.name
     language = "KOREAN"
     productName = rootProject.name
-    textVersion = applicationVersion
-    version = applicationVersion
+    textVersion = buildVersion
+    version = buildVersion
 
     // copyConfigurable = emptyList<Any>()
     // jarTask = tasks.shadowJar.get()
@@ -123,7 +103,7 @@ tasks.register<Launch4jLibraryTask>("createExe_localJre") {
     description = "Create an executable using local JRE."
     group = "launch4j"
 
-    outfile = "$outFilename local v$applicationVersion.exe"
+    outfile = "$appName local v$buildVersion.exe"
 
     bundledJrePath = "jre17"
 }
@@ -149,10 +129,10 @@ tasks.register<Zip>("releaseProduction") {
     description = "Create an archive file to release."
     group = "distribution"
 
-    archiveBaseName.set(outFilename)
-    archiveVersion.set(applicationVersion)
+    archiveBaseName.set(appName)
+    archiveVersion.set(buildVersion)
 
     val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
     from("$buildDir/${launch4jTask.outputDir}")
-    into("$outFilename v$applicationVersion")
+    into("$appName v$buildVersion")
 }

@@ -1,9 +1,8 @@
-module varchivemacro {
+module varchivemacro.app {
     requires java.desktop;
-    requires java.logging;
 
-    requires com.github.kwhat.jnativehook;
-    requires com.google.gson;
+    requires varchivemacro.lib.hook;
+    requires varchivemacro.lib.json;
 
     requires org.bytedeco.javacpp;
     requires org.bytedeco.leptonica.windows.x86_64;

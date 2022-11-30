@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
-import com.github.johypark97.varchivemacro.util.CustomGsonBuilder;
+import com.github.johypark97.varchivemacro.lib.json.CustomGsonBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
