@@ -1,6 +1,6 @@
 # VArchiveMacro
 
-![screenshot](./github/screenshot.png)
+![screenshot](.github/screenshot.png)
 
 VArchiveMacro는 네오위즈(NEOWIZ)가 개발/배급하는 PC 플랫폼 게임 [DJMAX RESPECT V](https://store.steampowered.com/app/960170/DJMAX_RESPECT_V/)의 유저 제작 웹 성과 관리 도구 [V-ARCHIVE](https://v-archive.net/)의 클라이언트 캡처 자동화를 지원하는 외부 매크로 프로그램 입니다.
 
