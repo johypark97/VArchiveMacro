@@ -9,6 +9,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":lib:common"))
     implementation(project(":lib:hook"))
     implementation(project(":lib:json"))
 }

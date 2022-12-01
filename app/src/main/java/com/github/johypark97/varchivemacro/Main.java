@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro;
 
+import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import com.github.johypark97.varchivemacro.config.ConfigManager;
 import com.github.johypark97.varchivemacro.gui.model.LicenseModel;
 import com.github.johypark97.varchivemacro.gui.model.SettingsModel;
@@ -25,18 +25,11 @@ public class Main {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            setLookAndFeel();
+            setSystemLookAndFeel();
 
             Main main = new Main();
             main.macroView.showView();
         });
-    }
-
-    private static void setLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-        }
     }
 
     private Main() {
