@@ -33,8 +33,8 @@ import com.github.johypark97.varchivemacro.lib.common.gui.component.RadioButtonG
 import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderGroup;
 import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
+import com.github.johypark97.varchivemacro.util.BuildInfo;
 import com.github.johypark97.varchivemacro.util.Language;
-import com.github.johypark97.varchivemacro.util.Version;
 
 public class MacroView extends JFrame implements IMacro.View {
     private static final String TITLE = "V-ARCHIVE Macro";
@@ -107,7 +107,7 @@ public class MacroView extends JFrame implements IMacro.View {
     private Language lang = Language.getInstance();
 
     public MacroView() {
-        setTitle(TITLE + " v" + Version.version);
+        setTitle(TITLE + " v" + BuildInfo.version);
         setFrameOption();
         setContentPanel();
         setContent();
@@ -421,9 +421,9 @@ public class MacroView extends JFrame implements IMacro.View {
     }
 
     protected void showAbout() {
-        showDialog(
-                lang.get("v.menu.info.about"), new Object[] {"V-Archive Macro",
-                        "Version: " + Version.version, "Soruce Code: " + GITHUB_URL},
+        showDialog(lang.get("v.menu.info.about"),
+                new Object[] {"V-Archive Macro", "Version: " + BuildInfo.version,
+                        "Build Date: " + BuildInfo.date, "Soruce Code: " + GITHUB_URL},
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
