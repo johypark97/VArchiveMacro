@@ -6,8 +6,6 @@ val appName = "VArchive Macro"
 val buildBasename = "app"
 val buildVersion = "1.0.0"
 
-var buildProfile = "development"
-
 plugins {
     id("project.java-application-conventions")
 
@@ -50,16 +48,8 @@ tasks.register<WriteProperties>("processResources_buildProperties") {
     property("build.version", buildVersion)
 }
 
-tasks.register<Copy>("processResources_res_buildProfile") {
-    description = "Copy resource files located in \"resources-\$buildProfile\" directory."
-
-    from("src/main/resources-$buildProfile")
-    into(sourceSets.main.get().output.resourcesDir!!)
-}
-
 tasks.processResources {
     dependsOn(tasks.named("processResources_buildProperties"))
-    dependsOn(tasks.named("processResources_res_buildProfile"))
 }
 
 tasks.jar {
@@ -72,7 +62,7 @@ tasks.jar {
     archiveVersion.set(buildVersion)
 }
 
-tasks.register<Copy>("copyDataDirectory") {
+tasks.register<Copy>("copyDataDirectoryToLaunch4j") {
     description = "Copy \"\$projectDir/data\" directory to launch4j outputDir."
 
     val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
@@ -81,7 +71,7 @@ tasks.register<Copy>("copyDataDirectory") {
 }
 
 tasks.withType<DefaultLaunch4jTask> {
-    dependsOn(tasks.named("copyDataDirectory"))
+    dependsOn(tasks.named("copyDataDirectoryToLaunch4j"))
 
     outfile = "$appName v$buildVersion.exe"
 
@@ -100,6 +90,15 @@ tasks.withType<DefaultLaunch4jTask> {
     // jarTask = tasks.shadowJar.get()
 }
 
+tasks.register<Launch4jLibraryTask>("createExe_envJre") {
+    description = "Create an executable using JAVA_HOME env JRE."
+    group = "launch4j"
+
+    outfile = "$appName env v$buildVersion.exe"
+
+    bundledJrePath = "%JAVA_HOME%"
+}
+
 tasks.register<Launch4jLibraryTask>("createExe_localJre") {
     description = "Create an executable using local JRE."
     group = "launch4j"
@@ -109,24 +108,8 @@ tasks.register<Launch4jLibraryTask>("createExe_localJre") {
     bundledJrePath = "jre17"
 }
 
-tasks.register("run_production") {
-    dependsOn(tasks.run)
-    description = "Run with production profile."
-    group = "application"
-
-    buildProfile = "production"
-}
-
-tasks.register("createAllExecutables_production") {
+tasks.register<Zip>("release") {
     dependsOn(tasks.createAllExecutables)
-    description = "Create all executables with production profile."
-    group = "launch4j"
-
-    buildProfile = "production"
-}
-
-tasks.register<Zip>("releaseProduction") {
-    dependsOn(tasks.named("createAllExecutables_production"))
     description = "Create an archive file to release."
     group = "distribution"
 
