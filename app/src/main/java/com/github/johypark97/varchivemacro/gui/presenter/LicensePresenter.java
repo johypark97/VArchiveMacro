@@ -8,7 +8,17 @@ public class LicensePresenter implements ILicense.Presenter {
     public LicenseModel licenseModel;
 
     // view
-    public ILicense.View licenseView;
+    private ILicense.View view;
+
+    public LicensePresenter(ILicense.View view) {
+        this.view = view;
+        this.view.setPresenter(this);
+    }
+
+    @Override
+    public void start() {
+        view.showView();
+    }
 
     @Override
     public void showLicense(String key) {
@@ -20,11 +30,11 @@ public class LicensePresenter implements ILicense.Presenter {
             text = e.getMessage();
         }
 
-        licenseView.showText(text);
+        view.showText(text);
     }
 
     @Override
     public void viewOpened() {
-        licenseView.setList(licenseModel.getList());
+        view.setList(licenseModel.getList());
     }
 }

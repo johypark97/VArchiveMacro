@@ -26,6 +26,9 @@ public class LicenseView extends JFrame implements ILicense.View {
     private static final int LIST_FONT_SIZE = 14;
     private static final int TEXT_AREA_FONT_SIZE = 12;
 
+    // presenter
+    protected ILicense.Presenter presenter;
+
     // components
     private DefaultListModel<String> listModel;
     private JTextArea textArea;
@@ -35,9 +38,6 @@ public class LicenseView extends JFrame implements ILicense.View {
     private WindowListener windowListener = new LicenseViewWindowListener(this);
     private ListSelectionListener listListener = new LicenseViewListListener(this);
 
-    // variables
-    public ILicense.Presenter presenter;
-
     public LicenseView() {
         setTitle(TITLE);
         setFrameOption();
@@ -45,10 +45,6 @@ public class LicenseView extends JFrame implements ILicense.View {
         setContent();
 
         addWindowListener(windowListener);
-    }
-
-    public void showView() {
-        setVisible(true);
     }
 
     private void setFrameOption() {
@@ -93,6 +89,16 @@ public class LicenseView extends JFrame implements ILicense.View {
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, TEXT_AREA_FONT_SIZE));
 
         return new JScrollPane(textArea);
+    }
+
+    @Override
+    public void setPresenter(ILicense.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void showView() {
+        setVisible(true);
     }
 
     @Override

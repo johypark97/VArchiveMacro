@@ -11,39 +11,31 @@ import com.github.johypark97.varchivemacro.gui.view.LicenseView;
 import com.github.johypark97.varchivemacro.gui.view.MacroView;
 
 public class Main {
-    // model
-    private LicenseModel licenseModel = new LicenseModel();
-    private SettingsModel settingsModel = new SettingsModel();
-
     // macro
-    private MacroView macroView = new MacroView();
-    private MacroPresenter macroPresenter = new MacroPresenter();
+    private MacroPresenter macroPresenter = new MacroPresenter(new MacroView());
 
     // license
-    private LicenseView licenseView = new LicenseView();
-    private LicensePresenter licensePresenter = new LicensePresenter();
+    private LicensePresenter licensePresenter = new LicensePresenter(new LicenseView());
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             setSystemLookAndFeel();
 
             Main main = new Main();
-            main.macroView.showView();
+            main.macroPresenter.start();
         });
     }
 
     private Main() {
+        // link presenter - presenter
+        macroPresenter.licensePresenter = licensePresenter;
+
+        // link macro presenter - model
+        SettingsModel settingsModel = new SettingsModel();
         settingsModel.subscribe(ConfigManager.getInstance());
-
         macroPresenter.settingsModel = settingsModel;
-        macroPresenter.licenseView = licenseView;
-        macroPresenter.macroView = macroView;
-        macroView.presenter = macroPresenter;
 
-        licensePresenter.licenseModel = licenseModel;
-        licensePresenter.licenseView = licenseView;
-        licenseView.presenter = licensePresenter;
-
-        macroPresenter.prepareView();
+        // link license presenter - model
+        licensePresenter.licenseModel = new LicenseModel();
     }
 }

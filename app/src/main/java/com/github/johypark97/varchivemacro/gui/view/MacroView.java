@@ -74,6 +74,9 @@ public class MacroView extends JFrame implements IMacro.View {
     private static final int LOG_FONT_SIZE = 12;
     private static final int LOG_ROWS = 8;
 
+    // presenter
+    protected IMacro.Presenter presenter;
+
     // components
     private JButton advancedButton;
     private JTextArea logTextArea;
@@ -102,7 +105,6 @@ public class MacroView extends JFrame implements IMacro.View {
 
     // variables
     private Language lang = Language.getInstance();
-    public IMacro.Presenter presenter;
 
     public MacroView() {
         setTitle(TITLE + " v" + Version.version);
@@ -113,10 +115,6 @@ public class MacroView extends JFrame implements IMacro.View {
         packSize();
 
         addWindowListener(windowListener);
-    }
-
-    public void showView() {
-        setVisible(true);
     }
 
     private void setFrameOption() {
@@ -427,6 +425,16 @@ public class MacroView extends JFrame implements IMacro.View {
                 lang.get("v.menu.info.about"), new Object[] {"V-Archive Macro",
                         "Version: " + Version.version, "Soruce Code: " + GITHUB_URL},
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public void setPresenter(IMacro.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void showView() {
+        setVisible(true);
     }
 
     @Override

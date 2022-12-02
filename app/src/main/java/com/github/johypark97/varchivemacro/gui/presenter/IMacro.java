@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.gui.presenter;
 
 public interface IMacro {
     interface Presenter {
+        void start();
+
         void addLog(String message);
 
         void showLicense();
@@ -23,6 +25,10 @@ public interface IMacro {
         enum DirectionKey {
             DOWN, UP
         }
+
+        void setPresenter(Presenter presenter);
+
+        void showView();
 
         void setSliderDefault(int count, int movingDelay, int captureDuration, int inputDuration);
 

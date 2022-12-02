@@ -13,7 +13,6 @@ import com.github.johypark97.varchivemacro.gui.model.SettingsModel;
 import com.github.johypark97.varchivemacro.gui.model.datastruct.SettingsData;
 import com.github.johypark97.varchivemacro.gui.presenter.converter.AnalyzeKeyConverter;
 import com.github.johypark97.varchivemacro.gui.presenter.converter.DirectionKeyConverter;
-import com.github.johypark97.varchivemacro.gui.view.LicenseView;
 import com.github.johypark97.varchivemacro.lib.hook.HookWrapper;
 import com.github.johypark97.varchivemacro.util.Language;
 import com.github.kwhat.jnativehook.NativeHookException;
@@ -33,30 +32,37 @@ public class MacroPresenter implements IMacro.Presenter {
     public SettingsModel settingsModel;
 
     // view
-    public IMacro.View macroView;
-    public LicenseView licenseView;
+    private IMacro.View view;
 
-    public void prepareView() {
+    // other presenters
+    public ILicense.Presenter licensePresenter;
+
+    public MacroPresenter(IMacro.View view) {
+        this.view = view;
+        this.view.setPresenter(this);
+    }
+
+    private void prepareView() {
         SettingsData data = new SettingsData();
-        macroView.setSliderDefault(data.count, data.movingDelay, data.captureDuration,
+        view.setSliderDefault(data.count, data.movingDelay, data.captureDuration,
                 data.inputDuration);
         updateView(data);
     }
 
     private void updateView(SettingsData data) {
-        macroView.setValues(data.count, data.movingDelay, data.captureDuration, data.inputDuration,
+        view.setValues(data.count, data.movingDelay, data.captureDuration, data.inputDuration,
                 AnalyzeKeyConverter.data2view(data.analyzeKey),
                 DirectionKeyConverter.data2view(data.directionKey));
     }
 
     private SettingsData getSettingsDataFromView() {
         SettingsData data = new SettingsData();
-        data.analyzeKey = AnalyzeKeyConverter.view2data(macroView.getAnalyzeKey());
-        data.captureDuration = macroView.getCaptureDuration();
-        data.count = macroView.getCount();
-        data.directionKey = DirectionKeyConverter.view2data(macroView.getDirectionKey());
-        data.inputDuration = macroView.getInputDuration();
-        data.movingDelay = macroView.getMovingDelay();
+        data.analyzeKey = AnalyzeKeyConverter.view2data(view.getAnalyzeKey());
+        data.captureDuration = view.getCaptureDuration();
+        data.count = view.getCount();
+        data.directionKey = DirectionKeyConverter.view2data(view.getDirectionKey());
+        data.inputDuration = view.getInputDuration();
+        data.movingDelay = view.getMovingDelay();
         return data;
     }
 
@@ -65,18 +71,18 @@ public class MacroPresenter implements IMacro.Presenter {
     }
 
     public void selectUp() {
-        macroView.setDirectionKey(IMacro.View.DirectionKey.UP);
+        view.setDirectionKey(IMacro.View.DirectionKey.UP);
     }
 
     public void selectDown() {
-        macroView.setDirectionKey(IMacro.View.DirectionKey.DOWN);
+        view.setDirectionKey(IMacro.View.DirectionKey.DOWN);
     }
 
     public void startCapture() {
         try {
             robot.capture(getSettingsDataFromView());
         } catch (AWTException e) {
-            macroView.showDialog(lang.get("p.macro_dialog.title"),
+            view.showDialog(lang.get("p.macro_dialog.title"),
                     new String[] {lang.get("p.macro_dialog.msg"), lang.get("p.macro_dialog.msg2")},
                     JOptionPane.ERROR_MESSAGE);
             return;
@@ -85,6 +91,12 @@ public class MacroPresenter implements IMacro.Presenter {
 
     public void stopCapture() {
         robot.stop();
+    }
+
+    @Override
+    public void start() {
+        prepareView();
+        view.showView();
     }
 
     @Override
@@ -97,12 +109,12 @@ public class MacroPresenter implements IMacro.Presenter {
         builder.append("] ");
         builder.append(message);
 
-        macroView.addLog(builder.toString());
+        view.addLog(builder.toString());
     }
 
     @Override
     public void showLicense() {
-        licenseView.showView();
+        licensePresenter.start();
     }
 
     @Override
@@ -118,21 +130,19 @@ public class MacroPresenter implements IMacro.Presenter {
                 updateView(settingsModel.getData());
             }
         } catch (NativeHookException e) {
-            macroView.showDialog(lang.get("p.hook_dialog.title"),
+            view.showDialog(lang.get("p.hook_dialog.title"),
                     new String[] {lang.get("p.hook_dialog.msg"), lang.get("p.hook_dialog.msg2")},
                     JOptionPane.ERROR_MESSAGE);
         } catch (IOException e) {
-            macroView
-                    .showDialog(lang.get("p.config.read_dialog.title"),
-                            new String[] {lang.get("p.config.read_dialog.error_msg"),
-                                    lang.get("p.config.read_dialog.default")},
-                            JOptionPane.ERROR_MESSAGE);
+            view.showDialog(lang.get("p.config.read_dialog.title"),
+                    new String[] {lang.get("p.config.read_dialog.error_msg"),
+                            lang.get("p.config.read_dialog.default")},
+                    JOptionPane.ERROR_MESSAGE);
         } catch (JsonSyntaxException e) {
-            macroView
-                    .showDialog(lang.get("p.config.read_dialog.title"),
-                            new String[] {lang.get("p.config.read_dialog.syntax_msg"),
-                                    lang.get("p.config.read_dialog.default")},
-                            JOptionPane.ERROR_MESSAGE);
+            view.showDialog(lang.get("p.config.read_dialog.title"),
+                    new String[] {lang.get("p.config.read_dialog.syntax_msg"),
+                            lang.get("p.config.read_dialog.default")},
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -144,7 +154,7 @@ public class MacroPresenter implements IMacro.Presenter {
             config.save();
             HookWrapper.unregister();
         } catch (IOException e) {
-            macroView.showDialog(lang.get("p.config.write_dialog.title"),
+            view.showDialog(lang.get("p.config.write_dialog.title"),
                     new String[] {lang.get("p.config.write_dialog.msg")},
                     JOptionPane.ERROR_MESSAGE);
         } catch (NativeHookException e) {
