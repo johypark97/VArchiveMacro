@@ -1,12 +1,9 @@
 package com.github.johypark97.varchivemacro.util;
 
+import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.loadXmlProperties;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
-import com.github.johypark97.varchivemacro.Main;
 
-// TODO: change to use the ResourceBundle
 public class Language {
     // singleton
     private Language() {}
@@ -36,14 +33,9 @@ public class Language {
     }
 
     private void create() {
-        properties = new Properties();
-
-        URL url = Main.class.getClassLoader().getResource("language_ko.xml");
-        if (url != null) {
-            try (InputStream stream = url.openStream()) {
-                properties.loadFromXML(stream);
-            } catch (IOException e) {
-            }
+        try {
+            properties = loadXmlProperties(getClass().getResource("/language_ko.xml"));
+        } catch (IOException e) {
         }
     }
 }

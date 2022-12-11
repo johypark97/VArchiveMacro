@@ -1,9 +1,8 @@
 package com.github.johypark97.varchivemacro.gui.model;
 
-import java.io.BufferedReader;
+import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -25,12 +24,10 @@ public class LicenseModel {
         if (path == null)
             return "ERROR: invalid key";
 
-        URL url = getClass().getResource(path);
-        if (url == null)
+        List<String> lines = readAllLines(getClass().getResource(path));
+        if (lines == null)
             return "ERROR: resource not found";
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
-            return reader.lines().collect(Collectors.joining(NEWLINE));
-        }
+        return lines.stream().collect(Collectors.joining(NEWLINE));
     }
 }

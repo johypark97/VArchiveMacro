@@ -1,6 +1,8 @@
 package com.github.johypark97.varchivemacro.util;
 
-import java.util.ResourceBundle;
+import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.loadProperties;
+import java.io.IOException;
+import java.util.Properties;
 
 public class BuildInfo {
     private static final String EMPTY_STRING = "";
@@ -9,16 +11,18 @@ public class BuildInfo {
     public static final String version;
 
     static {
-        ResourceBundle bundle = ResourceBundle.getBundle("build");
-        date = getValue(bundle, "build.date");
-        version = getValue(bundle, "build.version");
+        Properties properties = null;
+
+        try {
+            properties = loadProperties(BuildInfo.class.getResource("/build.properties"));
+        } catch (IOException e) {
+        }
+
+        date = getValue(properties, "build.date");
+        version = getValue(properties, "build.version");
     }
 
-    private static String getValue(ResourceBundle bundle, String key) {
-        try {
-            return bundle.getString(key);
-        } catch (Exception e) {
-            return EMPTY_STRING;
-        }
+    private static String getValue(Properties properties, String key) {
+        return (properties != null) ? properties.getProperty(key, EMPTY_STRING) : EMPTY_STRING;
     }
 }
