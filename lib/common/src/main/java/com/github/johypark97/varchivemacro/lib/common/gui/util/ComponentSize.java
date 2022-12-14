@@ -41,4 +41,9 @@ public class ComponentSize {
         int width = comp.getMaximumSize().width;
         comp.setMaximumSize(new Dimension(width, 0));
     }
+
+    public static void shrinkWidthToContents(Component comp) {
+        int height = comp.getPreferredSize().height;
+        comp.setMaximumSize(new Dimension(0, height));
+    }
 }
