@@ -1,0 +1,3158 @@
+{
+  "0": {
+    "title": "비상 ~Stay With Me~",
+    "db_name": null,
+    "composer": "Mycin.T",
+    "dlc": "RESPECT"
+  },
+  "1": {
+    "title": "2Nite",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "RESPECT"
+  },
+  "2": {
+    "title": "Alone",
+    "db_name": null,
+    "composer": "Marshmello",
+    "dlc": "RESPECT"
+  },
+  "3": {
+    "title": "Always",
+    "db_name": null,
+    "composer": "신지",
+    "dlc": "RESPECT"
+  },
+  "4": {
+    "title": "Armored Phantom",
+    "db_name": null,
+    "composer": "ned",
+    "dlc": "RESPECT"
+  },
+  "5": {
+    "title": "Beautiful Day",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "RESPECT"
+  },
+  "6": {
+    "title": "Beyond Yourself",
+    "db_name": null,
+    "composer": "Mycin.T",
+    "dlc": "RESPECT"
+  },
+  "7": {
+    "title": "Binary World",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "RESPECT"
+  },
+  "8": {
+    "title": "BlackCat",
+    "db_name": null,
+    "composer": "BEXTER",
+    "dlc": "RESPECT"
+  },
+  "9": {
+    "title": "Boom!",
+    "db_name": null,
+    "composer": "BEXTER",
+    "dlc": "RESPECT"
+  },
+  "10": {
+    "title": "Bullet, Wanted!",
+    "db_name": null,
+    "composer": "Mycin.T",
+    "dlc": "RESPECT"
+  },
+  "11": {
+    "title": "Child of Night",
+    "db_name": null,
+    "composer": "GOTH",
+    "dlc": "RESPECT"
+  },
+  "12": {
+    "title": "Don't Die",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "RESPECT"
+  },
+  "13": {
+    "title": "Enter The Universe",
+    "db_name": null,
+    "composer": "GOTH",
+    "dlc": "RESPECT"
+  },
+  "14": {
+    "title": "Far East Princess",
+    "db_name": null,
+    "composer": "Nauts",
+    "dlc": "RESPECT"
+  },
+  "15": {
+    "title": "Fly Away",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "RESPECT"
+  },
+  "16": {
+    "title": "glory day",
+    "db_name": null,
+    "composer": "BEXTER / Mycin.T",
+    "dlc": "RESPECT"
+  },
+  "17": {
+    "title": "Groovin Up",
+    "db_name": null,
+    "composer": "Mycin.T",
+    "dlc": "RESPECT"
+  },
+  "18": {
+    "title": "Heavenly",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "RESPECT"
+  },
+  "19": {
+    "title": "KILLER BEE",
+    "db_name": null,
+    "composer": "GOTH",
+    "dlc": "RESPECT"
+  },
+  "20": {
+    "title": "Kung Brother",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "RESPECT"
+  },
+  "21": {
+    "title": "Liar",
+    "db_name": null,
+    "composer": "zts",
+    "dlc": "RESPECT"
+  },
+  "22": {
+    "title": "Lift You Up",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "RESPECT"
+  },
+  "23": {
+    "title": "Mulch",
+    "db_name": null,
+    "composer": "Sampling Masters MEGA",
+    "dlc": "RESPECT"
+  },
+  "24": {
+    "title": "NB RANGER - Virgin Force",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "RESPECT"
+  },
+  "25": {
+    "title": "NEON 1989 (ESTi Remix)",
+    "db_name": null,
+    "composer": "YUKIKA",
+    "dlc": "RESPECT"
+  },
+  "26": {
+    "title": "Only for you",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "RESPECT"
+  },
+  "27": {
+    "title": "OPEN FIRE",
+    "db_name": null,
+    "composer": "JC",
+    "dlc": "RESPECT"
+  },
+  "28": {
+    "title": "Over Your Dream",
+    "db_name": null,
+    "composer": "xxdbxx",
+    "dlc": "RESPECT"
+  },
+  "29": {
+    "title": "quixotic",
+    "db_name": null,
+    "composer": "bermei.inazawa",
+    "dlc": "RESPECT"
+  },
+  "30": {
+    "title": "Remains Of Doom",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "RESPECT"
+  },
+  "31": {
+    "title": "Royal Clown",
+    "db_name": null,
+    "composer": "bermei.inazawa",
+    "dlc": "RESPECT"
+  },
+  "32": {
+    "title": "Runaway",
+    "db_name": null,
+    "composer": "LeeZu",
+    "dlc": "RESPECT"
+  },
+  "33": {
+    "title": "Running girl",
+    "db_name": null,
+    "composer": "Mycin.T",
+    "dlc": "RESPECT"
+  },
+  "34": {
+    "title": "Ruti'n (GOTH Wild Electro Remix)",
+    "db_name": null,
+    "composer": "GOTH",
+    "dlc": "RESPECT"
+  },
+  "35": {
+    "title": "Secret Dejavu",
+    "db_name": null,
+    "composer": "DINY",
+    "dlc": "RESPECT"
+  },
+  "36": {
+    "title": "Shadow Flower",
+    "db_name": null,
+    "composer": "ned",
+    "dlc": "RESPECT"
+  },
+  "37": {
+    "title": "The Feelings",
+    "db_name": null,
+    "composer": "Supbaby",
+    "dlc": "RESPECT"
+  },
+  "38": {
+    "title": "The Lost Story",
+    "db_name": null,
+    "composer": "NEOWIZ Bless Soundteam",
+    "dlc": "RESPECT"
+  },
+  "39": {
+    "title": "The Obliterator",
+    "db_name": null,
+    "composer": "GOTH",
+    "dlc": "RESPECT"
+  },
+  "40": {
+    "title": "Tok! Tok! Tok!",
+    "db_name": null,
+    "composer": "Lena",
+    "dlc": "RESPECT"
+  },
+  "41": {
+    "title": "U.A.D",
+    "db_name": null,
+    "composer": "HAYAKO",
+    "dlc": "RESPECT"
+  },
+  "42": {
+    "title": "v o l d e n u i t",
+    "db_name": null,
+    "composer": "Cuve",
+    "dlc": "RESPECT"
+  },
+  "43": {
+    "title": "Void",
+    "db_name": null,
+    "composer": "Kobayashi Tetsuya",
+    "dlc": "RESPECT"
+  },
+  "44": {
+    "title": "waiting for me",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "RESPECT"
+  },
+  "45": {
+    "title": "Waiting for you",
+    "db_name": null,
+    "composer": "Mycin.T",
+    "dlc": "RESPECT"
+  },
+  "46": {
+    "title": "We're All Gonna Die",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "RESPECT"
+  },
+  "47": {
+    "title": "WHY",
+    "db_name": null,
+    "composer": "Nauts",
+    "dlc": "RESPECT"
+  },
+  "48": {
+    "title": "설레임",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "PORTABLE 2"
+  },
+  "49": {
+    "title": "태권부리",
+    "db_name": null,
+    "composer": "xxdbxx",
+    "dlc": "PORTABLE 2"
+  },
+  "50": {
+    "title": "A Lie",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 2"
+  },
+  "51": {
+    "title": "Another DAY",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 2"
+  },
+  "52": {
+    "title": "Brain Storm",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "PORTABLE 2"
+  },
+  "53": {
+    "title": "Brandnew Days",
+    "db_name": null,
+    "composer": "Planetboom",
+    "dlc": "PORTABLE 2"
+  },
+  "54": {
+    "title": "Brave it Out",
+    "db_name": null,
+    "composer": "BEXTER",
+    "dlc": "PORTABLE 2"
+  },
+  "55": {
+    "title": "Bye Bye Love",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "PORTABLE 2"
+  },
+  "56": {
+    "title": "Chain of Gravity",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "PORTABLE 2"
+  },
+  "57": {
+    "title": "Cherokee",
+    "db_name": null,
+    "composer": "xxdbxx",
+    "dlc": "PORTABLE 2"
+  },
+  "58": {
+    "title": "DIVINE SERVICE",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "PORTABLE 2"
+  },
+  "59": {
+    "title": "Dream of You",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 2"
+  },
+  "60": {
+    "title": "Fallen Angel",
+    "db_name": null,
+    "composer": "DJ Mocha",
+    "dlc": "PORTABLE 2"
+  },
+  "61": {
+    "title": "Fentanest",
+    "db_name": null,
+    "composer": "EarBreaker / Eszett",
+    "dlc": "PORTABLE 2"
+  },
+  "62": {
+    "title": "For Seasons",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 2"
+  },
+  "63": {
+    "title": "For the IKARUS",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 2"
+  },
+  "64": {
+    "title": "Get on Top",
+    "db_name": null,
+    "composer": "Planetboom",
+    "dlc": "PORTABLE 2"
+  },
+  "65": {
+    "title": "GET OUT",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "PORTABLE 2"
+  },
+  "66": {
+    "title": "Good Bye",
+    "db_name": null,
+    "composer": "Ruby Tuesday",
+    "dlc": "PORTABLE 2"
+  },
+  "67": {
+    "title": "Hello Pinky",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 2"
+  },
+  "68": {
+    "title": "Higher",
+    "db_name": null,
+    "composer": "Supbaby",
+    "dlc": "PORTABLE 2"
+  },
+  "69": {
+    "title": "Ladymade Star",
+    "db_name": null,
+    "composer": "ESTi",
+    "dlc": "PORTABLE 2"
+  },
+  "70": {
+    "title": "Lost n' found",
+    "db_name": null,
+    "composer": "bermei.inazawa",
+    "dlc": "PORTABLE 2"
+  },
+  "71": {
+    "title": "Memoirs",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "PORTABLE 2"
+  },
+  "72": {
+    "title": "Mess it Up",
+    "db_name": null,
+    "composer": "Nauts",
+    "dlc": "PORTABLE 2"
+  },
+  "73": {
+    "title": "Midnight Blood",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 2"
+  },
+  "74": {
+    "title": "Miles",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "PORTABLE 2"
+  },
+  "75": {
+    "title": "Minus 3",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "PORTABLE 2"
+  },
+  "76": {
+    "title": "My Alias",
+    "db_name": null,
+    "composer": "Dayz",
+    "dlc": "PORTABLE 2"
+  },
+  "77": {
+    "title": "NANO RISK",
+    "db_name": null,
+    "composer": "Dayz",
+    "dlc": "PORTABLE 2"
+  },
+  "78": {
+    "title": "NB POWER",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 2"
+  },
+  "79": {
+    "title": "NB Rangers -Returns-",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 2"
+  },
+  "80": {
+    "title": "Negative Nature",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "PORTABLE 2"
+  },
+  "81": {
+    "title": "Nightmare",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "PORTABLE 2"
+  },
+  "82": {
+    "title": "Phantom Of Sky",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "PORTABLE 2"
+  },
+  "83": {
+    "title": "plastic method",
+    "db_name": null,
+    "composer": "zts",
+    "dlc": "PORTABLE 2"
+  },
+  "84": {
+    "title": "Right Now",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 2"
+  },
+  "85": {
+    "title": "Rocka-a-doodle-doo",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 2"
+  },
+  "86": {
+    "title": "Rolling On the Duck",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 2"
+  },
+  "87": {
+    "title": "Seeker",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "PORTABLE 2"
+  },
+  "88": {
+    "title": "Showtime",
+    "db_name": null,
+    "composer": "Ruby Tuesday",
+    "dlc": "PORTABLE 2"
+  },
+  "89": {
+    "title": "Smoky Quartz",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 2"
+  },
+  "90": {
+    "title": "sO mUCH iN LUV",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "PORTABLE 2"
+  },
+  "91": {
+    "title": "SQUEEZE",
+    "db_name": null,
+    "composer": "Oriental ST8",
+    "dlc": "PORTABLE 2"
+  },
+  "92": {
+    "title": "STALKER",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "PORTABLE 2"
+  },
+  "93": {
+    "title": "StarFish",
+    "db_name": null,
+    "composer": "PlanetBoom",
+    "dlc": "PORTABLE 2"
+  },
+  "94": {
+    "title": "Stay with me",
+    "db_name": null,
+    "composer": "Ruby Tuesday",
+    "dlc": "PORTABLE 2"
+  },
+  "95": {
+    "title": "Sunset Rider",
+    "db_name": null,
+    "composer": "Nauts",
+    "dlc": "PORTABLE 2"
+  },
+  "96": {
+    "title": "Syriana",
+    "db_name": null,
+    "composer": "BEXTER",
+    "dlc": "PORTABLE 2"
+  },
+  "97": {
+    "title": "WhiteBlue",
+    "db_name": "White Blue",
+    "composer": "zts",
+    "dlc": "PORTABLE 2"
+  },
+  "98": {
+    "title": "Yellowberry -AJ Mix-",
+    "db_name": "Yellowberry ~AJ Mix~",
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 2"
+  },
+  "99": {
+    "title": "Yo Creo Que Si",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 2"
+  },
+  "100": {
+    "title": "Your Own Miracle",
+    "db_name": null,
+    "composer": "Ruby Tuesday",
+    "dlc": "PORTABLE 2"
+  },
+  "101": {
+    "title": "바람에게 부탁해",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "102": {
+    "title": "바람에게 부탁해 ~Live Mix~",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "103": {
+    "title": "아침형 인간",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "PORTABLE 1"
+  },
+  "104": {
+    "title": "피아노 협주곡 1번",
+    "db_name": null,
+    "composer": "WavFactory",
+    "dlc": "PORTABLE 1"
+  },
+  "105": {
+    "title": "A.I",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "106": {
+    "title": "Astro Fight",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "107": {
+    "title": "BlythE",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "PORTABLE 1"
+  },
+  "108": {
+    "title": "Bright Dream",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "PORTABLE 1"
+  },
+  "109": {
+    "title": "Can We Talk",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "110": {
+    "title": "Catch Me",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "111": {
+    "title": "Chrono Breakers",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 1"
+  },
+  "112": {
+    "title": "CnP",
+    "db_name": null,
+    "composer": "CrooFE",
+    "dlc": "PORTABLE 1"
+  },
+  "113": {
+    "title": "Dreadnought",
+    "db_name": null,
+    "composer": "EarBreaker",
+    "dlc": "PORTABLE 1"
+  },
+  "114": {
+    "title": "Elastic STAR",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "115": {
+    "title": "End of the Moonlight",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "116": {
+    "title": "Enemy Storm",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "PORTABLE 1"
+  },
+  "117": {
+    "title": "Eternal Memory ~소녀의 꿈~",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "PORTABLE 1"
+  },
+  "118": {
+    "title": "Extreme Z4",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "119": {
+    "title": "FEAR",
+    "db_name": null,
+    "composer": "Supbaby",
+    "dlc": "PORTABLE 1"
+  },
+  "120": {
+    "title": "Fever GJ",
+    "db_name": null,
+    "composer": "xxdbxx",
+    "dlc": "PORTABLE 1"
+  },
+  "121": {
+    "title": "FTR",
+    "db_name": null,
+    "composer": "Supbaby",
+    "dlc": "PORTABLE 1"
+  },
+  "122": {
+    "title": "Funky Chups",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "123": {
+    "title": "Futurism",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "124": {
+    "title": "HAMSIN",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 1"
+  },
+  "125": {
+    "title": "JBG",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "PORTABLE 1"
+  },
+  "126": {
+    "title": "Jupiter Driving",
+    "db_name": null,
+    "composer": "xxdbxx",
+    "dlc": "PORTABLE 1"
+  },
+  "127": {
+    "title": "KUDA",
+    "db_name": null,
+    "composer": "Gonzo",
+    "dlc": "PORTABLE 1"
+  },
+  "128": {
+    "title": "Lemonade",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "PORTABLE 1"
+  },
+  "129": {
+    "title": "Let's Go Baby",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "PORTABLE 1"
+  },
+  "130": {
+    "title": "Light House",
+    "db_name": null,
+    "composer": "xxdbxx",
+    "dlc": "PORTABLE 1"
+  },
+  "131": {
+    "title": "Long Vacation",
+    "db_name": null,
+    "composer": "ESTi",
+    "dlc": "PORTABLE 1"
+  },
+  "132": {
+    "title": "Luv Flow",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "PORTABLE 1"
+  },
+  "133": {
+    "title": "MASAI",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "PORTABLE 1"
+  },
+  "134": {
+    "title": "Memory of Beach",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "PORTABLE 1"
+  },
+  "135": {
+    "title": "Minimal Life",
+    "db_name": null,
+    "composer": "EarBreaker",
+    "dlc": "PORTABLE 1"
+  },
+  "136": {
+    "title": "NB RANGER",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "PORTABLE 1"
+  },
+  "137": {
+    "title": "Never Say",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "PORTABLE 1"
+  },
+  "138": {
+    "title": "OBLIVION",
+    "db_name": null,
+    "composer": "ESTi",
+    "dlc": "PORTABLE 1"
+  },
+  "139": {
+    "title": "OBLIVION ~Rockin' Night Style~",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 1"
+  },
+  "140": {
+    "title": "ON",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "PORTABLE 1"
+  },
+  "141": {
+    "title": "One the Love",
+    "db_name": null,
+    "composer": "xxdbxx",
+    "dlc": "PORTABLE 1"
+  },
+  "142": {
+    "title": "Out Law",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "PORTABLE 1"
+  },
+  "143": {
+    "title": "Para-Q",
+    "db_name": "Para Q",
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "144": {
+    "title": "Ray of Illuminati",
+    "db_name": null,
+    "composer": "ESTi",
+    "dlc": "PORTABLE 1"
+  },
+  "145": {
+    "title": "RED",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "PORTABLE 1"
+  },
+  "146": {
+    "title": "복수혈전",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "PORTABLE 1"
+  },
+  "147": {
+    "title": "Road Of Death",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 1"
+  },
+  "148": {
+    "title": "Rock Or Die",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 1"
+  },
+  "149": {
+    "title": "Save My Dream",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "150": {
+    "title": "SIN",
+    "db_name": null,
+    "composer": "ESTi",
+    "dlc": "PORTABLE 1"
+  },
+  "151": {
+    "title": "SIN ~The Last Scene~",
+    "db_name": null,
+    "composer": "ESTi",
+    "dlc": "PORTABLE 1"
+  },
+  "152": {
+    "title": "Sunny Side",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "PORTABLE 1"
+  },
+  "153": {
+    "title": "Sunny Side ~Deepn' Soul Mix~",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 1"
+  },
+  "154": {
+    "title": "Temptation",
+    "db_name": null,
+    "composer": "S-TRO",
+    "dlc": "PORTABLE 1"
+  },
+  "155": {
+    "title": "Triple Zoe",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "156": {
+    "title": "Ya! Party!",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "PORTABLE 1"
+  },
+  "157": {
+    "title": "Ghost Voices",
+    "db_name": null,
+    "composer": "Virtual Self",
+    "dlc": "RESPECT"
+  },
+  "158": {
+    "title": "Sad Machine",
+    "db_name": null,
+    "composer": "Porter Robinson",
+    "dlc": "RESPECT"
+  },
+  "159": {
+    "title": "Bleed",
+    "db_name": null,
+    "composer": "Axol & The Tech Thieves",
+    "dlc": "RESPECT"
+  },
+  "160": {
+    "title": "Kingdom",
+    "db_name": null,
+    "composer": "Phantom Sage",
+    "dlc": "RESPECT"
+  },
+  "161": {
+    "title": "So Happy",
+    "db_name": null,
+    "composer": "Raven & Kreyn",
+    "dlc": "RESPECT"
+  },
+  "162": {
+    "title": "Get Jinxed",
+    "db_name": null,
+    "composer": "Agnete K",
+    "dlc": "RESPECT"
+  },
+  "163": {
+    "title": "POP/STARS",
+    "db_name": null,
+    "composer": "K/DA",
+    "dlc": "RESPECT"
+  },
+  "164": {
+    "title": "Cosmic Elevator",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "EMOTIONAL S."
+  },
+  "165": {
+    "title": "Feel",
+    "db_name": null,
+    "composer": "DJ Mocha",
+    "dlc": "EMOTIONAL S."
+  },
+  "166": {
+    "title": "Knowledge System",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "EMOTIONAL S."
+  },
+  "167": {
+    "title": "Real Over Drive",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "EMOTIONAL S."
+  },
+  "168": {
+    "title": "Space of Soul",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "EMOTIONAL S."
+  },
+  "169": {
+    "title": "Super lovely",
+    "db_name": null,
+    "composer": "Earbreaker",
+    "dlc": "EMOTIONAL S."
+  },
+  "170": {
+    "title": "Urban Night",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "EMOTIONAL S."
+  },
+  "171": {
+    "title": "Yo! Max!",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "EMOTIONAL S."
+  },
+  "172": {
+    "title": "Attack",
+    "db_name": null,
+    "composer": "Mr.Funky",
+    "dlc": "V EXTENSION"
+  },
+  "173": {
+    "title": "BLACK GOLD",
+    "db_name": null,
+    "composer": "Cranky",
+    "dlc": "V EXTENSION"
+  },
+  "174": {
+    "title": "Do it",
+    "db_name": null,
+    "composer": "House Rulez",
+    "dlc": "V EXTENSION"
+  },
+  "175": {
+    "title": "Dream it",
+    "db_name": null,
+    "composer": "BEXTER",
+    "dlc": "V EXTENSION"
+  },
+  "176": {
+    "title": "Fancy Night",
+    "db_name": null,
+    "composer": "SiNA x CHUCK",
+    "dlc": "V EXTENSION"
+  },
+  "177": {
+    "title": "FIGHT NIGHT (feat. Calyae)",
+    "db_name": null,
+    "composer": "Messier",
+    "dlc": "V EXTENSION"
+  },
+  "178": {
+    "title": "Kensei",
+    "db_name": null,
+    "composer": "Pure 100%",
+    "dlc": "V EXTENSION"
+  },
+  "179": {
+    "title": "Lisrim",
+    "db_name": null,
+    "composer": "onoken",
+    "dlc": "V EXTENSION"
+  },
+  "180": {
+    "title": "Lost Serenity",
+    "db_name": null,
+    "composer": "Benicx",
+    "dlc": "V EXTENSION"
+  },
+  "181": {
+    "title": "Lost Temple",
+    "db_name": null,
+    "composer": "IMLAY",
+    "dlc": "V EXTENSION"
+  },
+  "182": {
+    "title": "Maharajah -fenomeno edition-",
+    "db_name": null,
+    "composer": "Alice Schach and the Magic Orchestra",
+    "dlc": "V EXTENSION"
+  },
+  "183": {
+    "title": "Misty Er'A",
+    "db_name": null,
+    "composer": "Mycin.T x jam-jam",
+    "dlc": "V EXTENSION"
+  },
+  "184": {
+    "title": "Move Yourself",
+    "db_name": null,
+    "composer": "IMLAY / YESEO",
+    "dlc": "V EXTENSION"
+  },
+  "185": {
+    "title": "NANAIRO",
+    "db_name": null,
+    "composer": "HAYAKO",
+    "dlc": "V EXTENSION"
+  },
+  "186": {
+    "title": "Never Die",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "V EXTENSION"
+  },
+  "187": {
+    "title": "Remember Me",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "V EXTENSION"
+  },
+  "188": {
+    "title": "Space Challenger",
+    "db_name": null,
+    "composer": "Bagagee Viphex13",
+    "dlc": "V EXTENSION"
+  },
+  "189": {
+    "title": "Vile Requiem",
+    "db_name": null,
+    "composer": "GOTH",
+    "dlc": "V EXTENSION"
+  },
+  "190": {
+    "title": "welcome to the space (feat. Jisun)",
+    "db_name": null,
+    "composer": "Pory",
+    "dlc": "V EXTENSION"
+  },
+  "191": {
+    "title": "WONDER $LOT 777",
+    "db_name": null,
+    "composer": "MYUKKE.",
+    "dlc": "V EXTENSION"
+  },
+  "192": {
+    "title": "Black MInD",
+    "db_name": null,
+    "composer": "COSIO",
+    "dlc": "COLLABORATION"
+  },
+  "193": {
+    "title": "Good Night, Bad Luck.",
+    "db_name": null,
+    "composer": "t+pazolite",
+    "dlc": "COLLABORATION"
+  },
+  "194": {
+    "title": "Got more raves?",
+    "db_name": null,
+    "composer": "E.G.G.",
+    "dlc": "COLLABORATION"
+  },
+  "195": {
+    "title": "Groove Prayer",
+    "db_name": null,
+    "composer": "COSIO",
+    "dlc": "COLLABORATION"
+  },
+  "196": {
+    "title": "HB-axeleration",
+    "db_name": null,
+    "composer": "Tsukasa Yatoki feat. Erica Masaki",
+    "dlc": "COLLABORATION"
+  },
+  "197": {
+    "title": "Marry me, Nightmare",
+    "db_name": null,
+    "composer": "t+pazolite",
+    "dlc": "COLLABORATION"
+  },
+  "198": {
+    "title": "ouroboros -twin stroke of the end-",
+    "db_name": null,
+    "composer": "Cranky VS MASAKI",
+    "dlc": "COLLABORATION"
+  },
+  "199": {
+    "title": "OVER THE NIGHT",
+    "db_name": null,
+    "composer": "REDALiCE feat. Ayumi Nomiya",
+    "dlc": "COLLABORATION"
+  },
+  "200": {
+    "title": "Satisfiction",
+    "db_name": null,
+    "composer": "t+pazolite",
+    "dlc": "COLLABORATION"
+  },
+  "201": {
+    "title": "Warrior",
+    "db_name": null,
+    "composer": "Cranky",
+    "dlc": "COLLABORATION"
+  },
+  "202": {
+    "title": "바람의 기억",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "TRILOGY"
+  },
+  "203": {
+    "title": "A Lie ~Deep Inside Mix~",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "TRILOGY"
+  },
+  "204": {
+    "title": "Bye Bye Love ~Nu Jazz Mix~",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "TRILOGY"
+  },
+  "205": {
+    "title": "Catch You",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "TRILOGY"
+  },
+  "206": {
+    "title": "For Seasons ~Air Guitar Mix~",
+    "db_name": null,
+    "composer": "Planetboom",
+    "dlc": "TRILOGY"
+  },
+  "207": {
+    "title": "GET OUT ~Hip Noodle Mix~",
+    "db_name": null,
+    "composer": "DJ EON",
+    "dlc": "TRILOGY"
+  },
+  "208": {
+    "title": "Mind Control",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "TRILOGY"
+  },
+  "209": {
+    "title": "My Jealousy",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "TRILOGY"
+  },
+  "210": {
+    "title": "NB Girls",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "TRILOGY"
+  },
+  "211": {
+    "title": "sO mUCH iN LUV ~Melodic Twisted Mix~",
+    "db_name": null,
+    "composer": "Forte Escape",
+    "dlc": "TRILOGY"
+  },
+  "212": {
+    "title": "Someday",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "TRILOGY"
+  },
+  "213": {
+    "title": "STOP",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "TRILOGY"
+  },
+  "214": {
+    "title": "Streetlight",
+    "db_name": null,
+    "composer": "Nauts",
+    "dlc": "TRILOGY"
+  },
+  "215": {
+    "title": "Syriana ~Blast Wave Mix~",
+    "db_name": null,
+    "composer": "DJ EON",
+    "dlc": "TRILOGY"
+  },
+  "216": {
+    "title": "Talk! Talk!",
+    "db_name": null,
+    "composer": "xxdbxx",
+    "dlc": "TRILOGY"
+  },
+  "217": {
+    "title": "The One",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "TRILOGY"
+  },
+  "218": {
+    "title": "Ventilator",
+    "db_name": null,
+    "composer": "Cycle75",
+    "dlc": "TRILOGY"
+  },
+  "219": {
+    "title": "Yo Creo Que Si ~Live House Version~",
+    "db_name": null,
+    "composer": "BEXTER",
+    "dlc": "TRILOGY"
+  },
+  "220": {
+    "title": "Your Own Miracle ~Disco House Mix~",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "TRILOGY"
+  },
+  "221": {
+    "title": "ZET",
+    "db_name": null,
+    "composer": "BEXTER",
+    "dlc": "TRILOGY"
+  },
+  "222": {
+    "title": "Nevermind",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "RESPECT"
+  },
+  "223": {
+    "title": "Break a Spell",
+    "db_name": null,
+    "composer": "Daisuke Ishiwatari",
+    "dlc": "COLLABORATION"
+  },
+  "224": {
+    "title": "Holy Orders (Be Just Or Be Dead)",
+    "db_name": null,
+    "composer": "Daisuke Ishiwatari",
+    "dlc": "COLLABORATION"
+  },
+  "225": {
+    "title": "Marionette",
+    "db_name": null,
+    "composer": "Daisuke Ishiwatari",
+    "dlc": "COLLABORATION"
+  },
+  "226": {
+    "title": "고백, 꽃, 늑대 part.2",
+    "db_name": "고백,꽃,늑대 part.2",
+    "composer": "ReX",
+    "dlc": "BLACK SQUARE"
+  },
+  "227": {
+    "title": "Beat U Down",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "BLACK SQUARE"
+  },
+  "228": {
+    "title": "Colours of Sorrow",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "BLACK SQUARE"
+  },
+  "229": {
+    "title": "Cypher Gate",
+    "db_name": null,
+    "composer": "7 Sequence",
+    "dlc": "BLACK SQUARE"
+  },
+  "230": {
+    "title": "Desperado",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "BLACK SQUARE"
+  },
+  "231": {
+    "title": "Fermion",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "BLACK SQUARE"
+  },
+  "232": {
+    "title": "Fever Pitch Girl",
+    "db_name": null,
+    "composer": "Nikacha",
+    "dlc": "BLACK SQUARE"
+  },
+  "233": {
+    "title": "Get Down",
+    "db_name": null,
+    "composer": "BJJ",
+    "dlc": "BLACK SQUARE"
+  },
+  "234": {
+    "title": "Grave Consequence",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "BLACK SQUARE"
+  },
+  "235": {
+    "title": "Heart of Witch",
+    "db_name": null,
+    "composer": "ReX",
+    "dlc": "BLACK SQUARE"
+  },
+  "236": {
+    "title": "In my Dream",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "BLACK SQUARE"
+  },
+  "237": {
+    "title": "Jealousy",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "BLACK SQUARE"
+  },
+  "238": {
+    "title": "Keys to the World",
+    "db_name": null,
+    "composer": "Planetboom",
+    "dlc": "BLACK SQUARE"
+  },
+  "239": {
+    "title": "Lovely hands",
+    "db_name": null,
+    "composer": "Planetboom",
+    "dlc": "BLACK SQUARE"
+  },
+  "240": {
+    "title": "Lover (BS Style)",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "BLACK SQUARE"
+  },
+  "241": {
+    "title": "PDM",
+    "db_name": null,
+    "composer": "Trish",
+    "dlc": "BLACK SQUARE"
+  },
+  "242": {
+    "title": "Ready Now",
+    "db_name": null,
+    "composer": "Ruby Tuesday",
+    "dlc": "BLACK SQUARE"
+  },
+  "243": {
+    "title": "Ruti'n",
+    "db_name": null,
+    "composer": "BEXTER",
+    "dlc": "BLACK SQUARE"
+  },
+  "244": {
+    "title": "Secret World",
+    "db_name": null,
+    "composer": "Sweetune",
+    "dlc": "BLACK SQUARE"
+  },
+  "245": {
+    "title": "Y (BS Style)",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "BLACK SQUARE"
+  },
+  "246": {
+    "title": "고백, 꽃, 늑대",
+    "db_name": "고백,꽃,늑대",
+    "composer": "ReX",
+    "dlc": "CLAZZIQUAI"
+  },
+  "247": {
+    "title": "내게로 와",
+    "db_name": null,
+    "composer": "CLAZZIQUAI",
+    "dlc": "CLAZZIQUAI"
+  },
+  "248": {
+    "title": "너에게",
+    "db_name": null,
+    "composer": "Sweetune",
+    "dlc": "CLAZZIQUAI"
+  },
+  "249": {
+    "title": "영원",
+    "db_name": null,
+    "composer": "BEXTER",
+    "dlc": "CLAZZIQUAI"
+  },
+  "250": {
+    "title": "Closer",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "CLAZZIQUAI"
+  },
+  "251": {
+    "title": "Coastal Tempo",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "CLAZZIQUAI"
+  },
+  "252": {
+    "title": "Color",
+    "db_name": null,
+    "composer": "CLAZZIQUAI",
+    "dlc": "CLAZZIQUAI"
+  },
+  "253": {
+    "title": "Creator",
+    "db_name": null,
+    "composer": "CLAZZIQUAI",
+    "dlc": "CLAZZIQUAI"
+  },
+  "254": {
+    "title": "DARK ENVY",
+    "db_name": null,
+    "composer": "Sugardonut",
+    "dlc": "CLAZZIQUAI"
+  },
+  "255": {
+    "title": "Electronics",
+    "db_name": null,
+    "composer": "CLAZZIQUAI",
+    "dlc": "CLAZZIQUAI"
+  },
+  "256": {
+    "title": "Fate",
+    "db_name": null,
+    "composer": "STi",
+    "dlc": "CLAZZIQUAI"
+  },
+  "257": {
+    "title": "First Kiss",
+    "db_name": null,
+    "composer": "BJJ",
+    "dlc": "CLAZZIQUAI"
+  },
+  "258": {
+    "title": "Flea",
+    "db_name": null,
+    "composer": "CLAZZIQUAI",
+    "dlc": "CLAZZIQUAI"
+  },
+  "259": {
+    "title": "Freedom",
+    "db_name": null,
+    "composer": "CLAZZIQUAI",
+    "dlc": "CLAZZIQUAI"
+  },
+  "260": {
+    "title": "Here in the Moment",
+    "db_name": null,
+    "composer": "Ruby Tuesday",
+    "dlc": "CLAZZIQUAI"
+  },
+  "261": {
+    "title": "In My Heart",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "CLAZZIQUAI"
+  },
+  "262": {
+    "title": "Love Mode",
+    "db_name": null,
+    "composer": "CLAZZIQUAI",
+    "dlc": "CLAZZIQUAI"
+  },
+  "263": {
+    "title": "Lover (CE Style)",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "CLAZZIQUAI"
+  },
+  "264": {
+    "title": "Tell Me",
+    "db_name": null,
+    "composer": "이궐",
+    "dlc": "CLAZZIQUAI"
+  },
+  "265": {
+    "title": "The Clear Blue Sky",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "CLAZZIQUAI"
+  },
+  "266": {
+    "title": "The Night Stage",
+    "db_name": null,
+    "composer": "CLAZZIQUAI",
+    "dlc": "CLAZZIQUAI"
+  },
+  "267": {
+    "title": "Urban Night",
+    "db_name": null,
+    "composer": "hYO",
+    "dlc": "CLAZZIQUAI"
+  },
+  "268": {
+    "title": "Y (CE Style)",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "CLAZZIQUAI"
+  },
+  "269": {
+    "title": "Rising The Sonic",
+    "db_name": null,
+    "composer": "Dayz",
+    "dlc": "RESPECT"
+  },
+  "270": {
+    "title": "ANALYS",
+    "db_name": null,
+    "composer": "HAYAKO",
+    "dlc": "RESPECT"
+  },
+  "271": {
+    "title": "Chemical Slave",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "RESPECT"
+  },
+  "272": {
+    "title": "RockSTAR",
+    "db_name": null,
+    "composer": "Mr.Funky",
+    "dlc": "RESPECT"
+  },
+  "273": {
+    "title": "Watch Your Step",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "RESPECT"
+  },
+  "274": {
+    "title": "혜성",
+    "db_name": null,
+    "composer": "Mycin.T",
+    "dlc": "RESPECT"
+  },
+  "275": {
+    "title": "Angelic Sphere",
+    "db_name": null,
+    "composer": "3R2",
+    "dlc": "COLLABORATION"
+  },
+  "276": {
+    "title": "ANiMA",
+    "db_name": null,
+    "composer": "xi",
+    "dlc": "COLLABORATION"
+  },
+  "277": {
+    "title": "Dream",
+    "db_name": null,
+    "composer": "Rabpit",
+    "dlc": "COLLABORATION"
+  },
+  "278": {
+    "title": "Legacy",
+    "db_name": null,
+    "composer": "switchworks",
+    "dlc": "COLLABORATION"
+  },
+  "279": {
+    "title": "Magnolia",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "COLLABORATION"
+  },
+  "280": {
+    "title": "Nine point eight",
+    "db_name": "Nine Point Eight",
+    "composer": "Mili",
+    "dlc": "COLLABORATION"
+  },
+  "281": {
+    "title": "Sairai",
+    "db_name": null,
+    "composer": "Shinichi Kobayashi",
+    "dlc": "COLLABORATION"
+  },
+  "282": {
+    "title": "Undo",
+    "db_name": null,
+    "composer": "Yuk-cheung Chun",
+    "dlc": "COLLABORATION"
+  },
+  "283": {
+    "title": "Utopiosphere",
+    "db_name": null,
+    "composer": "Mili",
+    "dlc": "COLLABORATION"
+  },
+  "284": {
+    "title": "YUBIKIRI-GENMAN",
+    "db_name": null,
+    "composer": "Mili",
+    "dlc": "COLLABORATION"
+  },
+  "285": {
+    "title": "AXION",
+    "db_name": null,
+    "composer": "sakuzyo",
+    "dlc": "COLLABORATION"
+  },
+  "286": {
+    "title": "CODE NAME : ZERO",
+    "db_name": null,
+    "composer": "NeLiME",
+    "dlc": "COLLABORATION"
+  },
+  "287": {
+    "title": "conflict",
+    "db_name": null,
+    "composer": "Cranky + siromaru",
+    "dlc": "COLLABORATION"
+  },
+  "288": {
+    "title": "EMber",
+    "db_name": null,
+    "composer": "SIHanatsuka",
+    "dlc": "COLLABORATION"
+  },
+  "289": {
+    "title": "Entrance",
+    "db_name": null,
+    "composer": "Ice",
+    "dlc": "COLLABORATION"
+  },
+  "290": {
+    "title": "L",
+    "db_name": null,
+    "composer": "Ice",
+    "dlc": "COLLABORATION"
+  },
+  "291": {
+    "title": "Les Parfums de L'Amour",
+    "db_name": null,
+    "composer": "naotyu-",
+    "dlc": "COLLABORATION"
+  },
+  "292": {
+    "title": "Mammal",
+    "db_name": null,
+    "composer": "Teikyou",
+    "dlc": "COLLABORATION"
+  },
+  "293": {
+    "title": "Myosotis",
+    "db_name": null,
+    "composer": "M2U",
+    "dlc": "COLLABORATION"
+  },
+  "294": {
+    "title": "Old Gold",
+    "db_name": null,
+    "composer": "Cranky",
+    "dlc": "COLLABORATION"
+  },
+  "295": {
+    "title": "Shoot out",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "COLLABORATION"
+  },
+  "296": {
+    "title": "Ververg",
+    "db_name": null,
+    "composer": "onoken",
+    "dlc": "COLLABORATION"
+  },
+  "297": {
+    "title": "I want You ~반짝 반짝 Sunshine~",
+    "db_name": "I want You ~반짝★반짝 Sunshine~",
+    "composer": "Studio LAY-BACK",
+    "dlc": "RESPECT"
+  },
+  "298": {
+    "title": "설레임 Part.2",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "TECHNIKA 3"
+  },
+  "299": {
+    "title": "유령",
+    "db_name": null,
+    "composer": "STi",
+    "dlc": "TECHNIKA 3"
+  },
+  "300": {
+    "title": "A Life With You",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "TECHNIKA 3"
+  },
+  "301": {
+    "title": "AD2222",
+    "db_name": null,
+    "composer": "CROOVE",
+    "dlc": "TECHNIKA 3"
+  },
+  "302": {
+    "title": "AD2222 ~Extended Mix~",
+    "db_name": null,
+    "composer": "CROOVE",
+    "dlc": "TECHNIKA 3"
+  },
+  "303": {
+    "title": "Angel",
+    "db_name": null,
+    "composer": "Laurent Newfield",
+    "dlc": "TECHNIKA 3"
+  },
+  "304": {
+    "title": "Bamboo on Bamboo",
+    "db_name": null,
+    "composer": "Sampling Masters MEGA",
+    "dlc": "TECHNIKA 3"
+  },
+  "305": {
+    "title": "Black Swan",
+    "db_name": null,
+    "composer": "TAK",
+    "dlc": "TECHNIKA 3"
+  },
+  "306": {
+    "title": "Dark Prism",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "TECHNIKA 3"
+  },
+  "307": {
+    "title": "Dream Again",
+    "db_name": null,
+    "composer": "DINY",
+    "dlc": "TECHNIKA 3"
+  },
+  "308": {
+    "title": "EGG",
+    "db_name": null,
+    "composer": "Nauts",
+    "dlc": "TECHNIKA 3"
+  },
+  "309": {
+    "title": "EGG ~Extended Mix~",
+    "db_name": null,
+    "composer": "Nauts",
+    "dlc": "TECHNIKA 3"
+  },
+  "310": {
+    "title": "Emblem",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "TECHNIKA 3"
+  },
+  "311": {
+    "title": "Fallin' in LUV",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "TECHNIKA 3"
+  },
+  "312": {
+    "title": "Feel Ma Beat",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "TECHNIKA 3"
+  },
+  "313": {
+    "title": "Give Me 5",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "TECHNIKA 3"
+  },
+  "314": {
+    "title": "Kung-Fu Rider",
+    "db_name": null,
+    "composer": "AstroKid",
+    "dlc": "TECHNIKA 3"
+  },
+  "315": {
+    "title": "My Heart, My Soul",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "TECHNIKA 3"
+  },
+  "316": {
+    "title": "Now a NEW Day",
+    "db_name": null,
+    "composer": "Sui.Jay",
+    "dlc": "TECHNIKA 3"
+  },
+  "317": {
+    "title": "Out of CTRL",
+    "db_name": null,
+    "composer": "Mr.Funky",
+    "dlc": "TECHNIKA 3"
+  },
+  "318": {
+    "title": "Over the Rainbow",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "TECHNIKA 3"
+  },
+  "319": {
+    "title": "Right Back",
+    "db_name": null,
+    "composer": "TANUKI",
+    "dlc": "TECHNIKA 3"
+  },
+  "320": {
+    "title": "Showdown",
+    "db_name": null,
+    "composer": "LeeZu",
+    "dlc": "TECHNIKA 3"
+  },
+  "321": {
+    "title": "SigNalize",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "TECHNIKA 3"
+  },
+  "322": {
+    "title": "Supernova",
+    "db_name": null,
+    "composer": "Cranky",
+    "dlc": "TECHNIKA 3"
+  },
+  "323": {
+    "title": "Supersonic 2011",
+    "db_name": null,
+    "composer": "Sound LAB",
+    "dlc": "TECHNIKA 3"
+  },
+  "324": {
+    "title": "Wanna Be Your Lover",
+    "db_name": null,
+    "composer": "Laurent Newfield",
+    "dlc": "TECHNIKA 3"
+  },
+  "325": {
+    "title": "Xeus",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "TECHNIKA 3"
+  },
+  "326": {
+    "title": "You & Me",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "TECHNIKA 3"
+  },
+  "327": {
+    "title": "Airwave",
+    "db_name": null,
+    "composer": "ReX",
+    "dlc": "TECHNIKA 2"
+  },
+  "328": {
+    "title": "BEE-U-TIFUL",
+    "db_name": null,
+    "composer": "FIRST AID",
+    "dlc": "TECHNIKA 2"
+  },
+  "329": {
+    "title": "Burn it Down",
+    "db_name": null,
+    "composer": "P'sycho-Remi",
+    "dlc": "TECHNIKA 2"
+  },
+  "330": {
+    "title": "Cosmic Fantastic Lovesong",
+    "db_name": null,
+    "composer": "DINY",
+    "dlc": "TECHNIKA 2"
+  },
+  "331": {
+    "title": "Cozy Quilt",
+    "db_name": null,
+    "composer": "bermei.inazawa",
+    "dlc": "TECHNIKA 2"
+  },
+  "332": {
+    "title": "D2",
+    "db_name": null,
+    "composer": "FIRST AID",
+    "dlc": "TECHNIKA 2"
+  },
+  "333": {
+    "title": "Dream of Winds",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "TECHNIKA 2"
+  },
+  "334": {
+    "title": "Dual Strikers",
+    "db_name": null,
+    "composer": "7 Sequence",
+    "dlc": "TECHNIKA 2"
+  },
+  "335": {
+    "title": "Eternal Fantasy ~유니의 꿈~",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "TECHNIKA 2"
+  },
+  "336": {
+    "title": "La Campanella : Nu Rave",
+    "db_name": null,
+    "composer": "Cranky",
+    "dlc": "TECHNIKA 2"
+  },
+  "337": {
+    "title": "Love is Beautiful",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "TECHNIKA 2"
+  },
+  "338": {
+    "title": "MonoXide",
+    "db_name": null,
+    "composer": "Planetboom",
+    "dlc": "TECHNIKA 2"
+  },
+  "339": {
+    "title": "Nova ~Mr.Funky Remix~",
+    "db_name": null,
+    "composer": "Mr.Funky",
+    "dlc": "TECHNIKA 2"
+  },
+  "340": {
+    "title": "Put'Em Up",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "TECHNIKA 2"
+  },
+  "341": {
+    "title": "Puzzler",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "TECHNIKA 2"
+  },
+  "342": {
+    "title": "Rage Of Demon",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "TECHNIKA 2"
+  },
+  "343": {
+    "title": "Say it from your heart",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "TECHNIKA 2"
+  },
+  "344": {
+    "title": "Sweet Dream",
+    "db_name": null,
+    "composer": "Lin-G",
+    "dlc": "TECHNIKA 2"
+  },
+  "345": {
+    "title": "The Guilty",
+    "db_name": null,
+    "composer": "P'sycho-Remi",
+    "dlc": "TECHNIKA 2"
+  },
+  "346": {
+    "title": "Thor ~Extended Mix~",
+    "db_name": "Thor (Extended Mix)",
+    "composer": "XeoN",
+    "dlc": "TECHNIKA 2"
+  },
+  "347": {
+    "title": "Trip",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "TECHNIKA 2"
+  },
+  "348": {
+    "title": "XLASHER",
+    "db_name": null,
+    "composer": "Hosoe Shinji",
+    "dlc": "TECHNIKA 2"
+  },
+  "349": {
+    "title": "Y ~Extended Mix~",
+    "db_name": null,
+    "composer": "ND LEE",
+    "dlc": "TECHNIKA 2"
+  },
+  "350": {
+    "title": "Access",
+    "db_name": null,
+    "composer": "Sphazer",
+    "dlc": "TECHNIKA 1"
+  },
+  "351": {
+    "title": "Area 7",
+    "db_name": null,
+    "composer": "Sphazer",
+    "dlc": "TECHNIKA 1"
+  },
+  "352": {
+    "title": "Beyond the Future",
+    "db_name": null,
+    "composer": "7 Sequence",
+    "dlc": "TECHNIKA 1"
+  },
+  "353": {
+    "title": "Dear my Lady",
+    "db_name": null,
+    "composer": "Oriental ST8",
+    "dlc": "TECHNIKA 1"
+  },
+  "354": {
+    "title": "DJMAX",
+    "db_name": null,
+    "composer": "Humming Urban Stereo",
+    "dlc": "TECHNIKA 1"
+  },
+  "355": {
+    "title": "Fury",
+    "db_name": null,
+    "composer": "Sugardonut",
+    "dlc": "TECHNIKA 1"
+  },
+  "356": {
+    "title": "HEXAD",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "TECHNIKA 1"
+  },
+  "357": {
+    "title": "Honeymoon",
+    "db_name": null,
+    "composer": "Humming Urban Stereo",
+    "dlc": "TECHNIKA 1"
+  },
+  "358": {
+    "title": "I want You",
+    "db_name": null,
+    "composer": "Lin-G",
+    "dlc": "TECHNIKA 1"
+  },
+  "359": {
+    "title": "Landscape",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "TECHNIKA 1"
+  },
+  "360": {
+    "title": "Melody",
+    "db_name": null,
+    "composer": "bermei.inazawa / UC",
+    "dlc": "TECHNIKA 1"
+  },
+  "361": {
+    "title": "Play the Future",
+    "db_name": null,
+    "composer": "Urbatronic Chopsticks",
+    "dlc": "TECHNIKA 1"
+  },
+  "362": {
+    "title": "Remember",
+    "db_name": null,
+    "composer": "Lin-G",
+    "dlc": "TECHNIKA 1"
+  },
+  "363": {
+    "title": "Shoreline",
+    "db_name": null,
+    "composer": "Oriental ST8",
+    "dlc": "TECHNIKA 1"
+  },
+  "364": {
+    "title": "SON OF SUN",
+    "db_name": null,
+    "composer": "Hosoe Shinji",
+    "dlc": "TECHNIKA 1"
+  },
+  "365": {
+    "title": "SuperSonic",
+    "db_name": null,
+    "composer": "Planetboom",
+    "dlc": "TECHNIKA 1"
+  },
+  "366": {
+    "title": "Sweet Shining Shooting Star",
+    "db_name": null,
+    "composer": "Croove",
+    "dlc": "TECHNIKA 1"
+  },
+  "367": {
+    "title": "The Last Dance",
+    "db_name": null,
+    "composer": "Urbatronic Chopsticks",
+    "dlc": "TECHNIKA 1"
+  },
+  "368": {
+    "title": "Thor",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "TECHNIKA 1"
+  },
+  "369": {
+    "title": "Voyage",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "TECHNIKA 1"
+  },
+  "370": {
+    "title": "ALiCE",
+    "db_name": null,
+    "composer": "seibin",
+    "dlc": "RESPECT"
+  },
+  "371": {
+    "title": "End of Mythology",
+    "db_name": null,
+    "composer": "Alice Schach and the Magic Orchestra",
+    "dlc": "RESPECT"
+  },
+  "372": {
+    "title": "Do you want it",
+    "db_name": null,
+    "composer": "House Rulez",
+    "dlc": "RESPECT"
+  },
+  "373": {
+    "title": "Airwave ~Extended Mix~",
+    "db_name": null,
+    "composer": "ReX",
+    "dlc": "BLACK SQUARE"
+  },
+  "374": {
+    "title": "SON OF SUN ~Extended Mix~",
+    "db_name": null,
+    "composer": "Hosoe Shinji",
+    "dlc": "TECHNIKA 1"
+  },
+  "375": {
+    "title": "Here in the Moment ~Extended Mix~",
+    "db_name": null,
+    "composer": "Ruby Tuesday",
+    "dlc": "CLAZZIQUAI"
+  },
+  "376": {
+    "title": "Barbarous Funera",
+    "db_name": null,
+    "composer": "Rikako Watanabe (Basiscape)",
+    "dlc": "COLLABORATION"
+  },
+  "377": {
+    "title": "Frontline",
+    "db_name": null,
+    "composer": "B@kamin / M2U",
+    "dlc": "COLLABORATION"
+  },
+  "378": {
+    "title": "What am I fighting for?",
+    "db_name": null,
+    "composer": "Haloweak",
+    "dlc": "COLLABORATION"
+  },
+  "379": {
+    "title": "Cyberozar",
+    "db_name": null,
+    "composer": "sakuzyo",
+    "dlc": "COLLABORATION"
+  },
+  "380": {
+    "title": "Garakuta Doll Play",
+    "db_name": null,
+    "composer": "t+pazolite",
+    "dlc": "COLLABORATION"
+  },
+  "381": {
+    "title": "Ikazuchi",
+    "db_name": null,
+    "composer": "Takenobu Mitsuyoshi",
+    "dlc": "COLLABORATION"
+  },
+  "382": {
+    "title": "Ray Tuning",
+    "db_name": null,
+    "composer": "NayutalieN",
+    "dlc": "COLLABORATION"
+  },
+  "383": {
+    "title": "The wheel to the right",
+    "db_name": null,
+    "composer": "Sampling Masters MEGA",
+    "dlc": "COLLABORATION"
+  },
+  "384": {
+    "title": "Trrricksters!!",
+    "db_name": null,
+    "composer": "s-don vs. Hino Isuka",
+    "dlc": "COLLABORATION"
+  },
+  "385": {
+    "title": "염라",
+    "db_name": null,
+    "composer": "ampstyle",
+    "dlc": "RESPECT"
+  },
+  "386": {
+    "title": "Dance of the Dead",
+    "db_name": null,
+    "composer": "GOTH",
+    "dlc": "RESPECT"
+  },
+  "387": {
+    "title": "Grid System",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "RESPECT"
+  },
+  "388": {
+    "title": "Become Myself",
+    "db_name": null,
+    "composer": "PIA",
+    "dlc": "PORTABLE 3"
+  },
+  "389": {
+    "title": "Break!",
+    "db_name": null,
+    "composer": "Mr.Funky",
+    "dlc": "PORTABLE 3"
+  },
+  "390": {
+    "title": "Desperado ~Nu Skool Mix~",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "PORTABLE 3"
+  },
+  "391": {
+    "title": "Enemy Storm ~Dark Jungle Mix~",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "PORTABLE 3"
+  },
+  "392": {
+    "title": "Everything",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "PORTABLE 3"
+  },
+  "393": {
+    "title": "Gone Astray",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 3"
+  },
+  "394": {
+    "title": "Hanz up!",
+    "db_name": null,
+    "composer": "Mr.Funky",
+    "dlc": "PORTABLE 3"
+  },
+  "395": {
+    "title": "IF",
+    "db_name": null,
+    "composer": "Vanilla Unity",
+    "dlc": "PORTABLE 3"
+  },
+  "396": {
+    "title": "Leave me alone",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 3"
+  },
+  "397": {
+    "title": "Luv Flow ~Funky House Mix~",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "PORTABLE 3"
+  },
+  "398": {
+    "title": "Luv is True",
+    "db_name": null,
+    "composer": "3rd Coast",
+    "dlc": "PORTABLE 3"
+  },
+  "399": {
+    "title": "MASAI ~Electro House Mix~",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "PORTABLE 3"
+  },
+  "400": {
+    "title": "Mellow D Fantasy",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "PORTABLE 3"
+  },
+  "401": {
+    "title": "NB Ranger : Nonstop Remix",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "PORTABLE 3"
+  },
+  "402": {
+    "title": "Out Law : Reborn",
+    "db_name": null,
+    "composer": "Mr.Funky",
+    "dlc": "PORTABLE 3"
+  },
+  "403": {
+    "title": "Raise me up",
+    "db_name": null,
+    "composer": "Planetboom",
+    "dlc": "PORTABLE 3"
+  },
+  "404": {
+    "title": "Season (Warm Mix)",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "PORTABLE 3"
+  },
+  "405": {
+    "title": "SuperSonic ~Mr.Funky Dirty Planet Remix~",
+    "db_name": null,
+    "composer": "Mr.Funky",
+    "dlc": "PORTABLE 3"
+  },
+  "406": {
+    "title": "The Rain Maker",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "PORTABLE 3"
+  },
+  "407": {
+    "title": "Waiting for the Sun",
+    "db_name": null,
+    "composer": "MindCube",
+    "dlc": "PORTABLE 3"
+  },
+  "408": {
+    "title": "Your Smile",
+    "db_name": null,
+    "composer": "Cistrans (RoseLine)",
+    "dlc": "PORTABLE 3"
+  },
+  "409": {
+    "title": "ZET ~Mr.Funky Remix~",
+    "db_name": null,
+    "composer": "Mr.Funky",
+    "dlc": "PORTABLE 3"
+  },
+  "410": {
+    "title": "glory day (Mintorment Remix)",
+    "db_name": null,
+    "composer": "Mintorment",
+    "dlc": "RESPECT"
+  },
+  "411": {
+    "title": "glory day -JHS Remix-",
+    "db_name": null,
+    "composer": "JHS",
+    "dlc": "RESPECT"
+  },
+  "412": {
+    "title": "안아줘",
+    "db_name": null,
+    "composer": "YUKIKA",
+    "dlc": "COLLABORATION"
+  },
+  "413": {
+    "title": "HELIX",
+    "db_name": null,
+    "composer": "ESTi",
+    "dlc": "COLLABORATION"
+  },
+  "414": {
+    "title": "In My Heart ~ESTi Remix~",
+    "db_name": null,
+    "composer": "ESTi",
+    "dlc": "COLLABORATION"
+  },
+  "415": {
+    "title": "Obelisque",
+    "db_name": null,
+    "composer": "ESTi & M2U",
+    "dlc": "COLLABORATION"
+  },
+  "416": {
+    "title": "U-NIVUS",
+    "db_name": null,
+    "composer": "ESTi",
+    "dlc": "COLLABORATION"
+  },
+  "417": {
+    "title": "서울여자",
+    "db_name": null,
+    "composer": "YUKIKA",
+    "dlc": "RESPECT"
+  },
+  "418": {
+    "title": "Relation Again (ESTi's Remix)",
+    "db_name": null,
+    "composer": "Tsukasa / ESTi",
+    "dlc": "RESPECT"
+  },
+  "419": {
+    "title": "너로피어오라",
+    "db_name": null,
+    "composer": "ampstyle",
+    "dlc": "RESPECT"
+  },
+  "420": {
+    "title": "공성전 ~Pierre Blanche, Yonce Remix~",
+    "db_name": null,
+    "composer": "Pierre Blanche / Yonce",
+    "dlc": "COLLABORATION"
+  },
+  "421": {
+    "title": "광명의 루 : 루 라바다",
+    "db_name": null,
+    "composer": "Studio EIM",
+    "dlc": "COLLABORATION"
+  },
+  "422": {
+    "title": "부여성 ~Blosso Remix~",
+    "db_name": null,
+    "composer": "Blosso",
+    "dlc": "COLLABORATION"
+  },
+  "423": {
+    "title": "소년 모험가 ~SiNA Remix~",
+    "db_name": null,
+    "composer": "SiNA",
+    "dlc": "COLLABORATION"
+  },
+  "424": {
+    "title": "어릴적 할머니가 들려주신 옛 전설",
+    "db_name": null,
+    "composer": "HanStone",
+    "dlc": "COLLABORATION"
+  },
+  "425": {
+    "title": "연합군과 제국군",
+    "db_name": null,
+    "composer": "NEXON",
+    "dlc": "COLLABORATION"
+  },
+  "426": {
+    "title": "전설이 시작된 곳 ~VoidRover Remix~",
+    "db_name": null,
+    "composer": "VoidRover",
+    "dlc": "COLLABORATION"
+  },
+  "427": {
+    "title": "죽음의 신 : 크로우 크루아흐",
+    "db_name": null,
+    "composer": "Studio EIM",
+    "dlc": "COLLABORATION"
+  },
+  "428": {
+    "title": "최종무곡",
+    "db_name": null,
+    "composer": "HanStone",
+    "dlc": "COLLABORATION"
+  },
+  "429": {
+    "title": "카트라이더 Mashup ~Cosmograph Remix~",
+    "db_name": null,
+    "composer": "Cosmograph",
+    "dlc": "COLLABORATION"
+  },
+  "430": {
+    "title": "카트라이더 Mashup ~Pure 100% Remix~",
+    "db_name": null,
+    "composer": "Pure 100%",
+    "dlc": "COLLABORATION"
+  },
+  "431": {
+    "title": "카트라이더, 크레이지아케이드, 버블파이터 Main theme ~CHUCK Remix~",
+    "db_name": "카트라이더, 크레이지아케이드,버블파이터 Main theme ~CHUCK Remix~",
+    "composer": "CHUCK",
+    "dlc": "COLLABORATION"
+  },
+  "432": {
+    "title": "Apparition",
+    "db_name": null,
+    "composer": "ESTi",
+    "dlc": "COLLABORATION"
+  },
+  "433": {
+    "title": "Constant Moderato",
+    "db_name": null,
+    "composer": "Mitsukiyo",
+    "dlc": "COLLABORATION"
+  },
+  "434": {
+    "title": "It's my war now",
+    "db_name": null,
+    "composer": "김동현",
+    "dlc": "COLLABORATION"
+  },
+  "435": {
+    "title": "Lacheln, The City of Dreams",
+    "db_name": null,
+    "composer": "NEXON",
+    "dlc": "COLLABORATION"
+  },
+  "436": {
+    "title": "Reminiscence",
+    "db_name": null,
+    "composer": "Nauts",
+    "dlc": "COLLABORATION"
+  },
+  "437": {
+    "title": "Start The Adventure ~SOPHI Remix~",
+    "db_name": null,
+    "composer": "SOPHI",
+    "dlc": "COLLABORATION"
+  },
+  "438": {
+    "title": "Tayberrs - Collapsed Paradise",
+    "db_name": null,
+    "composer": "정영걸",
+    "dlc": "COLLABORATION"
+  },
+  "439": {
+    "title": "The Little Adventurer",
+    "db_name": null,
+    "composer": "Studio EIM",
+    "dlc": "COLLABORATION"
+  },
+  "440": {
+    "title": "The Raindrop Flower ~jam-jam Remix~",
+    "db_name": null,
+    "composer": "jam-jam",
+    "dlc": "COLLABORATION"
+  },
+  "441": {
+    "title": "Alone",
+    "db_name": null,
+    "composer": "Nauts",
+    "dlc": "RESPECT"
+  },
+  "442": {
+    "title": "꿈의 기억(feat. Jisun)",
+    "db_name": "꿈의 기억 (feat. Jisun)",
+    "composer": "Pory",
+    "dlc": "V EXTENSION 2"
+  },
+  "443": {
+    "title": "Arcade Love (feat. KNVWN)",
+    "db_name": null,
+    "composer": "Newton / KNVWN",
+    "dlc": "V EXTENSION 2"
+  },
+  "444": {
+    "title": "Chrysanthemum",
+    "db_name": null,
+    "composer": "Kanallia",
+    "dlc": "V EXTENSION 2"
+  },
+  "445": {
+    "title": "Cocked Pistol",
+    "db_name": null,
+    "composer": "Pierre Blanche",
+    "dlc": "V EXTENSION 2"
+  },
+  "446": {
+    "title": "Daydream",
+    "db_name": null,
+    "composer": "Mycin.T x SiNA",
+    "dlc": "V EXTENSION 2"
+  },
+  "447": {
+    "title": "FALLING IN LOVE",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "V EXTENSION 2"
+  },
+  "448": {
+    "title": "Forgotten",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "V EXTENSION 2"
+  },
+  "449": {
+    "title": "I’ve got a feeling",
+    "db_name": "I've got a feeling",
+    "composer": "LeeZu",
+    "dlc": "V EXTENSION 2"
+  },
+  "450": {
+    "title": "Imaginary dance",
+    "db_name": null,
+    "composer": "CHUCK",
+    "dlc": "V EXTENSION 2"
+  },
+  "451": {
+    "title": "Melonaid",
+    "db_name": null,
+    "composer": "KATOMORI",
+    "dlc": "V EXTENSION 2"
+  },
+  "452": {
+    "title": "Never let you go",
+    "db_name": null,
+    "composer": "Blosso",
+    "dlc": "V EXTENSION 2"
+  },
+  "453": {
+    "title": "Odysseus",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "V EXTENSION 2"
+  },
+  "454": {
+    "title": "Over Me",
+    "db_name": null,
+    "composer": "SSOMbo",
+    "dlc": "V EXTENSION 2"
+  },
+  "455": {
+    "title": "Red Eyes",
+    "db_name": null,
+    "composer": "Cosmograph",
+    "dlc": "V EXTENSION 2"
+  },
+  "456": {
+    "title": "Sweet On You",
+    "db_name": null,
+    "composer": "jam-jam",
+    "dlc": "V EXTENSION 2"
+  },
+  "457": {
+    "title": "Underwater Castle",
+    "db_name": null,
+    "composer": "Nauts",
+    "dlc": "V EXTENSION 2"
+  },
+  "458": {
+    "title": "Vertical Floating",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "V EXTENSION 2"
+  },
+  "459": {
+    "title": "Voyage",
+    "db_name": null,
+    "composer": "SOPHI",
+    "dlc": "V EXTENSION 2"
+  },
+  "460": {
+    "title": "Won't Back Down",
+    "db_name": null,
+    "composer": "Pure 100% / KASA",
+    "dlc": "V EXTENSION 2"
+  },
+  "461": {
+    "title": "Zero to the hunnit",
+    "db_name": null,
+    "composer": "SiNA",
+    "dlc": "V EXTENSION 2"
+  },
+  "462": {
+    "title": "너로피어오라 ~Original Ver.~",
+    "db_name": "너로피어오라(Original Ver.)",
+    "composer": "ampstyle",
+    "dlc": "V EXTENSION 2"
+  },
+  "463": {
+    "title": "Aurora Borealis",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "RESPECT"
+  },
+  "464": {
+    "title": "너랑 있으면",
+    "db_name": null,
+    "composer": "Lena",
+    "dlc": "RESPECT"
+  },
+  "465": {
+    "title": "Bang!!",
+    "db_name": null,
+    "composer": "BOOGEY VOXX",
+    "dlc": "COLLABORATION"
+  },
+  "466": {
+    "title": "can you feel it",
+    "db_name": null,
+    "composer": "MK",
+    "dlc": "COLLABORATION"
+  },
+  "467": {
+    "title": "Comet Coaster",
+    "db_name": null,
+    "composer": "DJ Noriken & aran",
+    "dlc": "COLLABORATION"
+  },
+  "468": {
+    "title": "Cthugha",
+    "db_name": null,
+    "composer": "USAO",
+    "dlc": "COLLABORATION"
+  },
+  "469": {
+    "title": "DataErr0r",
+    "db_name": null,
+    "composer": "Cosmograph",
+    "dlc": "COLLABORATION"
+  },
+  "470": {
+    "title": "Dysthymia",
+    "db_name": null,
+    "composer": "a_hisa",
+    "dlc": "COLLABORATION"
+  },
+  "471": {
+    "title": "ENERGY SYNERGY MATRIX",
+    "db_name": null,
+    "composer": "Tanchiky",
+    "dlc": "COLLABORATION"
+  },
+  "472": {
+    "title": "Koi no Moonlight",
+    "db_name": null,
+    "composer": "REDALiCE",
+    "dlc": "COLLABORATION"
+  },
+  "473": {
+    "title": "Lights of Muse",
+    "db_name": null,
+    "composer": "Ayatsugu_Otowa",
+    "dlc": "COLLABORATION"
+  },
+  "474": {
+    "title": "MUSEDASH!!!!",
+    "db_name": null,
+    "composer": "Dan@Yomi",
+    "dlc": "COLLABORATION"
+  },
+  "475": {
+    "title": "Pancake is Love",
+    "db_name": null,
+    "composer": "3R2",
+    "dlc": "COLLABORATION"
+  },
+  "476": {
+    "title": "PUPA",
+    "db_name": null,
+    "composer": "Morimori Atsushi",
+    "dlc": "COLLABORATION"
+  },
+  "477": {
+    "title": "tape/stop/night",
+    "db_name": null,
+    "composer": "Sugar & Co.",
+    "dlc": "COLLABORATION"
+  },
+  "478": {
+    "title": "The 90's Decision",
+    "db_name": null,
+    "composer": "MYUKKE.",
+    "dlc": "COLLABORATION"
+  },
+  "479": {
+    "title": "XING",
+    "db_name": null,
+    "composer": "ginkiha",
+    "dlc": "COLLABORATION"
+  },
+  "480": {
+    "title": "Airlock",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "RESPECT"
+  },
+  "481": {
+    "title": "Daylight",
+    "db_name": null,
+    "composer": "CROOVE",
+    "dlc": "RESPECT"
+  },
+  "482": {
+    "title": "OrBiTal",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "RESPECT"
+  },
+  "483": {
+    "title": "Angelic Tears",
+    "db_name": null,
+    "composer": "SHIKI",
+    "dlc": "RESPECT"
+  },
+  "484": {
+    "title": "별빛정원",
+    "db_name": null,
+    "composer": "vneld",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "485": {
+    "title": "A Song of Sixpence",
+    "db_name": null,
+    "composer": "makou",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "486": {
+    "title": "Back to Life",
+    "db_name": null,
+    "composer": "CROOVE",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "487": {
+    "title": "Deborah",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "488": {
+    "title": "Eternal Fantasy (Miya Vocal Mix)",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "489": {
+    "title": "Festa Nova",
+    "db_name": null,
+    "composer": "TerraMycin",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "490": {
+    "title": "Kal_wrnw",
+    "db_name": null,
+    "composer": "LeeZu",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "491": {
+    "title": "Love☆Panic",
+    "db_name": null,
+    "composer": "hiyong",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "492": {
+    "title": "Luv Yourself",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "493": {
+    "title": "Mukilteo Beach",
+    "db_name": null,
+    "composer": "CROOVE",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "494": {
+    "title": "Never Ending TECHNIKA",
+    "db_name": null,
+    "composer": "Studio LAY-BACK",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "495": {
+    "title": "Renovation",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "496": {
+    "title": "Retention",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "497": {
+    "title": "Shining My Boy",
+    "db_name": null,
+    "composer": "AstroKid",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "498": {
+    "title": "Silent Clarity",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "499": {
+    "title": "Take on Me",
+    "db_name": null,
+    "composer": "Cuve",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "500": {
+    "title": "The MAX",
+    "db_name": null,
+    "composer": "ND Lee",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "501": {
+    "title": "Thor (Deepin' Absonant Mix)",
+    "db_name": null,
+    "composer": "XeoN",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "502": {
+    "title": "VORTEX",
+    "db_name": null,
+    "composer": "Electronic Boutique",
+    "dlc": "TECHNIKA T&Q"
+  },
+  "503": {
+    "title": "Techno Racer",
+    "db_name": null,
+    "composer": "Paul Bazooka",
+    "dlc": "RESPECT"
+  },
+  "504": {
+    "title": "모짜르트 교향곡 40번 1악장",
+    "db_name": null,
+    "composer": "김창훈",
+    "dlc": "RESPECT"
+  },
+  "505": {
+    "title": "밤비(Bambi) - DJMAX Edit -",
+    "db_name": null,
+    "composer": "다즈비(DAZBEE)",
+    "dlc": "V EXTENSION 3"
+  },
+  "506": {
+    "title": "#mine (feat. Riho Iwamoto)",
+    "db_name": null,
+    "composer": "Tsukasa",
+    "dlc": "V EXTENSION 3"
+  },
+  "507": {
+    "title": "Bright Future",
+    "db_name": null,
+    "composer": "RiraN",
+    "dlc": "V EXTENSION 3"
+  },
+  "508": {
+    "title": "Charming World",
+    "db_name": null,
+    "composer": "SOPHI",
+    "dlc": "V EXTENSION 3"
+  },
+  "509": {
+    "title": "Disappearing Act",
+    "db_name": null,
+    "composer": "Pierre Blanche",
+    "dlc": "V EXTENSION 3"
+  },
+  "510": {
+    "title": "Emerge",
+    "db_name": null,
+    "composer": "Pure 100%",
+    "dlc": "V EXTENSION 3"
+  },
+  "511": {
+    "title": "Every Day ~ Every Night",
+    "db_name": null,
+    "composer": "Night Tempo",
+    "dlc": "V EXTENSION 3"
+  },
+  "512": {
+    "title": "Fundamental",
+    "db_name": null,
+    "composer": "Bagagee Viphex13",
+    "dlc": "V EXTENSION 3"
+  },
+  "513": {
+    "title": "KICK IT",
+    "db_name": null,
+    "composer": "HAYAKO",
+    "dlc": "V EXTENSION 3"
+  },
+  "514": {
+    "title": "Misty E'ra 'Mui'",
+    "db_name": null,
+    "composer": "Mycin.T x jam-jam",
+    "dlc": "V EXTENSION 3"
+  },
+  "515": {
+    "title": "Moment (feat. Nauts)",
+    "db_name": null,
+    "composer": "DoubleTO",
+    "dlc": "V EXTENSION 3"
+  },
+  "516": {
+    "title": "NB RANGERS - 운명의 Destiny",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "V EXTENSION 3"
+  },
+  "517": {
+    "title": "Plasma Sphere",
+    "db_name": null,
+    "composer": "VoidRover",
+    "dlc": "V EXTENSION 3"
+  },
+  "518": {
+    "title": "Secret",
+    "db_name": null,
+    "composer": "Milkoi / Ruxxi",
+    "dlc": "V EXTENSION 3"
+  },
+  "519": {
+    "title": "Set Me Free",
+    "db_name": null,
+    "composer": "Takahiro Eguchi",
+    "dlc": "V EXTENSION 3"
+  },
+  "520": {
+    "title": "Space Dream (feat. J.O.Y)",
+    "db_name": null,
+    "composer": "Newton",
+    "dlc": "V EXTENSION 3"
+  },
+  "521": {
+    "title": "STEP",
+    "db_name": null,
+    "composer": "YESEO",
+    "dlc": "V EXTENSION 3"
+  },
+  "522": {
+    "title": "Tic! Tac! Toe!",
+    "db_name": null,
+    "composer": "TAK x Corbin",
+    "dlc": "V EXTENSION 3"
+  },
+  "523": {
+    "title": "Winners",
+    "db_name": null,
+    "composer": "CHUCK",
+    "dlc": "V EXTENSION 3"
+  },
+  "524": {
+    "title": "Zero-Break",
+    "db_name": null,
+    "composer": "Cosmograph",
+    "dlc": "V EXTENSION 3"
+  },
+  "525": {
+    "title": "Mr.Lonely",
+    "db_name": null,
+    "composer": "NieN",
+    "dlc": "RESPECT"
+  }
+}
