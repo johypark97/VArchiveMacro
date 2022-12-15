@@ -33,7 +33,7 @@ public class DatabaseTableRowSorter extends TableRowSorter<TableModel> {
 
         setComparator(DatabaseTableModel.COLUMNS.indexOf("id"), intComparator);
         setComparator(DatabaseTableModel.COLUMNS.indexOf("title"), titleComparator);
-        setComparator(DatabaseTableModel.COLUMNS.indexOf("db_name"), titleComparator);
+        setComparator(DatabaseTableModel.COLUMNS.indexOf("remote_title"), titleComparator);
         setComparator(DatabaseTableModel.COLUMNS.indexOf("composer"), strComparator);
         setComparator(DatabaseTableModel.COLUMNS.indexOf("dlc"), strComparator);
         setSortKeys(getSortKeys("title", "dlc", "composer"));

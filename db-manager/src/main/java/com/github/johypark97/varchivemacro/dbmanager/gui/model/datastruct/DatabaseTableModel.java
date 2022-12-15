@@ -8,7 +8,8 @@ import com.github.johypark97.varchivemacro.dbmanager.database.datastruct.Song;
 public class DatabaseTableModel extends AbstractTableModel {
     private static final String ERROR_STRING = "ERROR";
 
-    public static final List<String> COLUMNS = List.of("id", "title", "db_name", "composer", "dlc");
+    public static final List<String> COLUMNS =
+            List.of("id", "title", "remote_title", "composer", "dlc");
 
     private Database database;
 
@@ -37,7 +38,7 @@ public class DatabaseTableModel extends AbstractTableModel {
 
         return switch (columnIndex) {
             case 1 -> song.title;
-            case 2 -> song.db_name;
+            case 2 -> song.remote_title;
             case 3 -> song.composer;
             case 4 -> song.dlc;
             default -> ERROR_STRING;

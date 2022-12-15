@@ -9,7 +9,7 @@ public class Song {
     public String title;
 
     @Expose
-    public String db_name;
+    public String remote_title;
 
     @Expose
     public String composer;
