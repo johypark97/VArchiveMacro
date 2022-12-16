@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.gui.presenter;
+package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 public interface IMacro {
     interface Presenter {

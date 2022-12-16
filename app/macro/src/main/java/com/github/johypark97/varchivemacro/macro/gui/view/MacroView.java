@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.gui.view;
+package com.github.johypark97.varchivemacro.macro.gui.view;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -28,13 +28,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.BadLocationException;
-import com.github.johypark97.varchivemacro.gui.presenter.IMacro;
 import com.github.johypark97.varchivemacro.lib.common.gui.component.RadioButtonGroup;
 import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderGroup;
 import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
-import com.github.johypark97.varchivemacro.util.BuildInfo;
-import com.github.johypark97.varchivemacro.util.Language;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro;
+import com.github.johypark97.varchivemacro.macro.util.BuildInfo;
+import com.github.johypark97.varchivemacro.macro.util.Language;
 
 public class MacroView extends JFrame implements IMacro.View {
     private static final String TITLE = "V-ARCHIVE Macro";

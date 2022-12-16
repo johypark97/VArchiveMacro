@@ -1,8 +1,8 @@
-package com.github.johypark97.varchivemacro.gui.model;
+package com.github.johypark97.varchivemacro.macro.gui.model;
 
-import com.github.johypark97.varchivemacro.config.ConfigData;
-import com.github.johypark97.varchivemacro.config.IConfigObserver;
-import com.github.johypark97.varchivemacro.gui.model.datastruct.SettingsData;
+import com.github.johypark97.varchivemacro.macro.config.ConfigData;
+import com.github.johypark97.varchivemacro.macro.config.IConfigObserver;
+import com.github.johypark97.varchivemacro.macro.gui.model.datastruct.SettingsData;
 
 public class SettingsModel implements IConfigObserver {
     private SettingsData data;

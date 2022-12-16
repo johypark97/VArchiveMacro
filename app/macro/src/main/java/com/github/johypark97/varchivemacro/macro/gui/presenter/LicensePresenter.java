@@ -1,7 +1,7 @@
-package com.github.johypark97.varchivemacro.gui.presenter;
+package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import java.io.IOException;
-import com.github.johypark97.varchivemacro.gui.model.LicenseModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.LicenseModel;
 
 public class LicensePresenter implements ILicense.Presenter {
     // model

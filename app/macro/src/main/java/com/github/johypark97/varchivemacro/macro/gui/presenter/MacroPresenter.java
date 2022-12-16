@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.gui.presenter;
+package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -8,13 +8,13 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
-import com.github.johypark97.varchivemacro.config.ConfigManager;
-import com.github.johypark97.varchivemacro.gui.model.SettingsModel;
-import com.github.johypark97.varchivemacro.gui.model.datastruct.SettingsData;
-import com.github.johypark97.varchivemacro.gui.presenter.converter.AnalyzeKeyConverter;
-import com.github.johypark97.varchivemacro.gui.presenter.converter.DirectionKeyConverter;
 import com.github.johypark97.varchivemacro.lib.hook.HookWrapper;
-import com.github.johypark97.varchivemacro.util.Language;
+import com.github.johypark97.varchivemacro.macro.config.ConfigManager;
+import com.github.johypark97.varchivemacro.macro.gui.model.SettingsModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.datastruct.SettingsData;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.converter.AnalyzeKeyConverter;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.converter.DirectionKeyConverter;
+import com.github.johypark97.varchivemacro.macro.util.Language;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.NativeInputEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;

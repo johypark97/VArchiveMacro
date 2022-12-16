@@ -1,14 +1,14 @@
-package com.github.johypark97.varchivemacro;
+package com.github.johypark97.varchivemacro.macro;
 
 import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
 import javax.swing.SwingUtilities;
-import com.github.johypark97.varchivemacro.config.ConfigManager;
-import com.github.johypark97.varchivemacro.gui.model.LicenseModel;
-import com.github.johypark97.varchivemacro.gui.model.SettingsModel;
-import com.github.johypark97.varchivemacro.gui.presenter.LicensePresenter;
-import com.github.johypark97.varchivemacro.gui.presenter.MacroPresenter;
-import com.github.johypark97.varchivemacro.gui.view.LicenseView;
-import com.github.johypark97.varchivemacro.gui.view.MacroView;
+import com.github.johypark97.varchivemacro.macro.config.ConfigManager;
+import com.github.johypark97.varchivemacro.macro.gui.model.LicenseModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.SettingsModel;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.LicensePresenter;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroPresenter;
+import com.github.johypark97.varchivemacro.macro.gui.view.LicenseView;
+import com.github.johypark97.varchivemacro.macro.gui.view.MacroView;
 
 public class Main {
     // macro

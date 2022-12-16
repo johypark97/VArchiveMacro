@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.util;
+package com.github.johypark97.varchivemacro.macro.util;
 
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.loadXmlProperties;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.config;
+package com.github.johypark97.varchivemacro.macro.config;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,7 +1,7 @@
-package com.github.johypark97.varchivemacro.gui.presenter.converter;
+package com.github.johypark97.varchivemacro.macro.gui.presenter.converter;
 
-import com.github.johypark97.varchivemacro.gui.model.datastruct.SettingsData;
-import com.github.johypark97.varchivemacro.gui.presenter.IMacro;
+import com.github.johypark97.varchivemacro.macro.gui.model.datastruct.SettingsData;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro;
 
 public class DirectionKeyConverter {
     public static IMacro.View.DirectionKey data2view(SettingsData.DirectionKey key) {

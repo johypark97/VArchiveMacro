@@ -1,4 +1,4 @@
-module varchivemacro.app {
+module varchivemacro.macro {
     requires java.desktop;
 
     requires varchivemacro.lib.common;
@@ -11,8 +11,8 @@ module varchivemacro.app {
     requires org.bytedeco.tesseract.windows.x86_64;
     requires org.bytedeco.tesseract;
 
-    exports com.github.johypark97.varchivemacro.config to com.google.gson;
-    exports com.github.johypark97.varchivemacro.gui.model.datastruct to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.config to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.gui.model.datastruct to com.google.gson;
 
-    exports com.github.johypark97.varchivemacro;
+    exports com.github.johypark97.varchivemacro.macro;
 }

@@ -3,7 +3,7 @@ import edu.sc.seis.launch4j.tasks.DefaultLaunch4jTask
 import edu.sc.seis.launch4j.tasks.Launch4jLibraryTask
 
 val appName = "VArchive Macro"
-val buildBasename = "app"
+val buildBasename = "macro"
 val buildVersion = "1.0.0"
 
 plugins {
@@ -23,8 +23,8 @@ dependencies {
 }
 
 application {
-    mainClass.set("com.github.johypark97.varchivemacro.Main")
-    mainModule.set("varchivemacro.app")
+    mainClass.set("com.github.johypark97.varchivemacro.macro.Main")
+    mainModule.set("varchivemacro.macro")
 
     applicationName = appName
     executableDir = ""
