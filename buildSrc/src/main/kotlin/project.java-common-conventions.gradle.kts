@@ -1,5 +1,11 @@
+import com.github.spotbugs.snom.SpotBugsTask
+
 plugins {
     java
+
+    // Static analysis tools
+    pmd
+    id("com.github.spotbugs")
 }
 
 repositories {
@@ -12,6 +18,9 @@ dependencies {
 
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+
+    spotbugs("com.github.spotbugs:spotbugs:4.7.1")
+    spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0")
 }
 
 java {
@@ -20,7 +29,22 @@ java {
     }
 }
 
+pmd {
+    isIgnoreFailures = true
+}
+
+spotbugs {
+    ignoreFailures.set(true)
+}
+
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+tasks.withType<SpotBugsTask> {
+    reports.create("html") {
+        required.set(true)
+        setStylesheet("fancy-hist.xsl")
+    }
 }
