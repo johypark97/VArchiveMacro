@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Properties;
 
@@ -33,12 +35,17 @@ public class ResourceUtil {
         return properties;
     }
 
-    public static List<String> readAllLines(URL url) throws IOException {
+    public static List<String> readAllLines(URL url, Charset encoding) throws IOException {
         if (url == null)
             return null;
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
+        try (BufferedReader reader =
+                new BufferedReader(new InputStreamReader(url.openStream(), encoding))) {
             return reader.lines().toList();
         }
+    }
+
+    public static List<String> readAllLines(URL url) throws IOException {
+        return readAllLines(url, StandardCharsets.UTF_8);
     }
 }
