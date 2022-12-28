@@ -82,13 +82,7 @@ public class SliderSet {
             int max = hasLimitMax ? limitMax : sliderMax;
             int min = hasLimitMin ? limitMin : sliderMin;
 
-            if (x < min) {
-                value = min;
-            } else if (x > max) {
-                value = max;
-            } else {
-                value = x;
-            }
+            value = Math.min(Math.max(min, x), max);
 
             slider.setValue(value);
             slider.setPaintTrack(sliderMin <= value && value <= sliderMax);

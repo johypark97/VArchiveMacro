@@ -21,10 +21,9 @@ public class TitleComparator implements Comparator<String> {
                 return left - right;
             }
 
-            int leftPriority = getPriority(left);
-            int rightPriority = getPriority(right);
-            if (leftPriority != rightPriority) {
-                return leftPriority - rightPriority;
+            int diffPriority = getPriority(left) - getPriority(right);
+            if (diffPriority != 0) {
+                return diffPriority;
             }
 
             if (left != right) {
