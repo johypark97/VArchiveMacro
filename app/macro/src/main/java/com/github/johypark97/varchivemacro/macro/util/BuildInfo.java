@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.util;
 
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.loadProperties;
+
 import java.io.IOException;
 import java.util.Properties;
 
@@ -15,7 +16,7 @@ public class BuildInfo {
 
         try {
             properties = loadProperties(BuildInfo.class.getResource("/build.properties"));
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
 
         date = getValue(properties, "build.date");

@@ -12,8 +12,9 @@ import java.util.Properties;
 
 public class ResourceUtil {
     public static Properties loadProperties(URL url) throws IOException {
-        if (url == null)
+        if (url == null) {
             return null;
+        }
 
         Properties properties = new Properties();
         try (InputStream stream = url.openStream()) {
@@ -24,8 +25,9 @@ public class ResourceUtil {
     }
 
     public static Properties loadXmlProperties(URL url) throws IOException {
-        if (url == null)
+        if (url == null) {
             return null;
+        }
 
         Properties properties = new Properties();
         try (InputStream stream = url.openStream()) {
@@ -36,11 +38,12 @@ public class ResourceUtil {
     }
 
     public static List<String> readAllLines(URL url, Charset encoding) throws IOException {
-        if (url == null)
+        if (url == null) {
             return null;
+        }
 
-        try (BufferedReader reader =
-                new BufferedReader(new InputStreamReader(url.openStream(), encoding))) {
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(url.openStream(), encoding))) {
             return reader.lines().toList();
         }
     }

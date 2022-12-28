@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct;
 
+import com.github.johypark97.varchivemacro.dbmanager.database.util.TitleComparator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -11,24 +12,13 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import com.github.johypark97.varchivemacro.dbmanager.database.util.TitleComparator;
 
 public class DatabaseTableRowSorter extends TableRowSorter<TableModel> {
     public DatabaseTableRowSorter(TableModel tableModel) {
         super(tableModel);
 
-        Comparator<Integer> intComparator = new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return Integer.compare(o1, o2);
-            }
-        };
-        Comparator<String> strComparator = new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1.compareTo(o2);
-            }
-        };
+        Comparator<Integer> intComparator = Integer::compare;
+        Comparator<String> strComparator = String::compareTo;
         Comparator<String> titleComparator = new TitleComparator();
 
         setComparator(DatabaseTableModel.COLUMNS.indexOf("id"), intComparator);
@@ -61,13 +51,13 @@ class CaseInsensitiveRegexFilter extends RowFilter<TableModel, Integer> {
     private static final String EMPTY_STRING = "";
 
     private Matcher matcher;
-    private int column;
+    private final int column;
 
     public CaseInsensitiveRegexFilter(String pattern, int column) {
         if (pattern != null && !pattern.isBlank()) {
             try {
                 matcher = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(EMPTY_STRING);
-            } catch (PatternSyntaxException e) {
+            } catch (PatternSyntaxException ignored) {
             }
         }
 
@@ -76,8 +66,9 @@ class CaseInsensitiveRegexFilter extends RowFilter<TableModel, Integer> {
 
     @Override
     public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-        if (matcher == null || column < 0 || column >= entry.getValueCount())
+        if (matcher == null || column < 0 || column >= entry.getValueCount()) {
             return true;
+        }
 
         return matcher.reset(entry.getStringValue(column)).find();
     }

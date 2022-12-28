@@ -14,30 +14,38 @@ public class TitleComparator implements Comparator<String> {
             int left = pLeft.next();
             int right = pRight.next();
 
-            if (isNul(left) && isNul(right))
+            if (isNul(left) && isNul(right)) {
                 return 0;
-            if (isNul(left) ^ isNul(right))
+            }
+            if (isNul(left) ^ isNul(right)) {
                 return left - right;
+            }
 
             int leftPriority = getPriority(left);
             int rightPriority = getPriority(right);
-            if (leftPriority != rightPriority)
+            if (leftPriority != rightPriority) {
                 return leftPriority - rightPriority;
+            }
 
-            if (left != right)
+            if (left != right) {
                 return left - right;
+            }
         }
     }
 
     private static int getPriority(int value) {
-        if (isSpace(value))
+        if (isSpace(value)) {
             return 0;
-        if (isKorean(value))
+        }
+        if (isKorean(value)) {
             return 1;
-        if (isDigit(value))
+        }
+        if (isDigit(value)) {
             return 3;
-        if (isEnglish(value))
+        }
+        if (isEnglish(value)) {
             return 4;
+        }
         return 2;
     }
 
@@ -47,8 +55,9 @@ public class TitleComparator implements Comparator<String> {
         private int i = 0;
 
         public Pointer(String str) {
-            if (str == null)
+            if (str == null) {
                 throw new NullPointerException();
+            }
 
             s = str;
             l = str.length();
@@ -60,11 +69,13 @@ public class TitleComparator implements Comparator<String> {
 
                 // 0x27: Apostrophe (')
                 // 0x2D: Hyphen-minus (-)
-                if (value == 0x27 || value == 0x2D)
+                if (value == 0x27 || value == 0x2D) {
                     continue;
+                }
 
-                if (isLowerCase(value))
+                if (isLowerCase(value)) {
                     return toUpperCase(value);
+                }
 
                 return value;
             }

@@ -1,19 +1,19 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.presenter;
 
+import com.github.johypark97.varchivemacro.dbmanager.gui.model.DatabaseModel;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import javax.swing.JOptionPane;
-import com.github.johypark97.varchivemacro.dbmanager.gui.model.DatabaseModel;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 
 public class DbManagerPresenter implements IDbManager.Presenter {
     // model
     public DatabaseModel databaseModel;
 
     // view
-    private IDbManager.View view;
+    private final IDbManager.View view;
 
     public DbManagerPresenter(IDbManager.View view) {
         this.view = view;

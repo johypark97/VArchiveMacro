@@ -7,9 +7,9 @@ import javax.swing.table.TableColumnModel;
 
 public class TableUtil {
     public static void resizeColumnWidth(JTable table, int min, int max, int margin) {
-        final TableColumnModel tableColumnModel = table.getColumnModel();
-        final int columnCount = table.getColumnCount();
-        final int rowCount = table.getRowCount();
+        TableColumnModel tableColumnModel = table.getColumnModel();
+        int columnCount = table.getColumnCount();
+        int rowCount = table.getRowCount();
 
         for (int column = 0; column < columnCount; ++column) {
             int width = 0;

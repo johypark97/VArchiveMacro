@@ -1,6 +1,6 @@
-import java.time.ZonedDateTime
 import edu.sc.seis.launch4j.tasks.DefaultLaunch4jTask
 import edu.sc.seis.launch4j.tasks.Launch4jLibraryTask
+import java.time.ZonedDateTime
 
 val appName = "VArchive Macro"
 val buildBasename = "macro"
@@ -11,7 +11,7 @@ plugins {
 
     // id("com.github.johnrengelman.shadow") version "7.1.2"
     id("edu.sc.seis.launch4j") version "2.5.4"
-    id("org.bytedeco.gradle-javacpp-platform") version("1.5.8")
+    id("org.bytedeco.gradle-javacpp-platform") version "1.5.8"
 }
 
 dependencies {

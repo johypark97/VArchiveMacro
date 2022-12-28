@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro;
 
 import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
-import javax.swing.SwingUtilities;
+
 import com.github.johypark97.varchivemacro.macro.config.ConfigManager;
 import com.github.johypark97.varchivemacro.macro.gui.model.LicenseModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.SettingsModel;
@@ -9,13 +9,14 @@ import com.github.johypark97.varchivemacro.macro.gui.presenter.LicensePresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroPresenter;
 import com.github.johypark97.varchivemacro.macro.gui.view.LicenseView;
 import com.github.johypark97.varchivemacro.macro.gui.view.MacroView;
+import javax.swing.SwingUtilities;
 
 public class Main {
     // macro
-    private MacroPresenter macroPresenter = new MacroPresenter(new MacroView());
+    private final MacroPresenter macroPresenter = new MacroPresenter(new MacroView());
 
     // license
-    private LicensePresenter licensePresenter = new LicensePresenter(new LicenseView());
+    private final LicensePresenter licensePresenter = new LicensePresenter(new LicenseView());
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

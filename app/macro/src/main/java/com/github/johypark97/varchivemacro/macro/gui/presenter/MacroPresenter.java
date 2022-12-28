@@ -1,13 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.function.Consumer;
-import javax.swing.JOptionPane;
 import com.github.johypark97.varchivemacro.lib.hook.HookWrapper;
 import com.github.johypark97.varchivemacro.macro.config.ConfigManager;
 import com.github.johypark97.varchivemacro.macro.gui.model.SettingsModel;
@@ -20,22 +12,30 @@ import com.github.kwhat.jnativehook.NativeInputEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import com.google.gson.JsonSyntaxException;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.function.Consumer;
+import javax.swing.JOptionPane;
 
 public class MacroPresenter implements IMacro.Presenter {
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-    private ConfigManager config = ConfigManager.getInstance();
-    private MacroRobot robot = new MacroRobot(this);
-    protected Language lang = Language.getInstance();
 
     // model
     public SettingsModel settingsModel;
 
     // view
-    private IMacro.View view;
+    private final IMacro.View view;
 
     // other presenters
     public ILicense.Presenter licensePresenter;
+
+    private final ConfigManager config = ConfigManager.getInstance();
+    private final MacroRobot robot = new MacroRobot(this);
+    protected Language lang = Language.getInstance();
 
     public MacroPresenter(IMacro.View view) {
         this.view = view;
@@ -85,7 +85,6 @@ public class MacroPresenter implements IMacro.Presenter {
             view.showDialog(lang.get("p.macro_dialog.title"),
                     new String[] {lang.get("p.macro_dialog.msg"), lang.get("p.macro_dialog.msg2")},
                     JOptionPane.ERROR_MESSAGE);
-            return;
         }
     }
 
@@ -102,14 +101,7 @@ public class MacroPresenter implements IMacro.Presenter {
     @Override
     public void addLog(String message) {
         String time = LocalTime.now().format(TIME_FORMATTER);
-
-        StringBuilder builder = new StringBuilder();
-        builder.append('[');
-        builder.append(time);
-        builder.append("] ");
-        builder.append(message);
-
-        view.addLog(builder.toString());
+        view.addLog('[' + time + "] " + message);
     }
 
     @Override
@@ -136,13 +128,11 @@ public class MacroPresenter implements IMacro.Presenter {
         } catch (IOException e) {
             view.showDialog(lang.get("p.config.read_dialog.title"),
                     new String[] {lang.get("p.config.read_dialog.error_msg"),
-                            lang.get("p.config.read_dialog.default")},
-                    JOptionPane.ERROR_MESSAGE);
+                            lang.get("p.config.read_dialog.default")}, JOptionPane.ERROR_MESSAGE);
         } catch (JsonSyntaxException e) {
             view.showDialog(lang.get("p.config.read_dialog.title"),
                     new String[] {lang.get("p.config.read_dialog.syntax_msg"),
-                            lang.get("p.config.read_dialog.default")},
-                    JOptionPane.ERROR_MESSAGE);
+                            lang.get("p.config.read_dialog.default")}, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -157,54 +147,52 @@ public class MacroPresenter implements IMacro.Presenter {
             view.showDialog(lang.get("p.config.write_dialog.title"),
                     new String[] {lang.get("p.config.write_dialog.msg")},
                     JOptionPane.ERROR_MESSAGE);
-        } catch (NativeHookException e) {
+        } catch (NativeHookException ignored) {
         }
     }
 }
 
 
 class MacroNativeKeyListener implements NativeKeyListener {
-    private MacroPresenter presenter;
+    private final MacroPresenter presenter;
 
     public MacroNativeKeyListener(MacroPresenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void nativeKeyPressed(NativeKeyEvent e) {
-        switch (e.getKeyCode()) {
-            case NativeKeyEvent.VC_END:
-                presenter.stopCapture();
-                break;
-            default:
-                break;
+    public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
+        if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_END) {
+            presenter.stopCapture();
         }
     }
 
     @Override
-    public void nativeKeyReleased(NativeKeyEvent e) {
-        switch (e.getKeyCode()) {
-            case NativeKeyEvent.VC_UP:
-                if ((e.getModifiers() & NativeInputEvent.CTRL_MASK) != 0)
+    public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
+        switch (nativeEvent.getKeyCode()) {
+            case NativeKeyEvent.VC_UP -> {
+                if ((nativeEvent.getModifiers() & NativeInputEvent.CTRL_MASK) != 0) {
                     presenter.selectUp();
-                break;
-            case NativeKeyEvent.VC_DOWN:
-                if ((e.getModifiers() & NativeInputEvent.CTRL_MASK) != 0)
+                }
+            }
+            case NativeKeyEvent.VC_DOWN -> {
+                if ((nativeEvent.getModifiers() & NativeInputEvent.CTRL_MASK) != 0) {
                     presenter.selectDown();
-                break;
-            case NativeKeyEvent.VC_HOME:
-                if (e.getModifiers() == 0)
+                }
+            }
+            case NativeKeyEvent.VC_HOME -> {
+                if (nativeEvent.getModifiers() == 0) {
                     presenter.startCapture();
-                break;
-            default:
-                break;
+                }
+            }
         }
     }
 }
 
 
 class MacroRobot {
-    private MacroPresenter presenter;
+    private final MacroPresenter presenter;
+
     private Thread thread;
 
     public MacroRobot(MacroPresenter presenter) {
@@ -222,8 +210,9 @@ class MacroRobot {
                 thread = null;
             }
 
-            if (isDone)
+            if (isDone) {
                 presenter.addLog(presenter.lang.get("p.capture_is_done"));
+            }
         }));
 
         presenter.addLog(
@@ -242,17 +231,18 @@ class MacroRobot {
     }
 
     public synchronized void forceStop() {
-        if (thread != null)
+        if (thread != null) {
             thread.interrupt();
+        }
     }
 }
 
 
 class MacroRobotRunner implements Runnable {
-    private Consumer<Boolean> onReturn;
-    private MacroPresenter presenter;
-    private Robot robot;
-    private SettingsData settingsData;
+    private final Consumer<Boolean> onReturn;
+    private final MacroPresenter presenter;
+    private final Robot robot;
+    private final SettingsData settingsData;
     private int analyzeKeyCode;
     private int directionKeyCode;
 
@@ -266,22 +256,6 @@ class MacroRobotRunner implements Runnable {
         getKeyCode();
     }
 
-    private void getKeyCode() {
-        analyzeKeyCode = switch (settingsData.analyzeKey) {
-            case ALT_F11 -> KeyEvent.VK_F11;
-            case ALT_F12 -> KeyEvent.VK_F12;
-            case ALT_HOME -> KeyEvent.VK_HOME;
-            case ALT_INS -> KeyEvent.VK_INSERT;
-            default -> throw new RuntimeException("unknown analyze key");
-        };
-
-        directionKeyCode = switch (settingsData.directionKey) {
-            case DOWN -> KeyEvent.VK_DOWN;
-            case UP -> KeyEvent.VK_UP;
-            default -> throw new RuntimeException("unknown direction key");
-        };
-    }
-
     @Override
     public void run() {
         if (settingsData.count > 0) {
@@ -293,18 +267,21 @@ class MacroRobotRunner implements Runnable {
                     pressKeyWithMod(KeyEvent.VK_ALT, KeyEvent.VK_PRINTSCREEN,
                             settingsData.captureDuration);
 
-                    if (i < settingsData.count)
+                    if (i < settingsData.count) {
                         pressKey(directionKeyCode, settingsData.inputDuration);
+                    }
 
                     pressKeyWithMod(KeyEvent.VK_ALT, analyzeKeyCode, settingsData.inputDuration);
                     presenter.addLog(String.format("(%d/%d)", i, settingsData.count));
 
-                    if (i >= settingsData.count)
+                    if (i >= settingsData.count) {
                         break;
+                    }
 
                     ++i;
-                    if (movingDelay > 0)
+                    if (movingDelay > 0) {
                         Thread.sleep(movingDelay);
+                    }
                 }
             } catch (InterruptedException e) {
                 onReturn.accept(false);
@@ -313,6 +290,20 @@ class MacroRobotRunner implements Runnable {
         }
 
         onReturn.accept(true);
+    }
+
+    private void getKeyCode() {
+        analyzeKeyCode = switch (settingsData.analyzeKey) {
+            case ALT_F11 -> KeyEvent.VK_F11;
+            case ALT_F12 -> KeyEvent.VK_F12;
+            case ALT_HOME -> KeyEvent.VK_HOME;
+            case ALT_INS -> KeyEvent.VK_INSERT;
+        };
+
+        directionKeyCode = switch (settingsData.directionKey) {
+            case DOWN -> KeyEvent.VK_DOWN;
+            case UP -> KeyEvent.VK_UP;
+        };
     }
 
     private void pressKey(int keycode, int duration) throws InterruptedException {

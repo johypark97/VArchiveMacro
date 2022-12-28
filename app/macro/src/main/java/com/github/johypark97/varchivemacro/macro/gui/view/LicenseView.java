@@ -1,10 +1,12 @@
 package com.github.johypark97.varchivemacro.macro.gui.view;
 
+import com.github.johypark97.varchivemacro.macro.gui.presenter.ILicense;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.Serial;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -15,9 +17,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.ILicense;
 
 public class LicenseView extends JFrame implements ILicense.View {
+    @Serial
+    private static final long serialVersionUID = -8568849941252758711L;
+
     private static final String TITLE = "Open Source License";
 
     private static final int FRAME_HEIGHT = 600;
@@ -35,8 +39,8 @@ public class LicenseView extends JFrame implements ILicense.View {
     protected JList<String> list;
 
     // event listeners
-    private WindowListener windowListener = new LicenseViewWindowListener(this);
-    private ListSelectionListener listListener = new LicenseViewListListener(this);
+    private final ListSelectionListener listListener = new LicenseViewListListener(this);
+    private final WindowListener windowListener = new LicenseViewWindowListener(this);
 
     public LicenseView() {
         setTitle(TITLE);
@@ -105,8 +109,9 @@ public class LicenseView extends JFrame implements ILicense.View {
     public void setList(String[] list) {
         listModel.clear();
 
-        for (String i : list)
+        for (String i : list) {
             listModel.addElement(i);
+        }
     }
 
     @Override
@@ -118,7 +123,7 @@ public class LicenseView extends JFrame implements ILicense.View {
 
 
 class LicenseViewWindowListener implements WindowListener {
-    private LicenseView view;
+    private final LicenseView view;
 
     public LicenseViewWindowListener(LicenseView view) {
         this.view = view;
@@ -130,27 +135,33 @@ class LicenseViewWindowListener implements WindowListener {
     }
 
     @Override
-    public void windowClosing(WindowEvent e) {}
+    public void windowClosing(WindowEvent e) {
+    }
 
     @Override
-    public void windowClosed(WindowEvent e) {}
+    public void windowClosed(WindowEvent e) {
+    }
 
     @Override
-    public void windowIconified(WindowEvent e) {}
+    public void windowIconified(WindowEvent e) {
+    }
 
     @Override
-    public void windowDeiconified(WindowEvent e) {}
+    public void windowDeiconified(WindowEvent e) {
+    }
 
     @Override
-    public void windowActivated(WindowEvent e) {}
+    public void windowActivated(WindowEvent e) {
+    }
 
     @Override
-    public void windowDeactivated(WindowEvent e) {}
+    public void windowDeactivated(WindowEvent e) {
+    }
 }
 
 
 class LicenseViewListListener implements ListSelectionListener {
-    private LicenseView view;
+    private final LicenseView view;
 
     public LicenseViewListListener(LicenseView view) {
         this.view = view;

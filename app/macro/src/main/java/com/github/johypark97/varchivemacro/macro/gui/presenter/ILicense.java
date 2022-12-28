@@ -9,6 +9,7 @@ public interface ILicense {
         void viewOpened();
     }
 
+
     interface View {
         void setPresenter(Presenter presenter);
 

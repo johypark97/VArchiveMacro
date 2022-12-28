@@ -13,14 +13,17 @@ public interface IMacro {
         void viewClosed();
     }
 
+
     interface View {
         enum SliderKey {
             CAPTURE_DURATION, COUNT, INPUT_DURATION, MOVING_DELAY
         }
 
+
         enum AnalyzeKey {
             ALT_F11, ALT_F12, ALT_HOME, ALT_INS
         }
+
 
         enum DirectionKey {
             DOWN, UP

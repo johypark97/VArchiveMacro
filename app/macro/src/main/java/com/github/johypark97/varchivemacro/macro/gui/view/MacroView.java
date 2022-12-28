@@ -1,5 +1,12 @@
 package com.github.johypark97.varchivemacro.macro.gui.view;
 
+import com.github.johypark97.varchivemacro.lib.common.gui.component.RadioButtonGroup;
+import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderGroup;
+import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
+import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro;
+import com.github.johypark97.varchivemacro.macro.util.BuildInfo;
+import com.github.johypark97.varchivemacro.macro.util.Language;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -8,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.Serial;
+import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,15 +37,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.BadLocationException;
-import com.github.johypark97.varchivemacro.lib.common.gui.component.RadioButtonGroup;
-import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderGroup;
-import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
-import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro;
-import com.github.johypark97.varchivemacro.macro.util.BuildInfo;
-import com.github.johypark97.varchivemacro.macro.util.Language;
 
 public class MacroView extends JFrame implements IMacro.View {
+    @Serial
+    private static final long serialVersionUID = -4985735753645144141L;
+
     private static final String TITLE = "V-ARCHIVE Macro";
 
     private static final String EMPTY_STRING = "";
@@ -96,15 +101,15 @@ public class MacroView extends JFrame implements IMacro.View {
     protected JMenuItem menuItemOSL;
 
     // event listeners
-    private ActionListener menuListener = new MacroViewMenuListener(this);
-    private WindowListener windowListener = new MacroViewWindowListener(this);
+    private final ActionListener menuListener = new MacroViewMenuListener(this);
+    private final WindowListener windowListener = new MacroViewWindowListener(this);
 
     // variables for frame size controlling
     private int advancedHeight;
     private int minimumHeight;
 
     // variables
-    private Language lang = Language.getInstance();
+    private final Language lang = Language.getInstance();
 
     public MacroView() {
         setTitle(TITLE + " v" + BuildInfo.version);
@@ -119,8 +124,12 @@ public class MacroView extends JFrame implements IMacro.View {
 
     private void setFrameOption() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setIconImage(new ImageIcon(getClass().getResource("/overMeElFail.png")).getImage());
         setResizable(true);
+
+        URL url = getClass().getResource("/overMeElFail.png");
+        if (url != null) {
+            setIconImage(new ImageIcon(url).getImage());
+        }
     }
 
     private void setContentPanel() {
@@ -391,13 +400,10 @@ public class MacroView extends JFrame implements IMacro.View {
         inputDuration.setText(lang.get("v.slider.input_duration"));
         inputDuration.setToolTipText(lang.get("v.slider.input_duration.tooltip"));
 
-        generalSliderGroup.forEachSliders((x) -> {
-            x.setToolTipText(lang.get("v.right_click_reset"));
-        });
+        generalSliderGroup.forEachSliders((x) -> x.setToolTipText(lang.get("v.right_click_reset")));
 
-        advancedSliderGroup.forEachSliders((x) -> {
-            x.setToolTipText(lang.get("v.right_click_reset"));
-        });
+        advancedSliderGroup.forEachSliders(
+                (x) -> x.setToolTipText(lang.get("v.right_click_reset")));
 
         analyzeKeyBorder.setTitle(lang.get("v.title.analyze_key"));
         analyzeKeyRadioGroup.getButton(AnalyzeKey.ALT_F11).setText("[Alt + F11]");
@@ -423,7 +429,7 @@ public class MacroView extends JFrame implements IMacro.View {
     protected void showAbout() {
         showDialog(lang.get("v.menu.info.about"),
                 new Object[] {"V-Archive Macro", "Version: " + BuildInfo.version,
-                        "Build Date: " + BuildInfo.date, "Soruce Code: " + GITHUB_URL},
+                        "Build Date: " + BuildInfo.date, "Source Code: " + GITHUB_URL},
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -494,9 +500,8 @@ public class MacroView extends JFrame implements IMacro.View {
 
     @Override
     public void showDialog(String title, Object[] messages, int messageType) {
-        SwingUtilities.invokeLater(() -> {
-            JOptionPane.showMessageDialog(this, messages, title, messageType);
-        });
+        SwingUtilities.invokeLater(
+                () -> JOptionPane.showMessageDialog(this, messages, title, messageType));
     }
 
     @Override
@@ -506,7 +511,7 @@ public class MacroView extends JFrame implements IMacro.View {
                 try {
                     int index = logTextArea.getLineEndOffset(0);
                     logTextArea.replaceRange("", 0, index);
-                } catch (BadLocationException e) {
+                } catch (BadLocationException ignored) {
                 }
             }
 
@@ -519,7 +524,7 @@ public class MacroView extends JFrame implements IMacro.View {
 
 
 class MacroViewWindowListener implements WindowListener {
-    private MacroView view;
+    private final MacroView view;
 
     public MacroViewWindowListener(MacroView view) {
         this.view = view;
@@ -531,7 +536,8 @@ class MacroViewWindowListener implements WindowListener {
     }
 
     @Override
-    public void windowClosing(WindowEvent e) {}
+    public void windowClosing(WindowEvent e) {
+    }
 
     @Override
     public void windowClosed(WindowEvent e) {
@@ -542,21 +548,25 @@ class MacroViewWindowListener implements WindowListener {
     }
 
     @Override
-    public void windowIconified(WindowEvent e) {}
+    public void windowIconified(WindowEvent e) {
+    }
 
     @Override
-    public void windowDeiconified(WindowEvent e) {}
+    public void windowDeiconified(WindowEvent e) {
+    }
 
     @Override
-    public void windowActivated(WindowEvent e) {}
+    public void windowActivated(WindowEvent e) {
+    }
 
     @Override
-    public void windowDeactivated(WindowEvent e) {}
+    public void windowDeactivated(WindowEvent e) {
+    }
 }
 
 
 class MacroViewMenuListener implements ActionListener {
-    private MacroView view;
+    private final MacroView view;
 
     public MacroViewMenuListener(MacroView view) {
         this.view = view;
@@ -566,11 +576,12 @@ class MacroViewMenuListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if (source == view.menuItemExit)
+        if (source == view.menuItemExit) {
             view.dispose();
-        else if (source == view.menuItemOSL)
+        } else if (source == view.menuItemOSL) {
             view.presenter.showLicense();
-        else if (source == view.menuItemAbout)
+        } else if (source == view.menuItemAbout) {
             view.showAbout();
+        }
     }
 }

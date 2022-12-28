@@ -1,5 +1,8 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.view;
 
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager;
+import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
+import com.github.johypark97.varchivemacro.lib.common.gui.util.TableUtil;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -9,6 +12,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.Serial;
 import java.nio.file.Path;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -33,11 +37,11 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager;
-import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
-import com.github.johypark97.varchivemacro.lib.common.gui.util.TableUtil;
 
 public class DbManagerView extends JFrame implements IDbManager.View {
+    @Serial
+    private static final long serialVersionUID = 1539051679420322263L;
+
     private static final String TITLE = "Database Manager";
 
     private static final int FRAME_HEIGHT = 600;
@@ -60,9 +64,9 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     protected JTextField viewerTabFilterTextField;
 
     // event listeners
-    private ActionListener actionListener = new DbManagerViewActionListener(this);
-    private ActionListener menuListener = new DbManagerViewMenuListener(this);
-    private DocumentListener documentListener = new DbManagerViewDocumentListener(this);
+    private final ActionListener actionListener = new DbManagerViewActionListener(this);
+    private final ActionListener menuListener = new DbManagerViewMenuListener(this);
+    private final DocumentListener documentListener = new DbManagerViewDocumentListener(this);
 
     public DbManagerView() {
         setTitle(TITLE);
@@ -173,20 +177,23 @@ public class DbManagerView extends JFrame implements IDbManager.View {
 
         // table
         viewerTabTable = new JTable() {
+            @Serial
+            private static final long serialVersionUID = -1675524704391374766L;
+
             @Override
             public boolean isCellEditable(int row, int column) {
                 return true;
             }
 
             @Override
-            public String getToolTipText(MouseEvent e) {
-                Point p = e.getPoint();
+            public String getToolTipText(MouseEvent event) {
+                Point p = event.getPoint();
                 int rowIndex = rowAtPoint(p);
                 int colIndex = columnAtPoint(p);
 
                 try {
                     return getValueAt(rowIndex, colIndex).toString();
-                } catch (RuntimeException ex) {
+                } catch (RuntimeException e) {
                     return null;
                 }
             }
@@ -216,9 +223,8 @@ public class DbManagerView extends JFrame implements IDbManager.View {
 
     @Override
     public void showDialog(String title, int messageType, Object... messages) {
-        SwingUtilities.invokeLater(() -> {
-            JOptionPane.showMessageDialog(this, messages, title, messageType);
-        });
+        SwingUtilities.invokeLater(
+                () -> JOptionPane.showMessageDialog(this, messages, title, messageType));
     }
 
     @Override
@@ -240,8 +246,9 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     @Override
     public void setItems_viewerTabFilterComboBox(String... items) {
         viewerTabFilterComboBox.removeAllItems();
-        for (String i : items)
+        for (String i : items) {
             viewerTabFilterComboBox.addItem(i);
+        }
     }
 
     @Override
@@ -257,7 +264,7 @@ public class DbManagerView extends JFrame implements IDbManager.View {
 
 
 class DbManagerViewMenuListener implements ActionListener {
-    private DbManagerView view;
+    private final DbManagerView view;
 
     public DbManagerViewMenuListener(DbManagerView view) {
         this.view = view;
@@ -267,17 +274,18 @@ class DbManagerViewMenuListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if (source == view.menuItemExit)
+        if (source == view.menuItemExit) {
             view.dispose();
-        else
+        } else {
             System.out.println(source);
+        }
     }
 }
 
 
 class DbManagerViewActionListener implements ActionListener {
-    private DbManagerView view;
-    private JsonFileChooser jsonFileChooser = new JsonFileChooser();
+    private final DbManagerView view;
+    private final JsonFileChooser jsonFileChooser = new JsonFileChooser();
 
     public DbManagerViewActionListener(DbManagerView view) {
         this.view = view;
@@ -289,29 +297,28 @@ class DbManagerViewActionListener implements ActionListener {
 
         if (source == view.databaseFileSelectButton) {
             Path path = jsonFileChooser.get(view);
-            if (path != null)
+            if (path != null) {
                 view.databaseFileTextField.setText(path.toString());
-        } else if (source == view.databaseFileLoadButton)
+            }
+        } else if (source == view.databaseFileLoadButton) {
             view.presenter.loadDatabase();
-        else if (source == view.viewerTabFilterResetButton)
+        } else if (source == view.viewerTabFilterResetButton) {
             view.viewerTabFilterTextField.setText("");
-        else if (source == view.viewerTabFilterComboBox)
+        } else if (source == view.viewerTabFilterComboBox) {
             view.presenter.updateFilter();
-        else
+        } else {
             System.out.println(source);
+        }
     }
 }
 
 
 class DbManagerViewDocumentListener implements DocumentListener {
-    private DbManagerView view;
+    private final DbManagerView view;
 
     public DbManagerViewDocumentListener(DbManagerView view) {
         this.view = view;
     }
-
-    @Override
-    public void changedUpdate(DocumentEvent e) {}
 
     @Override
     public void insertUpdate(DocumentEvent e) {
@@ -323,6 +330,10 @@ class DbManagerViewDocumentListener implements DocumentListener {
         update();
     }
 
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+    }
+
     private void update() {
         view.presenter.updateFilter();
     }
@@ -330,6 +341,9 @@ class DbManagerViewDocumentListener implements DocumentListener {
 
 
 class JsonFileChooser extends JFileChooser {
+    @Serial
+    private static final long serialVersionUID = -1770798834986186727L;
+
     private static final Path CURRENT_DIRECTORY = Path.of(System.getProperty("user.dir"));
 
     public JsonFileChooser() {
@@ -339,8 +353,9 @@ class JsonFileChooser extends JFileChooser {
     }
 
     public Path get(JFrame frame) {
-        if (showOpenDialog(frame) != JFileChooser.APPROVE_OPTION)
+        if (showOpenDialog(frame) != JFileChooser.APPROVE_OPTION) {
             return null;
+        }
 
         Path path = getSelectedFile().toPath();
         return path.startsWith(CURRENT_DIRECTORY) ? CURRENT_DIRECTORY.relativize(path) : path;

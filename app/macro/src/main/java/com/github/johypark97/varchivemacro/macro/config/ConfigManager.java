@@ -1,17 +1,18 @@
 package com.github.johypark97.varchivemacro.macro.config;
 
+import com.github.johypark97.varchivemacro.lib.json.CustomGsonBuilder;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
-import com.github.johypark97.varchivemacro.lib.json.CustomGsonBuilder;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 public class ConfigManager implements IConfigObservable {
     // singleton
-    private ConfigManager() {}
+    private ConfigManager() {
+    }
 
     private static final class ConfigManagerInstance {
         private static final ConfigManager instance = new ConfigManager();
@@ -22,19 +23,21 @@ public class ConfigManager implements IConfigObservable {
     }
 
     // observer
-    private Set<IConfigObserver> observers = new HashSet<>();
+    private final Set<IConfigObserver> observers = new HashSet<>();
 
     @Override
     public synchronized void register(IConfigObserver observer) {
-        if (observer == null)
+        if (observer == null) {
             throw new NullPointerException();
+        }
         observers.add(observer);
     }
 
     @Override
     public synchronized void unregister(IConfigObserver observer) {
-        if (observer == null)
+        if (observer == null) {
             throw new NullPointerException();
+        }
         observers.remove(observer);
     }
 
@@ -58,14 +61,15 @@ public class ConfigManager implements IConfigObservable {
     private static final Path CONFIG_PATH = Path.of(System.getProperty("user.dir"), "config.json");
 
     // instance
-    private ConfigData data;
-    private Gson gson = CustomGsonBuilder.create();
+    private final Gson gson = CustomGsonBuilder.create();
+    private volatile ConfigData data;
 
     public ConfigData getData() {
         if (data == null) {
             synchronized (this) {
-                if (data == null)
+                if (data == null) {
                     data = new ConfigData();
+                }
             }
         }
 
@@ -91,8 +95,9 @@ public class ConfigManager implements IConfigObservable {
 
     public synchronized void load() throws IOException, JsonSyntaxException {
         ConfigData loaded = convertJsonToData(Files.readString(CONFIG_PATH));
-        if (loaded != null)
+        if (loaded != null) {
             data = loaded;
+        }
 
         notifyObservers(NotifyType.IS_LOADED);
     }

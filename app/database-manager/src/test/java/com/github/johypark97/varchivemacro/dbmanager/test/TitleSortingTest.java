@@ -3,12 +3,13 @@ package com.github.johypark97.varchivemacro.dbmanager.test;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import com.github.johypark97.varchivemacro.dbmanager.database.util.TitleComparator;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import com.github.johypark97.varchivemacro.dbmanager.database.util.TitleComparator;
 
 public class TitleSortingTest {
     private static final String SAMPLE_PATH = "/sortingTestSample.txt";

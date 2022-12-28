@@ -1,11 +1,11 @@
 package com.github.johypark97.varchivemacro.lib.hook;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.dispatcher.SwingDispatchService;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HookWrapper {
     public static void disableLogging() {

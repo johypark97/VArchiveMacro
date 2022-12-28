@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.dbmanager.database.datastruct;
 
+import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.annotations.Expose;
 
 public class Song {
     @Expose

@@ -7,9 +7,11 @@ public class SettingsData {
         ALT_F11, ALT_F12, ALT_HOME, ALT_INS
     }
 
+
     public enum DirectionKey {
         DOWN, UP
     }
+
 
     @Expose
     public AnalyzeKey analyzeKey = SettingsData.AnalyzeKey.ALT_F11;

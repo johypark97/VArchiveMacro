@@ -1,14 +1,14 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import com.github.johypark97.varchivemacro.dbmanager.database.datastruct.Database;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct.DatabaseTableModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct.DatabaseTableRowSorter;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
+import java.io.IOException;
+import java.nio.file.Path;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class DatabaseModel {
     private Database database;
@@ -37,7 +37,8 @@ public class DatabaseModel {
     }
 
     public void setFilter(String pattern, String column) {
-        if (tableRowSorter != null)
+        if (tableRowSorter != null) {
             tableRowSorter.setFilter(pattern, column);
+        }
     }
 }

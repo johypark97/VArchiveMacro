@@ -12,6 +12,7 @@ public interface IDbManager {
         void updateFilter();
     }
 
+
     interface View {
         void setPresenter(Presenter presenter);
 
