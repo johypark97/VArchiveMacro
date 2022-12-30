@@ -19,7 +19,9 @@ dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 
-    spotbugs("com.github.spotbugs:spotbugs:4.7.1")
+    // Spotbugs
+    // implementation("com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}")
+    spotbugs("com.github.spotbugs:spotbugs:${spotbugs.toolVersion.get()}")
     spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0")
 }
 
@@ -30,11 +32,16 @@ java {
 }
 
 pmd {
-    isIgnoreFailures = true
+    isIgnoreFailures = false
+    toolVersion = "6.52.0"
+
+    ruleSetFiles = files("$rootDir/buildSrc/config/pmd/rules.xml")
+    ruleSets = emptyList()
 }
 
 spotbugs {
-    ignoreFailures.set(true)
+    ignoreFailures.set(false)
+    toolVersion.set("4.7.3")
 }
 
 tasks.named<Test>("test") {
