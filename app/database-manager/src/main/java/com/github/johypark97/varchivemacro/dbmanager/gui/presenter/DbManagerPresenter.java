@@ -10,10 +10,10 @@ import javax.swing.JOptionPane;
 
 public class DbManagerPresenter implements IDbManager.Presenter {
     // model
-    public DatabaseModel databaseModel;
+    private DatabaseModel databaseModel;
 
     // view
-    private final IDbManager.View view;
+    public final IDbManager.View view;
 
     public DbManagerPresenter(IDbManager.View view) {
         this.view = view;
@@ -29,7 +29,7 @@ public class DbManagerPresenter implements IDbManager.Presenter {
     public void loadDatabase() {
         try {
             Path path = Path.of(view.getText_databaseFileTextField());
-            databaseModel.loadFile(path);
+            databaseModel = new DatabaseModel(path);
         } catch (JsonSyntaxException e) {
             view.showDialog("Json Syntax Error", JOptionPane.ERROR_MESSAGE, "Invalid Json syntax");
             return;
@@ -44,8 +44,8 @@ public class DbManagerPresenter implements IDbManager.Presenter {
             return;
         }
 
-        view.setTableModel_viewerTabTable(databaseModel.getTableModel());
-        view.setTableRowSorter_viewerTabTable(databaseModel.getTableRowSorter());
+        view.setTableModel_viewerTabTable(databaseModel.tableModel);
+        view.setTableRowSorter_viewerTabTable(databaseModel.tableRowSorter);
         view.setItems_viewerTabFilterComboBox(databaseModel.getFilterableColumns());
     }
 

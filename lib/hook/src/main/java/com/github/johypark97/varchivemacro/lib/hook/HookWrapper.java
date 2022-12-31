@@ -8,10 +8,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HookWrapper {
+    private static final Logger LOGGER =
+            Logger.getLogger(GlobalScreen.class.getPackage().getName());
+
     public static void disableLogging() {
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.OFF);
-        logger.setUseParentHandlers(false);
+        LOGGER.setLevel(Level.OFF);
+        LOGGER.setUseParentHandlers(false);
     }
 
     public static void setSwingEventDispatcher() {

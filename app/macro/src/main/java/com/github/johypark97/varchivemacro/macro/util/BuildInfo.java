@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.util;
 
-import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.loadProperties;
-
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 public class BuildInfo {
@@ -12,18 +12,17 @@ public class BuildInfo {
     public static final String version;
 
     static {
-        Properties properties = null;
+        Properties properties = new Properties();
 
-        try {
-            properties = loadProperties(BuildInfo.class.getResource("/build.properties"));
-        } catch (IOException ignored) {
+        URL url = BuildInfo.class.getResource("/build.properties");
+        if (url != null) {
+            try (InputStream stream = url.openStream()) {
+                properties.load(stream);
+            } catch (IOException ignored) {
+            }
         }
 
-        date = getValue(properties, "build.date");
-        version = getValue(properties, "build.version");
-    }
-
-    private static String getValue(Properties properties, String key) {
-        return (properties != null) ? properties.getProperty(key, EMPTY_STRING) : EMPTY_STRING;
+        date = properties.getProperty("build.date", EMPTY_STRING);
+        version = properties.getProperty("build.version", EMPTY_STRING);
     }
 }

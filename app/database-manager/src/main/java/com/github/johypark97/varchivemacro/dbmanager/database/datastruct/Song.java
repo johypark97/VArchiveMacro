@@ -18,5 +18,11 @@ public class Song {
     public String dlc;
 
     @Expose
-    public List<Score> scores = new ArrayList<>();
+    public List<Record> records = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s (%s) { %s }", title, composer, dlc,
+                String.join(", ", records.stream().map(Record::toString).toList()));
+    }
 }

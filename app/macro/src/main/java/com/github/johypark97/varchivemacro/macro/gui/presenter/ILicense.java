@@ -4,6 +4,8 @@ public interface ILicense {
     interface Presenter {
         void start();
 
+        void stop();
+
         void showLicense(String key);
 
         void viewOpened();
@@ -15,7 +17,9 @@ public interface ILicense {
 
         void showView();
 
-        void setList(String[] list);
+        void disposeView();
+
+        void setList(String... list);
 
         void showText(String text);
     }

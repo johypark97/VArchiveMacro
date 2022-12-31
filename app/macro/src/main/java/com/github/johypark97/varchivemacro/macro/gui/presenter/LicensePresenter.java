@@ -8,7 +8,7 @@ public class LicensePresenter implements ILicense.Presenter {
     public LicenseModel licenseModel;
 
     // view
-    private final ILicense.View view;
+    public final ILicense.View view;
 
     public LicensePresenter(ILicense.View view) {
         this.view = view;
@@ -18,6 +18,11 @@ public class LicensePresenter implements ILicense.Presenter {
     @Override
     public void start() {
         view.showView();
+    }
+
+    @Override
+    public void stop() {
+        view.disposeView();
     }
 
     @Override

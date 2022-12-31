@@ -3,6 +3,8 @@ package com.github.johypark97.varchivemacro.macro.gui.model;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +27,14 @@ public class LicenseModel {
             return "ERROR: invalid key";
         }
 
-        List<String> lines = readAllLines(getClass().getResource(path));
-        if (lines == null) {
+        URL url = getClass().getResource(path);
+        if (url == null) {
             return "ERROR: resource not found";
+        }
+
+        List<String> lines;
+        try (InputStream stream = url.openStream()) {
+            lines = readAllLines(stream);
         }
 
         return String.join(NEWLINE, lines);

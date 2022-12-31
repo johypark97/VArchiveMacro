@@ -80,7 +80,7 @@ public class MacroView extends JFrame implements IMacro.View {
     private static final int LOG_ROWS = 8;
 
     // presenter
-    protected IMacro.Presenter presenter;
+    public transient IMacro.Presenter presenter;
 
     // components
     private JButton advancedButton;
@@ -101,15 +101,15 @@ public class MacroView extends JFrame implements IMacro.View {
     protected JMenuItem menuItemOSL;
 
     // event listeners
-    private final ActionListener menuListener = new MacroViewMenuListener(this);
-    private final WindowListener windowListener = new MacroViewWindowListener(this);
+    private transient final ActionListener menuListener = new MacroViewMenuListener(this);
+    private transient final WindowListener windowListener = new MacroViewWindowListener(this);
 
     // variables for frame size controlling
     private int advancedHeight;
     private int minimumHeight;
 
     // variables
-    private final Language lang = Language.getInstance();
+    private transient final Language lang = Language.getInstance();
 
     public MacroView() {
         setTitle(TITLE + " v" + BuildInfo.version);
@@ -204,16 +204,16 @@ public class MacroView extends JFrame implements IMacro.View {
         generalSliderGroup = new SliderGroup<>();
         SliderSet count = generalSliderGroup.addNewSliderSet(SliderKey.COUNT);
         count.setLimitMax(COUNT_LIMIT_MAX);
-        count.getSlider().setMaximum(COUNT_SLIDER_MAX);
-        count.getSlider().setMinimum(COUNT_SLIDER_MIN);
-        count.getSlider().setMajorTickSpacing(COUNT_SLIDER_TICK_MAJOR);
-        count.getSlider().setMinorTickSpacing(COUNT_SLIDER_TICK_MINOR);
+        count.slider.setMaximum(COUNT_SLIDER_MAX);
+        count.slider.setMinimum(COUNT_SLIDER_MIN);
+        count.slider.setMajorTickSpacing(COUNT_SLIDER_TICK_MAJOR);
+        count.slider.setMinorTickSpacing(COUNT_SLIDER_TICK_MINOR);
         SliderSet movingDelay = generalSliderGroup.addNewSliderSet(SliderKey.MOVING_DELAY);
         movingDelay.setLimitMax(MOVING_DELAY_LIMIT_MAX);
-        movingDelay.getSlider().setMaximum(MOVING_DELAY_SLIDER_MAX);
-        movingDelay.getSlider().setMinimum(MOVING_DELAY_SLIDER_MIN);
-        movingDelay.getSlider().setMajorTickSpacing(MOVING_DELAY_SLIDER_TICK_MAJOR);
-        movingDelay.getSlider().setMinorTickSpacing(MOVING_DELAY_SLIDER_TICK_MINOR);
+        movingDelay.slider.setMaximum(MOVING_DELAY_SLIDER_MAX);
+        movingDelay.slider.setMinimum(MOVING_DELAY_SLIDER_MIN);
+        movingDelay.slider.setMajorTickSpacing(MOVING_DELAY_SLIDER_TICK_MAJOR);
+        movingDelay.slider.setMinorTickSpacing(MOVING_DELAY_SLIDER_TICK_MINOR);
         generalSliderGroup.setupLayout();
         generalSliderGroup.forEachSliders((x) -> {
             x.setPaintLabels(true);
@@ -260,16 +260,16 @@ public class MacroView extends JFrame implements IMacro.View {
         advancedSliderGroup = new SliderGroup<>();
         SliderSet captureDuration = advancedSliderGroup.addNewSliderSet(SliderKey.CAPTURE_DURATION);
         captureDuration.setLimitMax(CAPTURE_DURATION_LIMIT_MAX);
-        captureDuration.getSlider().setMaximum(CAPTURE_DURATION_SLIDER_MAX);
-        captureDuration.getSlider().setMinimum(CAPTURE_DURATION_SLIDER_MIN);
-        captureDuration.getSlider().setMajorTickSpacing(CAPTURE_DURATION_SLIDER_TICK_MAJOR);
-        captureDuration.getSlider().setMinorTickSpacing(CAPTURE_DURATION_SLIDER_TICK_MINOR);
+        captureDuration.slider.setMaximum(CAPTURE_DURATION_SLIDER_MAX);
+        captureDuration.slider.setMinimum(CAPTURE_DURATION_SLIDER_MIN);
+        captureDuration.slider.setMajorTickSpacing(CAPTURE_DURATION_SLIDER_TICK_MAJOR);
+        captureDuration.slider.setMinorTickSpacing(CAPTURE_DURATION_SLIDER_TICK_MINOR);
         SliderSet inputDuration = advancedSliderGroup.addNewSliderSet(SliderKey.INPUT_DURATION);
         inputDuration.setLimitMax(INPUT_DURATION_LIMIT_MAX);
-        inputDuration.getSlider().setMaximum(INPUT_DURATION_SLIDER_MAX);
-        inputDuration.getSlider().setMinimum(INPUT_DURATION_SLIDER_MIN);
-        inputDuration.getSlider().setMajorTickSpacing(INPUT_DURATION_SLIDER_TICK_MAJOR);
-        inputDuration.getSlider().setMinorTickSpacing(INPUT_DURATION_SLIDER_TICK_MINOR);
+        inputDuration.slider.setMaximum(INPUT_DURATION_SLIDER_MAX);
+        inputDuration.slider.setMinimum(INPUT_DURATION_SLIDER_MIN);
+        inputDuration.slider.setMajorTickSpacing(INPUT_DURATION_SLIDER_TICK_MAJOR);
+        inputDuration.slider.setMinorTickSpacing(INPUT_DURATION_SLIDER_TICK_MINOR);
         advancedSliderGroup.setupLayout();
         advancedSliderGroup.forEachSliders((x) -> {
             x.setPaintLabels(true);
@@ -385,18 +385,15 @@ public class MacroView extends JFrame implements IMacro.View {
         sliderBorder.setTitle(lang.get("v.title.capture"));
         advancedButton.setText(lang.get("v.advanced_button"));
 
-        generalSliderGroup.getSliderSet(SliderKey.COUNT).getLabel()
-                .setText(lang.get("v.slider.count"));
-        generalSliderGroup.getSliderSet(SliderKey.MOVING_DELAY).getLabel()
-                .setText(lang.get("v.slider.moving_delay"));
+        generalSliderGroup.getSliderSet(SliderKey.COUNT).label.setText(lang.get("v.slider.count"));
+        generalSliderGroup.getSliderSet(SliderKey.MOVING_DELAY).label.setText(
+                lang.get("v.slider.moving_delay"));
 
-        JLabel captureDuration =
-                advancedSliderGroup.getSliderSet(SliderKey.CAPTURE_DURATION).getLabel();
+        JLabel captureDuration = advancedSliderGroup.getSliderSet(SliderKey.CAPTURE_DURATION).label;
         captureDuration.setText(lang.get("v.slider.capture_duration"));
         captureDuration.setToolTipText(lang.get("v.slider.capture_duration.tooltip"));
 
-        JLabel inputDuration =
-                advancedSliderGroup.getSliderSet(SliderKey.INPUT_DURATION).getLabel();
+        JLabel inputDuration = advancedSliderGroup.getSliderSet(SliderKey.INPUT_DURATION).label;
         inputDuration.setText(lang.get("v.slider.input_duration"));
         inputDuration.setToolTipText(lang.get("v.slider.input_duration.tooltip"));
 
@@ -537,14 +534,11 @@ class MacroViewWindowListener implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
+        view.presenter.viewClosing();
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-        view.presenter.viewClosed();
-
-        System.runFinalization();
-        System.exit(0);
     }
 
     @Override
@@ -576,11 +570,11 @@ class MacroViewMenuListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if (source == view.menuItemExit) {
+        if (source.equals(view.menuItemExit)) {
             view.dispose();
-        } else if (source == view.menuItemOSL) {
+        } else if (source.equals(view.menuItemOSL)) {
             view.presenter.showLicense();
-        } else if (source == view.menuItemAbout) {
+        } else if (source.equals(view.menuItemAbout)) {
             view.showAbout();
         }
     }

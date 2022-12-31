@@ -7,32 +7,22 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.nio.file.Path;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 public class DatabaseModel {
-    private Database database;
+    public final Database database;
 
-    private DatabaseTableModel tableModel;
-    private DatabaseTableRowSorter tableRowSorter;
+    public final DatabaseTableModel tableModel;
+    public final DatabaseTableRowSorter tableRowSorter;
 
-    public void loadFile(Path path) throws JsonSyntaxException, JsonIOException, IOException {
+    public DatabaseModel(Path path) throws JsonSyntaxException, JsonIOException, IOException {
         database = Database.loadJson(path);
 
-        tableModel = new DatabaseTableModel(database);
+        tableModel = new DatabaseTableModel(this);
         tableRowSorter = new DatabaseTableRowSorter(tableModel);
     }
 
-    public TableModel getTableModel() {
-        return tableModel;
-    }
-
-    public TableRowSorter<TableModel> getTableRowSorter() {
-        return tableRowSorter;
-    }
-
     public String[] getFilterableColumns() {
-        return DatabaseTableModel.COLUMNS.stream().filter((x) -> !x.equals("id"))
+        return DatabaseTableModel.COLUMNS.stream().filter((x) -> !"id".equals(x))
                 .toArray(String[]::new);
     }
 

@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.util;
 
-import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.loadXmlProperties;
-
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 public class Language {
@@ -36,8 +36,15 @@ public class Language {
     }
 
     private void create() {
-        try {
-            properties = loadXmlProperties(getClass().getResource("/language_ko.xml"));
+        properties = new Properties();
+
+        URL url = getClass().getResource("/language_ko.xml");
+        if (url == null) {
+            return;
+        }
+
+        try (InputStream stream = url.openStream()) {
+            properties.loadFromXML(stream);
         } catch (IOException ignored) {
         }
     }

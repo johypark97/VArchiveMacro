@@ -5,15 +5,11 @@ import com.github.johypark97.varchivemacro.macro.config.IConfigObserver;
 import com.github.johypark97.varchivemacro.macro.gui.model.datastruct.SettingsData;
 
 public class SettingsModel implements IConfigObserver {
-    private volatile SettingsData data;
+    private SettingsData data;
 
-    public SettingsData getData() {
+    public synchronized SettingsData getData() {
         if (data == null) {
-            synchronized (this) {
-                if (data == null) {
-                    data = new SettingsData();
-                }
-            }
+            data = new SettingsData();
         }
 
         return data;

@@ -48,7 +48,7 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     private static final int FRAME_WIDTH = 800;
 
     // presenter
-    protected IDbManager.Presenter presenter;
+    public transient IDbManager.Presenter presenter;
 
     // components
     private JMenu menuFile;
@@ -64,9 +64,10 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     protected JTextField viewerTabFilterTextField;
 
     // event listeners
-    private final ActionListener actionListener = new DbManagerViewActionListener(this);
-    private final ActionListener menuListener = new DbManagerViewMenuListener(this);
-    private final DocumentListener documentListener = new DbManagerViewDocumentListener(this);
+    private transient final ActionListener actionListener = new DbManagerViewActionListener(this);
+    private transient final ActionListener menuListener = new DbManagerViewMenuListener(this);
+    private transient final DocumentListener documentListener =
+            new DbManagerViewDocumentListener(this);
 
     public DbManagerView() {
         setTitle(TITLE);
@@ -274,10 +275,11 @@ class DbManagerViewMenuListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if (source == view.menuItemExit) {
+        if (source.equals(view.menuItemExit)) {
             view.dispose();
         } else {
-            System.out.println(source);
+            // TODO: Remove println after completing the view.
+            System.out.println(source); // NOPMD
         }
     }
 }
@@ -295,19 +297,20 @@ class DbManagerViewActionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if (source == view.databaseFileSelectButton) {
+        if (source.equals(view.databaseFileSelectButton)) {
             Path path = jsonFileChooser.get(view);
             if (path != null) {
                 view.databaseFileTextField.setText(path.toString());
             }
-        } else if (source == view.databaseFileLoadButton) {
+        } else if (source.equals(view.databaseFileLoadButton)) {
             view.presenter.loadDatabase();
-        } else if (source == view.viewerTabFilterResetButton) {
+        } else if (source.equals(view.viewerTabFilterResetButton)) {
             view.viewerTabFilterTextField.setText("");
-        } else if (source == view.viewerTabFilterComboBox) {
+        } else if (source.equals(view.viewerTabFilterComboBox)) {
             view.presenter.updateFilter();
         } else {
-            System.out.println(source);
+            // TODO: Remove println after completing the view.
+            System.out.println(source); // NOPMD
         }
     }
 }

@@ -1,8 +1,13 @@
 package com.github.johypark97.varchivemacro.dbmanager.database.util;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class TitleComparator implements Comparator<String> {
+public class TitleComparator implements Comparator<String>, Serializable {
+    @Serial
+    private static final long serialVersionUID = -3956120129742409963L;
+
     private static final int NUL = 0;
 
     @Override
@@ -65,18 +70,13 @@ public class TitleComparator implements Comparator<String> {
         public int next() {
             while (i < l) {
                 int value = s.codePointAt(i++);
-
-                // 0x27: Apostrophe (')
-                // 0x2D: Hyphen-minus (-)
-                if (value == 0x27 || value == 0x2D) {
-                    continue;
+                switch (value) {
+                    case 0x27: // Apostrophe (')
+                    case 0x2D: // Hyphen-minus (-)
+                        break; // continue;
+                    default:
+                        return isLowerCase(value) ? toUpperCase(value) : value;
                 }
-
-                if (isLowerCase(value)) {
-                    return toUpperCase(value);
-                }
-
-                return value;
             }
 
             return NUL;

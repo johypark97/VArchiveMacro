@@ -2,7 +2,6 @@ package com.github.johypark97.varchivemacro.dbmanager;
 
 import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
 
-import com.github.johypark97.varchivemacro.dbmanager.gui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.DbManagerPresenter;
 import com.github.johypark97.varchivemacro.dbmanager.gui.view.DbManagerView;
 import javax.swing.SwingUtilities;
@@ -19,9 +18,5 @@ public class Main {
             Main main = new Main();
             main.dbManagerPresenter.start();
         });
-    }
-
-    private Main() {
-        dbManagerPresenter.databaseModel = new DatabaseModel();
     }
 }

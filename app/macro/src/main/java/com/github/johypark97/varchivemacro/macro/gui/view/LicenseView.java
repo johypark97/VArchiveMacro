@@ -31,7 +31,7 @@ public class LicenseView extends JFrame implements ILicense.View {
     private static final int TEXT_AREA_FONT_SIZE = 12;
 
     // presenter
-    protected ILicense.Presenter presenter;
+    public transient ILicense.Presenter presenter;
 
     // components
     private DefaultListModel<String> listModel;
@@ -39,8 +39,8 @@ public class LicenseView extends JFrame implements ILicense.View {
     protected JList<String> list;
 
     // event listeners
-    private final ListSelectionListener listListener = new LicenseViewListListener(this);
-    private final WindowListener windowListener = new LicenseViewWindowListener(this);
+    private transient final ListSelectionListener listListener = new LicenseViewListListener(this);
+    private transient final WindowListener windowListener = new LicenseViewWindowListener(this);
 
     public LicenseView() {
         setTitle(TITLE);
@@ -52,7 +52,7 @@ public class LicenseView extends JFrame implements ILicense.View {
     }
 
     private void setFrameOption() {
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(true);
         setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
 
@@ -106,7 +106,12 @@ public class LicenseView extends JFrame implements ILicense.View {
     }
 
     @Override
-    public void setList(String[] list) {
+    public void disposeView() {
+        dispose();
+    }
+
+    @Override
+    public void setList(String... list) {
         listModel.clear();
 
         for (String i : list) {

@@ -28,7 +28,7 @@ public class MacroPresenter implements IMacro.Presenter {
     public SettingsModel settingsModel;
 
     // view
-    private final IMacro.View view;
+    public final IMacro.View view;
 
     // other presenters
     public ILicense.Presenter licensePresenter;
@@ -137,7 +137,7 @@ public class MacroPresenter implements IMacro.Presenter {
     }
 
     @Override
-    public void viewClosed() {
+    public void viewClosing() {
         robot.forceStop();
         settingsModel.setData(getSettingsDataFromView());
         try {
@@ -149,6 +149,8 @@ public class MacroPresenter implements IMacro.Presenter {
                     JOptionPane.ERROR_MESSAGE);
         } catch (NativeHookException ignored) {
         }
+
+        licensePresenter.stop();
     }
 }
 
@@ -185,6 +187,8 @@ class MacroNativeKeyListener implements NativeKeyListener {
                     presenter.startCapture();
                 }
             }
+            default -> {
+            }
         }
     }
 }
@@ -207,7 +211,7 @@ class MacroRobot {
 
         thread = new Thread(new MacroRobotRunner(presenter, settingsData, (isDone) -> {
             synchronized (this) {
-                thread = null;
+                thread = null; // NOPMD
             }
 
             if (isDone) {

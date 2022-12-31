@@ -14,9 +14,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class SliderSet {
-    protected JLabel label = new JLabel();
-    protected JSlider slider = new JSlider();
-    protected JTextField textField = new JTextField();
+    public final JLabel label = new JLabel();
+    public final JSlider slider = new JSlider();
+    public final JTextField textField = new JTextField();
 
     private boolean hasDefault = false;
     private boolean hasLimitMax = false;
@@ -34,18 +34,6 @@ public class SliderSet {
         slider.addMouseListener(listener);
         textField.addFocusListener(listener);
         textField.addKeyListener(listener);
-    }
-
-    public JLabel getLabel() {
-        return label;
-    }
-
-    public JSlider getSlider() {
-        return slider;
-    }
-
-    public JTextField getTextField() {
-        return textField;
     }
 
     public void setDefault(int value) {
