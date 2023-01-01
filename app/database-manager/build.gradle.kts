@@ -2,7 +2,7 @@ import java.time.ZonedDateTime
 
 val appName = "DB Manager"
 val buildBasename = "dbmanager"
-val buildVersion = "1.0.0"
+val buildVersion = Version.makeVersionString()
 
 plugins {
     id("project.java-application-conventions")

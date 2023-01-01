@@ -4,7 +4,7 @@ import java.time.ZonedDateTime
 
 val appName = "VArchive Macro"
 val buildBasename = "macro"
-val buildVersion = "1.0.0"
+val buildVersion = Version.makeVersionString()
 
 plugins {
     id("project.java-application-conventions")

@@ -1,5 +1,5 @@
 val buildBasename = "libjson"
-val buildVersion = "1.0.0"
+val buildVersion = Version.makeVersionString()
 
 plugins {
     id("project.java-library-conventions")
