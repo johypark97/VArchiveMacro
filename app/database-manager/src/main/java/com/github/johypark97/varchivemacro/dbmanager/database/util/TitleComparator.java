@@ -12,8 +12,8 @@ public class TitleComparator implements Comparator<String>, Serializable {
 
     @Override
     public int compare(String o1, String o2) {
-        final Pointer pLeft = new Pointer(o1);
-        final Pointer pRight = new Pointer(o2);
+        Pointer pLeft = new Pointer(o1);
+        Pointer pRight = new Pointer(o2);
 
         while (true) {
             int left = pLeft.next();
