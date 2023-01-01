@@ -10,7 +10,7 @@ public interface IMacro {
 
         void viewOpened();
 
-        void viewClosing();
+        void viewClosed();
     }
 
 

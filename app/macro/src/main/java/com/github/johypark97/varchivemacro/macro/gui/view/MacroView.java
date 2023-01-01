@@ -534,11 +534,11 @@ class MacroViewWindowListener implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
-        view.presenter.viewClosing();
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
+        view.presenter.viewClosed();
     }
 
     @Override

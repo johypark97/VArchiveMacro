@@ -137,7 +137,7 @@ public class MacroPresenter implements IMacro.Presenter {
     }
 
     @Override
-    public void viewClosing() {
+    public void viewClosed() {
         robot.forceStop();
         settingsModel.setData(getSettingsDataFromView());
         try {
