@@ -1,9 +1,5 @@
 module varchivemacro.macro {
-    requires java.desktop;
-
     requires varchivemacro.lib.common;
-    requires varchivemacro.lib.hook;
-    requires varchivemacro.lib.json;
 
     requires org.bytedeco.javacpp;
     requires org.bytedeco.leptonica.windows.x86_64;

@@ -16,8 +16,6 @@ plugins {
 
 dependencies {
     implementation(project(":lib:common"))
-    implementation(project(":lib:hook"))
-    implementation(project(":lib:json"))
 
     implementation("org.bytedeco:tesseract-platform:5.2.0-1.5.8")
 }

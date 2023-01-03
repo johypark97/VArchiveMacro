@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
-import com.github.johypark97.varchivemacro.lib.hook.HookWrapper;
+import com.github.johypark97.varchivemacro.lib.common.hook.HookWrapper;
 import com.github.johypark97.varchivemacro.macro.config.ConfigManager;
 import com.github.johypark97.varchivemacro.macro.gui.model.SettingsModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.datastruct.SettingsData;

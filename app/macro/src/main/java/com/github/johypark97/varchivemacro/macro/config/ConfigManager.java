@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.config;
 
-import com.github.johypark97.varchivemacro.lib.json.CustomGsonBuilder;
+import com.github.johypark97.varchivemacro.lib.common.json.CustomGsonBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
