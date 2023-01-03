@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.config;
 
-import com.github.johypark97.varchivemacro.lib.common.json.CustomGsonBuilder;
+import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_dump;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
@@ -61,7 +62,7 @@ public class ConfigManager implements IConfigObservable {
     private static final Path CONFIG_PATH = Path.of(System.getProperty("user.dir"), "config.json");
 
     // instance
-    private final Gson gson = CustomGsonBuilder.create();
+    private final Gson gson = newGsonBuilder_dump().create();
     private volatile ConfigData data;
 
     public ConfigData getData() {

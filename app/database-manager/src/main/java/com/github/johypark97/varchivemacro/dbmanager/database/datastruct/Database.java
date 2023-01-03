@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.database.datastruct;
 
-import com.github.johypark97.varchivemacro.lib.common.json.CustomGsonBuilder;
+import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_dump;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -17,7 +18,7 @@ public class Database extends HashMap<Integer, Song> {
 
     public static Database loadJson(Path path)
             throws JsonSyntaxException, JsonIOException, IOException {
-        Gson gson = CustomGsonBuilder.create();
+        Gson gson = newGsonBuilder_dump().create();
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             return gson.fromJson(reader, Database.class);
         }
