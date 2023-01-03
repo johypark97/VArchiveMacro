@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.dbmanager.database.datastruct;
+package com.github.johypark97.varchivemacro.lib.common.database.datastruct;
 
 import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_dump;
 

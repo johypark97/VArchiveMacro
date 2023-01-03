@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct;
 
-import com.github.johypark97.varchivemacro.dbmanager.database.datastruct.Song;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.DatabaseModel;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.Song;
 import java.io.Serial;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;

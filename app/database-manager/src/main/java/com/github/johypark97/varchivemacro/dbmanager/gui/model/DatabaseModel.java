@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model;
 
-import com.github.johypark97.varchivemacro.dbmanager.database.datastruct.Database;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct.DatabaseTableModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct.DatabaseTableRowSorter;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.Database;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;

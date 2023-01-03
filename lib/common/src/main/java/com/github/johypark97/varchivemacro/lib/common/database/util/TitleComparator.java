@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.dbmanager.database.util;
+package com.github.johypark97.varchivemacro.lib.common.database.util;
 
 import java.io.Serial;
 import java.io.Serializable;
