@@ -20,6 +20,7 @@ public class Song {
     @Expose
     public List<Record> records = new ArrayList<>();
 
+    // Temporary method to resolve spotbugs URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD warning.
     @Override
     public String toString() {
         return String.format("%s - %s (%s) { %s }", title, composer, dlc,

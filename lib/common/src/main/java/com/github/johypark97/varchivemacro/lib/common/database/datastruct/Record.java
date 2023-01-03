@@ -38,6 +38,7 @@ public class Record {
         this.score = score;
     }
 
+    // Temporary method to resolve spotbugs URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD warning.
     @Override
     public String toString() {
         return String.format("%sB %s %.2f(%d)", button, pattern, score, maxCombo);
