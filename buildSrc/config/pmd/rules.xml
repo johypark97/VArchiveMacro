@@ -9,7 +9,10 @@
     Custom rules
   </description>
 
-  <rule ref="category/java/bestpractices.xml"/>
+  <rule ref="category/java/bestpractices.xml">
+    <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+    <exclude name="JUnitTestContainsTooManyAsserts"/>
+  </rule>
 
   <rule ref="category/java/errorprone.xml">
     <exclude name="NonSerializableClass"/>

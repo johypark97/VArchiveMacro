@@ -17,6 +17,7 @@ dependencies {
     // implementation("com.google.guava:guava:31.0.1-jre")
 
     // Test libraries.
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testImplementation("org.mockito:mockito-core:4.11.0")
     testImplementation("org.mockito:mockito-junit-jupiter:4.11.0")

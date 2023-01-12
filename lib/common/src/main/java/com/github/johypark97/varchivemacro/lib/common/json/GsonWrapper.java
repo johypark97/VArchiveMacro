@@ -7,7 +7,11 @@ public class GsonWrapper {
         return new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
     }
 
+    public static GsonBuilder newGsonBuilder_general() {
+        return newGsonBuilder_base().disableHtmlEscaping();
+    }
+
     public static GsonBuilder newGsonBuilder_dump() {
-        return newGsonBuilder_base().disableHtmlEscaping().serializeNulls().setPrettyPrinting();
+        return newGsonBuilder_general().serializeNulls().setPrettyPrinting();
     }
 }
