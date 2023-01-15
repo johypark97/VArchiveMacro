@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -51,17 +52,19 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     public transient IDbManager.Presenter presenter;
 
     // components
-    private JMenu menuFile;
     protected JMenuItem menuItemExit;
 
-    protected JButton databaseFileLoadButton;
-    protected JButton databaseFileSelectButton;
-    protected JTextField databaseFileTextField;
+    protected JButton songsFileLoadButton;
+    protected JButton songsFileSelectButton;
+    protected JTextField songsFileTextField;
 
-    private JTable viewerTabTable;
-    protected JButton viewerTabFilterResetButton;
-    protected JComboBox<String> viewerTabFilterComboBox;
-    protected JTextField viewerTabFilterTextField;
+    private JTable songsTable;
+    protected JButton songsFilterResetButton;
+    protected JComboBox<String> songsFilterColumnComboBox;
+    protected JTextField songsFilterTextField;
+
+    private JTextArea checkerResultTextArea;
+    protected JButton checkerCheckButton;
 
     // event listeners
     private transient final ActionListener actionListener = new DbManagerViewActionListener(this);
@@ -104,7 +107,7 @@ public class DbManagerView extends JFrame implements IDbManager.View {
         menuBar.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
         // menu file
-        menuFile = new JMenu("File");
+        JMenu menuFile = new JMenu("File");
 
         menuItemExit = new JMenuItem("Exit");
         menuItemExit.addActionListener(menuListener);
@@ -119,21 +122,21 @@ public class DbManagerView extends JFrame implements IDbManager.View {
         Box box = Box.createHorizontalBox();
 
         // label
-        box.add(new JLabel("Database : "));
+        box.add(new JLabel("Songs File : "));
 
         // text field
-        databaseFileTextField = new JTextField();
-        ComponentSize.expandWidthOnly(databaseFileTextField);
-        box.add(databaseFileTextField);
+        songsFileTextField = new JTextField();
+        ComponentSize.expandWidthOnly(songsFileTextField);
+        box.add(songsFileTextField);
 
         // button
-        databaseFileSelectButton = new JButton("select");
-        databaseFileSelectButton.addActionListener(actionListener);
-        box.add(databaseFileSelectButton);
+        songsFileSelectButton = new JButton("select");
+        songsFileSelectButton.addActionListener(actionListener);
+        box.add(songsFileSelectButton);
 
-        databaseFileLoadButton = new JButton("load");
-        databaseFileLoadButton.addActionListener(actionListener);
-        box.add(databaseFileLoadButton);
+        songsFileLoadButton = new JButton("load");
+        songsFileLoadButton.addActionListener(actionListener);
+        box.add(songsFileLoadButton);
 
         return box;
     }
@@ -144,6 +147,7 @@ public class DbManagerView extends JFrame implements IDbManager.View {
         JTabbedPane tabbedPane = new JTabbedPane();
 
         tabbedPane.addTab("Viewer", createTabViewer());
+        tabbedPane.addTab("Checker", createTabChecker());
 
         box.add(tabbedPane);
 
@@ -159,25 +163,25 @@ public class DbManagerView extends JFrame implements IDbManager.View {
 
         toolBox.add(new JLabel("Regex Filter : "));
 
-        viewerTabFilterTextField = new JTextField();
-        viewerTabFilterTextField.getDocument().addDocumentListener(documentListener);
-        ComponentSize.expandWidthOnly(viewerTabFilterTextField);
-        toolBox.add(viewerTabFilterTextField);
+        songsFilterTextField = new JTextField();
+        songsFilterTextField.getDocument().addDocumentListener(documentListener);
+        ComponentSize.expandWidthOnly(songsFilterTextField);
+        toolBox.add(songsFilterTextField);
 
-        viewerTabFilterComboBox = new JComboBox<>();
-        viewerTabFilterComboBox.addActionListener(actionListener);
-        ComponentSize.shrinkWidthToContents(viewerTabFilterComboBox);
-        toolBox.add(viewerTabFilterComboBox);
+        songsFilterColumnComboBox = new JComboBox<>();
+        songsFilterColumnComboBox.addActionListener(actionListener);
+        ComponentSize.shrinkWidthToContents(songsFilterColumnComboBox);
+        toolBox.add(songsFilterColumnComboBox);
 
-        viewerTabFilterResetButton = new JButton("reset");
-        viewerTabFilterResetButton.addActionListener(actionListener);
-        toolBox.add(viewerTabFilterResetButton);
+        songsFilterResetButton = new JButton("reset");
+        songsFilterResetButton.addActionListener(actionListener);
+        toolBox.add(songsFilterResetButton);
 
         ComponentSize.shrinkHeightToContents(toolBox);
         box.add(toolBox);
 
         // table
-        viewerTabTable = new JTable() {
+        songsTable = new JTable() {
             @Serial
             private static final long serialVersionUID = -1675524704391374766L;
 
@@ -199,15 +203,38 @@ public class DbManagerView extends JFrame implements IDbManager.View {
                 }
             }
         };
-        viewerTabTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        viewerTabTable.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
-        viewerTabTable.setRowHeight(32);
-        viewerTabTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        songsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        songsTable.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
+        songsTable.setRowHeight(32);
+        songsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JScrollPane scrollPane = new JScrollPane(viewerTabTable);
+        JScrollPane scrollPane = new JScrollPane(songsTable);
         scrollPane.getViewport().setBackground(Color.WHITE);
         scrollPane.setBorder(BorderFactory.createLoweredBevelBorder());
         box.add(scrollPane);
+
+        return box;
+    }
+
+    private Component createTabChecker() {
+        Box box = Box.createVerticalBox();
+
+        // tool box
+        Box toolBox = Box.createHorizontalBox();
+        toolBox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+
+        checkerCheckButton = new JButton("check");
+        checkerCheckButton.addActionListener(actionListener);
+        toolBox.add(checkerCheckButton);
+
+        ComponentSize.shrinkHeightToContents(toolBox);
+        box.add(toolBox);
+
+        // result text area
+        checkerResultTextArea = new JTextArea();
+        checkerResultTextArea.setEditable(false);
+        checkerResultTextArea.setBorder(BorderFactory.createLoweredBevelBorder());
+        box.add(checkerResultTextArea);
 
         return box;
     }
@@ -229,37 +256,43 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     }
 
     @Override
-    public String getText_databaseFileTextField() {
-        return databaseFileTextField.getText();
+    public String getSongsFileText() {
+        return songsFileTextField.getText();
     }
 
     @Override
-    public void setTableModel_viewerTabTable(TableModel tableModel) {
-        viewerTabTable.setModel(tableModel);
-        TableUtil.resizeColumnWidth(viewerTabTable, 40, 400, 10);
+    public void setSongsTableModel(TableModel tableModel) {
+        songsTable.setModel(tableModel);
+        TableUtil.resizeColumnWidth(songsTable, 40, 400, 10);
     }
 
     @Override
-    public void setTableRowSorter_viewerTabTable(TableRowSorter<TableModel> tableRowSorter) {
-        viewerTabTable.setRowSorter(tableRowSorter);
+    public void setSongsTableRowSorter(TableRowSorter<TableModel> tableRowSorter) {
+        songsTable.setRowSorter(tableRowSorter);
     }
 
     @Override
-    public void setItems_viewerTabFilterComboBox(String... items) {
-        viewerTabFilterComboBox.removeAllItems();
+    public void setSongsTableFilterColumnItems(String... items) {
+        songsFilterColumnComboBox.removeAllItems();
         for (String i : items) {
-            viewerTabFilterComboBox.addItem(i);
+            songsFilterColumnComboBox.addItem(i);
         }
     }
 
     @Override
-    public String getText_viewerTabFilterComboBox() {
-        return (String) viewerTabFilterComboBox.getSelectedItem();
+    public String getSongsTableFilterColumn() {
+        Object value = songsFilterColumnComboBox.getSelectedItem();
+        return (value != null) ? (String) value : "";
     }
 
     @Override
-    public String getText_viewerTabFilterTextField() {
-        return viewerTabFilterTextField.getText();
+    public String getSongsTableFilterText() {
+        return songsFilterTextField.getText();
+    }
+
+    @Override
+    public void setCheckerResultText(String value) {
+        checkerResultTextArea.setText(value);
     }
 }
 
@@ -297,17 +330,19 @@ class DbManagerViewActionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if (source.equals(view.databaseFileSelectButton)) {
+        if (source.equals(view.songsFileSelectButton)) {
             Path path = jsonFileChooser.get(view);
             if (path != null) {
-                view.databaseFileTextField.setText(path.toString());
+                view.songsFileTextField.setText(path.toString());
             }
-        } else if (source.equals(view.databaseFileLoadButton)) {
-            view.presenter.loadDatabase();
-        } else if (source.equals(view.viewerTabFilterResetButton)) {
-            view.viewerTabFilterTextField.setText("");
-        } else if (source.equals(view.viewerTabFilterComboBox)) {
+        } else if (source.equals(view.songsFileLoadButton)) {
+            view.presenter.loadSongs();
+        } else if (source.equals(view.songsFilterResetButton)) {
+            view.songsFilterTextField.setText("");
+        } else if (source.equals(view.songsFilterColumnComboBox)) {
             view.presenter.updateFilter();
+        } else if (source.equals(view.checkerCheckButton)) {
+            view.presenter.checkSongs();
         } else {
             // TODO: Remove println after completing the view.
             System.out.println(source); // NOPMD

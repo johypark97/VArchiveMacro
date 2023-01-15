@@ -1,17 +1,15 @@
 package com.github.johypark97.varchivemacro.lib.common.database.datastruct;
 
+import com.github.johypark97.varchivemacro.lib.common.api.Button;
+import com.github.johypark97.varchivemacro.lib.common.api.Pattern;
 import com.google.gson.annotations.Expose;
-import java.util.List;
 
-public class Record {
-    private static final List<Integer> BUTTONS = List.of(4, 5, 6, 8);
-    private static final List<String> PATTERNS = List.of("NM", "HD", "MX", "SC");
+public class LocalRecord {
+    @Expose
+    public final Button button;
 
     @Expose
-    public final int button;
-
-    @Expose
-    public final String pattern;
+    public final Pattern pattern;
 
     @Expose
     public float score;
@@ -19,15 +17,7 @@ public class Record {
     @Expose
     public int maxCombo;
 
-    public Record(int button, String pattern, float score, int maxCombo) {
-        if (!BUTTONS.contains(button)) {
-            throw new IllegalArgumentException("unknown button: " + button);
-        }
-
-        if (!PATTERNS.contains(pattern)) {
-            throw new IllegalArgumentException("invalid pattern: " + pattern);
-        }
-
+    public LocalRecord(Button button, Pattern pattern, float score, int maxCombo) {
         if (score < 0.0f || score > 100.0f) {
             throw new IllegalArgumentException("invalid score: " + score);
         }

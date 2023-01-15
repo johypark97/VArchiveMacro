@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.DatabaseModel;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.Song;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.Serial;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
@@ -13,7 +13,7 @@ public class DatabaseTableModel extends AbstractTableModel {
     private static final String ERROR_STRING = "ERROR";
 
     public static final List<String> COLUMNS =
-            List.of("id", "title", "remote_title", "composer", "dlc");
+            List.of("id", "title", "remote_title", "composer", "dlc", "dlcCode");
 
     // model
     public final DatabaseModel model;
@@ -24,7 +24,7 @@ public class DatabaseTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return model.database.size();
+        return model.songs.size();
     }
 
     @Override
@@ -34,20 +34,18 @@ public class DatabaseTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (columnIndex == 0) {
-            return rowIndex;
-        }
-
-        Song song = model.database.get(rowIndex);
-        if (song == null) {
+        LocalSong localSong = model.songs.get(rowIndex);
+        if (localSong == null) {
             return ERROR_STRING;
         }
 
         return switch (columnIndex) {
-            case 1 -> song.title;
-            case 2 -> song.remote_title;
-            case 3 -> song.composer;
-            case 4 -> song.dlc;
+            case 0 -> localSong.id();
+            case 1 -> localSong.title();
+            case 2 -> localSong.remote_title();
+            case 3 -> localSong.composer();
+            case 4 -> localSong.dlc();
+            case 5 -> localSong.dlcCode();
             default -> ERROR_STRING;
         };
     }

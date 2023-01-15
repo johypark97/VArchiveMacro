@@ -31,7 +31,9 @@ public class DatabaseTableRowSorter extends TableRowSorter<TableModel> {
 
     public void setFilter(String pattern, String column) {
         int index = DatabaseTableModel.COLUMNS.indexOf(column);
-        setRowFilter(new CaseInsensitiveRegexFilter(pattern, index));
+        if (index != -1) {
+            setRowFilter(new CaseInsensitiveRegexFilter(pattern, index));
+        }
     }
 
     private List<SortKey> getSortKeys(String... columns) {

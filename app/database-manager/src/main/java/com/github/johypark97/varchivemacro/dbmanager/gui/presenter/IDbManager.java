@@ -7,9 +7,11 @@ public interface IDbManager {
     interface Presenter {
         void start();
 
-        void loadDatabase();
+        void loadSongs();
 
         void updateFilter();
+
+        void checkSongs();
     }
 
 
@@ -20,16 +22,18 @@ public interface IDbManager {
 
         void showDialog(String title, int messageType, Object... messages);
 
-        String getText_databaseFileTextField();
+        String getSongsFileText();
 
-        void setTableModel_viewerTabTable(TableModel tableModel);
+        void setSongsTableModel(TableModel tableModel);
 
-        void setTableRowSorter_viewerTabTable(TableRowSorter<TableModel> tableRowSorter);
+        void setSongsTableRowSorter(TableRowSorter<TableModel> tableRowSorter);
 
-        void setItems_viewerTabFilterComboBox(String... items);
+        void setSongsTableFilterColumnItems(String... items);
 
-        String getText_viewerTabFilterComboBox();
+        String getSongsTableFilterColumn();
 
-        String getText_viewerTabFilterTextField();
+        String getSongsTableFilterText();
+
+        void setCheckerResultText(String value);
     }
 }
