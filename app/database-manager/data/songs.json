@@ -4206,5 +4206,13 @@
     "composer": "NieN",
     "dlc": "RESPECT",
     "dlcCode": "R"
+  },
+  "526": {
+    "id": 526,
+    "title": "Dancin' Planet",
+    "remote_title": null,
+    "composer": "Planetboom",
+    "dlc": "RESPECT",
+    "dlcCode": "R"
   }
 }
