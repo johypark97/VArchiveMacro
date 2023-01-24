@@ -233,8 +233,10 @@ public class DbManagerView extends JFrame implements IDbManager.View {
         // result text area
         checkerResultTextArea = new JTextArea();
         checkerResultTextArea.setEditable(false);
-        checkerResultTextArea.setBorder(BorderFactory.createLoweredBevelBorder());
-        box.add(checkerResultTextArea);
+
+        JScrollPane scrollPane = new JScrollPane(checkerResultTextArea);
+        scrollPane.setBorder(BorderFactory.createLoweredBevelBorder());
+        box.add(scrollPane);
 
         return box;
     }
