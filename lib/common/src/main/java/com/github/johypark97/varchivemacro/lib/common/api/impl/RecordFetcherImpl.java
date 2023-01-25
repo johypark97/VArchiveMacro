@@ -1,13 +1,8 @@
 package com.github.johypark97.varchivemacro.lib.common.api.impl;
 
-import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_general;
-
 import com.github.johypark97.varchivemacro.lib.common.api.Board;
 import com.github.johypark97.varchivemacro.lib.common.api.Button;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.recordfetcher.Failure;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.recordfetcher.Success;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -19,8 +14,6 @@ import java.nio.charset.StandardCharsets;
 
 public class RecordFetcherImpl implements RecordFetcher {
     private static final String URL_FORMAT = ImplBase.BASE_URL + "/api/archive/%s/board/%s/%s";
-
-    private final Gson gson = newGsonBuilder_general().create();
 
     private Success result;
     private final HttpClient httpClient;
@@ -65,9 +58,9 @@ public class RecordFetcherImpl implements RecordFetcher {
         HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
         int statusCode = response.statusCode();
         switch (statusCode) {
-            case 200 -> result = gson.fromJson(response.body(), Success.class);
+            case 200 -> result = Success.fromJson(response.body());
             case 404, 500 -> {
-                Failure failure = gson.fromJson(response.body(), Failure.class);
+                Failure failure = Failure.fromJson(response.body());
                 throw new RuntimeException(failure.message);
             }
             default -> throw new RuntimeException(statusCode + " Network Error");

@@ -1,12 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.common.api.impl;
 
-import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_general;
-
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.recorduploader.Failure;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.recorduploader.RequestData;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.recorduploader.Success;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -18,8 +12,6 @@ import java.util.UUID;
 
 public class RecordUploaderImpl implements RecordUploader {
     private static final String URL_FORMAT = ImplBase.BASE_URL + "/client/open/%d/score";
-
-    private final Gson gson = newGsonBuilder_general().create();
 
     private boolean result;
     private final HttpClient httpClient;
@@ -60,18 +52,18 @@ public class RecordUploaderImpl implements RecordUploader {
     @Override
     public void upload(RequestData data) throws IOException, InterruptedException {
         URI uri = createUri(userNo);
-        HttpRequest request = createRequest(uri, gson.toJson(data));
+        HttpRequest request = createRequest(uri, data.toJson());
 
         // TODO: Change to use sendAsync in final release.
         HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
         int statusCode = response.statusCode();
         switch (statusCode) {
             case 200 -> {
-                Success success = gson.fromJson(response.body(), Success.class);
+                Success success = Success.fromJson(response.body());
                 result = success.update;
             }
             case 400, 404, 500 -> {
-                Failure failure = gson.fromJson(response.body(), Failure.class);
+                Failure failure = Failure.fromJson(response.body());
                 throw new RuntimeException(failure.message);
             }
             default -> throw new RuntimeException(statusCode + " Network Error");

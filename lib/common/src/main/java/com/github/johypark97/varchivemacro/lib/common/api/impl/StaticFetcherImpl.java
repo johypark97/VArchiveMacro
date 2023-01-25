@@ -1,10 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.common.api.impl;
 
-import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_general;
-
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.staticfetcher.RemoteSong;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -15,8 +11,6 @@ import java.util.List;
 
 public class StaticFetcherImpl implements StaticFetcher {
     private static final String SONGS_URL = ImplBase.BASE_URL + "/db/songs.json";
-
-    private final Gson gson = newGsonBuilder_general().create();
 
     private final HttpClient httpClient;
     public List<RemoteSong> remoteSongs;
@@ -42,7 +36,7 @@ public class StaticFetcherImpl implements StaticFetcher {
         // TODO: Change to use sendAsync in final release.
         HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
 
-        remoteSongs = (response.statusCode() == 200) ? gson.fromJson(response.body(),
-                new RemoteSong.GsonListTypeToken()) : List.of();
+        remoteSongs =
+                (response.statusCode() == 200) ? RemoteSong.fromJson(response.body()) : List.of();
     }
 }

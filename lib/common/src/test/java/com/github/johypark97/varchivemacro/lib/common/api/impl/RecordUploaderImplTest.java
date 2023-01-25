@@ -9,9 +9,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.recorduploader.Failure;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.recorduploader.RequestData;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.recorduploader.Success;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.Failure;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestData;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.Success;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
@@ -123,6 +123,7 @@ class RecordUploaderImplTest {
     @ParameterizedTest
     @ValueSource(ints = 200)
     void test_upload_200(int statusCode) throws Exception {
+        stubDummyRequestData();
         stubHttpClientSend().thenReturn(httpResponseMock);
 
         Success data = new Success();
@@ -140,6 +141,7 @@ class RecordUploaderImplTest {
     @ParameterizedTest
     @ValueSource(ints = 200)
     void test_upload_200_newRecord(int statusCode) throws Exception {
+        stubDummyRequestData();
         stubHttpClientSend().thenReturn(httpResponseMock);
 
         Success data = new Success();
@@ -157,6 +159,7 @@ class RecordUploaderImplTest {
     @ParameterizedTest
     @ValueSource(ints = {400, 404, 500})
     void test_upload_400_404_500(int statusCode) throws Exception {
+        stubDummyRequestData();
         stubHttpClientSend().thenReturn(httpResponseMock);
 
         String expected = "exception message" + statusCode;
@@ -177,6 +180,7 @@ class RecordUploaderImplTest {
     @ParameterizedTest
     @ValueSource(ints = 503)
     void test_upload_etc(int statusCode) throws Exception {
+        stubDummyRequestData();
         stubHttpClientSend().thenReturn(httpResponseMock);
 
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
@@ -187,6 +191,7 @@ class RecordUploaderImplTest {
     @ParameterizedTest
     @ValueSource(ints = {200, 400, 404, 500})
     void test_upload_jsonSyntaxException(int statusCode) throws Exception {
+        stubDummyRequestData();
         stubHttpClientSend().thenReturn(httpResponseMock);
 
         String data = "{";
@@ -199,6 +204,7 @@ class RecordUploaderImplTest {
 
     @Test
     void test_upload_ioException() throws Exception {
+        stubDummyRequestData();
         stubHttpClientSend().thenThrow(new IOException());
 
         assertThrows(IOException.class, () -> recordUploader.upload(dummyRequestData));
@@ -206,9 +212,14 @@ class RecordUploaderImplTest {
 
     @Test
     void test_upload_interruptedException() throws Exception {
+        stubDummyRequestData();
         stubHttpClientSend().thenThrow(new InterruptedException());
 
         assertThrows(InterruptedException.class, () -> recordUploader.upload(dummyRequestData));
+    }
+
+    private void stubDummyRequestData() {
+        when(dummyRequestData.toJson()).thenReturn("");
     }
 
     private OngoingStubbing<HttpResponse<String>> stubHttpClientSend() throws Exception {

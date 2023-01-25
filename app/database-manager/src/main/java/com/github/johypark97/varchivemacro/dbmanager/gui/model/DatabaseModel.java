@@ -4,7 +4,7 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct.Databa
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct.DatabaseTableRowSorter;
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.staticfetcher.RemoteSong;
+import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher.RemoteSong;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
 import java.nio.file.Path;

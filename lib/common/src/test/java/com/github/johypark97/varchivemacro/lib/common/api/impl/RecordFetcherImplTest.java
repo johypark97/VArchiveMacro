@@ -10,8 +10,8 @@ import static org.mockito.Mockito.when;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Board;
 import com.github.johypark97.varchivemacro.lib.common.api.Button;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.recordfetcher.Failure;
-import com.github.johypark97.varchivemacro.lib.common.api.datastruct.recordfetcher.Success;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher.Failure;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher.Success;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
