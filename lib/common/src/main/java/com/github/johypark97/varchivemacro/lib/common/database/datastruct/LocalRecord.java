@@ -20,6 +20,9 @@ public class LocalRecord {
 
 
     @Expose
+    public final int id;
+
+    @Expose
     public final Button button;
 
     @Expose
@@ -31,12 +34,13 @@ public class LocalRecord {
     @Expose
     public int maxCombo;
 
-    public LocalRecord(Button button, Pattern pattern, float score, int maxCombo) {
+    public LocalRecord(int id, Button button, Pattern pattern, float score, int maxCombo) {
         if (score < 0.0f || score > 100.0f) {
             throw new IllegalArgumentException("invalid score: " + score);
         }
 
         this.button = button;
+        this.id = id;
         this.maxCombo = (score == 100.0f || maxCombo != 0) ? 1 : 0;
         this.pattern = pattern;
         this.score = score;
@@ -45,7 +49,7 @@ public class LocalRecord {
     // Temporary method to resolve spotbugs URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD warning.
     @Override
     public String toString() {
-        return String.format("%sB %s %.2f(%d)", button, pattern, score, maxCombo);
+        return String.format("%d. %sB %s %.2f(%d)", id, button, pattern, score, maxCombo);
     }
 
     public static List<LocalRecord> loadJson(Path path) throws IOException {
