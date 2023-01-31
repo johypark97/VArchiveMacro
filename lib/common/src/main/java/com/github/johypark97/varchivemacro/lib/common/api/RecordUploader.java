@@ -10,23 +10,23 @@ import java.io.IOException;
 public interface RecordUploader {
     boolean getResult();
 
-    void upload(RequestData data) throws IOException, InterruptedException;
+    void upload(RequestJson data) throws IOException, InterruptedException;
 
-    class Success {
+    class SuccessJson {
         @Expose
-        public boolean success; // NOPMD
+        public boolean success;
 
         @Expose
         public boolean update;
 
-        public static Success fromJson(String json) {
+        public static SuccessJson fromJson(String json) {
             Gson gson = newGsonBuilder_general().create();
-            return gson.fromJson(json, Success.class);
+            return gson.fromJson(json, SuccessJson.class);
         }
     }
 
 
-    class RequestData {
+    class RequestJson {
         @Expose
         @SerializedName("name")
         public String title;
@@ -49,7 +49,7 @@ public interface RecordUploader {
         @Expose
         public int maxCombo;
 
-        public RequestData(String title, Button button, Pattern pattern, float score,
+        public RequestJson(String title, Button button, Pattern pattern, float score,
                 int maxCombo) {
             if (score < 0.0f || score > 100.0f) {
                 throw new IllegalArgumentException("invalid score: " + score);
@@ -77,13 +77,13 @@ public interface RecordUploader {
     }
 
 
-    class Failure {
+    class FailureJson {
         @Expose
         public String message;
 
-        public static Failure fromJson(String json) {
+        public static FailureJson fromJson(String json) {
             Gson gson = newGsonBuilder_general().create();
-            return gson.fromJson(json, Failure.class);
+            return gson.fromJson(json, FailureJson.class);
         }
     }
 }

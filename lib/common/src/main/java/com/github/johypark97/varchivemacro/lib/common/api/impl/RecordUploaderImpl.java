@@ -50,7 +50,7 @@ public class RecordUploaderImpl implements RecordUploader {
     }
 
     @Override
-    public void upload(RequestData data) throws IOException, InterruptedException {
+    public void upload(RequestJson data) throws IOException, InterruptedException {
         URI uri = createUri(userNo);
         HttpRequest request = createRequest(uri, data.toJson());
 
@@ -59,11 +59,11 @@ public class RecordUploaderImpl implements RecordUploader {
         int statusCode = response.statusCode();
         switch (statusCode) {
             case 200 -> {
-                Success success = Success.fromJson(response.body());
+                SuccessJson success = SuccessJson.fromJson(response.body());
                 result = success.update;
             }
             case 400, 404, 500 -> {
-                Failure failure = Failure.fromJson(response.body());
+                FailureJson failure = FailureJson.fromJson(response.body());
                 throw new RuntimeException(failure.message);
             }
             default -> throw new RuntimeException(statusCode + " Network Error");

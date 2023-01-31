@@ -10,8 +10,8 @@ import static org.mockito.Mockito.when;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Board;
 import com.github.johypark97.varchivemacro.lib.common.api.Button;
-import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher.Failure;
-import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher.Success;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher.FailureJson;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher.SuccessJson;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
@@ -95,7 +95,7 @@ class RecordFetcherImplTest {
     void test_fetch_200(int statusCode) throws Exception {
         stubHttpClientSend().thenReturn(httpResponseMock);
 
-        Success data = new Success();
+        SuccessJson data = new SuccessJson();
         data.success = true;
 
         when(httpResponseMock.body()).thenReturn(gson.toJson(data));
@@ -114,7 +114,7 @@ class RecordFetcherImplTest {
 
         String expected = "exception message" + statusCode;
 
-        Failure data = new Failure();
+        FailureJson data = new FailureJson();
         data.message = expected;
 
         when(httpResponseMock.body()).thenReturn(gson.toJson(data));

@@ -9,9 +9,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.Failure;
-import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestData;
-import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.Success;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.FailureJson;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestJson;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.SuccessJson;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
@@ -50,7 +50,7 @@ class RecordUploaderImplTest {
     private HttpResponse<String> httpResponseMock;
 
     @Mock
-    private RequestData dummyRequestData;
+    private RequestJson dummyRequestJson;
 
     private RecordUploaderImpl recordUploader;
 
@@ -126,13 +126,13 @@ class RecordUploaderImplTest {
         stubDummyRequestData();
         stubHttpClientSend().thenReturn(httpResponseMock);
 
-        Success data = new Success();
+        SuccessJson data = new SuccessJson();
         data.update = false;
 
         when(httpResponseMock.body()).thenReturn(gson.toJson(data));
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
-        recordUploader.upload(dummyRequestData);
+        recordUploader.upload(dummyRequestJson);
 
         boolean condition = recordUploader.getResult();
         assertFalse(condition);
@@ -144,13 +144,13 @@ class RecordUploaderImplTest {
         stubDummyRequestData();
         stubHttpClientSend().thenReturn(httpResponseMock);
 
-        Success data = new Success();
+        SuccessJson data = new SuccessJson();
         data.update = true;
 
         when(httpResponseMock.body()).thenReturn(gson.toJson(data));
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
-        recordUploader.upload(dummyRequestData);
+        recordUploader.upload(dummyRequestJson);
 
         boolean condition = recordUploader.getResult();
         assertTrue(condition);
@@ -164,14 +164,14 @@ class RecordUploaderImplTest {
 
         String expected = "exception message" + statusCode;
 
-        Failure failure = new Failure();
-        failure.message = expected;
+        FailureJson data = new FailureJson();
+        data.message = expected;
 
-        when(httpResponseMock.body()).thenReturn(gson.toJson(failure));
+        when(httpResponseMock.body()).thenReturn(gson.toJson(data));
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
         Throwable throwable =
-                assertThrows(RuntimeException.class, () -> recordUploader.upload(dummyRequestData));
+                assertThrows(RuntimeException.class, () -> recordUploader.upload(dummyRequestJson));
 
         String actual = throwable.getMessage();
         assertEquals(expected, actual);
@@ -185,7 +185,7 @@ class RecordUploaderImplTest {
 
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
-        assertThrows(RuntimeException.class, () -> recordUploader.upload(dummyRequestData));
+        assertThrows(RuntimeException.class, () -> recordUploader.upload(dummyRequestJson));
     }
 
     @ParameterizedTest
@@ -199,7 +199,7 @@ class RecordUploaderImplTest {
         when(httpResponseMock.body()).thenReturn(data);
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
-        assertThrows(JsonSyntaxException.class, () -> recordUploader.upload(dummyRequestData));
+        assertThrows(JsonSyntaxException.class, () -> recordUploader.upload(dummyRequestJson));
     }
 
     @Test
@@ -207,7 +207,7 @@ class RecordUploaderImplTest {
         stubDummyRequestData();
         stubHttpClientSend().thenThrow(new IOException());
 
-        assertThrows(IOException.class, () -> recordUploader.upload(dummyRequestData));
+        assertThrows(IOException.class, () -> recordUploader.upload(dummyRequestJson));
     }
 
     @Test
@@ -215,11 +215,11 @@ class RecordUploaderImplTest {
         stubDummyRequestData();
         stubHttpClientSend().thenThrow(new InterruptedException());
 
-        assertThrows(InterruptedException.class, () -> recordUploader.upload(dummyRequestData));
+        assertThrows(InterruptedException.class, () -> recordUploader.upload(dummyRequestJson));
     }
 
     private void stubDummyRequestData() {
-        when(dummyRequestData.toJson()).thenReturn("");
+        when(dummyRequestJson.toJson()).thenReturn("");
     }
 
     private OngoingStubbing<HttpResponse<String>> stubHttpClientSend() throws Exception {

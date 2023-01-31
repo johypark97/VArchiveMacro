@@ -9,43 +9,43 @@ import java.io.IOException;
 import java.util.List;
 
 public interface RecordFetcher {
-    Success getResult();
+    SuccessJson getResult();
 
     void fetch(Button button, Board board) throws IOException, InterruptedException;
 
-    class Success {
+    class SuccessJson {
         @Expose
-        public boolean success; // NOPMD
+        public boolean success;
 
         @Expose
         public String board;
 
         @Expose
-        public int button;
+        public Button button;
 
         @Expose
         public int totalCount;
 
         @Expose
-        public List<Floor> floors;
+        public List<FloorJson> floors;
 
-        public static Success fromJson(String json) {
+        public static SuccessJson fromJson(String json) {
             Gson gson = newGsonBuilder_general().create();
-            return gson.fromJson(json, Success.class);
+            return gson.fromJson(json, SuccessJson.class);
         }
     }
 
 
-    class Floor {
+    class FloorJson {
         @Expose
         public float floorNumber;
 
         @Expose
-        public List<Pattern> patterns;
+        public List<PatternJson> patterns;
     }
 
 
-    class Pattern {
+    class PatternJson {
         @Expose
         @SerializedName("title")
         public int id;
@@ -58,7 +58,7 @@ public interface RecordFetcher {
         public String composer;
 
         @Expose
-        public String pattern; // NOPMD
+        public Pattern pattern;
 
         @Expose
         public float score;
@@ -74,13 +74,13 @@ public interface RecordFetcher {
     }
 
 
-    class Failure {
+    class FailureJson {
         @Expose
         public String message;
 
-        public static Failure fromJson(String json) {
+        public static FailureJson fromJson(String json) {
             Gson gson = newGsonBuilder_general().create();
-            return gson.fromJson(json, Failure.class);
+            return gson.fromJson(json, FailureJson.class);
         }
     }
 }

@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 public class RecordFetcherImpl implements RecordFetcher {
     private static final String URL_FORMAT = ImplBase.BASE_URL + "/api/archive/%s/board/%s/%s";
 
-    private Success result;
+    private SuccessJson result;
     private final HttpClient httpClient;
     private final String djName;
 
@@ -45,7 +45,7 @@ public class RecordFetcherImpl implements RecordFetcher {
     }
 
     @Override
-    public Success getResult() {
+    public SuccessJson getResult() {
         return result;
     }
 
@@ -58,9 +58,9 @@ public class RecordFetcherImpl implements RecordFetcher {
         HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
         int statusCode = response.statusCode();
         switch (statusCode) {
-            case 200 -> result = Success.fromJson(response.body());
+            case 200 -> result = SuccessJson.fromJson(response.body());
             case 404, 500 -> {
-                Failure failure = Failure.fromJson(response.body());
+                FailureJson failure = FailureJson.fromJson(response.body());
                 throw new RuntimeException(failure.message);
             }
             default -> throw new RuntimeException(statusCode + " Network Error");
