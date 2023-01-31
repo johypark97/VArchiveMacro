@@ -1,10 +1,24 @@
 package com.github.johypark97.varchivemacro.lib.common.database.datastruct;
 
+import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_dump;
+
 import com.github.johypark97.varchivemacro.lib.common.api.Button;
 import com.github.johypark97.varchivemacro.lib.common.api.Pattern;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 public class LocalRecord {
+    public static class GsonListTypeToken extends TypeToken<List<LocalRecord>> {
+    }
+
+
     @Expose
     public final Button button;
 
@@ -32,5 +46,18 @@ public class LocalRecord {
     @Override
     public String toString() {
         return String.format("%sB %s %.2f(%d)", button, pattern, score, maxCombo);
+    }
+
+    public static List<LocalRecord> loadJson(Path path) throws IOException {
+        Gson gson = newGsonBuilder_dump().create();
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            return gson.fromJson(reader, new GsonListTypeToken());
+        }
+    }
+
+    public static void saveJson(Path path, List<LocalRecord> records) throws IOException {
+        GsonBuilder builder = newGsonBuilder_dump();
+        Gson gson = builder.registerTypeAdapter(Button.class, new Button.GsonSerializer()).create();
+        Files.writeString(path, gson.toJson(records));
     }
 }
