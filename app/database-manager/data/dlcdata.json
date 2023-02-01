@@ -1,0 +1,220 @@
+{
+  "dlcs": {
+    "0": {
+      "name": "Respect",
+      "code": "R",
+      "tab": "RESPECT"
+    },
+    "1": {
+      "name": "Portable 1",
+      "code": "P1",
+      "tab": "PORTABLE 1"
+    },
+    "2": {
+      "name": "Portable 2",
+      "code": "P2",
+      "tab": "PORTABLE 2"
+    },
+    "3": {
+      "name": "Portable 3",
+      "code": "P3",
+      "tab": "PORTABLE 3"
+    },
+    "4": {
+      "name": "Trilogy",
+      "code": "TR",
+      "tab": "TRILOGY"
+    },
+    "5": {
+      "name": "Clazziquai Edition",
+      "code": "CE",
+      "tab": "CLAZZIQUAI"
+    },
+    "6": {
+      "name": "Black Square",
+      "code": "BS",
+      "tab": "BLACK SQUARE"
+    },
+    "7": {
+      "name": "V Extension",
+      "code": "VE",
+      "tab": "V EXTENSION"
+    },
+    "8": {
+      "name": "V Extension 2",
+      "code": "VE2",
+      "tab": "V EXTENSION 2"
+    },
+    "9": {
+      "name": "V Extension 3",
+      "code": "VE3",
+      "tab": "V EXTENSION 3"
+    },
+    "10": {
+      "name": "Emotional Sense",
+      "code": "ES",
+      "tab": "EMOTIONAL S."
+    },
+    "11": {
+      "name": "Technika 1",
+      "code": "T1",
+      "tab": "TECHNIKA 1"
+    },
+    "12": {
+      "name": "Technika 2",
+      "code": "T2",
+      "tab": "TECHNIKA 2"
+    },
+    "13": {
+      "name": "Technika 3",
+      "code": "T3",
+      "tab": "TECHNIKA 3"
+    },
+    "14": {
+      "name": "Technika Tune & Q",
+      "code": "TQ",
+      "tab": "TECHNIKA T&Q"
+    },
+    "15": {
+      "name": "Guilty Gear",
+      "code": "GG",
+      "tab": "COLLABORATION"
+    },
+    "16": {
+      "name": "Chunithm",
+      "code": "CHU",
+      "tab": "COLLABORATION"
+    },
+    "17": {
+      "name": "Cytus",
+      "code": "CY",
+      "tab": "COLLABORATION"
+    },
+    "18": {
+      "name": "Deemo",
+      "code": "DM",
+      "tab": "COLLABORATION"
+    },
+    "19": {
+      "name": "Estimate",
+      "code": "ESTI",
+      "tab": "COLLABORATION"
+    },
+    "20": {
+      "name": "Groove Coaster",
+      "code": "GC",
+      "tab": "COLLABORATION"
+    },
+    "21": {
+      "name": "Girls' Frontline",
+      "code": "GF",
+      "tab": "COLLABORATION"
+    },
+    "22": {
+      "name": "Muse Dash",
+      "code": "MD",
+      "tab": "COLLABORATION"
+    },
+    "23": {
+      "name": "Nexon",
+      "code": "NXN",
+      "tab": "COLLABORATION"
+    }
+  },
+  "unlocks": {
+    "222": [
+      // Nevermind
+      [
+        "TR"
+      ]
+    ],
+    "269": [
+      // Rising The Sonic
+      [
+        "CE"
+      ]
+    ],
+    "270": [
+      // ANALYS
+      [
+        "BS"
+      ]
+    ],
+    "370": [
+      // ALiCE
+      [
+        "T3"
+      ]
+    ],
+    "371": [
+      // End of Mythology
+      [
+        "T2"
+      ]
+    ],
+    "372": [
+      // Do you want it
+      [
+        "T1"
+      ]
+    ],
+    "373": [
+      // Airwave ~Extended Mix~
+      [
+        "BS",
+        "CE"
+      ],
+      [
+        "BS",
+        "T1"
+      ]
+    ],
+    "374": [
+      // SON OF SUN ~Extended Mix~
+      [
+        "BS",
+        "T1"
+      ],
+      [
+        "CE",
+        "T1"
+      ]
+    ],
+    "375": [
+      // Here in the Moment ~Extended Mix~
+      [
+        "BS",
+        "CE"
+      ],
+      [
+        "CE",
+        "T1"
+      ]
+    ],
+    "410": [
+      // glory day (Mintorment Remix)
+      [
+        "P3"
+      ]
+    ],
+    "411": [
+      // glory day -JHS Remix-
+      [
+        "P3"
+      ]
+    ],
+    "462": [
+      // 너로피어오라 ~Original Ver.~
+      [
+        "VE",
+        "VE2"
+      ]
+    ],
+    "503": [
+      // Techno Racer
+      [
+        "TQ"
+      ]
+    ]
+  }
+}
