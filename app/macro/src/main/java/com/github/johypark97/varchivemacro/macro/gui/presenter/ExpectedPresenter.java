@@ -1,19 +1,16 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
-import com.github.johypark97.varchivemacro.macro.gui.model.LicenseModel;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.ILicense.Presenter;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.ILicense.View;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.IExpected.Presenter;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.IExpected.View;
 import javax.swing.JFrame;
+import javax.swing.tree.TreeModel;
 
-public class LicensePresenter implements Presenter {
-    // model
-    private final LicenseModel licenseModel = new LicenseModel();
-
+public class ExpectedPresenter implements Presenter {
     // view
     private final Class<? extends View> viewClass;
     public View view;
 
-    public LicensePresenter(Class<? extends View> viewClass) {
+    public ExpectedPresenter(Class<? extends View> viewClass) {
         this.viewClass = viewClass;
     }
 
@@ -28,13 +25,13 @@ public class LicensePresenter implements Presenter {
     }
 
     @Override
-    public synchronized void start(JFrame parent) {
+    public synchronized void start(JFrame parent, TreeModel model) {
         if (view != null) {
             return;
         }
         newView(parent);
 
-        view.setLicenses(licenseModel.getList());
+        view.setTreeModel(model);
 
         view.showView();
     }
@@ -43,15 +40,6 @@ public class LicensePresenter implements Presenter {
     public synchronized void viewClosed() {
         if (view != null) {
             view = null; // NOPMD
-        }
-    }
-
-    @Override
-    public String getLicense(String key) {
-        try {
-            return licenseModel.getText(key);
-        } catch (Exception e) {
-            return e.getMessage();
         }
     }
 }

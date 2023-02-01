@@ -10,11 +10,14 @@ import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RecordManager {
     private static final List<Board> BOARDS =
@@ -25,6 +28,37 @@ public class RecordManager {
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     private RecordMap managedRecords = new RecordMap();
+
+    public List<Float> getRecords(int id) {
+        List<Float> records = Stream.generate(() -> -1f).limit(16)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        lock.readLock().lock();
+        ButtonMap buttonMap = managedRecords.get(id);
+        if (buttonMap != null) {
+            buttonMap.forEach((button, patternMap) -> {
+                patternMap.forEach(((pattern, record) -> {
+                    int b = switch (button) {
+                        case _4 -> 0;
+                        case _5 -> 1;
+                        case _6 -> 2;
+                        case _8 -> 3;
+                    };
+                    int p = switch (pattern) {
+                        case NM -> 0;
+                        case HD -> 1;
+                        case MX -> 2;
+                        case SC -> 3;
+                    };
+
+                    records.set(p + b * 4, record.score);
+                }));
+            });
+        }
+        lock.readLock().unlock();
+
+        return records;
+    }
 
     public void loadJson(Path path) throws IOException {
         RecordMap map = new RecordMap();

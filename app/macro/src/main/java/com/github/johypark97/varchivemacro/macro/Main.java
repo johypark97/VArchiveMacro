@@ -2,21 +2,16 @@ package com.github.johypark97.varchivemacro.macro;
 
 import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
 
-import com.github.johypark97.varchivemacro.macro.config.ConfigManager;
-import com.github.johypark97.varchivemacro.macro.gui.model.LicenseModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.SettingsModel;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.ExpectedPresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.LicensePresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroPresenter;
+import com.github.johypark97.varchivemacro.macro.gui.view.ExpectedView;
 import com.github.johypark97.varchivemacro.macro.gui.view.LicenseView;
 import com.github.johypark97.varchivemacro.macro.gui.view.MacroView;
 import javax.swing.SwingUtilities;
 
 public class Main {
-    // macro
-    private final MacroPresenter macroPresenter = new MacroPresenter(new MacroView());
-
-    // license
-    private final LicensePresenter licensePresenter = new LicensePresenter(new LicenseView());
+    private final MacroPresenter macroPresenter = new MacroPresenter(MacroView.class);
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -28,15 +23,7 @@ public class Main {
     }
 
     private Main() {
-        // link presenter - presenter
-        macroPresenter.licensePresenter = licensePresenter;
-
-        // link macro presenter - model
-        SettingsModel settingsModel = new SettingsModel();
-        settingsModel.subscribe(ConfigManager.getInstance());
-        macroPresenter.settingsModel = settingsModel;
-
-        // link license presenter - model
-        licensePresenter.licenseModel = new LicenseModel();
+        macroPresenter.setPresenters(new ExpectedPresenter(ExpectedView.class),
+                new LicensePresenter(LicenseView.class));
     }
 }

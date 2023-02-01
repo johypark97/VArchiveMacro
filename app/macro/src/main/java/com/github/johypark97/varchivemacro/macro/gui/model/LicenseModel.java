@@ -17,8 +17,8 @@ public class LicenseModel {
                     Map.entry("JNativeHook", PATH + "jnativehook.txt"),
                     Map.entry("Launch4j", PATH + "launch4j.txt"));
 
-    public String[] getList() {
-        return LICENSES.keySet().stream().sorted().toArray(String[]::new);
+    public List<String> getList() {
+        return LICENSES.keySet().stream().sorted().toList();
     }
 
     public String getText(String key) throws IOException {

@@ -1,25 +1,31 @@
 package com.github.johypark97.varchivemacro.macro.gui.view;
 
-import com.github.johypark97.varchivemacro.lib.common.gui.component.RadioButtonGroup;
-import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderGroup;
-import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
+import com.github.johypark97.varchivemacro.lib.common.gui.component.CheckboxGroup;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.util.BuildInfo;
-import com.github.johypark97.varchivemacro.macro.util.Language;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.Serial;
 import java.net.URL;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.IntStream;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,101 +36,78 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import javax.swing.text.BadLocationException;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeSelectionModel;
 
-public class MacroView extends JFrame implements IMacro.View {
+public class MacroView extends JFrame implements View, WindowListener {
     @Serial
     private static final long serialVersionUID = -4985735753645144141L;
 
-    private static final String TITLE = "V-ARCHIVE Macro";
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-    private static final String EMPTY_STRING = "";
-    private static final String GITHUB_URL = "https://github.com/johypark97/VArchiveMacro";
-    private static final String NEWLINE = System.lineSeparator();
-    private static final int LOG_LINES = 100;
-
-    private static final int SLIDER_GROUP_TEXT_FIELD_COLUMNS = 4;
-    private static final int SLIDER_GROUP_WIDTH = 500;
-
-    private static final int COUNT_LIMIT_MAX = 10000;
-    private static final int COUNT_SLIDER_MAX = 1000;
-    private static final int COUNT_SLIDER_MIN = 0;
-    private static final int COUNT_SLIDER_TICK_MAJOR = 200;
-    private static final int COUNT_SLIDER_TICK_MINOR = 50;
-
-    private static final int MOVING_DELAY_LIMIT_MAX = 5000;
-    private static final int MOVING_DELAY_SLIDER_MAX = 2000;
-    private static final int MOVING_DELAY_SLIDER_MIN = 200;
-    private static final int MOVING_DELAY_SLIDER_TICK_MAJOR = 300;
-    private static final int MOVING_DELAY_SLIDER_TICK_MINOR = 100;
-
-    private static final int CAPTURE_DURATION_LIMIT_MAX = 1000;
-    private static final int CAPTURE_DURATION_SLIDER_MAX = 100;
-    private static final int CAPTURE_DURATION_SLIDER_MIN = 0;
-    private static final int CAPTURE_DURATION_SLIDER_TICK_MAJOR = 20;
-    private static final int CAPTURE_DURATION_SLIDER_TICK_MINOR = 5;
-
-    private static final int INPUT_DURATION_LIMIT_MAX = 1000;
-    private static final int INPUT_DURATION_SLIDER_MAX = 100;
-    private static final int INPUT_DURATION_SLIDER_MIN = 0;
-    private static final int INPUT_DURATION_SLIDER_TICK_MAJOR = 20;
-    private static final int INPUT_DURATION_SLIDER_TICK_MINOR = 5;
-
+    private static final String WINDOW_TITLE = "V-ARCHIVE Macro";
     private static final int LOG_FONT_SIZE = 12;
+    private static final int LOG_LINES = 100;
     private static final int LOG_ROWS = 8;
+    private static final int WINDOW_HEIGHT = 600;
+    private static final int WINDOW_WIDTH = 800;
+    public static final Set<String> DEFAULT_DLCS = Set.of("R", "P1", "P2", "GG");
 
     // presenter
-    public transient IMacro.Presenter presenter;
+    public transient Presenter presenter;
 
     // components
-    private JButton advancedButton;
-    private JTextArea logTextArea;
-    private JTextArea optionTextArea;
-    private RadioButtonGroup<AnalyzeKey> analyzeKeyRadioGroup;
-    private RadioButtonGroup<DirectionKey> directionKeyRadioGroup;
-    private SliderGroup<SliderKey> advancedSliderGroup;
-    private SliderGroup<SliderKey> generalSliderGroup;
-    private TitledBorder analyzeKeyBorder;
-    private TitledBorder directionKeyBorder;
-    private TitledBorder optionBorder;
-    private TitledBorder sliderBorder;
-    protected JMenu menuFile;
-    protected JMenu menuInfo;
+    private JMenu menuFile;
+    private JMenu menuInfo;
     protected JMenuItem menuItemAbout;
     protected JMenuItem menuItemExit;
     protected JMenuItem menuItemOSL;
 
+    private JTextArea recordViewerTextArea;
+    private JTree recordViewerTree;
+    private final List<JTextField> recordViewerGridTextFields = new ArrayList<>(16);
+    protected JButton loadRemoteRecordButton;
+
+    private JScrollPane dlcCheckboxScrollPane;
+    private JTextArea logTextArea;
+    private JTextField accountFileTextField;
+    protected JButton selectAccountFileButton;
+    protected JButton selectAllDlcButton;
+    protected JButton showExpectedButton;
+    protected JButton unselectAllDlcButton;
+    protected JButton uploadRecordButton;
+    protected transient CheckboxGroup<String> dlcCheckboxGroup = new CheckboxGroup<>();
+
     // event listeners
+    private transient final ActionListener buttonListener = new MacroViewButtonListener(this);
     private transient final ActionListener menuListener = new MacroViewMenuListener(this);
-    private transient final WindowListener windowListener = new MacroViewWindowListener(this);
-
-    // variables for frame size controlling
-    private int advancedHeight;
-    private int minimumHeight;
-
-    // variables
-    private transient final Language lang = Language.getInstance();
 
     public MacroView() {
-        setTitle(TITLE + " v" + BuildInfo.version);
+        super(WINDOW_TITLE + " v" + BuildInfo.version);
+
         setFrameOption();
         setContentPanel();
         setContent();
         setText();
-        packSize();
 
-        addWindowListener(windowListener);
+        addWindowListener(this);
     }
 
     private void setFrameOption() {
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setMinimumSize(new Dimension(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
         setResizable(true);
+        setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
+
+        setLocationRelativeTo(null);
 
         URL url = getClass().getResource("/overMeElFail.png");
         if (url != null) {
@@ -136,30 +119,18 @@ public class MacroView extends JFrame implements IMacro.View {
         setContentPane(new JPanel(new BorderLayout()));
     }
 
-    private void packSize() {
-        setMinimumSize(new Dimension());
-
-        pack();
-        advancedHeight = advancedSliderGroup.getHeight();
-        advancedSliderGroup.setVisible(false);
-
-        pack();
-        minimumHeight = getHeight();
-
-        ComponentSize.preventShrink(this);
-        setLocationRelativeTo(null);
-    }
-
     private void setContent() {
         add(createMenu(), BorderLayout.PAGE_START);
+        add(createCenter(), BorderLayout.CENTER);
+        add(createLog(), BorderLayout.PAGE_END);
+    }
 
-        Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        box.add(createRow00());
-        box.add(createRow01());
-        box.add(createRow02());
-
-        add(box, BorderLayout.CENTER);
+    private void setText() {
+        menuFile.setText("File");
+        menuInfo.setText("Info");
+        menuItemAbout.setText("About");
+        menuItemExit.setText("Exit");
+        menuItemOSL.setText("Open Source License");
     }
 
     private Component createMenu() {
@@ -168,270 +139,209 @@ public class MacroView extends JFrame implements IMacro.View {
 
         // menu file
         menuFile = new JMenu();
-
-        menuItemExit = new JMenuItem();
-        menuItemExit.addActionListener(menuListener);
-        menuFile.add(menuItemExit);
-
+        {
+            menuItemExit = new JMenuItem();
+            menuItemExit.addActionListener(menuListener);
+            menuFile.add(menuItemExit);
+        }
         menuBar.add(menuFile);
 
         // menu info
         menuInfo = new JMenu();
+        {
+            menuItemOSL = new JMenuItem();
+            menuItemOSL.addActionListener(menuListener);
+            menuInfo.add(menuItemOSL);
 
-        menuItemOSL = new JMenuItem();
-        menuItemOSL.addActionListener(menuListener);
-        menuInfo.add(menuItemOSL);
+            menuInfo.addSeparator();
 
-        menuInfo.addSeparator();
-
-        menuItemAbout = new JMenuItem();
-        menuItemAbout.addActionListener(menuListener);
-        menuInfo.add(menuItemAbout);
-
+            menuItemAbout = new JMenuItem();
+            menuItemAbout.addActionListener(menuListener);
+            menuInfo.add(menuItemAbout);
+        }
         menuBar.add(menuInfo);
 
         return menuBar;
     }
 
-    private Component createRow00() {
-        Box box = Box.createVerticalBox();
-        sliderBorder = BorderFactory.createTitledBorder(EMPTY_STRING);
-        box.setBorder(sliderBorder);
-        ComponentSize.expandWidthOnly(box);
-        ComponentSize.shrinkHeightToContents(box);
+    private Component createCenter() {
+        JTabbedPane tabbedPane = new JTabbedPane();
 
-        // general slider
-        generalSliderGroup = new SliderGroup<>();
-        SliderSet count = generalSliderGroup.addNewSliderSet(SliderKey.COUNT);
-        count.setLimitMax(COUNT_LIMIT_MAX);
-        count.slider.setMaximum(COUNT_SLIDER_MAX);
-        count.slider.setMinimum(COUNT_SLIDER_MIN);
-        count.slider.setMajorTickSpacing(COUNT_SLIDER_TICK_MAJOR);
-        count.slider.setMinorTickSpacing(COUNT_SLIDER_TICK_MINOR);
-        SliderSet movingDelay = generalSliderGroup.addNewSliderSet(SliderKey.MOVING_DELAY);
-        movingDelay.setLimitMax(MOVING_DELAY_LIMIT_MAX);
-        movingDelay.slider.setMaximum(MOVING_DELAY_SLIDER_MAX);
-        movingDelay.slider.setMinimum(MOVING_DELAY_SLIDER_MIN);
-        movingDelay.slider.setMajorTickSpacing(MOVING_DELAY_SLIDER_TICK_MAJOR);
-        movingDelay.slider.setMinorTickSpacing(MOVING_DELAY_SLIDER_TICK_MINOR);
-        generalSliderGroup.setupLayout();
-        generalSliderGroup.forEachSliders((x) -> {
-            x.setPaintLabels(true);
-            x.setPaintTicks(true);
-        });
-        generalSliderGroup.forEachTextFields((x) -> {
-            x.setColumns(SLIDER_GROUP_TEXT_FIELD_COLUMNS);
-            x.setHorizontalAlignment(JTextField.RIGHT);
-            ComponentSize.preventExpand(x);
-        });
-        generalSliderGroup.setWidth(SLIDER_GROUP_WIDTH);
+        tabbedPane.addTab("Record Viewer", createViewerTab());
+        tabbedPane.addTab("Scanner", createScannerTab());
+        tabbedPane.addTab("Macro (WIP)", createMacroTab());
 
-        Box generalSliderBox = Box.createHorizontalBox();
-        generalSliderBox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        generalSliderBox.add(generalSliderGroup);
-        box.add(generalSliderBox);
-
-        // separator
-        Box separatorBox = Box.createHorizontalBox();
-        separatorBox.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-        separatorBox.add(new JSeparator());
-        box.add(separatorBox);
-
-        // advanced button
-        advancedButton = new JButton();
-        advancedButton.setFocusPainted(false);
-        advancedButton.addActionListener((e) -> {
-            int width = getMinimumSize().width;
-            if (!advancedSliderGroup.isVisible()) {
-                advancedSliderGroup.setVisible(true);
-                setSize(getWidth(), getHeight() + advancedHeight);
-                setMinimumSize(new Dimension(width, minimumHeight + advancedHeight));
-            } else {
-                advancedSliderGroup.setVisible(false);
-                setMinimumSize(new Dimension(width, minimumHeight));
-                setSize(getWidth(), getHeight() - advancedHeight);
-            }
-        });
-        advancedButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        ComponentSize.expandWidthOnly(advancedButton);
-        box.add(advancedButton);
-
-        // advanced slider
-        advancedSliderGroup = new SliderGroup<>();
-        SliderSet captureDuration = advancedSliderGroup.addNewSliderSet(SliderKey.CAPTURE_DURATION);
-        captureDuration.setLimitMax(CAPTURE_DURATION_LIMIT_MAX);
-        captureDuration.slider.setMaximum(CAPTURE_DURATION_SLIDER_MAX);
-        captureDuration.slider.setMinimum(CAPTURE_DURATION_SLIDER_MIN);
-        captureDuration.slider.setMajorTickSpacing(CAPTURE_DURATION_SLIDER_TICK_MAJOR);
-        captureDuration.slider.setMinorTickSpacing(CAPTURE_DURATION_SLIDER_TICK_MINOR);
-        SliderSet inputDuration = advancedSliderGroup.addNewSliderSet(SliderKey.INPUT_DURATION);
-        inputDuration.setLimitMax(INPUT_DURATION_LIMIT_MAX);
-        inputDuration.slider.setMaximum(INPUT_DURATION_SLIDER_MAX);
-        inputDuration.slider.setMinimum(INPUT_DURATION_SLIDER_MIN);
-        inputDuration.slider.setMajorTickSpacing(INPUT_DURATION_SLIDER_TICK_MAJOR);
-        inputDuration.slider.setMinorTickSpacing(INPUT_DURATION_SLIDER_TICK_MINOR);
-        advancedSliderGroup.setupLayout();
-        advancedSliderGroup.forEachSliders((x) -> {
-            x.setPaintLabels(true);
-            x.setPaintTicks(true);
-        });
-        advancedSliderGroup.forEachTextFields((x) -> {
-            x.setColumns(SLIDER_GROUP_TEXT_FIELD_COLUMNS);
-            x.setHorizontalAlignment(JTextField.RIGHT);
-            ComponentSize.preventExpand(x);
-        });
-        advancedSliderGroup.setWidth(SLIDER_GROUP_WIDTH);
-
-        Box advancedSliderBox = Box.createHorizontalBox();
-        advancedSliderBox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        advancedSliderBox.add(advancedSliderGroup);
-        box.add(advancedSliderBox);
-
-        return box;
+        return tabbedPane;
     }
 
-    private Component createRow01() {
-        Box box = Box.createHorizontalBox();
-
-        box.add(createRow01_left());
-        box.add(createRow01_right());
-
-        return box;
-    }
-
-    private Component createRow01_left() {
-        Box box = Box.createHorizontalBox();
-        analyzeKeyBorder = BorderFactory.createTitledBorder(EMPTY_STRING);
-        box.setBorder(analyzeKeyBorder);
-
-        analyzeKeyRadioGroup = new RadioButtonGroup<>();
-        analyzeKeyRadioGroup.setLayout(new BoxLayout(analyzeKeyRadioGroup, BoxLayout.X_AXIS));
-        analyzeKeyRadioGroup.addButton(AnalyzeKey.ALT_F11);
-        analyzeKeyRadioGroup.addButton(AnalyzeKey.ALT_F12);
-        analyzeKeyRadioGroup.addButton(AnalyzeKey.ALT_HOME);
-        analyzeKeyRadioGroup.addButton(AnalyzeKey.ALT_INS);
-
-        box.add(Box.createHorizontalGlue());
-        box.add(analyzeKeyRadioGroup);
-        box.add(Box.createHorizontalGlue());
-
-        return box;
-    }
-
-    private Component createRow01_right() {
-        Box box = Box.createHorizontalBox();
-        directionKeyBorder = BorderFactory.createTitledBorder(EMPTY_STRING);
-        box.setBorder(directionKeyBorder);
-
-        directionKeyRadioGroup = new RadioButtonGroup<>();
-        directionKeyRadioGroup.setLayout(new BoxLayout(directionKeyRadioGroup, BoxLayout.X_AXIS));
-        directionKeyRadioGroup.addButton(DirectionKey.UP);
-        directionKeyRadioGroup.addButton(DirectionKey.DOWN);
-
-        box.add(Box.createHorizontalGlue());
-        box.add(directionKeyRadioGroup);
-        box.add(Box.createHorizontalGlue());
-
-        return box;
-    }
-
-    private Component createRow02() {
+    private Component createViewerTab() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        panel.add(createRow02_left(), BorderLayout.CENTER);
-        panel.add(createRow02_right(), BorderLayout.LINE_END);
+        // tool box
+        Box toolBox = Box.createHorizontalBox();
+        {
+            toolBox.add(Box.createHorizontalGlue());
+
+            loadRemoteRecordButton = new JButton("Load server record");
+            loadRemoteRecordButton.addActionListener(buttonListener);
+            toolBox.add(loadRemoteRecordButton);
+
+            toolBox.add(Box.createHorizontalGlue());
+        }
+        panel.add(toolBox, BorderLayout.PAGE_START);
+
+        // record viewer tree
+        JScrollPane viewerScrollPane;
+        {
+            recordViewerTree = new JTree();
+            recordViewerTree.setModel(null);
+            recordViewerTree.getSelectionModel()
+                    .setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+            recordViewerTree.getSelectionModel().addTreeSelectionListener((e) -> {
+                DefaultMutableTreeNode node =
+                        (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+                presenter.recordViewerTreeNodeSelected(node);
+            });
+
+            viewerScrollPane = new JScrollPane(recordViewerTree);
+            ComponentSize.setPreferredWidth(viewerScrollPane, 300);
+        }
+        panel.add(viewerScrollPane, BorderLayout.LINE_START);
+
+        // record viewer detail
+        JPanel detailPanel = new JPanel(new BorderLayout());
+        {
+            // text area
+            recordViewerTextArea = new JTextArea();
+            recordViewerTextArea.setEditable(false);
+            detailPanel.add(new JScrollPane(recordViewerTextArea), BorderLayout.CENTER);
+
+            // grid
+            JPanel grid = new JPanel(new GridLayout(5, 5));
+            grid.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
+            {
+                // set header
+                grid.add(new JPanel());
+                List.of("4B", "5B", "6B", "8B").forEach((x) -> {
+                    JLabel label = new JLabel(x);
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    grid.add(label);
+                });
+
+                // set rows
+                List.of("NM", "HD", "MX", "SC").forEach((x) -> {
+                    JLabel label = new JLabel(x);
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    grid.add(label);
+
+                    IntStream.range(0, 4).forEach((i) -> {
+                        JTextField textField = new JTextField();
+                        textField.setBackground(Color.WHITE);
+                        textField.setEditable(false);
+                        recordViewerGridTextFields.add(textField);
+
+                        grid.add(textField);
+                    });
+                });
+            }
+            detailPanel.add(grid, BorderLayout.PAGE_END);
+        }
+        panel.add(detailPanel, BorderLayout.CENTER);
 
         return panel;
     }
 
-    private Component createRow02_left() {
+    private Component createScannerTab() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        // tool box
+        Box toolBox = Box.createHorizontalBox();
+        {
+            toolBox.add(new JLabel("Account file : "));
+
+            accountFileTextField = new JTextField();
+            accountFileTextField.setBackground(Color.WHITE);
+            accountFileTextField.setEditable(false);
+            ComponentSize.expandWidthOnly(accountFileTextField);
+            toolBox.add(accountFileTextField);
+
+            selectAccountFileButton = new JButton("Select");
+            selectAccountFileButton.addActionListener(buttonListener);
+            toolBox.add(selectAccountFileButton);
+        }
+        panel.add(toolBox, BorderLayout.PAGE_START);
+
+        // main panel
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        {
+            // temp panel
+            JPanel tempPanel = new JPanel();
+            tempPanel.setBackground(Color.WHITE);
+            mainPanel.add(tempPanel, BorderLayout.CENTER);
+
+            // button box
+            Box buttonBox = Box.createHorizontalBox();
+            {
+                buttonBox.add(Box.createHorizontalGlue());
+
+                uploadRecordButton = new JButton("Upload");
+                uploadRecordButton.addActionListener(buttonListener);
+                buttonBox.add(uploadRecordButton);
+            }
+            mainPanel.add(buttonBox, BorderLayout.PAGE_END);
+        }
+        panel.add(mainPanel, BorderLayout.CENTER);
+
+        // dlc panel
+        JPanel dlcPanel = new JPanel(new BorderLayout());
+        {
+            dlcCheckboxScrollPane = new JScrollPane();
+            dlcCheckboxScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+            dlcCheckboxScrollPane.setBorder(BorderFactory.createTitledBorder("Owned DLCs"));
+            dlcPanel.add(dlcCheckboxScrollPane, BorderLayout.CENTER);
+
+            // button box
+            Box buttonBox = Box.createVerticalBox();
+            {
+                Box box = Box.createHorizontalBox();
+                {
+                    selectAllDlcButton = new JButton("Select all");
+                    selectAllDlcButton.addActionListener(buttonListener);
+                    box.add(selectAllDlcButton);
+
+                    unselectAllDlcButton = new JButton("Unselect all");
+                    unselectAllDlcButton.addActionListener(buttonListener);
+                    box.add(unselectAllDlcButton);
+                }
+                buttonBox.add(box);
+
+                showExpectedButton = new JButton("Show expected");
+                showExpectedButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+                showExpectedButton.addActionListener(buttonListener);
+                ComponentSize.expandWidthOnly(showExpectedButton);
+                buttonBox.add(showExpectedButton);
+            }
+            dlcPanel.add(buttonBox, BorderLayout.PAGE_END);
+        }
+        panel.add(dlcPanel, BorderLayout.LINE_END);
+
+        return panel;
+    }
+
+    private Component createMacroTab() {
+        return new JPanel();
+    }
+
+    private Component createLog() {
         logTextArea = new JTextArea(LOG_ROWS, 0);
         logTextArea.setEditable(false);
         logTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, LOG_FONT_SIZE));
 
-        JScrollPane scrollPane = new JScrollPane(logTextArea);
-        Border outsideBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-        Border insideBorder = BorderFactory.createLoweredBevelBorder();
-        scrollPane.setBorder(BorderFactory.createCompoundBorder(outsideBorder, insideBorder));
-
-        return scrollPane;
-    }
-
-    private Component createRow02_right() {
-        Box box = Box.createVerticalBox();
-        optionBorder = BorderFactory.createTitledBorder(EMPTY_STRING);
-        box.setBorder(optionBorder);
-
-        optionTextArea = new JTextArea();
-        optionTextArea.setEditable(false);
-        optionTextArea.setFocusable(false);
-        optionTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, LOG_FONT_SIZE));
-        optionTextArea.setOpaque(false);
-
-        box.add(optionTextArea);
-        box.add(Box.createVerticalGlue());
-
-        return box;
-    }
-
-    private void setText() {
-        menuFile.setText(lang.get("v.menu.file"));
-        menuItemExit.setText(lang.get("v.menu.file.exit"));
-
-        menuInfo.setText(lang.get("v.menu.info"));
-        menuItemOSL.setText(lang.get("v.menu.info.osl"));
-        menuItemAbout.setText(lang.get("v.menu.info.about"));
-
-        sliderBorder.setTitle(lang.get("v.title.capture"));
-        advancedButton.setText(lang.get("v.advanced_button"));
-
-        generalSliderGroup.getSliderSet(SliderKey.COUNT).label.setText(lang.get("v.slider.count"));
-        generalSliderGroup.getSliderSet(SliderKey.MOVING_DELAY).label.setText(
-                lang.get("v.slider.moving_delay"));
-
-        JLabel captureDuration = advancedSliderGroup.getSliderSet(SliderKey.CAPTURE_DURATION).label;
-        captureDuration.setText(lang.get("v.slider.capture_duration"));
-        captureDuration.setToolTipText(lang.get("v.slider.capture_duration.tooltip"));
-
-        JLabel inputDuration = advancedSliderGroup.getSliderSet(SliderKey.INPUT_DURATION).label;
-        inputDuration.setText(lang.get("v.slider.input_duration"));
-        inputDuration.setToolTipText(lang.get("v.slider.input_duration.tooltip"));
-
-        generalSliderGroup.forEachSliders((x) -> x.setToolTipText(lang.get("v.right_click_reset")));
-
-        advancedSliderGroup.forEachSliders(
-                (x) -> x.setToolTipText(lang.get("v.right_click_reset")));
-
-        analyzeKeyBorder.setTitle(lang.get("v.title.analyze_key"));
-        analyzeKeyRadioGroup.getButton(AnalyzeKey.ALT_F11).setText("[Alt + F11]");
-        analyzeKeyRadioGroup.getButton(AnalyzeKey.ALT_F12).setText("[Alt + F12]");
-        analyzeKeyRadioGroup.getButton(AnalyzeKey.ALT_HOME).setText("[Alt + Home]");
-        analyzeKeyRadioGroup.getButton(AnalyzeKey.ALT_INS).setText("[Alt + Ins]");
-
-        directionKeyBorder.setTitle(lang.get("v.title.direction_key"));
-        directionKeyRadioGroup.getButton(DirectionKey.DOWN)
-                .setText(lang.get("v.direction_key.down"));
-        directionKeyRadioGroup.getButton(DirectionKey.UP).setText(lang.get("v.direction_key.up"));
-
-        optionBorder.setTitle(lang.get("v.title.option"));
-
-        String[] keyInfo = new String[4];
-        keyInfo[0] = String.format("[Home]: %s", lang.get("v.key.start"));
-        keyInfo[1] = String.format("[End]: %s", lang.get("v.key.stop"));
-        keyInfo[2] = String.format("[Ctrl + Up]: %s", lang.get("v.key.up"));
-        keyInfo[3] = String.format("[Ctrl + Down]: %s", lang.get("v.key.down"));
-        optionTextArea.setText(String.join(NEWLINE, keyInfo));
-    }
-
-    protected void showAbout() {
-        showDialog(lang.get("v.menu.info.about"),
-                new Object[] {"V-Archive Macro", "Version: " + BuildInfo.version,
-                        "Build Date: " + BuildInfo.date, "Source Code: " + GITHUB_URL},
-                JOptionPane.INFORMATION_MESSAGE);
+        return new JScrollPane(logTextArea);
     }
 
     @Override
-    public void setPresenter(IMacro.Presenter presenter) {
+    public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -441,68 +351,14 @@ public class MacroView extends JFrame implements IMacro.View {
     }
 
     @Override
-    public void setSliderDefault(int count, int movingDelay, int captureDuration,
-            int inputDuration) {
-        generalSliderGroup.getSliderSet(SliderKey.COUNT).setDefault(count);
-        generalSliderGroup.getSliderSet(SliderKey.MOVING_DELAY).setDefault(movingDelay);
-        advancedSliderGroup.getSliderSet(SliderKey.CAPTURE_DURATION).setDefault(captureDuration);
-        advancedSliderGroup.getSliderSet(SliderKey.INPUT_DURATION).setDefault(inputDuration);
-    }
-
-    @Override
-    public void setValues(int count, int movingDelay, int captureDuration, int inputDuration,
-            AnalyzeKey analyzeKey, DirectionKey directionKey) {
-        generalSliderGroup.getSliderSet(SliderKey.COUNT).setValue(count);
-        generalSliderGroup.getSliderSet(SliderKey.MOVING_DELAY).setValue(movingDelay);
-        advancedSliderGroup.getSliderSet(SliderKey.CAPTURE_DURATION).setValue(captureDuration);
-        advancedSliderGroup.getSliderSet(SliderKey.INPUT_DURATION).setValue(inputDuration);
-        analyzeKeyRadioGroup.setSelected(analyzeKey);
-        directionKeyRadioGroup.setSelected(directionKey);
-    }
-
-    @Override
-    public int getCount() {
-        return generalSliderGroup.getSliderSet(SliderKey.COUNT).getValue();
-    }
-
-    @Override
-    public int getMovingDelay() {
-        return generalSliderGroup.getSliderSet(SliderKey.MOVING_DELAY).getValue();
-    }
-
-    @Override
-    public int getCaptureDuration() {
-        return advancedSliderGroup.getSliderSet(SliderKey.CAPTURE_DURATION).getValue();
-    }
-
-    @Override
-    public int getInputDuration() {
-        return advancedSliderGroup.getSliderSet(SliderKey.INPUT_DURATION).getValue();
-    }
-
-    @Override
-    public AnalyzeKey getAnalyzeKey() {
-        return analyzeKeyRadioGroup.getSelected();
-    }
-
-    @Override
-    public DirectionKey getDirectionKey() {
-        return directionKeyRadioGroup.getSelected();
-    }
-
-    @Override
-    public void setDirectionKey(DirectionKey key) {
-        directionKeyRadioGroup.setSelected(key);
-    }
-
-    @Override
-    public void showDialog(String title, Object[] messages, int messageType) {
-        SwingUtilities.invokeLater(
-                () -> JOptionPane.showMessageDialog(this, messages, title, messageType));
+    public void disposeView() {
+        dispose();
     }
 
     @Override
     public void addLog(String message) {
+        String time = LocalTime.now().format(TIME_FORMATTER);
+
         SwingUtilities.invokeLater(() -> {
             if (logTextArea.getLineCount() > LOG_LINES) {
                 try {
@@ -512,33 +368,73 @@ public class MacroView extends JFrame implements IMacro.View {
                 }
             }
 
-            logTextArea.append(message);
-            logTextArea.append(NEWLINE);
+            logTextArea.append(String.format("[%s] %s%n", time, message));
             logTextArea.setCaretPosition(logTextArea.getDocument().getLength());
         });
     }
-}
 
+    @Override
+    public void showErrorDialog(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 
-class MacroViewWindowListener implements WindowListener {
-    private final MacroView view;
+    @Override
+    public void showMessageDialog(String title, String message) {
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
 
-    public MacroViewWindowListener(MacroView view) {
-        this.view = view;
+    @Override
+    public void setRecordViewerTreeModel(TreeModel model) {
+        recordViewerTree.setModel(model);
+    }
+
+    @Override
+    public void showRecord(String text, List<Float> records) {
+        recordViewerTextArea.setText(text);
+
+        int size = recordViewerGridTextFields.size();
+        IntStream.range(0, size).forEach((i) -> {
+            // (index % columnSize) + (index / rowSize) * columnSize = sequential index
+            // (index / rowSize) + (index % columnSize) * columnSize = transposed index
+            int transposedIndex = i / 4 + i % 4 * 4;
+
+            float score = records.get(transposedIndex);
+            String value = (score >= 0) ? String.valueOf(score) : "";
+            recordViewerGridTextFields.get(i).setText(value);
+        });
+    }
+
+    @Override
+    public void setSelectableDlcs(Map<String, String> codeNameMap) {
+        dlcCheckboxGroup.clear();
+        codeNameMap.forEach((key, value) -> dlcCheckboxGroup.add(key, value));
+
+        Box box = Box.createVerticalBox();
+        dlcCheckboxGroup.forEach((key, checkbox) -> {
+            if (DEFAULT_DLCS.contains(key)) {
+                checkbox.setEnabled(false);
+                checkbox.setSelected(true);
+            }
+            box.add(checkbox);
+        });
+
+        dlcCheckboxScrollPane.setViewportView(box);
+        revalidate();
     }
 
     @Override
     public void windowOpened(WindowEvent e) {
-        view.presenter.viewOpened();
+        presenter.viewOpened();
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
+        presenter.stop();
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-        view.presenter.viewClosed();
+        presenter.viewClosed();
     }
 
     @Override
@@ -571,11 +467,42 @@ class MacroViewMenuListener implements ActionListener {
         Object source = e.getSource();
 
         if (source.equals(view.menuItemExit)) {
-            view.dispose();
+            view.presenter.stop();
         } else if (source.equals(view.menuItemOSL)) {
-            view.presenter.showLicense();
-        } else if (source.equals(view.menuItemAbout)) {
-            view.showAbout();
+            view.presenter.openLicenseView(view);
+        } else {
+            view.addLog(source.toString());
+        }
+    }
+}
+
+
+class MacroViewButtonListener implements ActionListener {
+    private final MacroView view;
+
+    public MacroViewButtonListener(MacroView view) {
+        this.view = view;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+
+        if (source.equals(view.loadRemoteRecordButton)) {
+            String djName = JOptionPane.showInputDialog(view, "Please enter your DJ Name");
+            if (djName != null) {
+                view.presenter.loadServerRecord(djName);
+            }
+            // } else if (source.equals(view.selectAccountFileButton)) {
+            // } else if (source.equals(view.uploadRecordButton)) {
+        } else if (source.equals(view.selectAllDlcButton)) {
+            view.dlcCheckboxGroup.selectAllExclude(MacroView.DEFAULT_DLCS);
+        } else if (source.equals(view.unselectAllDlcButton)) {
+            view.dlcCheckboxGroup.unselectAllExclude(MacroView.DEFAULT_DLCS);
+        } else if (source.equals(view.showExpectedButton)) {
+            view.presenter.openExpected(view, view.dlcCheckboxGroup.getSelected());
+        } else {
+            view.addLog(source.toString());
         }
     }
 }

@@ -1,15 +1,13 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
-import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.tree.TreeModel;
 
-public interface ILicense {
+public interface IExpected {
     interface Presenter {
-        void start(JFrame parent);
+        void start(JFrame parent, TreeModel model);
 
         void viewClosed();
-
-        String getLicense(String key);
     }
 
 
@@ -18,6 +16,6 @@ public interface ILicense {
 
         void showView();
 
-        void setLicenses(List<String> licenses);
+        void setTreeModel(TreeModel model);
     }
 }

@@ -1,335 +1,177 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
-import com.github.johypark97.varchivemacro.lib.common.hook.HookWrapper;
-import com.github.johypark97.varchivemacro.macro.config.ConfigManager;
-import com.github.johypark97.varchivemacro.macro.gui.model.SettingsModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.datastruct.SettingsData;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.converter.AnalyzeKeyConverter;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.converter.DirectionKeyConverter;
-import com.github.johypark97.varchivemacro.macro.util.Language;
-import com.github.kwhat.jnativehook.NativeHookException;
-import com.github.kwhat.jnativehook.NativeInputEvent;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
-import com.google.gson.JsonSyntaxException;
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import java.io.IOException;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.function.Consumer;
-import javax.swing.JOptionPane;
+import java.io.Serial;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javax.swing.JFrame;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 
-public class MacroPresenter implements IMacro.Presenter {
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
-
+public class MacroPresenter implements Presenter {
     // model
-    public SettingsModel settingsModel;
+    private SongModel songModel;
+    private final RecordModel recordModel = new RecordModel();
 
     // view
-    public final IMacro.View view;
+    private final Class<? extends View> viewClass;
+    public View view;
 
     // other presenters
-    public ILicense.Presenter licensePresenter;
+    private IExpected.Presenter expectedPresenter;
+    private ILicense.Presenter licensePresenter;
 
-    private final ConfigManager config = ConfigManager.getInstance();
-    private final MacroRobot robot = new MacroRobot(this);
-    protected Language lang = Language.getInstance();
-
-    public MacroPresenter(IMacro.View view) {
-        this.view = view;
-        this.view.setPresenter(this);
+    public MacroPresenter(Class<? extends View> viewClass) {
+        this.viewClass = viewClass;
     }
 
-    private void prepareView() {
-        SettingsData data = new SettingsData();
-        view.setSliderDefault(data.count, data.movingDelay, data.captureDuration,
-                data.inputDuration);
-        updateView(data);
+    public void setPresenters(IExpected.Presenter expectedPresenter,
+            ILicense.Presenter licensePresenter) {
+        this.expectedPresenter = expectedPresenter;
+        this.licensePresenter = licensePresenter;
     }
 
-    private void updateView(SettingsData data) {
-        view.setValues(data.count, data.movingDelay, data.captureDuration, data.inputDuration,
-                AnalyzeKeyConverter.data2view(data.analyzeKey),
-                DirectionKeyConverter.data2view(data.directionKey));
-    }
-
-    private SettingsData getSettingsDataFromView() {
-        SettingsData data = new SettingsData();
-        data.analyzeKey = AnalyzeKeyConverter.view2data(view.getAnalyzeKey());
-        data.captureDuration = view.getCaptureDuration();
-        data.count = view.getCount();
-        data.directionKey = DirectionKeyConverter.view2data(view.getDirectionKey());
-        data.inputDuration = view.getInputDuration();
-        data.movingDelay = view.getMovingDelay();
-        return data;
-    }
-
-    private void enableKeyListener() {
-        HookWrapper.addKeyListener(new MacroNativeKeyListener(this));
-    }
-
-    public void selectUp() {
-        view.setDirectionKey(IMacro.View.DirectionKey.UP);
-    }
-
-    public void selectDown() {
-        view.setDirectionKey(IMacro.View.DirectionKey.DOWN);
-    }
-
-    public void startCapture() {
+    private void newView() {
         try {
-            robot.capture(getSettingsDataFromView());
-        } catch (AWTException e) {
-            view.showDialog(lang.get("p.macro_dialog.title"),
-                    new String[] {lang.get("p.macro_dialog.msg"), lang.get("p.macro_dialog.msg2")},
-                    JOptionPane.ERROR_MESSAGE);
+            view = viewClass.getConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
         }
+
+        view.setPresenter(this);
     }
 
-    public void stopCapture() {
-        robot.stop();
+    private TreeModel createTabSongTreeModel(String title,
+            Map<String, List<LocalSong>> tabSongMap) {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(title);
+
+        tabSongMap.forEach((key, value) -> {
+            DefaultMutableTreeNode dlcNode = new DefaultMutableTreeNode(key);
+
+            value.forEach(localSong -> {
+                DefaultMutableTreeNode songNode = new DefaultMutableTreeNode(localSong) {
+                    @Serial
+                    private static final long serialVersionUID = 2139231854201218074L;
+
+                    @Override
+                    public String toString() {
+                        LocalSong song = (LocalSong) getUserObject();
+                        return String.format("%s ...... %s", song.title(), song.composer());
+                    }
+                };
+
+                dlcNode.add(songNode);
+            });
+
+            root.add(dlcNode);
+        });
+
+        return new DefaultTreeModel(root);
     }
 
     @Override
-    public void start() {
-        prepareView();
+    public synchronized void start() {
+        if (view != null) {
+            return;
+        }
+        newView();
+
         view.showView();
     }
 
     @Override
-    public void addLog(String message) {
-        String time = LocalTime.now().format(TIME_FORMATTER);
-        view.addLog('[' + time + "] " + message);
-    }
-
-    @Override
-    public void showLicense() {
-        licensePresenter.start();
+    public synchronized void stop() {
+        view.disposeView();
     }
 
     @Override
     public void viewOpened() {
-        HookWrapper.disableLogging();
-        HookWrapper.setSwingEventDispatcher();
         try {
-            HookWrapper.register();
-            enableKeyListener();
-
-            if (config.isConfigExists()) {
-                config.load();
-                updateView(settingsModel.getData());
-            }
-        } catch (NativeHookException e) {
-            view.showDialog(lang.get("p.hook_dialog.title"),
-                    new String[] {lang.get("p.hook_dialog.msg"), lang.get("p.hook_dialog.msg2")},
-                    JOptionPane.ERROR_MESSAGE);
+            songModel = new SongModel();
         } catch (IOException e) {
-            view.showDialog(lang.get("p.config.read_dialog.title"),
-                    new String[] {lang.get("p.config.read_dialog.error_msg"),
-                            lang.get("p.config.read_dialog.default")}, JOptionPane.ERROR_MESSAGE);
-        } catch (JsonSyntaxException e) {
-            view.showDialog(lang.get("p.config.read_dialog.title"),
-                    new String[] {lang.get("p.config.read_dialog.syntax_msg"),
-                            lang.get("p.config.read_dialog.default")}, JOptionPane.ERROR_MESSAGE);
+            view.showErrorDialog("File read error: " + e.getMessage());
+            view.disposeView();
+            return;
+        } catch (Exception e) {
+            view.showErrorDialog("ERROR: " + e.getMessage());
+            view.disposeView();
+            return;
+        }
+
+        TreeModel treeModel = createTabSongTreeModel("Records", songModel.getTabSongMap());
+        view.setRecordViewerTreeModel(treeModel);
+        view.setSelectableDlcs(songModel.getDlcCodeNameMap());
+
+        try {
+            if (recordModel.loadLocal()) {
+                view.addLog("Record file loaded.");
+            } else {
+                String message = "Record file not found. Please load your records form the server.";
+                view.addLog(message);
+                view.showMessageDialog("Record file not found", message);
+            }
+        } catch (IOException e) {
+            view.addLog("Record file read error: " + e.getMessage());
+        } catch (Exception e) {
+            view.addLog("ERROR: " + e.getMessage());
         }
     }
 
     @Override
     public void viewClosed() {
-        robot.forceStop();
-        settingsModel.setData(getSettingsDataFromView());
-        try {
-            config.save();
-            HookWrapper.unregister();
-        } catch (IOException e) {
-            view.showDialog(lang.get("p.config.write_dialog.title"),
-                    new String[] {lang.get("p.config.write_dialog.msg")},
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (NativeHookException ignored) {
-        }
-
-        licensePresenter.stop();
-    }
-}
-
-
-class MacroNativeKeyListener implements NativeKeyListener {
-    private final MacroPresenter presenter;
-
-    public MacroNativeKeyListener(MacroPresenter presenter) {
-        this.presenter = presenter;
-    }
-
-    @Override
-    public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-        if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_END) {
-            presenter.stopCapture();
+        if (view != null) {
+            view = null; // NOPMD
         }
     }
 
     @Override
-    public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
-        switch (nativeEvent.getKeyCode()) {
-            case NativeKeyEvent.VC_UP -> {
-                if ((nativeEvent.getModifiers() & NativeInputEvent.CTRL_MASK) != 0) {
-                    presenter.selectUp();
-                }
-            }
-            case NativeKeyEvent.VC_DOWN -> {
-                if ((nativeEvent.getModifiers() & NativeInputEvent.CTRL_MASK) != 0) {
-                    presenter.selectDown();
-                }
-            }
-            case NativeKeyEvent.VC_HOME -> {
-                if (nativeEvent.getModifiers() == 0) {
-                    presenter.startCapture();
-                }
-            }
-            default -> {
-            }
-        }
-    }
-}
-
-
-class MacroRobot {
-    private final MacroPresenter presenter;
-
-    private Thread thread;
-
-    public MacroRobot(MacroPresenter presenter) {
-        this.presenter = presenter;
-    }
-
-    public synchronized void capture(SettingsData settingsData) throws AWTException {
-        if (thread != null) {
-            presenter.addLog(presenter.lang.get("p.capture_is_running"));
-            return;
-        }
-
-        thread = new Thread(new MacroRobotRunner(presenter, settingsData, (isDone) -> {
-            synchronized (this) {
-                thread = null; // NOPMD
-            }
-
-            if (isDone) {
-                presenter.addLog(presenter.lang.get("p.capture_is_done"));
-            }
-        }));
-
-        presenter.addLog(
-                String.format(presenter.lang.get("p.capture_has_started"), settingsData.count));
-        thread.start();
-    }
-
-    public synchronized void stop() {
-        if (thread == null) {
-            presenter.addLog(presenter.lang.get("p.capture_is_not_running"));
-            return;
-        }
-
-        thread.interrupt();
-        presenter.addLog(presenter.lang.get("p.capture_stopped"));
-    }
-
-    public synchronized void forceStop() {
-        if (thread != null) {
-            thread.interrupt();
-        }
-    }
-}
-
-
-class MacroRobotRunner implements Runnable {
-    private final Consumer<Boolean> onReturn;
-    private final MacroPresenter presenter;
-    private final Robot robot;
-    private final SettingsData settingsData;
-    private int analyzeKeyCode;
-    private int directionKeyCode;
-
-    public MacroRobotRunner(MacroPresenter presenter, SettingsData settingsData,
-            Consumer<Boolean> onReturn) throws AWTException {
-        this.onReturn = onReturn;
-        this.presenter = presenter;
-        this.settingsData = settingsData;
-        robot = new Robot();
-
-        getKeyCode();
+    public void openLicenseView(JFrame frame) {
+        licensePresenter.start(frame);
     }
 
     @Override
-    public void run() {
-        if (settingsData.count > 0) {
-            int movingDelay = settingsData.movingDelay - (settingsData.inputDuration << 2);
-
+    public void loadServerRecord(String djName) {
+        // TODO: Need to change to thread safe code.
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
             try {
-                int i = 1;
-                while (true) {
-                    pressKeyWithMod(KeyEvent.VK_ALT, KeyEvent.VK_PRINTSCREEN,
-                            settingsData.captureDuration);
-
-                    if (i < settingsData.count) {
-                        pressKey(directionKeyCode, settingsData.inputDuration);
-                    }
-
-                    pressKeyWithMod(KeyEvent.VK_ALT, analyzeKeyCode, settingsData.inputDuration);
-                    presenter.addLog(String.format("(%d/%d)", i, settingsData.count));
-
-                    if (i >= settingsData.count) {
-                        break;
-                    }
-
-                    ++i;
-                    if (movingDelay > 0) {
-                        Thread.sleep(movingDelay);
-                    }
-                }
-            } catch (InterruptedException e) {
-                onReturn.accept(false);
+                recordModel.loadRemote(djName);
+            } catch (Exception e) {
+                view.addLog(e.toString());
                 return;
             }
-        }
+            view.addLog("done");
+        });
 
-        onReturn.accept(true);
+        view.addLog("Loading record... " + djName);
+        executor.shutdown();
     }
 
-    private void getKeyCode() {
-        analyzeKeyCode = switch (settingsData.analyzeKey) {
-            case ALT_F11 -> KeyEvent.VK_F11;
-            case ALT_F12 -> KeyEvent.VK_F12;
-            case ALT_HOME -> KeyEvent.VK_HOME;
-            case ALT_INS -> KeyEvent.VK_INSERT;
-        };
+    @Override
+    public void recordViewerTreeNodeSelected(DefaultMutableTreeNode node) {
+        if (!node.isLeaf()) {
+            return;
+        }
 
-        directionKeyCode = switch (settingsData.directionKey) {
-            case DOWN -> KeyEvent.VK_DOWN;
-            case UP -> KeyEvent.VK_UP;
-        };
+        LocalSong song = (LocalSong) node.getUserObject();
+
+        String text = String.format("Title: %s%nComposer: %s", song.title(), song.composer());
+        view.showRecord(text, recordModel.getRecords(song.id()));
     }
 
-    private void pressKey(int keycode, int duration) throws InterruptedException {
-        try {
-            robot.keyPress(keycode);
-            Thread.sleep(duration);
-        } finally {
-            robot.keyRelease(keycode);
-        }
-        Thread.sleep(duration);
-    }
-
-    private void pressKeyWithMod(int modcode, int keycode, int duration)
-            throws InterruptedException {
-        try {
-            robot.keyPress(modcode);
-            robot.keyPress(keycode);
-            Thread.sleep(duration);
-        } finally {
-            robot.keyRelease(keycode);
-            robot.keyRelease(modcode);
-        }
-        Thread.sleep(duration);
+    @Override
+    public void openExpected(JFrame frame, Set<String> ownedDlcs) {
+        TreeModel model =
+                createTabSongTreeModel("Expected Song List", songModel.getTabSongMap(ownedDlcs));
+        expectedPresenter.start(frame, model);
     }
 }

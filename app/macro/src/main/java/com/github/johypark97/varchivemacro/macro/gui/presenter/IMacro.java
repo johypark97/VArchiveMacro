@@ -1,59 +1,49 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.swing.JFrame;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
+
 public interface IMacro {
     interface Presenter {
         void start();
 
-        void addLog(String message);
-
-        void showLicense();
+        void stop();
 
         void viewOpened();
 
         void viewClosed();
+
+        void openLicenseView(JFrame frame);
+
+        void loadServerRecord(String djName);
+
+        void recordViewerTreeNodeSelected(DefaultMutableTreeNode node);
+
+        void openExpected(JFrame frame, Set<String> ownedDlcs);
     }
 
 
     interface View {
-        enum SliderKey {
-            CAPTURE_DURATION, COUNT, INPUT_DURATION, MOVING_DELAY
-        }
-
-
-        enum AnalyzeKey {
-            ALT_F11, ALT_F12, ALT_HOME, ALT_INS
-        }
-
-
-        enum DirectionKey {
-            DOWN, UP
-        }
-
         void setPresenter(Presenter presenter);
 
         void showView();
 
-        void setSliderDefault(int count, int movingDelay, int captureDuration, int inputDuration);
-
-        void setValues(int count, int movingDelay, int captureDuration, int inputDuration,
-                AnalyzeKey analyzeKey, DirectionKey directionKey);
-
-        int getCount();
-
-        int getMovingDelay();
-
-        int getCaptureDuration();
-
-        int getInputDuration();
-
-        AnalyzeKey getAnalyzeKey();
-
-        DirectionKey getDirectionKey();
-
-        void setDirectionKey(DirectionKey key);
-
-        void showDialog(String title, Object[] messages, int messageType);
+        void disposeView();
 
         void addLog(String message);
+
+        void showErrorDialog(String message);
+
+        void showMessageDialog(String title, String message);
+
+        void setRecordViewerTreeModel(TreeModel model);
+
+        void showRecord(String text, List<Float> records);
+
+        void setSelectableDlcs(Map<String, String> codeNameMap);
     }
 }
