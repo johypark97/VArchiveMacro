@@ -46,6 +46,28 @@ public class LocalRecord {
         this.score = score;
     }
 
+    public boolean isUpdated(LocalRecord record) {
+        if (id != record.id || button != record.button || pattern != record.pattern) {
+            String format = "%d. %sB %s";
+            String a = String.format(format, id, button, pattern);
+            String b = String.format(format, record.id, record.button, record.pattern);
+            String message = String.format("is a different song: %s <-> %s", a, b);
+            throw new IllegalArgumentException(message);
+        }
+
+        return record.score > score || record.maxCombo > maxCombo;
+    }
+
+    public boolean update(LocalRecord record) {
+        if (!isUpdated(record)) {
+            return false;
+        }
+
+        score = Math.max(score, record.score);
+        maxCombo = Math.max(maxCombo, record.maxCombo);
+        return true;
+    }
+
     // Temporary method to resolve spotbugs URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD warning.
     @Override
     public String toString() {
