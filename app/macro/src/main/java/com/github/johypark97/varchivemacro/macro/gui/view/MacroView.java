@@ -37,11 +37,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
@@ -77,6 +81,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JButton loadRemoteRecordButton;
 
     private JScrollPane dlcCheckboxScrollPane;
+    private JTable scannerTable;
     private JTextArea logTextArea;
     private JTextField accountFileTextField;
     protected JButton selectAccountFileButton;
@@ -274,10 +279,19 @@ public class MacroView extends JFrame implements View, WindowListener {
         // main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
         {
-            // temp panel
-            JPanel tempPanel = new JPanel();
-            tempPanel.setBackground(Color.WHITE);
-            mainPanel.add(tempPanel, BorderLayout.CENTER);
+            // scanner table panel
+            JScrollPane scannerTableScrollPane;
+            {
+                scannerTable = new JTable();
+                scannerTable.getTableHeader().setReorderingAllowed(false);
+                scannerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                scannerTable.setBackground(Color.WHITE);
+                scannerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+                scannerTableScrollPane = new JScrollPane(scannerTable);
+                scannerTableScrollPane.getViewport().setBackground(Color.WHITE);
+            }
+            mainPanel.add(scannerTableScrollPane, BorderLayout.CENTER);
 
             // button box
             Box buttonBox = Box.createHorizontalBox();
@@ -423,6 +437,21 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
+    public Set<String> getSelectedDlcs() {
+        return dlcCheckboxGroup.getSelected();
+    }
+
+    @Override
+    public void setScannerTaskTableModel(TableModel model) {
+        scannerTable.setModel(model);
+
+        TableColumnModel tableColumnModel = scannerTable.getColumnModel();
+        tableColumnModel.getColumn(0).setPreferredWidth(40);
+        tableColumnModel.getColumn(1).setPreferredWidth(320);
+        tableColumnModel.getColumn(2).setPreferredWidth(160);
+    }
+
+    @Override
     public void windowOpened(WindowEvent e) {
         presenter.viewOpened();
     }
@@ -500,7 +529,7 @@ class MacroViewButtonListener implements ActionListener {
         } else if (source.equals(view.unselectAllDlcButton)) {
             view.dlcCheckboxGroup.unselectAllExclude(MacroView.DEFAULT_DLCS);
         } else if (source.equals(view.showExpectedButton)) {
-            view.presenter.openExpected(view, view.dlcCheckboxGroup.getSelected());
+            view.presenter.openExpected(view);
         } else {
             view.addLog(source.toString());
         }

@@ -1,10 +1,16 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.hook.HookWrapper;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.Scanner;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
+import com.github.kwhat.jnativehook.NativeHookException;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.Serial;
 import java.util.List;
@@ -12,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -21,6 +28,7 @@ public class MacroPresenter implements Presenter {
     // model
     private SongModel songModel;
     private final RecordModel recordModel = new RecordModel();
+    private final Scanner scanner;
 
     // view
     private final Class<? extends View> viewClass;
@@ -31,6 +39,24 @@ public class MacroPresenter implements Presenter {
     private ILicense.Presenter licensePresenter;
 
     public MacroPresenter(Class<? extends View> viewClass) {
+        Consumer<Exception> whenThrown = (e) -> {
+            Toolkit.getDefaultToolkit().beep();
+            view.addLog("Error: " + e.getMessage());
+        };
+        Runnable whenCanceled = () -> {
+            Toolkit.getDefaultToolkit().beep();
+            view.addLog("Canceled");
+        };
+        Runnable whenCaptureDone = () -> {
+            Toolkit.getDefaultToolkit().beep();
+            view.addLog("Capture done");
+        };
+        Runnable whenDone = () -> {
+            Toolkit.getDefaultToolkit().beep();
+            view.addLog("Done");
+        };
+        scanner = new Scanner(whenCaptureDone, whenDone, whenCanceled, whenThrown);
+
         this.viewClass = viewClass;
     }
 
@@ -78,6 +104,50 @@ public class MacroPresenter implements Presenter {
         return new DefaultTreeModel(root);
     }
 
+    private void setupHook() throws NativeHookException {
+        HookWrapper.disableLogging();
+        HookWrapper.register();
+
+        HookWrapper.addKeyListener(new NativeKeyListener() {
+            @Override
+            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
+                if ((nativeEvent.getModifiers() & NativeKeyEvent.CTRL_MASK) == 0) {
+                    return;
+                }
+
+                if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_END) {
+                    if (!scanner.stop()) {
+                        view.addLog("Scanner is not running.");
+                    }
+                }
+            }
+
+            @Override
+            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
+                if ((nativeEvent.getModifiers() & NativeKeyEvent.CTRL_MASK) == 0) {
+                    return;
+                }
+
+                if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_HOME) {
+                    Set<String> ownedDlcs = view.getSelectedDlcs();
+                    Map<String, List<LocalSong>> tapSongMap = songModel.getTabSongMap(ownedDlcs);
+                    if (scanner.startScanning(tapSongMap)) {
+                        view.addLog("Started.");
+                    } else {
+                        view.addLog("Scanner is already running.");
+                    }
+                }
+            }
+        });
+    }
+
+    private void clearHook() {
+        try {
+            HookWrapper.unregister();
+        } catch (NativeHookException ignored) {
+        }
+    }
+
     @Override
     public synchronized void start() {
         if (view != null) {
@@ -90,26 +160,47 @@ public class MacroPresenter implements Presenter {
 
     @Override
     public synchronized void stop() {
+        if (scanner.isRunning()) {
+            view.addLog("Scanner is running. Cannot exit.");
+            return;
+        }
+
+        clearHook();
+
         view.disposeView();
     }
 
     @Override
     public void viewOpened() {
         try {
-            songModel = new SongModel();
-        } catch (IOException e) {
-            view.showErrorDialog("File read error: " + e.getMessage());
-            view.disposeView();
+            setupHook();
+        } catch (NativeHookException e) {
+            view.showErrorDialog("Hook error: " + e.getMessage());
+            stop();
             return;
         } catch (Exception e) {
             view.showErrorDialog("ERROR: " + e.getMessage());
-            view.disposeView();
+            stop();
+            return;
+        }
+
+        try {
+            songModel = new SongModel();
+        } catch (IOException e) {
+            view.showErrorDialog("File read error: " + e.getMessage());
+            stop();
+            return;
+        } catch (Exception e) {
+            view.showErrorDialog("ERROR: " + e.getMessage());
+            stop();
             return;
         }
 
         TreeModel treeModel = createTabSongTreeModel("Records", songModel.getTabSongMap());
         view.setRecordViewerTreeModel(treeModel);
         view.setSelectableDlcs(songModel.getDlcCodeNameMap());
+
+        view.setScannerTaskTableModel(scanner.getTaskTableModel());
 
         try {
             if (recordModel.loadLocal()) {
@@ -169,9 +260,9 @@ public class MacroPresenter implements Presenter {
     }
 
     @Override
-    public void openExpected(JFrame frame, Set<String> ownedDlcs) {
-        TreeModel model =
-                createTabSongTreeModel("Expected Song List", songModel.getTabSongMap(ownedDlcs));
-        expectedPresenter.start(frame, model);
+    public void openExpected(JFrame frame) {
+        Set<String> ownedDlcs = view.getSelectedDlcs();
+        Map<String, List<LocalSong>> tabSongMap = songModel.getTabSongMap(ownedDlcs);
+        expectedPresenter.start(frame, createTabSongTreeModel("Expected Song List", tabSongMap));
     }
 }

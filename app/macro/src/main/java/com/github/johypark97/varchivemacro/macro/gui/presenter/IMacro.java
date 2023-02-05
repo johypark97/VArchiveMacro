@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JFrame;
+import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 
@@ -23,7 +24,7 @@ public interface IMacro {
 
         void recordViewerTreeNodeSelected(DefaultMutableTreeNode node);
 
-        void openExpected(JFrame frame, Set<String> ownedDlcs);
+        void openExpected(JFrame frame);
     }
 
 
@@ -45,5 +46,9 @@ public interface IMacro {
         void showRecord(String text, List<Float> records);
 
         void setSelectableDlcs(Map<String, String> codeNameMap);
+
+        Set<String> getSelectedDlcs();
+
+        void setScannerTaskTableModel(TableModel model);
     }
 }
