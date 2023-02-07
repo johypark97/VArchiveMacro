@@ -1,15 +1,14 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import java.nio.file.Path;
+import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 class ScanData {
-    private static final Path BASE_PATH = Path.of(System.getProperty("user.dir"), "image");
-
-    public static final String FORMAT = "png";
-
     private Exception exception;
     private String status;
+    private byte[] imageBytes;
     private final LocalSong song;
     private final ScanDataManager parent;
     public final int taskNumber;
@@ -18,6 +17,18 @@ class ScanData {
         this.parent = parent;
         this.song = song;
         this.taskNumber = taskNumber;
+    }
+
+    public void storeImage(BufferedImage image) throws IOException {
+        imageBytes = ImageConverter.imageToPngBytes(image);
+    }
+
+    public BufferedImage loadImage() throws IOException {
+        return ImageConverter.pngBytesToImage(imageBytes);
+    }
+
+    public byte[] getImageBytes() {
+        return imageBytes.clone();
     }
 
     public String getTitle() {
@@ -40,14 +51,5 @@ class ScanData {
     public void setException(Exception value) {
         exception = value;
         setStatus(exception.toString());
-    }
-
-    public Path getImagePath() {
-        return BASE_PATH.resolve(String.format("%04d.%s", song.id(), FORMAT));
-    }
-
-    public Path getImagePath_title() {
-        String title = song.title().replaceAll("[/:*?\"<>|]", "_").replace('\\', '_');
-        return BASE_PATH.resolve(String.format("%04d. %s.%s", song.id(), title, FORMAT));
     }
 }

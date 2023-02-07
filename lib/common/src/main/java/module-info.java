@@ -16,6 +16,7 @@ module varchivemacro.lib.common {
     exports com.github.johypark97.varchivemacro.lib.common.gui.util;
 
     exports com.github.johypark97.varchivemacro.lib.common.hook;
+    exports com.github.johypark97.varchivemacro.lib.common.image;
     exports com.github.johypark97.varchivemacro.lib.common.json;
     exports com.github.johypark97.varchivemacro.lib.common.resource;
 }

@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro;
 
 import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
 
+import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.ExpectedPresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.LicensePresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroPresenter;
@@ -14,6 +15,8 @@ public class Main {
     private final MacroPresenter macroPresenter = new MacroPresenter(MacroView.class);
 
     public static void main(String[] args) {
+        ImageConverter.disableDiskCache();
+
         SwingUtilities.invokeLater(() -> {
             setSystemLookAndFeel();
 

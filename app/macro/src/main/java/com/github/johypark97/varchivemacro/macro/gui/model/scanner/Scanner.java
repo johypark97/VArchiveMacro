@@ -36,14 +36,13 @@ public class Scanner {
         }
 
         dataManager.clear();
+
         run(() -> {
             CaptureService captureService = new CaptureService();
             captureService.execute(tabSongMap, dataManager::add);
 
             try {
                 captureService.awaitCapture();
-                whenCaptureDone.run();
-                captureService.await();
             } catch (InterruptedException e) {
                 captureService.shutdownNow();
                 whenCanceled.run();
@@ -52,6 +51,16 @@ public class Scanner {
 
             if (captureService.exception != null) {
                 whenThrown.accept(captureService.exception);
+                return;
+            }
+
+            whenCaptureDone.run();
+
+            try {
+                captureService.await();
+            } catch (InterruptedException e) {
+                captureService.shutdownNow();
+                whenCanceled.run();
                 return;
             }
 
