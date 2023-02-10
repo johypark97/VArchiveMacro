@@ -11,6 +11,8 @@ import java.io.Serial;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,10 +22,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class RecordManager {
-    private static final List<Board> BOARDS =
-            List.of(Board._1, Board._2, Board._3, Board._4, Board._5, Board._6, Board._7, Board._8,
-                    Board._9, Board._10, Board._11, Board.MX, Board.SC);
-    private static final List<Button> BUTTONS = List.of(Button._4, Button._5, Button._6, Button._8);
+    private static final List<Board> BOARDS = Arrays.stream(Board.values())
+            .filter((x) -> !EnumSet.of(Board.SC5, Board.SC10, Board.SC15).contains(x)).toList();
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
@@ -36,24 +36,22 @@ public class RecordManager {
         lock.readLock().lock();
         ButtonMap buttonMap = managedRecords.get(id);
         if (buttonMap != null) {
-            buttonMap.forEach((button, patternMap) -> {
-                patternMap.forEach(((pattern, record) -> {
-                    int b = switch (button) {
-                        case _4 -> 0;
-                        case _5 -> 1;
-                        case _6 -> 2;
-                        case _8 -> 3;
-                    };
-                    int p = switch (pattern) {
-                        case NM -> 0;
-                        case HD -> 1;
-                        case MX -> 2;
-                        case SC -> 3;
-                    };
+            buttonMap.forEach((button, patternMap) -> patternMap.forEach((pattern, record) -> {
+                int b = switch (button) {
+                    case _4 -> 0;
+                    case _5 -> 1;
+                    case _6 -> 2;
+                    case _8 -> 3;
+                };
+                int p = switch (pattern) {
+                    case NM -> 0;
+                    case HD -> 1;
+                    case MX -> 2;
+                    case SC -> 3;
+                };
 
-                    records.set(p + b * 4, record.score);
-                }));
-            });
+                records.set(p + b * 4, record.score);
+            }));
         }
         lock.readLock().unlock();
 
@@ -77,7 +75,7 @@ public class RecordManager {
         RecordMap map = new RecordMap();
 
         RecordFetcher fetcher = Api.newRecordFetcher(djName);
-        for (Button button : BUTTONS) {
+        for (Button button : Button.values()) {
             for (Board board : BOARDS) {
                 fetcher.fetch(button, board);
 

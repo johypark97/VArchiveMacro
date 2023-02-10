@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.table.TableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 
 public interface IMacro {
@@ -22,7 +21,7 @@ public interface IMacro {
 
         void loadServerRecord(String djName);
 
-        void recordViewerTreeNodeSelected(DefaultMutableTreeNode node);
+        void recordViewerTreeNodeSelected(Object object);
 
         void openExpected(JFrame frame);
     }

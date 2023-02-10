@@ -47,7 +47,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.BadLocationException;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -202,11 +201,10 @@ public class MacroView extends JFrame implements View, WindowListener {
             recordViewerTree.setModel(null);
             recordViewerTree.getSelectionModel()
                     .setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-            recordViewerTree.getSelectionModel().addTreeSelectionListener((e) -> {
-                DefaultMutableTreeNode node =
-                        (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-                presenter.recordViewerTreeNodeSelected(node);
-            });
+
+            recordViewerTree.getSelectionModel().addTreeSelectionListener(
+                    (e) -> presenter.recordViewerTreeNodeSelected(
+                            e.getPath().getLastPathComponent()));
 
             viewerScrollPane = new JScrollPane(recordViewerTree);
             ComponentSize.setPreferredWidth(viewerScrollPane, 300);
@@ -222,32 +220,36 @@ public class MacroView extends JFrame implements View, WindowListener {
             detailPanel.add(new JScrollPane(recordViewerTextArea), BorderLayout.CENTER);
 
             // grid
-            JPanel grid = new JPanel(new GridLayout(5, 5));
+            JPanel grid = new JPanel();
             grid.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
             {
-                // set header
-                grid.add(new JPanel());
-                List.of("4B", "5B", "6B", "8B").forEach((x) -> {
-                    JLabel label = new JLabel(x);
-                    label.setHorizontalAlignment(SwingConstants.CENTER);
-                    grid.add(label);
-                });
+                List<String> columns = List.of("", "4B", "5B", "6B", "8B");
+                List<String> rows = List.of("", "NM", "HD", "MX", "SC");
+                grid.setLayout(new GridLayout(columns.size(), rows.size()));
 
-                // set rows
-                List.of("NM", "HD", "MX", "SC").forEach((x) -> {
-                    JLabel label = new JLabel(x);
-                    label.setHorizontalAlignment(SwingConstants.CENTER);
-                    grid.add(label);
+                rows.forEach((row) -> columns.forEach((column) -> {
+                    if (row.isBlank()) {
+                        JLabel label = new JLabel();
+                        if (!column.isBlank()) {
+                            label.setText(column);
+                            label.setHorizontalAlignment(SwingConstants.CENTER);
+                        }
+                        grid.add(label);
+                    } else {
+                        if (column.isBlank()) {
+                            JLabel label = new JLabel(row);
+                            label.setHorizontalAlignment(SwingConstants.CENTER);
+                            grid.add(label);
+                        } else {
+                            JTextField textField = new JTextField();
+                            textField.setBackground(Color.WHITE);
+                            textField.setEditable(false);
+                            recordViewerGridTextFields.add(textField);
 
-                    IntStream.range(0, 4).forEach((i) -> {
-                        JTextField textField = new JTextField();
-                        textField.setBackground(Color.WHITE);
-                        textField.setEditable(false);
-                        recordViewerGridTextFields.add(textField);
-
-                        grid.add(textField);
-                    });
-                });
+                            grid.add(textField);
+                        }
+                    }
+                }));
             }
             detailPanel.add(grid, BorderLayout.PAGE_END);
         }

@@ -83,7 +83,7 @@ public class MacroPresenter implements Presenter {
         tabSongMap.forEach((key, value) -> {
             DefaultMutableTreeNode dlcNode = new DefaultMutableTreeNode(key);
 
-            value.forEach(localSong -> {
+            value.forEach((localSong) -> {
                 DefaultMutableTreeNode songNode = new DefaultMutableTreeNode(localSong) {
                     @Serial
                     private static final long serialVersionUID = 2139231854201218074L;
@@ -282,7 +282,8 @@ public class MacroPresenter implements Presenter {
     }
 
     @Override
-    public void recordViewerTreeNodeSelected(DefaultMutableTreeNode node) {
+    public void recordViewerTreeNodeSelected(Object object) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) object;
         if (!node.isLeaf()) {
             return;
         }

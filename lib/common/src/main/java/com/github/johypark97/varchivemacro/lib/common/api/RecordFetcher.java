@@ -18,7 +18,7 @@ public interface RecordFetcher {
         public boolean success;
 
         @Expose
-        public String board;
+        public Board board;
 
         @Expose
         public Button button;

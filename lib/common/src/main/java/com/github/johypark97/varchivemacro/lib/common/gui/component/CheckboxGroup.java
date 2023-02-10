@@ -25,7 +25,7 @@ public class CheckboxGroup<T> {
     }
 
     public Set<T> getSelected() {
-        return checkboxes.entrySet().stream().filter(entry -> entry.getValue().isSelected())
+        return checkboxes.entrySet().stream().filter((entry) -> entry.getValue().isSelected())
                 .map(Entry::getKey).collect(Collectors.toSet());
     }
 
