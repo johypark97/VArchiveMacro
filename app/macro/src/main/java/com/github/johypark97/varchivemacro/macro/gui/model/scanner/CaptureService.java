@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScanData.Status;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CaptureTask.Status;
 import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -21,12 +21,13 @@ class CaptureService {
     private static final int REJECTED_SLEEP_TIME = 1000;
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final ImageWritingService imageWritingService = new ImageWritingService();
+    private final ImageCachingService imageCachingService = new ImageCachingService();
     private final Robot robot;
 
+    private final Function<LocalSong, CaptureTask> taskCreator;
     public Exception exception;
 
-    public CaptureService() {
+    public CaptureService(Function<LocalSong, CaptureTask> taskCreator) {
         try {
             robot = new Robot();
         } catch (AWTException e) {
@@ -34,17 +35,19 @@ class CaptureService {
             // mouse. (Normally never be thrown)
             throw new RuntimeException(e);
         }
+
+        this.taskCreator = taskCreator;
     }
 
     public void shutdownNow() {
         executor.shutdownNow();
 
-        imageWritingService.shutdownNow();
+        imageCachingService.shutdownNow();
     }
 
     public void await() throws InterruptedException {
         awaitCapture();
-        imageWritingService.await();
+        imageCachingService.await();
     }
 
     public void awaitCapture() throws InterruptedException {
@@ -53,8 +56,7 @@ class CaptureService {
         }
     }
 
-    public void execute(Map<String, List<LocalSong>> tabSongMap,
-            Function<LocalSong, ScanData> dataCreator) {
+    public void execute(Map<String, List<LocalSong>> tabSongMap) {
         executor.execute(() -> {
             Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
 
@@ -72,12 +74,12 @@ class CaptureService {
 
                         BufferedImage image = robot.createScreenCapture(screenRect);
 
-                        ScanData data = dataCreator.apply(song);
-                        data.setStatus(Status.CAPTURED);
+                        CaptureTask task = taskCreator.apply(song);
+                        task.setStatus(Status.CAPTURED);
 
                         while (true) {
                             try {
-                                imageWritingService.execute(data, image);
+                                imageCachingService.execute(task, image);
                                 break;
                             } catch (RejectedExecutionException ignored) {
                             }
@@ -85,9 +87,9 @@ class CaptureService {
                         }
                     }
                 }
-                imageWritingService.shutdown();
+                imageCachingService.shutdown();
             } catch (Exception e) {
-                imageWritingService.shutdownNow();
+                imageCachingService.shutdownNow();
                 exception = e;
             }
         });

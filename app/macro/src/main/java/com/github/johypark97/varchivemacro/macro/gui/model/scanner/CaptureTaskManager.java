@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScanData.Status;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CaptureTask.Status;
 import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Files;
@@ -11,27 +11,27 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.table.AbstractTableModel;
 
-public class ScanDataManager {
+class CaptureTaskManager {
     private static final Path BASE_PATH = Path.of(System.getProperty("user.dir"), "image");
     private static final String FORMAT = "png";
 
-    private final Map<Integer, ScanData> dataList = new ConcurrentHashMap<>();
+    private final Map<Integer, CaptureTask> tasks = new ConcurrentHashMap<>();
     public final ScannerTaskTableModel tableModel = new ScannerTaskTableModel();
 
     public void clear() {
-        dataList.clear();
+        tasks.clear();
         tableModel.fireTableDataChanged();
     }
 
-    public ScanData add(LocalSong song) {
-        int taskNumber = dataList.size();
+    public CaptureTask create(LocalSong song) {
+        int taskNumber = tasks.size();
 
-        ScanData data = new ScanData(this, taskNumber, song);
-        dataList.put(taskNumber, data);
+        CaptureTask task = new CaptureTask(this, taskNumber, song);
+        tasks.put(taskNumber, task);
 
         tableModel.fireTableRowsInserted(taskNumber, taskNumber);
 
-        return data;
+        return task;
     }
 
     public void saveToDisk() throws IOException {
@@ -40,23 +40,23 @@ public class ScanDataManager {
             Files.createDirectories(dirPath);
         }
 
-        for (ScanData data : dataList.values()) {
-            byte[] bytes = data.getImageBytes();
+        for (CaptureTask task : tasks.values()) {
+            byte[] bytes = task.getImageBytes();
 
-            Path path = getFilePath(data.song.id());
+            Path path = getFilePath(task.getSongId());
             Files.deleteIfExists(path);
             Files.write(path, bytes);
 
-            data.setStatus(Status.DISK_SAVED);
+            task.setStatus(Status.DISK_SAVED);
         }
     }
 
     public void loadFromDisk() throws IOException {
-        for (ScanData data : dataList.values()) {
-            Path path = getFilePath(data.song.id());
+        for (CaptureTask task : tasks.values()) {
+            Path path = getFilePath(task.getSongId());
             if (Files.exists(path)) {
-                data.setImageBytes(Files.readAllBytes(path));
-                data.setStatus(Status.DISK_LOADED);
+                task.setImageBytes(Files.readAllBytes(path));
+                task.setStatus(Status.DISK_LOADED);
             }
         }
     }
@@ -94,7 +94,7 @@ public class ScanDataManager {
 
         @Override
         public int getRowCount() {
-            return dataList.size();
+            return tasks.size();
         }
 
         @Override
@@ -104,15 +104,15 @@ public class ScanDataManager {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            ScanData data = dataList.get(rowIndex);
-            if (data == null) {
+            CaptureTask task = tasks.get(rowIndex);
+            if (task == null) {
                 return ERROR_STRING;
             }
 
             return switch (columnIndex) {
-                case 0 -> data.taskNumber;
-                case 1 -> data.getTitle();
-                case 2 -> statusToString(data.getStatus());
+                case 0 -> task.taskNumber;
+                case 1 -> task.getSongTitle();
+                case 2 -> statusToString(task.getStatus());
                 default -> ERROR_STRING;
             };
         }

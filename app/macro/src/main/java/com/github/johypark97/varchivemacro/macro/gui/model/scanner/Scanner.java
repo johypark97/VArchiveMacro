@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import javax.swing.table.TableModel;
 
 public class Scanner {
-    private final ScanDataManager dataManager = new ScanDataManager();
+    private final CaptureTaskManager taskManager = new CaptureTaskManager();
 
     private final Consumer<Exception> whenThrown;
     private final Runnable whenCanceled;
@@ -36,11 +36,11 @@ public class Scanner {
             return false;
         }
 
-        dataManager.clear();
+        taskManager.clear();
 
         run(() -> {
-            CaptureService captureService = new CaptureService();
-            captureService.execute(tabSongMap, dataManager::add);
+            CaptureService captureService = new CaptureService(taskManager::create);
+            captureService.execute(tabSongMap);
 
             try {
                 captureService.awaitCapture();
@@ -78,7 +78,7 @@ public class Scanner {
 
         run(() -> {
             try {
-                dataManager.saveToDisk();
+                taskManager.saveToDisk();
             } catch (IOException e) {
                 whenThrown.accept(e);
                 return;
@@ -95,12 +95,12 @@ public class Scanner {
             return false;
         }
 
-        dataManager.clear();
-        tabSongMap.values().forEach((songs) -> songs.forEach(dataManager::add));
+        taskManager.clear();
+        tabSongMap.values().forEach((songs) -> songs.forEach(taskManager::create));
 
         run(() -> {
             try {
-                dataManager.loadFromDisk();
+                taskManager.loadFromDisk();
             } catch (IOException e) {
                 whenThrown.accept(e);
                 return;
@@ -130,6 +130,6 @@ public class Scanner {
     }
 
     public TableModel getTaskTableModel() {
-        return dataManager.tableModel;
+        return taskManager.tableModel;
     }
 }

@@ -5,21 +5,22 @@ import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-class ScanData {
+class CaptureTask {
     public enum Status {
         CACHED, CAPTURED, DISK_LOADED, DISK_SAVED, EXCEPTION, NONE,
     }
 
 
+    private final CaptureTaskManager manager;
+    private final LocalSong song;
+    public final int taskNumber;
+
     private Exception exception;
     private Status status = Status.NONE;
     private byte[] imageBytes;
-    private final ScanDataManager parent;
-    protected final LocalSong song;
-    public final int taskNumber;
 
-    public ScanData(ScanDataManager parent, int taskNumber, LocalSong song) {
-        this.parent = parent;
+    public CaptureTask(CaptureTaskManager manager, int taskNumber, LocalSong song) {
+        this.manager = manager;
         this.song = song;
         this.taskNumber = taskNumber;
     }
@@ -44,7 +45,11 @@ class ScanData {
         imageBytes = bytes.clone();
     }
 
-    public String getTitle() {
+    public int getSongId() {
+        return song.id();
+    }
+
+    public String getSongTitle() {
         return song.title();
     }
 
@@ -54,7 +59,7 @@ class ScanData {
 
     public void setStatus(Status value) {
         status = value;
-        parent.notify_statusUpdated(taskNumber);
+        manager.notify_statusUpdated(taskNumber);
     }
 
     public Exception getException() {
