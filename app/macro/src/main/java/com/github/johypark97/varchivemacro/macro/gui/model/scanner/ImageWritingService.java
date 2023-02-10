@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScanData.Status;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -33,7 +34,7 @@ class ImageWritingService {
         executor.execute(() -> {
             try {
                 data.saveImage(image);
-                data.setStatus("image saved");
+                data.setStatus(Status.CACHED);
             } catch (Exception e) {
                 data.setException(e);
             }

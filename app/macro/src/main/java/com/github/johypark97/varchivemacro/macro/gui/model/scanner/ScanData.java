@@ -6,8 +6,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 class ScanData {
+    public enum Status {
+        CACHED, CAPTURED, DISK_LOADED, DISK_SAVED, EXCEPTION, NONE,
+    }
+
+
     private Exception exception;
-    private String status;
+    private Status status = Status.NONE;
     private byte[] imageBytes;
     private final ScanDataManager parent;
     protected final LocalSong song;
@@ -43,11 +48,11 @@ class ScanData {
         return song.title();
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String value) {
+    public void setStatus(Status value) {
         status = value;
         parent.notify_statusUpdated(taskNumber);
     }
@@ -58,6 +63,6 @@ class ScanData {
 
     public void setException(Exception value) {
         exception = value;
-        setStatus(exception.toString());
+        setStatus(Status.EXCEPTION);
     }
 }

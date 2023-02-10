@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScanData.Status;
 import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -72,7 +73,7 @@ class CaptureService {
                         BufferedImage image = robot.createScreenCapture(screenRect);
 
                         ScanData data = dataCreator.apply(song);
-                        data.setStatus("image captured");
+                        data.setStatus(Status.CAPTURED);
 
                         while (true) {
                             try {

@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScanData.Status;
 import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Files;
@@ -46,7 +47,7 @@ public class ScanDataManager {
             Files.deleteIfExists(path);
             Files.write(path, bytes);
 
-            data.setStatus("saved to disk");
+            data.setStatus(Status.DISK_SAVED);
         }
     }
 
@@ -55,7 +56,7 @@ public class ScanDataManager {
             Path path = getFilePath(data.song.id());
             if (Files.exists(path)) {
                 data.setImageBytes(Files.readAllBytes(path));
-                data.setStatus("loaded from disk");
+                data.setStatus(Status.DISK_LOADED);
             }
         }
     }
@@ -74,6 +75,17 @@ public class ScanDataManager {
 
         private static final List<String> COLUMNS = List.of("No", "Title", "Status");
         private static final String ERROR_STRING = "ERROR";
+
+        private String statusToString(Status status) {
+            return switch (status) {
+                case CACHED -> "cached";
+                case CAPTURED -> "captured";
+                case DISK_LOADED -> "loaded from disk";
+                case DISK_SAVED -> "saved to disk";
+                case EXCEPTION -> "exception occurred";
+                case NONE -> "none";
+            };
+        }
 
         @Override
         public String getColumnName(int column) {
@@ -100,7 +112,7 @@ public class ScanDataManager {
             return switch (columnIndex) {
                 case 0 -> data.taskNumber;
                 case 1 -> data.getTitle();
-                case 2 -> data.getStatus();
+                case 2 -> statusToString(data.getStatus());
                 default -> ERROR_STRING;
             };
         }
