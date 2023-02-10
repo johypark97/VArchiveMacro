@@ -2,7 +2,9 @@ package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CaptureTask.Status;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
 import java.awt.AWTException;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -58,9 +60,13 @@ class CaptureService {
 
     public void execute(Map<String, List<LocalSong>> tabSongMap) {
         executor.execute(() -> {
-            Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-
             try {
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+                // Check if the screen size is supported using whether an exception occurs.
+                CollectionAreaFactory.create(screenSize);
+
+                Rectangle screenRect = new Rectangle(screenSize);
                 for (List<LocalSong> songs : tabSongMap.values()) {
                     tabKey(KeyEvent.VK_SPACE);
 
