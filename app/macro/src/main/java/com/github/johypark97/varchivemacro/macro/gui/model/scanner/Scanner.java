@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -61,6 +62,47 @@ public class Scanner {
             } catch (InterruptedException e) {
                 captureService.shutdownNow();
                 whenCanceled.run();
+                return;
+            }
+
+            whenDone.run();
+        });
+
+        return true;
+    }
+
+    public synchronized boolean saveImagesToDisk() {
+        if (isRunning()) {
+            return false;
+        }
+
+        run(() -> {
+            try {
+                dataManager.saveToDisk();
+            } catch (IOException e) {
+                whenThrown.accept(e);
+                return;
+            }
+
+            whenDone.run();
+        });
+
+        return true;
+    }
+
+    public synchronized boolean loadImagesFromDisk(Map<String, List<LocalSong>> tabSongMap) {
+        if (isRunning()) {
+            return false;
+        }
+
+        dataManager.clear();
+        tabSongMap.values().forEach((songs) -> songs.forEach(dataManager::add));
+
+        run(() -> {
+            try {
+                dataManager.loadFromDisk();
+            } catch (IOException e) {
+                whenThrown.accept(e);
                 return;
             }
 

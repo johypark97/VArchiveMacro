@@ -9,8 +9,8 @@ class ScanData {
     private Exception exception;
     private String status;
     private byte[] imageBytes;
-    private final LocalSong song;
     private final ScanDataManager parent;
+    protected final LocalSong song;
     public final int taskNumber;
 
     public ScanData(ScanDataManager parent, int taskNumber, LocalSong song) {
@@ -19,16 +19,24 @@ class ScanData {
         this.taskNumber = taskNumber;
     }
 
-    public void storeImage(BufferedImage image) throws IOException {
+    public void saveImage(BufferedImage image) throws IOException {
         imageBytes = ImageConverter.imageToPngBytes(image);
     }
 
     public BufferedImage loadImage() throws IOException {
+        if (imageBytes == null) {
+            throw new NullPointerException("image bytes is null");
+        }
+
         return ImageConverter.pngBytesToImage(imageBytes);
     }
 
     public byte[] getImageBytes() {
-        return imageBytes.clone();
+        return (imageBytes != null) ? imageBytes.clone() : null;
+    }
+
+    public void setImageBytes(byte[] bytes) {
+        imageBytes = bytes.clone();
     }
 
     public String getTitle() {

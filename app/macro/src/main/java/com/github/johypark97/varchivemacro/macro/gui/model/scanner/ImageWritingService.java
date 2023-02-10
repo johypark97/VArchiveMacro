@@ -32,8 +32,8 @@ class ImageWritingService {
     public void execute(ScanData data, BufferedImage image) {
         executor.execute(() -> {
             try {
-                data.storeImage(image);
-                data.setStatus("image stored");
+                data.saveImage(image);
+                data.setStatus("image saved");
             } catch (Exception e) {
                 data.setException(e);
             }

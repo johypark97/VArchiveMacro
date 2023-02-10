@@ -124,17 +124,51 @@ public class MacroPresenter implements Presenter {
 
             @Override
             public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
-                if ((nativeEvent.getModifiers() & NativeKeyEvent.CTRL_MASK) == 0) {
+                int mod = nativeEvent.getModifiers();
+
+                boolean ctrl = (mod & NativeKeyEvent.CTRL_MASK) != 0;
+                mod &= ~NativeKeyEvent.CTRL_MASK;
+
+                boolean shift = (mod & NativeKeyEvent.SHIFT_MASK) != 0;
+                mod &= ~NativeKeyEvent.SHIFT_MASK;
+
+                boolean otherMod = mod != 0;
+                if (otherMod) {
                     return;
                 }
 
-                if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_HOME) {
-                    Set<String> ownedDlcs = view.getSelectedDlcs();
-                    Map<String, List<LocalSong>> tapSongMap = songModel.getTabSongMap(ownedDlcs);
-                    if (scanner.startScanning(tapSongMap)) {
-                        view.addLog("Started.");
-                    } else {
-                        view.addLog("Scanner is already running.");
+                Set<String> ownedDlcs = view.getSelectedDlcs();
+                Map<String, List<LocalSong>> tapSongMap = songModel.getTabSongMap(ownedDlcs);
+
+                switch (nativeEvent.getKeyCode()) {
+                    case NativeKeyEvent.VC_HOME -> {
+                        if (ctrl && !shift) {
+                            if (scanner.startScanning(tapSongMap)) {
+                                view.addLog("Started.");
+                            } else {
+                                view.addLog("Scanner is already running.");
+                            }
+                        }
+                    }
+                    case NativeKeyEvent.VC_S -> {
+                        if (ctrl && shift) {
+                            if (scanner.saveImagesToDisk()) {
+                                view.addLog("Writing images to disk...");
+                            } else {
+                                view.addLog("A task is running.");
+                            }
+                        }
+                    }
+                    case NativeKeyEvent.VC_L -> {
+                        if (ctrl && shift) {
+                            if (scanner.loadImagesFromDisk(tapSongMap)) {
+                                view.addLog("Loading images from disk...");
+                            } else {
+                                view.addLog("A task is running.");
+                            }
+                        }
+                    }
+                    default -> {
                     }
                 }
             }
