@@ -13,16 +13,21 @@ repositories {
 }
 
 dependencies {
-    // This dependency is used by the application.
-    // implementation("com.google.guava:guava:31.0.1-jre")
+    implementation("com.google.guava:guava:31.0.1-jre")
 
-    // Test libraries.
+    // -------- Logging --------
+    implementation("org.slf4j:slf4j-api:2.0.6")
+
+    // implementation("org.slf4j:slf4j-simple:2.0.6")
+    implementation("ch.qos.logback:logback-classic:1.4.5")
+
+    // -------- Test libraries --------
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testImplementation("org.mockito:mockito-core:4.11.0")
     testImplementation("org.mockito:mockito-junit-jupiter:4.11.0")
 
-    // Spotbugs
+    // -------- Spotbugs --------
     // implementation("com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}")
     spotbugs("com.github.spotbugs:spotbugs:${spotbugs.toolVersion.get()}")
     spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0")
@@ -48,7 +53,6 @@ spotbugs {
 }
 
 tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
 
