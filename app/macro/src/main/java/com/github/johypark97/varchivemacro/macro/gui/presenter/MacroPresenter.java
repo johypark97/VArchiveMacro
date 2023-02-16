@@ -4,9 +4,11 @@ import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalS
 import com.github.johypark97.varchivemacro.lib.common.hook.HookWrapper;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.Scanner;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
@@ -37,6 +39,7 @@ public class MacroPresenter implements Presenter {
     // other presenters
     private IExpected.Presenter expectedPresenter;
     private ILicense.Presenter licensePresenter;
+    private IScannerTask.Presenter scannerTaskPresenter;
 
     public MacroPresenter(Class<? extends View> viewClass) {
         Consumer<Exception> whenThrown = (e) -> {
@@ -61,9 +64,10 @@ public class MacroPresenter implements Presenter {
     }
 
     public void setPresenters(IExpected.Presenter expectedPresenter,
-            ILicense.Presenter licensePresenter) {
+            ILicense.Presenter licensePresenter, IScannerTask.Presenter scannerTaskPresenter) {
         this.expectedPresenter = expectedPresenter;
         this.licensePresenter = licensePresenter;
+        this.scannerTaskPresenter = scannerTaskPresenter;
     }
 
     private void newView() {
@@ -299,5 +303,22 @@ public class MacroPresenter implements Presenter {
         Set<String> ownedDlcs = view.getSelectedDlcs();
         Map<String, List<LocalSong>> tabSongMap = songModel.getTabSongMap(ownedDlcs);
         expectedPresenter.start(frame, createTabSongTreeModel("Expected Song List", tabSongMap));
+    }
+
+    @Override
+    public void showScannerTask(JFrame frame, int taskNumber) {
+        CollectionTaskData taskData = scanner.getTaskData(taskNumber);
+        if (taskData == null) {
+            return;
+        }
+
+        ScannerTaskViewData viewData = new ScannerTaskViewData();
+        viewData.fullImage = taskData.fullImage;
+        viewData.titleImage = taskData.titleImage;
+        taskData.records.forEach(
+                (key, value) -> viewData.addRecord(key, value.rateImage, value.maxComboImage,
+                        value.rate, value.maxCombo));
+
+        scannerTaskPresenter.start(frame, viewData);
     }
 }

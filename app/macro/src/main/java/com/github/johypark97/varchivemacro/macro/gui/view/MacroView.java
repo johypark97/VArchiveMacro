@@ -80,14 +80,15 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JButton loadRemoteRecordButton;
 
     private JScrollPane dlcCheckboxScrollPane;
-    private JTable scannerTable;
     private JTextArea logTextArea;
     private JTextField accountFileTextField;
     protected JButton selectAccountFileButton;
     protected JButton selectAllDlcButton;
     protected JButton showExpectedButton;
+    protected JButton showScannerTaskButton;
     protected JButton unselectAllDlcButton;
     protected JButton uploadRecordButton;
+    protected JTable scannerTable;
     protected transient CheckboxGroup<String> dlcCheckboxGroup = new CheckboxGroup<>();
 
     // event listeners
@@ -298,6 +299,10 @@ public class MacroView extends JFrame implements View, WindowListener {
             // button box
             Box buttonBox = Box.createHorizontalBox();
             {
+                showScannerTaskButton = new JButton("show");
+                showScannerTaskButton.addActionListener(buttonListener);
+                buttonBox.add(showScannerTaskButton);
+
                 buttonBox.add(Box.createHorizontalGlue());
 
                 uploadRecordButton = new JButton("Upload");
@@ -525,6 +530,14 @@ class MacroViewButtonListener implements ActionListener {
                 view.presenter.loadServerRecord(djName);
             }
             // } else if (source.equals(view.selectAccountFileButton)) {
+        } else if (source.equals(view.showScannerTaskButton)) {
+            int index = view.scannerTable.getSelectedRow();
+            if (index != -1) {
+                Object value = view.scannerTable.getValueAt(index, 0);
+                if (value instanceof Integer taskNumber) {
+                    view.presenter.showScannerTask(view, taskNumber);
+                }
+            }
             // } else if (source.equals(view.uploadRecordButton)) {
         } else if (source.equals(view.selectAllDlcButton)) {
             view.dlcCheckboxGroup.selectAllExclude(MacroView.DEFAULT_DLCS);

@@ -2,10 +2,15 @@ package com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public interface CollectionArea {
     enum Section {
-        PLAY_COUNT(0), HIGH_SCORE(1), RATE(2), COMBO(3);
+        COUNT(0), SCORE(1), RATE(2), COMBO(3);
 
         private final int value;
 
@@ -48,23 +53,59 @@ public interface CollectionArea {
         }
     }
 
-    default BufferedImage getSubimage(BufferedImage i, Rectangle r) {
-        return i.getSubimage(r.x, r.y, r.width, r.height);
-    }
-
     Rectangle getTitle();
 
     Rectangle getCell(Section section, Button button, Pattern pattern);
 
-    Rectangle getRecord(Section section, Button button, Pattern pattern);
+    Rectangle getRate(Button button, Pattern pattern);
 
-    Rectangle getMark(Section section, Button button, Pattern pattern);
+    Rectangle getComboMark(Button button, Pattern pattern);
 
-    BufferedImage getTitle(BufferedImage image);
+    default Map<String, Rectangle> getRateMap() {
+        Map<String, Rectangle> map = new HashMap<>();
 
-    BufferedImage getCell(BufferedImage image, Section section, Button button, Pattern pattern);
+        for (Button button : Button.values()) {
+            for (Pattern pattern : Pattern.values()) {
+                String key = generateKey(button, pattern);
+                map.put(key, getRate(button, pattern));
+            }
+        }
 
-    BufferedImage getRecord(BufferedImage image, Section section, Button button, Pattern pattern);
+        return map;
+    }
 
-    BufferedImage getMark(BufferedImage image, Section section, Button button, Pattern pattern);
+    default Map<String, BufferedImage> getRateMap(BufferedImage image) {
+        return getCroppedImageMap(image, this::getRateMap);
+    }
+
+    default Map<String, Rectangle> getComboMarkMap() {
+        Map<String, Rectangle> map = new HashMap<>();
+
+        for (Button button : Button.values()) {
+            for (Pattern pattern : Pattern.values()) {
+                String key = generateKey(button, pattern);
+                map.put(key, getComboMark(button, pattern));
+            }
+        }
+
+        return map;
+    }
+
+    default Map<String, BufferedImage> getComboMarkMap(BufferedImage image) {
+        return getCroppedImageMap(image, this::getComboMarkMap);
+    }
+
+    default String generateKey(Button button, Pattern pattern) {
+        // key format: _4B_NM
+        return String.format("%sB_%s", button, pattern);
+    }
+
+    default Map<String, BufferedImage> getCroppedImageMap(BufferedImage image,
+            Supplier<Map<String, Rectangle>> supplier) {
+        return supplier.get().entrySet().stream()
+                .collect(Collectors.toMap(Entry::getKey, (entry) -> {
+                    Rectangle r = entry.getValue();
+                    return image.getSubimage(r.x, r.y, r.width, r.height);
+                }));
+    }
 }

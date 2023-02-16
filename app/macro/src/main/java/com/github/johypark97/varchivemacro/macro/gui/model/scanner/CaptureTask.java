@@ -7,7 +7,7 @@ import java.io.IOException;
 
 class CaptureTask {
     public enum Status {
-        CACHED, CAPTURED, DISK_LOADED, DISK_SAVED, EXCEPTION, NONE,
+        CACHED, CAPTURED, DISK_LOADED, DISK_SAVED, EXCEPTION, NONE
     }
 
 

@@ -132,4 +132,13 @@ public class Scanner {
     public TableModel getTaskTableModel() {
         return taskManager.tableModel;
     }
+
+    public CollectionTaskData getTaskData(int taskNumber) {
+        CaptureTask task = taskManager.getTask(taskNumber);
+        if (task == null) {
+            return null;
+        }
+
+        return AnalysisService.analyze(task);
+    }
 }

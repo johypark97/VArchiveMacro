@@ -6,9 +6,11 @@ import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.ExpectedPresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.LicensePresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroPresenter;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.ScannerTaskPresenter;
 import com.github.johypark97.varchivemacro.macro.gui.view.ExpectedView;
 import com.github.johypark97.varchivemacro.macro.gui.view.LicenseView;
 import com.github.johypark97.varchivemacro.macro.gui.view.MacroView;
+import com.github.johypark97.varchivemacro.macro.gui.view.ScannerTaskView;
 import javax.swing.SwingUtilities;
 
 public class Main {
@@ -27,6 +29,7 @@ public class Main {
 
     private Main() {
         macroPresenter.setPresenters(new ExpectedPresenter(ExpectedView.class),
-                new LicensePresenter(LicenseView.class));
+                new LicensePresenter(LicenseView.class),
+                new ScannerTaskPresenter(ScannerTaskView.class));
     }
 }

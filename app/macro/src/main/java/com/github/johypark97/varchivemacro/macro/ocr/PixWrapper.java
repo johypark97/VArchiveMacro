@@ -1,0 +1,221 @@
+package com.github.johypark97.varchivemacro.macro.ocr;
+
+import java.awt.Rectangle;
+import java.util.List;
+import org.bytedeco.javacpp.BytePointer;
+import org.bytedeco.javacpp.SizeTPointer;
+import org.bytedeco.leptonica.BOX;
+import org.bytedeco.leptonica.PIX;
+import org.bytedeco.leptonica.SEL;
+import org.bytedeco.leptonica.global.leptonica;
+
+public class PixWrapper implements AutoCloseable {
+    public final PIX pixInstance;
+
+    protected PixWrapper(PIX pixInstance) {
+        this.pixInstance = pixInstance;
+    }
+
+    public PixWrapper(byte[] pngBytes) throws PixError {
+        pixInstance = leptonica.pixReadMemPng(pngBytes, pngBytes.length);
+        if (pixInstance == null) {
+            throw new PixError("Error: pixReadMemPng()");
+        }
+    }
+
+    // -------------------------
+    // -------- Getters --------
+    // -------------------------
+
+    public byte[] getPngBytes() throws PixError {
+        try (BytePointer ptr_buffer = new BytePointer();
+                SizeTPointer ptr_size_t = new SizeTPointer(1)) {
+            if (leptonica.pixWriteMemPng(ptr_buffer, ptr_size_t, pixInstance, 0) != 0) {
+                throw new PixError("Error: pixWriteMemPng()");
+            }
+
+            long size = ptr_size_t.get();
+            byte[] bytes = new byte[(int) size];
+            ptr_buffer.get(bytes);
+
+            return bytes;
+        }
+    }
+
+    public int getWidth() {
+        return pixInstance.w();
+    }
+
+    public int getHeight() {
+        return pixInstance.h();
+    }
+
+    // -------------------------------------
+    // -------- Create new instance --------
+    // -------------------------------------
+
+    public PixWrapper copy() throws PixError {
+        PIX pix = leptonica.pixCopy(null, pixInstance);
+        if (pix == null) {
+            throw new PixError("Error: pixCopy()");
+        }
+
+        return new PixWrapper(pix);
+    }
+
+    public PixWrapper crop(Rectangle rect) throws PixError {
+        try (BOX box = leptonica.boxCreate(rect.x, rect.y, rect.width, rect.height)) {
+            if (box == null) {
+                throw new PixError("Error: boxCreate()");
+            }
+
+            PIX pix = leptonica.pixClipRectangle(pixInstance, box, (BOX) null);
+            leptonica.boxDestroy(box);
+
+            if (pix == null) {
+                throw new PixError("Error: pixClipRectangle()");
+            }
+
+            return new PixWrapper(pix);
+        }
+    }
+
+    // --------------------------------------------
+    // -------- Image processing - general --------
+    // --------------------------------------------
+
+    public void contrastTRC(float factor) {
+        // Return: pixd always
+        leptonica.pixContrastTRC(pixInstance, pixInstance, factor);
+    }
+
+    public void convertRGBToLuminance() throws PixError {
+        try (PIX p = leptonica.pixConvertRGBToLuminance(pixInstance)) {
+            if (p == null) {
+                throw new PixError("Error: pixConvertRGBToLuminance()");
+            }
+
+            PixError e = copyToPixInstance(p);
+            leptonica.pixDestroy(p);
+
+            if (e != null) {
+                throw e;
+            }
+        }
+    }
+
+    public void gammaTRC(float gamma, int minval, int maxval) {
+        // Return: pixd always
+        leptonica.pixGammaTRC(pixInstance, pixInstance, gamma, minval, maxval);
+    }
+
+    public void invert() throws PixError {
+        if (leptonica.pixInvert(pixInstance, pixInstance) == null) {
+            throw new PixError("Error: pixInvert()");
+        }
+    }
+
+    public void scaleGeneral(float scalex, float scaley, float sharpfract, int sharpwidth)
+            throws PixError {
+        try (PIX p = leptonica.pixScaleGeneral(pixInstance, scalex, scaley, sharpfract,
+                sharpwidth)) {
+            if (p == null) {
+                throw new PixError("Error: pixScale()");
+            }
+
+            PixError e = copyToPixInstance(p);
+            leptonica.pixDestroy(p);
+
+            if (e != null) {
+                throw e;
+            }
+        }
+    }
+
+    public void thresholdToBinary(int thresh) throws PixError {
+        try (PIX p = leptonica.pixThresholdToBinary(pixInstance, thresh)) {
+            if (p == null) {
+                throw new PixError("Error: pixThresholdToBinary()");
+            }
+
+            PixError e = copyToPixInstance(p);
+            leptonica.pixDestroy(p);
+
+            if (e != null) {
+                throw e;
+            }
+        }
+    }
+
+    // -----------------------------------------------------
+    // -------- Image processing - erode and dilate --------
+    // -----------------------------------------------------
+
+    public void erode(int originx, int originy, List<List<Integer>> kernel) throws PixError {
+        try (SEL sel = createSel(kernel)) {
+            sel.cx(originx);
+            sel.cy(originy);
+
+            // Return: pixd
+            leptonica.pixErode(pixInstance, pixInstance, sel);
+
+            leptonica.selDestroy(sel);
+        }
+    }
+
+    public void dilate(int originx, int originy, List<List<Integer>> kernel) throws PixError {
+        try (SEL sel = createSel(kernel)) {
+            sel.cx(originx);
+            sel.cy(originy);
+
+            // Return: pixd
+            leptonica.pixDilate(pixInstance, pixInstance, sel);
+
+            leptonica.selDestroy(sel);
+        }
+    }
+
+    protected SEL createSel(List<List<Integer>> kernel) throws PixError {
+        int height = kernel.size();
+        int width = kernel.stream().map(List::size).min(Integer::compareTo).orElse(0);
+
+        SEL sel = leptonica.selCreate(height, width, (String) null);
+        if (sel == null) {
+            throw new PixError("Error: selCreate()");
+        }
+
+        for (int row = 0; row < height; ++row) {
+            for (int column = 0; column < width; ++column) {
+                int value = kernel.get(row).get(column);
+                if (leptonica.selSetElement(sel, row, column, value) != 0) {
+                    leptonica.selDestroy(sel);
+                    sel.close();
+
+                    throw new PixError("Error: selSetElement()");
+                }
+            }
+        }
+
+        return sel;
+    }
+
+    // ----------------------------------------------
+    // -------- Image processing - protected --------
+    // ----------------------------------------------
+
+    protected PixError copyToPixInstance(PIX pix) {
+        return (leptonica.pixCopy(pixInstance, pix) == null)
+                ? new PixError("Error: pixCopy()")
+                : null;
+    }
+
+    // ----------------------------
+    // -------- Implements --------
+    // ----------------------------
+
+    @Override
+    public void close() {
+        leptonica.pixDestroy(pixInstance);
+        pixInstance.close();
+    }
+}

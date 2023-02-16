@@ -65,6 +65,10 @@ class CaptureTaskManager {
         return BASE_PATH.resolve(String.format("%04d.%s", id, FORMAT));
     }
 
+    public CaptureTask getTask(int taskNumber) {
+        return tasks.get(taskNumber);
+    }
+
     public void notify_statusUpdated(int taskNumber) {
         tableModel.fireTableRowsUpdated(taskNumber, taskNumber);
     }

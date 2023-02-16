@@ -24,6 +24,8 @@ public interface IMacro {
         void recordViewerTreeNodeSelected(Object object);
 
         void openExpected(JFrame frame);
+
+        void showScannerTask(JFrame frame, int taskNumber);
     }
 
 
