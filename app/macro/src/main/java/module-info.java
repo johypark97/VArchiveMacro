@@ -4,12 +4,10 @@ module varchivemacro.macro {
     // guava
     requires com.google.common;
 
-    // tesseract
-    requires org.bytedeco.javacpp;
+    // tesseract-platform
+    requires org.bytedeco.javacpp.windows.x86_64;
     requires org.bytedeco.leptonica.windows.x86_64;
-    requires org.bytedeco.leptonica;
     requires org.bytedeco.tesseract.windows.x86_64;
-    requires org.bytedeco.tesseract;
 
     // slf4j
     requires org.slf4j;
