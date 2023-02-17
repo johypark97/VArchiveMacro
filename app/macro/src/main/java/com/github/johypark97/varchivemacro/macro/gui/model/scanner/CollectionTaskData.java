@@ -19,10 +19,7 @@ public class CollectionTaskData {
         titleImage = ImageConverter.pngBytesToImage(pngBytes);
     }
 
-    public void addRecord(String key, Image rateImage, String rate) {
-        RecordData data = new RecordData();
-        data.rateImage = rateImage;
-        data.rate = rate;
+    public void addRecord(String key, RecordData data) {
         records.put(key, data);
     }
 

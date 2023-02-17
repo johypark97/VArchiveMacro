@@ -3,8 +3,11 @@ package com.github.johypark97.varchivemacro.macro.ocr;
 import java.awt.Rectangle;
 import java.util.List;
 import org.bytedeco.javacpp.BytePointer;
+import org.bytedeco.javacpp.FloatPointer;
+import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.SizeTPointer;
 import org.bytedeco.leptonica.BOX;
+import org.bytedeco.leptonica.NUMA;
 import org.bytedeco.leptonica.PIX;
 import org.bytedeco.leptonica.SEL;
 import org.bytedeco.leptonica.global.leptonica;
@@ -109,6 +112,36 @@ public class PixWrapper implements AutoCloseable {
         leptonica.pixGammaTRC(pixInstance, pixInstance, gamma, minval, maxval);
     }
 
+    public float[] getGrayHistogram(int factor) throws PixError {
+        try (NUMA numa = leptonica.pixGetGrayHistogram(pixInstance, factor)) {
+            if (numa == null) {
+                throw new PixError("Error: pixGetGrayHistogram()");
+            }
+
+            int size = leptonica.numaGetCount(numa);
+            if (size == 0) {
+                leptonica.numaDestroy(numa);
+                throw new PixError("Error: numaGetCount()");
+            }
+
+            float[] data;
+            try (FloatPointer p = new FloatPointer(size)) {
+                for (int i = 0; i < size; ++i) {
+                    if (leptonica.numaGetFValue(numa, i, p.getPointer(i)) != 0) {
+                        leptonica.numaDestroy(numa);
+                        throw new PixError("Error: numaGetCount()");
+                    }
+                }
+
+                data = new float[size];
+                p.get(data);
+            }
+
+            leptonica.numaDestroy(numa);
+            return data;
+        }
+    }
+
     public void invert() throws PixError {
         if (leptonica.pixInvert(pixInstance, pixInstance) == null) {
             throw new PixError("Error: pixInvert()");
@@ -129,6 +162,16 @@ public class PixWrapper implements AutoCloseable {
             if (e != null) {
                 throw e;
             }
+        }
+    }
+
+    public boolean thresholdPixelSum(int thresh) throws PixError {
+        try (IntPointer ptr_isAbove = new IntPointer(1)) {
+            if (leptonica.pixThresholdPixelSum(pixInstance, thresh, ptr_isAbove, null) != 0) {
+                throw new PixError("Error: pixThresholdPixelSum()");
+            }
+
+            return ptr_isAbove.get() == 1;
         }
     }
 
@@ -207,6 +250,28 @@ public class PixWrapper implements AutoCloseable {
         return (leptonica.pixCopy(pixInstance, pix) == null)
                 ? new PixError("Error: pixCopy()")
                 : null;
+    }
+
+    // ---------------------------
+    // -------- Utilities --------
+    // ---------------------------
+
+    public float getGrayRatio(int factor, int threshold) throws PixError {
+        float black;
+        float sum = 0;
+        float[] histogram = getGrayHistogram(factor);
+
+        int length = histogram.length;
+        int limit = Math.min(length, threshold);
+        for (int i = 0; i < limit; ++i) {
+            sum += histogram[i];
+        }
+        black = sum;
+        for (int i = limit; i < length; ++i) {
+            sum += histogram[i];
+        }
+
+        return black / sum;
     }
 
     // ----------------------------

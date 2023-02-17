@@ -6,12 +6,11 @@ import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.Co
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.macro.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.macro.ocr.PixWrapper;
-import com.google.common.base.CharMatcher;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,12 @@ import org.slf4j.LoggerFactory;
 public class AnalysisService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisService.class);
 
-    public static final int COMBO_MARK_THRESHOLD = 192;
+    public static final float COMBO_MARK_RATIO = 0.01f;
+    public static final float RATE_RATIO = 0.01f;
+    public static final int COMBO_MARK_FACTOR = 8;
+    public static final int COMBO_MARK_THRESHOLD = 224;
+    public static final int RATE_FACTOR = 8;
+    public static final int RATE_THRESHOLD = 224;
 
     public static CollectionTaskData analyze(CaptureTask task) {
         CollectionTaskData data = new CollectionTaskData();
@@ -55,28 +59,36 @@ public class AnalysisService {
             }
 
             // -------- analyze records --------
-            for (Entry<String, Rectangle> entry : area.getRateMap().entrySet()) {
-                try (PixWrapper recordPix = pix.crop(entry.getValue())) {
+            for (Entry<String, List<Rectangle>> entry : area.getRateComboMarkMap().entrySet()) {
+                RecordData recordData = new RecordData();
+                Rectangle rate = entry.getValue().get(0);
+                Rectangle comboMark = entry.getValue().get(1);
 
-                    String text = ocr.run(recordPix.pixInstance);
-                    text = CharMatcher.whitespace().removeFrom(text);
+                try (PixWrapper recordPix = pix.crop(rate)) {
+                    recordData.rateImage = ImageConverter.pngBytesToImage(recordPix.getPngBytes());
 
-                    LOGGER.atDebug().log(text);
-                    // text = parseRateText(text);
-
-                    Image image = ImageConverter.pngBytesToImage(recordPix.getPngBytes());
-                    data.addRecord(entry.getKey(), image, text);
+                    // test whether the image contains enough black pixels using the histogram.
+                    // if true, run ocr.
+                    float r = recordPix.getGrayRatio(RATE_FACTOR, RATE_THRESHOLD);
+                    String text = "";
+                    if (r >= RATE_RATIO) {
+                        text = ocr.run(recordPix.pixInstance);
+                        // text = CharMatcher.whitespace().removeFrom(text);
+                        text = parseRateText(text);
+                    }
+                    recordData.rate = text;
                 }
+
+                try (PixWrapper comboMarkPix = pix.crop(comboMark)) {
+                    recordData.maxComboImage =
+                            ImageConverter.pngBytesToImage(comboMarkPix.getPngBytes());
+
+                    float r = comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR, COMBO_MARK_THRESHOLD);
+                    recordData.maxCombo = r >= COMBO_MARK_RATIO;
+                }
+
+                data.addRecord(entry.getKey(), recordData);
             }
-
-            area.getComboMarkMap(ImageConverter.pngBytesToImage(task.getImageBytes()))
-                    .forEach((key, value) -> {
-                        RecordData recordData = data.records.get(key);
-                        recordData.maxCombo = isMaxCombo(value);
-
-                        binarizeComboMarkImage(value);
-                        recordData.maxComboImage = value;
-                    });
             return data;
         } catch (Exception e) {
             LOGGER.atError().log(e.getMessage(), e);
