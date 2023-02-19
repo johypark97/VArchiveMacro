@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.hook.HookWrapper;
+import com.github.johypark97.varchivemacro.macro.command.Command;
+import com.github.johypark97.varchivemacro.macro.command.CommandRunner;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData;
@@ -18,8 +20,6 @@ import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -29,7 +29,8 @@ import javax.swing.tree.TreeModel;
 public class MacroPresenter implements Presenter {
     // model
     private SongModel songModel;
-    private final RecordModel recordModel = new RecordModel();
+    private final CommandRunner commandRunner = new CommandRunner();
+    private final RecordModel recordModel;
     private final Scanner scanner;
 
     // view
@@ -46,18 +47,21 @@ public class MacroPresenter implements Presenter {
             Toolkit.getDefaultToolkit().beep();
             view.addLog("Error: " + e.getMessage());
         };
+
         Runnable whenCanceled = () -> {
             Toolkit.getDefaultToolkit().beep();
-            view.addLog("Canceled");
+            view.addLog("Canceled.");
         };
         Runnable whenCaptureDone = () -> {
             Toolkit.getDefaultToolkit().beep();
-            view.addLog("Capture done");
+            view.addLog("Capture done.");
         };
         Runnable whenDone = () -> {
             Toolkit.getDefaultToolkit().beep();
-            view.addLog("Done");
+            view.addLog("Done.");
         };
+
+        recordModel = new RecordModel(whenDone, whenThrown);
         scanner = new Scanner(whenCaptureDone, whenDone, whenCanceled, whenThrown);
 
         this.viewClass = viewClass;
@@ -108,6 +112,20 @@ public class MacroPresenter implements Presenter {
         return new DefaultTreeModel(root);
     }
 
+    private void startCommand(Command command, String message) {
+        if (commandRunner.start(command)) {
+            view.addLog(message);
+        } else {
+            view.addLog("Another command is running.");
+        }
+    }
+
+    private void stopCommand() {
+        if (!commandRunner.stop()) {
+            view.addLog("No command is running.");
+        }
+    }
+
     private void setupHook() throws NativeHookException {
         HookWrapper.disableLogging();
         HookWrapper.register();
@@ -120,9 +138,7 @@ public class MacroPresenter implements Presenter {
                 }
 
                 if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_END) {
-                    if (!scanner.stop()) {
-                        view.addLog("Scanner is not running.");
-                    }
+                    stopCommand();
                 }
             }
 
@@ -147,20 +163,14 @@ public class MacroPresenter implements Presenter {
                 switch (nativeEvent.getKeyCode()) {
                     case NativeKeyEvent.VC_HOME -> {
                         if (ctrl && !shift) {
-                            if (scanner.startScanning(tapSongMap)) {
-                                view.addLog("Started.");
-                            } else {
-                                view.addLog("Scanner is already running.");
-                            }
+                            Command command = scanner.getCommand_scan(tapSongMap);
+                            startCommand(command, "Scanning...");
                         }
                     }
                     case NativeKeyEvent.VC_L -> {
                         if (ctrl && shift) {
-                            if (scanner.loadCapturedImages(tapSongMap)) {
-                                view.addLog("Loading images from disk...");
-                            } else {
-                                view.addLog("A task is running.");
-                            }
+                            Command command = scanner.getCommand_loadCapturedImages(tapSongMap);
+                            startCommand(command, "Loading images from disk...");
                         }
                     }
                     default -> {
@@ -189,8 +199,8 @@ public class MacroPresenter implements Presenter {
 
     @Override
     public synchronized void stop() {
-        if (scanner.isRunning()) {
-            view.addLog("Scanner is running. Cannot exit.");
+        if (commandRunner.isRunning()) {
+            view.addLog("A command is running. Cannot exit.");
             return;
         }
 
@@ -260,20 +270,8 @@ public class MacroPresenter implements Presenter {
 
     @Override
     public void loadServerRecord(String djName) {
-        // TODO: Need to change to thread safe code.
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            try {
-                recordModel.loadRemote(djName);
-            } catch (Exception e) {
-                view.addLog(e.toString());
-                return;
-            }
-            view.addLog("done");
-        });
-
-        view.addLog("Loading record... " + djName);
-        executor.shutdown();
+        Command command = recordModel.getCommand_loadRemote(djName);
+        startCommand(command, "Loading record... DJ Name: " + djName);
     }
 
     @Override

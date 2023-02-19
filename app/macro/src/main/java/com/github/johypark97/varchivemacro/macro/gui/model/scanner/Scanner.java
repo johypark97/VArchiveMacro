@@ -1,12 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.macro.command.Command;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import javax.swing.table.TableModel;
 
@@ -18,8 +17,6 @@ public class Scanner {
     private final Runnable whenCaptureDone;
     private final Runnable whenDone;
 
-    private ExecutorService controlExecutor;
-
     public Scanner(Runnable whenCaptureDone, Runnable whenDone, Runnable whenCanceled,
             Consumer<Exception> whenThrown) {
         this.whenCanceled = whenCanceled;
@@ -28,18 +25,10 @@ public class Scanner {
         this.whenThrown = whenThrown;
     }
 
-    public synchronized boolean isRunning() {
-        return controlExecutor != null && !controlExecutor.isTerminated();
-    }
+    public Command getCommand_scan(Map<String, List<LocalSong>> tabSongMap) {
+        return () -> {
+            taskManager.clear();
 
-    public synchronized boolean startScanning(Map<String, List<LocalSong>> tabSongMap) {
-        if (isRunning()) {
-            return false;
-        }
-
-        taskManager.clear();
-
-        run(() -> {
             CaptureService captureService = new CaptureService(taskManager::create);
             captureService.execute(tabSongMap);
 
@@ -67,17 +56,11 @@ public class Scanner {
             }
 
             whenDone.run();
-        });
-
-        return true;
+        };
     }
 
-    public synchronized boolean loadCapturedImages(Map<String, List<LocalSong>> tabSongMap) {
-        if (isRunning()) {
-            return false;
-        }
-
-        run(() -> {
+    public Command getCommand_loadCapturedImages(Map<String, List<LocalSong>> tabSongMap) {
+        return () -> {
             taskManager.clear();
             tabSongMap.values().forEach((songs) -> songs.forEach((song) -> {
                 CaptureTask task = taskManager.create(song);
@@ -87,26 +70,7 @@ public class Scanner {
             }));
 
             whenDone.run();
-        });
-
-        return true;
-    }
-
-    public synchronized boolean stop() {
-        if (!isRunning()) {
-            return false;
-        }
-
-        controlExecutor.shutdownNow();
-        return true;
-    }
-
-    private synchronized void run(Runnable task) {
-        if (!isRunning()) {
-            controlExecutor = Executors.newSingleThreadExecutor();
-            controlExecutor.submit(task);
-            controlExecutor.shutdown();
-        }
+        };
     }
 
     public TableModel getTaskTableModel() {
