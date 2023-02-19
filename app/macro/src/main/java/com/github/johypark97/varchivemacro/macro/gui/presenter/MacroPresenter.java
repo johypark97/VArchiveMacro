@@ -154,18 +154,9 @@ public class MacroPresenter implements Presenter {
                             }
                         }
                     }
-                    case NativeKeyEvent.VC_S -> {
-                        if (ctrl && shift) {
-                            if (scanner.saveImagesToDisk()) {
-                                view.addLog("Writing images to disk...");
-                            } else {
-                                view.addLog("A task is running.");
-                            }
-                        }
-                    }
                     case NativeKeyEvent.VC_L -> {
                         if (ctrl && shift) {
-                            if (scanner.loadImagesFromDisk(tapSongMap)) {
+                            if (scanner.loadCapturedImages(tapSongMap)) {
                                 view.addLog("Loading images from disk...");
                             } else {
                                 view.addLog("A task is running.");

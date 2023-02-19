@@ -1,9 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import javax.imageio.ImageIO;
 
 class CaptureTask {
     public enum Status {
@@ -11,13 +13,15 @@ class CaptureTask {
     }
 
 
+    public static final Path BASE_PATH = Path.of(System.getProperty("user.dir"), "cache/image");
+    public static final String FORMAT = "png";
+
     private final CaptureTaskManager manager;
     private final LocalSong song;
     public final int taskNumber;
 
     private Exception exception;
     private Status status = Status.NONE;
-    private byte[] imageBytes;
 
     public CaptureTask(CaptureTaskManager manager, int taskNumber, LocalSong song) {
         this.manager = manager;
@@ -25,24 +29,23 @@ class CaptureTask {
         this.taskNumber = taskNumber;
     }
 
+    public Path getFilePath() {
+        return BASE_PATH.resolve(String.format("%04d.%s", song.id(), FORMAT));
+    }
+
     public void saveImage(BufferedImage image) throws IOException {
-        imageBytes = ImageConverter.imageToPngBytes(image);
+        Path path = getFilePath();
+        Path dirPath = path.getParent();
+        if (dirPath != null) {
+            Files.createDirectories(dirPath);
+        }
+
+        Files.deleteIfExists(path);
+        ImageIO.write(image, FORMAT, path.toFile());
     }
 
     public BufferedImage loadImage() throws IOException {
-        if (imageBytes == null) {
-            throw new NullPointerException("image bytes is null");
-        }
-
-        return ImageConverter.pngBytesToImage(imageBytes);
-    }
-
-    public byte[] getImageBytes() {
-        return (imageBytes != null) ? imageBytes.clone() : null;
-    }
-
-    public void setImageBytes(byte[] bytes) {
-        imageBytes = bytes.clone();
+        return ImageIO.read(getFilePath().toFile());
     }
 
     public int getSongId() {

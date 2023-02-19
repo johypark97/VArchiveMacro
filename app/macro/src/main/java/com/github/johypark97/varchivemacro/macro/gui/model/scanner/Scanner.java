@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -71,40 +72,19 @@ public class Scanner {
         return true;
     }
 
-    public synchronized boolean saveImagesToDisk() {
+    public synchronized boolean loadCapturedImages(Map<String, List<LocalSong>> tabSongMap) {
         if (isRunning()) {
             return false;
         }
 
         run(() -> {
-            try {
-                taskManager.saveToDisk();
-            } catch (IOException e) {
-                whenThrown.accept(e);
-                return;
-            }
-
-            whenDone.run();
-        });
-
-        return true;
-    }
-
-    public synchronized boolean loadImagesFromDisk(Map<String, List<LocalSong>> tabSongMap) {
-        if (isRunning()) {
-            return false;
-        }
-
-        taskManager.clear();
-        tabSongMap.values().forEach((songs) -> songs.forEach(taskManager::create));
-
-        run(() -> {
-            try {
-                taskManager.loadFromDisk();
-            } catch (IOException e) {
-                whenThrown.accept(e);
-                return;
-            }
+            taskManager.clear();
+            tabSongMap.values().forEach((songs) -> songs.forEach((song) -> {
+                CaptureTask task = taskManager.create(song);
+                if (!Files.exists(task.getFilePath())) {
+                    task.setException(new IOException("File not found"));
+                }
+            }));
 
             whenDone.run();
         });

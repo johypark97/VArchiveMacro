@@ -1,6 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.ocr;
 
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.FloatPointer;
@@ -17,6 +20,17 @@ public class PixWrapper implements AutoCloseable {
 
     protected PixWrapper(PIX pixInstance) {
         this.pixInstance = pixInstance;
+    }
+
+    public PixWrapper(Path path) throws IOException {
+        if (!Files.exists(path)) {
+            throw new IOException(path + " (File not found)");
+        }
+
+        pixInstance = leptonica.pixRead(path.toString());
+        if (pixInstance == null) {
+            throw new IOException(path + " (Failed to read file)");
+        }
     }
 
     public PixWrapper(byte[] pngBytes) throws PixError {

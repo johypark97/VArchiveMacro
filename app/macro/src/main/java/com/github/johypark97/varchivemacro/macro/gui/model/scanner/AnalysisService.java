@@ -28,18 +28,8 @@ public class AnalysisService {
     public static CollectionTaskData analyze(CaptureTask task) {
         CollectionTaskData data = new CollectionTaskData();
 
-        byte[] bytes = task.getImageBytes();
-        if (bytes == null) {
-            Exception e = new NullPointerException("image bytes is null");
-            LOGGER.atDebug().addKeyValue("taskNumber", task.taskNumber)
-                    .addKeyValue("title", task.getSongTitle()).addArgument(e).log(e.getMessage());
-            task.setException(e);
-            return null;
-        }
-
-        LOGGER.atDebug().log(task.getSongTitle());
-
-        try (OcrWrapper ocr = new OcrWrapper(); PixWrapper pix = new PixWrapper(bytes)) {
+        try (OcrWrapper ocr = new OcrWrapper();
+                PixWrapper pix = new PixWrapper(task.getFilePath())) {
             ocr.setWhitelist("0123456789.%");
 
             Dimension size = new Dimension(pix.getWidth(), pix.getHeight());
@@ -91,6 +81,7 @@ public class AnalysisService {
             }
             return data;
         } catch (Exception e) {
+            task.setException(e);
             LOGGER.atError().log(e.getMessage(), e);
             return null;
         }
