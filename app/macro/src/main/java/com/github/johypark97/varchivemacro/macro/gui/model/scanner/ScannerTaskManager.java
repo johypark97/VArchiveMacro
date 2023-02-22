@@ -1,15 +1,15 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CaptureTask.Status;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.table.AbstractTableModel;
 
-class CaptureTaskManager {
-    private final Map<Integer, CaptureTask> tasks = new ConcurrentHashMap<>();
+class ScannerTaskManager {
+    private final Map<Integer, ScannerTask> tasks = new ConcurrentHashMap<>();
     public final ScannerTaskTableModel tableModel = new ScannerTaskTableModel();
 
     public void clear() {
@@ -17,10 +17,10 @@ class CaptureTaskManager {
         tableModel.fireTableDataChanged();
     }
 
-    public CaptureTask create(LocalSong song) {
+    public ScannerTask create(LocalSong song) {
         int taskNumber = tasks.size();
 
-        CaptureTask task = new CaptureTask(this, taskNumber, song);
+        ScannerTask task = new ScannerTask(this, taskNumber, song);
         tasks.put(taskNumber, task);
 
         tableModel.fireTableRowsInserted(taskNumber, taskNumber);
@@ -28,7 +28,7 @@ class CaptureTaskManager {
         return task;
     }
 
-    public CaptureTask getTask(int taskNumber) {
+    public ScannerTask getTask(int taskNumber) {
         return tasks.get(taskNumber);
     }
 
@@ -71,7 +71,7 @@ class CaptureTaskManager {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            CaptureTask task = tasks.get(rowIndex);
+            ScannerTask task = tasks.get(rowIndex);
             if (task == null) {
                 return ERROR_STRING;
             }

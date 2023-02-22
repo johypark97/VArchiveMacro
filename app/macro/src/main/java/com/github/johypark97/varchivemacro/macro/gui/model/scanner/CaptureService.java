@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CaptureTask.Status;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
 import java.awt.AWTException;
 import java.awt.Dimension;
@@ -16,7 +16,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 class CaptureService {
     private static final int INPUT_DURATION = 20;
@@ -26,10 +25,9 @@ class CaptureService {
     private final ImageCachingService imageCachingService = new ImageCachingService();
     private final Robot robot;
 
-    private final Function<LocalSong, CaptureTask> taskCreator;
     public Exception exception;
 
-    public CaptureService(Function<LocalSong, CaptureTask> taskCreator) {
+    public CaptureService() {
         try {
             robot = new Robot();
         } catch (AWTException e) {
@@ -37,8 +35,6 @@ class CaptureService {
             // mouse. (Normally never be thrown)
             throw new RuntimeException(e);
         }
-
-        this.taskCreator = taskCreator;
     }
 
     public void shutdownNow() {
@@ -58,7 +54,7 @@ class CaptureService {
         }
     }
 
-    public void execute(Map<String, List<LocalSong>> tabSongMap) {
+    public void execute(ScannerTaskManager taskManager, Map<String, List<LocalSong>> tabSongMap) {
         executor.execute(() -> {
             try {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -80,7 +76,7 @@ class CaptureService {
 
                         BufferedImage image = robot.createScreenCapture(screenRect);
 
-                        CaptureTask task = taskCreator.apply(song);
+                        ScannerTask task = taskManager.create(song);
                         task.setStatus(Status.CAPTURED);
 
                         while (true) {

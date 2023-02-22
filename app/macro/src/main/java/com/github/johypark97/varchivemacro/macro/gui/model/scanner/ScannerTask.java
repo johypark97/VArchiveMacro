@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.imageio.ImageIO;
 
-class CaptureTask {
+class ScannerTask {
     public enum Status {
         CACHED, CAPTURED, DISK_LOADED, DISK_SAVED, EXCEPTION, NONE
     }
@@ -16,14 +16,14 @@ class CaptureTask {
     public static final Path BASE_PATH = Path.of(System.getProperty("user.dir"), "cache/image");
     public static final String FORMAT = "png";
 
-    private final CaptureTaskManager manager;
+    private final ScannerTaskManager manager;
     private final LocalSong song;
     public final int taskNumber;
 
     private Exception exception;
     private Status status = Status.NONE;
 
-    public CaptureTask(CaptureTaskManager manager, int taskNumber, LocalSong song) {
+    public ScannerTask(ScannerTaskManager manager, int taskNumber, LocalSong song) {
         this.manager = manager;
         this.song = song;
         this.taskNumber = taskNumber;

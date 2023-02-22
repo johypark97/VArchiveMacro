@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-class CollectionAreaFHD implements CollectionArea {
+class CollectionAreaFHD extends AbstractCollectionArea {
     public static final Dimension RESOLUTION = new Dimension(1920, 1080);
 
     private static final Rectangle TITLE = new Rectangle(612, 282, 810, 60);

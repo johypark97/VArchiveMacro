@@ -3,15 +3,15 @@ package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Button;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.macro.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.macro.ocr.PixWrapper;
+import com.google.common.collect.Table.Cell;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class AnalysisService {
     public static final int RATE_FACTOR = 8;
     public static final int RATE_THRESHOLD = 224;
 
-    public static CollectionTaskData analyze(CaptureTask task) {
+    public static CollectionTaskData analyze(ScannerTask task) {
         CollectionTaskData data = new CollectionTaskData();
 
         try (OcrWrapper ocr = new OcrWrapper();
@@ -49,12 +49,13 @@ public class AnalysisService {
             }
 
             // -------- analyze records --------
-            for (Entry<String, List<Rectangle>> entry : area.getRateComboMarkMap().entrySet()) {
-                RecordData recordData = new RecordData();
-                Rectangle rate = entry.getValue().get(0);
-                Rectangle comboMark = entry.getValue().get(1);
+            for (Cell<Button, Pattern, String> cell : area.keys()) {
+                Button button = cell.getRowKey();
+                Pattern pattern = cell.getColumnKey();
 
-                try (PixWrapper recordPix = pix.crop(rate)) {
+                RecordData recordData = new RecordData();
+
+                try (PixWrapper recordPix = pix.crop(area.getRate(button, pattern))) {
                     recordData.rateImage = ImageConverter.pngBytesToImage(recordPix.getPngBytes());
 
                     // test whether the image contains enough black pixels using the histogram.
@@ -69,7 +70,7 @@ public class AnalysisService {
                     recordData.rate = text;
                 }
 
-                try (PixWrapper comboMarkPix = pix.crop(comboMark)) {
+                try (PixWrapper comboMarkPix = pix.crop(area.getComboMark(button, pattern))) {
                     recordData.maxComboImage =
                             ImageConverter.pngBytesToImage(comboMarkPix.getPngBytes());
 
@@ -77,7 +78,7 @@ public class AnalysisService {
                     recordData.maxCombo = r >= COMBO_MARK_RATIO;
                 }
 
-                data.addRecord(entry.getKey(), recordData);
+                data.addRecord(cell.getValue(), recordData);
             }
             return data;
         } catch (Exception e) {

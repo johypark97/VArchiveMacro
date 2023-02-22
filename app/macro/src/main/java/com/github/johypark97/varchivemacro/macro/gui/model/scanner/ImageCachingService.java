@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CaptureTask.Status;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -30,7 +30,7 @@ class ImageCachingService {
         }
     }
 
-    public void execute(CaptureTask task, BufferedImage image) {
+    public void execute(ScannerTask task, BufferedImage image) {
         executor.execute(() -> {
             try {
                 task.saveImage(image);

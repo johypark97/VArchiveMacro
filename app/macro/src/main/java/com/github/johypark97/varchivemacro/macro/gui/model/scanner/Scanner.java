@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import javax.swing.table.TableModel;
 
 public class Scanner {
-    private final CaptureTaskManager taskManager = new CaptureTaskManager();
+    private final ScannerTaskManager taskManager = new ScannerTaskManager();
 
     private final Consumer<Exception> whenThrown;
     private final Runnable whenCanceled;
@@ -29,8 +29,8 @@ public class Scanner {
         return () -> {
             taskManager.clear();
 
-            CaptureService captureService = new CaptureService(taskManager::create);
-            captureService.execute(tabSongMap);
+            CaptureService captureService = new CaptureService();
+            captureService.execute(taskManager, tabSongMap);
 
             try {
                 captureService.awaitCapture();
@@ -63,7 +63,7 @@ public class Scanner {
         return () -> {
             taskManager.clear();
             tabSongMap.values().forEach((songs) -> songs.forEach((song) -> {
-                CaptureTask task = taskManager.create(song);
+                ScannerTask task = taskManager.create(song);
                 if (!Files.exists(task.getFilePath())) {
                     task.setException(new IOException("File not found"));
                 }
@@ -78,7 +78,7 @@ public class Scanner {
     }
 
     public CollectionTaskData getTaskData(int taskNumber) {
-        CaptureTask task = taskManager.getTask(taskNumber);
+        ScannerTask task = taskManager.getTask(taskNumber);
         if (task == null) {
             return null;
         }
