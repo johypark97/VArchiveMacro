@@ -20,7 +20,7 @@
     "title": "Urban Night",
     "remote_title": null,
     "composer": "hYO",
-    "dlc": "CLAZZIQUAI",
+    "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
   {
@@ -28,7 +28,7 @@
     "title": "Urban Night",
     "remote_title": null,
     "composer": "Electronic Boutique",
-    "dlc": "EMOTIONAL S.",
+    "dlc": "Emotional Sense",
     "dlcCode": "ES"
   },
   {
@@ -36,7 +36,7 @@
     "title": "Voyage",
     "remote_title": null,
     "composer": "makou",
-    "dlc": "TECHNIKA 1",
+    "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
   {
@@ -44,7 +44,7 @@
     "title": "Voyage",
     "remote_title": null,
     "composer": "SOPHI",
-    "dlc": "V EXTENSION 2",
+    "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   }
 ]

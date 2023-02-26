@@ -12,11 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SongManager {
-    private static final String DLC_COLLABORATION_NAME = "COLLABORATION";
+    private static final String DLC_COLLABORATION_TAB = "COLLABORATION";
 
     private final DlcData dlcData;
     private final Map<Integer, LocalSong> songs;
@@ -37,21 +35,21 @@ public class SongManager {
     }
 
     public Map<String, List<LocalSong>> getTabSongMap() {
-        List<String> tabs = new ArrayList<>();
-        dlcData.dlcs.values().forEach((x) -> {
-            if (!tabs.contains(x.tab())) {
-                tabs.add(x.tab());
-            }
+        Map<String, List<LocalSong>> map = new LinkedHashMap<>();
+        dlcData.dlcs.forEach((key, value) -> {
+            String tab = value.tab();
+            String code = value.code();
+
+            List<LocalSong> list = map.computeIfAbsent(tab, x -> new ArrayList<>());
+            songs.values().stream().filter((song) -> song.dlcCode().equals(code))
+                    .forEach(list::add);
         });
 
-        Map<String, List<LocalSong>> map = new LinkedHashMap<>();
-        tabs.forEach((tab) -> {
-            Stream<LocalSong> stream = songs.values().stream().filter((x) -> tab.equals(x.dlc()));
-
-            if (!DLC_COLLABORATION_NAME.equals(tab)) {
-                stream = stream.sorted(new LocalSongComparator());
+        map.forEach((key, value) -> {
+            if (!DLC_COLLABORATION_TAB.equals(key)) {
+                value.sort(new LocalSongComparator());
             } else {
-                stream = stream.sorted(new LocalSongComparator() {
+                value.sort(new LocalSongComparator() {
                     @Serial
                     private static final long serialVersionUID = -217358984531426514L;
 
@@ -69,8 +67,6 @@ public class SongManager {
                     }
                 });
             }
-
-            map.put(tab, stream.collect(Collectors.toCollection(ArrayList::new)));
         });
 
         return map;

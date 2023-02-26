@@ -72,7 +72,6 @@ public class DatabaseModel {
             }
         }
 
-        return localSong.dlc().equals(remoteSong.dlc) && localSong.dlcCode()
-                .equals(remoteSong.dlcCode);
+        return localSong.dlcCode().equals(remoteSong.dlcCode);
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class DlcData {
-    public record DlcInfo(@Expose String name, @Expose String code, @Expose String tab) {
+    public record DlcInfo(@Expose String code, @Expose String name, @Expose String tab) {
     }
 
 

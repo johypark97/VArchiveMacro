@@ -1,128 +1,128 @@
 {
   "dlcs": {
     "0": {
-      "name": "Respect",
       "code": "R",
+      "name": "Respect",
       "tab": "RESPECT"
     },
     "1": {
-      "name": "Portable 1",
       "code": "P1",
+      "name": "Portable",
       "tab": "PORTABLE 1"
     },
     "2": {
-      "name": "Portable 2",
       "code": "P2",
+      "name": "Portable 2",
       "tab": "PORTABLE 2"
     },
     "3": {
-      "name": "Portable 3",
       "code": "P3",
+      "name": "Portable 3",
       "tab": "PORTABLE 3"
     },
     "4": {
-      "name": "Trilogy",
       "code": "TR",
+      "name": "Trilogy",
       "tab": "TRILOGY"
     },
     "5": {
-      "name": "Clazziquai Edition",
       "code": "CE",
+      "name": "Clazziquai Edition",
       "tab": "CLAZZIQUAI"
     },
     "6": {
-      "name": "Black Square",
       "code": "BS",
+      "name": "Black Square",
       "tab": "BLACK SQUARE"
     },
     "7": {
-      "name": "V Extension",
       "code": "VE",
+      "name": "V Extension",
       "tab": "V EXTENSION"
     },
     "8": {
-      "name": "V Extension 2",
       "code": "VE2",
+      "name": "V Extension 2",
       "tab": "V EXTENSION 2"
     },
     "9": {
-      "name": "V Extension 3",
       "code": "VE3",
+      "name": "V Extension 3",
       "tab": "V EXTENSION 3"
     },
     "10": {
-      "name": "Emotional Sense",
       "code": "ES",
+      "name": "Emotional Sense",
       "tab": "EMOTIONAL S."
     },
     "11": {
-      "name": "Technika 1",
       "code": "T1",
+      "name": "Technika",
       "tab": "TECHNIKA 1"
     },
     "12": {
-      "name": "Technika 2",
       "code": "T2",
+      "name": "Technika 2",
       "tab": "TECHNIKA 2"
     },
     "13": {
-      "name": "Technika 3",
       "code": "T3",
+      "name": "Technika 3",
       "tab": "TECHNIKA 3"
     },
     "14": {
-      "name": "Technika Tune & Q",
       "code": "TQ",
-      "tab": "TECHNIKA T&Q"
+      "name": "Technika Tune & Q",
+      "tab": "TECHNIKA TUNE Q"
     },
     "15": {
-      "name": "Guilty Gear",
       "code": "GG",
+      "name": "Guilty Gear",
       "tab": "COLLABORATION"
     },
     "16": {
-      "name": "Chunithm",
       "code": "CHU",
+      "name": "Chunithm",
       "tab": "COLLABORATION"
     },
     "17": {
-      "name": "Cytus",
       "code": "CY",
+      "name": "Cytus",
       "tab": "COLLABORATION"
     },
     "18": {
-      "name": "Deemo",
       "code": "DM",
+      "name": "Deemo",
       "tab": "COLLABORATION"
     },
     "19": {
-      "name": "Estimate",
       "code": "ESTI",
+      "name": "Estimate",
       "tab": "COLLABORATION"
     },
     "20": {
-      "name": "EZ2ON",
       "code": "EZ2",
+      "name": "EZ2ON",
       "tab": "COLLABORATION"
     },
     "21": {
-      "name": "Groove Coaster",
       "code": "GC",
+      "name": "Groove Coaster",
       "tab": "COLLABORATION"
     },
     "22": {
-      "name": "Girls' Frontline",
       "code": "GF",
+      "name": "Girls' Frontline",
       "tab": "COLLABORATION"
     },
     "23": {
-      "name": "Muse Dash",
       "code": "MD",
+      "name": "Muse Dash",
       "tab": "COLLABORATION"
     },
     "24": {
-      "name": "Nexon",
       "code": "NXN",
+      "name": "Nexon",
       "tab": "COLLABORATION"
     }
   },
