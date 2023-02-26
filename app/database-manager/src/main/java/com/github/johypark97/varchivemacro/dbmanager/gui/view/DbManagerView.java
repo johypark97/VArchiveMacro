@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.view;
 
-import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Presenter;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.View;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.TableUtil;
 import java.awt.BorderLayout;
@@ -12,8 +13,11 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.Serial;
 import java.nio.file.Path;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -32,24 +36,22 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-public class DbManagerView extends JFrame implements IDbManager.View {
+public class DbManagerView extends JFrame implements View, WindowListener {
     @Serial
     private static final long serialVersionUID = 1539051679420322263L;
 
     private static final String TITLE = "Database Manager";
-
-    private static final int FRAME_HEIGHT = 600;
-    private static final int FRAME_WIDTH = 800;
+    private static final int WINDOW_HEIGHT = 600;
+    private static final int WINDOW_WIDTH = 800;
 
     // presenter
-    public transient IDbManager.Presenter presenter;
+    public transient Presenter presenter;
 
     // components
     protected JMenuItem menuItemExit;
@@ -67,22 +69,25 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     protected JButton checkerCheckButton;
 
     // event listeners
-    private transient final ActionListener actionListener = new DbManagerViewActionListener(this);
+    private transient final ActionListener buttonListener = new DbManagerViewButtonListener(this);
     private transient final ActionListener menuListener = new DbManagerViewMenuListener(this);
     private transient final DocumentListener documentListener =
             new DbManagerViewDocumentListener(this);
 
     public DbManagerView() {
-        setTitle(TITLE);
+        super(TITLE);
+
         setFrameOption();
         setContentPanel();
         setContent();
+
+        addWindowListener(this);
     }
 
     private void setFrameOption() {
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setResizable(true);
-        setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 
         setLocationRelativeTo(null);
     }
@@ -131,11 +136,11 @@ public class DbManagerView extends JFrame implements IDbManager.View {
 
         // button
         songsFileSelectButton = new JButton("select");
-        songsFileSelectButton.addActionListener(actionListener);
+        songsFileSelectButton.addActionListener(buttonListener);
         box.add(songsFileSelectButton);
 
         songsFileLoadButton = new JButton("load");
-        songsFileLoadButton.addActionListener(actionListener);
+        songsFileLoadButton.addActionListener(buttonListener);
         box.add(songsFileLoadButton);
 
         return box;
@@ -169,12 +174,12 @@ public class DbManagerView extends JFrame implements IDbManager.View {
         toolBox.add(songsFilterTextField);
 
         songsFilterColumnComboBox = new JComboBox<>();
-        songsFilterColumnComboBox.addActionListener(actionListener);
+        songsFilterColumnComboBox.addActionListener(buttonListener);
         ComponentSize.shrinkWidthToContents(songsFilterColumnComboBox);
         toolBox.add(songsFilterColumnComboBox);
 
         songsFilterResetButton = new JButton("reset");
-        songsFilterResetButton.addActionListener(actionListener);
+        songsFilterResetButton.addActionListener(buttonListener);
         toolBox.add(songsFilterResetButton);
 
         ComponentSize.shrinkHeightToContents(toolBox);
@@ -224,7 +229,7 @@ public class DbManagerView extends JFrame implements IDbManager.View {
         toolBox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
         checkerCheckButton = new JButton("check");
-        checkerCheckButton.addActionListener(actionListener);
+        checkerCheckButton.addActionListener(buttonListener);
         toolBox.add(checkerCheckButton);
 
         ComponentSize.shrinkHeightToContents(toolBox);
@@ -242,7 +247,7 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     }
 
     @Override
-    public void setPresenter(IDbManager.Presenter presenter) {
+    public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -252,9 +257,13 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     }
 
     @Override
-    public void showDialog(String title, int messageType, Object... messages) {
-        SwingUtilities.invokeLater(
-                () -> JOptionPane.showMessageDialog(this, messages, title, messageType));
+    public void disposeView() {
+        dispose();
+    }
+
+    @Override
+    public void showErrorDialog(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
@@ -274,11 +283,9 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     }
 
     @Override
-    public void setSongsTableFilterColumnItems(String... items) {
+    public void setSongsTableFilterColumnItems(List<String> items) {
         songsFilterColumnComboBox.removeAllItems();
-        for (String i : items) {
-            songsFilterColumnComboBox.addItem(i);
-        }
+        items.forEach(songsFilterColumnComboBox::addItem);
     }
 
     @Override
@@ -296,6 +303,35 @@ public class DbManagerView extends JFrame implements IDbManager.View {
     public void setCheckerResultText(String value) {
         checkerResultTextArea.setText(value);
     }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        presenter.stop();
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+    }
 }
 
 
@@ -311,7 +347,7 @@ class DbManagerViewMenuListener implements ActionListener {
         Object source = e.getSource();
 
         if (source.equals(view.menuItemExit)) {
-            view.dispose();
+            view.presenter.stop();
         } else {
             // TODO: Remove println after completing the view.
             System.out.println(source); // NOPMD
@@ -320,11 +356,11 @@ class DbManagerViewMenuListener implements ActionListener {
 }
 
 
-class DbManagerViewActionListener implements ActionListener {
+class DbManagerViewButtonListener implements ActionListener {
     private final DbManagerView view;
     private final JsonFileChooser jsonFileChooser = new JsonFileChooser();
 
-    public DbManagerViewActionListener(DbManagerView view) {
+    public DbManagerViewButtonListener(DbManagerView view) {
         this.view = view;
     }
 

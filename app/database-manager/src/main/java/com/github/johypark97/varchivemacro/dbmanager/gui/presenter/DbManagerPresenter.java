@@ -3,27 +3,48 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.presenter;
 import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_dump;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.DatabaseModel;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Presenter;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.View;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
-import javax.swing.JOptionPane;
 
-public class DbManagerPresenter implements IDbManager.Presenter {
+public class DbManagerPresenter implements Presenter {
     // model
     private final DatabaseModel databaseModel = new DatabaseModel();
 
     // view
-    public final IDbManager.View view;
+    private final Class<? extends View> viewClass;
+    public View view;
 
-    public DbManagerPresenter(IDbManager.View view) {
-        this.view = view;
-        this.view.setPresenter(this);
+    public DbManagerPresenter(Class<? extends View> viewClass) {
+        this.viewClass = viewClass;
+    }
+
+    private void newView() {
+        try {
+            view = viewClass.getConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+
+        view.setPresenter(this);
     }
 
     @Override
-    public void start() {
+    public synchronized void start() {
+        if (view != null) {
+            return;
+        }
+        newView();
+
         view.showView();
+    }
+
+    @Override
+    public void stop() {
+        view.disposeView();
     }
 
     @Override
@@ -32,10 +53,10 @@ public class DbManagerPresenter implements IDbManager.Presenter {
             Path path = Path.of(view.getSongsFileText());
             databaseModel.loadSongs(path);
         } catch (IOException e) {
-            view.showDialog("IO Error", JOptionPane.ERROR_MESSAGE, "Cannot read the file");
+            view.showErrorDialog("Cannot read the file");
             return;
         } catch (RuntimeException e) {
-            view.showDialog("Runtime Exception", JOptionPane.ERROR_MESSAGE, e.getMessage());
+            view.showErrorDialog(e.getMessage());
             return;
         }
 
@@ -55,23 +76,19 @@ public class DbManagerPresenter implements IDbManager.Presenter {
     @Override
     public void checkSongs() {
         if (!databaseModel.isSongLoaded()) {
-            view.showDialog("Songs file is not loaded", JOptionPane.ERROR_MESSAGE,
-                    "Songs file is not loaded");
+            view.showErrorDialog("A songs json file not loaded");
             return;
         }
 
         try {
             databaseModel.checkRemote();
         } catch (GeneralSecurityException e) {
-            view.showDialog("TLS Error", JOptionPane.ERROR_MESSAGE, "TLS Init Error");
+            view.showErrorDialog("TLS Init Error");
             return;
-        } catch (IOException e) {
-            view.showDialog("Network Error", JOptionPane.ERROR_MESSAGE, e.getMessage());
+        } catch (IOException | RuntimeException e) {
+            view.showErrorDialog(e.getMessage());
             return;
         } catch (InterruptedException e) {
-            return;
-        } catch (RuntimeException e) {
-            view.showDialog("Runtime Exception", JOptionPane.ERROR_MESSAGE, e.getMessage());
             return;
         }
 

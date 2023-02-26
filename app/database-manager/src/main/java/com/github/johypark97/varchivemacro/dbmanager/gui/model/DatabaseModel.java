@@ -33,9 +33,8 @@ public class DatabaseModel {
         return songs != null;
     }
 
-    public String[] getFilterableColumns() {
-        return DatabaseTableModel.COLUMNS.stream().filter((x) -> !"id".equals(x))
-                .toArray(String[]::new);
+    public List<String> getFilterableColumns() {
+        return DatabaseTableModel.COLUMNS.stream().filter((x) -> !"id".equals(x)).toList();
     }
 
     public void setFilter(String pattern, String column) {

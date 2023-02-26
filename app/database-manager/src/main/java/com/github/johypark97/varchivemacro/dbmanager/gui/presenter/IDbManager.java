@@ -1,11 +1,14 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.presenter;
 
+import java.util.List;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public interface IDbManager {
     interface Presenter {
         void start();
+
+        void stop();
 
         void loadSongs();
 
@@ -20,7 +23,9 @@ public interface IDbManager {
 
         void showView();
 
-        void showDialog(String title, int messageType, Object... messages);
+        void disposeView();
+
+        void showErrorDialog(String message);
 
         String getSongsFileText();
 
@@ -28,7 +33,7 @@ public interface IDbManager {
 
         void setSongsTableRowSorter(TableRowSorter<TableModel> tableRowSorter);
 
-        void setSongsTableFilterColumnItems(String... items);
+        void setSongsTableFilterColumnItems(List<String> items);
 
         String getSongsTableFilterColumn();
 

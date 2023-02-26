@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
 public class Main {
     // dbManager
     private final DbManagerPresenter dbManagerPresenter =
-            new DbManagerPresenter(new DbManagerView());
+            new DbManagerPresenter(DbManagerView.class);
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
