@@ -18,11 +18,6 @@ public class LocalSongComparator implements Comparator<LocalSong>, Serializable 
             return ret;
         }
 
-        ret = o1.dlc().compareTo(o2.dlc());
-        if (ret != 0) {
-            return ret;
-        }
-
-        return o1.composer().compareTo(o2.composer());
+        return o1.priority() - o2.priority();
     }
 }

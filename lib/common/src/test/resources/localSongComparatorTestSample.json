@@ -5,7 +5,8 @@
     "remote_title": null,
     "composer": "Marshmello",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 441,
@@ -13,7 +14,26 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 1
+  },
+  {
+    "id": 320,
+    "title": "Showdown",
+    "remote_title": null,
+    "composer": "LeeZu",
+    "dlc": "TECHNIKA 3",
+    "dlcCode": "T3",
+    "priority": 0
+  },
+  {
+    "id": 538,
+    "title": "Showdown",
+    "remote_title": null,
+    "composer": "Andy Lee",
+    "dlc": "EZ2ON",
+    "dlcCode": "EZ2",
+    "priority": 1
   },
   {
     "id": 267,
@@ -21,7 +41,8 @@
     "remote_title": null,
     "composer": "hYO",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 170,
@@ -29,7 +50,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "Emotional Sense",
-    "dlcCode": "ES"
+    "dlcCode": "ES",
+    "priority": 1
   },
   {
     "id": 369,
@@ -37,7 +59,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 459,
@@ -45,6 +68,7 @@
     "remote_title": null,
     "composer": "SOPHI",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 1
   }
 ]

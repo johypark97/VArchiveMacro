@@ -5,7 +5,8 @@
     "remote_title": null,
     "composer": "Mycin.T",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 1,
@@ -13,7 +14,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 2,
@@ -21,7 +23,8 @@
     "remote_title": null,
     "composer": "Marshmello",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 3,
@@ -29,7 +32,8 @@
     "remote_title": null,
     "composer": "신지",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 4,
@@ -37,7 +41,8 @@
     "remote_title": null,
     "composer": "ned",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 5,
@@ -45,7 +50,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 6,
@@ -53,7 +59,8 @@
     "remote_title": null,
     "composer": "Mycin.T",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 7,
@@ -61,7 +68,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 8,
@@ -69,7 +77,8 @@
     "remote_title": null,
     "composer": "BEXTER",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 9,
@@ -77,7 +86,8 @@
     "remote_title": null,
     "composer": "BEXTER",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 10,
@@ -85,7 +95,8 @@
     "remote_title": null,
     "composer": "Mycin.T",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 11,
@@ -93,7 +104,8 @@
     "remote_title": null,
     "composer": "GOTH",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 12,
@@ -101,7 +113,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 13,
@@ -109,7 +122,8 @@
     "remote_title": null,
     "composer": "GOTH",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 14,
@@ -117,7 +131,8 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 15,
@@ -125,7 +140,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 16,
@@ -133,7 +149,8 @@
     "remote_title": null,
     "composer": "BEXTER / Mycin.T",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 17,
@@ -141,7 +158,8 @@
     "remote_title": null,
     "composer": "Mycin.T",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 18,
@@ -149,7 +167,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 19,
@@ -157,7 +176,8 @@
     "remote_title": null,
     "composer": "GOTH",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 20,
@@ -165,7 +185,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 21,
@@ -173,7 +194,8 @@
     "remote_title": null,
     "composer": "zts",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 22,
@@ -181,7 +203,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 23,
@@ -189,7 +212,8 @@
     "remote_title": null,
     "composer": "Sampling Masters MEGA",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 24,
@@ -197,7 +221,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 25,
@@ -205,7 +230,8 @@
     "remote_title": null,
     "composer": "YUKIKA",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 26,
@@ -213,7 +239,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 27,
@@ -221,7 +248,8 @@
     "remote_title": null,
     "composer": "JC",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 28,
@@ -229,7 +257,8 @@
     "remote_title": null,
     "composer": "xxdbxx",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 29,
@@ -237,7 +266,8 @@
     "remote_title": null,
     "composer": "bermei.inazawa",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 30,
@@ -245,7 +275,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 31,
@@ -253,7 +284,8 @@
     "remote_title": null,
     "composer": "bermei.inazawa",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 32,
@@ -261,7 +293,8 @@
     "remote_title": null,
     "composer": "LeeZu",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 33,
@@ -269,7 +302,8 @@
     "remote_title": null,
     "composer": "Mycin.T",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 34,
@@ -277,7 +311,8 @@
     "remote_title": null,
     "composer": "GOTH",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 35,
@@ -285,7 +320,8 @@
     "remote_title": null,
     "composer": "DINY",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 36,
@@ -293,7 +329,8 @@
     "remote_title": null,
     "composer": "ned",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 37,
@@ -301,7 +338,8 @@
     "remote_title": null,
     "composer": "Supbaby",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 38,
@@ -309,7 +347,8 @@
     "remote_title": null,
     "composer": "NEOWIZ Bless Soundteam",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 39,
@@ -317,7 +356,8 @@
     "remote_title": null,
     "composer": "GOTH",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 40,
@@ -325,7 +365,8 @@
     "remote_title": null,
     "composer": "Lena",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 41,
@@ -333,7 +374,8 @@
     "remote_title": null,
     "composer": "HAYAKO",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 42,
@@ -341,7 +383,8 @@
     "remote_title": null,
     "composer": "Cuve",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 43,
@@ -349,7 +392,8 @@
     "remote_title": null,
     "composer": "Kobayashi Tetsuya",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 44,
@@ -357,7 +401,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 45,
@@ -365,7 +410,8 @@
     "remote_title": null,
     "composer": "Mycin.T",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 46,
@@ -373,7 +419,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 47,
@@ -381,7 +428,8 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 48,
@@ -389,7 +437,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 49,
@@ -397,7 +446,8 @@
     "remote_title": null,
     "composer": "xxdbxx",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 50,
@@ -405,7 +455,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 51,
@@ -413,7 +464,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 52,
@@ -421,7 +473,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 53,
@@ -429,7 +482,8 @@
     "remote_title": null,
     "composer": "Planetboom",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 54,
@@ -437,7 +491,8 @@
     "remote_title": null,
     "composer": "BEXTER",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 55,
@@ -445,7 +500,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 56,
@@ -453,7 +509,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 57,
@@ -461,7 +518,8 @@
     "remote_title": null,
     "composer": "xxdbxx",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 58,
@@ -469,7 +527,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 59,
@@ -477,7 +536,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 60,
@@ -485,7 +545,8 @@
     "remote_title": null,
     "composer": "DJ Mocha",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 61,
@@ -493,7 +554,8 @@
     "remote_title": null,
     "composer": "EarBreaker / Eszett",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 62,
@@ -501,7 +563,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 63,
@@ -509,7 +572,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 64,
@@ -517,7 +581,8 @@
     "remote_title": null,
     "composer": "Planetboom",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 65,
@@ -525,7 +590,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 66,
@@ -533,7 +599,8 @@
     "remote_title": null,
     "composer": "Ruby Tuesday",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 67,
@@ -541,7 +608,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 68,
@@ -549,7 +617,8 @@
     "remote_title": null,
     "composer": "Supbaby",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 69,
@@ -557,7 +626,8 @@
     "remote_title": null,
     "composer": "ESTi",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 70,
@@ -565,7 +635,8 @@
     "remote_title": null,
     "composer": "bermei.inazawa",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 71,
@@ -573,7 +644,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 72,
@@ -581,7 +653,8 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 73,
@@ -589,7 +662,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 74,
@@ -597,7 +671,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 75,
@@ -605,7 +680,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 76,
@@ -613,7 +689,8 @@
     "remote_title": null,
     "composer": "Dayz",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 77,
@@ -621,7 +698,8 @@
     "remote_title": null,
     "composer": "Dayz",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 78,
@@ -629,7 +707,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 79,
@@ -637,7 +716,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 80,
@@ -645,7 +725,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 81,
@@ -653,7 +734,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 82,
@@ -661,7 +743,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 83,
@@ -669,7 +752,8 @@
     "remote_title": null,
     "composer": "zts",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 84,
@@ -677,7 +761,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 85,
@@ -685,7 +770,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 86,
@@ -693,7 +779,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 87,
@@ -701,7 +788,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 88,
@@ -709,7 +797,8 @@
     "remote_title": null,
     "composer": "Ruby Tuesday",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 89,
@@ -717,7 +806,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 90,
@@ -725,7 +815,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 91,
@@ -733,7 +824,8 @@
     "remote_title": null,
     "composer": "Oriental ST8",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 92,
@@ -741,7 +833,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 93,
@@ -749,7 +842,8 @@
     "remote_title": null,
     "composer": "PlanetBoom",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 94,
@@ -757,7 +851,8 @@
     "remote_title": null,
     "composer": "Ruby Tuesday",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 95,
@@ -765,7 +860,8 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 96,
@@ -773,7 +869,8 @@
     "remote_title": null,
     "composer": "BEXTER",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 97,
@@ -781,7 +878,8 @@
     "remote_title": null,
     "composer": "zts",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 98,
@@ -789,7 +887,8 @@
     "remote_title": "Yellowberry ~AJ Mix~",
     "composer": "Forte Escape",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 99,
@@ -797,7 +896,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 100,
@@ -805,7 +905,8 @@
     "remote_title": null,
     "composer": "Ruby Tuesday",
     "dlc": "Portable 2",
-    "dlcCode": "P2"
+    "dlcCode": "P2",
+    "priority": 0
   },
   {
     "id": 101,
@@ -813,7 +914,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 102,
@@ -821,7 +923,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 103,
@@ -829,7 +932,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 104,
@@ -837,7 +941,8 @@
     "remote_title": null,
     "composer": "WavFactory",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 105,
@@ -845,7 +950,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 106,
@@ -853,7 +959,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 107,
@@ -861,7 +968,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 108,
@@ -869,7 +977,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 109,
@@ -877,7 +986,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 110,
@@ -885,7 +995,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 111,
@@ -893,7 +1004,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 112,
@@ -901,7 +1013,8 @@
     "remote_title": null,
     "composer": "CrooFE",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 113,
@@ -909,7 +1022,8 @@
     "remote_title": null,
     "composer": "EarBreaker",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 114,
@@ -917,7 +1031,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 115,
@@ -925,7 +1040,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 116,
@@ -933,7 +1049,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 117,
@@ -941,7 +1058,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 118,
@@ -949,7 +1067,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 119,
@@ -957,7 +1076,8 @@
     "remote_title": null,
     "composer": "Supbaby",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 120,
@@ -965,7 +1085,8 @@
     "remote_title": null,
     "composer": "xxdbxx",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 121,
@@ -973,7 +1094,8 @@
     "remote_title": null,
     "composer": "Supbaby",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 122,
@@ -981,7 +1103,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 123,
@@ -989,7 +1112,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 124,
@@ -997,7 +1121,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 125,
@@ -1005,7 +1130,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 126,
@@ -1013,7 +1139,8 @@
     "remote_title": null,
     "composer": "xxdbxx",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 127,
@@ -1021,7 +1148,8 @@
     "remote_title": null,
     "composer": "Gonzo",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 128,
@@ -1029,7 +1157,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 129,
@@ -1037,7 +1166,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 130,
@@ -1045,7 +1175,8 @@
     "remote_title": null,
     "composer": "xxdbxx",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 131,
@@ -1053,7 +1184,8 @@
     "remote_title": null,
     "composer": "ESTi",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 132,
@@ -1061,7 +1193,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 133,
@@ -1069,7 +1202,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 134,
@@ -1077,7 +1211,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 135,
@@ -1085,7 +1220,8 @@
     "remote_title": null,
     "composer": "EarBreaker",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 136,
@@ -1093,7 +1229,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 137,
@@ -1101,7 +1238,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 138,
@@ -1109,7 +1247,8 @@
     "remote_title": null,
     "composer": "ESTi",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 139,
@@ -1117,7 +1256,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 140,
@@ -1125,7 +1265,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 141,
@@ -1133,7 +1274,8 @@
     "remote_title": null,
     "composer": "xxdbxx",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 142,
@@ -1141,7 +1283,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 143,
@@ -1149,7 +1292,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 144,
@@ -1157,7 +1301,8 @@
     "remote_title": null,
     "composer": "ESTi",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 145,
@@ -1165,7 +1310,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 146,
@@ -1173,7 +1319,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 147,
@@ -1181,7 +1328,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 148,
@@ -1189,7 +1337,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 149,
@@ -1197,7 +1346,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 150,
@@ -1205,7 +1355,8 @@
     "remote_title": null,
     "composer": "ESTi",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 151,
@@ -1213,7 +1364,8 @@
     "remote_title": null,
     "composer": "ESTi",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 152,
@@ -1221,7 +1373,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 153,
@@ -1229,7 +1382,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 154,
@@ -1237,7 +1391,8 @@
     "remote_title": null,
     "composer": "S-TRO",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 155,
@@ -1245,7 +1400,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 156,
@@ -1253,7 +1409,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Portable",
-    "dlcCode": "P1"
+    "dlcCode": "P1",
+    "priority": 0
   },
   {
     "id": 157,
@@ -1261,7 +1418,8 @@
     "remote_title": null,
     "composer": "Virtual Self",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 158,
@@ -1269,7 +1427,8 @@
     "remote_title": null,
     "composer": "Porter Robinson",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 159,
@@ -1277,7 +1436,8 @@
     "remote_title": null,
     "composer": "Axol & The Tech Thieves",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 160,
@@ -1285,7 +1445,8 @@
     "remote_title": null,
     "composer": "Phantom Sage",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 161,
@@ -1293,7 +1454,8 @@
     "remote_title": null,
     "composer": "Raven & Kreyn",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 162,
@@ -1301,7 +1463,8 @@
     "remote_title": null,
     "composer": "Agnete K",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 163,
@@ -1309,7 +1472,8 @@
     "remote_title": null,
     "composer": "K/DA",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 164,
@@ -1317,7 +1481,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Emotional Sense",
-    "dlcCode": "ES"
+    "dlcCode": "ES",
+    "priority": 0
   },
   {
     "id": 165,
@@ -1325,7 +1490,8 @@
     "remote_title": null,
     "composer": "DJ Mocha",
     "dlc": "Emotional Sense",
-    "dlcCode": "ES"
+    "dlcCode": "ES",
+    "priority": 0
   },
   {
     "id": 166,
@@ -1333,7 +1499,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "Emotional Sense",
-    "dlcCode": "ES"
+    "dlcCode": "ES",
+    "priority": 0
   },
   {
     "id": 167,
@@ -1341,7 +1508,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Emotional Sense",
-    "dlcCode": "ES"
+    "dlcCode": "ES",
+    "priority": 0
   },
   {
     "id": 168,
@@ -1349,7 +1517,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Emotional Sense",
-    "dlcCode": "ES"
+    "dlcCode": "ES",
+    "priority": 0
   },
   {
     "id": 169,
@@ -1357,7 +1526,8 @@
     "remote_title": null,
     "composer": "Earbreaker",
     "dlc": "Emotional Sense",
-    "dlcCode": "ES"
+    "dlcCode": "ES",
+    "priority": 0
   },
   {
     "id": 170,
@@ -1365,7 +1535,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "Emotional Sense",
-    "dlcCode": "ES"
+    "dlcCode": "ES",
+    "priority": 1
   },
   {
     "id": 171,
@@ -1373,7 +1544,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "Emotional Sense",
-    "dlcCode": "ES"
+    "dlcCode": "ES",
+    "priority": 0
   },
   {
     "id": 172,
@@ -1381,7 +1553,8 @@
     "remote_title": null,
     "composer": "Mr.Funky",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 173,
@@ -1389,7 +1562,8 @@
     "remote_title": null,
     "composer": "Cranky",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 174,
@@ -1397,7 +1571,8 @@
     "remote_title": null,
     "composer": "House Rulez",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 175,
@@ -1405,7 +1580,8 @@
     "remote_title": null,
     "composer": "BEXTER",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 176,
@@ -1413,7 +1589,8 @@
     "remote_title": null,
     "composer": "SiNA x CHUCK",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 177,
@@ -1421,7 +1598,8 @@
     "remote_title": null,
     "composer": "Messier",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 178,
@@ -1429,7 +1607,8 @@
     "remote_title": null,
     "composer": "Pure 100%",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 179,
@@ -1437,7 +1616,8 @@
     "remote_title": null,
     "composer": "onoken",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 180,
@@ -1445,7 +1625,8 @@
     "remote_title": null,
     "composer": "Benicx",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 181,
@@ -1453,7 +1634,8 @@
     "remote_title": null,
     "composer": "IMLAY",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 182,
@@ -1461,7 +1643,8 @@
     "remote_title": null,
     "composer": "Alice Schach and the Magic Orchestra",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 183,
@@ -1469,7 +1652,8 @@
     "remote_title": null,
     "composer": "Mycin.T x jam-jam",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 184,
@@ -1477,7 +1661,8 @@
     "remote_title": null,
     "composer": "IMLAY / YESEO",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 185,
@@ -1485,7 +1670,8 @@
     "remote_title": null,
     "composer": "HAYAKO",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 186,
@@ -1493,7 +1679,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 187,
@@ -1501,7 +1688,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 188,
@@ -1509,7 +1697,8 @@
     "remote_title": null,
     "composer": "Bagagee Viphex13",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 189,
@@ -1517,7 +1706,8 @@
     "remote_title": null,
     "composer": "GOTH",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 190,
@@ -1525,7 +1715,8 @@
     "remote_title": null,
     "composer": "Pory",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 191,
@@ -1533,7 +1724,8 @@
     "remote_title": null,
     "composer": "MYUKKE.",
     "dlc": "V Extension",
-    "dlcCode": "VE"
+    "dlcCode": "VE",
+    "priority": 0
   },
   {
     "id": 192,
@@ -1541,7 +1733,8 @@
     "remote_title": null,
     "composer": "COSIO",
     "dlc": "GROOVE COASTER",
-    "dlcCode": "GC"
+    "dlcCode": "GC",
+    "priority": 0
   },
   {
     "id": 193,
@@ -1549,7 +1742,8 @@
     "remote_title": null,
     "composer": "t+pazolite",
     "dlc": "GROOVE COASTER",
-    "dlcCode": "GC"
+    "dlcCode": "GC",
+    "priority": 0
   },
   {
     "id": 194,
@@ -1557,7 +1751,8 @@
     "remote_title": null,
     "composer": "E.G.G.",
     "dlc": "GROOVE COASTER",
-    "dlcCode": "GC"
+    "dlcCode": "GC",
+    "priority": 0
   },
   {
     "id": 195,
@@ -1565,7 +1760,8 @@
     "remote_title": null,
     "composer": "COSIO",
     "dlc": "GROOVE COASTER",
-    "dlcCode": "GC"
+    "dlcCode": "GC",
+    "priority": 0
   },
   {
     "id": 196,
@@ -1573,7 +1769,8 @@
     "remote_title": null,
     "composer": "Tsukasa Yatoki feat. Erica Masaki",
     "dlc": "GROOVE COASTER",
-    "dlcCode": "GC"
+    "dlcCode": "GC",
+    "priority": 0
   },
   {
     "id": 197,
@@ -1581,7 +1778,8 @@
     "remote_title": null,
     "composer": "t+pazolite",
     "dlc": "GROOVE COASTER",
-    "dlcCode": "GC"
+    "dlcCode": "GC",
+    "priority": 0
   },
   {
     "id": 198,
@@ -1589,7 +1787,8 @@
     "remote_title": null,
     "composer": "Cranky VS MASAKI",
     "dlc": "GROOVE COASTER",
-    "dlcCode": "GC"
+    "dlcCode": "GC",
+    "priority": 0
   },
   {
     "id": 199,
@@ -1597,7 +1796,8 @@
     "remote_title": null,
     "composer": "REDALiCE feat. Ayumi Nomiya",
     "dlc": "GROOVE COASTER",
-    "dlcCode": "GC"
+    "dlcCode": "GC",
+    "priority": 0
   },
   {
     "id": 200,
@@ -1605,7 +1805,8 @@
     "remote_title": null,
     "composer": "t+pazolite",
     "dlc": "GROOVE COASTER",
-    "dlcCode": "GC"
+    "dlcCode": "GC",
+    "priority": 0
   },
   {
     "id": 201,
@@ -1613,7 +1814,8 @@
     "remote_title": null,
     "composer": "Cranky",
     "dlc": "GROOVE COASTER",
-    "dlcCode": "GC"
+    "dlcCode": "GC",
+    "priority": 0
   },
   {
     "id": 202,
@@ -1621,7 +1823,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 203,
@@ -1629,7 +1832,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 204,
@@ -1637,7 +1841,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 205,
@@ -1645,7 +1850,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 206,
@@ -1653,7 +1859,8 @@
     "remote_title": null,
     "composer": "Planetboom",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 207,
@@ -1661,7 +1868,8 @@
     "remote_title": null,
     "composer": "DJ EON",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 208,
@@ -1669,7 +1877,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 209,
@@ -1677,7 +1886,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 210,
@@ -1685,7 +1895,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 211,
@@ -1693,7 +1904,8 @@
     "remote_title": null,
     "composer": "Forte Escape",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 212,
@@ -1701,7 +1913,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 213,
@@ -1709,7 +1922,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 214,
@@ -1717,7 +1931,8 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 215,
@@ -1725,7 +1940,8 @@
     "remote_title": null,
     "composer": "DJ EON",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 216,
@@ -1733,7 +1949,8 @@
     "remote_title": null,
     "composer": "xxdbxx",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 217,
@@ -1741,7 +1958,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 218,
@@ -1749,7 +1967,8 @@
     "remote_title": null,
     "composer": "Cycle75",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 219,
@@ -1757,7 +1976,8 @@
     "remote_title": null,
     "composer": "BEXTER",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 220,
@@ -1765,7 +1985,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 221,
@@ -1773,7 +1994,8 @@
     "remote_title": null,
     "composer": "BEXTER",
     "dlc": "TRILOGY",
-    "dlcCode": "TR"
+    "dlcCode": "TR",
+    "priority": 0
   },
   {
     "id": 222,
@@ -1781,7 +2003,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 223,
@@ -1789,7 +2012,8 @@
     "remote_title": null,
     "composer": "Daisuke Ishiwatari",
     "dlc": "GUILTY GEAR",
-    "dlcCode": "GG"
+    "dlcCode": "GG",
+    "priority": 0
   },
   {
     "id": 224,
@@ -1797,7 +2021,8 @@
     "remote_title": null,
     "composer": "Daisuke Ishiwatari",
     "dlc": "GUILTY GEAR",
-    "dlcCode": "GG"
+    "dlcCode": "GG",
+    "priority": 0
   },
   {
     "id": 225,
@@ -1805,7 +2030,8 @@
     "remote_title": null,
     "composer": "Daisuke Ishiwatari",
     "dlc": "GUILTY GEAR",
-    "dlcCode": "GG"
+    "dlcCode": "GG",
+    "priority": 0
   },
   {
     "id": 226,
@@ -1813,7 +2039,8 @@
     "remote_title": null,
     "composer": "ReX",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 227,
@@ -1821,7 +2048,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 228,
@@ -1829,7 +2057,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 229,
@@ -1837,7 +2066,8 @@
     "remote_title": null,
     "composer": "7 Sequence",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 230,
@@ -1845,7 +2075,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 231,
@@ -1853,7 +2084,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 232,
@@ -1861,7 +2093,8 @@
     "remote_title": null,
     "composer": "Nikacha",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 233,
@@ -1869,7 +2102,8 @@
     "remote_title": null,
     "composer": "BJJ",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 234,
@@ -1877,7 +2111,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 235,
@@ -1885,7 +2120,8 @@
     "remote_title": null,
     "composer": "ReX",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 236,
@@ -1893,7 +2129,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 237,
@@ -1901,7 +2138,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 238,
@@ -1909,7 +2147,8 @@
     "remote_title": null,
     "composer": "Planetboom",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 239,
@@ -1917,7 +2156,8 @@
     "remote_title": null,
     "composer": "Planetboom",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 240,
@@ -1925,7 +2165,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 241,
@@ -1933,7 +2174,8 @@
     "remote_title": null,
     "composer": "Trish",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 242,
@@ -1941,7 +2183,8 @@
     "remote_title": null,
     "composer": "Ruby Tuesday",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 243,
@@ -1949,7 +2192,8 @@
     "remote_title": null,
     "composer": "BEXTER",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 244,
@@ -1957,7 +2201,8 @@
     "remote_title": null,
     "composer": "Sweetune",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 245,
@@ -1965,7 +2210,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 246,
@@ -1973,7 +2219,8 @@
     "remote_title": null,
     "composer": "ReX",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 247,
@@ -1981,7 +2228,8 @@
     "remote_title": null,
     "composer": "CLAZZIQUAI",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 248,
@@ -1989,7 +2237,8 @@
     "remote_title": null,
     "composer": "Sweetune",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 249,
@@ -1997,7 +2246,8 @@
     "remote_title": null,
     "composer": "BEXTER",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 250,
@@ -2005,7 +2255,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 251,
@@ -2013,7 +2264,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 252,
@@ -2021,7 +2273,8 @@
     "remote_title": null,
     "composer": "CLAZZIQUAI",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 253,
@@ -2029,7 +2282,8 @@
     "remote_title": null,
     "composer": "CLAZZIQUAI",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 254,
@@ -2037,7 +2291,8 @@
     "remote_title": null,
     "composer": "Sugardonut",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 255,
@@ -2045,7 +2300,8 @@
     "remote_title": null,
     "composer": "CLAZZIQUAI",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 256,
@@ -2053,7 +2309,8 @@
     "remote_title": null,
     "composer": "STi",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 257,
@@ -2061,7 +2318,8 @@
     "remote_title": null,
     "composer": "BJJ",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 258,
@@ -2069,7 +2327,8 @@
     "remote_title": null,
     "composer": "CLAZZIQUAI",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 259,
@@ -2077,7 +2336,8 @@
     "remote_title": null,
     "composer": "CLAZZIQUAI",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 260,
@@ -2085,7 +2345,8 @@
     "remote_title": null,
     "composer": "Ruby Tuesday",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 261,
@@ -2093,7 +2354,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 262,
@@ -2101,7 +2363,8 @@
     "remote_title": null,
     "composer": "CLAZZIQUAI",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 263,
@@ -2109,7 +2372,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 264,
@@ -2117,7 +2381,8 @@
     "remote_title": null,
     "composer": "이궐",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 265,
@@ -2125,7 +2390,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 266,
@@ -2133,7 +2399,8 @@
     "remote_title": null,
     "composer": "CLAZZIQUAI",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 267,
@@ -2141,7 +2408,8 @@
     "remote_title": null,
     "composer": "hYO",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 268,
@@ -2149,7 +2417,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 269,
@@ -2157,7 +2426,8 @@
     "remote_title": null,
     "composer": "Dayz",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 270,
@@ -2165,7 +2435,8 @@
     "remote_title": null,
     "composer": "HAYAKO",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 271,
@@ -2173,7 +2444,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 272,
@@ -2181,7 +2453,8 @@
     "remote_title": null,
     "composer": "Mr.Funky",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 273,
@@ -2189,7 +2462,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 274,
@@ -2197,7 +2471,8 @@
     "remote_title": null,
     "composer": "Mycin.T",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 275,
@@ -2205,7 +2480,8 @@
     "remote_title": null,
     "composer": "3R2",
     "dlc": "Deemo",
-    "dlcCode": "DM"
+    "dlcCode": "DM",
+    "priority": 0
   },
   {
     "id": 276,
@@ -2213,7 +2489,8 @@
     "remote_title": null,
     "composer": "xi",
     "dlc": "Deemo",
-    "dlcCode": "DM"
+    "dlcCode": "DM",
+    "priority": 0
   },
   {
     "id": 277,
@@ -2221,7 +2498,8 @@
     "remote_title": null,
     "composer": "Rabpit",
     "dlc": "Deemo",
-    "dlcCode": "DM"
+    "dlcCode": "DM",
+    "priority": 0
   },
   {
     "id": 278,
@@ -2229,7 +2507,8 @@
     "remote_title": null,
     "composer": "switchworks",
     "dlc": "Deemo",
-    "dlcCode": "DM"
+    "dlcCode": "DM",
+    "priority": 0
   },
   {
     "id": 279,
@@ -2237,7 +2516,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Deemo",
-    "dlcCode": "DM"
+    "dlcCode": "DM",
+    "priority": 0
   },
   {
     "id": 280,
@@ -2245,7 +2525,8 @@
     "remote_title": null,
     "composer": "Mili",
     "dlc": "Deemo",
-    "dlcCode": "DM"
+    "dlcCode": "DM",
+    "priority": 0
   },
   {
     "id": 281,
@@ -2253,7 +2534,8 @@
     "remote_title": null,
     "composer": "Shinichi Kobayashi",
     "dlc": "Deemo",
-    "dlcCode": "DM"
+    "dlcCode": "DM",
+    "priority": 0
   },
   {
     "id": 282,
@@ -2261,7 +2543,8 @@
     "remote_title": null,
     "composer": "Yuk-cheung Chun",
     "dlc": "Deemo",
-    "dlcCode": "DM"
+    "dlcCode": "DM",
+    "priority": 0
   },
   {
     "id": 283,
@@ -2269,7 +2552,8 @@
     "remote_title": null,
     "composer": "Mili",
     "dlc": "Deemo",
-    "dlcCode": "DM"
+    "dlcCode": "DM",
+    "priority": 0
   },
   {
     "id": 284,
@@ -2277,7 +2561,8 @@
     "remote_title": null,
     "composer": "Mili",
     "dlc": "Deemo",
-    "dlcCode": "DM"
+    "dlcCode": "DM",
+    "priority": 0
   },
   {
     "id": 285,
@@ -2285,7 +2570,8 @@
     "remote_title": null,
     "composer": "sakuzyo",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 286,
@@ -2293,7 +2579,8 @@
     "remote_title": null,
     "composer": "NeLiME",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 287,
@@ -2301,7 +2588,8 @@
     "remote_title": null,
     "composer": "Cranky + siromaru",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 288,
@@ -2309,7 +2597,8 @@
     "remote_title": null,
     "composer": "SIHanatsuka",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 289,
@@ -2317,7 +2606,8 @@
     "remote_title": null,
     "composer": "Ice",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 290,
@@ -2325,7 +2615,8 @@
     "remote_title": null,
     "composer": "Ice",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 291,
@@ -2333,7 +2624,8 @@
     "remote_title": null,
     "composer": "naotyu-",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 292,
@@ -2341,7 +2633,8 @@
     "remote_title": null,
     "composer": "Teikyou",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 293,
@@ -2349,7 +2642,8 @@
     "remote_title": null,
     "composer": "M2U",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 294,
@@ -2357,7 +2651,8 @@
     "remote_title": null,
     "composer": "Cranky",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 295,
@@ -2365,7 +2660,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 296,
@@ -2373,7 +2669,8 @@
     "remote_title": null,
     "composer": "onoken",
     "dlc": "Cytus",
-    "dlcCode": "CY"
+    "dlcCode": "CY",
+    "priority": 0
   },
   {
     "id": 297,
@@ -2381,7 +2678,8 @@
     "remote_title": "I want You ~반짝★반짝 Sunshine~",
     "composer": "Studio LAY-BACK",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 298,
@@ -2389,7 +2687,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 299,
@@ -2397,7 +2696,8 @@
     "remote_title": null,
     "composer": "STi",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 300,
@@ -2405,7 +2705,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 301,
@@ -2413,7 +2714,8 @@
     "remote_title": null,
     "composer": "CROOVE",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 302,
@@ -2421,7 +2723,8 @@
     "remote_title": null,
     "composer": "CROOVE",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 303,
@@ -2429,7 +2732,8 @@
     "remote_title": null,
     "composer": "Laurent Newfield",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 304,
@@ -2437,7 +2741,8 @@
     "remote_title": null,
     "composer": "Sampling Masters MEGA",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 305,
@@ -2445,7 +2750,8 @@
     "remote_title": null,
     "composer": "TAK",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 306,
@@ -2453,7 +2759,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 307,
@@ -2461,7 +2768,8 @@
     "remote_title": null,
     "composer": "DINY",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 308,
@@ -2469,7 +2777,8 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 309,
@@ -2477,7 +2786,8 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 310,
@@ -2485,7 +2795,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 311,
@@ -2493,7 +2804,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 312,
@@ -2501,7 +2813,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 313,
@@ -2509,7 +2822,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 314,
@@ -2517,7 +2831,8 @@
     "remote_title": null,
     "composer": "AstroKid",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 315,
@@ -2525,7 +2840,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 316,
@@ -2533,7 +2849,8 @@
     "remote_title": null,
     "composer": "Sui.Jay",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 317,
@@ -2541,7 +2858,8 @@
     "remote_title": null,
     "composer": "Mr.Funky",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 318,
@@ -2549,7 +2867,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 319,
@@ -2557,7 +2876,8 @@
     "remote_title": null,
     "composer": "TANUKI",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 320,
@@ -2565,7 +2885,8 @@
     "remote_title": null,
     "composer": "LeeZu",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 321,
@@ -2573,7 +2894,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 322,
@@ -2581,7 +2903,8 @@
     "remote_title": null,
     "composer": "Cranky",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 323,
@@ -2589,7 +2912,8 @@
     "remote_title": null,
     "composer": "Sound LAB",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 324,
@@ -2597,7 +2921,8 @@
     "remote_title": null,
     "composer": "Laurent Newfield",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 325,
@@ -2605,7 +2930,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 326,
@@ -2613,7 +2939,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "TECHNIKA 3",
-    "dlcCode": "T3"
+    "dlcCode": "T3",
+    "priority": 0
   },
   {
     "id": 327,
@@ -2621,7 +2948,8 @@
     "remote_title": null,
     "composer": "ReX",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 328,
@@ -2629,7 +2957,8 @@
     "remote_title": null,
     "composer": "FIRST AID",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 329,
@@ -2637,7 +2966,8 @@
     "remote_title": null,
     "composer": "P'sycho-Remi",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 330,
@@ -2645,7 +2975,8 @@
     "remote_title": null,
     "composer": "DINY",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 331,
@@ -2653,7 +2984,8 @@
     "remote_title": null,
     "composer": "bermei.inazawa",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 332,
@@ -2661,7 +2993,8 @@
     "remote_title": null,
     "composer": "FIRST AID",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 333,
@@ -2669,7 +3002,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 334,
@@ -2677,7 +3011,8 @@
     "remote_title": null,
     "composer": "7 Sequence",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 335,
@@ -2685,7 +3020,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 336,
@@ -2693,7 +3029,8 @@
     "remote_title": null,
     "composer": "Cranky",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 337,
@@ -2701,7 +3038,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 338,
@@ -2709,7 +3047,8 @@
     "remote_title": null,
     "composer": "Planetboom",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 339,
@@ -2717,7 +3056,8 @@
     "remote_title": null,
     "composer": "Mr.Funky",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 340,
@@ -2725,7 +3065,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 341,
@@ -2733,7 +3074,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 342,
@@ -2741,7 +3083,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 343,
@@ -2749,7 +3092,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 344,
@@ -2757,7 +3101,8 @@
     "remote_title": null,
     "composer": "Lin-G",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 345,
@@ -2765,7 +3110,8 @@
     "remote_title": null,
     "composer": "P'sycho-Remi",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 346,
@@ -2773,7 +3119,8 @@
     "remote_title": "Thor (Extended Mix)",
     "composer": "XeoN",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 347,
@@ -2781,7 +3128,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 348,
@@ -2789,7 +3137,8 @@
     "remote_title": null,
     "composer": "Hosoe Shinji",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 349,
@@ -2797,7 +3146,8 @@
     "remote_title": null,
     "composer": "ND LEE",
     "dlc": "TECHNIKA 2",
-    "dlcCode": "T2"
+    "dlcCode": "T2",
+    "priority": 0
   },
   {
     "id": 350,
@@ -2805,7 +3155,8 @@
     "remote_title": null,
     "composer": "Sphazer",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 351,
@@ -2813,7 +3164,8 @@
     "remote_title": null,
     "composer": "Sphazer",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 352,
@@ -2821,7 +3173,8 @@
     "remote_title": null,
     "composer": "7 Sequence",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 353,
@@ -2829,7 +3182,8 @@
     "remote_title": null,
     "composer": "Oriental ST8",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 354,
@@ -2837,7 +3191,8 @@
     "remote_title": null,
     "composer": "Humming Urban Stereo",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 355,
@@ -2845,7 +3200,8 @@
     "remote_title": null,
     "composer": "Sugardonut",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 356,
@@ -2853,7 +3209,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 357,
@@ -2861,7 +3218,8 @@
     "remote_title": null,
     "composer": "Humming Urban Stereo",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 358,
@@ -2869,7 +3227,8 @@
     "remote_title": null,
     "composer": "Lin-G",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 359,
@@ -2877,7 +3236,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 360,
@@ -2885,7 +3245,8 @@
     "remote_title": null,
     "composer": "bermei.inazawa / UC",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 361,
@@ -2893,7 +3254,8 @@
     "remote_title": null,
     "composer": "Urbatronic Chopsticks",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 362,
@@ -2901,7 +3263,8 @@
     "remote_title": null,
     "composer": "Lin-G",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 363,
@@ -2909,7 +3272,8 @@
     "remote_title": null,
     "composer": "Oriental ST8",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 364,
@@ -2917,7 +3281,8 @@
     "remote_title": null,
     "composer": "Hosoe Shinji",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 365,
@@ -2925,7 +3290,8 @@
     "remote_title": null,
     "composer": "Planetboom",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 366,
@@ -2933,7 +3299,8 @@
     "remote_title": null,
     "composer": "Croove",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 367,
@@ -2941,7 +3308,8 @@
     "remote_title": null,
     "composer": "Urbatronic Chopsticks",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 368,
@@ -2949,7 +3317,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 369,
@@ -2957,7 +3326,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 370,
@@ -2965,7 +3335,8 @@
     "remote_title": null,
     "composer": "seibin",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 371,
@@ -2973,7 +3344,8 @@
     "remote_title": null,
     "composer": "Alice Schach and the Magic Orchestra",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 372,
@@ -2981,7 +3353,8 @@
     "remote_title": null,
     "composer": "House Rulez",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 373,
@@ -2989,7 +3362,8 @@
     "remote_title": null,
     "composer": "ReX",
     "dlc": "BLACK SQUARE",
-    "dlcCode": "BS"
+    "dlcCode": "BS",
+    "priority": 0
   },
   {
     "id": 374,
@@ -2997,7 +3371,8 @@
     "remote_title": null,
     "composer": "Hosoe Shinji",
     "dlc": "TECHNIKA",
-    "dlcCode": "T1"
+    "dlcCode": "T1",
+    "priority": 0
   },
   {
     "id": 375,
@@ -3005,7 +3380,8 @@
     "remote_title": null,
     "composer": "Ruby Tuesday",
     "dlc": "Clazziquai Edition",
-    "dlcCode": "CE"
+    "dlcCode": "CE",
+    "priority": 0
   },
   {
     "id": 376,
@@ -3013,7 +3389,8 @@
     "remote_title": null,
     "composer": "Rikako Watanabe (Basiscape)",
     "dlc": "GIRLS' FRONTLINE",
-    "dlcCode": "GF"
+    "dlcCode": "GF",
+    "priority": 0
   },
   {
     "id": 377,
@@ -3021,7 +3398,8 @@
     "remote_title": null,
     "composer": "B@kamin / M2U",
     "dlc": "GIRLS' FRONTLINE",
-    "dlcCode": "GF"
+    "dlcCode": "GF",
+    "priority": 0
   },
   {
     "id": 378,
@@ -3029,7 +3407,8 @@
     "remote_title": null,
     "composer": "Haloweak",
     "dlc": "GIRLS' FRONTLINE",
-    "dlcCode": "GF"
+    "dlcCode": "GF",
+    "priority": 0
   },
   {
     "id": 379,
@@ -3037,7 +3416,8 @@
     "remote_title": null,
     "composer": "sakuzyo",
     "dlc": "CHUNITHM",
-    "dlcCode": "CHU"
+    "dlcCode": "CHU",
+    "priority": 0
   },
   {
     "id": 380,
@@ -3045,7 +3425,8 @@
     "remote_title": null,
     "composer": "t+pazolite",
     "dlc": "CHUNITHM",
-    "dlcCode": "CHU"
+    "dlcCode": "CHU",
+    "priority": 0
   },
   {
     "id": 381,
@@ -3053,7 +3434,8 @@
     "remote_title": null,
     "composer": "Takenobu Mitsuyoshi",
     "dlc": "CHUNITHM",
-    "dlcCode": "CHU"
+    "dlcCode": "CHU",
+    "priority": 0
   },
   {
     "id": 382,
@@ -3061,7 +3443,8 @@
     "remote_title": null,
     "composer": "NayutalieN",
     "dlc": "CHUNITHM",
-    "dlcCode": "CHU"
+    "dlcCode": "CHU",
+    "priority": 0
   },
   {
     "id": 383,
@@ -3069,7 +3452,8 @@
     "remote_title": null,
     "composer": "Sampling Masters MEGA",
     "dlc": "CHUNITHM",
-    "dlcCode": "CHU"
+    "dlcCode": "CHU",
+    "priority": 0
   },
   {
     "id": 384,
@@ -3077,7 +3461,8 @@
     "remote_title": null,
     "composer": "s-don vs. Hino Isuka",
     "dlc": "CHUNITHM",
-    "dlcCode": "CHU"
+    "dlcCode": "CHU",
+    "priority": 0
   },
   {
     "id": 385,
@@ -3085,7 +3470,8 @@
     "remote_title": null,
     "composer": "ampstyle",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 386,
@@ -3093,7 +3479,8 @@
     "remote_title": null,
     "composer": "GOTH",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 387,
@@ -3101,7 +3488,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 388,
@@ -3109,7 +3497,8 @@
     "remote_title": null,
     "composer": "PIA",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 389,
@@ -3117,7 +3506,8 @@
     "remote_title": null,
     "composer": "Mr.Funky",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 390,
@@ -3125,7 +3515,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 391,
@@ -3133,7 +3524,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 392,
@@ -3141,7 +3533,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 393,
@@ -3149,7 +3542,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 394,
@@ -3157,7 +3551,8 @@
     "remote_title": null,
     "composer": "Mr.Funky",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 395,
@@ -3165,7 +3560,8 @@
     "remote_title": null,
     "composer": "Vanilla Unity",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 396,
@@ -3173,7 +3569,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 397,
@@ -3181,7 +3578,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 398,
@@ -3189,7 +3587,8 @@
     "remote_title": null,
     "composer": "3rd Coast",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 399,
@@ -3197,7 +3596,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 400,
@@ -3205,7 +3605,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 401,
@@ -3213,7 +3614,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 402,
@@ -3221,7 +3623,8 @@
     "remote_title": null,
     "composer": "Mr.Funky",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 403,
@@ -3229,7 +3632,8 @@
     "remote_title": null,
     "composer": "Planetboom",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 404,
@@ -3237,7 +3641,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 405,
@@ -3245,7 +3650,8 @@
     "remote_title": null,
     "composer": "Mr.Funky",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 406,
@@ -3253,7 +3659,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 407,
@@ -3261,7 +3668,8 @@
     "remote_title": null,
     "composer": "MindCube",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 408,
@@ -3269,7 +3677,8 @@
     "remote_title": null,
     "composer": "Cistrans (RoseLine)",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 409,
@@ -3277,7 +3686,8 @@
     "remote_title": null,
     "composer": "Mr.Funky",
     "dlc": "Portable 3",
-    "dlcCode": "P3"
+    "dlcCode": "P3",
+    "priority": 0
   },
   {
     "id": 410,
@@ -3285,7 +3695,8 @@
     "remote_title": null,
     "composer": "Mintorment",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 411,
@@ -3293,7 +3704,8 @@
     "remote_title": null,
     "composer": "JHS",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 412,
@@ -3301,7 +3713,8 @@
     "remote_title": null,
     "composer": "YUKIKA",
     "dlc": "ESTIMATE",
-    "dlcCode": "ESTI"
+    "dlcCode": "ESTI",
+    "priority": 0
   },
   {
     "id": 413,
@@ -3309,7 +3722,8 @@
     "remote_title": null,
     "composer": "ESTi",
     "dlc": "ESTIMATE",
-    "dlcCode": "ESTI"
+    "dlcCode": "ESTI",
+    "priority": 0
   },
   {
     "id": 414,
@@ -3317,7 +3731,8 @@
     "remote_title": null,
     "composer": "ESTi",
     "dlc": "ESTIMATE",
-    "dlcCode": "ESTI"
+    "dlcCode": "ESTI",
+    "priority": 0
   },
   {
     "id": 415,
@@ -3325,7 +3740,8 @@
     "remote_title": null,
     "composer": "ESTi & M2U",
     "dlc": "ESTIMATE",
-    "dlcCode": "ESTI"
+    "dlcCode": "ESTI",
+    "priority": 0
   },
   {
     "id": 416,
@@ -3333,7 +3749,8 @@
     "remote_title": null,
     "composer": "ESTi",
     "dlc": "ESTIMATE",
-    "dlcCode": "ESTI"
+    "dlcCode": "ESTI",
+    "priority": 0
   },
   {
     "id": 417,
@@ -3341,7 +3758,8 @@
     "remote_title": null,
     "composer": "YUKIKA",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 418,
@@ -3349,7 +3767,8 @@
     "remote_title": null,
     "composer": "Tsukasa / ESTi",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 419,
@@ -3357,7 +3776,8 @@
     "remote_title": null,
     "composer": "ampstyle",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 420,
@@ -3365,7 +3785,8 @@
     "remote_title": null,
     "composer": "Pierre Blanche / Yonce",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 421,
@@ -3373,7 +3794,8 @@
     "remote_title": null,
     "composer": "Studio EIM",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 422,
@@ -3381,7 +3803,8 @@
     "remote_title": null,
     "composer": "Blosso",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 423,
@@ -3389,7 +3812,8 @@
     "remote_title": null,
     "composer": "SiNA",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 424,
@@ -3397,7 +3821,8 @@
     "remote_title": null,
     "composer": "HanStone",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 425,
@@ -3405,7 +3830,8 @@
     "remote_title": null,
     "composer": "NEXON",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 426,
@@ -3413,7 +3839,8 @@
     "remote_title": null,
     "composer": "VoidRover",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 427,
@@ -3421,7 +3848,8 @@
     "remote_title": null,
     "composer": "Studio EIM",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 428,
@@ -3429,7 +3857,8 @@
     "remote_title": null,
     "composer": "HanStone",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 429,
@@ -3437,7 +3866,8 @@
     "remote_title": null,
     "composer": "Cosmograph",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 430,
@@ -3445,7 +3875,8 @@
     "remote_title": null,
     "composer": "Pure 100%",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 431,
@@ -3453,7 +3884,8 @@
     "remote_title": null,
     "composer": "CHUCK",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 432,
@@ -3461,7 +3893,8 @@
     "remote_title": null,
     "composer": "ESTi",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 433,
@@ -3469,7 +3902,8 @@
     "remote_title": null,
     "composer": "Mitsukiyo",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 434,
@@ -3477,7 +3911,8 @@
     "remote_title": null,
     "composer": "김동현",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 435,
@@ -3485,7 +3920,8 @@
     "remote_title": null,
     "composer": "NEXON",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 436,
@@ -3493,7 +3929,8 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 437,
@@ -3501,7 +3938,8 @@
     "remote_title": null,
     "composer": "SOPHI",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 438,
@@ -3509,7 +3947,8 @@
     "remote_title": null,
     "composer": "정영걸",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 439,
@@ -3517,7 +3956,8 @@
     "remote_title": null,
     "composer": "Studio EIM",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 440,
@@ -3525,7 +3965,8 @@
     "remote_title": null,
     "composer": "jam-jam",
     "dlc": "NEXON",
-    "dlcCode": "NXN"
+    "dlcCode": "NXN",
+    "priority": 0
   },
   {
     "id": 441,
@@ -3533,7 +3974,8 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 1
   },
   {
     "id": 442,
@@ -3541,7 +3983,8 @@
     "remote_title": "꿈의 기억 (feat. Jisun)",
     "composer": "Pory",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 443,
@@ -3549,7 +3992,8 @@
     "remote_title": null,
     "composer": "Newton / KNVWN",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 444,
@@ -3557,7 +4001,8 @@
     "remote_title": null,
     "composer": "Kanallia",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 445,
@@ -3565,7 +4010,8 @@
     "remote_title": null,
     "composer": "Pierre Blanche",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 446,
@@ -3573,7 +4019,8 @@
     "remote_title": null,
     "composer": "Mycin.T x SiNA",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 447,
@@ -3581,7 +4028,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 448,
@@ -3589,7 +4037,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 449,
@@ -3597,7 +4046,8 @@
     "remote_title": null,
     "composer": "LeeZu",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 450,
@@ -3605,7 +4055,8 @@
     "remote_title": null,
     "composer": "CHUCK",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 451,
@@ -3613,7 +4064,8 @@
     "remote_title": null,
     "composer": "KATOMORI",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 452,
@@ -3621,7 +4073,8 @@
     "remote_title": null,
     "composer": "Blosso",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 453,
@@ -3629,7 +4082,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 454,
@@ -3637,7 +4091,8 @@
     "remote_title": null,
     "composer": "SSOMbo",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 455,
@@ -3645,7 +4100,8 @@
     "remote_title": null,
     "composer": "Cosmograph",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 456,
@@ -3653,7 +4109,8 @@
     "remote_title": null,
     "composer": "jam-jam",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 457,
@@ -3661,7 +4118,8 @@
     "remote_title": null,
     "composer": "Nauts",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 458,
@@ -3669,7 +4127,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 459,
@@ -3677,7 +4136,8 @@
     "remote_title": null,
     "composer": "SOPHI",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 1
   },
   {
     "id": 460,
@@ -3685,7 +4145,8 @@
     "remote_title": null,
     "composer": "Pure 100% / KASA",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 461,
@@ -3693,7 +4154,8 @@
     "remote_title": null,
     "composer": "SiNA",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 462,
@@ -3701,7 +4163,8 @@
     "remote_title": "너로피어오라(Original Ver.)",
     "composer": "ampstyle",
     "dlc": "V EXTENSION II",
-    "dlcCode": "VE2"
+    "dlcCode": "VE2",
+    "priority": 0
   },
   {
     "id": 463,
@@ -3709,7 +4172,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 464,
@@ -3717,7 +4181,8 @@
     "remote_title": null,
     "composer": "Lena",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 465,
@@ -3725,7 +4190,8 @@
     "remote_title": null,
     "composer": "BOOGEY VOXX",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 466,
@@ -3733,7 +4199,8 @@
     "remote_title": null,
     "composer": "MK",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 467,
@@ -3741,7 +4208,8 @@
     "remote_title": null,
     "composer": "DJ Noriken & aran",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 468,
@@ -3749,7 +4217,8 @@
     "remote_title": null,
     "composer": "USAO",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 469,
@@ -3757,7 +4226,8 @@
     "remote_title": null,
     "composer": "Cosmograph",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 470,
@@ -3765,7 +4235,8 @@
     "remote_title": null,
     "composer": "a_hisa",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 471,
@@ -3773,7 +4244,8 @@
     "remote_title": null,
     "composer": "Tanchiky",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 472,
@@ -3781,7 +4253,8 @@
     "remote_title": null,
     "composer": "REDALiCE",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 473,
@@ -3789,7 +4262,8 @@
     "remote_title": null,
     "composer": "Ayatsugu_Otowa",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 474,
@@ -3797,7 +4271,8 @@
     "remote_title": null,
     "composer": "Dan@Yomi",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 475,
@@ -3805,7 +4280,8 @@
     "remote_title": null,
     "composer": "3R2",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 476,
@@ -3813,7 +4289,8 @@
     "remote_title": null,
     "composer": "Morimori Atsushi",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 477,
@@ -3821,7 +4298,8 @@
     "remote_title": null,
     "composer": "Sugar & Co.",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 478,
@@ -3829,7 +4307,8 @@
     "remote_title": null,
     "composer": "MYUKKE.",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 479,
@@ -3837,7 +4316,8 @@
     "remote_title": null,
     "composer": "ginkiha",
     "dlc": "Muse Dash",
-    "dlcCode": "MD"
+    "dlcCode": "MD",
+    "priority": 0
   },
   {
     "id": 480,
@@ -3845,7 +4325,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 481,
@@ -3853,7 +4334,8 @@
     "remote_title": null,
     "composer": "CROOVE",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 482,
@@ -3861,7 +4343,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 483,
@@ -3869,7 +4352,8 @@
     "remote_title": null,
     "composer": "SHIKI",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 484,
@@ -3877,7 +4361,8 @@
     "remote_title": null,
     "composer": "vneld",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 485,
@@ -3885,7 +4370,8 @@
     "remote_title": null,
     "composer": "makou",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 486,
@@ -3893,7 +4379,8 @@
     "remote_title": null,
     "composer": "CROOVE",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 487,
@@ -3901,7 +4388,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 488,
@@ -3909,7 +4397,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 489,
@@ -3917,7 +4406,8 @@
     "remote_title": null,
     "composer": "TerraMycin",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 490,
@@ -3925,7 +4415,8 @@
     "remote_title": null,
     "composer": "LeeZu",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 491,
@@ -3933,7 +4424,8 @@
     "remote_title": null,
     "composer": "hiyong",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 492,
@@ -3941,7 +4433,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 493,
@@ -3949,7 +4442,8 @@
     "remote_title": null,
     "composer": "CROOVE",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 494,
@@ -3957,7 +4451,8 @@
     "remote_title": null,
     "composer": "Studio LAY-BACK",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 495,
@@ -3965,7 +4460,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 496,
@@ -3973,7 +4469,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 497,
@@ -3981,7 +4478,8 @@
     "remote_title": null,
     "composer": "AstroKid",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 498,
@@ -3989,7 +4487,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 499,
@@ -3997,7 +4496,8 @@
     "remote_title": null,
     "composer": "Cuve",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 500,
@@ -4005,7 +4505,8 @@
     "remote_title": null,
     "composer": "ND Lee",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 501,
@@ -4013,7 +4514,8 @@
     "remote_title": null,
     "composer": "XeoN",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 502,
@@ -4021,7 +4523,8 @@
     "remote_title": null,
     "composer": "Electronic Boutique",
     "dlc": "TECHNIKA TUNE & Q",
-    "dlcCode": "TQ"
+    "dlcCode": "TQ",
+    "priority": 0
   },
   {
     "id": 503,
@@ -4029,7 +4532,8 @@
     "remote_title": null,
     "composer": "Paul Bazooka",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 504,
@@ -4037,7 +4541,8 @@
     "remote_title": null,
     "composer": "김창훈",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 505,
@@ -4045,7 +4550,8 @@
     "remote_title": null,
     "composer": "다즈비(DAZBEE)",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 506,
@@ -4053,7 +4559,8 @@
     "remote_title": null,
     "composer": "Tsukasa",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 507,
@@ -4061,7 +4568,8 @@
     "remote_title": null,
     "composer": "RiraN",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 508,
@@ -4069,7 +4577,8 @@
     "remote_title": null,
     "composer": "SOPHI",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 509,
@@ -4077,7 +4586,8 @@
     "remote_title": null,
     "composer": "Pierre Blanche",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 510,
@@ -4085,7 +4595,8 @@
     "remote_title": null,
     "composer": "Pure 100%",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 511,
@@ -4093,7 +4604,8 @@
     "remote_title": null,
     "composer": "Night Tempo",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 512,
@@ -4101,7 +4613,8 @@
     "remote_title": null,
     "composer": "Bagagee Viphex13",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 513,
@@ -4109,7 +4622,8 @@
     "remote_title": null,
     "composer": "HAYAKO",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 514,
@@ -4117,7 +4631,8 @@
     "remote_title": null,
     "composer": "Mycin.T x jam-jam",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 515,
@@ -4125,7 +4640,8 @@
     "remote_title": null,
     "composer": "DoubleTO",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 516,
@@ -4133,7 +4649,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 517,
@@ -4141,7 +4658,8 @@
     "remote_title": null,
     "composer": "VoidRover",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 518,
@@ -4149,7 +4667,8 @@
     "remote_title": null,
     "composer": "Milkoi / Ruxxi",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 519,
@@ -4157,7 +4676,8 @@
     "remote_title": null,
     "composer": "Takahiro Eguchi",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 520,
@@ -4165,7 +4685,8 @@
     "remote_title": null,
     "composer": "Newton",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 521,
@@ -4173,7 +4694,8 @@
     "remote_title": null,
     "composer": "YESEO",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 522,
@@ -4181,7 +4703,8 @@
     "remote_title": null,
     "composer": "TAK x Corbin",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 523,
@@ -4189,7 +4712,8 @@
     "remote_title": null,
     "composer": "CHUCK",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 524,
@@ -4197,7 +4721,8 @@
     "remote_title": null,
     "composer": "Cosmograph",
     "dlc": "V EXTENSION III",
-    "dlcCode": "VE3"
+    "dlcCode": "VE3",
+    "priority": 0
   },
   {
     "id": 525,
@@ -4205,7 +4730,8 @@
     "remote_title": null,
     "composer": "NieN",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 526,
@@ -4213,7 +4739,8 @@
     "remote_title": null,
     "composer": "Planetboom",
     "dlc": "RESPECT",
-    "dlcCode": "R"
+    "dlcCode": "R",
+    "priority": 0
   },
   {
     "id": 527,
@@ -4221,7 +4748,8 @@
     "remote_title": null,
     "composer": "Kang Eun Soo / eridanus",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 528,
@@ -4229,7 +4757,8 @@
     "remote_title": null,
     "composer": "Andy Lee",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 529,
@@ -4237,7 +4766,8 @@
     "remote_title": null,
     "composer": "CROOVE",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 530,
@@ -4245,7 +4775,8 @@
     "remote_title": null,
     "composer": "Ruby Tuesday",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 531,
@@ -4253,7 +4784,8 @@
     "remote_title": null,
     "composer": "CROOVE",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 532,
@@ -4261,7 +4793,8 @@
     "remote_title": null,
     "composer": "CROOVE / Mario Bolden",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 533,
@@ -4269,7 +4802,8 @@
     "remote_title": null,
     "composer": "Andy Lee",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 534,
@@ -4277,7 +4811,8 @@
     "remote_title": null,
     "composer": "Ruby Tuesday",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 535,
@@ -4285,7 +4820,8 @@
     "remote_title": null,
     "composer": "xxdbxx",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 536,
@@ -4293,7 +4829,8 @@
     "remote_title": null,
     "composer": "nato",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 537,
@@ -4301,7 +4838,8 @@
     "remote_title": null,
     "composer": "CROOVE",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 538,
@@ -4309,7 +4847,8 @@
     "remote_title": null,
     "composer": "Andy Lee",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 1
   },
   {
     "id": 539,
@@ -4317,7 +4856,8 @@
     "remote_title": null,
     "composer": "xxdbxx / CROOVE",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 540,
@@ -4325,7 +4865,8 @@
     "remote_title": null,
     "composer": "Jeon Jun Kye / Mario Bolden",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   },
   {
     "id": 541,
@@ -4333,6 +4874,7 @@
     "remote_title": null,
     "composer": "Joyrock",
     "dlc": "EZ2ON",
-    "dlcCode": "EZ2"
+    "dlcCode": "EZ2",
+    "priority": 0
   }
 ]
