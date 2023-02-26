@@ -11,15 +11,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public record LocalSong(@Expose int id, @Expose String title, @Expose String remote_title,
-                        @Expose String composer, @Expose String dlc, @Expose String dlcCode) {
-    public static class GsonListTypeToken extends TypeToken<List<LocalSong>> {
+public record Dlc(@Expose int priority, @Expose String code, @Expose String name,
+                  @Expose String tab) {
+    public static class GsonMapTypeToken extends TypeToken<List<Dlc>> {
     }
 
-    public static List<LocalSong> loadJson(Path path) throws IOException {
+    public static List<Dlc> loadJson(Path path) throws IOException {
         Gson gson = newGsonBuilder_dump().create();
         try (BufferedReader reader = Files.newBufferedReader(path)) {
-            return gson.fromJson(reader, new GsonListTypeToken());
+            return gson.fromJson(reader, new GsonMapTypeToken());
         }
     }
 }

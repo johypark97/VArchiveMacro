@@ -24,7 +24,7 @@ public class DatabaseTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return model.songs.size();
+        return model.songManager.songCount();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class DatabaseTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        LocalSong localSong = model.songs.get(rowIndex);
+        LocalSong localSong = model.songManager.getSong(rowIndex);
         if (localSong == null) {
             return ERROR_STRING;
         }

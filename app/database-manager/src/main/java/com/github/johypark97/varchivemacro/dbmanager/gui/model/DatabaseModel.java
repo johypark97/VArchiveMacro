@@ -5,32 +5,32 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct.Databa
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher.RemoteSong;
+import com.github.johypark97.varchivemacro.lib.common.database.SongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class DatabaseModel {
-    public Map<Integer, LocalSong> songs;
-
-    public List<RemoteSong> conflict;
-    public List<RemoteSong> unclassified;
+    public SongManager songManager;
 
     public DatabaseTableModel tableModel;
     public DatabaseTableRowSorter tableRowSorter;
 
+    public List<RemoteSong> conflict;
+    public List<RemoteSong> unclassified;
+
     public void loadSongs(Path path) throws IOException {
-        songs = LocalSong.loadJson(path);
+        songManager = new SongManager(path);
 
         tableModel = new DatabaseTableModel(this);
         tableRowSorter = new DatabaseTableRowSorter(tableModel);
     }
 
     public boolean isSongLoaded() {
-        return songs != null;
+        return songManager != null;
     }
 
     public List<String> getFilterableColumns() {
@@ -51,7 +51,7 @@ public class DatabaseModel {
 
         staticFetcher.fetchSongs();
         for (RemoteSong remoteSong : staticFetcher.getSongs()) {
-            LocalSong localSong = songs.get(remoteSong.id);
+            LocalSong localSong = songManager.getSong(remoteSong.id);
             if (localSong == null) {
                 unclassified.add(remoteSong);
             } else if (!compareSong(localSong, remoteSong)) {

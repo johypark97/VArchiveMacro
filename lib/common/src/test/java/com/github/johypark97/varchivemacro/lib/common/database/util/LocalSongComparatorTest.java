@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong.GsonListTypeToken;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -37,15 +37,12 @@ class LocalSongComparatorTest {
             return;
         }
 
-        List<LocalSong> expected = gson.fromJson(sample, new GsonLocalSongListTypeToken());
+        List<LocalSong> expected = gson.fromJson(sample, new GsonListTypeToken());
 
         List<LocalSong> actual = new ArrayList<>(expected);
         Collections.reverse(actual);
         actual.sort(new LocalSongComparator());
 
         assertIterableEquals(expected, actual);
-    }
-
-    public static class GsonLocalSongListTypeToken extends TypeToken<List<LocalSong>> {
     }
 }

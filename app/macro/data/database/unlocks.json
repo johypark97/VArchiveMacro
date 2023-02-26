@@ -1,0 +1,122 @@
+{
+  "222": {
+    // Nevermind
+    "conditions": [
+      [
+        "TR"
+      ]
+    ]
+  },
+  "269": {
+    // Rising The Sonic
+    "conditions": [
+      [
+        "CE"
+      ]
+    ]
+  },
+  "270": {
+    // ANALYS
+    "conditions": [
+      [
+        "BS"
+      ]
+    ]
+  },
+  "370": {
+    // ALiCE
+    "conditions": [
+      [
+        "T3"
+      ]
+    ]
+  },
+  "371": {
+    // End of Mythology
+    "conditions": [
+      [
+        "T2"
+      ]
+    ]
+  },
+  "372": {
+    // Do you want it
+    "conditions": [
+      [
+        "T1"
+      ]
+    ]
+  },
+  "373": {
+    // Airwave ~Extended Mix~
+    "conditions": [
+      [
+        "BS",
+        "CE"
+      ],
+      [
+        "BS",
+        "T1"
+      ]
+    ]
+  },
+  "374": {
+    // SON OF SUN ~Extended Mix~
+    "conditions": [
+      [
+        "BS",
+        "T1"
+      ],
+      [
+        "CE",
+        "T1"
+      ]
+    ]
+  },
+  "375": {
+    // Here in the Moment ~Extended Mix~
+    "conditions": [
+      [
+        "BS",
+        "CE"
+      ],
+      [
+        "CE",
+        "T1"
+      ]
+    ]
+  },
+  "410": {
+    // glory day (Mintorment Remix)
+    "conditions": [
+      [
+        "P3"
+      ]
+    ]
+  },
+  "411": {
+    // glory day -JHS Remix-
+    "conditions": [
+      [
+        "P3"
+      ]
+    ]
+  },
+  "462": {
+    // 너로피어오라 ~Original Ver.~
+    "conditions": [
+      [
+        "VE",
+        "VE2"
+      ]
+    ]
+  },
+  "503": {
+    // Techno Racer
+    "conditions": [
+      [
+        "TQ"
+      ]
+    ]
+  }
+}

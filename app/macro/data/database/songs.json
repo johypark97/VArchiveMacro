@@ -1,5 +1,5 @@
-{
-  "0": {
+[
+  {
     "id": 0,
     "title": "비상 ~Stay With Me~",
     "remote_title": null,
@@ -7,7 +7,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "1": {
+  {
     "id": 1,
     "title": "2Nite",
     "remote_title": null,
@@ -15,7 +15,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "2": {
+  {
     "id": 2,
     "title": "Alone",
     "remote_title": null,
@@ -23,7 +23,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "3": {
+  {
     "id": 3,
     "title": "Always",
     "remote_title": null,
@@ -31,7 +31,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "4": {
+  {
     "id": 4,
     "title": "Armored Phantom",
     "remote_title": null,
@@ -39,7 +39,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "5": {
+  {
     "id": 5,
     "title": "Beautiful Day",
     "remote_title": null,
@@ -47,7 +47,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "6": {
+  {
     "id": 6,
     "title": "Beyond Yourself",
     "remote_title": null,
@@ -55,7 +55,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "7": {
+  {
     "id": 7,
     "title": "Binary World",
     "remote_title": null,
@@ -63,7 +63,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "8": {
+  {
     "id": 8,
     "title": "BlackCat",
     "remote_title": null,
@@ -71,7 +71,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "9": {
+  {
     "id": 9,
     "title": "Boom!",
     "remote_title": null,
@@ -79,7 +79,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "10": {
+  {
     "id": 10,
     "title": "Bullet, Wanted!",
     "remote_title": null,
@@ -87,7 +87,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "11": {
+  {
     "id": 11,
     "title": "Child of Night",
     "remote_title": null,
@@ -95,7 +95,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "12": {
+  {
     "id": 12,
     "title": "Don't Die",
     "remote_title": null,
@@ -103,7 +103,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "13": {
+  {
     "id": 13,
     "title": "Enter The Universe",
     "remote_title": null,
@@ -111,7 +111,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "14": {
+  {
     "id": 14,
     "title": "Far East Princess",
     "remote_title": null,
@@ -119,7 +119,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "15": {
+  {
     "id": 15,
     "title": "Fly Away",
     "remote_title": null,
@@ -127,7 +127,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "16": {
+  {
     "id": 16,
     "title": "glory day",
     "remote_title": null,
@@ -135,7 +135,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "17": {
+  {
     "id": 17,
     "title": "Groovin Up",
     "remote_title": null,
@@ -143,7 +143,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "18": {
+  {
     "id": 18,
     "title": "Heavenly",
     "remote_title": null,
@@ -151,7 +151,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "19": {
+  {
     "id": 19,
     "title": "KILLER BEE",
     "remote_title": null,
@@ -159,7 +159,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "20": {
+  {
     "id": 20,
     "title": "Kung Brother",
     "remote_title": null,
@@ -167,7 +167,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "21": {
+  {
     "id": 21,
     "title": "Liar",
     "remote_title": null,
@@ -175,7 +175,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "22": {
+  {
     "id": 22,
     "title": "Lift You Up",
     "remote_title": null,
@@ -183,7 +183,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "23": {
+  {
     "id": 23,
     "title": "Mulch",
     "remote_title": null,
@@ -191,7 +191,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "24": {
+  {
     "id": 24,
     "title": "NB RANGER - Virgin Force",
     "remote_title": null,
@@ -199,7 +199,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "25": {
+  {
     "id": 25,
     "title": "NEON 1989 (ESTi Remix)",
     "remote_title": null,
@@ -207,7 +207,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "26": {
+  {
     "id": 26,
     "title": "Only for you",
     "remote_title": null,
@@ -215,7 +215,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "27": {
+  {
     "id": 27,
     "title": "OPEN FIRE",
     "remote_title": null,
@@ -223,7 +223,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "28": {
+  {
     "id": 28,
     "title": "Over Your Dream",
     "remote_title": null,
@@ -231,7 +231,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "29": {
+  {
     "id": 29,
     "title": "quixotic",
     "remote_title": null,
@@ -239,7 +239,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "30": {
+  {
     "id": 30,
     "title": "Remains Of Doom",
     "remote_title": null,
@@ -247,7 +247,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "31": {
+  {
     "id": 31,
     "title": "Royal Clown",
     "remote_title": null,
@@ -255,7 +255,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "32": {
+  {
     "id": 32,
     "title": "Runaway",
     "remote_title": null,
@@ -263,7 +263,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "33": {
+  {
     "id": 33,
     "title": "Running girl",
     "remote_title": null,
@@ -271,7 +271,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "34": {
+  {
     "id": 34,
     "title": "Ruti'n (GOTH Wild Electro Remix)",
     "remote_title": null,
@@ -279,7 +279,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "35": {
+  {
     "id": 35,
     "title": "Secret Dejavu",
     "remote_title": null,
@@ -287,7 +287,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "36": {
+  {
     "id": 36,
     "title": "Shadow Flower",
     "remote_title": null,
@@ -295,7 +295,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "37": {
+  {
     "id": 37,
     "title": "The Feelings",
     "remote_title": null,
@@ -303,7 +303,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "38": {
+  {
     "id": 38,
     "title": "The Lost Story",
     "remote_title": null,
@@ -311,7 +311,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "39": {
+  {
     "id": 39,
     "title": "The Obliterator",
     "remote_title": null,
@@ -319,7 +319,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "40": {
+  {
     "id": 40,
     "title": "Tok! Tok! Tok!",
     "remote_title": null,
@@ -327,7 +327,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "41": {
+  {
     "id": 41,
     "title": "U.A.D",
     "remote_title": null,
@@ -335,7 +335,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "42": {
+  {
     "id": 42,
     "title": "v o l d e n u i t",
     "remote_title": null,
@@ -343,7 +343,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "43": {
+  {
     "id": 43,
     "title": "Void",
     "remote_title": null,
@@ -351,7 +351,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "44": {
+  {
     "id": 44,
     "title": "waiting for me",
     "remote_title": null,
@@ -359,7 +359,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "45": {
+  {
     "id": 45,
     "title": "Waiting for you",
     "remote_title": null,
@@ -367,7 +367,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "46": {
+  {
     "id": 46,
     "title": "We're All Gonna Die",
     "remote_title": null,
@@ -375,7 +375,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "47": {
+  {
     "id": 47,
     "title": "WHY",
     "remote_title": null,
@@ -383,7 +383,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "48": {
+  {
     "id": 48,
     "title": "설레임",
     "remote_title": null,
@@ -391,7 +391,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "49": {
+  {
     "id": 49,
     "title": "태권부리",
     "remote_title": null,
@@ -399,7 +399,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "50": {
+  {
     "id": 50,
     "title": "A Lie",
     "remote_title": null,
@@ -407,7 +407,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "51": {
+  {
     "id": 51,
     "title": "Another DAY",
     "remote_title": null,
@@ -415,7 +415,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "52": {
+  {
     "id": 52,
     "title": "Brain Storm",
     "remote_title": null,
@@ -423,7 +423,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "53": {
+  {
     "id": 53,
     "title": "Brandnew Days",
     "remote_title": null,
@@ -431,7 +431,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "54": {
+  {
     "id": 54,
     "title": "Brave it Out",
     "remote_title": null,
@@ -439,7 +439,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "55": {
+  {
     "id": 55,
     "title": "Bye Bye Love",
     "remote_title": null,
@@ -447,7 +447,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "56": {
+  {
     "id": 56,
     "title": "Chain of Gravity",
     "remote_title": null,
@@ -455,7 +455,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "57": {
+  {
     "id": 57,
     "title": "Cherokee",
     "remote_title": null,
@@ -463,7 +463,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "58": {
+  {
     "id": 58,
     "title": "DIVINE SERVICE",
     "remote_title": null,
@@ -471,7 +471,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "59": {
+  {
     "id": 59,
     "title": "Dream of You",
     "remote_title": null,
@@ -479,7 +479,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "60": {
+  {
     "id": 60,
     "title": "Fallen Angel",
     "remote_title": null,
@@ -487,7 +487,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "61": {
+  {
     "id": 61,
     "title": "Fentanest",
     "remote_title": null,
@@ -495,7 +495,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "62": {
+  {
     "id": 62,
     "title": "For Seasons",
     "remote_title": null,
@@ -503,7 +503,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "63": {
+  {
     "id": 63,
     "title": "For the IKARUS",
     "remote_title": null,
@@ -511,7 +511,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "64": {
+  {
     "id": 64,
     "title": "Get on Top",
     "remote_title": null,
@@ -519,7 +519,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "65": {
+  {
     "id": 65,
     "title": "GET OUT",
     "remote_title": null,
@@ -527,7 +527,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "66": {
+  {
     "id": 66,
     "title": "Good Bye",
     "remote_title": null,
@@ -535,7 +535,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "67": {
+  {
     "id": 67,
     "title": "Hello Pinky",
     "remote_title": null,
@@ -543,7 +543,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "68": {
+  {
     "id": 68,
     "title": "Higher",
     "remote_title": null,
@@ -551,7 +551,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "69": {
+  {
     "id": 69,
     "title": "Ladymade Star",
     "remote_title": null,
@@ -559,7 +559,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "70": {
+  {
     "id": 70,
     "title": "Lost n' found",
     "remote_title": null,
@@ -567,7 +567,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "71": {
+  {
     "id": 71,
     "title": "Memoirs",
     "remote_title": null,
@@ -575,7 +575,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "72": {
+  {
     "id": 72,
     "title": "Mess it Up",
     "remote_title": null,
@@ -583,7 +583,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "73": {
+  {
     "id": 73,
     "title": "Midnight Blood",
     "remote_title": null,
@@ -591,7 +591,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "74": {
+  {
     "id": 74,
     "title": "Miles",
     "remote_title": null,
@@ -599,7 +599,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "75": {
+  {
     "id": 75,
     "title": "Minus 3",
     "remote_title": null,
@@ -607,7 +607,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "76": {
+  {
     "id": 76,
     "title": "My Alias",
     "remote_title": null,
@@ -615,7 +615,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "77": {
+  {
     "id": 77,
     "title": "NANO RISK",
     "remote_title": null,
@@ -623,7 +623,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "78": {
+  {
     "id": 78,
     "title": "NB POWER",
     "remote_title": null,
@@ -631,7 +631,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "79": {
+  {
     "id": 79,
     "title": "NB Rangers -Returns-",
     "remote_title": null,
@@ -639,7 +639,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "80": {
+  {
     "id": 80,
     "title": "Negative Nature",
     "remote_title": null,
@@ -647,7 +647,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "81": {
+  {
     "id": 81,
     "title": "Nightmare",
     "remote_title": null,
@@ -655,7 +655,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "82": {
+  {
     "id": 82,
     "title": "Phantom Of Sky",
     "remote_title": null,
@@ -663,7 +663,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "83": {
+  {
     "id": 83,
     "title": "plastic method",
     "remote_title": null,
@@ -671,7 +671,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "84": {
+  {
     "id": 84,
     "title": "Right Now",
     "remote_title": null,
@@ -679,7 +679,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "85": {
+  {
     "id": 85,
     "title": "Rocka-a-doodle-doo",
     "remote_title": null,
@@ -687,7 +687,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "86": {
+  {
     "id": 86,
     "title": "Rolling On the Duck",
     "remote_title": null,
@@ -695,7 +695,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "87": {
+  {
     "id": 87,
     "title": "Seeker",
     "remote_title": null,
@@ -703,7 +703,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "88": {
+  {
     "id": 88,
     "title": "Showtime",
     "remote_title": null,
@@ -711,7 +711,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "89": {
+  {
     "id": 89,
     "title": "Smoky Quartz",
     "remote_title": null,
@@ -719,7 +719,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "90": {
+  {
     "id": 90,
     "title": "sO mUCH iN LUV",
     "remote_title": null,
@@ -727,7 +727,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "91": {
+  {
     "id": 91,
     "title": "SQUEEZE",
     "remote_title": null,
@@ -735,7 +735,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "92": {
+  {
     "id": 92,
     "title": "STALKER",
     "remote_title": null,
@@ -743,7 +743,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "93": {
+  {
     "id": 93,
     "title": "StarFish",
     "remote_title": null,
@@ -751,7 +751,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "94": {
+  {
     "id": 94,
     "title": "Stay with me",
     "remote_title": null,
@@ -759,7 +759,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "95": {
+  {
     "id": 95,
     "title": "Sunset Rider",
     "remote_title": null,
@@ -767,7 +767,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "96": {
+  {
     "id": 96,
     "title": "Syriana",
     "remote_title": null,
@@ -775,7 +775,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "97": {
+  {
     "id": 97,
     "title": "WhiteBlue",
     "remote_title": null,
@@ -783,7 +783,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "98": {
+  {
     "id": 98,
     "title": "Yellowberry -AJ Mix-",
     "remote_title": "Yellowberry ~AJ Mix~",
@@ -791,7 +791,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "99": {
+  {
     "id": 99,
     "title": "Yo Creo Que Si",
     "remote_title": null,
@@ -799,7 +799,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "100": {
+  {
     "id": 100,
     "title": "Your Own Miracle",
     "remote_title": null,
@@ -807,7 +807,7 @@
     "dlc": "Portable 2",
     "dlcCode": "P2"
   },
-  "101": {
+  {
     "id": 101,
     "title": "바람에게 부탁해",
     "remote_title": null,
@@ -815,7 +815,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "102": {
+  {
     "id": 102,
     "title": "바람에게 부탁해 ~Live Mix~",
     "remote_title": null,
@@ -823,7 +823,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "103": {
+  {
     "id": 103,
     "title": "아침형 인간",
     "remote_title": null,
@@ -831,7 +831,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "104": {
+  {
     "id": 104,
     "title": "피아노 협주곡 1번",
     "remote_title": null,
@@ -839,7 +839,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "105": {
+  {
     "id": 105,
     "title": "A.I",
     "remote_title": null,
@@ -847,7 +847,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "106": {
+  {
     "id": 106,
     "title": "Astro Fight",
     "remote_title": null,
@@ -855,7 +855,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "107": {
+  {
     "id": 107,
     "title": "BlythE",
     "remote_title": null,
@@ -863,7 +863,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "108": {
+  {
     "id": 108,
     "title": "Bright Dream",
     "remote_title": null,
@@ -871,7 +871,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "109": {
+  {
     "id": 109,
     "title": "Can We Talk",
     "remote_title": null,
@@ -879,7 +879,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "110": {
+  {
     "id": 110,
     "title": "Catch Me",
     "remote_title": null,
@@ -887,7 +887,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "111": {
+  {
     "id": 111,
     "title": "Chrono Breakers",
     "remote_title": null,
@@ -895,7 +895,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "112": {
+  {
     "id": 112,
     "title": "CnP",
     "remote_title": null,
@@ -903,7 +903,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "113": {
+  {
     "id": 113,
     "title": "Dreadnought",
     "remote_title": null,
@@ -911,7 +911,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "114": {
+  {
     "id": 114,
     "title": "Elastic STAR",
     "remote_title": null,
@@ -919,7 +919,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "115": {
+  {
     "id": 115,
     "title": "End of the Moonlight",
     "remote_title": null,
@@ -927,7 +927,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "116": {
+  {
     "id": 116,
     "title": "Enemy Storm",
     "remote_title": null,
@@ -935,7 +935,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "117": {
+  {
     "id": 117,
     "title": "Eternal Memory ~소녀의 꿈~",
     "remote_title": null,
@@ -943,7 +943,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "118": {
+  {
     "id": 118,
     "title": "Extreme Z4",
     "remote_title": null,
@@ -951,7 +951,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "119": {
+  {
     "id": 119,
     "title": "FEAR",
     "remote_title": null,
@@ -959,7 +959,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "120": {
+  {
     "id": 120,
     "title": "Fever GJ",
     "remote_title": null,
@@ -967,7 +967,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "121": {
+  {
     "id": 121,
     "title": "FTR",
     "remote_title": null,
@@ -975,7 +975,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "122": {
+  {
     "id": 122,
     "title": "Funky Chups",
     "remote_title": null,
@@ -983,7 +983,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "123": {
+  {
     "id": 123,
     "title": "Futurism",
     "remote_title": null,
@@ -991,7 +991,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "124": {
+  {
     "id": 124,
     "title": "HAMSIN",
     "remote_title": null,
@@ -999,7 +999,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "125": {
+  {
     "id": 125,
     "title": "JBG",
     "remote_title": null,
@@ -1007,7 +1007,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "126": {
+  {
     "id": 126,
     "title": "Jupiter Driving",
     "remote_title": null,
@@ -1015,7 +1015,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "127": {
+  {
     "id": 127,
     "title": "KUDA",
     "remote_title": null,
@@ -1023,7 +1023,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "128": {
+  {
     "id": 128,
     "title": "Lemonade",
     "remote_title": null,
@@ -1031,7 +1031,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "129": {
+  {
     "id": 129,
     "title": "Let's Go Baby",
     "remote_title": null,
@@ -1039,7 +1039,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "130": {
+  {
     "id": 130,
     "title": "Light House",
     "remote_title": null,
@@ -1047,7 +1047,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "131": {
+  {
     "id": 131,
     "title": "Long Vacation",
     "remote_title": null,
@@ -1055,7 +1055,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "132": {
+  {
     "id": 132,
     "title": "Luv Flow",
     "remote_title": null,
@@ -1063,7 +1063,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "133": {
+  {
     "id": 133,
     "title": "MASAI",
     "remote_title": null,
@@ -1071,7 +1071,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "134": {
+  {
     "id": 134,
     "title": "Memory of Beach",
     "remote_title": null,
@@ -1079,7 +1079,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "135": {
+  {
     "id": 135,
     "title": "Minimal Life",
     "remote_title": null,
@@ -1087,7 +1087,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "136": {
+  {
     "id": 136,
     "title": "NB RANGER",
     "remote_title": null,
@@ -1095,7 +1095,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "137": {
+  {
     "id": 137,
     "title": "Never Say",
     "remote_title": null,
@@ -1103,7 +1103,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "138": {
+  {
     "id": 138,
     "title": "OBLIVION",
     "remote_title": null,
@@ -1111,7 +1111,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "139": {
+  {
     "id": 139,
     "title": "OBLIVION ~Rockin' Night Style~",
     "remote_title": null,
@@ -1119,7 +1119,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "140": {
+  {
     "id": 140,
     "title": "ON",
     "remote_title": null,
@@ -1127,7 +1127,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "141": {
+  {
     "id": 141,
     "title": "One the Love",
     "remote_title": null,
@@ -1135,7 +1135,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "142": {
+  {
     "id": 142,
     "title": "Out Law",
     "remote_title": null,
@@ -1143,7 +1143,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "143": {
+  {
     "id": 143,
     "title": "Para-Q",
     "remote_title": null,
@@ -1151,7 +1151,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "144": {
+  {
     "id": 144,
     "title": "Ray of Illuminati",
     "remote_title": null,
@@ -1159,7 +1159,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "145": {
+  {
     "id": 145,
     "title": "RED",
     "remote_title": null,
@@ -1167,7 +1167,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "146": {
+  {
     "id": 146,
     "title": "복수혈전",
     "remote_title": null,
@@ -1175,7 +1175,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "147": {
+  {
     "id": 147,
     "title": "Road Of Death",
     "remote_title": null,
@@ -1183,7 +1183,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "148": {
+  {
     "id": 148,
     "title": "Rock Or Die",
     "remote_title": null,
@@ -1191,7 +1191,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "149": {
+  {
     "id": 149,
     "title": "Save My Dream",
     "remote_title": null,
@@ -1199,7 +1199,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "150": {
+  {
     "id": 150,
     "title": "SIN",
     "remote_title": null,
@@ -1207,7 +1207,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "151": {
+  {
     "id": 151,
     "title": "SIN ~The Last Scene~",
     "remote_title": null,
@@ -1215,7 +1215,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "152": {
+  {
     "id": 152,
     "title": "Sunny Side",
     "remote_title": null,
@@ -1223,7 +1223,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "153": {
+  {
     "id": 153,
     "title": "Sunny Side ~Deepn' Soul Mix~",
     "remote_title": null,
@@ -1231,7 +1231,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "154": {
+  {
     "id": 154,
     "title": "Temptation",
     "remote_title": null,
@@ -1239,7 +1239,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "155": {
+  {
     "id": 155,
     "title": "Triple Zoe",
     "remote_title": null,
@@ -1247,7 +1247,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "156": {
+  {
     "id": 156,
     "title": "Ya! Party!",
     "remote_title": null,
@@ -1255,7 +1255,7 @@
     "dlc": "Portable",
     "dlcCode": "P1"
   },
-  "157": {
+  {
     "id": 157,
     "title": "Ghost Voices",
     "remote_title": null,
@@ -1263,7 +1263,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "158": {
+  {
     "id": 158,
     "title": "Sad Machine",
     "remote_title": null,
@@ -1271,7 +1271,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "159": {
+  {
     "id": 159,
     "title": "Bleed",
     "remote_title": null,
@@ -1279,7 +1279,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "160": {
+  {
     "id": 160,
     "title": "Kingdom",
     "remote_title": null,
@@ -1287,7 +1287,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "161": {
+  {
     "id": 161,
     "title": "So Happy",
     "remote_title": null,
@@ -1295,7 +1295,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "162": {
+  {
     "id": 162,
     "title": "Get Jinxed",
     "remote_title": null,
@@ -1303,7 +1303,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "163": {
+  {
     "id": 163,
     "title": "POP/STARS",
     "remote_title": null,
@@ -1311,7 +1311,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "164": {
+  {
     "id": 164,
     "title": "Cosmic Elevator",
     "remote_title": null,
@@ -1319,7 +1319,7 @@
     "dlc": "Emotional Sense",
     "dlcCode": "ES"
   },
-  "165": {
+  {
     "id": 165,
     "title": "Feel",
     "remote_title": null,
@@ -1327,7 +1327,7 @@
     "dlc": "Emotional Sense",
     "dlcCode": "ES"
   },
-  "166": {
+  {
     "id": 166,
     "title": "Knowledge System",
     "remote_title": null,
@@ -1335,7 +1335,7 @@
     "dlc": "Emotional Sense",
     "dlcCode": "ES"
   },
-  "167": {
+  {
     "id": 167,
     "title": "Real Over Drive",
     "remote_title": null,
@@ -1343,7 +1343,7 @@
     "dlc": "Emotional Sense",
     "dlcCode": "ES"
   },
-  "168": {
+  {
     "id": 168,
     "title": "Space of Soul",
     "remote_title": null,
@@ -1351,7 +1351,7 @@
     "dlc": "Emotional Sense",
     "dlcCode": "ES"
   },
-  "169": {
+  {
     "id": 169,
     "title": "Super lovely",
     "remote_title": null,
@@ -1359,7 +1359,7 @@
     "dlc": "Emotional Sense",
     "dlcCode": "ES"
   },
-  "170": {
+  {
     "id": 170,
     "title": "Urban Night",
     "remote_title": null,
@@ -1367,7 +1367,7 @@
     "dlc": "Emotional Sense",
     "dlcCode": "ES"
   },
-  "171": {
+  {
     "id": 171,
     "title": "Yo! Max!",
     "remote_title": null,
@@ -1375,7 +1375,7 @@
     "dlc": "Emotional Sense",
     "dlcCode": "ES"
   },
-  "172": {
+  {
     "id": 172,
     "title": "Attack",
     "remote_title": null,
@@ -1383,7 +1383,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "173": {
+  {
     "id": 173,
     "title": "BLACK GOLD",
     "remote_title": null,
@@ -1391,7 +1391,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "174": {
+  {
     "id": 174,
     "title": "Do it",
     "remote_title": null,
@@ -1399,7 +1399,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "175": {
+  {
     "id": 175,
     "title": "Dream it",
     "remote_title": null,
@@ -1407,7 +1407,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "176": {
+  {
     "id": 176,
     "title": "Fancy Night",
     "remote_title": null,
@@ -1415,7 +1415,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "177": {
+  {
     "id": 177,
     "title": "FIGHT NIGHT (feat. Calyae)",
     "remote_title": null,
@@ -1423,7 +1423,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "178": {
+  {
     "id": 178,
     "title": "Kensei",
     "remote_title": null,
@@ -1431,7 +1431,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "179": {
+  {
     "id": 179,
     "title": "Lisrim",
     "remote_title": null,
@@ -1439,7 +1439,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "180": {
+  {
     "id": 180,
     "title": "Lost Serenity",
     "remote_title": null,
@@ -1447,7 +1447,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "181": {
+  {
     "id": 181,
     "title": "Lost Temple",
     "remote_title": null,
@@ -1455,7 +1455,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "182": {
+  {
     "id": 182,
     "title": "Maharajah -fenomeno edition-",
     "remote_title": null,
@@ -1463,7 +1463,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "183": {
+  {
     "id": 183,
     "title": "Misty Er'A",
     "remote_title": null,
@@ -1471,7 +1471,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "184": {
+  {
     "id": 184,
     "title": "Move Yourself",
     "remote_title": null,
@@ -1479,7 +1479,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "185": {
+  {
     "id": 185,
     "title": "NANAIRO",
     "remote_title": null,
@@ -1487,7 +1487,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "186": {
+  {
     "id": 186,
     "title": "Never Die",
     "remote_title": null,
@@ -1495,7 +1495,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "187": {
+  {
     "id": 187,
     "title": "Remember Me",
     "remote_title": null,
@@ -1503,7 +1503,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "188": {
+  {
     "id": 188,
     "title": "Space Challenger",
     "remote_title": null,
@@ -1511,7 +1511,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "189": {
+  {
     "id": 189,
     "title": "Vile Requiem",
     "remote_title": null,
@@ -1519,7 +1519,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "190": {
+  {
     "id": 190,
     "title": "welcome to the space (feat. Jisun)",
     "remote_title": null,
@@ -1527,7 +1527,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "191": {
+  {
     "id": 191,
     "title": "WONDER $LOT 777",
     "remote_title": null,
@@ -1535,7 +1535,7 @@
     "dlc": "V Extension",
     "dlcCode": "VE"
   },
-  "192": {
+  {
     "id": 192,
     "title": "Black MInD",
     "remote_title": null,
@@ -1543,7 +1543,7 @@
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC"
   },
-  "193": {
+  {
     "id": 193,
     "title": "Good Night, Bad Luck.",
     "remote_title": null,
@@ -1551,7 +1551,7 @@
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC"
   },
-  "194": {
+  {
     "id": 194,
     "title": "Got more raves?",
     "remote_title": null,
@@ -1559,7 +1559,7 @@
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC"
   },
-  "195": {
+  {
     "id": 195,
     "title": "Groove Prayer",
     "remote_title": null,
@@ -1567,7 +1567,7 @@
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC"
   },
-  "196": {
+  {
     "id": 196,
     "title": "HB-axeleration",
     "remote_title": null,
@@ -1575,7 +1575,7 @@
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC"
   },
-  "197": {
+  {
     "id": 197,
     "title": "Marry me, Nightmare",
     "remote_title": null,
@@ -1583,7 +1583,7 @@
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC"
   },
-  "198": {
+  {
     "id": 198,
     "title": "ouroboros -twin stroke of the end-",
     "remote_title": null,
@@ -1591,7 +1591,7 @@
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC"
   },
-  "199": {
+  {
     "id": 199,
     "title": "OVER THE NIGHT",
     "remote_title": null,
@@ -1599,7 +1599,7 @@
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC"
   },
-  "200": {
+  {
     "id": 200,
     "title": "Satisfiction",
     "remote_title": null,
@@ -1607,7 +1607,7 @@
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC"
   },
-  "201": {
+  {
     "id": 201,
     "title": "Warrior",
     "remote_title": null,
@@ -1615,7 +1615,7 @@
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC"
   },
-  "202": {
+  {
     "id": 202,
     "title": "바람의 기억",
     "remote_title": null,
@@ -1623,7 +1623,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "203": {
+  {
     "id": 203,
     "title": "A Lie ~Deep Inside Mix~",
     "remote_title": null,
@@ -1631,7 +1631,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "204": {
+  {
     "id": 204,
     "title": "Bye Bye Love ~Nu Jazz Mix~",
     "remote_title": null,
@@ -1639,7 +1639,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "205": {
+  {
     "id": 205,
     "title": "Catch You",
     "remote_title": null,
@@ -1647,7 +1647,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "206": {
+  {
     "id": 206,
     "title": "For Seasons ~Air Guitar Mix~",
     "remote_title": null,
@@ -1655,7 +1655,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "207": {
+  {
     "id": 207,
     "title": "GET OUT ~Hip Noodle Mix~",
     "remote_title": null,
@@ -1663,7 +1663,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "208": {
+  {
     "id": 208,
     "title": "Mind Control",
     "remote_title": null,
@@ -1671,7 +1671,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "209": {
+  {
     "id": 209,
     "title": "My Jealousy",
     "remote_title": null,
@@ -1679,7 +1679,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "210": {
+  {
     "id": 210,
     "title": "NB Girls",
     "remote_title": null,
@@ -1687,7 +1687,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "211": {
+  {
     "id": 211,
     "title": "sO mUCH iN LUV ~Melodic Twisted Mix~",
     "remote_title": null,
@@ -1695,7 +1695,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "212": {
+  {
     "id": 212,
     "title": "Someday",
     "remote_title": null,
@@ -1703,7 +1703,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "213": {
+  {
     "id": 213,
     "title": "STOP",
     "remote_title": null,
@@ -1711,7 +1711,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "214": {
+  {
     "id": 214,
     "title": "Streetlight",
     "remote_title": null,
@@ -1719,7 +1719,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "215": {
+  {
     "id": 215,
     "title": "Syriana ~Blast Wave Mix~",
     "remote_title": null,
@@ -1727,7 +1727,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "216": {
+  {
     "id": 216,
     "title": "Talk! Talk!",
     "remote_title": null,
@@ -1735,7 +1735,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "217": {
+  {
     "id": 217,
     "title": "The One",
     "remote_title": null,
@@ -1743,7 +1743,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "218": {
+  {
     "id": 218,
     "title": "Ventilator",
     "remote_title": null,
@@ -1751,7 +1751,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "219": {
+  {
     "id": 219,
     "title": "Yo Creo Que Si ~Live House Version~",
     "remote_title": null,
@@ -1759,7 +1759,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "220": {
+  {
     "id": 220,
     "title": "Your Own Miracle ~Disco House Mix~",
     "remote_title": null,
@@ -1767,7 +1767,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "221": {
+  {
     "id": 221,
     "title": "ZET",
     "remote_title": null,
@@ -1775,7 +1775,7 @@
     "dlc": "TRILOGY",
     "dlcCode": "TR"
   },
-  "222": {
+  {
     "id": 222,
     "title": "Nevermind",
     "remote_title": null,
@@ -1783,7 +1783,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "223": {
+  {
     "id": 223,
     "title": "Break a Spell",
     "remote_title": null,
@@ -1791,7 +1791,7 @@
     "dlc": "GUILTY GEAR",
     "dlcCode": "GG"
   },
-  "224": {
+  {
     "id": 224,
     "title": "Holy Orders (Be Just Or Be Dead)",
     "remote_title": null,
@@ -1799,7 +1799,7 @@
     "dlc": "GUILTY GEAR",
     "dlcCode": "GG"
   },
-  "225": {
+  {
     "id": 225,
     "title": "Marionette",
     "remote_title": null,
@@ -1807,7 +1807,7 @@
     "dlc": "GUILTY GEAR",
     "dlcCode": "GG"
   },
-  "226": {
+  {
     "id": 226,
     "title": "고백, 꽃, 늑대 part.2",
     "remote_title": null,
@@ -1815,7 +1815,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "227": {
+  {
     "id": 227,
     "title": "Beat U Down",
     "remote_title": null,
@@ -1823,7 +1823,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "228": {
+  {
     "id": 228,
     "title": "Colours of Sorrow",
     "remote_title": null,
@@ -1831,7 +1831,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "229": {
+  {
     "id": 229,
     "title": "Cypher Gate",
     "remote_title": null,
@@ -1839,7 +1839,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "230": {
+  {
     "id": 230,
     "title": "Desperado",
     "remote_title": null,
@@ -1847,7 +1847,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "231": {
+  {
     "id": 231,
     "title": "Fermion",
     "remote_title": null,
@@ -1855,7 +1855,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "232": {
+  {
     "id": 232,
     "title": "Fever Pitch Girl",
     "remote_title": null,
@@ -1863,7 +1863,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "233": {
+  {
     "id": 233,
     "title": "Get Down",
     "remote_title": null,
@@ -1871,7 +1871,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "234": {
+  {
     "id": 234,
     "title": "Grave Consequence",
     "remote_title": null,
@@ -1879,7 +1879,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "235": {
+  {
     "id": 235,
     "title": "Heart of Witch",
     "remote_title": null,
@@ -1887,7 +1887,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "236": {
+  {
     "id": 236,
     "title": "In my Dream",
     "remote_title": null,
@@ -1895,7 +1895,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "237": {
+  {
     "id": 237,
     "title": "Jealousy",
     "remote_title": null,
@@ -1903,7 +1903,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "238": {
+  {
     "id": 238,
     "title": "Keys to the World",
     "remote_title": null,
@@ -1911,7 +1911,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "239": {
+  {
     "id": 239,
     "title": "Lovely hands",
     "remote_title": null,
@@ -1919,7 +1919,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "240": {
+  {
     "id": 240,
     "title": "Lover (BS Style)",
     "remote_title": null,
@@ -1927,7 +1927,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "241": {
+  {
     "id": 241,
     "title": "PDM",
     "remote_title": null,
@@ -1935,7 +1935,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "242": {
+  {
     "id": 242,
     "title": "Ready Now",
     "remote_title": null,
@@ -1943,7 +1943,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "243": {
+  {
     "id": 243,
     "title": "Ruti'n",
     "remote_title": null,
@@ -1951,7 +1951,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "244": {
+  {
     "id": 244,
     "title": "Secret World",
     "remote_title": null,
@@ -1959,7 +1959,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "245": {
+  {
     "id": 245,
     "title": "Y (BS Style)",
     "remote_title": null,
@@ -1967,7 +1967,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "246": {
+  {
     "id": 246,
     "title": "고백, 꽃, 늑대",
     "remote_title": null,
@@ -1975,7 +1975,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "247": {
+  {
     "id": 247,
     "title": "내게로 와",
     "remote_title": null,
@@ -1983,7 +1983,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "248": {
+  {
     "id": 248,
     "title": "너에게",
     "remote_title": null,
@@ -1991,7 +1991,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "249": {
+  {
     "id": 249,
     "title": "영원",
     "remote_title": null,
@@ -1999,7 +1999,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "250": {
+  {
     "id": 250,
     "title": "Closer",
     "remote_title": null,
@@ -2007,7 +2007,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "251": {
+  {
     "id": 251,
     "title": "Coastal Tempo",
     "remote_title": null,
@@ -2015,7 +2015,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "252": {
+  {
     "id": 252,
     "title": "Color",
     "remote_title": null,
@@ -2023,7 +2023,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "253": {
+  {
     "id": 253,
     "title": "Creator",
     "remote_title": null,
@@ -2031,7 +2031,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "254": {
+  {
     "id": 254,
     "title": "DARK ENVY",
     "remote_title": null,
@@ -2039,7 +2039,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "255": {
+  {
     "id": 255,
     "title": "Electronics",
     "remote_title": null,
@@ -2047,7 +2047,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "256": {
+  {
     "id": 256,
     "title": "Fate",
     "remote_title": null,
@@ -2055,7 +2055,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "257": {
+  {
     "id": 257,
     "title": "First Kiss",
     "remote_title": null,
@@ -2063,7 +2063,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "258": {
+  {
     "id": 258,
     "title": "Flea",
     "remote_title": null,
@@ -2071,7 +2071,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "259": {
+  {
     "id": 259,
     "title": "Freedom",
     "remote_title": null,
@@ -2079,7 +2079,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "260": {
+  {
     "id": 260,
     "title": "Here in the Moment",
     "remote_title": null,
@@ -2087,7 +2087,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "261": {
+  {
     "id": 261,
     "title": "In My Heart",
     "remote_title": null,
@@ -2095,7 +2095,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "262": {
+  {
     "id": 262,
     "title": "Love Mode",
     "remote_title": null,
@@ -2103,7 +2103,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "263": {
+  {
     "id": 263,
     "title": "Lover (CE Style)",
     "remote_title": null,
@@ -2111,7 +2111,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "264": {
+  {
     "id": 264,
     "title": "Tell Me",
     "remote_title": null,
@@ -2119,7 +2119,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "265": {
+  {
     "id": 265,
     "title": "The Clear Blue Sky",
     "remote_title": null,
@@ -2127,7 +2127,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "266": {
+  {
     "id": 266,
     "title": "The Night Stage",
     "remote_title": null,
@@ -2135,7 +2135,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "267": {
+  {
     "id": 267,
     "title": "Urban Night",
     "remote_title": null,
@@ -2143,7 +2143,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "268": {
+  {
     "id": 268,
     "title": "Y (CE Style)",
     "remote_title": null,
@@ -2151,7 +2151,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "269": {
+  {
     "id": 269,
     "title": "Rising The Sonic",
     "remote_title": null,
@@ -2159,7 +2159,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "270": {
+  {
     "id": 270,
     "title": "ANALYS",
     "remote_title": null,
@@ -2167,7 +2167,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "271": {
+  {
     "id": 271,
     "title": "Chemical Slave",
     "remote_title": null,
@@ -2175,7 +2175,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "272": {
+  {
     "id": 272,
     "title": "RockSTAR",
     "remote_title": null,
@@ -2183,7 +2183,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "273": {
+  {
     "id": 273,
     "title": "Watch Your Step",
     "remote_title": null,
@@ -2191,7 +2191,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "274": {
+  {
     "id": 274,
     "title": "혜성",
     "remote_title": null,
@@ -2199,7 +2199,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "275": {
+  {
     "id": 275,
     "title": "Angelic Sphere",
     "remote_title": null,
@@ -2207,7 +2207,7 @@
     "dlc": "Deemo",
     "dlcCode": "DM"
   },
-  "276": {
+  {
     "id": 276,
     "title": "ANiMA",
     "remote_title": null,
@@ -2215,7 +2215,7 @@
     "dlc": "Deemo",
     "dlcCode": "DM"
   },
-  "277": {
+  {
     "id": 277,
     "title": "Dream",
     "remote_title": null,
@@ -2223,7 +2223,7 @@
     "dlc": "Deemo",
     "dlcCode": "DM"
   },
-  "278": {
+  {
     "id": 278,
     "title": "Legacy",
     "remote_title": null,
@@ -2231,7 +2231,7 @@
     "dlc": "Deemo",
     "dlcCode": "DM"
   },
-  "279": {
+  {
     "id": 279,
     "title": "Magnolia",
     "remote_title": null,
@@ -2239,7 +2239,7 @@
     "dlc": "Deemo",
     "dlcCode": "DM"
   },
-  "280": {
+  {
     "id": 280,
     "title": "Nine point eight",
     "remote_title": null,
@@ -2247,7 +2247,7 @@
     "dlc": "Deemo",
     "dlcCode": "DM"
   },
-  "281": {
+  {
     "id": 281,
     "title": "Sairai",
     "remote_title": null,
@@ -2255,7 +2255,7 @@
     "dlc": "Deemo",
     "dlcCode": "DM"
   },
-  "282": {
+  {
     "id": 282,
     "title": "Undo",
     "remote_title": null,
@@ -2263,7 +2263,7 @@
     "dlc": "Deemo",
     "dlcCode": "DM"
   },
-  "283": {
+  {
     "id": 283,
     "title": "Utopiosphere",
     "remote_title": null,
@@ -2271,7 +2271,7 @@
     "dlc": "Deemo",
     "dlcCode": "DM"
   },
-  "284": {
+  {
     "id": 284,
     "title": "YUBIKIRI-GENMAN",
     "remote_title": null,
@@ -2279,7 +2279,7 @@
     "dlc": "Deemo",
     "dlcCode": "DM"
   },
-  "285": {
+  {
     "id": 285,
     "title": "AXION",
     "remote_title": null,
@@ -2287,7 +2287,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "286": {
+  {
     "id": 286,
     "title": "CODE NAME : ZERO",
     "remote_title": null,
@@ -2295,7 +2295,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "287": {
+  {
     "id": 287,
     "title": "conflict",
     "remote_title": null,
@@ -2303,7 +2303,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "288": {
+  {
     "id": 288,
     "title": "EMber",
     "remote_title": null,
@@ -2311,7 +2311,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "289": {
+  {
     "id": 289,
     "title": "Entrance",
     "remote_title": null,
@@ -2319,7 +2319,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "290": {
+  {
     "id": 290,
     "title": "L",
     "remote_title": null,
@@ -2327,7 +2327,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "291": {
+  {
     "id": 291,
     "title": "Les Parfums de L'Amour",
     "remote_title": null,
@@ -2335,7 +2335,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "292": {
+  {
     "id": 292,
     "title": "Mammal",
     "remote_title": null,
@@ -2343,7 +2343,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "293": {
+  {
     "id": 293,
     "title": "Myosotis",
     "remote_title": null,
@@ -2351,7 +2351,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "294": {
+  {
     "id": 294,
     "title": "Old Gold",
     "remote_title": null,
@@ -2359,7 +2359,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "295": {
+  {
     "id": 295,
     "title": "Shoot out",
     "remote_title": null,
@@ -2367,7 +2367,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "296": {
+  {
     "id": 296,
     "title": "Ververg",
     "remote_title": null,
@@ -2375,7 +2375,7 @@
     "dlc": "Cytus",
     "dlcCode": "CY"
   },
-  "297": {
+  {
     "id": 297,
     "title": "I want You ~반짝 반짝 Sunshine~",
     "remote_title": "I want You ~반짝★반짝 Sunshine~",
@@ -2383,7 +2383,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "298": {
+  {
     "id": 298,
     "title": "설레임 Part.2",
     "remote_title": null,
@@ -2391,7 +2391,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "299": {
+  {
     "id": 299,
     "title": "유령",
     "remote_title": null,
@@ -2399,7 +2399,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "300": {
+  {
     "id": 300,
     "title": "A Life With You",
     "remote_title": null,
@@ -2407,7 +2407,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "301": {
+  {
     "id": 301,
     "title": "AD2222",
     "remote_title": null,
@@ -2415,7 +2415,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "302": {
+  {
     "id": 302,
     "title": "AD2222 ~Extended Mix~",
     "remote_title": null,
@@ -2423,7 +2423,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "303": {
+  {
     "id": 303,
     "title": "Angel",
     "remote_title": null,
@@ -2431,7 +2431,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "304": {
+  {
     "id": 304,
     "title": "Bamboo on Bamboo",
     "remote_title": null,
@@ -2439,7 +2439,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "305": {
+  {
     "id": 305,
     "title": "Black Swan",
     "remote_title": null,
@@ -2447,7 +2447,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "306": {
+  {
     "id": 306,
     "title": "Dark Prism",
     "remote_title": null,
@@ -2455,7 +2455,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "307": {
+  {
     "id": 307,
     "title": "Dream Again",
     "remote_title": null,
@@ -2463,7 +2463,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "308": {
+  {
     "id": 308,
     "title": "EGG",
     "remote_title": null,
@@ -2471,7 +2471,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "309": {
+  {
     "id": 309,
     "title": "EGG ~Extended Mix~",
     "remote_title": null,
@@ -2479,7 +2479,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "310": {
+  {
     "id": 310,
     "title": "Emblem",
     "remote_title": null,
@@ -2487,7 +2487,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "311": {
+  {
     "id": 311,
     "title": "Fallin' in LUV",
     "remote_title": null,
@@ -2495,7 +2495,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "312": {
+  {
     "id": 312,
     "title": "Feel Ma Beat",
     "remote_title": null,
@@ -2503,7 +2503,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "313": {
+  {
     "id": 313,
     "title": "Give Me 5",
     "remote_title": null,
@@ -2511,7 +2511,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "314": {
+  {
     "id": 314,
     "title": "Kung-Fu Rider",
     "remote_title": null,
@@ -2519,7 +2519,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "315": {
+  {
     "id": 315,
     "title": "My Heart, My Soul",
     "remote_title": null,
@@ -2527,7 +2527,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "316": {
+  {
     "id": 316,
     "title": "Now a NEW Day",
     "remote_title": null,
@@ -2535,7 +2535,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "317": {
+  {
     "id": 317,
     "title": "Out of CTRL",
     "remote_title": null,
@@ -2543,7 +2543,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "318": {
+  {
     "id": 318,
     "title": "Over the Rainbow",
     "remote_title": null,
@@ -2551,7 +2551,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "319": {
+  {
     "id": 319,
     "title": "Right Back",
     "remote_title": null,
@@ -2559,7 +2559,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "320": {
+  {
     "id": 320,
     "title": "Showdown",
     "remote_title": null,
@@ -2567,7 +2567,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "321": {
+  {
     "id": 321,
     "title": "SigNalize",
     "remote_title": null,
@@ -2575,7 +2575,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "322": {
+  {
     "id": 322,
     "title": "Supernova",
     "remote_title": null,
@@ -2583,7 +2583,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "323": {
+  {
     "id": 323,
     "title": "Supersonic 2011",
     "remote_title": null,
@@ -2591,7 +2591,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "324": {
+  {
     "id": 324,
     "title": "Wanna Be Your Lover",
     "remote_title": null,
@@ -2599,7 +2599,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "325": {
+  {
     "id": 325,
     "title": "Xeus",
     "remote_title": null,
@@ -2607,7 +2607,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "326": {
+  {
     "id": 326,
     "title": "You & Me",
     "remote_title": null,
@@ -2615,7 +2615,7 @@
     "dlc": "TECHNIKA 3",
     "dlcCode": "T3"
   },
-  "327": {
+  {
     "id": 327,
     "title": "Airwave",
     "remote_title": null,
@@ -2623,7 +2623,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "328": {
+  {
     "id": 328,
     "title": "BEE-U-TIFUL",
     "remote_title": null,
@@ -2631,7 +2631,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "329": {
+  {
     "id": 329,
     "title": "Burn it Down",
     "remote_title": null,
@@ -2639,7 +2639,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "330": {
+  {
     "id": 330,
     "title": "Cosmic Fantastic Lovesong",
     "remote_title": null,
@@ -2647,7 +2647,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "331": {
+  {
     "id": 331,
     "title": "Cozy Quilt",
     "remote_title": null,
@@ -2655,7 +2655,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "332": {
+  {
     "id": 332,
     "title": "D2",
     "remote_title": null,
@@ -2663,7 +2663,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "333": {
+  {
     "id": 333,
     "title": "Dream of Winds",
     "remote_title": null,
@@ -2671,7 +2671,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "334": {
+  {
     "id": 334,
     "title": "Dual Strikers",
     "remote_title": null,
@@ -2679,7 +2679,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "335": {
+  {
     "id": 335,
     "title": "Eternal Fantasy ~유니의 꿈~",
     "remote_title": null,
@@ -2687,7 +2687,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "336": {
+  {
     "id": 336,
     "title": "La Campanella : Nu Rave",
     "remote_title": null,
@@ -2695,7 +2695,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "337": {
+  {
     "id": 337,
     "title": "Love is Beautiful",
     "remote_title": null,
@@ -2703,7 +2703,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "338": {
+  {
     "id": 338,
     "title": "MonoXide",
     "remote_title": null,
@@ -2711,7 +2711,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "339": {
+  {
     "id": 339,
     "title": "Nova ~Mr.Funky Remix~",
     "remote_title": null,
@@ -2719,7 +2719,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "340": {
+  {
     "id": 340,
     "title": "Put'Em Up",
     "remote_title": null,
@@ -2727,7 +2727,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "341": {
+  {
     "id": 341,
     "title": "Puzzler",
     "remote_title": null,
@@ -2735,7 +2735,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "342": {
+  {
     "id": 342,
     "title": "Rage Of Demon",
     "remote_title": null,
@@ -2743,7 +2743,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "343": {
+  {
     "id": 343,
     "title": "Say it from your heart",
     "remote_title": null,
@@ -2751,7 +2751,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "344": {
+  {
     "id": 344,
     "title": "Sweet Dream",
     "remote_title": null,
@@ -2759,7 +2759,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "345": {
+  {
     "id": 345,
     "title": "The Guilty",
     "remote_title": null,
@@ -2767,7 +2767,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "346": {
+  {
     "id": 346,
     "title": "Thor ~Extended Mix~",
     "remote_title": "Thor (Extended Mix)",
@@ -2775,7 +2775,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "347": {
+  {
     "id": 347,
     "title": "Trip",
     "remote_title": null,
@@ -2783,7 +2783,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "348": {
+  {
     "id": 348,
     "title": "XLASHER",
     "remote_title": null,
@@ -2791,7 +2791,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "349": {
+  {
     "id": 349,
     "title": "Y ~Extended Mix~",
     "remote_title": null,
@@ -2799,7 +2799,7 @@
     "dlc": "TECHNIKA 2",
     "dlcCode": "T2"
   },
-  "350": {
+  {
     "id": 350,
     "title": "Access",
     "remote_title": null,
@@ -2807,7 +2807,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "351": {
+  {
     "id": 351,
     "title": "Area 7",
     "remote_title": null,
@@ -2815,7 +2815,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "352": {
+  {
     "id": 352,
     "title": "Beyond the Future",
     "remote_title": null,
@@ -2823,7 +2823,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "353": {
+  {
     "id": 353,
     "title": "Dear my Lady",
     "remote_title": null,
@@ -2831,7 +2831,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "354": {
+  {
     "id": 354,
     "title": "DJMAX",
     "remote_title": null,
@@ -2839,7 +2839,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "355": {
+  {
     "id": 355,
     "title": "Fury",
     "remote_title": null,
@@ -2847,7 +2847,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "356": {
+  {
     "id": 356,
     "title": "HEXAD",
     "remote_title": null,
@@ -2855,7 +2855,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "357": {
+  {
     "id": 357,
     "title": "Honeymoon",
     "remote_title": null,
@@ -2863,7 +2863,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "358": {
+  {
     "id": 358,
     "title": "I want You",
     "remote_title": null,
@@ -2871,7 +2871,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "359": {
+  {
     "id": 359,
     "title": "Landscape",
     "remote_title": null,
@@ -2879,7 +2879,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "360": {
+  {
     "id": 360,
     "title": "Melody",
     "remote_title": null,
@@ -2887,7 +2887,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "361": {
+  {
     "id": 361,
     "title": "Play the Future",
     "remote_title": null,
@@ -2895,7 +2895,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "362": {
+  {
     "id": 362,
     "title": "Remember",
     "remote_title": null,
@@ -2903,7 +2903,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "363": {
+  {
     "id": 363,
     "title": "Shoreline",
     "remote_title": null,
@@ -2911,7 +2911,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "364": {
+  {
     "id": 364,
     "title": "SON OF SUN",
     "remote_title": null,
@@ -2919,7 +2919,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "365": {
+  {
     "id": 365,
     "title": "SuperSonic",
     "remote_title": null,
@@ -2927,7 +2927,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "366": {
+  {
     "id": 366,
     "title": "Sweet Shining Shooting Star",
     "remote_title": null,
@@ -2935,7 +2935,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "367": {
+  {
     "id": 367,
     "title": "The Last Dance",
     "remote_title": null,
@@ -2943,7 +2943,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "368": {
+  {
     "id": 368,
     "title": "Thor",
     "remote_title": null,
@@ -2951,7 +2951,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "369": {
+  {
     "id": 369,
     "title": "Voyage",
     "remote_title": null,
@@ -2959,7 +2959,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "370": {
+  {
     "id": 370,
     "title": "ALiCE",
     "remote_title": null,
@@ -2967,7 +2967,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "371": {
+  {
     "id": 371,
     "title": "End of Mythology",
     "remote_title": null,
@@ -2975,7 +2975,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "372": {
+  {
     "id": 372,
     "title": "Do you want it",
     "remote_title": null,
@@ -2983,7 +2983,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "373": {
+  {
     "id": 373,
     "title": "Airwave ~Extended Mix~",
     "remote_title": null,
@@ -2991,7 +2991,7 @@
     "dlc": "BLACK SQUARE",
     "dlcCode": "BS"
   },
-  "374": {
+  {
     "id": 374,
     "title": "SON OF SUN ~Extended Mix~",
     "remote_title": null,
@@ -2999,7 +2999,7 @@
     "dlc": "TECHNIKA",
     "dlcCode": "T1"
   },
-  "375": {
+  {
     "id": 375,
     "title": "Here in the Moment ~Extended Mix~",
     "remote_title": null,
@@ -3007,7 +3007,7 @@
     "dlc": "Clazziquai Edition",
     "dlcCode": "CE"
   },
-  "376": {
+  {
     "id": 376,
     "title": "Barbarous Funera",
     "remote_title": null,
@@ -3015,7 +3015,7 @@
     "dlc": "GIRLS' FRONTLINE",
     "dlcCode": "GF"
   },
-  "377": {
+  {
     "id": 377,
     "title": "Frontline",
     "remote_title": null,
@@ -3023,7 +3023,7 @@
     "dlc": "GIRLS' FRONTLINE",
     "dlcCode": "GF"
   },
-  "378": {
+  {
     "id": 378,
     "title": "What am I fighting for?",
     "remote_title": null,
@@ -3031,7 +3031,7 @@
     "dlc": "GIRLS' FRONTLINE",
     "dlcCode": "GF"
   },
-  "379": {
+  {
     "id": 379,
     "title": "Cyberozar",
     "remote_title": null,
@@ -3039,7 +3039,7 @@
     "dlc": "CHUNITHM",
     "dlcCode": "CHU"
   },
-  "380": {
+  {
     "id": 380,
     "title": "Garakuta Doll Play",
     "remote_title": null,
@@ -3047,7 +3047,7 @@
     "dlc": "CHUNITHM",
     "dlcCode": "CHU"
   },
-  "381": {
+  {
     "id": 381,
     "title": "Ikazuchi",
     "remote_title": null,
@@ -3055,7 +3055,7 @@
     "dlc": "CHUNITHM",
     "dlcCode": "CHU"
   },
-  "382": {
+  {
     "id": 382,
     "title": "Ray Tuning",
     "remote_title": null,
@@ -3063,7 +3063,7 @@
     "dlc": "CHUNITHM",
     "dlcCode": "CHU"
   },
-  "383": {
+  {
     "id": 383,
     "title": "The wheel to the right",
     "remote_title": null,
@@ -3071,7 +3071,7 @@
     "dlc": "CHUNITHM",
     "dlcCode": "CHU"
   },
-  "384": {
+  {
     "id": 384,
     "title": "Trrricksters!!",
     "remote_title": null,
@@ -3079,7 +3079,7 @@
     "dlc": "CHUNITHM",
     "dlcCode": "CHU"
   },
-  "385": {
+  {
     "id": 385,
     "title": "염라",
     "remote_title": null,
@@ -3087,7 +3087,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "386": {
+  {
     "id": 386,
     "title": "Dance of the Dead",
     "remote_title": null,
@@ -3095,7 +3095,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "387": {
+  {
     "id": 387,
     "title": "Grid System",
     "remote_title": null,
@@ -3103,7 +3103,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "388": {
+  {
     "id": 388,
     "title": "Become Myself",
     "remote_title": null,
@@ -3111,7 +3111,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "389": {
+  {
     "id": 389,
     "title": "Break!",
     "remote_title": null,
@@ -3119,7 +3119,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "390": {
+  {
     "id": 390,
     "title": "Desperado ~Nu Skool Mix~",
     "remote_title": null,
@@ -3127,7 +3127,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "391": {
+  {
     "id": 391,
     "title": "Enemy Storm ~Dark Jungle Mix~",
     "remote_title": null,
@@ -3135,7 +3135,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "392": {
+  {
     "id": 392,
     "title": "Everything",
     "remote_title": null,
@@ -3143,7 +3143,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "393": {
+  {
     "id": 393,
     "title": "Gone Astray",
     "remote_title": null,
@@ -3151,7 +3151,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "394": {
+  {
     "id": 394,
     "title": "Hanz up!",
     "remote_title": null,
@@ -3159,7 +3159,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "395": {
+  {
     "id": 395,
     "title": "IF",
     "remote_title": null,
@@ -3167,7 +3167,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "396": {
+  {
     "id": 396,
     "title": "Leave me alone",
     "remote_title": null,
@@ -3175,7 +3175,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "397": {
+  {
     "id": 397,
     "title": "Luv Flow ~Funky House Mix~",
     "remote_title": null,
@@ -3183,7 +3183,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "398": {
+  {
     "id": 398,
     "title": "Luv is True",
     "remote_title": null,
@@ -3191,7 +3191,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "399": {
+  {
     "id": 399,
     "title": "MASAI ~Electro House Mix~",
     "remote_title": null,
@@ -3199,7 +3199,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "400": {
+  {
     "id": 400,
     "title": "Mellow D Fantasy",
     "remote_title": null,
@@ -3207,7 +3207,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "401": {
+  {
     "id": 401,
     "title": "NB Ranger : Nonstop Remix",
     "remote_title": null,
@@ -3215,7 +3215,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "402": {
+  {
     "id": 402,
     "title": "Out Law : Reborn",
     "remote_title": null,
@@ -3223,7 +3223,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "403": {
+  {
     "id": 403,
     "title": "Raise me up",
     "remote_title": null,
@@ -3231,7 +3231,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "404": {
+  {
     "id": 404,
     "title": "Season (Warm Mix)",
     "remote_title": null,
@@ -3239,7 +3239,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "405": {
+  {
     "id": 405,
     "title": "SuperSonic ~Mr.Funky Dirty Planet Remix~",
     "remote_title": null,
@@ -3247,7 +3247,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "406": {
+  {
     "id": 406,
     "title": "The Rain Maker",
     "remote_title": null,
@@ -3255,7 +3255,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "407": {
+  {
     "id": 407,
     "title": "Waiting for the Sun",
     "remote_title": null,
@@ -3263,7 +3263,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "408": {
+  {
     "id": 408,
     "title": "Your Smile",
     "remote_title": null,
@@ -3271,7 +3271,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "409": {
+  {
     "id": 409,
     "title": "ZET ~Mr.Funky Remix~",
     "remote_title": null,
@@ -3279,7 +3279,7 @@
     "dlc": "Portable 3",
     "dlcCode": "P3"
   },
-  "410": {
+  {
     "id": 410,
     "title": "glory day (Mintorment Remix)",
     "remote_title": null,
@@ -3287,7 +3287,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "411": {
+  {
     "id": 411,
     "title": "glory day -JHS Remix-",
     "remote_title": null,
@@ -3295,7 +3295,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "412": {
+  {
     "id": 412,
     "title": "안아줘",
     "remote_title": null,
@@ -3303,7 +3303,7 @@
     "dlc": "ESTIMATE",
     "dlcCode": "ESTI"
   },
-  "413": {
+  {
     "id": 413,
     "title": "HELIX",
     "remote_title": null,
@@ -3311,7 +3311,7 @@
     "dlc": "ESTIMATE",
     "dlcCode": "ESTI"
   },
-  "414": {
+  {
     "id": 414,
     "title": "In My Heart ~ESTi Remix~",
     "remote_title": null,
@@ -3319,7 +3319,7 @@
     "dlc": "ESTIMATE",
     "dlcCode": "ESTI"
   },
-  "415": {
+  {
     "id": 415,
     "title": "Obelisque",
     "remote_title": null,
@@ -3327,7 +3327,7 @@
     "dlc": "ESTIMATE",
     "dlcCode": "ESTI"
   },
-  "416": {
+  {
     "id": 416,
     "title": "U-NIVUS",
     "remote_title": null,
@@ -3335,7 +3335,7 @@
     "dlc": "ESTIMATE",
     "dlcCode": "ESTI"
   },
-  "417": {
+  {
     "id": 417,
     "title": "서울여자",
     "remote_title": null,
@@ -3343,7 +3343,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "418": {
+  {
     "id": 418,
     "title": "Relation Again (ESTi's Remix)",
     "remote_title": null,
@@ -3351,7 +3351,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "419": {
+  {
     "id": 419,
     "title": "너로피어오라",
     "remote_title": null,
@@ -3359,7 +3359,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "420": {
+  {
     "id": 420,
     "title": "공성전 ~Pierre Blanche, Yonce Remix~",
     "remote_title": null,
@@ -3367,7 +3367,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "421": {
+  {
     "id": 421,
     "title": "광명의 루 : 루 라바다",
     "remote_title": null,
@@ -3375,7 +3375,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "422": {
+  {
     "id": 422,
     "title": "부여성 ~Blosso Remix~",
     "remote_title": null,
@@ -3383,7 +3383,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "423": {
+  {
     "id": 423,
     "title": "소년 모험가 ~SiNA Remix~",
     "remote_title": null,
@@ -3391,7 +3391,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "424": {
+  {
     "id": 424,
     "title": "어릴적 할머니가 들려주신 옛 전설",
     "remote_title": null,
@@ -3399,7 +3399,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "425": {
+  {
     "id": 425,
     "title": "연합군과 제국군",
     "remote_title": null,
@@ -3407,7 +3407,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "426": {
+  {
     "id": 426,
     "title": "전설이 시작된 곳 ~VoidRover Remix~",
     "remote_title": null,
@@ -3415,7 +3415,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "427": {
+  {
     "id": 427,
     "title": "죽음의 신 : 크로우 크루아흐",
     "remote_title": null,
@@ -3423,7 +3423,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "428": {
+  {
     "id": 428,
     "title": "최종무곡",
     "remote_title": null,
@@ -3431,7 +3431,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "429": {
+  {
     "id": 429,
     "title": "카트라이더 Mashup ~Cosmograph Remix~",
     "remote_title": null,
@@ -3439,7 +3439,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "430": {
+  {
     "id": 430,
     "title": "카트라이더 Mashup ~Pure 100% Remix~",
     "remote_title": null,
@@ -3447,7 +3447,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "431": {
+  {
     "id": 431,
     "title": "카트라이더, 크레이지아케이드, 버블파이터 Main theme ~CHUCK Remix~",
     "remote_title": null,
@@ -3455,7 +3455,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "432": {
+  {
     "id": 432,
     "title": "Apparition",
     "remote_title": null,
@@ -3463,7 +3463,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "433": {
+  {
     "id": 433,
     "title": "Constant Moderato",
     "remote_title": null,
@@ -3471,7 +3471,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "434": {
+  {
     "id": 434,
     "title": "It's my war now",
     "remote_title": null,
@@ -3479,7 +3479,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "435": {
+  {
     "id": 435,
     "title": "Lacheln, The City of Dreams",
     "remote_title": null,
@@ -3487,7 +3487,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "436": {
+  {
     "id": 436,
     "title": "Reminiscence",
     "remote_title": null,
@@ -3495,7 +3495,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "437": {
+  {
     "id": 437,
     "title": "Start The Adventure ~SOPHI Remix~",
     "remote_title": null,
@@ -3503,7 +3503,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "438": {
+  {
     "id": 438,
     "title": "Tayberrs - Collapsed Paradise",
     "remote_title": null,
@@ -3511,7 +3511,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "439": {
+  {
     "id": 439,
     "title": "The Little Adventurer",
     "remote_title": null,
@@ -3519,7 +3519,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "440": {
+  {
     "id": 440,
     "title": "The Raindrop Flower ~jam-jam Remix~",
     "remote_title": null,
@@ -3527,7 +3527,7 @@
     "dlc": "NEXON",
     "dlcCode": "NXN"
   },
-  "441": {
+  {
     "id": 441,
     "title": "Alone",
     "remote_title": null,
@@ -3535,7 +3535,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "442": {
+  {
     "id": 442,
     "title": "꿈의 기억(feat. Jisun)",
     "remote_title": "꿈의 기억 (feat. Jisun)",
@@ -3543,7 +3543,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "443": {
+  {
     "id": 443,
     "title": "Arcade Love (feat. KNVWN)",
     "remote_title": null,
@@ -3551,7 +3551,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "444": {
+  {
     "id": 444,
     "title": "Chrysanthemum",
     "remote_title": null,
@@ -3559,7 +3559,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "445": {
+  {
     "id": 445,
     "title": "Cocked Pistol",
     "remote_title": null,
@@ -3567,7 +3567,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "446": {
+  {
     "id": 446,
     "title": "Daydream",
     "remote_title": null,
@@ -3575,7 +3575,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "447": {
+  {
     "id": 447,
     "title": "FALLING IN LOVE",
     "remote_title": null,
@@ -3583,7 +3583,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "448": {
+  {
     "id": 448,
     "title": "Forgotten",
     "remote_title": null,
@@ -3591,7 +3591,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "449": {
+  {
     "id": 449,
     "title": "I’ve got a feeling",
     "remote_title": null,
@@ -3599,7 +3599,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "450": {
+  {
     "id": 450,
     "title": "Imaginary dance",
     "remote_title": null,
@@ -3607,7 +3607,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "451": {
+  {
     "id": 451,
     "title": "Melonaid",
     "remote_title": null,
@@ -3615,7 +3615,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "452": {
+  {
     "id": 452,
     "title": "Never let you go",
     "remote_title": null,
@@ -3623,7 +3623,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "453": {
+  {
     "id": 453,
     "title": "Odysseus",
     "remote_title": null,
@@ -3631,7 +3631,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "454": {
+  {
     "id": 454,
     "title": "Over Me",
     "remote_title": null,
@@ -3639,7 +3639,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "455": {
+  {
     "id": 455,
     "title": "Red Eyes",
     "remote_title": null,
@@ -3647,7 +3647,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "456": {
+  {
     "id": 456,
     "title": "Sweet On You",
     "remote_title": null,
@@ -3655,7 +3655,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "457": {
+  {
     "id": 457,
     "title": "Underwater Castle",
     "remote_title": null,
@@ -3663,7 +3663,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "458": {
+  {
     "id": 458,
     "title": "Vertical Floating",
     "remote_title": null,
@@ -3671,7 +3671,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "459": {
+  {
     "id": 459,
     "title": "Voyage",
     "remote_title": null,
@@ -3679,7 +3679,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "460": {
+  {
     "id": 460,
     "title": "Won't Back Down",
     "remote_title": null,
@@ -3687,7 +3687,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "461": {
+  {
     "id": 461,
     "title": "Zero to the hunnit",
     "remote_title": null,
@@ -3695,7 +3695,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "462": {
+  {
     "id": 462,
     "title": "너로피어오라 ~Original Ver.~",
     "remote_title": "너로피어오라(Original Ver.)",
@@ -3703,7 +3703,7 @@
     "dlc": "V EXTENSION II",
     "dlcCode": "VE2"
   },
-  "463": {
+  {
     "id": 463,
     "title": "Aurora Borealis",
     "remote_title": null,
@@ -3711,7 +3711,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "464": {
+  {
     "id": 464,
     "title": "너랑 있으면",
     "remote_title": null,
@@ -3719,7 +3719,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "465": {
+  {
     "id": 465,
     "title": "Bang!!",
     "remote_title": null,
@@ -3727,7 +3727,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "466": {
+  {
     "id": 466,
     "title": "can you feel it",
     "remote_title": null,
@@ -3735,7 +3735,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "467": {
+  {
     "id": 467,
     "title": "Comet Coaster",
     "remote_title": null,
@@ -3743,7 +3743,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "468": {
+  {
     "id": 468,
     "title": "Cthugha",
     "remote_title": null,
@@ -3751,7 +3751,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "469": {
+  {
     "id": 469,
     "title": "DataErr0r",
     "remote_title": null,
@@ -3759,7 +3759,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "470": {
+  {
     "id": 470,
     "title": "Dysthymia",
     "remote_title": null,
@@ -3767,7 +3767,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "471": {
+  {
     "id": 471,
     "title": "ENERGY SYNERGY MATRIX",
     "remote_title": null,
@@ -3775,7 +3775,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "472": {
+  {
     "id": 472,
     "title": "Koi no Moonlight",
     "remote_title": null,
@@ -3783,7 +3783,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "473": {
+  {
     "id": 473,
     "title": "Lights of Muse",
     "remote_title": null,
@@ -3791,7 +3791,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "474": {
+  {
     "id": 474,
     "title": "MUSEDASH!!!!",
     "remote_title": null,
@@ -3799,7 +3799,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "475": {
+  {
     "id": 475,
     "title": "Pancake is Love",
     "remote_title": null,
@@ -3807,7 +3807,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "476": {
+  {
     "id": 476,
     "title": "PUPA",
     "remote_title": null,
@@ -3815,7 +3815,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "477": {
+  {
     "id": 477,
     "title": "tape/stop/night",
     "remote_title": null,
@@ -3823,7 +3823,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "478": {
+  {
     "id": 478,
     "title": "The 90's Decision",
     "remote_title": null,
@@ -3831,7 +3831,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "479": {
+  {
     "id": 479,
     "title": "XING",
     "remote_title": null,
@@ -3839,7 +3839,7 @@
     "dlc": "Muse Dash",
     "dlcCode": "MD"
   },
-  "480": {
+  {
     "id": 480,
     "title": "Airlock",
     "remote_title": null,
@@ -3847,7 +3847,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "481": {
+  {
     "id": 481,
     "title": "Daylight",
     "remote_title": null,
@@ -3855,7 +3855,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "482": {
+  {
     "id": 482,
     "title": "OrBiTal",
     "remote_title": null,
@@ -3863,7 +3863,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "483": {
+  {
     "id": 483,
     "title": "Angelic Tears",
     "remote_title": null,
@@ -3871,7 +3871,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "484": {
+  {
     "id": 484,
     "title": "별빛정원",
     "remote_title": null,
@@ -3879,7 +3879,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "485": {
+  {
     "id": 485,
     "title": "A Song of Sixpence",
     "remote_title": null,
@@ -3887,7 +3887,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "486": {
+  {
     "id": 486,
     "title": "Back to Life",
     "remote_title": null,
@@ -3895,7 +3895,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "487": {
+  {
     "id": 487,
     "title": "Deborah",
     "remote_title": null,
@@ -3903,7 +3903,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "488": {
+  {
     "id": 488,
     "title": "Eternal Fantasy (Miya Vocal Mix)",
     "remote_title": null,
@@ -3911,7 +3911,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "489": {
+  {
     "id": 489,
     "title": "Festa Nova",
     "remote_title": null,
@@ -3919,7 +3919,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "490": {
+  {
     "id": 490,
     "title": "Kal_wrnw",
     "remote_title": null,
@@ -3927,7 +3927,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "491": {
+  {
     "id": 491,
     "title": "Love☆Panic",
     "remote_title": null,
@@ -3935,7 +3935,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "492": {
+  {
     "id": 492,
     "title": "Luv Yourself",
     "remote_title": null,
@@ -3943,7 +3943,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "493": {
+  {
     "id": 493,
     "title": "Mukilteo Beach",
     "remote_title": null,
@@ -3951,7 +3951,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "494": {
+  {
     "id": 494,
     "title": "Never Ending TECHNIKA",
     "remote_title": null,
@@ -3959,7 +3959,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "495": {
+  {
     "id": 495,
     "title": "Renovation",
     "remote_title": null,
@@ -3967,7 +3967,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "496": {
+  {
     "id": 496,
     "title": "Retention",
     "remote_title": null,
@@ -3975,7 +3975,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "497": {
+  {
     "id": 497,
     "title": "Shining My Boy",
     "remote_title": null,
@@ -3983,7 +3983,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "498": {
+  {
     "id": 498,
     "title": "Silent Clarity",
     "remote_title": null,
@@ -3991,7 +3991,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "499": {
+  {
     "id": 499,
     "title": "Take on Me",
     "remote_title": null,
@@ -3999,7 +3999,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "500": {
+  {
     "id": 500,
     "title": "The MAX",
     "remote_title": null,
@@ -4007,7 +4007,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "501": {
+  {
     "id": 501,
     "title": "Thor (Deepin' Absonant Mix)",
     "remote_title": null,
@@ -4015,7 +4015,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "502": {
+  {
     "id": 502,
     "title": "VORTEX",
     "remote_title": null,
@@ -4023,7 +4023,7 @@
     "dlc": "TECHNIKA TUNE & Q",
     "dlcCode": "TQ"
   },
-  "503": {
+  {
     "id": 503,
     "title": "Techno Racer",
     "remote_title": null,
@@ -4031,7 +4031,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "504": {
+  {
     "id": 504,
     "title": "모짜르트 교향곡 40번 1악장",
     "remote_title": null,
@@ -4039,7 +4039,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "505": {
+  {
     "id": 505,
     "title": "밤비(Bambi) - DJMAX Edit -",
     "remote_title": null,
@@ -4047,7 +4047,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "506": {
+  {
     "id": 506,
     "title": "#mine (feat. Riho Iwamoto)",
     "remote_title": null,
@@ -4055,7 +4055,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "507": {
+  {
     "id": 507,
     "title": "Bright Future",
     "remote_title": null,
@@ -4063,7 +4063,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "508": {
+  {
     "id": 508,
     "title": "Charming World",
     "remote_title": null,
@@ -4071,7 +4071,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "509": {
+  {
     "id": 509,
     "title": "Disappearing Act",
     "remote_title": null,
@@ -4079,7 +4079,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "510": {
+  {
     "id": 510,
     "title": "Emerge",
     "remote_title": null,
@@ -4087,7 +4087,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "511": {
+  {
     "id": 511,
     "title": "Every Day ~ Every Night",
     "remote_title": null,
@@ -4095,7 +4095,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "512": {
+  {
     "id": 512,
     "title": "Fundamental",
     "remote_title": null,
@@ -4103,7 +4103,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "513": {
+  {
     "id": 513,
     "title": "KICK IT",
     "remote_title": null,
@@ -4111,7 +4111,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "514": {
+  {
     "id": 514,
     "title": "Misty E'ra 'Mui'",
     "remote_title": null,
@@ -4119,7 +4119,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "515": {
+  {
     "id": 515,
     "title": "Moment (feat. Nauts)",
     "remote_title": null,
@@ -4127,7 +4127,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "516": {
+  {
     "id": 516,
     "title": "NB RANGERS - 운명의 Destiny",
     "remote_title": null,
@@ -4135,7 +4135,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "517": {
+  {
     "id": 517,
     "title": "Plasma Sphere",
     "remote_title": null,
@@ -4143,7 +4143,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "518": {
+  {
     "id": 518,
     "title": "Secret",
     "remote_title": null,
@@ -4151,7 +4151,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "519": {
+  {
     "id": 519,
     "title": "Set Me Free",
     "remote_title": null,
@@ -4159,7 +4159,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "520": {
+  {
     "id": 520,
     "title": "Space Dream (feat. J.O.Y)",
     "remote_title": null,
@@ -4167,7 +4167,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "521": {
+  {
     "id": 521,
     "title": "STEP",
     "remote_title": null,
@@ -4175,7 +4175,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "522": {
+  {
     "id": 522,
     "title": "Tic! Tac! Toe!",
     "remote_title": null,
@@ -4183,7 +4183,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "523": {
+  {
     "id": 523,
     "title": "Winners",
     "remote_title": null,
@@ -4191,7 +4191,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "524": {
+  {
     "id": 524,
     "title": "Zero-Break",
     "remote_title": null,
@@ -4199,7 +4199,7 @@
     "dlc": "V EXTENSION III",
     "dlcCode": "VE3"
   },
-  "525": {
+  {
     "id": 525,
     "title": "Mr.Lonely",
     "remote_title": null,
@@ -4207,7 +4207,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "526": {
+  {
     "id": 526,
     "title": "Dancin' Planet",
     "remote_title": null,
@@ -4215,7 +4215,7 @@
     "dlc": "RESPECT",
     "dlcCode": "R"
   },
-  "527": {
+  {
     "id": 527,
     "title": "느낌",
     "remote_title": null,
@@ -4223,7 +4223,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "528": {
+  {
     "id": 528,
     "title": "Appeal",
     "remote_title": null,
@@ -4231,7 +4231,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "529": {
+  {
     "id": 529,
     "title": "Aquaris",
     "remote_title": null,
@@ -4239,7 +4239,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "530": {
+  {
     "id": 530,
     "title": "Back for more",
     "remote_title": null,
@@ -4247,7 +4247,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "531": {
+  {
     "id": 531,
     "title": "Complex",
     "remote_title": null,
@@ -4255,7 +4255,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "532": {
+  {
     "id": 532,
     "title": "Envy Mask",
     "remote_title": null,
@@ -4263,7 +4263,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "533": {
+  {
     "id": 533,
     "title": "Lie Lie",
     "remote_title": null,
@@ -4271,7 +4271,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "534": {
+  {
     "id": 534,
     "title": "Look out ~Here comes my love~",
     "remote_title": null,
@@ -4279,7 +4279,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "535": {
+  {
     "id": 535,
     "title": "Metagalactic",
     "remote_title": null,
@@ -4287,7 +4287,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "536": {
+  {
     "id": 536,
     "title": "Nihilism",
     "remote_title": null,
@@ -4295,7 +4295,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "537": {
+  {
     "id": 537,
     "title": "Sand Storm",
     "remote_title": null,
@@ -4303,7 +4303,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "538": {
+  {
     "id": 538,
     "title": "Showdown",
     "remote_title": null,
@@ -4311,7 +4311,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "539": {
+  {
     "id": 539,
     "title": "Sparrow",
     "remote_title": null,
@@ -4319,7 +4319,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "540": {
+  {
     "id": 540,
     "title": "Stay",
     "remote_title": null,
@@ -4327,7 +4327,7 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   },
-  "541": {
+  {
     "id": 541,
     "title": "Weird Wave",
     "remote_title": null,
@@ -4335,4 +4335,4 @@
     "dlc": "EZ2ON",
     "dlcCode": "EZ2"
   }
-}
+]
