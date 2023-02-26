@@ -101,21 +101,26 @@
       "tab": "COLLABORATION"
     },
     "20": {
+      "name": "EZ2ON",
+      "code": "EZ2",
+      "tab": "COLLABORATION"
+    },
+    "21": {
       "name": "Groove Coaster",
       "code": "GC",
       "tab": "COLLABORATION"
     },
-    "21": {
+    "22": {
       "name": "Girls' Frontline",
       "code": "GF",
       "tab": "COLLABORATION"
     },
-    "22": {
+    "23": {
       "name": "Muse Dash",
       "code": "MD",
       "tab": "COLLABORATION"
     },
-    "23": {
+    "24": {
       "name": "Nexon",
       "code": "NXN",
       "tab": "COLLABORATION"

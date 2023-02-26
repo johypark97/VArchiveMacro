@@ -4214,5 +4214,125 @@
     "composer": "Planetboom",
     "dlc": "RESPECT",
     "dlcCode": "R"
+  },
+  "527": {
+    "id": 527,
+    "title": "느낌",
+    "remote_title": null,
+    "composer": "Kang Eun Soo / eridanus",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "528": {
+    "id": 528,
+    "title": "Appeal",
+    "remote_title": null,
+    "composer": "Andy Lee",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "529": {
+    "id": 529,
+    "title": "Aquaris",
+    "remote_title": null,
+    "composer": "CROOVE",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "530": {
+    "id": 530,
+    "title": "Back for more",
+    "remote_title": null,
+    "composer": "Ruby Tuesday",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "531": {
+    "id": 531,
+    "title": "Complex",
+    "remote_title": null,
+    "composer": "CROOVE",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "532": {
+    "id": 532,
+    "title": "Envy Mask",
+    "remote_title": null,
+    "composer": "CROOVE / Mario Bolden",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "533": {
+    "id": 533,
+    "title": "Lie Lie",
+    "remote_title": null,
+    "composer": "Andy Lee",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "534": {
+    "id": 534,
+    "title": "Look out ~Here comes my love~",
+    "remote_title": null,
+    "composer": "Ruby Tuesday",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "535": {
+    "id": 535,
+    "title": "Metagalactic",
+    "remote_title": null,
+    "composer": "xxdbxx",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "536": {
+    "id": 536,
+    "title": "Nihilism",
+    "remote_title": null,
+    "composer": "nato",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "537": {
+    "id": 537,
+    "title": "Sand Storm",
+    "remote_title": null,
+    "composer": "CROOVE",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "538": {
+    "id": 538,
+    "title": "Showdown",
+    "remote_title": null,
+    "composer": "Andy Lee",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "539": {
+    "id": 539,
+    "title": "Sparrow",
+    "remote_title": null,
+    "composer": "xxdbxx / CROOVE",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "540": {
+    "id": 540,
+    "title": "Stay",
+    "remote_title": null,
+    "composer": "Jeon Jun Kye / Mario Bolden",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
+  },
+  "541": {
+    "id": 541,
+    "title": "Weird Wave",
+    "remote_title": null,
+    "composer": "Joyrock",
+    "dlc": "COLLABORATION",
+    "dlcCode": "EZ2"
   }
 }
