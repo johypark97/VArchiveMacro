@@ -13,7 +13,7 @@ import java.util.List;
 
 public record LocalSong(@Expose int id, @Expose String title, @Expose String remote_title,
                         @Expose String composer, @Expose String dlc, @Expose String dlcCode,
-                        @Expose int priority) {
+                        @Expose String dlcTab, @Expose int priority) {
     public static class GsonListTypeToken extends TypeToken<List<LocalSong>> {
     }
 
