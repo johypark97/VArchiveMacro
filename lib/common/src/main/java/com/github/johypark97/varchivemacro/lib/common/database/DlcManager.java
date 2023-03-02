@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,14 @@ public class DlcManager extends SongManager {
         dlcs = Dlc.loadJson(dlcPath);
         tabs = Tab.loadJson(tabPath);
         unlocks = Unlock.loadJson(unlockPath);
+    }
+
+    public Set<String> getDlcCodeSet() {
+        return dlcs.keySet();
+    }
+
+    public Set<String> getDlcTabSet() {
+        return new HashSet<>(tabs.values());
     }
 
     public Map<String, String> getDlcCodeNameMap() {

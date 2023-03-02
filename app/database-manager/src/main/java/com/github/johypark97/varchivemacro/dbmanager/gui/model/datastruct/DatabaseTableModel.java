@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct;
 
-import com.github.johypark97.varchivemacro.dbmanager.gui.model.DatabaseModel;
+import com.github.johypark97.varchivemacro.lib.common.database.SongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.Serial;
 import java.util.List;
@@ -13,18 +13,18 @@ public class DatabaseTableModel extends AbstractTableModel {
     private static final String ERROR_STRING = "ERROR";
 
     public static final List<String> COLUMNS =
-            List.of("id", "title", "remote_title", "composer", "dlc", "dlcCode");
+            List.of("no", "id", "title", "remote_title", "composer", "dlc", "dlcCode", "dlcTab",
+                    "priority");
 
-    // model
-    public final DatabaseModel model;
+    private final List<LocalSong> songs;
 
-    public DatabaseTableModel(DatabaseModel model) {
-        this.model = model;
+    public DatabaseTableModel(SongManager songManager) {
+        songs = songManager.getSongs();
     }
 
     @Override
     public int getRowCount() {
-        return model.songManager.songCount();
+        return songs.size();
     }
 
     @Override
@@ -34,18 +34,21 @@ public class DatabaseTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        LocalSong localSong = model.songManager.getSong(rowIndex);
+        LocalSong localSong = songs.get(rowIndex);
         if (localSong == null) {
             return ERROR_STRING;
         }
 
         return switch (columnIndex) {
-            case 0 -> localSong.id();
-            case 1 -> localSong.title();
-            case 2 -> localSong.remote_title();
-            case 3 -> localSong.composer();
-            case 4 -> localSong.dlc();
-            case 5 -> localSong.dlcCode();
+            case 0 -> rowIndex + 1;
+            case 1 -> localSong.id();
+            case 2 -> localSong.title();
+            case 3 -> localSong.remote_title();
+            case 4 -> localSong.composer();
+            case 5 -> localSong.dlc();
+            case 6 -> localSong.dlcCode();
+            case 7 -> localSong.dlcTab();
+            case 8 -> localSong.priority();
             default -> ERROR_STRING;
         };
     }

@@ -2,7 +2,6 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.view;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Presenter;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.View;
-import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.TableUtil;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,7 +37,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -58,15 +56,18 @@ public class DbManagerView extends JFrame implements View, WindowListener {
 
     protected JButton songsFileLoadButton;
     protected JButton songsFileSelectButton;
-    protected JTextField songsFileTextField;
+    protected JTextField databaseDirectoryTextField;
 
     private JTable songsTable;
     protected JButton songsFilterResetButton;
     protected JComboBox<String> songsFilterColumnComboBox;
     protected JTextField songsFilterTextField;
 
-    private JTextArea checkerResultTextArea;
-    protected JButton checkerCheckButton;
+    private JTextArea validatorTextArea;
+    protected JButton validateButton;
+
+    private JTextArea remoteCheckerTextArea;
+    protected JButton checkRemoteButton;
 
     // event listeners
     private transient final ActionListener buttonListener = new DbManagerViewButtonListener(this);
@@ -98,13 +99,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
 
     private void setContent() {
         add(createMenu(), BorderLayout.PAGE_START);
-
-        Box box = Box.createVerticalBox();
-        box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        box.add(createRow00());
-        box.add(createRow01());
-
-        add(box, BorderLayout.CENTER);
+        add(createCenter(), BorderLayout.CENTER);
     }
 
     private Component createMenu() {
@@ -123,16 +118,32 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         return menuBar;
     }
 
-    private Component createRow00() {
+    private Component createCenter() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        panel.add(createHeader(), BorderLayout.PAGE_START);
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        {
+            tabbedPane.addTab("Viewer", createTabViewer());
+            tabbedPane.addTab("Validator", createTabValidator());
+            tabbedPane.addTab("Remote Checker", createTabRemoteChecker());
+        }
+        panel.add(tabbedPane, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private Component createHeader() {
         Box box = Box.createHorizontalBox();
 
         // label
-        box.add(new JLabel("Songs File : "));
+        box.add(new JLabel("Database directory : "));
 
         // text field
-        songsFileTextField = new JTextField();
-        ComponentSize.expandWidthOnly(songsFileTextField);
-        box.add(songsFileTextField);
+        databaseDirectoryTextField = new JTextField();
+        box.add(databaseDirectoryTextField);
 
         // button
         songsFileSelectButton = new JButton("select");
@@ -146,104 +157,128 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         return box;
     }
 
-    private Component createRow01() {
-        Box box = Box.createHorizontalBox();
-
-        JTabbedPane tabbedPane = new JTabbedPane();
-
-        tabbedPane.addTab("Viewer", createTabViewer());
-        tabbedPane.addTab("Checker", createTabChecker());
-
-        box.add(tabbedPane);
-
-        return box;
-    }
-
     private Component createTabViewer() {
-        Box box = Box.createVerticalBox();
+        JPanel panel = new JPanel(new BorderLayout());
 
         // tool box
         Box toolBox = Box.createHorizontalBox();
         toolBox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        {
+            toolBox.add(new JLabel("Regex Filter : "));
 
-        toolBox.add(new JLabel("Regex Filter : "));
+            songsFilterTextField = new JTextField();
+            songsFilterTextField.getDocument().addDocumentListener(documentListener);
+            toolBox.add(songsFilterTextField);
 
-        songsFilterTextField = new JTextField();
-        songsFilterTextField.getDocument().addDocumentListener(documentListener);
-        ComponentSize.expandWidthOnly(songsFilterTextField);
-        toolBox.add(songsFilterTextField);
+            songsFilterColumnComboBox = new JComboBox<>();
+            songsFilterColumnComboBox.addActionListener(buttonListener);
+            toolBox.add(songsFilterColumnComboBox);
 
-        songsFilterColumnComboBox = new JComboBox<>();
-        songsFilterColumnComboBox.addActionListener(buttonListener);
-        ComponentSize.shrinkWidthToContents(songsFilterColumnComboBox);
-        toolBox.add(songsFilterColumnComboBox);
-
-        songsFilterResetButton = new JButton("reset");
-        songsFilterResetButton.addActionListener(buttonListener);
-        toolBox.add(songsFilterResetButton);
-
-        ComponentSize.shrinkHeightToContents(toolBox);
-        box.add(toolBox);
+            songsFilterResetButton = new JButton("reset");
+            songsFilterResetButton.addActionListener(buttonListener);
+            toolBox.add(songsFilterResetButton);
+        }
+        panel.add(toolBox, BorderLayout.PAGE_START);
 
         // table
-        songsTable = new JTable() {
-            @Serial
-            private static final long serialVersionUID = -1675524704391374766L;
-
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return true;
-            }
-
-            @Override
-            public String getToolTipText(MouseEvent event) {
-                Point p = event.getPoint();
-                int rowIndex = rowAtPoint(p);
-                int colIndex = columnAtPoint(p);
-
-                try {
-                    return getValueAt(rowIndex, colIndex).toString();
-                } catch (RuntimeException e) {
-                    return null;
-                }
-            }
-        };
-        songsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        songsTable.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
-        songsTable.setRowHeight(32);
-        songsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        JScrollPane scrollPane = new JScrollPane(songsTable);
+        JScrollPane scrollPane = new JScrollPane();
         scrollPane.getViewport().setBackground(Color.WHITE);
         scrollPane.setBorder(BorderFactory.createLoweredBevelBorder());
-        box.add(scrollPane);
+        {
+            songsTable = new JTable() {
+                @Serial
+                private static final long serialVersionUID = -1675524704391374766L;
 
-        return box;
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return true;
+                }
+
+                @Override
+                public String getToolTipText(MouseEvent event) {
+                    Point p = event.getPoint();
+                    int rowIndex = rowAtPoint(p);
+                    int colIndex = columnAtPoint(p);
+
+                    try {
+                        return getValueAt(rowIndex, colIndex).toString();
+                    } catch (RuntimeException e) {
+                        return null;
+                    }
+                }
+            };
+            songsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            songsTable.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 16));
+            songsTable.setRowHeight(32);
+            songsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+            scrollPane.setViewportView(songsTable);
+        }
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        return panel;
     }
 
-    private Component createTabChecker() {
-        Box box = Box.createVerticalBox();
+    private Component createTabValidator() {
+        JPanel panel = new JPanel(new BorderLayout());
 
         // tool box
         Box toolBox = Box.createHorizontalBox();
         toolBox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        {
+            toolBox.add(Box.createHorizontalGlue());
 
-        checkerCheckButton = new JButton("check");
-        checkerCheckButton.addActionListener(buttonListener);
-        toolBox.add(checkerCheckButton);
+            validateButton = new JButton("validate");
+            validateButton.addActionListener(buttonListener);
+            toolBox.add(validateButton);
 
-        ComponentSize.shrinkHeightToContents(toolBox);
-        box.add(toolBox);
+            toolBox.add(Box.createHorizontalGlue());
+        }
+        panel.add(toolBox, BorderLayout.PAGE_START);
 
-        // result text area
-        checkerResultTextArea = new JTextArea();
-        checkerResultTextArea.setEditable(false);
-
-        JScrollPane scrollPane = new JScrollPane(checkerResultTextArea);
+        // text area
+        JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBorder(BorderFactory.createLoweredBevelBorder());
-        box.add(scrollPane);
+        {
+            validatorTextArea = new JTextArea();
+            validatorTextArea.setEditable(false);
 
-        return box;
+            scrollPane.setViewportView(validatorTextArea);
+        }
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private Component createTabRemoteChecker() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        // tool box
+        Box toolBox = Box.createHorizontalBox();
+        toolBox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        {
+            toolBox.add(Box.createHorizontalGlue());
+
+            checkRemoteButton = new JButton("check");
+            checkRemoteButton.addActionListener(buttonListener);
+            toolBox.add(checkRemoteButton);
+
+            toolBox.add(Box.createHorizontalGlue());
+        }
+        panel.add(toolBox, BorderLayout.PAGE_START);
+
+        // text area
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBorder(BorderFactory.createLoweredBevelBorder());
+        {
+            remoteCheckerTextArea = new JTextArea();
+            remoteCheckerTextArea.setEditable(false);
+
+            scrollPane.setViewportView(remoteCheckerTextArea);
+        }
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        return panel;
     }
 
     @Override
@@ -264,11 +299,6 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     @Override
     public void showErrorDialog(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    @Override
-    public String getSongsFileText() {
-        return songsFileTextField.getText();
     }
 
     @Override
@@ -300,8 +330,13 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     }
 
     @Override
+    public void setValidatorResultText(String value) {
+        validatorTextArea.setText(value);
+    }
+
+    @Override
     public void setCheckerResultText(String value) {
-        checkerResultTextArea.setText(value);
+        remoteCheckerTextArea.setText(value);
     }
 
     @Override
@@ -358,7 +393,7 @@ class DbManagerViewMenuListener implements ActionListener {
 
 class DbManagerViewButtonListener implements ActionListener {
     private final DbManagerView view;
-    private final JsonFileChooser jsonFileChooser = new JsonFileChooser();
+    private final DirectoryChooser directoryChooser = new DirectoryChooser();
 
     public DbManagerViewButtonListener(DbManagerView view) {
         this.view = view;
@@ -369,18 +404,21 @@ class DbManagerViewButtonListener implements ActionListener {
         Object source = e.getSource();
 
         if (source.equals(view.songsFileSelectButton)) {
-            Path path = jsonFileChooser.get(view);
+            Path path = directoryChooser.get(view);
             if (path != null) {
-                view.songsFileTextField.setText(path.toString());
+                view.databaseDirectoryTextField.setText(path.toString());
             }
         } else if (source.equals(view.songsFileLoadButton)) {
-            view.presenter.loadSongs();
+            String path = view.databaseDirectoryTextField.getText();
+            view.presenter.loadDatabase(path);
         } else if (source.equals(view.songsFilterResetButton)) {
             view.songsFilterTextField.setText("");
         } else if (source.equals(view.songsFilterColumnComboBox)) {
             view.presenter.updateFilter();
-        } else if (source.equals(view.checkerCheckButton)) {
-            view.presenter.checkSongs();
+        } else if (source.equals(view.validateButton)) {
+            view.presenter.validateDatabase();
+        } else if (source.equals(view.checkRemoteButton)) {
+            view.presenter.checkRemote();
         } else {
             // TODO: Remove println after completing the view.
             System.out.println(source); // NOPMD
@@ -416,15 +454,15 @@ class DbManagerViewDocumentListener implements DocumentListener {
 }
 
 
-class JsonFileChooser extends JFileChooser {
+class DirectoryChooser extends JFileChooser {
     @Serial
     private static final long serialVersionUID = -1770798834986186727L;
 
     private static final Path CURRENT_DIRECTORY = Path.of(System.getProperty("user.dir"));
 
-    public JsonFileChooser() {
+    public DirectoryChooser() {
         setCurrentDirectory(CURRENT_DIRECTORY.toFile());
-        setFileFilter(new FileNameExtensionFilter("JSON file (*.json)", "json"));
+        setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         setMultiSelectionEnabled(false);
     }
 

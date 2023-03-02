@@ -5,16 +5,22 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct.Databa
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher.RemoteSong;
-import com.github.johypark97.varchivemacro.lib.common.database.SongManager;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class DatabaseModel {
-    public SongManager songManager;
+    private static final String DLC_FILENAME = "dlcs.json";
+    private static final String SONG_FILENAME = "songs.json";
+    private static final String TAB_FILENAME = "tabs.json";
+    private static final String UNLOCK_FILENAME = "unlocks.json";
+
+    private DlcManager dlcManager;
 
     public DatabaseTableModel tableModel;
     public DatabaseTableRowSorter tableRowSorter;
@@ -22,15 +28,19 @@ public class DatabaseModel {
     public List<RemoteSong> conflict;
     public List<RemoteSong> unclassified;
 
-    public void loadSongs(Path path) throws IOException {
-        songManager = new SongManager(path);
+    public void load(Path baseDir) throws IOException {
+        Path dlcPath = baseDir.resolve(DLC_FILENAME);
+        Path songPath = baseDir.resolve(SONG_FILENAME);
+        Path tabPath = baseDir.resolve(TAB_FILENAME);
+        Path unlockPath = baseDir.resolve(UNLOCK_FILENAME);
+        dlcManager = new DlcManager(songPath, dlcPath, tabPath, unlockPath);
 
-        tableModel = new DatabaseTableModel(this);
+        tableModel = new DatabaseTableModel(dlcManager);
         tableRowSorter = new DatabaseTableRowSorter(tableModel);
     }
 
-    public boolean isSongLoaded() {
-        return songManager != null;
+    public boolean isLoaded() {
+        return dlcManager != null;
     }
 
     public List<String> getFilterableColumns() {
@@ -43,6 +53,18 @@ public class DatabaseModel {
         }
     }
 
+    public List<LocalSong> getSongs() {
+        return dlcManager.getSongs();
+    }
+
+    public Set<String> getDlcCodeSet() {
+        return dlcManager.getDlcCodeSet();
+    }
+
+    public Set<String> getDlcTabSet() {
+        return dlcManager.getDlcTabSet();
+    }
+
     public void checkRemote() throws GeneralSecurityException, IOException, InterruptedException {
         StaticFetcher staticFetcher = Api.newStaticFetcher();
 
@@ -51,7 +73,7 @@ public class DatabaseModel {
 
         staticFetcher.fetchSongs();
         for (RemoteSong remoteSong : staticFetcher.getSongs()) {
-            LocalSong localSong = songManager.getSong(remoteSong.id);
+            LocalSong localSong = dlcManager.getSong(remoteSong.id);
             if (localSong == null) {
                 unclassified.add(remoteSong);
             } else if (!compareSong(localSong, remoteSong)) {

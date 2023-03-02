@@ -1,7 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct;
 
 import com.github.johypark97.varchivemacro.lib.common.database.util.TitleComparator;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,12 +20,18 @@ public class DatabaseTableRowSorter extends TableRowSorter<TableModel> {
         Comparator<String> strComparator = String::compareTo;
         Comparator<String> titleComparator = new TitleComparator();
 
+        setComparator(DatabaseTableModel.COLUMNS.indexOf("no"), intComparator);
         setComparator(DatabaseTableModel.COLUMNS.indexOf("id"), intComparator);
         setComparator(DatabaseTableModel.COLUMNS.indexOf("title"), titleComparator);
         setComparator(DatabaseTableModel.COLUMNS.indexOf("remote_title"), titleComparator);
         setComparator(DatabaseTableModel.COLUMNS.indexOf("composer"), strComparator);
         setComparator(DatabaseTableModel.COLUMNS.indexOf("dlc"), strComparator);
-        setSortKeys(getSortKeys("title", "dlc", "composer"));
+        setComparator(DatabaseTableModel.COLUMNS.indexOf("dlcCode"), strComparator);
+        setComparator(DatabaseTableModel.COLUMNS.indexOf("dlcTab"), strComparator);
+        setComparator(DatabaseTableModel.COLUMNS.indexOf("priority"), intComparator);
+
+        setSortKeys(List.of(new RowSorter.SortKey(DatabaseTableModel.COLUMNS.indexOf("no"),
+                SortOrder.ASCENDING)));
     }
 
     public void setFilter(String pattern, String column) {
@@ -34,17 +39,6 @@ public class DatabaseTableRowSorter extends TableRowSorter<TableModel> {
         if (index != -1) {
             setRowFilter(new CaseInsensitiveRegexFilter(pattern, index));
         }
-    }
-
-    private List<SortKey> getSortKeys(String... columns) {
-        List<SortKey> sortKeys = new ArrayList<>();
-
-        for (String i : columns) {
-            int index = DatabaseTableModel.COLUMNS.indexOf(i);
-            sortKeys.add(new RowSorter.SortKey(index, SortOrder.ASCENDING));
-        }
-
-        return sortKeys;
     }
 }
 

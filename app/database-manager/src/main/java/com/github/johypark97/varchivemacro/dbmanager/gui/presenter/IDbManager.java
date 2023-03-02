@@ -10,11 +10,13 @@ public interface IDbManager {
 
         void stop();
 
-        void loadSongs();
+        void loadDatabase(String path);
 
         void updateFilter();
 
-        void checkSongs();
+        void validateDatabase();
+
+        void checkRemote();
     }
 
 
@@ -27,8 +29,6 @@ public interface IDbManager {
 
         void showErrorDialog(String message);
 
-        String getSongsFileText();
-
         void setSongsTableModel(TableModel tableModel);
 
         void setSongsTableRowSorter(TableRowSorter<TableModel> tableRowSorter);
@@ -38,6 +38,8 @@ public interface IDbManager {
         String getSongsTableFilterColumn();
 
         String getSongsTableFilterText();
+
+        void setValidatorResultText(String value);
 
         void setCheckerResultText(String value);
     }
