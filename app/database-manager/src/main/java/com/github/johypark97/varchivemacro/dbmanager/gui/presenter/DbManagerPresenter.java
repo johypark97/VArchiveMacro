@@ -94,33 +94,6 @@ public class DbManagerPresenter implements Presenter {
         Set<String> dlcCodeSet = databaseModel.getDlcCodeSet();
         Set<String> dlcTabSet = databaseModel.getDlcTabSet();
 
-        builder.append("-------- songs.json data check --------\n");
-        builder.append('\n');
-
-        builder.append("dlc (pack names) - dlcCode\n");
-        {
-            Map<String, Set<String>> map = new HashMap<>();
-            songs.forEach((song) -> map.computeIfAbsent(song.dlc(), (x) -> new HashSet<>())
-                    .add(song.dlcCode()));
-            List<String> list =
-                    map.entrySet().stream().map((x) -> x.getKey() + " - " + x.getValue()).sorted()
-                            .toList();
-            builder.append(gson.toJson(list)).append('\n');
-        }
-        builder.append('\n');
-
-        builder.append("dlcTab - dlcCode\n");
-        {
-            Map<String, Set<String>> map = new HashMap<>();
-            songs.forEach((song) -> map.computeIfAbsent(song.dlcTab(), (x) -> new HashSet<>())
-                    .add(song.dlcCode()));
-            List<String> list =
-                    map.entrySet().stream().map((x) -> x.getKey() + " - " + x.getValue()).sorted()
-                            .toList();
-            builder.append(gson.toJson(list)).append('\n');
-        }
-        builder.append('\n');
-
         builder.append("-------- validation --------\n");
         builder.append('\n');
 
@@ -138,6 +111,13 @@ public class DbManagerPresenter implements Presenter {
         }
         builder.append('\n');
 
+        builder.append("dlcCode list\n");
+        {
+            List<String> list = databaseModel.getDlcCodeList();
+            builder.append(gson.toJson(list)).append('\n');
+        }
+        builder.append('\n');
+
         builder.append("dlcTab (songs.json - tabs.json)\n");
         {
             Set<String> set = songs.stream().map(LocalSong::dlcTab).collect(Collectors.toSet());
@@ -148,6 +128,38 @@ public class DbManagerPresenter implements Presenter {
                 builder.append("songs.json: ").append(Sets.difference(set, dlcTabSet)).append('\n');
                 builder.append("tabs.json: ").append(Sets.difference(dlcTabSet, set)).append('\n');
             }
+        }
+        builder.append('\n');
+
+        builder.append("dlcTab list\n");
+        {
+            List<String> list = databaseModel.getDlcTabList();
+            builder.append(gson.toJson(list)).append('\n');
+        }
+        builder.append('\n');
+
+        builder.append("-------- songs.json data check --------\n");
+        builder.append('\n');
+
+        builder.append("dlc (pack names) - dlcCode\n");
+        {
+            Map<String, Set<String>> map = new HashMap<>();
+            songs.forEach((song) -> map.computeIfAbsent(song.dlc(), (x) -> new HashSet<>())
+                    .add(song.dlcCode()));
+            List<String> list =
+                    map.entrySet().stream().map((x) -> x.getKey() + " - " + x.getValue()).sorted()
+                            .toList();
+            builder.append(gson.toJson(list)).append('\n');
+        }
+        builder.append('\n');
+
+        builder.append("dlcTab - dlcCode\n");
+        {
+            Map<String, Set<String>> map = databaseModel.getDlcTabCodeMap();
+            List<String> list =
+                    map.entrySet().stream().map((x) -> x.getKey() + " - " + x.getValue()).sorted()
+                            .toList();
+            builder.append(gson.toJson(list)).append('\n');
         }
         builder.append('\n');
 

@@ -34,6 +34,10 @@ public class DlcManager extends SongManager {
         unlocks = Unlock.loadJson(unlockPath);
     }
 
+    public List<String> getDlcCodeList() {
+        return dlcs.keySet().stream().toList();
+    }
+
     public Set<String> getDlcCodeSet() {
         return dlcs.keySet();
     }

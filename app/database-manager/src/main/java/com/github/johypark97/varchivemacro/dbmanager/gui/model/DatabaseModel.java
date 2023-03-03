@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class DatabaseModel {
@@ -57,12 +58,24 @@ public class DatabaseModel {
         return dlcManager.getSongs();
     }
 
+    public List<String> getDlcCodeList() {
+        return dlcManager.getDlcCodeList();
+    }
+
     public Set<String> getDlcCodeSet() {
         return dlcManager.getDlcCodeSet();
     }
 
+    public List<String> getDlcTabList() {
+        return dlcManager.getDlcTabList();
+    }
+
     public Set<String> getDlcTabSet() {
         return dlcManager.getDlcTabSet();
+    }
+
+    public Map<String, Set<String>> getDlcTabCodeMap() {
+        return dlcManager.getDlcTabCodeMap();
     }
 
     public void checkRemote() throws GeneralSecurityException, IOException, InterruptedException {

@@ -332,11 +332,13 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     @Override
     public void setValidatorResultText(String value) {
         validatorTextArea.setText(value);
+        validatorTextArea.setCaretPosition(0);
     }
 
     @Override
     public void setCheckerResultText(String value) {
         remoteCheckerTextArea.setText(value);
+        remoteCheckerTextArea.setCaretPosition(0);
     }
 
     @Override
