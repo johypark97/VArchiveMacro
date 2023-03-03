@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.lib.common.database;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
-import com.github.johypark97.varchivemacro.lib.common.api.Board;
-import com.github.johypark97.varchivemacro.lib.common.api.Button;
-import com.github.johypark97.varchivemacro.lib.common.api.Pattern;
+import com.github.johypark97.varchivemacro.lib.common.api.Api.Board;
+import com.github.johypark97.varchivemacro.lib.common.api.Api.Button;
+import com.github.johypark97.varchivemacro.lib.common.api.Api.Pattern;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import java.io.IOException;
@@ -111,40 +111,39 @@ public class RecordManager {
 
         LocalRecord.saveJson(path, recordList);
     }
-}
 
+    protected static class RecordMap extends HashMap<Integer, ButtonMap> {
+        @Serial
+        private static final long serialVersionUID = 5499528273876284886L;
 
-class RecordMap extends HashMap<Integer, ButtonMap> {
-    @Serial
-    private static final long serialVersionUID = 5499528273876284886L;
-
-    public boolean add(LocalRecord record) {
-        return computeIfAbsent(record.id, (x) -> new ButtonMap()).add(record);
+        public boolean add(LocalRecord record) {
+            return computeIfAbsent(record.id, (x) -> new ButtonMap()).add(record);
+        }
     }
-}
 
 
-class ButtonMap extends HashMap<Button, PatternMap> {
-    @Serial
-    private static final long serialVersionUID = -7755798461331119049L;
+    protected static class ButtonMap extends HashMap<Button, PatternMap> {
+        @Serial
+        private static final long serialVersionUID = -7755798461331119049L;
 
-    public boolean add(LocalRecord record) {
-        return computeIfAbsent(record.button, (x) -> new PatternMap()).add(record);
+        public boolean add(LocalRecord record) {
+            return computeIfAbsent(record.button, (x) -> new PatternMap()).add(record);
+        }
     }
-}
 
 
-class PatternMap extends HashMap<Pattern, LocalRecord> {
-    @Serial
-    private static final long serialVersionUID = -6011022680688092958L;
+    protected static class PatternMap extends HashMap<Pattern, LocalRecord> {
+        @Serial
+        private static final long serialVersionUID = -6011022680688092958L;
 
-    public boolean add(LocalRecord newRecord) {
-        LocalRecord storedRecord = get(newRecord.pattern);
-        if (storedRecord == null) {
-            put(newRecord.pattern, newRecord);
-            return true;
-        } else {
-            return storedRecord.update(newRecord);
+        public boolean add(LocalRecord newRecord) {
+            LocalRecord storedRecord = get(newRecord.pattern);
+            if (storedRecord == null) {
+                put(newRecord.pattern, newRecord);
+                return true;
+            } else {
+                return storedRecord.update(newRecord);
+            }
         }
     }
 }

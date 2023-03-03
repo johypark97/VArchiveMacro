@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.lib.common.api;
 
 import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_general;
 
+import com.github.johypark97.varchivemacro.lib.common.api.Api.Button;
+import com.github.johypark97.varchivemacro.lib.common.api.Api.Pattern;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

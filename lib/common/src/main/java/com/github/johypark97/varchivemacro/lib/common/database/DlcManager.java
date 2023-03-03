@@ -92,8 +92,8 @@ public class DlcManager extends SongManager {
 
                     @Override
                     public int compare(LocalSong o1, LocalSong o2) {
-                        int left = getDlcOrder(o1.dlcCode());
-                        int right = getDlcOrder(o2.dlcCode());
+                        int left = getDlcPriority(o1.dlcCode());
+                        int right = getDlcPriority(o2.dlcCode());
 
                         int diff = left - right;
                         if (diff != 0) {
@@ -115,7 +115,7 @@ public class DlcManager extends SongManager {
         return map;
     }
 
-    protected int getDlcOrder(String dlcCode) {
+    protected int getDlcPriority(String dlcCode) {
         Dlc dlc = dlcs.get(dlcCode);
         return (dlc != null) ? dlc.priority() : -1;
     }
