@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.lib.common.database.DlcManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,15 +23,23 @@ public class SongModel {
     public SongModel() throws IOException {
     }
 
-    public Map<String, String> getDlcCodeNameMap() {
-        return dlcManager.getDlcCodeNameMap();
+    public List<String> getTabs() {
+        return dlcManager.getDlcTabList();
     }
 
     public Map<String, List<LocalSong>> getTabSongMap() {
         return dlcManager.getTabSongMap();
     }
 
-    public Map<String, List<LocalSong>> getTabSongMap(Set<String> ownedDlcs) {
-        return dlcManager.getTabSongMap(ownedDlcs);
+    public Map<String, List<LocalSong>> getTabSongMap(Set<String> ownedDlcTabs) {
+        Set<String> dlcCodes = new HashSet<>();
+
+        dlcManager.getDlcTabCodeMap().forEach((key, value) -> {
+            if (ownedDlcTabs.contains(key)) {
+                dlcCodes.addAll(value);
+            }
+        });
+
+        return dlcManager.getTabSongMap(dlcCodes);
     }
 }

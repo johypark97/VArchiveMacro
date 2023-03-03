@@ -21,7 +21,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 import javax.swing.BorderFactory;
@@ -62,7 +61,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     private static final int LOG_ROWS = 8;
     private static final int WINDOW_HEIGHT = 600;
     private static final int WINDOW_WIDTH = 800;
-    public static final Set<String> DEFAULT_DLCS = Set.of("R", "P1", "P2", "GG");
+    public static final Set<String> DEFAULT_DLCS = Set.of("RESPECT", "PORTABLE 1", "PORTABLE 2");
 
     // presenter
     public transient Presenter presenter;
@@ -318,7 +317,7 @@ public class MacroView extends JFrame implements View, WindowListener {
         {
             dlcCheckboxScrollPane = new JScrollPane();
             dlcCheckboxScrollPane.getVerticalScrollBar().setUnitIncrement(16);
-            dlcCheckboxScrollPane.setBorder(BorderFactory.createTitledBorder("Owned DLCs"));
+            dlcCheckboxScrollPane.setBorder(BorderFactory.createTitledBorder("Owned DLC Tabs"));
             dlcPanel.add(dlcCheckboxScrollPane, BorderLayout.CENTER);
 
             // button box
@@ -426,9 +425,9 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
-    public void setSelectableDlcs(Map<String, String> codeNameMap) {
+    public void setSelectableDlcTabs(List<String> tabs) {
         dlcCheckboxGroup.clear();
-        codeNameMap.forEach((key, value) -> dlcCheckboxGroup.add(key, value));
+        tabs.forEach((x) -> dlcCheckboxGroup.add(x, x));
 
         Box box = Box.createVerticalBox();
         dlcCheckboxGroup.forEach((key, checkbox) -> {
@@ -444,7 +443,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
-    public Set<String> getSelectedDlcs() {
+    public Set<String> getSelectedDlcTabs() {
         return dlcCheckboxGroup.getSelected();
     }
 

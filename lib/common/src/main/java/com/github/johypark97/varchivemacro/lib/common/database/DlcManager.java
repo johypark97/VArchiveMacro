@@ -38,6 +38,10 @@ public class DlcManager extends SongManager {
         return dlcs.keySet();
     }
 
+    public List<String> getDlcTabList() {
+        return tabs.values().stream().toList();
+    }
+
     public Set<String> getDlcTabSet() {
         return new HashSet<>(tabs.values());
     }
@@ -47,6 +51,22 @@ public class DlcManager extends SongManager {
         Function<Entry<String, Dlc>, String> valueMapper = (x) -> x.getValue().name();
 
         return dlcs.entrySet().stream().collect(Collectors.toMap(keyMapper, valueMapper));
+    }
+
+    public Map<String, Set<String>> getDlcTabCodeMap() {
+        Map<String, Set<String>> map = new LinkedHashMap<>();
+        tabs.forEach((key, value) -> map.putIfAbsent(value, new HashSet<>()));
+
+        for (LocalSong song : songs) {
+            Set<String> set = map.get(song.dlcTab());
+            if (set == null) {
+                throw new RuntimeException("tab does not exist: " + song.dlcTab());
+            }
+
+            set.add(song.dlcCode());
+        }
+
+        return map;
     }
 
     public Map<String, List<LocalSong>> getTabSongMap() {

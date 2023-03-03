@@ -157,8 +157,8 @@ public class MacroPresenter implements Presenter {
                     return;
                 }
 
-                Set<String> ownedDlcs = view.getSelectedDlcs();
-                Map<String, List<LocalSong>> tapSongMap = songModel.getTabSongMap(ownedDlcs);
+                Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
+                Map<String, List<LocalSong>> tapSongMap = songModel.getTabSongMap(ownedDlcTabs);
 
                 switch (nativeEvent.getKeyCode()) {
                     case NativeKeyEvent.VC_HOME -> {
@@ -237,7 +237,7 @@ public class MacroPresenter implements Presenter {
 
         TreeModel treeModel = createTabSongTreeModel("Records", songModel.getTabSongMap());
         view.setRecordViewerTreeModel(treeModel);
-        view.setSelectableDlcs(songModel.getDlcCodeNameMap());
+        view.setSelectableDlcTabs(songModel.getTabs());
 
         view.setScannerTaskTableModel(scanner.getTaskTableModel());
 
@@ -289,8 +289,8 @@ public class MacroPresenter implements Presenter {
 
     @Override
     public void openExpected(JFrame frame) {
-        Set<String> ownedDlcs = view.getSelectedDlcs();
-        Map<String, List<LocalSong>> tabSongMap = songModel.getTabSongMap(ownedDlcs);
+        Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
+        Map<String, List<LocalSong>> tabSongMap = songModel.getTabSongMap(ownedDlcTabs);
         expectedPresenter.start(frame, createTabSongTreeModel("Expected Song List", tabSongMap));
     }
 
