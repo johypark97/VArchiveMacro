@@ -30,8 +30,8 @@ public class MacroPresenter implements Presenter {
     // model
     private SongModel songModel;
     private final CommandRunner commandRunner = new CommandRunner();
-    private final RecordModel recordModel;
-    private final Scanner scanner;
+    private final RecordModel recordModel = new RecordModel();
+    private final Scanner scanner = new Scanner();
 
     // view
     private final Class<? extends View> viewClass;
@@ -43,26 +43,35 @@ public class MacroPresenter implements Presenter {
     private IScannerTask.Presenter scannerTaskPresenter;
 
     public MacroPresenter(Class<? extends View> viewClass) {
+        Runnable whenDone = () -> {
+            Toolkit.getDefaultToolkit().beep();
+            view.addLog("Done.");
+        };
+        Runnable whenCanceled = () -> {
+            Toolkit.getDefaultToolkit().beep();
+            view.addLog("Canceled.");
+        };
         Consumer<Exception> whenThrown = (e) -> {
             Toolkit.getDefaultToolkit().beep();
             view.addLog("Error: " + e.getMessage());
         };
 
-        Runnable whenCanceled = () -> {
-            Toolkit.getDefaultToolkit().beep();
-            view.addLog("Canceled.");
-        };
-        Runnable whenCaptureDone = () -> {
+        recordModel.whenDone = whenDone;
+        recordModel.whenThrown = whenThrown;
+
+        recordModel.whenStart_loadRemote =
+                (djName) -> view.addLog("Loading record... DJ Name: " + djName);
+
+        scanner.whenCanceled = whenCanceled;
+        scanner.whenDone = whenDone;
+        scanner.whenThrown = whenThrown;
+
+        scanner.whenCaptureDone = () -> {
             Toolkit.getDefaultToolkit().beep();
             view.addLog("Capture done.");
         };
-        Runnable whenDone = () -> {
-            Toolkit.getDefaultToolkit().beep();
-            view.addLog("Done.");
-        };
-
-        recordModel = new RecordModel(whenDone, whenThrown);
-        scanner = new Scanner(whenCaptureDone, whenDone, whenCanceled, whenThrown);
+        scanner.whenStart_capture = () -> view.addLog("Scanning...");
+        scanner.whenStart_loadImages = () -> view.addLog("Loading images from disk...");
 
         this.viewClass = viewClass;
     }
@@ -112,9 +121,9 @@ public class MacroPresenter implements Presenter {
         return new DefaultTreeModel(root);
     }
 
-    private void startCommand(Command command, String message) {
+    private void startCommand(Command command) {
         if (commandRunner.start(command)) {
-            view.addLog(message);
+            view.addLog("Start command.");
         } else {
             view.addLog("Another command is running.");
         }
@@ -164,13 +173,13 @@ public class MacroPresenter implements Presenter {
                     case NativeKeyEvent.VC_HOME -> {
                         if (ctrl && !shift) {
                             Command command = scanner.getCommand_scan(tapSongMap);
-                            startCommand(command, "Scanning...");
+                            startCommand(command);
                         }
                     }
                     case NativeKeyEvent.VC_L -> {
                         if (ctrl && shift) {
                             Command command = scanner.getCommand_loadCapturedImages(tapSongMap);
-                            startCommand(command, "Loading images from disk...");
+                            startCommand(command);
                         }
                     }
                     default -> {
@@ -271,7 +280,7 @@ public class MacroPresenter implements Presenter {
     @Override
     public void loadServerRecord(String djName) {
         Command command = recordModel.getCommand_loadRemote(djName);
-        startCommand(command, "Loading record... DJ Name: " + djName);
+        startCommand(command);
     }
 
     @Override

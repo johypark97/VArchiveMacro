@@ -16,8 +16,14 @@ public class CommandRunner {
         }
 
         commandExecutor = Executors.newSingleThreadExecutor();
-        commandExecutor.execute(command);
+        commandExecutor.execute(() -> {
+            Command p = command;
+            while (p.run() && p.getNext() != null) {
+                p = p.getNext();
+            }
+        });
         commandExecutor.shutdown();
+
         return true;
     }
 

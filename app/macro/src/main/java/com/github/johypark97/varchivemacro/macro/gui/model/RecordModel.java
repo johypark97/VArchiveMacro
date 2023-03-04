@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
 import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
+import com.github.johypark97.varchivemacro.macro.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.command.Command;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,13 +15,9 @@ public class RecordModel {
 
     private final RecordManager recordManager = new RecordManager();
 
-    private final Consumer<Exception> whenThrown;
-    private final Runnable whenDone;
-
-    public RecordModel(Runnable whenDone, Consumer<Exception> whenThrown) {
-        this.whenDone = whenDone;
-        this.whenThrown = whenThrown;
-    }
+    public Consumer<Exception> whenThrown;
+    public Consumer<String> whenStart_loadRemote;
+    public Runnable whenDone;
 
     public List<Float> getRecords(int id) {
         return recordManager.getRecords(id);
@@ -36,20 +33,30 @@ public class RecordModel {
     }
 
     public Command getCommand_loadRemote(String djName) {
-        return () -> {
-            try {
-                recordManager.loadRemote(djName);
-                recordManager.saveJson(RECORD_PATH);
-            } catch (Exception e) {
-                whenThrown.accept(e);
-                return;
-            }
-
-            whenDone.run();
-        };
+        return createCommand_loadRemote(djName);
     }
 
     public void save() throws IOException {
         recordManager.saveJson(RECORD_PATH);
+    }
+
+    protected Command createCommand_loadRemote(String djName) {
+        return new AbstractCommand() {
+            @Override
+            public boolean run() {
+                whenStart_loadRemote.accept(djName);
+
+                try {
+                    recordManager.loadRemote(djName);
+                    recordManager.saveJson(RECORD_PATH);
+                } catch (Exception e) {
+                    whenThrown.accept(e);
+                    return false;
+                }
+
+                whenDone.run();
+                return true;
+            }
+        };
     }
 }
