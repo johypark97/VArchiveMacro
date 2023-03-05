@@ -27,6 +27,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
 public class MacroPresenter implements Presenter {
+    private static final String ERROR_LOG_PREFIX = "Error: ";
+
     // model
     private SongModel songModel;
     private final CommandRunner commandRunner = new CommandRunner();
@@ -53,7 +55,7 @@ public class MacroPresenter implements Presenter {
         };
         Consumer<Exception> whenThrown = (e) -> {
             Toolkit.getDefaultToolkit().beep();
-            view.addLog("Error: " + e.getMessage());
+            view.addLog(ERROR_LOG_PREFIX + e.getMessage());
         };
 
         recordModel.whenDone = whenDone;
@@ -70,6 +72,7 @@ public class MacroPresenter implements Presenter {
             Toolkit.getDefaultToolkit().beep();
             view.addLog("Capture done.");
         };
+        scanner.whenStart_analyze = () -> view.addLog("Analyzing...");
         scanner.whenStart_capture = () -> view.addLog("Scanning...");
         scanner.whenStart_loadImages = () -> view.addLog("Loading images from disk...");
 
@@ -123,7 +126,7 @@ public class MacroPresenter implements Presenter {
 
     private void startCommand(Command command) {
         if (commandRunner.start(command)) {
-            view.addLog("Start command.");
+            view.addLog("-------- Start command --------");
         } else {
             view.addLog("Another command is running.");
         }
@@ -227,7 +230,7 @@ public class MacroPresenter implements Presenter {
             stop();
             return;
         } catch (Exception e) {
-            view.showErrorDialog("ERROR: " + e.getMessage());
+            view.showErrorDialog(ERROR_LOG_PREFIX + e.getMessage());
             stop();
             return;
         }
@@ -261,7 +264,7 @@ public class MacroPresenter implements Presenter {
         } catch (IOException e) {
             view.addLog("Record file read error: " + e.getMessage());
         } catch (Exception e) {
-            view.addLog("ERROR: " + e.getMessage());
+            view.addLog(ERROR_LOG_PREFIX + e.getMessage());
         }
     }
 
@@ -305,7 +308,14 @@ public class MacroPresenter implements Presenter {
 
     @Override
     public void showScannerTask(JFrame frame, int taskNumber) {
-        CollectionTaskData taskData = scanner.getTaskData(taskNumber);
+        CollectionTaskData taskData;
+        try {
+            taskData = scanner.getTaskData(taskNumber);
+        } catch (Exception e) {
+            view.addLog(ERROR_LOG_PREFIX + e.getMessage());
+            return;
+        }
+
         if (taskData == null) {
             return;
         }
@@ -318,5 +328,11 @@ public class MacroPresenter implements Presenter {
                         value.rate, value.maxCombo));
 
         scannerTaskPresenter.start(frame, viewData);
+    }
+
+    @Override
+    public void analyzeScannerTask() {
+        Command command = scanner.getCommand_analyze();
+        startCommand(command);
     }
 }

@@ -89,7 +89,10 @@ class CaptureService {
                         }
                     }
                 }
+
                 imageCachingService.shutdown();
+            } catch (InterruptedException ignored) {
+                imageCachingService.shutdownNow();
             } catch (Exception e) {
                 imageCachingService.shutdownNow();
                 exception = e;

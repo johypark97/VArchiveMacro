@@ -1,6 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Button;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Pattern;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,7 +13,13 @@ import javax.imageio.ImageIO;
 
 class ScannerTask {
     public enum Status {
-        CACHED, CAPTURED, DISK_LOADED, DISK_SAVED, EXCEPTION, NONE
+        ANALYZED, ANALYZING, CACHED, CAPTURED, DISK_LOADED, DISK_SAVED, EXCEPTION, NONE, WAITING
+    }
+
+
+    public static class AnalyzedData {
+        public String rateText = "";
+        public boolean isMaxCombo;
     }
 
 
@@ -22,6 +32,7 @@ class ScannerTask {
 
     private Exception exception;
     private Status status = Status.NONE;
+    private final Table<Button, Pattern, AnalyzedData> analyzedDataList = HashBasedTable.create();
 
     public ScannerTask(ScannerTaskManager manager, int taskNumber, LocalSong song) {
         this.manager = manager;
@@ -72,5 +83,17 @@ class ScannerTask {
     public void setException(Exception value) {
         exception = value;
         setStatus(Status.EXCEPTION);
+    }
+
+    public void clearAnalyzedData() {
+        analyzedDataList.clear();
+    }
+
+    public AnalyzedData getAnalyzedData(Button button, Pattern pattern) {
+        return analyzedDataList.get(button, pattern);
+    }
+
+    public void addAnalyzedData(Button button, Pattern pattern, AnalyzedData data) {
+        analyzedDataList.put(button, pattern, data);
     }
 }

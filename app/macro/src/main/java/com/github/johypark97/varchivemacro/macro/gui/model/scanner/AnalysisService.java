@@ -1,17 +1,21 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
-import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData.RecordData;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Button;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.macro.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.macro.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.macro.ocr.PixWrapper;
+import com.google.common.base.CharMatcher;
 import com.google.common.collect.Table.Cell;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,13 +29,47 @@ public class AnalysisService {
     public static final int RATE_FACTOR = 8;
     public static final int RATE_THRESHOLD = 224;
 
-    public static CollectionTaskData analyze(ScannerTask task) {
-        CollectionTaskData data = new CollectionTaskData();
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    public Exception exception;
 
-        try (OcrWrapper ocr = new OcrWrapper();
-                PixWrapper pix = new PixWrapper(task.getFilePath())) {
-            ocr.setWhitelist("0123456789.%");
+    public void shutdownNow() {
+        executor.shutdownNow();
+    }
 
+    public void await() throws InterruptedException {
+        if (!executor.awaitTermination(1, TimeUnit.HOURS)) {
+            throw new RuntimeException("unexpected timeout");
+        }
+    }
+
+    public void execute(ScannerTaskManager taskManager) {
+        executor.execute(() -> {
+            try (OcrWrapper ocr = new OcrWrapper()) {
+                List<ScannerTask> queue =
+                        taskManager.getTasks().stream().filter((x) -> x.getException() == null)
+                                .toList();
+
+                queue.forEach((x) -> x.setStatus(Status.WAITING));
+
+                Thread thread = Thread.currentThread();
+                for (ScannerTask task : queue) {
+                    analyze(ocr, task);
+
+                    if (thread.isInterrupted()) {
+                        break;
+                    }
+                }
+            } catch (OcrInitializationError ignored) {
+            }
+        });
+        executor.shutdown();
+    }
+
+    public static void analyze(OcrWrapper ocr, ScannerTask task) {
+        task.setStatus(Status.ANALYZING);
+        task.clearAnalyzedData();
+
+        try (PixWrapper pix = new PixWrapper(task.getFilePath())) {
             Dimension size = new Dimension(pix.getWidth(), pix.getHeight());
             CollectionArea area = CollectionAreaFactory.create(size);
 
@@ -40,51 +78,40 @@ public class AnalysisService {
             pix.gammaTRC(0.2f, 0, 255);
             pix.invert();
 
-            // store full image
-            data.setFullImage(pix.getPngBytes());
-
-            // store title image
-            try (PixWrapper titlePix = pix.crop(area.getTitle())) {
-                data.setTitleImage(titlePix.getPngBytes());
-            }
-
             // -------- analyze records --------
             for (Cell<Button, Pattern, String> cell : area.keys()) {
+                AnalyzedData data;
                 Button button = cell.getRowKey();
                 Pattern pattern = cell.getColumnKey();
 
-                RecordData recordData = new RecordData();
-
                 try (PixWrapper recordPix = pix.crop(area.getRate(button, pattern))) {
-                    recordData.rateImage = ImageConverter.pngBytesToImage(recordPix.getPngBytes());
-
                     // test whether the image contains enough black pixels using the histogram.
                     // if true, run ocr.
                     float r = recordPix.getGrayRatio(RATE_FACTOR, RATE_THRESHOLD);
-                    String text = "";
-                    if (r >= RATE_RATIO) {
-                        text = ocr.run(recordPix.pixInstance);
-                        // text = CharMatcher.whitespace().removeFrom(text);
-                        text = parseRateText(text);
+                    if (r < RATE_RATIO) {
+                        continue;
                     }
-                    recordData.rate = text;
+
+                    String text = ocr.run(recordPix.pixInstance);
+                    text = CharMatcher.whitespace().removeFrom(text);
+                    text = parseRateText(text);
+
+                    data = new AnalyzedData();
+                    data.rateText = text;
                 }
 
                 try (PixWrapper comboMarkPix = pix.crop(area.getComboMark(button, pattern))) {
-                    recordData.maxComboImage =
-                            ImageConverter.pngBytesToImage(comboMarkPix.getPngBytes());
-
                     float r = comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR, COMBO_MARK_THRESHOLD);
-                    recordData.maxCombo = r >= COMBO_MARK_RATIO;
+                    data.isMaxCombo = r >= COMBO_MARK_RATIO;
                 }
 
-                data.addRecord(cell.getValue(), recordData);
+                task.addAnalyzedData(button, pattern, data);
             }
-            return data;
+
+            task.setStatus(Status.ANALYZED);
         } catch (Exception e) {
             task.setException(e);
             LOGGER.atError().log(e.getMessage(), e);
-            return null;
         }
     }
 
@@ -97,30 +124,9 @@ public class AnalysisService {
         try {
             String s = text.substring(0, index);
             float value = Float.parseFloat(s);
-            return (value <= 100) ? String.valueOf(value) : "";
+            return (value >= 0 && value <= 100) ? String.valueOf(value) : "";
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             return "";
         }
-    }
-
-    public static void binarizeComboMarkImage(BufferedImage image) {
-        for (int y = 0; y < image.getHeight(); ++y) {
-            for (int x = 0; x < image.getWidth(); ++x) {
-                Color c = isMaxCombo(image.getRGB(x, y)) ? Color.BLACK : Color.WHITE;
-                image.setRGB(x, y, c.getRGB());
-            }
-        }
-    }
-
-    public static boolean isMaxCombo(BufferedImage image) {
-        int x = image.getWidth() / 2;
-        int y = image.getHeight() / 2;
-        return isMaxCombo(image.getRGB(x, y));
-    }
-
-    public static boolean isMaxCombo(int rgb) {
-        Color color = new Color(rgb);
-        return color.getRed() >= COMBO_MARK_THRESHOLD || color.getGreen() >= COMBO_MARK_THRESHOLD
-                || color.getBlue() >= COMBO_MARK_THRESHOLD;
     }
 }

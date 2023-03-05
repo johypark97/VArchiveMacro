@@ -32,6 +32,10 @@ class ScannerTaskManager {
         return tasks.get(taskNumber);
     }
 
+    public List<ScannerTask> getTasks() {
+        return tasks.values().stream().toList();
+    }
+
     public void notify_statusUpdated(int taskNumber) {
         tableModel.fireTableRowsUpdated(taskNumber, taskNumber);
     }
@@ -45,12 +49,15 @@ class ScannerTaskManager {
 
         private String statusToString(Status status) {
             return switch (status) {
+                case ANALYZED -> "analyzed";
+                case ANALYZING -> "analyzing";
                 case CACHED -> "cached";
                 case CAPTURED -> "captured";
                 case DISK_LOADED -> "loaded from disk";
                 case DISK_SAVED -> "saved to disk";
                 case EXCEPTION -> "exception occurred";
                 case NONE -> "none";
+                case WAITING -> "waiting";
             };
         }
 

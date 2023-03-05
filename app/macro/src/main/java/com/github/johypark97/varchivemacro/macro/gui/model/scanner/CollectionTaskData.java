@@ -1,8 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
-import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
 import java.awt.Image;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,14 +8,6 @@ public class CollectionTaskData {
     public Image fullImage;
     public Image titleImage;
     public final Map<String, RecordData> records = new HashMap<>();
-
-    public void setFullImage(byte[] pngBytes) throws IOException {
-        fullImage = ImageConverter.pngBytesToImage(pngBytes);
-    }
-
-    public void setTitleImage(byte[] pngBytes) throws IOException {
-        titleImage = ImageConverter.pngBytesToImage(pngBytes);
-    }
 
     public void addRecord(String key, RecordData data) {
         records.put(key, data);

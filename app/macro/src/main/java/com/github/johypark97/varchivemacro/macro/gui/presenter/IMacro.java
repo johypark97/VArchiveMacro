@@ -25,6 +25,8 @@ public interface IMacro {
         void openExpected(JFrame frame);
 
         void showScannerTask(JFrame frame, int taskNumber);
+
+        void analyzeScannerTask();
     }
 
 
@@ -50,5 +52,7 @@ public interface IMacro {
         Set<String> getSelectedDlcTabs();
 
         void setScannerTaskTableModel(TableModel model);
+
+        void setScannerResultTableModel(TableModel model);
     }
 }

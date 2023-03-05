@@ -81,13 +81,15 @@ public class MacroView extends JFrame implements View, WindowListener {
     private JScrollPane dlcCheckboxScrollPane;
     private JTextArea logTextArea;
     private JTextField accountFileTextField;
+    protected JButton analyzeScannerTaskButton;
     protected JButton selectAccountFileButton;
     protected JButton selectAllDlcButton;
     protected JButton showExpectedButton;
     protected JButton showScannerTaskButton;
     protected JButton unselectAllDlcButton;
     protected JButton uploadRecordButton;
-    protected JTable scannerTable;
+    protected JTable scannerResultTable;
+    protected JTable scannerTaskTable;
     protected transient CheckboxGroup<String> dlcCheckboxGroup = new CheckboxGroup<>();
 
     // event listeners
@@ -278,39 +280,72 @@ public class MacroView extends JFrame implements View, WindowListener {
         }
         panel.add(toolBox, BorderLayout.PAGE_START);
 
-        // main panel
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        // tabbed panel
+        JTabbedPane tabbedPane = new JTabbedPane();
         {
-            // scanner table panel
-            JScrollPane scannerTableScrollPane;
+            JPanel taskPanel = new JPanel(new BorderLayout());
             {
-                scannerTable = new JTable();
-                scannerTable.getTableHeader().setReorderingAllowed(false);
-                scannerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                scannerTable.setBackground(Color.WHITE);
-                scannerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                // scanner table panel
+                JScrollPane scannerTableScrollPane;
+                {
+                    scannerTaskTable = new JTable();
+                    scannerTaskTable.getTableHeader().setReorderingAllowed(false);
+                    scannerTaskTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                    scannerTaskTable.setBackground(Color.WHITE);
+                    scannerTaskTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-                scannerTableScrollPane = new JScrollPane(scannerTable);
-                scannerTableScrollPane.getViewport().setBackground(Color.WHITE);
+                    scannerTableScrollPane = new JScrollPane(scannerTaskTable);
+                    scannerTableScrollPane.getViewport().setBackground(Color.WHITE);
+                }
+                taskPanel.add(scannerTableScrollPane, BorderLayout.CENTER);
+
+                // button box
+                Box buttonBox = Box.createHorizontalBox();
+                {
+                    showScannerTaskButton = new JButton("Show");
+                    showScannerTaskButton.addActionListener(buttonListener);
+                    buttonBox.add(showScannerTaskButton);
+
+                    buttonBox.add(Box.createHorizontalGlue());
+
+                    analyzeScannerTaskButton = new JButton("Analyze");
+                    analyzeScannerTaskButton.addActionListener(buttonListener);
+                    buttonBox.add(analyzeScannerTaskButton);
+                }
+                taskPanel.add(buttonBox, BorderLayout.PAGE_END);
             }
-            mainPanel.add(scannerTableScrollPane, BorderLayout.CENTER);
+            tabbedPane.addTab("Task", taskPanel);
 
-            // button box
-            Box buttonBox = Box.createHorizontalBox();
+            JPanel resultPanel = new JPanel(new BorderLayout());
             {
-                showScannerTaskButton = new JButton("show");
-                showScannerTaskButton.addActionListener(buttonListener);
-                buttonBox.add(showScannerTaskButton);
+                // scanner table panel
+                JScrollPane scannerTableScrollPane;
+                {
+                    scannerResultTable = new JTable();
+                    scannerResultTable.getTableHeader().setReorderingAllowed(false);
+                    scannerResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                    scannerResultTable.setBackground(Color.WHITE);
+                    scannerResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-                buttonBox.add(Box.createHorizontalGlue());
+                    scannerTableScrollPane = new JScrollPane(scannerResultTable);
+                    scannerTableScrollPane.getViewport().setBackground(Color.WHITE);
+                }
+                resultPanel.add(scannerTableScrollPane, BorderLayout.CENTER);
 
-                uploadRecordButton = new JButton("Upload");
-                uploadRecordButton.addActionListener(buttonListener);
-                buttonBox.add(uploadRecordButton);
+                // button box
+                Box buttonBox = Box.createHorizontalBox();
+                {
+                    buttonBox.add(Box.createHorizontalGlue());
+
+                    uploadRecordButton = new JButton("Upload");
+                    uploadRecordButton.addActionListener(buttonListener);
+                    buttonBox.add(uploadRecordButton);
+                }
+                resultPanel.add(buttonBox, BorderLayout.PAGE_END);
             }
-            mainPanel.add(buttonBox, BorderLayout.PAGE_END);
+            tabbedPane.addTab("Result", resultPanel);
         }
-        panel.add(mainPanel, BorderLayout.CENTER);
+        panel.add(tabbedPane, BorderLayout.CENTER);
 
         // dlc panel
         JPanel dlcPanel = new JPanel(new BorderLayout());
@@ -449,12 +484,17 @@ public class MacroView extends JFrame implements View, WindowListener {
 
     @Override
     public void setScannerTaskTableModel(TableModel model) {
-        scannerTable.setModel(model);
+        scannerTaskTable.setModel(model);
 
-        TableColumnModel tableColumnModel = scannerTable.getColumnModel();
+        TableColumnModel tableColumnModel = scannerTaskTable.getColumnModel();
         tableColumnModel.getColumn(0).setPreferredWidth(40);
         tableColumnModel.getColumn(1).setPreferredWidth(320);
         tableColumnModel.getColumn(2).setPreferredWidth(160);
+    }
+
+    @Override
+    public void setScannerResultTableModel(TableModel model) {
+        scannerResultTable.setModel(model);
     }
 
     @Override
@@ -530,13 +570,15 @@ class MacroViewButtonListener implements ActionListener {
             }
             // } else if (source.equals(view.selectAccountFileButton)) {
         } else if (source.equals(view.showScannerTaskButton)) {
-            int index = view.scannerTable.getSelectedRow();
+            int index = view.scannerTaskTable.getSelectedRow();
             if (index != -1) {
-                Object value = view.scannerTable.getValueAt(index, 0);
+                Object value = view.scannerTaskTable.getValueAt(index, 0);
                 if (value instanceof Integer taskNumber) {
                     view.presenter.showScannerTask(view, taskNumber);
                 }
             }
+        } else if (source.equals(view.analyzeScannerTaskButton)) {
+            view.presenter.analyzeScannerTask();
             // } else if (source.equals(view.uploadRecordButton)) {
         } else if (source.equals(view.selectAllDlcButton)) {
             view.dlcCheckboxGroup.selectAllExclude(MacroView.DEFAULT_DLCS);

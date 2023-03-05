@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Table.Cell;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public interface CollectionArea {
     enum Section {
@@ -58,4 +59,10 @@ public interface CollectionArea {
     Rectangle getRate(Button button, Pattern pattern);
 
     Rectangle getComboMark(Button button, Pattern pattern);
+
+    BufferedImage getTitle(BufferedImage image);
+
+    BufferedImage getRate(BufferedImage image, Button button, Pattern pattern);
+
+    BufferedImage getComboMark(BufferedImage image, Button button, Pattern pattern);
 }
