@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.tree.TreeModel;
 
 public interface IMacro {
@@ -27,6 +28,8 @@ public interface IMacro {
         void showScannerTask(JFrame frame, int taskNumber);
 
         void analyzeScannerTask();
+
+        void refreshScannerResult();
     }
 
 
@@ -54,5 +57,7 @@ public interface IMacro {
         void setScannerTaskTableModel(TableModel model);
 
         void setScannerResultTableModel(TableModel model);
+
+        void setScannerResultTableRowSorter(TableRowSorter<TableModel> rowSorter);
     }
 }

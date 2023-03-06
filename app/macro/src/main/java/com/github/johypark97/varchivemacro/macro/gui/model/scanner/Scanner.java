@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.command.Command;
+import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
@@ -18,8 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class Scanner {
+    private final ResultManager resultManager;
     private final ScannerTaskManager taskManager = new ScannerTaskManager();
 
     public Consumer<Exception> whenThrown;
@@ -28,24 +31,43 @@ public class Scanner {
     public Runnable whenDone;
     public Runnable whenStart_analyze;
     public Runnable whenStart_capture;
+    public Runnable whenStart_collectResult;
     public Runnable whenStart_loadImages;
+
+    public Scanner(RecordModel recordModel) {
+        resultManager = new ResultManager(recordModel);
+    }
 
     public Command getCommand_scan(Map<String, List<LocalSong>> tabSongMap) {
         Command root = createCommand_scan(tabSongMap);
-        root.setNext(createCommand_analyze());
+        root.setNext(getCommand_analyze());
         return root;
+    }
+
+    public Command getCommand_analyze() {
+        Command root = createCommand_analyze();
+        root.setNext(getCommand_collectResult());
+        return root;
+    }
+
+    public Command getCommand_collectResult() {
+        return createCommand_collectResult();
     }
 
     public Command getCommand_loadCapturedImages(Map<String, List<LocalSong>> tabSongMap) {
         return createCommand_loadCapturedImages(tabSongMap);
     }
 
-    public Command getCommand_analyze() {
-        return createCommand_analyze();
-    }
-
     public TableModel getTaskTableModel() {
         return taskManager.tableModel;
+    }
+
+    public TableModel getResultTableModel() {
+        return resultManager.tableModel;
+    }
+
+    public TableRowSorter<TableModel> getResultTableRowSorter() {
+        return resultManager.rowSorter;
     }
 
     public CollectionTaskData getTaskData(int taskNumber) throws Exception {
@@ -123,28 +145,6 @@ public class Scanner {
         };
     }
 
-    protected Command createCommand_loadCapturedImages(Map<String, List<LocalSong>> tabSongMap) {
-        return new AbstractCommand() {
-            @Override
-            public boolean run() {
-                whenStart_loadImages.run();
-
-                taskManager.clear();
-                tabSongMap.values().forEach((songs) -> songs.forEach((song) -> {
-                    ScannerTask task = taskManager.create(song);
-                    if (Files.exists(task.getFilePath())) {
-                        task.setStatus(Status.CACHED);
-                    } else {
-                        task.setException(new IOException("File not found"));
-                    }
-                }));
-
-                whenDone.run();
-                return true;
-            }
-        };
-    }
-
     protected Command createCommand_analyze() {
         return new AbstractCommand() {
             @Override
@@ -161,6 +161,43 @@ public class Scanner {
                     whenCanceled.run();
                     return false;
                 }
+
+                whenDone.run();
+                return true;
+            }
+        };
+    }
+
+    protected Command createCommand_collectResult() {
+        return new AbstractCommand() {
+            @Override
+            public boolean run() {
+                whenStart_collectResult.run();
+
+                resultManager.clearRecords();
+                taskManager.getTasks().forEach(resultManager::addRecordFromTask);
+
+                whenDone.run();
+                return true;
+            }
+        };
+    }
+
+    protected Command createCommand_loadCapturedImages(Map<String, List<LocalSong>> tabSongMap) {
+        return new AbstractCommand() {
+            @Override
+            public boolean run() {
+                whenStart_loadImages.run();
+
+                taskManager.clear();
+                tabSongMap.values().forEach((songs) -> songs.forEach((song) -> {
+                    ScannerTask task = taskManager.create(song);
+                    if (Files.exists(task.getFilePath())) {
+                        task.setStatus(Status.CACHED);
+                    } else {
+                        task.setException(new IOException("File not found"));
+                    }
+                }));
 
                 whenDone.run();
                 return true;

@@ -5,10 +5,12 @@ import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.Co
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Pattern;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.google.common.collect.Table.Cell;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 import javax.imageio.ImageIO;
 
 class ScannerTask {
@@ -20,6 +22,7 @@ class ScannerTask {
     public static class AnalyzedData {
         public String rateText = "";
         public boolean isMaxCombo;
+        public float rate;
     }
 
 
@@ -27,7 +30,7 @@ class ScannerTask {
     public static final String FORMAT = "png";
 
     private final ScannerTaskManager manager;
-    private final LocalSong song;
+    public final LocalSong song;
     public final int taskNumber;
 
     private Exception exception;
@@ -59,14 +62,6 @@ class ScannerTask {
         return ImageIO.read(getFilePath().toFile());
     }
 
-    public int getSongId() {
-        return song.id();
-    }
-
-    public String getSongTitle() {
-        return song.title();
-    }
-
     public Status getStatus() {
         return status;
     }
@@ -95,5 +90,9 @@ class ScannerTask {
 
     public void addAnalyzedData(Button button, Pattern pattern, AnalyzedData data) {
         analyzedDataList.put(button, pattern, data);
+    }
+
+    public Set<Cell<Button, Pattern, AnalyzedData>> getAnalyzedDataCellSet() {
+        return analyzedDataList.cellSet();
     }
 }

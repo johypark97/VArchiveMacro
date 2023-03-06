@@ -28,14 +28,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ScannerTaskView extends JDialog implements View, WindowListener {
     @Serial
     private static final long serialVersionUID = 1403466149083029200L;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ScannerTaskView.class);
 
     private static final String WINDOW_TITLE = "Captured Image";
     private static final int WINDOW_HEIGHT = 480;
@@ -162,8 +158,6 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
             RecordData data = viewData.records.get(key);
             if (data != null) {
                 value.setData(data);
-            } else {
-                LOGGER.atDebug().addKeyValue("record data key", key).log("key is not exists");
             }
         });
 

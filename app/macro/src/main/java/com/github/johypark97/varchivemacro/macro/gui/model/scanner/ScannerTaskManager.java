@@ -85,7 +85,7 @@ class ScannerTaskManager {
 
             return switch (columnIndex) {
                 case 0 -> task.taskNumber;
-                case 1 -> task.getSongTitle();
+                case 1 -> task.song.title();
                 case 2 -> statusToString(task.getStatus());
                 default -> ERROR_STRING;
             };

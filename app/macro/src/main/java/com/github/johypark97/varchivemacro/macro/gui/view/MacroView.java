@@ -45,6 +45,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.BadLocationException;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
@@ -59,8 +60,8 @@ public class MacroView extends JFrame implements View, WindowListener {
     private static final int LOG_FONT_SIZE = 12;
     private static final int LOG_LINES = 100;
     private static final int LOG_ROWS = 8;
-    private static final int WINDOW_HEIGHT = 600;
-    private static final int WINDOW_WIDTH = 800;
+    private static final int WINDOW_HEIGHT = 768;
+    private static final int WINDOW_WIDTH = 1024;
     public static final Set<String> DEFAULT_DLCS = Set.of("RESPECT", "PORTABLE 1", "PORTABLE 2");
 
     // presenter
@@ -82,6 +83,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     private JTextArea logTextArea;
     private JTextField accountFileTextField;
     protected JButton analyzeScannerTaskButton;
+    protected JButton refreshScannerResultButton;
     protected JButton selectAccountFileButton;
     protected JButton selectAllDlcButton;
     protected JButton showExpectedButton;
@@ -335,6 +337,10 @@ public class MacroView extends JFrame implements View, WindowListener {
                 // button box
                 Box buttonBox = Box.createHorizontalBox();
                 {
+                    refreshScannerResultButton = new JButton("Refresh");
+                    refreshScannerResultButton.addActionListener(buttonListener);
+                    buttonBox.add(refreshScannerResultButton);
+
                     buttonBox.add(Box.createHorizontalGlue());
 
                     uploadRecordButton = new JButton("Upload");
@@ -495,6 +501,23 @@ public class MacroView extends JFrame implements View, WindowListener {
     @Override
     public void setScannerResultTableModel(TableModel model) {
         scannerResultTable.setModel(model);
+
+        TableColumnModel tableColumnModel = scannerResultTable.getColumnModel();
+        tableColumnModel.getColumn(0).setPreferredWidth(40);
+        tableColumnModel.getColumn(1).setPreferredWidth(40);
+        tableColumnModel.getColumn(2).setPreferredWidth(160);
+        tableColumnModel.getColumn(3).setPreferredWidth(80);
+        tableColumnModel.getColumn(4).setPreferredWidth(80);
+        tableColumnModel.getColumn(5).setPreferredWidth(40);
+        tableColumnModel.getColumn(6).setPreferredWidth(40);
+        tableColumnModel.getColumn(7).setPreferredWidth(80);
+        tableColumnModel.getColumn(8).setPreferredWidth(80);
+        tableColumnModel.getColumn(9).setPreferredWidth(80);
+    }
+
+    @Override
+    public void setScannerResultTableRowSorter(TableRowSorter<TableModel> rowSorter) {
+        scannerResultTable.setRowSorter(rowSorter);
     }
 
     @Override
@@ -579,6 +602,8 @@ class MacroViewButtonListener implements ActionListener {
             }
         } else if (source.equals(view.analyzeScannerTaskButton)) {
             view.presenter.analyzeScannerTask();
+        } else if (source.equals(view.refreshScannerResultButton)) {
+            view.presenter.refreshScannerResult();
             // } else if (source.equals(view.uploadRecordButton)) {
         } else if (source.equals(view.selectAllDlcButton)) {
             view.dlcCheckboxGroup.selectAllExclude(MacroView.DEFAULT_DLCS);

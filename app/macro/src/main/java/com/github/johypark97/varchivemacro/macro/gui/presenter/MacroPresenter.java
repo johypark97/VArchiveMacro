@@ -33,7 +33,7 @@ public class MacroPresenter implements Presenter {
     private SongModel songModel;
     private final CommandRunner commandRunner = new CommandRunner();
     private final RecordModel recordModel = new RecordModel();
-    private final Scanner scanner = new Scanner();
+    private final Scanner scanner = new Scanner(recordModel);
 
     // view
     private final Class<? extends View> viewClass;
@@ -74,6 +74,7 @@ public class MacroPresenter implements Presenter {
         };
         scanner.whenStart_analyze = () -> view.addLog("Analyzing...");
         scanner.whenStart_capture = () -> view.addLog("Scanning...");
+        scanner.whenStart_collectResult = () -> view.addLog("Refreshing the result...");
         scanner.whenStart_loadImages = () -> view.addLog("Loading images from disk...");
 
         this.viewClass = viewClass;
@@ -251,6 +252,8 @@ public class MacroPresenter implements Presenter {
         view.setRecordViewerTreeModel(treeModel);
         view.setSelectableDlcTabs(songModel.getTabs());
 
+        view.setScannerResultTableModel(scanner.getResultTableModel());
+        view.setScannerResultTableRowSorter(scanner.getResultTableRowSorter());
         view.setScannerTaskTableModel(scanner.getTaskTableModel());
 
         try {
@@ -333,6 +336,12 @@ public class MacroPresenter implements Presenter {
     @Override
     public void analyzeScannerTask() {
         Command command = scanner.getCommand_analyze();
+        startCommand(command);
+    }
+
+    @Override
+    public void refreshScannerResult() {
+        Command command = scanner.getCommand_collectResult();
         startCommand(command);
     }
 }

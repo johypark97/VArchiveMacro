@@ -94,9 +94,9 @@ public class AnalysisService {
 
                     String text = ocr.run(recordPix.pixInstance);
                     text = CharMatcher.whitespace().removeFrom(text);
-                    text = parseRateText(text);
 
                     data = new AnalyzedData();
+                    data.rate = parseRateText(text);
                     data.rateText = text;
                 }
 
@@ -115,18 +115,18 @@ public class AnalysisService {
         }
     }
 
-    public static String parseRateText(String text) {
+    public static float parseRateText(String text) {
         int index = text.indexOf('%');
         if (index == -1) {
-            return "";
+            return -1;
         }
 
         try {
             String s = text.substring(0, index);
             float value = Float.parseFloat(s);
-            return (value >= 0 && value <= 100) ? String.valueOf(value) : "";
+            return (value >= 0 && value <= 100) ? value : -1;
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            return "";
+            return -1;
         }
     }
 }

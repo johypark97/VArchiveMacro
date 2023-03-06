@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
 import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.macro.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.command.Command;
 import java.io.IOException;
@@ -19,6 +20,10 @@ public class RecordModel {
     public Consumer<String> whenStart_loadRemote;
     public Runnable whenDone;
 
+    public LocalRecord findSameRecord(LocalRecord record) {
+        return recordManager.getRecord(record.id, record.button, record.pattern);
+    }
+
     public List<Float> getRecords(int id) {
         return recordManager.getRecords(id);
     }
@@ -32,12 +37,12 @@ public class RecordModel {
         return true;
     }
 
-    public Command getCommand_loadRemote(String djName) {
-        return createCommand_loadRemote(djName);
-    }
-
     public void save() throws IOException {
         recordManager.saveJson(RECORD_PATH);
+    }
+
+    public Command getCommand_loadRemote(String djName) {
+        return createCommand_loadRemote(djName);
     }
 
     protected Command createCommand_loadRemote(String djName) {

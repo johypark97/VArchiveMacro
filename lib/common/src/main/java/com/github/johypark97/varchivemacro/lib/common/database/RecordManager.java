@@ -29,6 +29,15 @@ public class RecordManager {
 
     private RecordMap managedRecords = new RecordMap();
 
+    public LocalRecord getRecord(int id, Button button, Pattern pattern) {
+        lock.readLock().lock();
+        try {
+            return managedRecords.find(id, button, pattern);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
     public List<Float> getRecords(int id) {
         List<Float> records = Stream.generate(() -> -1f).limit(16)
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -119,6 +128,11 @@ public class RecordManager {
         public boolean add(LocalRecord record) {
             return computeIfAbsent(record.id, (x) -> new ButtonMap()).add(record);
         }
+
+        public LocalRecord find(int id, Button button, Pattern pattern) {
+            ButtonMap map = get(id);
+            return (map != null) ? map.find(button, pattern) : null;
+        }
     }
 
 
@@ -128,6 +142,11 @@ public class RecordManager {
 
         public boolean add(LocalRecord record) {
             return computeIfAbsent(record.button, (x) -> new PatternMap()).add(record);
+        }
+
+        public LocalRecord find(Button button, Pattern pattern) {
+            PatternMap map = get(button);
+            return (map != null) ? map.find(pattern) : null;
         }
     }
 
@@ -144,6 +163,10 @@ public class RecordManager {
             } else {
                 return storedRecord.update(newRecord);
             }
+        }
+
+        public LocalRecord find(Pattern pattern) {
+            return get(pattern);
         }
     }
 }
