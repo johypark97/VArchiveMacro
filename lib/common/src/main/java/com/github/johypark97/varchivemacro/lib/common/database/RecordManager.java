@@ -46,20 +46,9 @@ public class RecordManager {
         ButtonMap buttonMap = managedRecords.get(id);
         if (buttonMap != null) {
             buttonMap.forEach((button, patternMap) -> patternMap.forEach((pattern, record) -> {
-                int b = switch (button) {
-                    case _4 -> 0;
-                    case _5 -> 1;
-                    case _6 -> 2;
-                    case _8 -> 3;
-                };
-                int p = switch (pattern) {
-                    case NM -> 0;
-                    case HD -> 1;
-                    case MX -> 2;
-                    case SC -> 3;
-                };
-
-                records.set(p + b * 4, record.score);
+                int b = button.getWeight();
+                int p = pattern.getWeight();
+                records.set(p + b * 4, record.rate);
             }));
         }
         lock.readLock().unlock();
@@ -93,10 +82,10 @@ public class RecordManager {
                     for (RecordFetcher.PatternJson pattern : floor.patterns) {
                         int id = pattern.id;
                         Pattern p = pattern.pattern;
-                        float score = pattern.score;
-                        int maxCombo = pattern.maxCombo;
+                        float rate = pattern.rate;
+                        boolean maxCombo = pattern.maxCombo == 1;
 
-                        map.add(new LocalRecord(id, b, p, score, maxCombo));
+                        map.add(new LocalRecord(id, b, p, rate, maxCombo));
                     }
                 }
             }

@@ -14,29 +14,29 @@ class RecordUploaderTest {
 
     @ParameterizedTest
     @ValueSource(ints = {-1, 101})
-    void test_RequestData_constructor_score(int score) {
+    void test_RequestJson_constructor_rate(int rate) {
         assertThrows(IllegalArgumentException.class,
-                () -> new RequestJson(TITLE_STRING, Button._4, Pattern.NM, score, 0));
+                () -> new RequestJson(TITLE_STRING, Button._4, Pattern.NM, rate, false));
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1})
-    void test_RequestData_constructor_maxCombo_notPerfect(int maxCombo) {
-        int score = 99;
+    @ValueSource(booleans = {false, true})
+    void test_RequestJson_constructor_maxCombo_notPerfect(boolean maxCombo) {
+        int rate = 99;
 
-        RequestJson data = new RequestJson(TITLE_STRING, Button._4, Pattern.NM, score, maxCombo);
+        RequestJson data = new RequestJson(TITLE_STRING, Button._4, Pattern.NM, rate, maxCombo);
 
-        int expected = maxCombo;
+        int expected = maxCombo ? 1 : 0;
         int actual = data.maxCombo;
         assertEquals(expected, actual);
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1})
-    void test_RequestData_constructor_maxCombo_perfect(int maxCombo) {
-        int score = 100;
+    @ValueSource(booleans = {false, true})
+    void test_RequestJson_constructor_maxCombo_perfect(boolean maxCombo) {
+        int rate = 100;
 
-        RequestJson data = new RequestJson(TITLE_STRING, Button._4, Pattern.NM, score, maxCombo);
+        RequestJson data = new RequestJson(TITLE_STRING, Button._4, Pattern.NM, rate, maxCombo);
 
         int expected = 1;
         int actual = data.maxCombo;

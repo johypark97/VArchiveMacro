@@ -459,8 +459,8 @@ public class MacroView extends JFrame implements View, WindowListener {
             // (index / rowSize) + (index % columnSize) * columnSize = transposed index
             int transposedIndex = i / 4 + i % 4 * 4;
 
-            float score = records.get(transposedIndex);
-            String value = (score >= 0) ? String.valueOf(score) : "";
+            float rate = records.get(transposedIndex);
+            String value = (rate >= 0) ? String.valueOf(rate) : "";
             recordViewerGridTextFields.get(i).setText(value);
         });
     }

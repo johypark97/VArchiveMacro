@@ -29,21 +29,21 @@ public class LocalRecord {
     public final Pattern pattern;
 
     @Expose
-    public float score;
+    public float rate;
 
     @Expose
-    public int maxCombo;
+    public boolean maxCombo;
 
-    public LocalRecord(int id, Button button, Pattern pattern, float score, int maxCombo) {
-        if (score < 0.0f || score > 100.0f) {
-            throw new IllegalArgumentException("invalid score: " + score);
+    public LocalRecord(int id, Button button, Pattern pattern, float rate, boolean maxCombo) {
+        if (rate < 0.0f || rate > 100.0f) {
+            throw new IllegalArgumentException("invalid rate: " + rate);
         }
 
         this.button = button;
         this.id = id;
-        this.maxCombo = (score == 100.0f || maxCombo != 0) ? 1 : 0;
+        this.maxCombo = maxCombo || rate == 100.0f;
         this.pattern = pattern;
-        this.score = score;
+        this.rate = rate;
     }
 
     public boolean isUpdated(LocalRecord record) {
@@ -55,7 +55,7 @@ public class LocalRecord {
             throw new IllegalArgumentException(message);
         }
 
-        return record.score > score || record.maxCombo > maxCombo;
+        return rate < record.rate || (!maxCombo && record.maxCombo);
     }
 
     public boolean update(LocalRecord record) {
@@ -63,15 +63,15 @@ public class LocalRecord {
             return false;
         }
 
-        score = Math.max(score, record.score);
-        maxCombo = Math.max(maxCombo, record.maxCombo);
+        rate = Math.max(rate, record.rate);
+        maxCombo = maxCombo | record.maxCombo;
         return true;
     }
 
     // Temporary method to resolve spotbugs URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD warning.
     @Override
     public String toString() {
-        return String.format("%d. %sB %s %.2f(%d)", id, button, pattern, score, maxCombo);
+        return String.format("%d. %sB %s %.2f(%b)", id, button, pattern, rate, maxCombo);
     }
 
     public static List<LocalRecord> loadJson(Path path) throws IOException {

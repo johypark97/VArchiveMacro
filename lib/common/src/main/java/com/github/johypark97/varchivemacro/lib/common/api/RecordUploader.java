@@ -46,22 +46,23 @@ public interface RecordUploader {
         public String pattern;
 
         @Expose
-        public float score;
+        @SerializedName("score")
+        public float rate;
 
         @Expose
         public int maxCombo;
 
-        public RequestJson(String title, Button button, Pattern pattern, float score,
-                int maxCombo) {
-            if (score < 0.0f || score > 100.0f) {
-                throw new IllegalArgumentException("invalid score: " + score);
+        public RequestJson(String title, Button button, Pattern pattern, float rate,
+                boolean maxCombo) {
+            if (rate < 0.0f || rate > 100.0f) {
+                throw new IllegalArgumentException("invalid rate: " + rate);
             }
 
             this.title = title;
             this.button = button.getValue();
             this.pattern = pattern.toString();
-            this.score = score;
-            this.maxCombo = (score == 100.0f || maxCombo != 0) ? 1 : 0;
+            this.rate = rate;
+            this.maxCombo = (maxCombo || rate == 100.0f) ? 1 : 0;
         }
 
         public String toJson() {
@@ -74,7 +75,7 @@ public interface RecordUploader {
         public String toString() {
             return "RequestData{" + "title='" + title + '\'' + ", dlc='" + dlc + '\''
                     + ", composer='" + composer + '\'' + ", button=" + button + ", pattern='"
-                    + pattern + '\'' + ", score=" + score + ", maxCombo=" + maxCombo + '}';
+                    + pattern + '\'' + ", rate=" + rate + ", maxCombo=" + maxCombo + '}';
         }
     }
 

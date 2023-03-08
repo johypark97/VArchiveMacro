@@ -35,16 +35,22 @@ public final class Api {
 
 
     public enum Button {
-        _4(4), _5(5), _6(6), _8(8);
+        _4(0, 4), _5(1, 5), _6(2, 6), _8(3, 8);
 
         private final int value;
+        private final int weight;
 
-        Button(int i) {
+        Button(int w, int i) {
             value = i;
+            weight = w;
         }
 
         public int getValue() {
             return value;
+        }
+
+        public int getWeight() {
+            return weight;
         }
 
         @Override
@@ -63,17 +69,29 @@ public final class Api {
 
 
     public enum Pattern {
-        NM("NORMAL"), HD("HARD"), MX("MAXIMUM"), SC("SC");
+        NM(0, "NORMAL", "NM"), HD(1, "HARD", "HD"), MX(2, "MAXIMUM", "MX"), SC(3, "SC", "SC");
 
-        private final String value;
+        private final String fullName;
+        private final String shortName;
+        private final int weight;
 
-        Pattern(String s) {
-            value = s;
+        Pattern(int w, String f, String s) {
+            fullName = f;
+            shortName = s;
+            weight = w;
+        }
+
+        public String getShortName() {
+            return shortName;
+        }
+
+        public int getWeight() {
+            return weight;
         }
 
         @Override
         public String toString() {
-            return value;
+            return fullName;
         }
     }
 

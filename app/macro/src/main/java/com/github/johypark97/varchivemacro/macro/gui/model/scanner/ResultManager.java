@@ -34,7 +34,7 @@ public class ResultManager {
 
     public final RecordModel recordModel;
 
-    private static final float PERFECT_SCORE = 100f;
+    private static final float PERFECT_RATE = 100f;
 
 
     public ResultManager(RecordModel recordModel) {
@@ -72,10 +72,10 @@ public class ResultManager {
                 case MX -> Api.Pattern.MX;
                 case SC -> Api.Pattern.SC;
             };
-            float score = analyzedData.rate;
-            int maxCombo = analyzedData.isMaxCombo ? 1 : 0;
+            float rate = analyzedData.rate;
+            boolean maxCombo = analyzedData.isMaxCombo;
 
-            LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, score, maxCombo);
+            LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
             LocalRecord oldRecord = recordModel.findSameRecord(newRecord);
 
             if (oldRecord == null || oldRecord.isUpdated(newRecord)) {
@@ -102,19 +102,19 @@ public class ResultManager {
         tableModel.fireTableDataChanged();
     }
 
-    private String toScoreText(LocalRecord record) {
-        if (record == null || record.score == 0) {
+    private String toRateText(LocalRecord record) {
+        if (record == null || record.rate == 0) {
             return "";
         }
 
         String mark = "";
-        if (record.score == PERFECT_SCORE) {
+        if (record.rate == PERFECT_RATE) {
             mark = " (P)";
-        } else if (record.maxCombo != 0) {
+        } else if (record.maxCombo) {
             mark = " (M)";
         }
 
-        return String.format("%.2f%s", record.score, mark);
+        return String.format("%.2f%s", record.rate, mark);
     }
 
 
@@ -175,8 +175,8 @@ public class ResultManager {
                 case 4 -> data.song.dlc();
                 case 5 -> data.newRecord.button.toString();
                 case 6 -> data.newRecord.pattern.toString();
-                case 7 -> toScoreText(data.oldRecord);
-                case 8 -> toScoreText(data.newRecord);
+                case 7 -> toRateText(data.oldRecord);
+                case 8 -> toRateText(data.newRecord);
                 case 9 -> data.isSelected;
                 default -> ERROR_STRING;
             };

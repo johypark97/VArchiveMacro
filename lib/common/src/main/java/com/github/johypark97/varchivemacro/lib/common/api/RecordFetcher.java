@@ -64,7 +64,8 @@ public interface RecordFetcher {
         public Pattern pattern;
 
         @Expose
-        public float score;
+        @SerializedName("score")
+        public float rate;
 
         @Expose
         public int maxCombo;
