@@ -86,9 +86,11 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JButton refreshScannerResultButton;
     protected JButton selectAccountFileButton;
     protected JButton selectAllDlcButton;
+    protected JButton selectAllRecordButton;
     protected JButton showExpectedButton;
     protected JButton showScannerTaskButton;
     protected JButton unselectAllDlcButton;
+    protected JButton unselectAllRecordButton;
     protected JButton uploadRecordButton;
     protected JTable scannerResultTable;
     protected JTable scannerTaskTable;
@@ -343,6 +345,16 @@ public class MacroView extends JFrame implements View, WindowListener {
 
                     buttonBox.add(Box.createHorizontalGlue());
 
+                    selectAllRecordButton = new JButton("Select all");
+                    selectAllRecordButton.addActionListener(buttonListener);
+                    buttonBox.add(selectAllRecordButton);
+
+                    unselectAllRecordButton = new JButton("Unselect all");
+                    unselectAllRecordButton.addActionListener(buttonListener);
+                    buttonBox.add(unselectAllRecordButton);
+
+                    buttonBox.add(Box.createHorizontalGlue());
+
                     uploadRecordButton = new JButton("Upload");
                     uploadRecordButton.addActionListener(buttonListener);
                     buttonBox.add(uploadRecordButton);
@@ -510,9 +522,11 @@ public class MacroView extends JFrame implements View, WindowListener {
         tableColumnModel.getColumn(4).setPreferredWidth(80);
         tableColumnModel.getColumn(5).setPreferredWidth(40);
         tableColumnModel.getColumn(6).setPreferredWidth(40);
-        tableColumnModel.getColumn(7).setPreferredWidth(80);
-        tableColumnModel.getColumn(8).setPreferredWidth(80);
-        tableColumnModel.getColumn(9).setPreferredWidth(80);
+        tableColumnModel.getColumn(7).setPreferredWidth(60);
+        tableColumnModel.getColumn(8).setPreferredWidth(40);
+        tableColumnModel.getColumn(9).setPreferredWidth(40);
+        tableColumnModel.getColumn(10).setPreferredWidth(60);
+        tableColumnModel.getColumn(11).setPreferredWidth(80);
     }
 
     @Override
@@ -576,6 +590,9 @@ class MacroViewMenuListener implements ActionListener {
 
 
 class MacroViewButtonListener implements ActionListener {
+    // TODO: Change to get the index from the model.
+    private static final int UPLOAD_COLUMN_INDEX = 11;
+
     private final MacroView view;
 
     public MacroViewButtonListener(MacroView view) {
@@ -604,6 +621,16 @@ class MacroViewButtonListener implements ActionListener {
             view.presenter.analyzeScannerTask();
         } else if (source.equals(view.refreshScannerResultButton)) {
             view.presenter.refreshScannerResult();
+        } else if (source.equals(view.selectAllRecordButton)) {
+            int count = view.scannerResultTable.getRowCount();
+            for (int i = 0; i < count; ++i) {
+                view.scannerResultTable.setValueAt(true, i, UPLOAD_COLUMN_INDEX);
+            }
+        } else if (source.equals(view.unselectAllRecordButton)) {
+            int count = view.scannerResultTable.getRowCount();
+            for (int i = 0; i < count; ++i) {
+                view.scannerResultTable.setValueAt(false, i, UPLOAD_COLUMN_INDEX);
+            }
             // } else if (source.equals(view.uploadRecordButton)) {
         } else if (source.equals(view.selectAllDlcButton)) {
             view.dlcCheckboxGroup.selectAllExclude(MacroView.DEFAULT_DLCS);

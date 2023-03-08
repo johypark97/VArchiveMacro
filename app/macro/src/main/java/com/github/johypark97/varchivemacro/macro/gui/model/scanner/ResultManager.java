@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
+import com.github.johypark97.varchivemacro.lib.common.api.Api.Pattern;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.database.util.LocalSongComparator;
@@ -9,9 +10,13 @@ import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.AbstractTableModel;
@@ -34,9 +39,6 @@ public class ResultManager {
 
     public final RecordModel recordModel;
 
-    private static final float PERFECT_RATE = 100f;
-
-
     public ResultManager(RecordModel recordModel) {
         this.recordModel = recordModel;
 
@@ -48,45 +50,48 @@ public class ResultManager {
         tableModel.fireTableDataChanged();
     }
 
-    public void addRecordFromTask(ScannerTask task) {
-        LocalSong song = task.song;
-
+    public void addRecords(List<ScannerTask> tasks) {
         List<RecordData> dataList = new ArrayList<>();
-        task.getAnalyzedDataCellSet().forEach((cell) -> {
-            AnalyzedData analyzedData = cell.getValue();
 
-            // The rate will be negative when an OCRed rateText is invalid.
-            if (analyzedData.rate == -1) {
-                return;
-            }
+        tasks.forEach((task) -> {
+            LocalSong song = task.song;
 
-            Api.Button button = switch (cell.getRowKey()) {
-                case _4 -> Api.Button._4;
-                case _5 -> Api.Button._5;
-                case _6 -> Api.Button._6;
-                case _8 -> Api.Button._8;
-            };
-            Api.Pattern pattern = switch (cell.getColumnKey()) {
-                case NM -> Api.Pattern.NM;
-                case HD -> Api.Pattern.HD;
-                case MX -> Api.Pattern.MX;
-                case SC -> Api.Pattern.SC;
-            };
-            float rate = analyzedData.rate;
-            boolean maxCombo = analyzedData.isMaxCombo;
+            task.getAnalyzedDataCellSet().forEach((cell) -> {
+                AnalyzedData analyzedData = cell.getValue();
 
-            LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
-            LocalRecord oldRecord = recordModel.findSameRecord(newRecord);
+                // The rate will be negative when an OCRed rateText is invalid.
+                if (analyzedData.rate == -1) {
+                    return;
+                }
 
-            if (oldRecord == null || oldRecord.isUpdated(newRecord)) {
-                RecordData data = new RecordData();
-                data.newRecord = newRecord;
-                data.oldRecord = oldRecord;
-                data.song = song;
-                data.taskNumber = task.taskNumber;
+                Api.Button button = switch (cell.getRowKey()) {
+                    case _4 -> Api.Button._4;
+                    case _5 -> Api.Button._5;
+                    case _6 -> Api.Button._6;
+                    case _8 -> Api.Button._8;
+                };
+                Api.Pattern pattern = switch (cell.getColumnKey()) {
+                    case NM -> Api.Pattern.NM;
+                    case HD -> Api.Pattern.HD;
+                    case MX -> Api.Pattern.MX;
+                    case SC -> Api.Pattern.SC;
+                };
+                float rate = analyzedData.rate;
+                boolean maxCombo = analyzedData.isMaxCombo;
 
-                dataList.add(data);
-            }
+                LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
+                LocalRecord oldRecord = recordModel.findSameRecord(newRecord);
+
+                if (oldRecord != null && oldRecord.isUpdated(newRecord)) {
+                    RecordData data = new RecordData();
+                    data.newRecord = newRecord;
+                    data.oldRecord = oldRecord;
+                    data.song = song;
+                    data.taskNumber = task.taskNumber;
+
+                    dataList.add(data);
+                }
+            });
         });
 
         dataList.sort(new Comparator<>() {
@@ -102,32 +107,23 @@ public class ResultManager {
         tableModel.fireTableDataChanged();
     }
 
-    private String toRateText(LocalRecord record) {
-        if (record == null || record.rate == 0) {
-            return "";
-        }
-
-        String mark = "";
-        if (record.rate == PERFECT_RATE) {
-            mark = " (P)";
-        } else if (record.maxCombo) {
-            mark = " (M)";
-        }
-
-        return String.format("%.2f%s", record.rate, mark);
-    }
-
-
     protected class ScannerResultTableModel extends AbstractTableModel {
         @Serial
         private static final long serialVersionUID = 3174993439149836273L;
 
         private static final List<String> COLUMNS =
-                List.of("No", "TaskNo", "Title", "Composer", "Dlc", "Button", "Pattern", "Old",
-                        "New", "Upload");
+                List.of("No", "TaskNo", "Title", "Composer", "Dlc", "Button", "Pattern", "OMax",
+                        "Old", "New", "NMax", "Upload");
+
+        private static final Set<Integer> BOOLEAN_COLUMNS =
+                Set.of(COLUMNS.indexOf("OMax"), COLUMNS.indexOf("NMax"));
+        private static final Set<Integer> FLOAT_COLUMNS =
+                Set.of(COLUMNS.indexOf("Old"), COLUMNS.indexOf("New"));
+        private static final Set<Integer> INT_COLUMNS =
+                Set.of(COLUMNS.indexOf("No"), COLUMNS.indexOf("TaskNo"), COLUMNS.indexOf("Button"));
+        private static final int UPLOAD_COLUMN_INDEX = COLUMNS.indexOf("Upload");
 
         private static final String ERROR_STRING = "ERROR";
-        private static final int UPLOAD_COLUMN_INDEX = COLUMNS.indexOf("Upload");
 
         public ScannerResultTableRowSorter newRowSorter() {
             return new ScannerResultTableRowSorter(this);
@@ -150,9 +146,20 @@ public class ResultManager {
 
         @Override
         public Class<?> getColumnClass(int columnIndex) {
-            return (columnIndex == UPLOAD_COLUMN_INDEX)
-                    ? Boolean.class
-                    : super.getColumnClass(columnIndex);
+            if (BOOLEAN_COLUMNS.contains(columnIndex)) {
+                return Boolean.class;
+            }
+            if (FLOAT_COLUMNS.contains(columnIndex)) {
+                return Float.class;
+            }
+            if (INT_COLUMNS.contains(columnIndex)) {
+                return Integer.class;
+            }
+            if (columnIndex == UPLOAD_COLUMN_INDEX) {
+                return Boolean.class;
+            }
+
+            return super.getColumnClass(columnIndex);
         }
 
         @Override
@@ -173,11 +180,13 @@ public class ResultManager {
                 case 2 -> data.song.title();
                 case 3 -> data.song.composer();
                 case 4 -> data.song.dlc();
-                case 5 -> data.newRecord.button.toString();
-                case 6 -> data.newRecord.pattern.toString();
-                case 7 -> toRateText(data.oldRecord);
-                case 8 -> toRateText(data.newRecord);
-                case 9 -> data.isSelected;
+                case 5 -> data.newRecord.button.getValue();
+                case 6 -> data.newRecord.pattern.getShortName();
+                case 7 -> data.oldRecord.maxCombo;
+                case 8 -> data.oldRecord.rate;
+                case 9 -> data.newRecord.rate;
+                case 10 -> data.newRecord.maxCombo;
+                case 11 -> data.isSelected;
                 default -> ERROR_STRING;
             };
         }
@@ -196,12 +205,24 @@ public class ResultManager {
             public ScannerResultTableRowSorter(TableModel tableModel) {
                 super(tableModel);
 
-                Comparator<Integer> intComparator = Integer::compare;
-                Comparator<String> titleComparator = new TitleComparator();
+                Comparator<String> patternComparator = new Comparator<>() {
+                    private static final Map<String, Integer> PRIORITY =
+                            Arrays.stream(Pattern.values()).collect(
+                                    Collectors.toMap(Pattern::getShortName, Pattern::getWeight));
 
-                setComparator(COLUMNS.indexOf("No"), intComparator);
-                setComparator(COLUMNS.indexOf("TaskNo"), intComparator);
-                setComparator(COLUMNS.indexOf("Title"), titleComparator);
+                    @Override
+                    public int compare(String o1, String o2) {
+                        return PRIORITY.getOrDefault(o1, -1) - PRIORITY.getOrDefault(o2, -1);
+                    }
+                };
+
+                setComparator(COLUMNS.indexOf("Title"), new TitleComparator());
+                setComparator(COLUMNS.indexOf("Pattern"), patternComparator);
+                setComparator(COLUMNS.indexOf("OMax"), Comparator.reverseOrder());
+                setComparator(COLUMNS.indexOf("Old"), Comparator.reverseOrder());
+                setComparator(COLUMNS.indexOf("New"), Comparator.reverseOrder());
+                setComparator(COLUMNS.indexOf("NMax"), Comparator.reverseOrder());
+                setComparator(COLUMNS.indexOf("Upload"), Comparator.reverseOrder());
 
                 setSortKeys(
                         List.of(new RowSorter.SortKey(COLUMNS.indexOf("No"), SortOrder.ASCENDING)));

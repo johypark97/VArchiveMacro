@@ -175,7 +175,7 @@ public class Scanner {
                 whenStart_collectResult.run();
 
                 resultManager.clearRecords();
-                taskManager.getTasks().forEach(resultManager::addRecordFromTask);
+                resultManager.addRecords(taskManager.getTasks());
 
                 whenDone.run();
                 return true;
