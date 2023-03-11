@@ -41,8 +41,8 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
     public transient Presenter presenter;
 
     // components
-    private ImageIcon fullImage;
-    private ImageIcon titleImage;
+    private JLabel fullImage;
+    private JLabel titleImage;
     private transient final Map<String, RecordBox> recordBoxes = new HashMap<>();
 
     public ScannerTaskView(JFrame parent) {
@@ -84,8 +84,8 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.setBorder(BorderFactory.createTitledBorder("Title"));
         {
-            titleImage = new ImageIcon();
-            titlePanel.add(new JLabel(titleImage));
+            titleImage = new JLabel();
+            titlePanel.add(titleImage);
         }
         panel.add(titlePanel, BorderLayout.CENTER);
 
@@ -126,9 +126,9 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
     }
 
     private Component createFullImageTab() {
-        fullImage = new ImageIcon();
+        fullImage = new JLabel();
 
-        JScrollPane scrollPane = new JScrollPane(new JLabel(fullImage));
+        JScrollPane scrollPane = new JScrollPane(fullImage);
         scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
@@ -148,20 +148,20 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
     @Override
     public void setData(ScannerTaskViewData viewData) {
         // full image
-        fullImage.setImage(viewData.fullImage);
+        fullImage.setIcon(new ImageIcon(viewData.fullImage));
 
         // title image
-        titleImage.setImage(viewData.titleImage);
+        titleImage.setIcon(new ImageIcon(viewData.titleImage));
 
         // records
         recordBoxes.forEach((key, value) -> {
             RecordData data = viewData.records.get(key);
             if (data != null) {
                 value.setData(data);
+            } else {
+                value.clear();
             }
         });
-
-        repaint();
     }
 
     @Override
@@ -198,8 +198,8 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
 class RecordBox {
     public final Box box = Box.createVerticalBox();
 
-    public final ImageIcon maxComboImage = new ImageIcon();
-    public final ImageIcon rateImage = new ImageIcon();
+    public final JLabel maxComboImage = new JLabel();
+    public final JLabel rateImage = new JLabel();
     public final JCheckBox maxComboCheckbox = new JCheckBox("MaxCombo");
     public final JTextField rateTextField = new JTextField(5);
 
@@ -208,9 +208,9 @@ class RecordBox {
 
         Box imageBox = Box.createHorizontalBox();
         {
-            imageBox.add(new JLabel(rateImage));
+            imageBox.add(rateImage);
             imageBox.add(Box.createHorizontalStrut(5));
-            imageBox.add(new JLabel(maxComboImage));
+            imageBox.add(maxComboImage);
         }
         box.add(imageBox);
 
@@ -226,10 +226,17 @@ class RecordBox {
         box.add(dataBox);
     }
 
+    public void clear() {
+        maxComboCheckbox.setSelected(false);
+        maxComboImage.setIcon(null);
+        rateImage.setIcon(null);
+        rateTextField.setText("");
+    }
+
     public void setData(RecordData data) {
         maxComboCheckbox.setSelected(data.maxCombo);
-        maxComboImage.setImage(data.maxComboImage);
-        rateImage.setImage(data.rateImage);
+        maxComboImage.setIcon(new ImageIcon(data.maxComboImage));
+        rateImage.setIcon(new ImageIcon(data.rateImage));
         rateTextField.setText(data.rate);
     }
 }
