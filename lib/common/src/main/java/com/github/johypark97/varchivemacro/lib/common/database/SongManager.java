@@ -4,8 +4,12 @@ import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalS
 import com.github.johypark97.varchivemacro.lib.common.database.util.LocalSongComparator;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -30,6 +34,17 @@ public class SongManager {
 
     public List<LocalSong> getSongs() {
         return songs.stream().sorted(new LocalSongComparator()).toList();
+    }
+
+    public Set<Integer> duplicateTitleSet() {
+        Map<String, List<LocalSong>> map = new HashMap<>();
+        songs.forEach((song) -> {
+            List<LocalSong> list = map.computeIfAbsent(song.title(), (x) -> new ArrayList<>());
+            list.add(song);
+        });
+
+        return map.values().stream().filter((x) -> x.size() > 1).flatMap(Collection::stream)
+                .map(LocalSong::id).collect(Collectors.toSet());
     }
 
     private Map<Integer, LocalSong> newLookupId(List<LocalSong> songs) {

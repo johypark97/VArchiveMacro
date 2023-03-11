@@ -2,20 +2,30 @@ package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Pattern;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader;
+import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestJson;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.lib.common.database.util.LocalSongComparator;
 import com.github.johypark97.varchivemacro.lib.common.database.util.TitleComparator;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ResultManager.RecordData.Result;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
+import java.io.IOException;
 import java.io.Serial;
+import java.nio.file.Path;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -25,24 +35,38 @@ import javax.swing.table.TableRowSorter;
 
 public class ResultManager {
     public static class RecordData {
+        public enum Result {
+            CANCELED, HIGHER_RECORD_EXISTS, NOT_UPLOADED, SUSPENDED, UPLOADED, UPLOADING, WAITING
+        }
+
+
         public LocalRecord newRecord;
-        public LocalRecord oldRecord;
         public LocalSong song;
+        public Result result = Result.NOT_UPLOADED;
         public boolean isSelected = true;
+        public boolean oldMaxCombo;
+        public final int recordNumber;
+        public float oldRate;
         public int taskNumber;
+
+        public RecordData(int recordNumber) {
+            this.recordNumber = recordNumber;
+        }
     }
 
 
+    private static final int UPLOAD_DELAY = 20;
+
     private final List<RecordData> records = new CopyOnWriteArrayList<>();
     public final ScannerResultTableModel tableModel = new ScannerResultTableModel();
-    public final TableRowSorter<TableModel> rowSorter;
+    public final TableRowSorter<TableModel> rowSorter = tableModel.newRowSorter();
 
-    public final RecordModel recordModel;
+    private RecordModel recordModel;
+    private SongModel songModel;
 
-    public ResultManager(RecordModel recordModel) {
+    public void setModels(SongModel songModel, RecordModel recordModel) {
         this.recordModel = recordModel;
-
-        rowSorter = tableModel.newRowSorter();
+        this.songModel = songModel;
     }
 
     public void clearRecords() {
@@ -83,9 +107,10 @@ public class ResultManager {
                 LocalRecord oldRecord = recordModel.findSameRecord(newRecord);
 
                 if (oldRecord != null && oldRecord.isUpdated(newRecord)) {
-                    RecordData data = new RecordData();
+                    RecordData data = new RecordData(dataList.size());
                     data.newRecord = newRecord;
-                    data.oldRecord = oldRecord;
+                    data.oldMaxCombo = oldRecord.maxCombo;
+                    data.oldRate = oldRecord.rate;
                     data.song = song;
                     data.taskNumber = task.taskNumber;
 
@@ -94,17 +119,65 @@ public class ResultManager {
             });
         });
 
-        dataList.sort(new Comparator<>() {
-            private final LocalSongComparator superComparator = new LocalSongComparator();
-
-            @Override
-            public int compare(RecordData o1, RecordData o2) {
-                return superComparator.compare(o1.song, o2.song);
-            }
-        });
-
         records.addAll(dataList);
         tableModel.fireTableDataChanged();
+    }
+
+    public void upload(Path accountPath) throws IOException, GeneralSecurityException {
+        Account account = new Account(accountPath);
+        RecordUploader api = Api.newRecordUploader(account.userNo, account.token);
+
+        EnumSet<Result> filter = EnumSet.of(Result.CANCELED, Result.NOT_UPLOADED, Result.SUSPENDED);
+        Queue<RecordData> queue =
+                records.stream().filter((x) -> x.isSelected && filter.contains(x.result))
+                        .collect(Collectors.toCollection(LinkedList::new));
+
+        try {
+            while (queue.peek() != null) {
+                RecordData data = queue.poll();
+
+                data.result = Result.UPLOADING;
+                tableModel.fireTableRowsUpdated(data.recordNumber, data.recordNumber);
+
+                RequestJson requestJson = recordToRequest(data.song, data.newRecord);
+                api.upload(requestJson); // Throw an RuntimeException when an error occurs.
+
+                data.result = api.getResult() ? Result.UPLOADED : Result.HIGHER_RECORD_EXISTS;
+                recordModel.update(data.newRecord);
+                tableModel.fireTableRowsUpdated(data.recordNumber, data.recordNumber);
+
+                TimeUnit.MILLISECONDS.sleep(UPLOAD_DELAY);
+            }
+        } catch (InterruptedException e) {
+            while (queue.peek() != null) {
+                RecordData data = queue.poll();
+                data.result = Result.CANCELED;
+            }
+        } finally {
+            while (queue.peek() != null) {
+                RecordData data = queue.poll();
+                data.result = Result.SUSPENDED;
+            }
+        }
+
+        recordModel.save();
+
+        tableModel.fireTableDataChanged();
+    }
+
+    private RequestJson recordToRequest(LocalSong song, LocalRecord record) {
+        String title = song.remote_title();
+        if (title == null) {
+            title = song.title();
+        }
+
+        RequestJson requestJson =
+                new RequestJson(title, record.button, record.pattern, record.rate, record.maxCombo);
+        if (songModel.duplicateTitleSet().contains(song.id())) {
+            requestJson.composer = song.composer();
+        }
+
+        return requestJson;
     }
 
     protected class ScannerResultTableModel extends AbstractTableModel {
@@ -113,7 +186,7 @@ public class ResultManager {
 
         private static final List<String> COLUMNS =
                 List.of("No", "TaskNo", "Title", "Composer", "Dlc", "Button", "Pattern", "OMax",
-                        "Old", "New", "NMax", "Upload");
+                        "Old", "New", "NMax", "Upload", "Upload result");
 
         private static final Set<Integer> BOOLEAN_COLUMNS =
                 Set.of(COLUMNS.indexOf("OMax"), COLUMNS.indexOf("NMax"));
@@ -175,18 +248,27 @@ public class ResultManager {
             }
 
             return switch (columnIndex) {
-                case 0 -> rowIndex + 1;
+                case 0 -> data.recordNumber;
                 case 1 -> data.taskNumber;
                 case 2 -> data.song.title();
                 case 3 -> data.song.composer();
                 case 4 -> data.song.dlc();
                 case 5 -> data.newRecord.button.getValue();
                 case 6 -> data.newRecord.pattern.getShortName();
-                case 7 -> data.oldRecord.maxCombo;
-                case 8 -> data.oldRecord.rate;
+                case 7 -> data.oldMaxCombo;
+                case 8 -> data.oldRate;
                 case 9 -> data.newRecord.rate;
                 case 10 -> data.newRecord.maxCombo;
                 case 11 -> data.isSelected;
+                case 12 -> switch (data.result) {
+                    case CANCELED -> "canceled";
+                    case HIGHER_RECORD_EXISTS -> "higher record exists";
+                    case NOT_UPLOADED -> "";
+                    case SUSPENDED -> "suspended";
+                    case UPLOADED -> "uploaded";
+                    case UPLOADING -> "uploading";
+                    case WAITING -> "waiting";
+                };
                 default -> ERROR_STRING;
             };
         }

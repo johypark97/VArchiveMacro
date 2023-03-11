@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalS
 import com.github.johypark97.varchivemacro.macro.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.command.Command;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
@@ -15,6 +16,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -22,7 +24,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class Scanner {
-    private final ResultManager resultManager;
+    private final ResultManager resultManager = new ResultManager();
     private final ScannerTaskManager taskManager = new ScannerTaskManager();
 
     public Consumer<Exception> whenThrown;
@@ -33,9 +35,10 @@ public class Scanner {
     public Runnable whenStart_capture;
     public Runnable whenStart_collectResult;
     public Runnable whenStart_loadImages;
+    public Runnable whenStart_uploadRecord;
 
-    public Scanner(RecordModel recordModel) {
-        resultManager = new ResultManager(recordModel);
+    public void setModels(SongModel songModel, RecordModel recordModel) {
+        resultManager.setModels(songModel, recordModel);
     }
 
     public Command getCommand_scan(Map<String, List<LocalSong>> tabSongMap) {
@@ -52,6 +55,10 @@ public class Scanner {
 
     public Command getCommand_collectResult() {
         return createCommand_collectResult();
+    }
+
+    public Command getCommand_uploadRecord(Path accountPath) {
+        return createCommand_uploadRecord(accountPath);
     }
 
     public Command getCommand_loadCapturedImages(Map<String, List<LocalSong>> tabSongMap) {
@@ -176,6 +183,25 @@ public class Scanner {
 
                 resultManager.clearRecords();
                 resultManager.addRecords(taskManager.getTasks());
+
+                whenDone.run();
+                return true;
+            }
+        };
+    }
+
+    protected Command createCommand_uploadRecord(Path accountPath) {
+        return new AbstractCommand() {
+            @Override
+            public boolean run() {
+                whenStart_uploadRecord.run();
+
+                try {
+                    resultManager.upload(accountPath);
+                } catch (Exception e) {
+                    whenThrown.accept(e);
+                    return false;
+                }
 
                 whenDone.run();
                 return true;

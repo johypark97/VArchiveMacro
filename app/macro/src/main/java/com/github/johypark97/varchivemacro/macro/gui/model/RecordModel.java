@@ -28,6 +28,10 @@ public class RecordModel {
         return recordManager.getRecords(id);
     }
 
+    public void update(LocalRecord record) {
+        recordManager.update(record);
+    }
+
     public boolean loadLocal() throws IOException {
         if (!Files.exists(RECORD_PATH)) {
             return false;

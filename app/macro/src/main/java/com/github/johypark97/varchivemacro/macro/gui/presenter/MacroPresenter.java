@@ -17,6 +17,7 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.Serial;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,7 +34,7 @@ public class MacroPresenter implements Presenter {
     private SongModel songModel;
     private final CommandRunner commandRunner = new CommandRunner();
     private final RecordModel recordModel = new RecordModel();
-    private final Scanner scanner = new Scanner(recordModel);
+    private final Scanner scanner = new Scanner();
 
     // view
     private final Class<? extends View> viewClass;
@@ -76,6 +77,7 @@ public class MacroPresenter implements Presenter {
         scanner.whenStart_capture = () -> view.addLog("Scanning...");
         scanner.whenStart_collectResult = () -> view.addLog("Refreshing the result...");
         scanner.whenStart_loadImages = () -> view.addLog("Loading images from disk...");
+        scanner.whenStart_uploadRecord = () -> view.addLog("Uploading records...");
 
         this.viewClass = viewClass;
     }
@@ -248,6 +250,8 @@ public class MacroPresenter implements Presenter {
             return;
         }
 
+        scanner.setModels(songModel, recordModel);
+
         TreeModel treeModel = createTabSongTreeModel("Records", songModel.getTabSongMap());
         view.setRecordViewerTreeModel(treeModel);
         view.setSelectableDlcTabs(songModel.getTabs());
@@ -342,6 +346,17 @@ public class MacroPresenter implements Presenter {
     @Override
     public void refreshScannerResult() {
         Command command = scanner.getCommand_collectResult();
+        startCommand(command);
+    }
+
+    @Override
+    public void uploadRecord(Path accountPath) {
+        if (accountPath == null) {
+            view.showErrorDialog("No account file selected");
+            return;
+        }
+
+        Command command = scanner.getCommand_uploadRecord(accountPath);
         startCommand(command);
     }
 }

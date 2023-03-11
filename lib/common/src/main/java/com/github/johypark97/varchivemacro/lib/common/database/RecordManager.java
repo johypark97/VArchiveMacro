@@ -29,6 +29,15 @@ public class RecordManager {
 
     private RecordMap managedRecords = new RecordMap();
 
+    public boolean update(LocalRecord record) {
+        lock.writeLock().lock();
+        try {
+            return managedRecords.add(record);
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
     public LocalRecord getRecord(int id, Button button, Pattern pattern) {
         lock.readLock().lock();
         try {

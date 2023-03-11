@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import javax.swing.JFrame;
@@ -30,6 +31,8 @@ public interface IMacro {
         void analyzeScannerTask();
 
         void refreshScannerResult();
+
+        void uploadRecord(Path accountPath);
     }
 
 

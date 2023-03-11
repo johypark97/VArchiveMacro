@@ -17,6 +17,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.Serial;
 import java.net.URL;
+import java.nio.file.Path;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -43,6 +45,7 @@ import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -81,7 +84,6 @@ public class MacroView extends JFrame implements View, WindowListener {
 
     private JScrollPane dlcCheckboxScrollPane;
     private JTextArea logTextArea;
-    private JTextField accountFileTextField;
     protected JButton analyzeScannerTaskButton;
     protected JButton refreshScannerResultButton;
     protected JButton selectAccountFileButton;
@@ -94,11 +96,15 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JButton uploadRecordButton;
     protected JTable scannerResultTable;
     protected JTable scannerTaskTable;
+    protected JTextField accountFileTextField;
     protected transient CheckboxGroup<String> dlcCheckboxGroup = new CheckboxGroup<>();
 
     // event listeners
     private transient final ActionListener buttonListener = new MacroViewButtonListener(this);
     private transient final ActionListener menuListener = new MacroViewMenuListener(this);
+
+    // variables
+    protected transient Path accountPath;
 
     public MacroView() {
         super(WINDOW_TITLE + " v" + BuildInfo.version);
@@ -527,6 +533,7 @@ public class MacroView extends JFrame implements View, WindowListener {
         tableColumnModel.getColumn(9).setPreferredWidth(40);
         tableColumnModel.getColumn(10).setPreferredWidth(60);
         tableColumnModel.getColumn(11).setPreferredWidth(80);
+        tableColumnModel.getColumn(12).setPreferredWidth(160);
     }
 
     @Override
@@ -593,6 +600,7 @@ class MacroViewButtonListener implements ActionListener {
     // TODO: Change to get the index from the model.
     private static final int UPLOAD_COLUMN_INDEX = 11;
 
+    private final AccountFileChooser accountFileChooser = new AccountFileChooser();
     private final MacroView view;
 
     public MacroViewButtonListener(MacroView view) {
@@ -608,7 +616,12 @@ class MacroViewButtonListener implements ActionListener {
             if (djName != null) {
                 view.presenter.loadServerRecord(djName);
             }
-            // } else if (source.equals(view.selectAccountFileButton)) {
+        } else if (source.equals(view.selectAccountFileButton)) {
+            Path path = accountFileChooser.get(view);
+            if (path != null) {
+                view.accountPath = path;
+                view.accountFileTextField.setText(path.toString());
+            }
         } else if (source.equals(view.showScannerTaskButton)) {
             int index = view.scannerTaskTable.getSelectedRow();
             if (index != -1) {
@@ -631,7 +644,8 @@ class MacroViewButtonListener implements ActionListener {
             for (int i = 0; i < count; ++i) {
                 view.scannerResultTable.setValueAt(false, i, UPLOAD_COLUMN_INDEX);
             }
-            // } else if (source.equals(view.uploadRecordButton)) {
+        } else if (source.equals(view.uploadRecordButton)) {
+            view.presenter.uploadRecord(view.accountPath);
         } else if (source.equals(view.selectAllDlcButton)) {
             view.dlcCheckboxGroup.selectAllExclude(MacroView.DEFAULT_DLCS);
         } else if (source.equals(view.unselectAllDlcButton)) {
@@ -641,5 +655,28 @@ class MacroViewButtonListener implements ActionListener {
         } else {
             view.addLog(source.toString());
         }
+    }
+}
+
+
+class AccountFileChooser extends JFileChooser {
+    @Serial
+    private static final long serialVersionUID = 1407963872565375369L;
+
+    private static final Path CURRENT_DIRECTORY = Path.of(System.getProperty("user.dir"));
+
+    public AccountFileChooser() {
+        setCurrentDirectory(CURRENT_DIRECTORY.toFile());
+        setFileFilter(new FileNameExtensionFilter("Account file (*.txt)", "txt"));
+        setMultiSelectionEnabled(false);
+    }
+
+    public Path get(JFrame frame) {
+        if (showOpenDialog(frame) != JFileChooser.APPROVE_OPTION) {
+            return null;
+        }
+
+        Path path = getSelectedFile().toPath();
+        return path.startsWith(CURRENT_DIRECTORY) ? CURRENT_DIRECTORY.relativize(path) : path;
     }
 }

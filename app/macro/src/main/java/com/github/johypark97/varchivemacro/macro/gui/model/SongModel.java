@@ -42,4 +42,8 @@ public class SongModel {
 
         return dlcManager.getTabSongMap(dlcCodes);
     }
+
+    public Set<Integer> duplicateTitleSet() {
+        return dlcManager.duplicateTitleSet();
+    }
 }
