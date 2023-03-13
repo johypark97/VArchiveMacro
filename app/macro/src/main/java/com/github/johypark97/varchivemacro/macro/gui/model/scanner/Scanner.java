@@ -61,8 +61,8 @@ public class Scanner {
         return createCommand_uploadRecord(accountPath);
     }
 
-    public Command getCommand_loadCapturedImages(Map<String, List<LocalSong>> tabSongMap) {
-        return createCommand_loadCapturedImages(tabSongMap);
+    public Command getCommand_loadCachedImages(Map<String, List<LocalSong>> tabSongMap) {
+        return createCommand_loadCachedImages(tabSongMap);
     }
 
     public TableModel getTaskTableModel() {
@@ -209,7 +209,7 @@ public class Scanner {
         };
     }
 
-    protected Command createCommand_loadCapturedImages(Map<String, List<LocalSong>> tabSongMap) {
+    protected Command createCommand_loadCachedImages(Map<String, List<LocalSong>> tabSongMap) {
         return new AbstractCommand() {
             @Override
             public boolean run() {

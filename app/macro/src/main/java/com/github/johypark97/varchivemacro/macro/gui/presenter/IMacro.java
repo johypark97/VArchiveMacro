@@ -28,11 +28,15 @@ public interface IMacro {
 
         void showScannerTask(JFrame frame, int taskNumber);
 
+        void loadCachedImages();
+
         void analyzeScannerTask();
 
         void refreshScannerResult();
 
         void uploadRecord(Path accountPath);
+
+        void stopCommand();
     }
 
 

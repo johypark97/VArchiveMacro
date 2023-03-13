@@ -85,12 +85,14 @@ public class MacroView extends JFrame implements View, WindowListener {
     private JScrollPane dlcCheckboxScrollPane;
     private JTextArea logTextArea;
     protected JButton analyzeScannerTaskButton;
+    protected JButton loadCachedImagesButton;
     protected JButton refreshScannerResultButton;
     protected JButton selectAccountFileButton;
     protected JButton selectAllDlcButton;
     protected JButton selectAllRecordButton;
     protected JButton showExpectedButton;
     protected JButton showScannerTaskButton;
+    protected JButton stopCommandButton;
     protected JButton unselectAllDlcButton;
     protected JButton unselectAllRecordButton;
     protected JButton uploadRecordButton;
@@ -138,7 +140,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     private void setContent() {
         add(createMenu(), BorderLayout.PAGE_START);
         add(createCenter(), BorderLayout.CENTER);
-        add(createLog(), BorderLayout.PAGE_END);
+        add(createBottom(), BorderLayout.PAGE_END);
     }
 
     private void setText() {
@@ -318,6 +320,12 @@ public class MacroView extends JFrame implements View, WindowListener {
 
                     buttonBox.add(Box.createHorizontalGlue());
 
+                    loadCachedImagesButton = new JButton("Load cached images");
+                    loadCachedImagesButton.addActionListener(buttonListener);
+                    buttonBox.add(loadCachedImagesButton);
+
+                    buttonBox.add(Box.createHorizontalGlue());
+
                     analyzeScannerTaskButton = new JButton("Analyze");
                     analyzeScannerTaskButton.addActionListener(buttonListener);
                     buttonBox.add(analyzeScannerTaskButton);
@@ -411,12 +419,34 @@ public class MacroView extends JFrame implements View, WindowListener {
         return new JPanel();
     }
 
-    private Component createLog() {
+    private Component createBottom() {
+        JPanel panel = new JPanel(new BorderLayout());
+
         logTextArea = new JTextArea(LOG_ROWS, 0);
         logTextArea.setEditable(false);
         logTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, LOG_FONT_SIZE));
+        panel.add(new JScrollPane(logTextArea), BorderLayout.CENTER);
 
-        return new JScrollPane(logTextArea);
+        JPanel controlPanel = new JPanel(new BorderLayout());
+        {
+            JTextArea textArea = new JTextArea();
+            textArea.setBorder(BorderFactory.createTitledBorder("Controls"));
+            textArea.setEditable(false);
+            textArea.setOpaque(false);
+
+            textArea.setText(
+                    "[Ctrl + Home]: Start the scanning command\n[Ctrl + End]: Stop command");
+            controlPanel.add(textArea, BorderLayout.CENTER);
+
+            stopCommandButton = new JButton("Stop a running command");
+            stopCommandButton.addActionListener(buttonListener);
+            ComponentSize.setPreferredHeight(stopCommandButton, 32);
+
+            controlPanel.add(stopCommandButton, BorderLayout.PAGE_END);
+        }
+        panel.add(controlPanel, BorderLayout.LINE_END);
+
+        return panel;
     }
 
     @Override
@@ -630,6 +660,8 @@ class MacroViewButtonListener implements ActionListener {
                     view.presenter.showScannerTask(view, taskNumber);
                 }
             }
+        } else if (source.equals(view.loadCachedImagesButton)) {
+            view.presenter.loadCachedImages();
         } else if (source.equals(view.analyzeScannerTaskButton)) {
             view.presenter.analyzeScannerTask();
         } else if (source.equals(view.refreshScannerResultButton)) {
@@ -652,6 +684,8 @@ class MacroViewButtonListener implements ActionListener {
             view.dlcCheckboxGroup.unselectAllExclude(MacroView.DEFAULT_DLCS);
         } else if (source.equals(view.showExpectedButton)) {
             view.presenter.openExpected(view);
+        } else if (source.equals(view.stopCommandButton)) {
+            view.presenter.stopCommand();
         } else {
             view.addLog(source.toString());
         }

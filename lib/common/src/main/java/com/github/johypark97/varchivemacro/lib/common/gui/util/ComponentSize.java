@@ -32,6 +32,11 @@ public class ComponentSize {
         comp.setPreferredSize(new Dimension(width, height));
     }
 
+    public static void setPreferredHeight(Component comp, int height) {
+        int width = comp.getPreferredSize().width;
+        comp.setPreferredSize(new Dimension(width, height));
+    }
+
     public static void setSize(Component comp, Dimension size) {
         comp.setPreferredSize(size);
         fixToPreferredSize(comp);

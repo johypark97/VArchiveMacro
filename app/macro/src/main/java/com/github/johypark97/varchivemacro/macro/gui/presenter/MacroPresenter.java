@@ -135,12 +135,6 @@ public class MacroPresenter implements Presenter {
         }
     }
 
-    private void stopCommand() {
-        if (!commandRunner.stop()) {
-            view.addLog("No command is running.");
-        }
-    }
-
     private void setupHook() throws NativeHookException {
         HookWrapper.disableLogging();
         HookWrapper.register();
@@ -184,8 +178,7 @@ public class MacroPresenter implements Presenter {
                     }
                     case NativeKeyEvent.VC_L -> {
                         if (ctrl && shift) {
-                            Command command = scanner.getCommand_loadCapturedImages(tapSongMap);
-                            startCommand(command);
+                            loadCachedImages();
                         }
                     }
                     default -> {
@@ -338,6 +331,13 @@ public class MacroPresenter implements Presenter {
     }
 
     @Override
+    public void loadCachedImages() {
+        Map<String, List<LocalSong>> tapSongMap = songModel.getTabSongMap();
+        Command command = scanner.getCommand_loadCachedImages(tapSongMap);
+        startCommand(command);
+    }
+
+    @Override
     public void analyzeScannerTask() {
         Command command = scanner.getCommand_analyze();
         startCommand(command);
@@ -358,5 +358,12 @@ public class MacroPresenter implements Presenter {
 
         Command command = scanner.getCommand_uploadRecord(accountPath);
         startCommand(command);
+    }
+
+    @Override
+    public void stopCommand() {
+        if (!commandRunner.stop()) {
+            view.addLog("No command is running.");
+        }
     }
 }
