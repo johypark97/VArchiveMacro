@@ -1,14 +1,14 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
+import com.github.johypark97.varchivemacro.macro.core.ocr.OcrInitializationError;
+import com.github.johypark97.varchivemacro.macro.core.ocr.OcrWrapper;
+import com.github.johypark97.varchivemacro.macro.core.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Button;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.macro.ocr.OcrInitializationError;
-import com.github.johypark97.varchivemacro.macro.ocr.OcrWrapper;
-import com.github.johypark97.varchivemacro.macro.ocr.PixWrapper;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.Table.Cell;
 import java.awt.Dimension;

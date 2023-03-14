@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.macro.gui.model;
 
 import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
-import com.github.johypark97.varchivemacro.macro.command.AbstractCommand;
-import com.github.johypark97.varchivemacro.macro.command.Command;
+import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
+import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

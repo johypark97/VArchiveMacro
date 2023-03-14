@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.command;
+package com.github.johypark97.varchivemacro.macro.core.command;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

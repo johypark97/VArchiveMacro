@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.ocr;
+package com.github.johypark97.varchivemacro.macro.core.ocr;
 
 import java.nio.file.Path;
 import org.bytedeco.javacpp.BytePointer;

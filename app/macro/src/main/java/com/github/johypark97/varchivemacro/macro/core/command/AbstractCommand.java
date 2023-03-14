@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.command;
+package com.github.johypark97.varchivemacro.macro.core.command;
 
 public abstract class AbstractCommand implements Command {
     protected Command nextCommand;

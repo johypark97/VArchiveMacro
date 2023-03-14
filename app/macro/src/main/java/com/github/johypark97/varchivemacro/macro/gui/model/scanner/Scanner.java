@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.macro.command.AbstractCommand;
-import com.github.johypark97.varchivemacro.macro.command.Command;
+import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
+import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData.RecordData;

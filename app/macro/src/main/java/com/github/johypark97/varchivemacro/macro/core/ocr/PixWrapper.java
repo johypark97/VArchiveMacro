@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.ocr;
+package com.github.johypark97.varchivemacro.macro.core.ocr;
 
 import java.awt.Rectangle;
 import java.io.IOException;
