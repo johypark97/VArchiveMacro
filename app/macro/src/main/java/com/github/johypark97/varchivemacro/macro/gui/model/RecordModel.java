@@ -2,12 +2,15 @@ package com.github.johypark97.varchivemacro.macro.gui.model;
 
 import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.function.Consumer;
 
 public class RecordModel {
@@ -24,8 +27,14 @@ public class RecordModel {
         return recordManager.getRecord(record.id, record.button, record.pattern);
     }
 
-    public List<Float> getRecords(int id) {
-        return recordManager.getRecords(id);
+    public Table<Button, Pattern, String> getRecords(int id) {
+        Table<Button, Pattern, String> table = HashBasedTable.create();
+
+        recordManager.getRecords(id).forEach((button, patternMap) -> patternMap.forEach(
+                (pattern, value) -> table.put(Button.valueOf(button), Pattern.valueOf(pattern),
+                        value)));
+
+        return table;
     }
 
     public void update(LocalRecord record) {

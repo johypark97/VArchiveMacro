@@ -1,5 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.google.common.collect.Table;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +58,7 @@ public interface IMacro {
 
         void setRecordViewerTreeModel(TreeModel model);
 
-        void showRecord(String text, List<Float> records);
+        void showRecord(String text, Table<Button, Pattern, String> records);
 
         void setSelectableDlcTabs(List<String> tabs);
 

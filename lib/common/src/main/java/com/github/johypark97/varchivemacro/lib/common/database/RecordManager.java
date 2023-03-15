@@ -10,16 +10,15 @@ import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class RecordManager {
     private static final List<Board> BOARDS = Arrays.stream(Board.values())
@@ -47,22 +46,24 @@ public class RecordManager {
         }
     }
 
-    public List<Float> getRecords(int id) {
-        List<Float> records = Stream.generate(() -> -1f).limit(16)
-                .collect(Collectors.toCollection(ArrayList::new));
+    public Map<Button, Map<Pattern, String>> getRecords(int id) {
+        Map<Button, Map<Pattern, String>> map = new EnumMap<>(Button.class);
 
         lock.readLock().lock();
         ButtonMap buttonMap = managedRecords.get(id);
         if (buttonMap != null) {
             buttonMap.forEach((button, patternMap) -> patternMap.forEach((pattern, record) -> {
-                int b = button.getWeight();
-                int p = pattern.getWeight();
-                records.set(p + b * 4, record.rate);
+                Map<Pattern, String> subMap =
+                        map.computeIfAbsent(button, (x) -> new EnumMap<>(Pattern.class));
+
+                String rate = String.valueOf(record.rate);
+                String maxCombo = record.maxCombo ? " (Max)" : "";
+                subMap.put(pattern, rate + maxCombo);
             }));
         }
         lock.readLock().unlock();
 
-        return records;
+        return map;
     }
 
     public void loadJson(Path path) throws IOException {

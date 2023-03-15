@@ -2,10 +2,13 @@ package com.github.johypark97.varchivemacro.macro.gui.view;
 
 import com.github.johypark97.varchivemacro.lib.common.gui.component.CheckboxGroup;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
+import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.util.BuildInfo;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -21,10 +24,8 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.IntStream;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -81,7 +82,8 @@ public class MacroView extends JFrame implements View, WindowListener {
 
     private JTextArea recordViewerTextArea;
     private JTree recordViewerTree;
-    private final List<JTextField> recordViewerGridTextFields = new ArrayList<>(16);
+    private final Table<Button, Pattern, JTextField> recordViewerGridTextFields =
+            HashBasedTable.create();
     protected JButton loadRemoteRecordButton;
 
     private JScrollPane dlcCheckboxScrollPane;
@@ -239,33 +241,33 @@ public class MacroView extends JFrame implements View, WindowListener {
             JPanel grid = new JPanel();
             grid.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 20));
             {
-                List<String> columns = List.of("", "4B", "5B", "6B", "8B");
-                List<String> rows = List.of("", "NM", "HD", "MX", "SC");
-                grid.setLayout(new GridLayout(columns.size(), rows.size()));
+                int rows = Pattern.values().length + 1;
+                int columns = Button.values().length + 1;
+                grid.setLayout(new GridLayout(rows, columns));
 
-                rows.forEach((row) -> columns.forEach((column) -> {
-                    if (row.isBlank()) {
-                        JLabel label = new JLabel();
-                        if (!column.isBlank()) {
-                            label.setText(column);
-                            label.setHorizontalAlignment(SwingConstants.CENTER);
-                        }
-                        grid.add(label);
-                    } else {
-                        if (column.isBlank()) {
-                            JLabel label = new JLabel(row);
-                            label.setHorizontalAlignment(SwingConstants.CENTER);
-                            grid.add(label);
-                        } else {
-                            JTextField textField = new JTextField();
-                            textField.setBackground(Color.WHITE);
-                            textField.setEditable(false);
-                            recordViewerGridTextFields.add(textField);
+                // header
+                grid.add(new JLabel());
+                for (Button button : Button.values()) {
+                    JLabel label = new JLabel(button + "B");
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    grid.add(label);
+                }
 
-                            grid.add(textField);
-                        }
+                // rows
+                for (Pattern pattern : Pattern.values()) {
+                    JLabel label = new JLabel(pattern.toString());
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    grid.add(label);
+
+                    for (Button button : Button.values()) {
+                        JTextField textField = new JTextField();
+                        textField.setBackground(Color.WHITE);
+                        textField.setEditable(false);
+
+                        recordViewerGridTextFields.put(button, pattern, textField);
+                        grid.add(textField);
                     }
-                }));
+                }
             }
             detailPanel.add(grid, BorderLayout.PAGE_END);
         }
@@ -515,18 +517,12 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
-    public void showRecord(String text, List<Float> records) {
+    public void showRecord(String text, Table<Button, Pattern, String> records) {
         recordViewerTextArea.setText(text);
 
-        int size = recordViewerGridTextFields.size();
-        IntStream.range(0, size).forEach((i) -> {
-            // (index % columnSize) + (index / rowSize) * columnSize = sequential index
-            // (index / rowSize) + (index % columnSize) * columnSize = transposed index
-            int transposedIndex = i / 4 + i % 4 * 4;
-
-            float rate = records.get(transposedIndex);
-            String value = (rate >= 0) ? String.valueOf(rate) : "";
-            recordViewerGridTextFields.get(i).setText(value);
+        recordViewerGridTextFields.cellSet().forEach((cell) -> {
+            String value = records.get(cell.getRowKey(), cell.getColumnKey());
+            cell.getValue().setText((value != null) ? value : "");
         });
     }
 
