@@ -1,16 +1,18 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import java.awt.Image;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CollectionTaskData {
     public Image fullImage;
     public Image titleImage;
-    public final Map<String, RecordData> records = new HashMap<>();
+    public final Table<Button, Pattern, RecordData> records = HashBasedTable.create();
 
-    public void addRecord(String key, RecordData data) {
-        records.put(key, data);
+    public void addRecord(Button button, Pattern pattern, RecordData data) {
+        records.put(button, pattern, data);
     }
 
     public static class RecordData {

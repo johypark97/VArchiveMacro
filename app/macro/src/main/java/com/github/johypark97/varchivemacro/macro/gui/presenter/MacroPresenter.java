@@ -2,11 +2,14 @@ package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.hook.HookWrapper;
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.command.CommandRunner;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData;
+import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.Scanner;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
@@ -323,9 +326,13 @@ public class MacroPresenter implements Presenter {
         ScannerTaskViewData viewData = new ScannerTaskViewData();
         viewData.fullImage = taskData.fullImage;
         viewData.titleImage = taskData.titleImage;
-        taskData.records.forEach(
-                (key, value) -> viewData.addRecord(key, value.rateImage, value.maxComboImage,
-                        value.rate, value.maxCombo));
+        taskData.records.cellSet().forEach((cell) -> {
+            Button button = cell.getRowKey();
+            Pattern pattern = cell.getColumnKey();
+            RecordData data = cell.getValue();
+            viewData.addRecord(button, pattern, data.rateImage, data.maxComboImage, data.rate,
+                    data.maxCombo);
+        });
 
         scannerTaskPresenter.start(frame, viewData);
     }

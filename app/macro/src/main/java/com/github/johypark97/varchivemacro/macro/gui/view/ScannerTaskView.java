@@ -1,10 +1,14 @@
 package com.github.johypark97.varchivemacro.macro.gui.view;
 
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.View;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -13,9 +17,6 @@ import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.Serial;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -43,7 +44,7 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
     // components
     private JLabel fullImage;
     private JLabel titleImage;
-    private transient final Map<String, RecordBox> recordBoxes = new HashMap<>();
+    private transient final Table<Button, Pattern, RecordBox> recordBoxes = HashBasedTable.create();
 
     public ScannerTaskView(JFrame parent) {
         super(parent, WINDOW_TITLE, false);
@@ -90,35 +91,33 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
         panel.add(titlePanel, BorderLayout.CENTER);
 
         // record grid
-        JPanel recordGrid = new JPanel(new GridLayout(5, 5, 0, 10));
+        JPanel recordGrid = new JPanel();
         recordGrid.setBorder(BorderFactory.createTitledBorder("Records"));
         {
-            List<String> rows = List.of("", "NM", "HD", "MX", "SC");
-            List<String> columns = List.of("", "4B", "5B", "6B", "8B");
+            int rows = Pattern.values().length + 1;
+            int columns = Button.values().length + 1;
+            recordGrid.setLayout(new GridLayout(rows, columns, 0, 10));
 
-            rows.forEach((row) -> columns.forEach((column) -> {
-                if (row.isBlank()) {
-                    if (column.isBlank()) {
-                        recordGrid.add(new JLabel());
-                    } else {
-                        JLabel label = new JLabel(column);
-                        label.setHorizontalAlignment(SwingConstants.CENTER);
-                        recordGrid.add(label);
-                    }
-                } else {
-                    if (column.isBlank()) {
-                        JLabel label = new JLabel(row);
-                        label.setHorizontalAlignment(SwingConstants.CENTER);
-                        recordGrid.add(label);
-                    } else {
-                        RecordBox recordBox = new RecordBox();
-                        String key = String.format("_%s_%s", column, row);
-                        recordBoxes.put(key, recordBox);
+            // header
+            recordGrid.add(new JLabel());
+            for (Button button : Button.values()) {
+                JLabel label = new JLabel(button + "B");
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                recordGrid.add(label);
+            }
 
-                        recordGrid.add(recordBox.box);
-                    }
+            // rows
+            for (Pattern pattern : Pattern.values()) {
+                JLabel label = new JLabel(pattern.toString());
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                recordGrid.add(label);
+
+                for (Button button : Button.values()) {
+                    RecordBox recordBox = new RecordBox();
+                    recordBoxes.put(button, pattern, recordBox);
+                    recordGrid.add(recordBox.box);
                 }
-            }));
+            }
         }
         panel.add(recordGrid, BorderLayout.PAGE_END);
 
@@ -154,12 +153,12 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
         titleImage.setIcon(new ImageIcon(viewData.titleImage));
 
         // records
-        recordBoxes.forEach((key, value) -> {
-            RecordData data = viewData.records.get(key);
+        recordBoxes.cellSet().forEach((cell) -> {
+            RecordData data = viewData.records.get(cell.getRowKey(), cell.getColumnKey());
             if (data != null) {
-                value.setData(data);
+                cell.getValue().setData(data);
             } else {
-                value.clear();
+                cell.getValue().clear();
             }
         });
     }

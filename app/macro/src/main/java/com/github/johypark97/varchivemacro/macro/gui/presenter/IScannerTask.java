@@ -1,8 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import java.awt.Image;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JFrame;
 
 public interface IScannerTask {
@@ -25,17 +27,17 @@ public interface IScannerTask {
     class ScannerTaskViewData {
         public Image fullImage;
         public Image titleImage;
-        public final Map<String, RecordData> records = new HashMap<>();
+        public final Table<Button, Pattern, RecordData> records = HashBasedTable.create();
 
-        public void addRecord(String key, Image rateImage, Image maxComboImage, String rate,
-                boolean maxCombo) {
+        public void addRecord(Button button, Pattern pattern, Image rateImage, Image maxComboImage,
+                String rate, boolean maxCombo) {
             RecordData data = new RecordData();
             data.maxCombo = maxCombo;
             data.maxComboImage = maxComboImage;
             data.rate = rate;
             data.rateImage = rateImage;
 
-            records.put(key, data);
+            records.put(button, pattern, data);
         }
 
         public static class RecordData {

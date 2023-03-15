@@ -1,16 +1,15 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.macro.core.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.macro.core.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Button;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
 import com.google.common.base.CharMatcher;
-import com.google.common.collect.Table.Cell;
 import java.awt.Dimension;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -79,33 +78,36 @@ public class AnalysisService {
             pix.invert();
 
             // -------- analyze records --------
-            for (Cell<Button, Pattern, String> cell : area.keys()) {
-                AnalyzedData data;
-                Button button = cell.getRowKey();
-                Pattern pattern = cell.getColumnKey();
+            for (Button button : Button.values()) {
+                for (Pattern pattern : Pattern.values()) {
+                    AnalyzedData data;
+                    CollectionArea.Button b = button.toCollectionArea();
+                    CollectionArea.Pattern p = pattern.toCollectionArea();
 
-                try (PixWrapper recordPix = pix.crop(area.getRate(button, pattern))) {
-                    // test whether the image contains enough black pixels using the histogram.
-                    // if true, run ocr.
-                    float r = recordPix.getGrayRatio(RATE_FACTOR, RATE_THRESHOLD);
-                    if (r < RATE_RATIO) {
-                        continue;
+                    try (PixWrapper recordPix = pix.crop(area.getRate(b, p))) {
+                        // test whether the image contains enough black pixels using the histogram.
+                        // if true, run ocr.
+                        float r = recordPix.getGrayRatio(RATE_FACTOR, RATE_THRESHOLD);
+                        if (r < RATE_RATIO) {
+                            continue;
+                        }
+
+                        String text = ocr.run(recordPix.pixInstance);
+                        text = CharMatcher.whitespace().removeFrom(text);
+
+                        data = new AnalyzedData();
+                        data.rate = parseRateText(text);
+                        data.rateText = text;
                     }
 
-                    String text = ocr.run(recordPix.pixInstance);
-                    text = CharMatcher.whitespace().removeFrom(text);
+                    try (PixWrapper comboMarkPix = pix.crop(area.getComboMark(b, p))) {
+                        float r =
+                                comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR, COMBO_MARK_THRESHOLD);
+                        data.isMaxCombo = r >= COMBO_MARK_RATIO;
+                    }
 
-                    data = new AnalyzedData();
-                    data.rate = parseRateText(text);
-                    data.rateText = text;
+                    task.addAnalyzedData(button, pattern, data);
                 }
-
-                try (PixWrapper comboMarkPix = pix.crop(area.getComboMark(button, pattern))) {
-                    float r = comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR, COMBO_MARK_THRESHOLD);
-                    data.isMaxCombo = r >= COMBO_MARK_RATIO;
-                }
-
-                task.addAnalyzedData(button, pattern, data);
             }
 
             task.setStatus(Status.ANALYZED);

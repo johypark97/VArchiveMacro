@@ -1,6 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
@@ -9,8 +11,6 @@ import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTas
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Button;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -92,22 +92,23 @@ public class Scanner {
         CollectionArea area = CollectionAreaFactory.create(size);
         data.titleImage = area.getTitle(image);
 
-        area.keys().forEach((cell) -> {
-            Button button = cell.getRowKey();
-            Pattern pattern = cell.getColumnKey();
-            String key = cell.getValue();
+        for (Button button : Button.values()) {
+            for (Pattern pattern : Pattern.values()) {
+                AnalyzedData analyzedData = task.getAnalyzedData(button, pattern);
+                CollectionArea.Button b = button.toCollectionArea();
+                CollectionArea.Pattern p = pattern.toCollectionArea();
 
-            AnalyzedData analyzedData = task.getAnalyzedData(button, pattern);
-            if (analyzedData != null) {
-                RecordData recordData = new RecordData();
-                recordData.maxCombo = analyzedData.isMaxCombo;
-                recordData.maxComboImage = area.getComboMark(image, button, pattern);
-                recordData.rate = analyzedData.rateText;
-                recordData.rateImage = area.getRate(image, button, pattern);
+                if (analyzedData != null) {
+                    RecordData recordData = new RecordData();
+                    recordData.maxCombo = analyzedData.isMaxCombo;
+                    recordData.maxComboImage = area.getComboMark(image, b, p);
+                    recordData.rate = analyzedData.rateText;
+                    recordData.rateImage = area.getRate(image, b, p);
 
-                data.addRecord(key, recordData);
+                    data.addRecord(button, pattern, recordData);
+                }
             }
-        });
+        }
 
         return data;
     }

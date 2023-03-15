@@ -1,7 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Table.Cell;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -49,8 +47,6 @@ public interface CollectionArea {
             return value;
         }
     }
-
-    ImmutableSet<Cell<Button, Pattern, String>> keys();
 
     Rectangle getTitle();
 

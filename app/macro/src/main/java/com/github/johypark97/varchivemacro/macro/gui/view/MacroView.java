@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.gui.view;
 
 import com.github.johypark97.varchivemacro.lib.common.gui.component.CheckboxGroup;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.util.BuildInfo;
@@ -46,6 +47,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -344,6 +346,21 @@ public class MacroView extends JFrame implements View, WindowListener {
                     scannerResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
                     scannerResultTable.setBackground(Color.WHITE);
                     scannerResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+                    scannerResultTable.setDefaultRenderer(Pattern.class,
+                            new DefaultTableCellRenderer() {
+                                @Serial
+                                private static final long serialVersionUID = -2356333891819256448L;
+
+                                @Override
+                                public Component getTableCellRendererComponent(JTable table,
+                                        Object value, boolean isSelected, boolean hasFocus, int row,
+                                        int column) {
+                                    String text = ((Pattern) value).getShortName();
+                                    return super.getTableCellRendererComponent(table, text,
+                                            isSelected, hasFocus, row, column);
+                                }
+                            });
 
                     scannerTableScrollPane = new JScrollPane(scannerResultTable);
                     scannerTableScrollPane.getViewport().setBackground(Color.WHITE);

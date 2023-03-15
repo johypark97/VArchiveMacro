@@ -1,12 +1,13 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
-import com.github.johypark97.varchivemacro.lib.common.api.Api.Pattern;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestJson;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.database.util.TitleComparator;
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ResultManager.RecordData.Result;
@@ -16,12 +17,10 @@ import java.io.Serial;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -88,18 +87,8 @@ public class ResultManager {
                     return;
                 }
 
-                Api.Button button = switch (cell.getRowKey()) {
-                    case _4 -> Api.Button._4;
-                    case _5 -> Api.Button._5;
-                    case _6 -> Api.Button._6;
-                    case _8 -> Api.Button._8;
-                };
-                Api.Pattern pattern = switch (cell.getColumnKey()) {
-                    case NM -> Api.Pattern.NM;
-                    case HD -> Api.Pattern.HD;
-                    case MX -> Api.Pattern.MX;
-                    case SC -> Api.Pattern.SC;
-                };
+                Api.Button button = cell.getRowKey().toApi();
+                Api.Pattern pattern = cell.getColumnKey().toApi();
                 float rate = analyzedData.rate;
                 boolean maxCombo = analyzedData.isMaxCombo;
 
@@ -184,22 +173,56 @@ public class ResultManager {
         @Serial
         private static final long serialVersionUID = 3174993439149836273L;
 
+        private static final String NO_COLUMN = "No";
+        private static final String TASKNO_COLUMN = "TaskNo";
+        private static final String TITLE_COLUMN = "Title";
+        private static final String BUTTON_COLUMN = "Button";
+        private static final String PATTERN_COLUMN = "Pattern";
+        private static final String OMAX_COLUMN = "OMax";
+        private static final String OLD_COLUMN = "Old";
+        private static final String NEW_COLUMN = "New";
+        private static final String NMAX_COLUMN = "NMax";
+        private static final String UPLOAD_COLUMN = "Upload";
+
         private static final List<String> COLUMNS =
-                List.of("No", "TaskNo", "Title", "Composer", "Dlc", "Button", "Pattern", "OMax",
-                        "Old", "New", "NMax", "Upload", "Upload result");
+                List.of(NO_COLUMN, TASKNO_COLUMN, TITLE_COLUMN, "Composer", "Dlc", BUTTON_COLUMN,
+                        PATTERN_COLUMN, OMAX_COLUMN, OLD_COLUMN, NEW_COLUMN, NMAX_COLUMN,
+                        UPLOAD_COLUMN, "Upload result");
+
+        private static final int NO_COLUMN_INDEX = COLUMNS.indexOf(NO_COLUMN);
+        private static final int TASKNO_COLUMN_INDEX = COLUMNS.indexOf(TASKNO_COLUMN);
+        private static final int TITLE_COLUMN_INDEX = COLUMNS.indexOf(TITLE_COLUMN);
+        private static final int BUTTON_COLUMN_INDEX = COLUMNS.indexOf(BUTTON_COLUMN);
+        private static final int PATTERN_COLUMN_INDEX = COLUMNS.indexOf(PATTERN_COLUMN);
+        private static final int OMAX_COLUMN_INDEX = COLUMNS.indexOf(OMAX_COLUMN);
+        private static final int OLD_COLUMN_INDEX = COLUMNS.indexOf(OLD_COLUMN);
+        private static final int NEW_COLUMN_INDEX = COLUMNS.indexOf(NEW_COLUMN);
+        private static final int NMAX_COLUMN_INDEX = COLUMNS.indexOf(NMAX_COLUMN);
+        private static final int UPLOAD_COLUMN_INDEX = COLUMNS.indexOf(UPLOAD_COLUMN);
 
         private static final Set<Integer> BOOLEAN_COLUMNS =
-                Set.of(COLUMNS.indexOf("OMax"), COLUMNS.indexOf("NMax"));
+                Set.of(OMAX_COLUMN_INDEX, NMAX_COLUMN_INDEX);
         private static final Set<Integer> FLOAT_COLUMNS =
-                Set.of(COLUMNS.indexOf("Old"), COLUMNS.indexOf("New"));
+                Set.of(OLD_COLUMN_INDEX, NEW_COLUMN_INDEX);
         private static final Set<Integer> INT_COLUMNS =
-                Set.of(COLUMNS.indexOf("No"), COLUMNS.indexOf("TaskNo"), COLUMNS.indexOf("Button"));
-        private static final int UPLOAD_COLUMN_INDEX = COLUMNS.indexOf("Upload");
+                Set.of(NO_COLUMN_INDEX, TASKNO_COLUMN_INDEX, BUTTON_COLUMN_INDEX);
 
         private static final String ERROR_STRING = "ERROR";
 
         public ScannerResultTableRowSorter newRowSorter() {
             return new ScannerResultTableRowSorter(this);
+        }
+
+        private String resultToString(Result result) {
+            return switch (result) {
+                case CANCELED -> "canceled";
+                case HIGHER_RECORD_EXISTS -> "higher record exists";
+                case NOT_UPLOADED -> "";
+                case SUSPENDED -> "suspended";
+                case UPLOADED -> "uploaded";
+                case UPLOADING -> "uploading";
+                case WAITING -> "waiting";
+            };
         }
 
         @Override
@@ -228,6 +251,12 @@ public class ResultManager {
             if (INT_COLUMNS.contains(columnIndex)) {
                 return Integer.class;
             }
+            if (columnIndex == BUTTON_COLUMN_INDEX) {
+                return Button.class;
+            }
+            if (columnIndex == PATTERN_COLUMN_INDEX) {
+                return Pattern.class;
+            }
             if (columnIndex == UPLOAD_COLUMN_INDEX) {
                 return Boolean.class;
             }
@@ -253,22 +282,14 @@ public class ResultManager {
                 case 2 -> data.song.title();
                 case 3 -> data.song.composer();
                 case 4 -> data.song.dlc();
-                case 5 -> data.newRecord.button.getValue();
-                case 6 -> data.newRecord.pattern.getShortName();
+                case 5 -> Button.valueOf(data.newRecord.button);
+                case 6 -> Pattern.valueOf(data.newRecord.pattern);
                 case 7 -> data.oldMaxCombo;
                 case 8 -> data.oldRate;
                 case 9 -> data.newRecord.rate;
                 case 10 -> data.newRecord.maxCombo;
                 case 11 -> data.isSelected;
-                case 12 -> switch (data.result) {
-                    case CANCELED -> "canceled";
-                    case HIGHER_RECORD_EXISTS -> "higher record exists";
-                    case NOT_UPLOADED -> "";
-                    case SUSPENDED -> "suspended";
-                    case UPLOADED -> "uploaded";
-                    case UPLOADING -> "uploading";
-                    case WAITING -> "waiting";
-                };
+                case 12 -> resultToString(data.result);
                 default -> ERROR_STRING;
             };
         }
@@ -287,27 +308,16 @@ public class ResultManager {
             public ScannerResultTableRowSorter(TableModel tableModel) {
                 super(tableModel);
 
-                Comparator<String> patternComparator = new Comparator<>() {
-                    private static final Map<String, Integer> PRIORITY =
-                            Arrays.stream(Pattern.values()).collect(
-                                    Collectors.toMap(Pattern::getShortName, Pattern::getWeight));
+                setComparator(TITLE_COLUMN_INDEX, new TitleComparator());
+                setComparator(BUTTON_COLUMN_INDEX, Comparator.comparingInt(Button::getWeight));
+                setComparator(PATTERN_COLUMN_INDEX, Comparator.comparingInt(Pattern::getWeight));
+                setComparator(OMAX_COLUMN_INDEX, Comparator.reverseOrder());
+                setComparator(OLD_COLUMN_INDEX, Comparator.reverseOrder());
+                setComparator(NEW_COLUMN_INDEX, Comparator.reverseOrder());
+                setComparator(NMAX_COLUMN_INDEX, Comparator.reverseOrder());
+                setComparator(UPLOAD_COLUMN_INDEX, Comparator.reverseOrder());
 
-                    @Override
-                    public int compare(String o1, String o2) {
-                        return PRIORITY.getOrDefault(o1, -1) - PRIORITY.getOrDefault(o2, -1);
-                    }
-                };
-
-                setComparator(COLUMNS.indexOf("Title"), new TitleComparator());
-                setComparator(COLUMNS.indexOf("Pattern"), patternComparator);
-                setComparator(COLUMNS.indexOf("OMax"), Comparator.reverseOrder());
-                setComparator(COLUMNS.indexOf("Old"), Comparator.reverseOrder());
-                setComparator(COLUMNS.indexOf("New"), Comparator.reverseOrder());
-                setComparator(COLUMNS.indexOf("NMax"), Comparator.reverseOrder());
-                setComparator(COLUMNS.indexOf("Upload"), Comparator.reverseOrder());
-
-                setSortKeys(
-                        List.of(new RowSorter.SortKey(COLUMNS.indexOf("No"), SortOrder.ASCENDING)));
+                setSortKeys(List.of(new RowSorter.SortKey(NO_COLUMN_INDEX, SortOrder.ASCENDING)));
             }
         }
     }
