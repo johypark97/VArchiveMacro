@@ -169,22 +169,14 @@ public class MacroPresenter implements Presenter {
                     return;
                 }
 
-                Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
-                Map<String, List<LocalSong>> tapSongMap = songModel.getTabSongMap(ownedDlcTabs);
+                if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_HOME) {
+                    if (ctrl && !shift) {
+                        Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
+                        Map<String, List<LocalSong>> tapSongMap =
+                                songModel.getTabSongMap(ownedDlcTabs);
 
-                switch (nativeEvent.getKeyCode()) {
-                    case NativeKeyEvent.VC_HOME -> {
-                        if (ctrl && !shift) {
-                            Command command = scanner.getCommand_scan(tapSongMap);
-                            startCommand(command);
-                        }
-                    }
-                    case NativeKeyEvent.VC_L -> {
-                        if (ctrl && shift) {
-                            loadCachedImages();
-                        }
-                    }
-                    default -> {
+                        Command command = scanner.getCommand_scan(tapSongMap);
+                        startCommand(command);
                     }
                 }
             }
