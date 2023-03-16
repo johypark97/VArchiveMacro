@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class SongModel {
-    private static final Path BASE_PATH = Path.of(System.getProperty("user.dir"), "data/database");
+    private static final Path BASE_PATH = Path.of("data/database");
 
     private static final Path DLC_PATH = BASE_PATH.resolve("dlcs.json");
     private static final Path SONG_PATH = BASE_PATH.resolve("songs.json");

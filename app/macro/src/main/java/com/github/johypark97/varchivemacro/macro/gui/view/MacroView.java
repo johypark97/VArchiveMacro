@@ -710,7 +710,7 @@ class AccountFileChooser extends JFileChooser {
     @Serial
     private static final long serialVersionUID = 1407963872565375369L;
 
-    private static final Path CURRENT_DIRECTORY = Path.of(System.getProperty("user.dir"));
+    private static final Path CURRENT_DIRECTORY = Path.of("").toAbsolutePath();
 
     public AccountFileChooser() {
         setCurrentDirectory(CURRENT_DIRECTORY.toFile());

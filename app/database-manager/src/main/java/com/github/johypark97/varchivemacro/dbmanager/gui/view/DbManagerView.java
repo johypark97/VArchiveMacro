@@ -460,7 +460,7 @@ class DirectoryChooser extends JFileChooser {
     @Serial
     private static final long serialVersionUID = -1770798834986186727L;
 
-    private static final Path CURRENT_DIRECTORY = Path.of(System.getProperty("user.dir"));
+    private static final Path CURRENT_DIRECTORY = Path.of("").toAbsolutePath();
 
     public DirectoryChooser() {
         setCurrentDirectory(CURRENT_DIRECTORY.toFile());

@@ -26,7 +26,7 @@ class ScannerTask {
     }
 
 
-    public static final Path BASE_PATH = Path.of(System.getProperty("user.dir"), "cache/image");
+    public static final Path BASE_PATH = Path.of("cache/image");
     public static final String FORMAT = "png";
 
     private final ScannerTaskManager manager;

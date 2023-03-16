@@ -6,7 +6,7 @@ import org.bytedeco.leptonica.PIX;
 import org.bytedeco.tesseract.TessBaseAPI;
 
 public class OcrWrapper implements AutoCloseable {
-    private static final Path DATAPATH = Path.of(System.getProperty("user.dir"), "data/tessdata");
+    private static final Path DATAPATH = Path.of("data/tessdata");
     private static final String LANGUAGE = "eng";
 
     private final TessBaseAPI tessBaseAPI;

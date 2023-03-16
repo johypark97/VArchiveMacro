@@ -14,8 +14,7 @@ import java.nio.file.Path;
 import java.util.function.Consumer;
 
 public class RecordModel {
-    private static final Path BASE_PATH = Path.of(System.getProperty("user.dir"));
-    private static final Path RECORD_PATH = BASE_PATH.resolve("records.json");
+    private static final Path RECORD_PATH = Path.of("records.json");
 
     private final RecordManager recordManager = new RecordManager();
 
