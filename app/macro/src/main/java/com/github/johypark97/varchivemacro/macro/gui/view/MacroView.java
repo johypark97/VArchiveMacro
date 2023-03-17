@@ -527,6 +527,17 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
+    public Path getAccountPath() {
+        return accountPath;
+    }
+
+    @Override
+    public void setAccountPath(Path path) {
+        accountPath = path;
+        accountFileTextField.setText((path != null) ? path.toString() : "");
+    }
+
+    @Override
     public void setSelectableDlcTabs(List<String> tabs) {
         dlcCheckboxGroup.clear();
         tabs.forEach((x) -> dlcCheckboxGroup.add(x, x));
@@ -547,6 +558,11 @@ public class MacroView extends JFrame implements View, WindowListener {
     @Override
     public Set<String> getSelectedDlcTabs() {
         return dlcCheckboxGroup.getSelected();
+    }
+
+    @Override
+    public void setSelectedDlcTabs(Set<String> tabs) {
+        dlcCheckboxGroup.select(tabs);
     }
 
     @Override

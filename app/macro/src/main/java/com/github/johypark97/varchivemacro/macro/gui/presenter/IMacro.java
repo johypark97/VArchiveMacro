@@ -60,9 +60,15 @@ public interface IMacro {
 
         void showRecord(String text, Table<Button, Pattern, String> records);
 
+        Path getAccountPath();
+
+        void setAccountPath(Path path);
+
         void setSelectableDlcTabs(List<String> tabs);
 
         Set<String> getSelectedDlcTabs();
+
+        void setSelectedDlcTabs(Set<String> tabs);
 
         void setScannerTaskTableModel(TableModel model);
 

@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.command.CommandRunner;
+import com.github.johypark97.varchivemacro.macro.gui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData;
@@ -36,6 +37,7 @@ public class MacroPresenter implements Presenter {
     // model
     private SongModel songModel;
     private final CommandRunner commandRunner = new CommandRunner();
+    private final ConfigModel configModel = new ConfigModel();
     private final RecordModel recordModel = new RecordModel();
     private final Scanner scanner = new Scanner();
 
@@ -207,6 +209,14 @@ public class MacroPresenter implements Presenter {
             return;
         }
 
+        configModel.setAccountPath(view.getAccountPath());
+        configModel.setSelectedDlcTabs(view.getSelectedDlcTabs());
+
+        try {
+            configModel.save();
+        } catch (Exception ignored) {
+        }
+
         clearHook();
 
         view.disposeView();
@@ -247,6 +257,17 @@ public class MacroPresenter implements Presenter {
         view.setScannerResultTableModel(scanner.getResultTableModel());
         view.setScannerResultTableRowSorter(scanner.getResultTableRowSorter());
         view.setScannerTaskTableModel(scanner.getTaskTableModel());
+
+        try {
+            configModel.load();
+        } catch (IOException e) {
+            view.addLog("Config file read error: " + e.getMessage());
+        } catch (Exception e) {
+            view.addLog(ERROR_LOG_PREFIX + e.getMessage());
+        }
+
+        view.setAccountPath(configModel.getAccountPath());
+        view.setSelectedDlcTabs(configModel.getSelectedDlcTabs());
 
         try {
             if (recordModel.loadLocal()) {
