@@ -23,6 +23,18 @@ public class ConfigModel {
         data.accountPath = path;
     }
 
+    public Path getCacheDir() {
+        if (data.cacheDir == null) {
+            data.cacheDir = new ConfigData().cacheDir;
+        }
+
+        return data.cacheDir;
+    }
+
+    public void setCacheDir(Path path) {
+        data.cacheDir = path;
+    }
+
     public Set<String> getSelectedDlcTabs() {
         if (data.selectedDlcTabs == null) {
             data.selectedDlcTabs = new ConfigData().selectedDlcTabs;

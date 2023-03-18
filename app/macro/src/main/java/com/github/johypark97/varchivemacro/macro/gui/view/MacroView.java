@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -94,6 +96,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JButton selectAccountFileButton;
     protected JButton selectAllDlcButton;
     protected JButton selectAllRecordButton;
+    protected JButton selectCacheDirectoryButton;
     protected JButton showExpectedButton;
     protected JButton showScannerTaskButton;
     protected JButton stopCommandButton;
@@ -103,6 +106,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JTable scannerResultTable;
     protected JTable scannerTaskTable;
     protected JTextField accountFileTextField;
+    protected JTextField cacheDirTextField;
     protected transient CheckboxGroup<String> dlcCheckboxGroup = new CheckboxGroup<>();
 
     // event listeners
@@ -111,6 +115,7 @@ public class MacroView extends JFrame implements View, WindowListener {
 
     // variables
     protected transient Path accountPath;
+    protected transient Path cacheDirPath;
 
     public MacroView() {
         super(WINDOW_TITLE + " v" + BuildInfo.version);
@@ -279,22 +284,73 @@ public class MacroView extends JFrame implements View, WindowListener {
     private Component createScannerTab() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        // tool box
-        Box toolBox = Box.createHorizontalBox();
+        // tool panel
+        JPanel toolPanel = new JPanel();
         {
-            toolBox.add(new JLabel("Account file : "));
+            // set layout
+            GroupLayout layout = new GroupLayout(toolPanel);
+            toolPanel.setLayout(layout);
 
-            accountFileTextField = new JTextField();
-            accountFileTextField.setBackground(Color.WHITE);
-            accountFileTextField.setEditable(false);
-            ComponentSize.expandWidthOnly(accountFileTextField);
-            toolBox.add(accountFileTextField);
+            // row 1
+            JLabel row01Label;
+            {
+                row01Label = new JLabel("Account file : ");
 
-            selectAccountFileButton = new JButton("Select");
-            selectAccountFileButton.addActionListener(buttonListener);
-            toolBox.add(selectAccountFileButton);
+                accountFileTextField = new JTextField();
+                accountFileTextField.setBackground(Color.WHITE);
+                accountFileTextField.setEditable(false);
+
+                selectAccountFileButton = new JButton("Select");
+                selectAccountFileButton.addActionListener(buttonListener);
+            }
+
+            // row 2
+            JLabel row02Label;
+            {
+                row02Label = new JLabel("Cache directory : ");
+
+                cacheDirTextField = new JTextField();
+                cacheDirTextField.setBackground(Color.WHITE);
+                cacheDirTextField.setEditable(false);
+
+                selectCacheDirectoryButton = new JButton("Select");
+                selectCacheDirectoryButton.addActionListener(buttonListener);
+            }
+
+            // set layout
+            {
+                // @formatter:off
+                layout.setHorizontalGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(Alignment.TRAILING)
+                                .addComponent(row01Label)
+                                .addComponent(row02Label)
+                        )
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(accountFileTextField)
+                                .addComponent(cacheDirTextField)
+                        )
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(selectAccountFileButton)
+                                .addComponent(selectCacheDirectoryButton)
+                        )
+                );
+
+                layout.setVerticalGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(Alignment.CENTER)
+                                .addComponent(row01Label)
+                                .addComponent(accountFileTextField)
+                                .addComponent(selectAccountFileButton)
+                        )
+                        .addGroup(layout.createParallelGroup(Alignment.CENTER)
+                                .addComponent(row02Label)
+                                .addComponent(cacheDirTextField)
+                                .addComponent(selectCacheDirectoryButton)
+                        )
+                );
+                // @formatter:on
+            }
         }
-        panel.add(toolBox, BorderLayout.PAGE_START);
+        panel.add(toolPanel, BorderLayout.PAGE_START);
 
         // tabbed panel
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -538,6 +594,17 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
+    public Path getCacheDir() {
+        return cacheDirPath;
+    }
+
+    @Override
+    public void setCacheDir(Path path) {
+        cacheDirPath = path;
+        cacheDirTextField.setText((path != null) ? path.toString() : "");
+    }
+
+    @Override
     public void setSelectableDlcTabs(List<String> tabs) {
         dlcCheckboxGroup.clear();
         tabs.forEach((x) -> dlcCheckboxGroup.add(x, x));
@@ -660,6 +727,7 @@ class MacroViewButtonListener implements ActionListener {
     private static final int UPLOAD_COLUMN_INDEX = 11;
 
     private final AccountFileChooser accountFileChooser = new AccountFileChooser();
+    private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private final MacroView view;
 
     public MacroViewButtonListener(MacroView view) {
@@ -680,6 +748,12 @@ class MacroViewButtonListener implements ActionListener {
             if (path != null) {
                 view.accountPath = path;
                 view.accountFileTextField.setText(path.toString());
+            }
+        } else if (source.equals(view.selectCacheDirectoryButton)) {
+            Path path = directoryChooser.get(view);
+            if (path != null) {
+                view.cacheDirPath = path;
+                view.cacheDirTextField.setText(path.toString());
             }
         } else if (source.equals(view.showScannerTaskButton)) {
             int index = view.scannerTaskTable.getSelectedRow();
@@ -731,6 +805,29 @@ class AccountFileChooser extends JFileChooser {
     public AccountFileChooser() {
         setCurrentDirectory(CURRENT_DIRECTORY.toFile());
         setFileFilter(new FileNameExtensionFilter("Account file (*.txt)", "txt"));
+        setMultiSelectionEnabled(false);
+    }
+
+    public Path get(JFrame frame) {
+        if (showOpenDialog(frame) != JFileChooser.APPROVE_OPTION) {
+            return null;
+        }
+
+        Path path = getSelectedFile().toPath();
+        return path.startsWith(CURRENT_DIRECTORY) ? CURRENT_DIRECTORY.relativize(path) : path;
+    }
+}
+
+
+class DirectoryChooser extends JFileChooser {
+    @Serial
+    private static final long serialVersionUID = -1770798834986186727L;
+
+    private static final Path CURRENT_DIRECTORY = Path.of("").toAbsolutePath();
+
+    public DirectoryChooser() {
+        setCurrentDirectory(CURRENT_DIRECTORY.toFile());
+        setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         setMultiSelectionEnabled(false);
     }
 

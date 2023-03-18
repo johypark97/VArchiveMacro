@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import java.io.Serial;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,6 +13,12 @@ class ScannerTaskManager {
     private final Map<Integer, ScannerTask> tasks = new ConcurrentHashMap<>();
     public final ScannerTaskTableModel tableModel = new ScannerTaskTableModel();
 
+    private Path cacheDir = Path.of("");
+
+    public void setCacheDir(Path path) {
+        cacheDir = path;
+    }
+
     public void clear() {
         tasks.clear();
         tableModel.fireTableDataChanged();
@@ -20,7 +27,7 @@ class ScannerTaskManager {
     public ScannerTask create(LocalSong song) {
         int taskNumber = tasks.size();
 
-        ScannerTask task = new ScannerTask(this, taskNumber, song);
+        ScannerTask task = new ScannerTask(this, taskNumber, song, cacheDir);
         tasks.put(taskNumber, task);
 
         tableModel.fireTableRowsInserted(taskNumber, taskNumber);

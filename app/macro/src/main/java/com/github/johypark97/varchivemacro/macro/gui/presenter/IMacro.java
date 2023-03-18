@@ -64,6 +64,10 @@ public interface IMacro {
 
         void setAccountPath(Path path);
 
+        Path getCacheDir();
+
+        void setCacheDir(Path path);
+
         void setSelectableDlcTabs(List<String> tabs);
 
         Set<String> getSelectedDlcTabs();

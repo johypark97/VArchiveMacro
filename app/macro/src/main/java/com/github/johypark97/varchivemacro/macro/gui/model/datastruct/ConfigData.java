@@ -21,6 +21,9 @@ public class ConfigData {
     public Path accountPath = Path.of("account.txt");
 
     @Expose
+    public Path cacheDir = Path.of("cache");
+
+    @Expose
     public Set<String> selectedDlcTabs =
             new HashSet<>(Set.of("RESPECT", "PORTABLE 1", "PORTABLE 2"));
 

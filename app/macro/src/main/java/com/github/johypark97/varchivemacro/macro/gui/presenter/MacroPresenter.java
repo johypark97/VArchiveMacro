@@ -173,11 +173,13 @@ public class MacroPresenter implements Presenter {
 
                 if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_HOME) {
                     if (ctrl && !shift) {
+                        Path path = view.getCacheDir();
+
                         Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
                         Map<String, List<LocalSong>> tapSongMap =
                                 songModel.getTabSongMap(ownedDlcTabs);
 
-                        Command command = scanner.getCommand_scan(tapSongMap);
+                        Command command = scanner.getCommand_scan(path, tapSongMap);
                         startCommand(command);
                     }
                 }
@@ -210,6 +212,7 @@ public class MacroPresenter implements Presenter {
         }
 
         configModel.setAccountPath(view.getAccountPath());
+        configModel.setCacheDir(view.getCacheDir());
         configModel.setSelectedDlcTabs(view.getSelectedDlcTabs());
 
         try {
@@ -267,6 +270,7 @@ public class MacroPresenter implements Presenter {
         }
 
         view.setAccountPath(configModel.getAccountPath());
+        view.setCacheDir(configModel.getCacheDir());
         view.setSelectedDlcTabs(configModel.getSelectedDlcTabs());
 
         try {
@@ -352,8 +356,9 @@ public class MacroPresenter implements Presenter {
 
     @Override
     public void loadCachedImages() {
+        Path path = view.getCacheDir();
         Map<String, List<LocalSong>> tapSongMap = songModel.getTabSongMap();
-        Command command = scanner.getCommand_loadCachedImages(tapSongMap);
+        Command command = scanner.getCommand_loadCachedImages(path, tapSongMap);
         startCommand(command);
     }
 

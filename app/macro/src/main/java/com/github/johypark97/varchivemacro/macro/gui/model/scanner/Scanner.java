@@ -41,8 +41,8 @@ public class Scanner {
         resultManager.setModels(songModel, recordModel);
     }
 
-    public Command getCommand_scan(Map<String, List<LocalSong>> tabSongMap) {
-        Command root = createCommand_scan(tabSongMap);
+    public Command getCommand_scan(Path cacheDir, Map<String, List<LocalSong>> tabSongMap) {
+        Command root = createCommand_scan(cacheDir, tabSongMap);
         root.setNext(getCommand_analyze());
         return root;
     }
@@ -61,8 +61,9 @@ public class Scanner {
         return createCommand_uploadRecord(accountPath);
     }
 
-    public Command getCommand_loadCachedImages(Map<String, List<LocalSong>> tabSongMap) {
-        return createCommand_loadCachedImages(tabSongMap);
+    public Command getCommand_loadCachedImages(Path cacheDir,
+            Map<String, List<LocalSong>> tabSongMap) {
+        return createCommand_loadCachedImages(cacheDir, tabSongMap);
     }
 
     public TableModel getTaskTableModel() {
@@ -113,13 +114,14 @@ public class Scanner {
         return data;
     }
 
-    protected Command createCommand_scan(Map<String, List<LocalSong>> tabSongMap) {
+    protected Command createCommand_scan(Path cachePath, Map<String, List<LocalSong>> tabSongMap) {
         return new AbstractCommand() {
             @Override
             public boolean run() {
                 whenStart_capture.run();
 
                 taskManager.clear();
+                taskManager.setCacheDir(cachePath);
 
                 CaptureService captureService = new CaptureService();
                 captureService.execute(taskManager, tabSongMap);
@@ -210,16 +212,19 @@ public class Scanner {
         };
     }
 
-    protected Command createCommand_loadCachedImages(Map<String, List<LocalSong>> tabSongMap) {
+    protected Command createCommand_loadCachedImages(Path cachePath,
+            Map<String, List<LocalSong>> tabSongMap) {
         return new AbstractCommand() {
             @Override
             public boolean run() {
                 whenStart_loadImages.run();
 
                 taskManager.clear();
+                taskManager.setCacheDir(cachePath);
+
                 tabSongMap.values().forEach((songs) -> songs.forEach((song) -> {
                     ScannerTask task = taskManager.create(song);
-                    if (Files.exists(task.getFilePath())) {
+                    if (Files.exists(task.filePath)) {
                         task.setStatus(Status.CACHED);
                     } else {
                         task.setException(new IOException("File not found"));

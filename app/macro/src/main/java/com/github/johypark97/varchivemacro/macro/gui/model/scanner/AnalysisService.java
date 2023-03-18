@@ -68,7 +68,7 @@ public class AnalysisService {
         task.setStatus(Status.ANALYZING);
         task.clearAnalyzedData();
 
-        try (PixWrapper pix = new PixWrapper(task.getFilePath())) {
+        try (PixWrapper pix = new PixWrapper(task.filePath)) {
             Dimension size = new Dimension(pix.getWidth(), pix.getHeight());
             CollectionArea area = CollectionAreaFactory.create(size);
 

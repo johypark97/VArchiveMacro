@@ -26,8 +26,7 @@ class ScannerTask {
     }
 
 
-    public static final Path BASE_PATH = Path.of("cache/image");
-    public static final String FORMAT = "png";
+    private static final String FORMAT = "png";
 
     private final ScannerTaskManager manager;
     public final LocalSong song;
@@ -36,30 +35,28 @@ class ScannerTask {
     private Exception exception;
     private Status status = Status.NONE;
     private final Table<Button, Pattern, AnalyzedData> analyzedDataList = HashBasedTable.create();
+    public final Path filePath;
 
-    public ScannerTask(ScannerTaskManager manager, int taskNumber, LocalSong song) {
+    public ScannerTask(ScannerTaskManager manager, int taskNumber, LocalSong song, Path dirPath) {
         this.manager = manager;
         this.song = song;
         this.taskNumber = taskNumber;
-    }
 
-    public Path getFilePath() {
-        return BASE_PATH.resolve(String.format("%04d.%s", song.id(), FORMAT));
+        filePath = dirPath.resolve(String.format("%04d.%s", song.id(), FORMAT));
     }
 
     public void saveImage(BufferedImage image) throws IOException {
-        Path path = getFilePath();
-        Path dirPath = path.getParent();
+        Path dirPath = filePath.getParent();
         if (dirPath != null) {
             Files.createDirectories(dirPath);
         }
 
-        Files.deleteIfExists(path);
-        ImageIO.write(image, FORMAT, path.toFile());
+        Files.deleteIfExists(filePath);
+        ImageIO.write(image, FORMAT, filePath.toFile());
     }
 
     public BufferedImage loadImage() throws IOException {
-        return ImageIO.read(getFilePath().toFile());
+        return ImageIO.read(filePath.toFile());
     }
 
     public Status getStatus() {
