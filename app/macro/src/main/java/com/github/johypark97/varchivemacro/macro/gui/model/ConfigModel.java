@@ -1,51 +1,16 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
 import com.github.johypark97.varchivemacro.macro.gui.model.datastruct.ConfigData;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroViewConfig;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
-public class ConfigModel {
+public class ConfigModel implements MacroViewConfig {
     private static final Path CONFIG_PATH = Path.of("config.json");
 
     private ConfigData data = new ConfigData();
-
-    public Path getAccountPath() {
-        if (data.accountPath == null) {
-            data.accountPath = new ConfigData().accountPath;
-        }
-
-        return data.accountPath;
-    }
-
-    public void setAccountPath(Path path) {
-        data.accountPath = path;
-    }
-
-    public Path getCacheDir() {
-        if (data.cacheDir == null) {
-            data.cacheDir = new ConfigData().cacheDir;
-        }
-
-        return data.cacheDir;
-    }
-
-    public void setCacheDir(Path path) {
-        data.cacheDir = path;
-    }
-
-    public Set<String> getSelectedDlcTabs() {
-        if (data.selectedDlcTabs == null) {
-            data.selectedDlcTabs = new ConfigData().selectedDlcTabs;
-        }
-
-        return data.selectedDlcTabs;
-    }
-
-    public void setSelectedDlcTabs(Set<String> tabs) {
-        data.selectedDlcTabs = tabs;
-    }
 
     public void load() throws IOException {
         if (Files.exists(CONFIG_PATH)) {
@@ -60,5 +25,47 @@ public class ConfigModel {
         if (data != null) {
             data.save(CONFIG_PATH);
         }
+    }
+
+    @Override
+    public Path getAccountPath() {
+        if (data.accountPath == null) {
+            data.accountPath = new ConfigData().accountPath;
+        }
+
+        return data.accountPath;
+    }
+
+    @Override
+    public void setAccountPath(Path path) {
+        data.accountPath = path;
+    }
+
+    @Override
+    public Path getCacheDir() {
+        if (data.cacheDir == null) {
+            data.cacheDir = new ConfigData().cacheDir;
+        }
+
+        return data.cacheDir;
+    }
+
+    @Override
+    public void setCacheDir(Path path) {
+        data.cacheDir = path;
+    }
+
+    @Override
+    public Set<String> getSelectedDlcTabs() {
+        if (data.selectedDlcTabs == null) {
+            data.selectedDlcTabs = new ConfigData().selectedDlcTabs;
+        }
+
+        return data.selectedDlcTabs;
+    }
+
+    @Override
+    public void setSelectedDlcTabs(Set<String> tabs) {
+        data.selectedDlcTabs = tabs;
     }
 }

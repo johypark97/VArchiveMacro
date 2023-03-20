@@ -5,7 +5,6 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.google.common.collect.Table;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Set;
 import javax.swing.JFrame;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -43,7 +42,7 @@ public interface IMacro {
     }
 
 
-    interface View {
+    interface View extends MacroViewConfig {
         void setPresenter(Presenter presenter);
 
         void showView();
@@ -60,19 +59,7 @@ public interface IMacro {
 
         void showRecord(String text, Table<Button, Pattern, String> records);
 
-        Path getAccountPath();
-
-        void setAccountPath(Path path);
-
-        Path getCacheDir();
-
-        void setCacheDir(Path path);
-
         void setSelectableDlcTabs(List<String> tabs);
-
-        Set<String> getSelectedDlcTabs();
-
-        void setSelectedDlcTabs(Set<String> tabs);
 
         void setScannerTaskTableModel(TableModel model);
 
