@@ -9,6 +9,7 @@ import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.util.BuildInfo;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.google.common.collect.TreeBasedTable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -30,6 +31,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -284,74 +287,6 @@ public class MacroView extends JFrame implements View, WindowListener {
     private Component createScannerTab() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        // tool panel
-        JPanel toolPanel = new JPanel();
-        {
-            // set layout
-            GroupLayout layout = new GroupLayout(toolPanel);
-            toolPanel.setLayout(layout);
-
-            // row 1
-            JLabel row01Label;
-            {
-                row01Label = new JLabel("Account file : ");
-
-                accountFileTextField = new JTextField();
-                accountFileTextField.setBackground(Color.WHITE);
-                accountFileTextField.setEditable(false);
-
-                selectAccountFileButton = new JButton("Select");
-                selectAccountFileButton.addActionListener(buttonListener);
-            }
-
-            // row 2
-            JLabel row02Label;
-            {
-                row02Label = new JLabel("Cache directory : ");
-
-                cacheDirTextField = new JTextField();
-                cacheDirTextField.setBackground(Color.WHITE);
-                cacheDirTextField.setEditable(false);
-
-                selectCacheDirectoryButton = new JButton("Select");
-                selectCacheDirectoryButton.addActionListener(buttonListener);
-            }
-
-            // set layout
-            {
-                // @formatter:off
-                layout.setHorizontalGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(Alignment.TRAILING)
-                                .addComponent(row01Label)
-                                .addComponent(row02Label)
-                        )
-                        .addGroup(layout.createParallelGroup()
-                                .addComponent(accountFileTextField)
-                                .addComponent(cacheDirTextField)
-                        )
-                        .addGroup(layout.createParallelGroup()
-                                .addComponent(selectAccountFileButton)
-                                .addComponent(selectCacheDirectoryButton)
-                        )
-                );
-
-                layout.setVerticalGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(Alignment.CENTER)
-                                .addComponent(row01Label)
-                                .addComponent(accountFileTextField)
-                                .addComponent(selectAccountFileButton)
-                        )
-                        .addGroup(layout.createParallelGroup(Alignment.CENTER)
-                                .addComponent(row02Label)
-                                .addComponent(cacheDirTextField)
-                                .addComponent(selectCacheDirectoryButton)
-                        )
-                );
-                // @formatter:on
-            }
-        }
-        panel.add(toolPanel, BorderLayout.PAGE_START);
-
         // tabbed panel
         JTabbedPane tabbedPane = new JTabbedPane();
         {
@@ -451,6 +386,80 @@ public class MacroView extends JFrame implements View, WindowListener {
                 resultPanel.add(buttonBox, BorderLayout.PAGE_END);
             }
             tabbedPane.addTab("Result", resultPanel);
+
+            JScrollPane settingScrollPane = new JScrollPane();
+            settingScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+            {
+                // base panel
+                JPanel basePanel = new JPanel(new BorderLayout());
+                settingScrollPane.setViewportView(basePanel);
+
+                // group panel
+                JPanel groupPanel = new JPanel();
+                GroupLayout layout = new GroupLayout(groupPanel);
+                groupPanel.setLayout(layout);
+                basePanel.add(groupPanel, BorderLayout.PAGE_START);
+
+                Table<Integer, Integer, Component> components = TreeBasedTable.create();
+
+                // row 0
+                {
+                    int row = 0;
+
+                    components.put(row, 0, new JLabel("Account file : "));
+
+                    accountFileTextField = new JTextField();
+                    accountFileTextField.setBackground(Color.WHITE);
+                    accountFileTextField.setEditable(false);
+                    components.put(row, 1, accountFileTextField);
+
+                    selectAccountFileButton = new JButton("Select");
+                    selectAccountFileButton.addActionListener(buttonListener);
+                    components.put(row, 2, selectAccountFileButton);
+                }
+
+                // row 1
+                {
+                    int row = 1;
+
+                    components.put(row, 0, new JLabel("Cache directory : "));
+
+                    cacheDirTextField = new JTextField();
+                    cacheDirTextField.setBackground(Color.WHITE);
+                    cacheDirTextField.setEditable(false);
+                    components.put(row, 1, cacheDirTextField);
+
+                    selectCacheDirectoryButton = new JButton("Select");
+                    selectCacheDirectoryButton.addActionListener(buttonListener);
+                    components.put(row, 2, selectCacheDirectoryButton);
+                }
+
+                // set layout
+                {
+                    SequentialGroup hGroup = layout.createSequentialGroup();
+                    components.columnMap().forEach((column, columnMap) -> {
+                        ParallelGroup group;
+                        if (column == 0) {
+                            group = layout.createParallelGroup(Alignment.TRAILING);
+                        } else {
+                            group = layout.createParallelGroup();
+                        }
+
+                        columnMap.forEach((row, x) -> group.addComponent(x));
+                        hGroup.addGroup(group);
+                    });
+                    layout.setHorizontalGroup(hGroup);
+
+                    SequentialGroup vGroup = layout.createSequentialGroup();
+                    components.rowMap().forEach((row, rowMap) -> {
+                        ParallelGroup group = layout.createParallelGroup(Alignment.CENTER);
+                        rowMap.forEach((column, x) -> group.addComponent(x));
+                        vGroup.addGroup(group);
+                    });
+                    layout.setVerticalGroup(vGroup);
+                }
+            }
+            tabbedPane.addTab("Setting", settingScrollPane);
         }
         panel.add(tabbedPane, BorderLayout.CENTER);
 
