@@ -24,6 +24,12 @@ public class ConfigData {
     public Path cacheDir = Path.of("cache");
 
     @Expose
+    public Integer recordUploadDelay;
+
+    @Expose
+    public Integer scannerKeyInputDuration;
+
+    @Expose
     public Set<String> selectedDlcTabs =
             new HashSet<>(Set.of("RESPECT", "PORTABLE 1", "PORTABLE 2"));
 

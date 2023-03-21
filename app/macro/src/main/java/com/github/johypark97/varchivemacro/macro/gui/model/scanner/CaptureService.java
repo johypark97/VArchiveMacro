@@ -18,16 +18,16 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
 class CaptureService {
-    private static final int INPUT_DURATION = 20;
     private static final int REJECTED_SLEEP_TIME = 1000;
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final ImageCachingService imageCachingService = new ImageCachingService();
     private final Robot robot;
 
+    private final int inputDuration;
     public Exception exception;
 
-    public CaptureService() {
+    public CaptureService(int inputDuration) {
         try {
             robot = new Robot();
         } catch (AWTException e) {
@@ -35,6 +35,12 @@ class CaptureService {
             // mouse. (Normally never be thrown)
             throw new RuntimeException(e);
         }
+
+        if (inputDuration < 0) {
+            throw new IllegalArgumentException("inputDuration must be positive: " + inputDuration);
+        }
+
+        this.inputDuration = inputDuration;
     }
 
     public void shutdownNow() {
@@ -104,10 +110,10 @@ class CaptureService {
     private void tabKey(int keycode) throws InterruptedException {
         try {
             robot.keyPress(keycode);
-            TimeUnit.MILLISECONDS.sleep(INPUT_DURATION);
+            TimeUnit.MILLISECONDS.sleep(inputDuration);
         } finally {
             robot.keyRelease(keycode);
         }
-        TimeUnit.MILLISECONDS.sleep(INPUT_DURATION);
+        TimeUnit.MILLISECONDS.sleep(inputDuration);
     }
 }

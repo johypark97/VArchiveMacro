@@ -68,4 +68,32 @@ public class ConfigModel implements MacroViewConfig {
     public void setSelectedDlcTabs(Set<String> tabs) {
         data.selectedDlcTabs = tabs;
     }
+
+    @Override
+    public int getRecordUploadDelay() {
+        if (data.recordUploadDelay == null) {
+            data.recordUploadDelay = RECORD_UPLOAD_DELAY;
+        }
+
+        return data.recordUploadDelay;
+    }
+
+    @Override
+    public void setRecordUploadDelay(int value) {
+        data.recordUploadDelay = value;
+    }
+
+    @Override
+    public int getScannerKeyInputDuration() {
+        if (data.scannerKeyInputDuration == null) {
+            data.scannerKeyInputDuration = SCANNER_KEY_INPUT_DURATION;
+        }
+
+        return data.scannerKeyInputDuration;
+    }
+
+    @Override
+    public void setScannerKeyInputDuration(int value) {
+        data.scannerKeyInputDuration = value;
+    }
 }

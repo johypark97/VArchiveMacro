@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.view;
 
 import com.github.johypark97.varchivemacro.lib.common.gui.component.CheckboxGroup;
+import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
@@ -93,6 +94,8 @@ public class MacroView extends JFrame implements View, WindowListener {
 
     private JScrollPane dlcCheckboxScrollPane;
     private JTextArea logTextArea;
+    private transient SliderSet recordUploadDelaySlider;
+    private transient SliderSet scannerKeyInputDuration;
     protected JButton analyzeScannerTaskButton;
     protected JButton loadCachedImagesButton;
     protected JButton refreshScannerResultButton;
@@ -434,6 +437,56 @@ public class MacroView extends JFrame implements View, WindowListener {
                     components.put(row, 2, selectCacheDirectoryButton);
                 }
 
+                // row 2
+                {
+                    int row = 2;
+
+                    recordUploadDelaySlider = new SliderSet();
+                    recordUploadDelaySlider.setDefault(RECORD_UPLOAD_DELAY);
+                    recordUploadDelaySlider.setLimitMax(1000);
+                    recordUploadDelaySlider.setLimitMin(10);
+
+                    recordUploadDelaySlider.label.setText("Record upload delay : ");
+                    components.put(row, 0, recordUploadDelaySlider.label);
+
+                    recordUploadDelaySlider.slider.setMajorTickSpacing(40);
+                    recordUploadDelaySlider.slider.setMaximum(200);
+                    recordUploadDelaySlider.slider.setMinimum(0);
+                    recordUploadDelaySlider.slider.setMinorTickSpacing(10);
+                    recordUploadDelaySlider.slider.setPaintLabels(true);
+                    recordUploadDelaySlider.slider.setPaintTicks(true);
+                    components.put(row, 1, recordUploadDelaySlider.slider);
+
+                    recordUploadDelaySlider.textField.setColumns(8);
+                    ComponentSize.preventExpand(recordUploadDelaySlider.textField);
+                    components.put(row, 2, recordUploadDelaySlider.textField);
+                }
+
+                // row 3
+                {
+                    int row = 3;
+
+                    scannerKeyInputDuration = new SliderSet();
+                    scannerKeyInputDuration.setDefault(SCANNER_KEY_INPUT_DURATION);
+                    scannerKeyInputDuration.setLimitMax(100);
+                    scannerKeyInputDuration.setLimitMin(0);
+
+                    scannerKeyInputDuration.label.setText("Key input duration : ");
+                    components.put(row, 0, scannerKeyInputDuration.label);
+
+                    scannerKeyInputDuration.slider.setMajorTickSpacing(20);
+                    scannerKeyInputDuration.slider.setMaximum(100);
+                    scannerKeyInputDuration.slider.setMinimum(0);
+                    scannerKeyInputDuration.slider.setMinorTickSpacing(10);
+                    scannerKeyInputDuration.slider.setPaintLabels(true);
+                    scannerKeyInputDuration.slider.setPaintTicks(true);
+                    components.put(row, 1, scannerKeyInputDuration.slider);
+
+                    scannerKeyInputDuration.textField.setColumns(8);
+                    ComponentSize.preventExpand(scannerKeyInputDuration.textField);
+                    components.put(row, 2, scannerKeyInputDuration.textField);
+                }
+
                 // set layout
                 {
                     SequentialGroup hGroup = layout.createSequentialGroup();
@@ -674,6 +727,26 @@ public class MacroView extends JFrame implements View, WindowListener {
     @Override
     public void setSelectedDlcTabs(Set<String> tabs) {
         dlcCheckboxGroup.select(tabs);
+    }
+
+    @Override
+    public int getRecordUploadDelay() {
+        return recordUploadDelaySlider.getValue();
+    }
+
+    @Override
+    public void setRecordUploadDelay(int value) {
+        recordUploadDelaySlider.setValue(value);
+    }
+
+    @Override
+    public int getScannerKeyInputDuration() {
+        return scannerKeyInputDuration.getValue();
+    }
+
+    @Override
+    public void setScannerKeyInputDuration(int value) {
+        scannerKeyInputDuration.setValue(value);
     }
 
     @Override

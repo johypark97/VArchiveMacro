@@ -41,8 +41,9 @@ public class Scanner {
         resultManager.setModels(songModel, recordModel);
     }
 
-    public Command getCommand_scan(Path cacheDir, Map<String, List<LocalSong>> tabSongMap) {
-        Command root = createCommand_scan(cacheDir, tabSongMap);
+    public Command getCommand_scan(Path cacheDir, int inputDuration,
+            Map<String, List<LocalSong>> tabSongMap) {
+        Command root = createCommand_scan(cacheDir, inputDuration, tabSongMap);
         root.setNext(getCommand_analyze());
         return root;
     }
@@ -57,8 +58,8 @@ public class Scanner {
         return createCommand_collectResult();
     }
 
-    public Command getCommand_uploadRecord(Path accountPath) {
-        return createCommand_uploadRecord(accountPath);
+    public Command getCommand_uploadRecord(Path accountPath, int uploadDelay) {
+        return createCommand_uploadRecord(accountPath, uploadDelay);
     }
 
     public Command getCommand_loadCachedImages(Path cacheDir,
@@ -114,7 +115,8 @@ public class Scanner {
         return data;
     }
 
-    protected Command createCommand_scan(Path cachePath, Map<String, List<LocalSong>> tabSongMap) {
+    protected Command createCommand_scan(Path cachePath, int inputDuration,
+            Map<String, List<LocalSong>> tabSongMap) {
         return new AbstractCommand() {
             @Override
             public boolean run() {
@@ -123,7 +125,7 @@ public class Scanner {
                 taskManager.clear();
                 taskManager.setCacheDir(cachePath);
 
-                CaptureService captureService = new CaptureService();
+                CaptureService captureService = new CaptureService(inputDuration);
                 captureService.execute(taskManager, tabSongMap);
 
                 try {
@@ -193,14 +195,14 @@ public class Scanner {
         };
     }
 
-    protected Command createCommand_uploadRecord(Path accountPath) {
+    protected Command createCommand_uploadRecord(Path accountPath, int uploadDelay) {
         return new AbstractCommand() {
             @Override
             public boolean run() {
                 whenStart_uploadRecord.run();
 
                 try {
-                    resultManager.upload(accountPath);
+                    resultManager.upload(accountPath, uploadDelay);
                 } catch (Exception e) {
                     whenThrown.accept(e);
                     return false;

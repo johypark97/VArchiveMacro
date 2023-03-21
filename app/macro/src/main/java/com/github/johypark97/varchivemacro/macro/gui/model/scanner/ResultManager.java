@@ -54,8 +54,6 @@ public class ResultManager {
     }
 
 
-    private static final int UPLOAD_DELAY = 20;
-
     private final List<RecordData> records = new CopyOnWriteArrayList<>();
     public final ScannerResultTableModel tableModel = new ScannerResultTableModel();
     public final TableRowSorter<TableModel> rowSorter = tableModel.newRowSorter();
@@ -112,7 +110,7 @@ public class ResultManager {
         tableModel.fireTableDataChanged();
     }
 
-    public void upload(Path accountPath) throws IOException, GeneralSecurityException {
+    public void upload(Path accountPath, int delay) throws IOException, GeneralSecurityException {
         Account account = new Account(accountPath);
         RecordUploader api = Api.newRecordUploader(account.userNo, account.token);
 
@@ -135,7 +133,7 @@ public class ResultManager {
                 recordModel.update(data.newRecord);
                 tableModel.fireTableRowsUpdated(data.recordNumber, data.recordNumber);
 
-                TimeUnit.MILLISECONDS.sleep(UPLOAD_DELAY);
+                TimeUnit.MILLISECONDS.sleep(delay);
             }
         } catch (InterruptedException e) {
             while (queue.peek() != null) {
