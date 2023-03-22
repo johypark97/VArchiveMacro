@@ -7,6 +7,7 @@ import com.google.common.collect.Table;
 import java.awt.Image;
 
 public class CollectionTaskData {
+    public Exception exception;
     public Image fullImage;
     public Image titleImage;
     public final Table<Button, Pattern, RecordData> records = HashBasedTable.create();

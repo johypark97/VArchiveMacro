@@ -87,6 +87,12 @@ public class Scanner {
 
         CollectionTaskData data = new CollectionTaskData();
 
+        Exception exception = task.getException();
+        if (exception != null) {
+            data.exception = exception;
+            return data;
+        }
+
         BufferedImage image = task.loadImage();
         data.fullImage = image;
 

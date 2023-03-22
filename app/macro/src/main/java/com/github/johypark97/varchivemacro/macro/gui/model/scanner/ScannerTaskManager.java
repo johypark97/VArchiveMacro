@@ -62,7 +62,7 @@ class ScannerTaskManager {
                 case CAPTURED -> "captured";
                 case DISK_LOADED -> "loaded from disk";
                 case DISK_SAVED -> "saved to disk";
-                case EXCEPTION -> "exception occurred";
+                case EXCEPTION -> "error occurred";
                 case NONE -> "none";
                 case WAITING -> "waiting";
             };

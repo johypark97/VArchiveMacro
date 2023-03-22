@@ -30,8 +30,11 @@ import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MacroPresenter implements Presenter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MacroPresenter.class);
     private static final String ERROR_LOG_PREFIX = "Error: ";
 
     // model
@@ -61,6 +64,8 @@ public class MacroPresenter implements Presenter {
         };
         Consumer<Exception> whenThrown = (e) -> {
             Toolkit.getDefaultToolkit().beep();
+            LOGGER.atError().log("", e);
+            view.addLog("An error occurred while running a command.");
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
         };
 
@@ -220,7 +225,8 @@ public class MacroPresenter implements Presenter {
 
         try {
             configModel.save();
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            LOGGER.atError().log("", e);
         }
 
         clearHook();
@@ -237,6 +243,7 @@ public class MacroPresenter implements Presenter {
             stop();
             return;
         } catch (Exception e) {
+            LOGGER.atError().log("", e);
             view.showErrorDialog(ERROR_LOG_PREFIX + e.getMessage());
             stop();
             return;
@@ -249,7 +256,8 @@ public class MacroPresenter implements Presenter {
             stop();
             return;
         } catch (Exception e) {
-            view.showErrorDialog("ERROR: " + e.getMessage());
+            LOGGER.atError().log("", e);
+            view.showErrorDialog(ERROR_LOG_PREFIX + e.getMessage());
             stop();
             return;
         }
@@ -269,6 +277,8 @@ public class MacroPresenter implements Presenter {
         } catch (IOException e) {
             view.addLog("Config file read error: " + e.getMessage());
         } catch (Exception e) {
+            LOGGER.atError().log("", e);
+            view.addLog("An error occurred while loading config.");
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
         }
 
@@ -289,6 +299,8 @@ public class MacroPresenter implements Presenter {
         } catch (IOException e) {
             view.addLog("Record file read error: " + e.getMessage());
         } catch (Exception e) {
+            LOGGER.atError().log("", e);
+            view.addLog("An error occurred while loading local records.");
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
         }
     }
@@ -319,8 +331,9 @@ public class MacroPresenter implements Presenter {
         }
 
         LocalSong song = (LocalSong) node.getUserObject();
-
-        String text = String.format("Title: %s%nComposer: %s", song.title(), song.composer());
+        List<String> arguments = List.of("Title: %s", "Composer: %s", "DLC: %s", "Tab: %s");
+        String text = String.format(String.join("%n", arguments), song.title(), song.composer(),
+                song.dlc(), song.dlcTab());
         view.showRecord(text, recordModel.getRecords(song.id()));
     }
 
@@ -337,11 +350,17 @@ public class MacroPresenter implements Presenter {
         try {
             taskData = scanner.getTaskData(taskNumber);
         } catch (Exception e) {
+            view.addLog("An error occurred while loading task data.");
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
             return;
         }
 
         if (taskData == null) {
+            return;
+        }
+
+        if (taskData.exception != null) {
+            view.addLog("Occurred error: " + taskData.exception.getMessage());
             return;
         }
 
