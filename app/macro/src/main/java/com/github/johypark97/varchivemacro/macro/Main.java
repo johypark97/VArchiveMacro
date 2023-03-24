@@ -11,6 +11,8 @@ import com.github.johypark97.varchivemacro.macro.gui.view.ExpectedView;
 import com.github.johypark97.varchivemacro.macro.gui.view.LicenseView;
 import com.github.johypark97.varchivemacro.macro.gui.view.MacroView;
 import com.github.johypark97.varchivemacro.macro.gui.view.ScannerTaskView;
+import com.github.johypark97.varchivemacro.macro.util.Language;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class Main {
@@ -21,6 +23,14 @@ public class Main {
 
         SwingUtilities.invokeLater(() -> {
             setSystemLookAndFeel();
+
+            try {
+                Language.init();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             Main main = new Main();
             main.macroPresenter.start();
