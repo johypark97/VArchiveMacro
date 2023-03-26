@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.macro.gui.view;
 
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IExpected.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IExpected.View;
-import com.github.johypark97.varchivemacro.macro.util.ExpectedViewKey;
-import com.github.johypark97.varchivemacro.macro.util.Language;
+import com.github.johypark97.varchivemacro.macro.resource.ExpectedViewKey;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;

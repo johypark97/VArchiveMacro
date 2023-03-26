@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.util;
+package com.github.johypark97.varchivemacro.macro.resource;
 
 import java.util.Arrays;
 import java.util.List;

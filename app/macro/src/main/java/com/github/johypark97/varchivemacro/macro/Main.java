@@ -11,7 +11,7 @@ import com.github.johypark97.varchivemacro.macro.gui.view.ExpectedView;
 import com.github.johypark97.varchivemacro.macro.gui.view.LicenseView;
 import com.github.johypark97.varchivemacro.macro.gui.view.MacroView;
 import com.github.johypark97.varchivemacro.macro.gui.view.ScannerTaskView;
-import com.github.johypark97.varchivemacro.macro.util.Language;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 

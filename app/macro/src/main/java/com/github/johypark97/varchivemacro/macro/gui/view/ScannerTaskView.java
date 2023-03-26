@@ -7,8 +7,8 @@ import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.Pres
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.View;
-import com.github.johypark97.varchivemacro.macro.util.Language;
-import com.github.johypark97.varchivemacro.macro.util.ScannerTaskViewKey;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.resource.ScannerTaskViewKey;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.awt.BorderLayout;
