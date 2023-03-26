@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.google.common.collect.Table;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.JFrame;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -21,6 +22,8 @@ public interface IMacro {
         void viewClosed();
 
         void openLicenseView(JFrame frame);
+
+        void changeLanguage(Locale locale);
 
         void loadServerRecord(String djName);
 

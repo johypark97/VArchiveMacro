@@ -7,6 +7,8 @@ import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.Pres
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.View;
+import com.github.johypark97.varchivemacro.macro.util.Language;
+import com.github.johypark97.varchivemacro.macro.util.ScannerTaskViewKey;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.awt.BorderLayout;
@@ -34,7 +36,6 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
     @Serial
     private static final long serialVersionUID = 1403466149083029200L;
 
-    private static final String WINDOW_TITLE = "Captured Image";
     private static final int WINDOW_HEIGHT = 480;
     private static final int WINDOW_WIDTH = 960;
 
@@ -46,9 +47,13 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
     private JLabel titleImage;
     private transient final Table<Button, Pattern, RecordBox> recordBoxes = HashBasedTable.create();
 
-    public ScannerTaskView(JFrame parent) {
-        super(parent, WINDOW_TITLE, false);
+    // variables
+    private transient final Language lang = Language.getInstance();
 
+    public ScannerTaskView(JFrame parent) {
+        super(parent, false);
+
+        setTitle(lang.get(ScannerTaskViewKey.WINDOW_TITLE));
         setFrameOption();
         setContentPanel();
         setContent();
@@ -72,18 +77,19 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
     private void setContent() {
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        tabbedPane.addTab("Analyzed image", createAnalyzedImageTab());
-        tabbedPane.addTab("Full image", createFullImageTab());
+        tabbedPane.addTab(lang.get(ScannerTaskViewKey.TAB_RESULT), createResultTab());
+        tabbedPane.addTab(lang.get(ScannerTaskViewKey.TAB_FULL_IMAGE), createFullImageTab());
 
         add(tabbedPane, BorderLayout.CENTER);
     }
 
-    private Component createAnalyzedImageTab() {
+    private Component createResultTab() {
         JPanel panel = new JPanel(new BorderLayout());
 
         // title
         JPanel titlePanel = new JPanel(new BorderLayout());
-        titlePanel.setBorder(BorderFactory.createTitledBorder("Title"));
+        titlePanel.setBorder(
+                BorderFactory.createTitledBorder(lang.get(ScannerTaskViewKey.TITLE_IMAGE)));
         {
             titleImage = new JLabel();
             titlePanel.add(titleImage);
@@ -92,7 +98,8 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
 
         // record grid
         JPanel recordGrid = new JPanel();
-        recordGrid.setBorder(BorderFactory.createTitledBorder("Records"));
+        recordGrid.setBorder(
+                BorderFactory.createTitledBorder(lang.get(ScannerTaskViewKey.RECORD_IMAGE)));
         {
             int rows = Pattern.values().length + 1;
             int columns = Button.values().length + 1;

@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Optional;
@@ -32,6 +34,7 @@ public class Language {
         }
         instance.locale = loader.getLocale();
 
+        testLocale();
         saveLocale(loader.getLocale());
     }
 
@@ -50,10 +53,26 @@ public class Language {
         return locale;
     }
 
-    protected static void saveLocale(Locale locale) {
+    public static void saveLocale(Locale locale) {
         try {
             Files.writeString(CONFIG_PATH, locale.toLanguageTag());
         } catch (Exception ignored) {
+        }
+    }
+
+    protected static void testLocale() {
+        List<String> keys = new LinkedList<>();
+        keys.addAll(MacroViewKey.valueList());
+        keys.addAll(MacroPresenterKey.valueList());
+        keys.addAll(ExpectedViewKey.valueList());
+        keys.addAll(ScannerTaskViewKey.valueList());
+
+        for (String key : keys) {
+            if (instance.properties.get(key) == null) {
+                throw new IllegalStateException(
+                        String.format("Language key '%s' does not exist in locale '%s'", key,
+                                instance.locale));
+            }
         }
     }
 
@@ -67,6 +86,22 @@ public class Language {
 
     public String get(String key) {
         return properties.getProperty(key);
+    }
+
+    public String get(MacroViewKey key) {
+        return get(key.toString());
+    }
+
+    public String get(MacroPresenterKey key) {
+        return get(key.toString());
+    }
+
+    public String get(ExpectedViewKey key) {
+        return get(key.toString());
+    }
+
+    public String get(ScannerTaskViewKey key) {
+        return get(key.toString());
     }
 }
 

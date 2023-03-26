@@ -8,6 +8,8 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.util.BuildInfo;
+import com.github.johypark97.varchivemacro.macro.util.Language;
+import com.github.johypark97.varchivemacro.macro.util.MacroViewKey;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
@@ -26,7 +28,9 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -74,17 +78,17 @@ public class MacroView extends JFrame implements View, WindowListener {
     private static final int LOG_ROWS = 8;
     private static final int WINDOW_HEIGHT = 768;
     private static final int WINDOW_WIDTH = 1024;
-    public static final Set<String> DEFAULT_DLCS = Set.of("RESPECT", "PORTABLE 1", "PORTABLE 2");
+    protected static final Set<String> DEFAULT_DLCS = Set.of("RESPECT", "PORTABLE 1", "PORTABLE 2");
 
     // presenter
     public transient Presenter presenter;
 
     // components
-    private JMenu menuFile;
-    private JMenu menuInfo;
-    protected JMenuItem menuItemAbout;
-    protected JMenuItem menuItemExit;
-    protected JMenuItem menuItemOSL;
+    protected JMenuItem menuAbout;
+    protected JMenuItem menuExit;
+    protected JMenuItem menuLangEng;
+    protected JMenuItem menuLangKor;
+    protected JMenuItem menuOSL;
 
     private JTextArea recordViewerTextArea;
     private JTree recordViewerTree;
@@ -120,6 +124,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     private transient final ActionListener menuListener = new MacroViewMenuListener(this);
 
     // variables
+    private transient final Language lang = Language.getInstance();
     protected transient Path accountPath;
     protected transient Path cacheDirPath;
 
@@ -129,7 +134,6 @@ public class MacroView extends JFrame implements View, WindowListener {
         setFrameOption();
         setContentPanel();
         setContent();
-        setText();
 
         addWindowListener(this);
     }
@@ -158,41 +162,50 @@ public class MacroView extends JFrame implements View, WindowListener {
         add(createBottom(), BorderLayout.PAGE_END);
     }
 
-    private void setText() {
-        menuFile.setText("File");
-        menuInfo.setText("Info");
-        menuItemAbout.setText("About");
-        menuItemExit.setText("Exit");
-        menuItemOSL.setText("Open Source License");
-    }
-
     private Component createMenu() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
         // menu file
-        menuFile = new JMenu();
+        JMenu menuFile = new JMenu(lang.get(MacroViewKey.MENU_FILE));
         {
-            menuItemExit = new JMenuItem();
-            menuItemExit.addActionListener(menuListener);
-            menuFile.add(menuItemExit);
+            menuExit = new JMenuItem(lang.get(MacroViewKey.MENU_FILE_EXIT));
+            menuExit.addActionListener(menuListener);
+            menuFile.add(menuExit);
         }
         menuBar.add(menuFile);
 
         // menu info
-        menuInfo = new JMenu();
+        JMenu menuInfo = new JMenu(lang.get(MacroViewKey.MENU_INFO));
         {
-            menuItemOSL = new JMenuItem();
-            menuItemOSL.addActionListener(menuListener);
-            menuInfo.add(menuItemOSL);
+            menuOSL = new JMenuItem(lang.get(MacroViewKey.MENU_INFO_OSL));
+            menuOSL.addActionListener(menuListener);
+            menuInfo.add(menuOSL);
 
             menuInfo.addSeparator();
 
-            menuItemAbout = new JMenuItem();
-            menuItemAbout.addActionListener(menuListener);
-            menuInfo.add(menuItemAbout);
+            menuAbout = new JMenuItem(lang.get(MacroViewKey.MENU_INFO_ABOUT));
+            menuAbout.addActionListener(menuListener);
+            menuInfo.add(menuAbout);
         }
         menuBar.add(menuInfo);
+
+        JMenu menuLanguage = new JMenu(lang.get(MacroViewKey.MENU_LANGUAGE));
+        {
+            List<JMenuItem> list = new LinkedList<>();
+
+            menuLangEng = new JMenuItem("English");
+            list.add(menuLangEng);
+
+            menuLangKor = new JMenuItem("한국어");
+            list.add(menuLangKor);
+
+            list.forEach((x) -> {
+                x.addActionListener(menuListener);
+                menuLanguage.add(x);
+            });
+        }
+        menuBar.add(menuLanguage);
 
         return menuBar;
     }
@@ -200,9 +213,9 @@ public class MacroView extends JFrame implements View, WindowListener {
     private Component createCenter() {
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        tabbedPane.addTab("Record Viewer", createViewerTab());
-        tabbedPane.addTab("Scanner", createScannerTab());
-        tabbedPane.addTab("Macro (WIP)", createMacroTab());
+        tabbedPane.addTab(lang.get(MacroViewKey.TAB_RECORD_VIEWER), createViewerTab());
+        tabbedPane.addTab(lang.get(MacroViewKey.TAB_SCANNER), createScannerTab());
+        tabbedPane.addTab(lang.get(MacroViewKey.TAB_MACRO), createMacroTab());
 
         return tabbedPane;
     }
@@ -215,7 +228,7 @@ public class MacroView extends JFrame implements View, WindowListener {
         {
             toolBox.add(Box.createHorizontalGlue());
 
-            loadRemoteRecordButton = new JButton("Load server record");
+            loadRemoteRecordButton = new JButton(lang.get(MacroViewKey.LOAD_REMOTE_RECORD_BUTTON));
             loadRemoteRecordButton.addActionListener(buttonListener);
             toolBox.add(loadRemoteRecordButton);
 
@@ -312,25 +325,28 @@ public class MacroView extends JFrame implements View, WindowListener {
                 // button box
                 Box buttonBox = Box.createHorizontalBox();
                 {
-                    showScannerTaskButton = new JButton("Show");
+                    showScannerTaskButton =
+                            new JButton(lang.get(MacroViewKey.SHOW_SCANNER_TASK_BUTTON));
                     showScannerTaskButton.addActionListener(buttonListener);
                     buttonBox.add(showScannerTaskButton);
 
                     buttonBox.add(Box.createHorizontalGlue());
 
-                    loadCachedImagesButton = new JButton("Load cached images");
+                    loadCachedImagesButton =
+                            new JButton(lang.get(MacroViewKey.LOAD_CACHED_IMAGES_BUTTON));
                     loadCachedImagesButton.addActionListener(buttonListener);
                     buttonBox.add(loadCachedImagesButton);
 
                     buttonBox.add(Box.createHorizontalGlue());
 
-                    analyzeScannerTaskButton = new JButton("Analyze");
+                    analyzeScannerTaskButton =
+                            new JButton(lang.get(MacroViewKey.ANALYZE_SCANNER_TASK_BUTTON));
                     analyzeScannerTaskButton.addActionListener(buttonListener);
                     buttonBox.add(analyzeScannerTaskButton);
                 }
                 taskPanel.add(buttonBox, BorderLayout.PAGE_END);
             }
-            tabbedPane.addTab("Task", taskPanel);
+            tabbedPane.addTab(lang.get(MacroViewKey.TAB_SCANNER_TASK), taskPanel);
 
             JPanel resultPanel = new JPanel(new BorderLayout());
             {
@@ -366,33 +382,37 @@ public class MacroView extends JFrame implements View, WindowListener {
                 // button box
                 Box buttonBox = Box.createHorizontalBox();
                 {
-                    refreshScannerResultButton = new JButton("Refresh");
+                    refreshScannerResultButton =
+                            new JButton(lang.get(MacroViewKey.REFRESH_SCANNER_RESULT_BUTTON));
                     refreshScannerResultButton.addActionListener(buttonListener);
                     buttonBox.add(refreshScannerResultButton);
 
                     buttonBox.add(Box.createHorizontalGlue());
 
-                    selectAllRecordButton = new JButton("Select all");
+                    selectAllRecordButton = new JButton(lang.get(MacroViewKey.SELECT_ALL_BUTTON));
                     selectAllRecordButton.addActionListener(buttonListener);
                     buttonBox.add(selectAllRecordButton);
 
-                    unselectAllRecordButton = new JButton("Unselect all");
+                    unselectAllRecordButton =
+                            new JButton(lang.get(MacroViewKey.UNSELECT_ALL_BUTTON));
                     unselectAllRecordButton.addActionListener(buttonListener);
                     buttonBox.add(unselectAllRecordButton);
 
                     buttonBox.add(Box.createHorizontalGlue());
 
-                    uploadRecordButton = new JButton("Upload");
+                    uploadRecordButton = new JButton(lang.get(MacroViewKey.UPLOAD_RECORD_BUTTON));
                     uploadRecordButton.addActionListener(buttonListener);
                     buttonBox.add(uploadRecordButton);
                 }
                 resultPanel.add(buttonBox, BorderLayout.PAGE_END);
             }
-            tabbedPane.addTab("Result", resultPanel);
+            tabbedPane.addTab(lang.get(MacroViewKey.TAB_SCANNER_RESULT), resultPanel);
 
             JScrollPane settingScrollPane = new JScrollPane();
             settingScrollPane.getVerticalScrollBar().setUnitIncrement(16);
             {
+                String COLON = ": ";
+
                 // base panel
                 JPanel basePanel = new JPanel(new BorderLayout());
                 settingScrollPane.setViewportView(basePanel);
@@ -409,14 +429,16 @@ public class MacroView extends JFrame implements View, WindowListener {
                 {
                     int row = 0;
 
-                    components.put(row, 0, new JLabel("Account file : "));
+                    components.put(row, 0, new JLabel(
+                            lang.get(MacroViewKey.SETTING_SCANNER_ACCOUNT_FILE) + COLON));
 
                     accountFileTextField = new JTextField();
                     accountFileTextField.setBackground(Color.WHITE);
                     accountFileTextField.setEditable(false);
                     components.put(row, 1, accountFileTextField);
 
-                    selectAccountFileButton = new JButton("Select");
+                    selectAccountFileButton =
+                            new JButton(lang.get(MacroViewKey.SETTING_SCANNER_SELECT));
                     selectAccountFileButton.addActionListener(buttonListener);
                     components.put(row, 2, selectAccountFileButton);
                 }
@@ -425,14 +447,16 @@ public class MacroView extends JFrame implements View, WindowListener {
                 {
                     int row = 1;
 
-                    components.put(row, 0, new JLabel("Cache directory : "));
+                    components.put(row, 0, new JLabel(
+                            lang.get(MacroViewKey.SETTING_SCANNER_CACHE_DIRECTORY) + COLON));
 
                     cacheDirTextField = new JTextField();
                     cacheDirTextField.setBackground(Color.WHITE);
                     cacheDirTextField.setEditable(false);
                     components.put(row, 1, cacheDirTextField);
 
-                    selectCacheDirectoryButton = new JButton("Select");
+                    selectCacheDirectoryButton =
+                            new JButton(lang.get(MacroViewKey.SETTING_SCANNER_SELECT));
                     selectCacheDirectoryButton.addActionListener(buttonListener);
                     components.put(row, 2, selectCacheDirectoryButton);
                 }
@@ -446,7 +470,8 @@ public class MacroView extends JFrame implements View, WindowListener {
                     recordUploadDelaySlider.setLimitMax(1000);
                     recordUploadDelaySlider.setLimitMin(10);
 
-                    recordUploadDelaySlider.label.setText("Record upload delay : ");
+                    recordUploadDelaySlider.label.setText(
+                            lang.get(MacroViewKey.SETTING_SCANNER_RECORD_UPLOAD_DELAY) + COLON);
                     components.put(row, 0, recordUploadDelaySlider.label);
 
                     recordUploadDelaySlider.slider.setMajorTickSpacing(40);
@@ -471,7 +496,8 @@ public class MacroView extends JFrame implements View, WindowListener {
                     scannerKeyInputDuration.setLimitMax(100);
                     scannerKeyInputDuration.setLimitMin(0);
 
-                    scannerKeyInputDuration.label.setText("Key input duration : ");
+                    scannerKeyInputDuration.label.setText(
+                            lang.get(MacroViewKey.SETTING_SCANNER_KEY_INPUT_DURATION) + COLON);
                     components.put(row, 0, scannerKeyInputDuration.label);
 
                     scannerKeyInputDuration.slider.setMajorTickSpacing(20);
@@ -512,7 +538,7 @@ public class MacroView extends JFrame implements View, WindowListener {
                     layout.setVerticalGroup(vGroup);
                 }
             }
-            tabbedPane.addTab("Setting", settingScrollPane);
+            tabbedPane.addTab(lang.get(MacroViewKey.TAB_SCANNER_SETTING), settingScrollPane);
         }
         panel.add(tabbedPane, BorderLayout.CENTER);
 
@@ -521,7 +547,8 @@ public class MacroView extends JFrame implements View, WindowListener {
         {
             dlcCheckboxScrollPane = new JScrollPane();
             dlcCheckboxScrollPane.getVerticalScrollBar().setUnitIncrement(16);
-            dlcCheckboxScrollPane.setBorder(BorderFactory.createTitledBorder("Owned DLC Tabs"));
+            dlcCheckboxScrollPane.setBorder(
+                    BorderFactory.createTitledBorder(lang.get(MacroViewKey.DLC_CHECKBOX_TITLE)));
             dlcPanel.add(dlcCheckboxScrollPane, BorderLayout.CENTER);
 
             // button box
@@ -529,17 +556,17 @@ public class MacroView extends JFrame implements View, WindowListener {
             {
                 Box box = Box.createHorizontalBox();
                 {
-                    selectAllDlcButton = new JButton("Select all");
+                    selectAllDlcButton = new JButton(lang.get(MacroViewKey.SELECT_ALL_BUTTON));
                     selectAllDlcButton.addActionListener(buttonListener);
                     box.add(selectAllDlcButton);
 
-                    unselectAllDlcButton = new JButton("Unselect all");
+                    unselectAllDlcButton = new JButton(lang.get(MacroViewKey.UNSELECT_ALL_BUTTON));
                     unselectAllDlcButton.addActionListener(buttonListener);
                     box.add(unselectAllDlcButton);
                 }
                 buttonBox.add(box);
 
-                showExpectedButton = new JButton("Show expected");
+                showExpectedButton = new JButton(lang.get(MacroViewKey.SHOW_EXPECTED_BUTTON));
                 showExpectedButton.setAlignmentX(Component.CENTER_ALIGNMENT);
                 showExpectedButton.addActionListener(buttonListener);
                 ComponentSize.expandWidthOnly(showExpectedButton);
@@ -567,15 +594,21 @@ public class MacroView extends JFrame implements View, WindowListener {
         JPanel controlPanel = new JPanel(new BorderLayout());
         {
             JTextArea textArea = new JTextArea();
-            textArea.setBorder(BorderFactory.createTitledBorder("Controls"));
+            textArea.setBorder(
+                    BorderFactory.createTitledBorder(lang.get(MacroViewKey.CONTROL_TITLE)));
             textArea.setEditable(false);
             textArea.setOpaque(false);
 
-            textArea.setText(
-                    "[Ctrl + Home]: Start the scanning command\n[Ctrl + End]: Stop command");
+            StringBuilder builder = new StringBuilder();
+            builder.append("[Ctrl + Home]: ");
+            builder.append(lang.get(MacroViewKey.CONTROL_START_SCANNING));
+            builder.append(System.lineSeparator());
+            builder.append("[Ctrl + End]: ");
+            builder.append(lang.get(MacroViewKey.CONTROL_STOP));
+            textArea.setText(builder.toString());
             controlPanel.add(textArea, BorderLayout.CENTER);
 
-            stopCommandButton = new JButton("Stop a running command");
+            stopCommandButton = new JButton(lang.get(MacroViewKey.CONTROL_STOP));
             stopCommandButton.addActionListener(buttonListener);
             ComponentSize.setPreferredHeight(stopCommandButton, 32);
 
@@ -793,10 +826,14 @@ class MacroViewMenuListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if (source.equals(view.menuItemExit)) {
+        if (source.equals(view.menuExit)) {
             view.presenter.stop();
-        } else if (source.equals(view.menuItemOSL)) {
+        } else if (source.equals(view.menuOSL)) {
             view.presenter.openLicenseView(view);
+        } else if (source.equals(view.menuLangEng)) {
+            view.presenter.changeLanguage(Locale.ENGLISH);
+        } else if (source.equals(view.menuLangKor)) {
+            view.presenter.changeLanguage(Locale.KOREAN);
         } else {
             view.addLog(source.toString());
         }
@@ -811,6 +848,7 @@ class MacroViewButtonListener implements ActionListener {
     private final AccountFileChooser accountFileChooser = new AccountFileChooser();
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private final MacroView view;
+    private final Language lang = Language.getInstance();
 
     public MacroViewButtonListener(MacroView view) {
         this.view = view;
@@ -821,7 +859,8 @@ class MacroViewButtonListener implements ActionListener {
         Object source = e.getSource();
 
         if (source.equals(view.loadRemoteRecordButton)) {
-            String djName = JOptionPane.showInputDialog(view, "Please enter your DJ Name");
+            String djName =
+                    JOptionPane.showInputDialog(view, lang.get(MacroViewKey.DIALOG_DJ_NAME));
             if (djName != null) {
                 view.presenter.loadServerRecord(djName);
             }

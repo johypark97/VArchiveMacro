@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.gui.view;
 
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IExpected.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IExpected.View;
+import com.github.johypark97.varchivemacro.macro.util.ExpectedViewKey;
+import com.github.johypark97.varchivemacro.macro.util.Language;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
@@ -21,7 +23,6 @@ public class ExpectedView extends JDialog implements View, WindowListener {
     @Serial
     private static final long serialVersionUID = -8933266479200356692L;
 
-    private static final String WINDOW_TITLE = "Expected Song List";
     private static final int WINDOW_HEIGHT = 640;
     private static final int WINDOW_WIDTH = 480;
 
@@ -31,9 +32,13 @@ public class ExpectedView extends JDialog implements View, WindowListener {
     // components
     private JTree tree;
 
-    public ExpectedView(JFrame parent) {
-        super(parent, WINDOW_TITLE, true);
+    // variables
+    private transient final Language lang = Language.getInstance();
 
+    public ExpectedView(JFrame parent) {
+        super(parent, true);
+
+        setTitle(lang.get(ExpectedViewKey.WINDOW_TITLE));
         setFrameOption();
         setContentPanel();
         setContent();
@@ -57,7 +62,7 @@ public class ExpectedView extends JDialog implements View, WindowListener {
     private void setContent() {
         Box toolBox = Box.createHorizontalBox();
         {
-            JCheckBox checkBox = new JCheckBox("Always on Top");
+            JCheckBox checkBox = new JCheckBox(lang.get(ExpectedViewKey.ALWAYS_ON_TOP));
             checkBox.addActionListener((e) -> setAlwaysOnTop(checkBox.isSelected()));
             toolBox.add(checkBox);
         }

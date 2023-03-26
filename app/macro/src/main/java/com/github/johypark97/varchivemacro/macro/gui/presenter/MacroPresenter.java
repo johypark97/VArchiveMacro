@@ -15,6 +15,8 @@ import com.github.johypark97.varchivemacro.macro.gui.model.scanner.Scanner;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
+import com.github.johypark97.varchivemacro.macro.util.Language;
+import com.github.johypark97.varchivemacro.macro.util.MacroPresenterKey;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -36,6 +39,7 @@ import org.slf4j.LoggerFactory;
 public class MacroPresenter implements Presenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(MacroPresenter.class);
     private static final String ERROR_LOG_PREFIX = "Error: ";
+    private static final String COLON = ": ";
 
     // model
     private SongModel songModel;
@@ -53,27 +57,30 @@ public class MacroPresenter implements Presenter {
     private ILicense.Presenter licensePresenter;
     private IScannerTask.Presenter scannerTaskPresenter;
 
+    // variables
+    private final Language lang = Language.getInstance();
+
     public MacroPresenter(Class<? extends View> viewClass) {
         Runnable whenDone = () -> {
             Toolkit.getDefaultToolkit().beep();
-            view.addLog("Done.");
+            view.addLog(lang.get(MacroPresenterKey.WHEN_DONE));
         };
         Runnable whenCanceled = () -> {
             Toolkit.getDefaultToolkit().beep();
-            view.addLog("Canceled.");
+            view.addLog(lang.get(MacroPresenterKey.WHEN_CANCELED));
         };
         Consumer<Exception> whenThrown = (e) -> {
             Toolkit.getDefaultToolkit().beep();
             LOGGER.atError().log("", e);
-            view.addLog("An error occurred while running a command.");
+            view.addLog(lang.get(MacroPresenterKey.WHEN_THROWN));
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
         };
 
         recordModel.whenDone = whenDone;
         recordModel.whenThrown = whenThrown;
 
-        recordModel.whenStart_loadRemote =
-                (djName) -> view.addLog("Loading record... DJ Name: " + djName);
+        recordModel.whenStart_loadRemote = (djName) -> view.addLog(
+                lang.get(MacroPresenterKey.WHEN_START_LOAD_REMOTE) + " " + djName);
 
         scanner.whenCanceled = whenCanceled;
         scanner.whenDone = whenDone;
@@ -81,13 +88,18 @@ public class MacroPresenter implements Presenter {
 
         scanner.whenCaptureDone = () -> {
             Toolkit.getDefaultToolkit().beep();
-            view.addLog("Capture done.");
+            view.addLog(lang.get(MacroPresenterKey.WHEN_CAPTURE_DONE));
         };
-        scanner.whenStart_analyze = () -> view.addLog("Analyzing...");
-        scanner.whenStart_capture = () -> view.addLog("Scanning...");
-        scanner.whenStart_collectResult = () -> view.addLog("Refreshing the result...");
-        scanner.whenStart_loadImages = () -> view.addLog("Loading images from disk...");
-        scanner.whenStart_uploadRecord = () -> view.addLog("Uploading records...");
+        scanner.whenStart_analyze =
+                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_ANALYZE));
+        scanner.whenStart_capture =
+                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_CAPTURE));
+        scanner.whenStart_collectResult =
+                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_COLLECT_RESULT));
+        scanner.whenStart_loadImages =
+                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_LOAD_IMAGES));
+        scanner.whenStart_uploadRecord =
+                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_UPLOAD_RECORD));
 
         this.viewClass = viewClass;
     }
@@ -139,9 +151,9 @@ public class MacroPresenter implements Presenter {
 
     private void startCommand(Command command) {
         if (commandRunner.start(command)) {
-            view.addLog("-------- Start command --------");
+            view.addLog(lang.get(MacroPresenterKey.START_COMMAND));
         } else {
-            view.addLog("Another command is running.");
+            view.addLog(lang.get(MacroPresenterKey.COMMAND_IS_RUNNING));
         }
     }
 
@@ -213,7 +225,7 @@ public class MacroPresenter implements Presenter {
     @Override
     public synchronized void stop() {
         if (commandRunner.isRunning()) {
-            view.addLog("A command is running. Cannot exit.");
+            view.addLog(lang.get(MacroPresenterKey.COMMAND_IS_RUNNING_CANNOT_EXIT));
             return;
         }
 
@@ -275,10 +287,10 @@ public class MacroPresenter implements Presenter {
         try {
             configModel.load();
         } catch (IOException e) {
-            view.addLog("Config file read error: " + e.getMessage());
+            view.addLog(lang.get(MacroPresenterKey.LOADING_CONFIG_ERROR) + COLON + e.getMessage());
         } catch (Exception e) {
             LOGGER.atError().log("", e);
-            view.addLog("An error occurred while loading config.");
+            view.addLog(lang.get(MacroPresenterKey.LOADING_CONFIG_EXCEPTION));
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
         }
 
@@ -290,17 +302,18 @@ public class MacroPresenter implements Presenter {
 
         try {
             if (recordModel.loadLocal()) {
-                view.addLog("Record file loaded.");
+                view.addLog(lang.get(MacroPresenterKey.LOADING_RECORD_LOADED));
             } else {
-                String message = "Record file not found. Please load your records form the server.";
+                String message = lang.get(MacroPresenterKey.LOADING_RECORD_PLEASE_LOAD);
                 view.addLog(message);
-                view.showMessageDialog("Record file not found", message);
+                view.showMessageDialog(lang.get(MacroPresenterKey.LOADING_RECORD_FILE_NOT_FOUND),
+                        message);
             }
         } catch (IOException e) {
-            view.addLog("Record file read error: " + e.getMessage());
+            view.addLog(lang.get(MacroPresenterKey.LOADING_RECORD_ERROR) + COLON + e.getMessage());
         } catch (Exception e) {
             LOGGER.atError().log("", e);
-            view.addLog("An error occurred while loading local records.");
+            view.addLog(lang.get(MacroPresenterKey.LOADING_RECORD_EXCEPTION));
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
         }
     }
@@ -315,6 +328,12 @@ public class MacroPresenter implements Presenter {
     @Override
     public void openLicenseView(JFrame frame) {
         licensePresenter.start(frame);
+    }
+
+    @Override
+    public void changeLanguage(Locale locale) {
+        Language.saveLocale(locale);
+        view.showMessageDialog("", lang.get(MacroPresenterKey.CHANGE_LANGUAGE));
     }
 
     @Override
@@ -341,7 +360,7 @@ public class MacroPresenter implements Presenter {
     public void openExpected(JFrame frame) {
         Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
         Map<String, List<LocalSong>> tabSongMap = songModel.getTabSongMap(ownedDlcTabs);
-        expectedPresenter.start(frame, createTabSongTreeModel("Expected Song List", tabSongMap));
+        expectedPresenter.start(frame, createTabSongTreeModel("List", tabSongMap));
     }
 
     @Override
@@ -350,7 +369,7 @@ public class MacroPresenter implements Presenter {
         try {
             taskData = scanner.getTaskData(taskNumber);
         } catch (Exception e) {
-            view.addLog("An error occurred while loading task data.");
+            view.addLog(lang.get(MacroPresenterKey.LOADING_TASK_DATA_EXCEPTION));
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
             return;
         }
@@ -360,7 +379,8 @@ public class MacroPresenter implements Presenter {
         }
 
         if (taskData.exception != null) {
-            view.addLog("Occurred error: " + taskData.exception.getMessage());
+            view.addLog(lang.get(MacroPresenterKey.LOADING_TASK_DATA_OCCURRED) + COLON
+                    + taskData.exception.getMessage());
             return;
         }
 
@@ -400,11 +420,6 @@ public class MacroPresenter implements Presenter {
 
     @Override
     public void uploadRecord(Path accountPath) {
-        if (accountPath == null) {
-            view.showErrorDialog("No account file selected");
-            return;
-        }
-
         int uploadDelay = view.getRecordUploadDelay();
         Command command = scanner.getCommand_uploadRecord(accountPath, uploadDelay);
         startCommand(command);
@@ -413,7 +428,7 @@ public class MacroPresenter implements Presenter {
     @Override
     public void stopCommand() {
         if (!commandRunner.stop()) {
-            view.addLog("No command is running.");
+            view.addLog(lang.get(MacroPresenterKey.COMMAND_IS_NOT_RUNNING));
         }
     }
 }
