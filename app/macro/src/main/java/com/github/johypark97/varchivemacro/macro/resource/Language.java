@@ -62,9 +62,9 @@ public class Language {
 
     protected static void testLocale() {
         List<String> keys = new LinkedList<>();
-        keys.addAll(MacroViewKey.valueList());
-        keys.addAll(MacroPresenterKey.valueList());
         keys.addAll(ExpectedViewKey.valueList());
+        keys.addAll(MacroPresenterKey.valueList());
+        keys.addAll(MacroViewKey.valueList());
         keys.addAll(ScannerTaskViewKey.valueList());
 
         for (String key : keys) {

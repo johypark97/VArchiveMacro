@@ -17,6 +17,7 @@ import com.google.common.collect.TreeBasedTable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -36,9 +37,6 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout.ParallelGroup;
-import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -176,21 +174,7 @@ public class MacroView extends JFrame implements View, WindowListener {
         }
         menuBar.add(menuFile);
 
-        // menu info
-        JMenu menuInfo = new JMenu(lang.get(MacroViewKey.MENU_INFO));
-        {
-            menuOSL = new JMenuItem(lang.get(MacroViewKey.MENU_INFO_OSL));
-            menuOSL.addActionListener(menuListener);
-            menuInfo.add(menuOSL);
-
-            menuInfo.addSeparator();
-
-            menuAbout = new JMenuItem(lang.get(MacroViewKey.MENU_INFO_ABOUT));
-            menuAbout.addActionListener(menuListener);
-            menuInfo.add(menuAbout);
-        }
-        menuBar.add(menuInfo);
-
+        // menu language
         JMenu menuLanguage = new JMenu(lang.get(MacroViewKey.MENU_LANGUAGE));
         {
             List<JMenuItem> list = new LinkedList<>();
@@ -207,6 +191,21 @@ public class MacroView extends JFrame implements View, WindowListener {
             });
         }
         menuBar.add(menuLanguage);
+
+        // menu info
+        JMenu menuInfo = new JMenu(lang.get(MacroViewKey.MENU_INFO));
+        {
+            menuOSL = new JMenuItem(lang.get(MacroViewKey.MENU_INFO_OSL));
+            menuOSL.addActionListener(menuListener);
+            menuInfo.add(menuOSL);
+
+            menuInfo.addSeparator();
+
+            menuAbout = new JMenuItem(lang.get(MacroViewKey.MENU_INFO_ABOUT));
+            menuAbout.addActionListener(menuListener);
+            menuInfo.add(menuAbout);
+        }
+        menuBar.add(menuInfo);
 
         return menuBar;
     }
@@ -418,53 +417,50 @@ public class MacroView extends JFrame implements View, WindowListener {
                 JPanel basePanel = new JPanel(new BorderLayout());
                 settingScrollPane.setViewportView(basePanel);
 
-                // group panel
-                JPanel groupPanel = new JPanel();
-                GroupLayout layout = new GroupLayout(groupPanel);
-                groupPanel.setLayout(layout);
-                basePanel.add(groupPanel, BorderLayout.PAGE_START);
+                // layout panel
+                JPanel layoutPanel = new JPanel();
+                EasyGroupLayout layout = new EasyGroupLayout(layoutPanel);
+                layoutPanel.setLayout(layout);
+                basePanel.add(layoutPanel, BorderLayout.PAGE_START);
 
                 Table<Integer, Integer, Component> components = TreeBasedTable.create();
-
-                // row 0
                 {
                     int row = 0;
+                    int column = 0;
 
-                    components.put(row, 0, new JLabel(
+                    components.put(row, column++, new JLabel(
                             lang.get(MacroViewKey.SETTING_SCANNER_ACCOUNT_FILE) + COLON));
 
                     accountFileTextField = new JTextField();
                     accountFileTextField.setBackground(Color.WHITE);
                     accountFileTextField.setEditable(false);
-                    components.put(row, 1, accountFileTextField);
+                    components.put(row, column++, accountFileTextField);
 
                     selectAccountFileButton =
                             new JButton(lang.get(MacroViewKey.SETTING_SCANNER_SELECT));
                     selectAccountFileButton.addActionListener(buttonListener);
-                    components.put(row, 2, selectAccountFileButton);
+                    components.put(row, column, selectAccountFileButton);
                 }
-
-                // row 1
                 {
                     int row = 1;
+                    int column = 0;
 
-                    components.put(row, 0, new JLabel(
+                    components.put(row, column++, new JLabel(
                             lang.get(MacroViewKey.SETTING_SCANNER_CACHE_DIRECTORY) + COLON));
 
                     cacheDirTextField = new JTextField();
                     cacheDirTextField.setBackground(Color.WHITE);
                     cacheDirTextField.setEditable(false);
-                    components.put(row, 1, cacheDirTextField);
+                    components.put(row, column++, cacheDirTextField);
 
                     selectCacheDirectoryButton =
                             new JButton(lang.get(MacroViewKey.SETTING_SCANNER_SELECT));
                     selectCacheDirectoryButton.addActionListener(buttonListener);
-                    components.put(row, 2, selectCacheDirectoryButton);
+                    components.put(row, column, selectCacheDirectoryButton);
                 }
-
-                // row 2
                 {
                     int row = 2;
+                    int column = 0;
 
                     recordUploadDelaySlider = new SliderSet();
                     recordUploadDelaySlider.setDefault(RECORD_UPLOAD_DELAY);
@@ -473,7 +469,7 @@ public class MacroView extends JFrame implements View, WindowListener {
 
                     recordUploadDelaySlider.label.setText(
                             lang.get(MacroViewKey.SETTING_SCANNER_RECORD_UPLOAD_DELAY) + COLON);
-                    components.put(row, 0, recordUploadDelaySlider.label);
+                    components.put(row, column++, recordUploadDelaySlider.label);
 
                     recordUploadDelaySlider.slider.setMajorTickSpacing(40);
                     recordUploadDelaySlider.slider.setMaximum(200);
@@ -481,16 +477,15 @@ public class MacroView extends JFrame implements View, WindowListener {
                     recordUploadDelaySlider.slider.setMinorTickSpacing(10);
                     recordUploadDelaySlider.slider.setPaintLabels(true);
                     recordUploadDelaySlider.slider.setPaintTicks(true);
-                    components.put(row, 1, recordUploadDelaySlider.slider);
+                    components.put(row, column++, recordUploadDelaySlider.slider);
 
                     recordUploadDelaySlider.textField.setColumns(8);
                     ComponentSize.preventExpand(recordUploadDelaySlider.textField);
-                    components.put(row, 2, recordUploadDelaySlider.textField);
+                    components.put(row, column, recordUploadDelaySlider.textField);
                 }
-
-                // row 3
                 {
                     int row = 3;
+                    int column = 0;
 
                     scannerKeyInputDuration = new SliderSet();
                     scannerKeyInputDuration.setDefault(SCANNER_KEY_INPUT_DURATION);
@@ -499,7 +494,7 @@ public class MacroView extends JFrame implements View, WindowListener {
 
                     scannerKeyInputDuration.label.setText(
                             lang.get(MacroViewKey.SETTING_SCANNER_KEY_INPUT_DURATION) + COLON);
-                    components.put(row, 0, scannerKeyInputDuration.label);
+                    components.put(row, column++, scannerKeyInputDuration.label);
 
                     scannerKeyInputDuration.slider.setMajorTickSpacing(20);
                     scannerKeyInputDuration.slider.setMaximum(100);
@@ -507,37 +502,14 @@ public class MacroView extends JFrame implements View, WindowListener {
                     scannerKeyInputDuration.slider.setMinorTickSpacing(10);
                     scannerKeyInputDuration.slider.setPaintLabels(true);
                     scannerKeyInputDuration.slider.setPaintTicks(true);
-                    components.put(row, 1, scannerKeyInputDuration.slider);
+                    components.put(row, column++, scannerKeyInputDuration.slider);
 
                     scannerKeyInputDuration.textField.setColumns(8);
                     ComponentSize.preventExpand(scannerKeyInputDuration.textField);
-                    components.put(row, 2, scannerKeyInputDuration.textField);
+                    components.put(row, column, scannerKeyInputDuration.textField);
                 }
 
-                // set layout
-                {
-                    SequentialGroup hGroup = layout.createSequentialGroup();
-                    components.columnMap().forEach((column, columnMap) -> {
-                        ParallelGroup group;
-                        if (column == 0) {
-                            group = layout.createParallelGroup(Alignment.TRAILING);
-                        } else {
-                            group = layout.createParallelGroup();
-                        }
-
-                        columnMap.forEach((row, x) -> group.addComponent(x));
-                        hGroup.addGroup(group);
-                    });
-                    layout.setHorizontalGroup(hGroup);
-
-                    SequentialGroup vGroup = layout.createSequentialGroup();
-                    components.rowMap().forEach((row, rowMap) -> {
-                        ParallelGroup group = layout.createParallelGroup(Alignment.CENTER);
-                        rowMap.forEach((column, x) -> group.addComponent(x));
-                        vGroup.addGroup(group);
-                    });
-                    layout.setVerticalGroup(vGroup);
-                }
+                layout.setContents(components);
             }
             tabbedPane.addTab(lang.get(MacroViewKey.TAB_SCANNER_SETTING), settingScrollPane);
         }
@@ -983,7 +955,7 @@ class AboutPanel extends JPanel {
 
         JPanel center = new JPanel();
         {
-            GroupLayout layout = new GroupLayout(center);
+            EasyGroupLayout layout = new EasyGroupLayout(center);
             layout.setAutoCreateContainerGaps(true);
             layout.setAutoCreateGaps(true);
             center.setLayout(layout);
@@ -1011,31 +983,39 @@ class AboutPanel extends JPanel {
                 components.put(row, column, url);
             }
 
-            // set layout
-            {
-                SequentialGroup hGroup = layout.createSequentialGroup();
-                components.columnMap().forEach((column, columnMap) -> {
-                    ParallelGroup group;
-                    if (column == 0) {
-                        group = layout.createParallelGroup(Alignment.TRAILING);
-                    } else {
-                        group = layout.createParallelGroup();
-                    }
-
-                    columnMap.forEach((row, x) -> group.addComponent(x));
-                    hGroup.addGroup(group);
-                });
-                layout.setHorizontalGroup(hGroup);
-
-                SequentialGroup vGroup = layout.createSequentialGroup();
-                components.rowMap().forEach((row, rowMap) -> {
-                    ParallelGroup group = layout.createParallelGroup(Alignment.CENTER);
-                    rowMap.forEach((column, x) -> group.addComponent(x));
-                    vGroup.addGroup(group);
-                });
-                layout.setVerticalGroup(vGroup);
-            }
+            layout.setContents(components);
         }
         add(center, BorderLayout.CENTER);
+    }
+}
+
+
+class EasyGroupLayout extends GroupLayout {
+    public EasyGroupLayout(Container host) {
+        super(host);
+    }
+
+    public void setContents(Table<Integer, Integer, Component> contents) {
+        SequentialGroup hGroup = createSequentialGroup();
+        contents.columnMap().forEach((column, columnMap) -> {
+            ParallelGroup group;
+            if (column == 0) {
+                group = createParallelGroup(Alignment.TRAILING);
+            } else {
+                group = createParallelGroup();
+            }
+
+            columnMap.forEach((row, x) -> group.addComponent(x));
+            hGroup.addGroup(group);
+        });
+        setHorizontalGroup(hGroup);
+
+        SequentialGroup vGroup = createSequentialGroup();
+        contents.rowMap().forEach((row, rowMap) -> {
+            ParallelGroup group = createParallelGroup(Alignment.CENTER);
+            rowMap.forEach((column, x) -> group.addComponent(x));
+            vGroup.addGroup(group);
+        });
+        setVerticalGroup(vGroup);
     }
 }

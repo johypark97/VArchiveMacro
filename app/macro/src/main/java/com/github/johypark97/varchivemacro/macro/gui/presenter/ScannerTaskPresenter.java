@@ -25,7 +25,7 @@ public class ScannerTaskPresenter implements Presenter {
     }
 
     @Override
-    public void start(JFrame parent, ScannerTaskViewData data) {
+    public synchronized void start(JFrame parent, ScannerTaskViewData data) {
         if (view == null) {
             newView(parent);
         }

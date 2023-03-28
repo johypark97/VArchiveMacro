@@ -350,10 +350,15 @@ public class MacroPresenter implements Presenter {
         }
 
         LocalSong song = (LocalSong) node.getUserObject();
-        List<String> arguments = List.of("Title: %s", "Composer: %s", "DLC: %s", "Tab: %s");
-        String text = String.format(String.join("%n", arguments), song.title(), song.composer(),
-                song.dlc(), song.dlcTab());
-        view.showRecord(text, recordModel.getRecords(song.id()));
+
+        String newline = System.lineSeparator();
+        StringBuilder builder = new StringBuilder();
+        builder.append("Title: ").append(song.title()).append(newline);
+        builder.append("Composer: ").append(song.composer()).append(newline);
+        builder.append("DLC: ").append(song.dlc()).append(newline);
+        builder.append("DLC Tab: ").append(song.dlcTab());
+
+        view.showRecord(builder.toString(), recordModel.getRecords(song.id()));
     }
 
     @Override
