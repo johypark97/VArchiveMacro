@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="macro.view.about.date">빌드 날짜</entry>
+  <entry key="macro.view.about.sourceCode">소스 코드</entry>
+  <entry key="macro.view.about.version">버전</entry>
   <entry key="macro.view.analyzeScannerTaskButton">분석</entry>
   <entry key="macro.view.control.startScanning">스캔 시작</entry>
   <entry key="macro.view.control.stop">작업 중지</entry>

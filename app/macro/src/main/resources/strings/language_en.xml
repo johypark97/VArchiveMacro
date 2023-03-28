@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="macro.view.about.date">Build date</entry>
+  <entry key="macro.view.about.sourceCode">Source code</entry>
+  <entry key="macro.view.about.version">Version</entry>
   <entry key="macro.view.analyzeScannerTaskButton">Analyze</entry>
   <entry key="macro.view.control.startScanning">Start scanning</entry>
   <entry key="macro.view.control.stop">Stop command</entry>

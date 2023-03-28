@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
+import com.github.johypark97.varchivemacro.macro.gui.view.components.UrlLabel;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.johypark97.varchivemacro.macro.resource.MacroViewKey;
@@ -828,6 +829,8 @@ class MacroViewMenuListener implements ActionListener {
 
         if (source.equals(view.menuExit)) {
             view.presenter.stop();
+        } else if (source.equals(view.menuAbout)) {
+            JOptionPane.showMessageDialog(view, new AboutPanel());
         } else if (source.equals(view.menuOSL)) {
             view.presenter.openLicenseView(view);
         } else if (source.equals(view.menuLangEng)) {
@@ -959,5 +962,80 @@ class DirectoryChooser extends JFileChooser {
 
         Path path = getSelectedFile().toPath();
         return path.startsWith(CURRENT_DIRECTORY) ? CURRENT_DIRECTORY.relativize(path) : path;
+    }
+}
+
+
+class AboutPanel extends JPanel {
+    @Serial
+    private static final long serialVersionUID = -7443336903636741728L;
+
+    private static final Language lang = Language.getInstance();
+    private static final String GITHUB_URL = "https://github.com/johypark97/VArchiveMacro";
+
+    public AboutPanel() {
+        super(new BorderLayout());
+
+        JLabel title = new JLabel("VArchive Macro");
+        title.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        title.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+        add(title, BorderLayout.PAGE_START);
+
+        JPanel center = new JPanel();
+        {
+            GroupLayout layout = new GroupLayout(center);
+            layout.setAutoCreateContainerGaps(true);
+            layout.setAutoCreateGaps(true);
+            center.setLayout(layout);
+
+            Table<Integer, Integer, Component> components = TreeBasedTable.create();
+            {
+                int row = 0;
+                int column = 0;
+                components.put(row, column++, new JLabel(lang.get(MacroViewKey.ABOUT_VERSION)));
+                components.put(row, column, new JLabel(BuildInfo.version));
+            }
+            {
+                int row = 1;
+                int column = 0;
+                components.put(row, column++, new JLabel(lang.get(MacroViewKey.ABOUT_DATE)));
+                components.put(row, column, new JLabel(BuildInfo.date));
+            }
+            {
+                int row = 2;
+                int column = 0;
+                components.put(row, column++, new JLabel(lang.get(MacroViewKey.ABOUT_SOURCE_CODE)));
+
+                UrlLabel url = new UrlLabel();
+                url.setUrl(GITHUB_URL);
+                components.put(row, column, url);
+            }
+
+            // set layout
+            {
+                SequentialGroup hGroup = layout.createSequentialGroup();
+                components.columnMap().forEach((column, columnMap) -> {
+                    ParallelGroup group;
+                    if (column == 0) {
+                        group = layout.createParallelGroup(Alignment.TRAILING);
+                    } else {
+                        group = layout.createParallelGroup();
+                    }
+
+                    columnMap.forEach((row, x) -> group.addComponent(x));
+                    hGroup.addGroup(group);
+                });
+                layout.setHorizontalGroup(hGroup);
+
+                SequentialGroup vGroup = layout.createSequentialGroup();
+                components.rowMap().forEach((row, rowMap) -> {
+                    ParallelGroup group = layout.createParallelGroup(Alignment.CENTER);
+                    rowMap.forEach((column, x) -> group.addComponent(x));
+                    vGroup.addGroup(group);
+                });
+                layout.setVerticalGroup(vGroup);
+            }
+        }
+        add(center, BorderLayout.CENTER);
     }
 }

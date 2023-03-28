@@ -5,6 +5,9 @@ import java.util.List;
 
 public enum MacroViewKey {
     // @formatter:off
+    ABOUT_DATE("about.date"),
+    ABOUT_SOURCE_CODE("about.sourceCode"),
+    ABOUT_VERSION("about.version"),
     ANALYZE_SCANNER_TASK_BUTTON("analyzeScannerTaskButton"),
     CONTROL_START_SCANNING("control.startScanning"),
     CONTROL_STOP("control.stop"),
