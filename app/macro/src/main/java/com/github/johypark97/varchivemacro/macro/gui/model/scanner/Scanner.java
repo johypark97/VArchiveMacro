@@ -41,9 +41,9 @@ public class Scanner {
         resultManager.setModels(songModel, recordModel);
     }
 
-    public Command getCommand_scan(Path cacheDir, int inputDuration,
+    public Command getCommand_scan(Path cacheDir, int captureDelay, int inputDuration,
             Map<String, List<LocalSong>> tabSongMap) {
-        Command root = createCommand_scan(cacheDir, inputDuration, tabSongMap);
+        Command root = createCommand_scan(cacheDir, captureDelay, inputDuration, tabSongMap);
         root.setNext(getCommand_analyze());
         return root;
     }
@@ -121,7 +121,7 @@ public class Scanner {
         return data;
     }
 
-    protected Command createCommand_scan(Path cachePath, int inputDuration,
+    protected Command createCommand_scan(Path cachePath, int captureDelay, int inputDuration,
             Map<String, List<LocalSong>> tabSongMap) {
         return new AbstractCommand() {
             @Override
@@ -131,7 +131,7 @@ public class Scanner {
                 taskManager.clear();
                 taskManager.setCacheDir(cachePath);
 
-                CaptureService captureService = new CaptureService(inputDuration);
+                CaptureService captureService = new CaptureService(captureDelay, inputDuration);
                 captureService.execute(taskManager, tabSongMap);
 
                 try {

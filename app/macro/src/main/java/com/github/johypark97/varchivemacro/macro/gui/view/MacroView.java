@@ -98,6 +98,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     private JScrollPane dlcCheckboxScrollPane;
     private JTextArea logTextArea;
     private transient SliderSet recordUploadDelaySlider;
+    private transient SliderSet scannerCaptureDelay;
     private transient SliderSet scannerKeyInputDuration;
     protected JButton analyzeScannerTaskButton;
     protected JButton loadCachedImagesButton;
@@ -487,6 +488,31 @@ public class MacroView extends JFrame implements View, WindowListener {
                     int row = 3;
                     int column = 0;
 
+                    scannerCaptureDelay = new SliderSet();
+                    scannerCaptureDelay.setDefault(SCANNER_CAPTURE_DELAY);
+                    scannerCaptureDelay.setLimitMax(1000);
+                    scannerCaptureDelay.setLimitMin(0);
+
+                    scannerCaptureDelay.label.setText(
+                            lang.get(MacroViewKey.SETTING_SCANNER_CAPTURE_DELAY) + COLON);
+                    components.put(row, column++, scannerCaptureDelay.label);
+
+                    scannerCaptureDelay.slider.setMajorTickSpacing(100);
+                    scannerCaptureDelay.slider.setMaximum(500);
+                    scannerCaptureDelay.slider.setMinimum(0);
+                    scannerCaptureDelay.slider.setMinorTickSpacing(50);
+                    scannerCaptureDelay.slider.setPaintLabels(true);
+                    scannerCaptureDelay.slider.setPaintTicks(true);
+                    components.put(row, column++, scannerCaptureDelay.slider);
+
+                    scannerCaptureDelay.textField.setColumns(8);
+                    ComponentSize.preventExpand(scannerCaptureDelay.textField);
+                    components.put(row, column, scannerCaptureDelay.textField);
+                }
+                {
+                    int row = 4;
+                    int column = 0;
+
                     scannerKeyInputDuration = new SliderSet();
                     scannerKeyInputDuration.setDefault(SCANNER_KEY_INPUT_DURATION);
                     scannerKeyInputDuration.setLimitMax(100);
@@ -743,6 +769,16 @@ public class MacroView extends JFrame implements View, WindowListener {
     @Override
     public void setRecordUploadDelay(int value) {
         recordUploadDelaySlider.setValue(value);
+    }
+
+    @Override
+    public int getScannerCaptureDelay() {
+        return scannerCaptureDelay.getValue();
+    }
+
+    @Override
+    public void setScannerCaptureDelay(int value) {
+        scannerCaptureDelay.setValue(value);
     }
 
     @Override

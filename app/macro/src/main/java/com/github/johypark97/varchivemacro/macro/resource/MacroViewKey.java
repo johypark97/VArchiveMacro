@@ -26,6 +26,7 @@ public enum MacroViewKey {
     SELECT_ALL_BUTTON("selectAllButton"),
     SETTING_SCANNER_ACCOUNT_FILE("setting.scanner.accountFile"),
     SETTING_SCANNER_CACHE_DIRECTORY("setting.scanner.cacheDirectory"),
+    SETTING_SCANNER_CAPTURE_DELAY("setting.scanner.captureDelay"),
     SETTING_SCANNER_KEY_INPUT_DURATION("setting.scanner.keyInputDuration"),
     SETTING_SCANNER_RECORD_UPLOAD_DELAY("setting.scanner.recordUploadDelay"),
     SETTING_SCANNER_SELECT("setting.scanner.select"),

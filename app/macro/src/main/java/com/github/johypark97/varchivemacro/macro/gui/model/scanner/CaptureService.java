@@ -24,10 +24,11 @@ class CaptureService {
     private final ImageCachingService imageCachingService = new ImageCachingService();
     private final Robot robot;
 
+    private final int captureDelay;
     private final int inputDuration;
     public Exception exception;
 
-    public CaptureService(int inputDuration) {
+    public CaptureService(int captureDelay, int inputDuration) {
         try {
             robot = new Robot();
         } catch (AWTException e) {
@@ -36,10 +37,14 @@ class CaptureService {
             throw new RuntimeException(e);
         }
 
+        if (captureDelay < 0) {
+            throw new IllegalArgumentException("captureDelay must be positive: " + captureDelay);
+        }
         if (inputDuration < 0) {
             throw new IllegalArgumentException("inputDuration must be positive: " + inputDuration);
         }
 
+        this.captureDelay = captureDelay;
         this.inputDuration = inputDuration;
     }
 
@@ -79,6 +84,8 @@ class CaptureService {
                         } else {
                             tabKey(KeyEvent.VK_DOWN);
                         }
+
+                        TimeUnit.MILLISECONDS.sleep(captureDelay);
 
                         BufferedImage image = robot.createScreenCapture(screenRect);
 

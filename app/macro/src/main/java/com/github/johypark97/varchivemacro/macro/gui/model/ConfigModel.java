@@ -84,6 +84,20 @@ public class ConfigModel implements MacroViewConfig {
     }
 
     @Override
+    public int getScannerCaptureDelay() {
+        if (data.scannerCaptureDelay == null) {
+            data.scannerCaptureDelay = SCANNER_CAPTURE_DELAY;
+        }
+
+        return data.scannerCaptureDelay;
+    }
+
+    @Override
+    public void setScannerCaptureDelay(int value) {
+        data.scannerCaptureDelay = value;
+    }
+
+    @Override
     public int getScannerKeyInputDuration() {
         if (data.scannerKeyInputDuration == null) {
             data.scannerKeyInputDuration = SCANNER_KEY_INPUT_DURATION;

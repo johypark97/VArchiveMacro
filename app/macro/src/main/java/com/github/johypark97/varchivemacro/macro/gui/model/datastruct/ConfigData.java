@@ -27,6 +27,9 @@ public class ConfigData {
     public Integer recordUploadDelay;
 
     @Expose
+    public Integer scannerCaptureDelay;
+
+    @Expose
     public Integer scannerKeyInputDuration;
 
     @Expose

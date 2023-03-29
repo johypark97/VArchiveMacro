@@ -191,13 +191,15 @@ public class MacroPresenter implements Presenter {
                 if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_HOME) {
                     if (ctrl && !shift) {
                         Path path = view.getCacheDir();
+                        int captureDelay = view.getScannerCaptureDelay();
                         int inputDuration = view.getScannerKeyInputDuration();
 
                         Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
                         Map<String, List<LocalSong>> tapSongMap =
                                 songModel.getTabSongMap(ownedDlcTabs);
 
-                        Command command = scanner.getCommand_scan(path, inputDuration, tapSongMap);
+                        Command command = scanner.getCommand_scan(path, captureDelay, inputDuration,
+                                tapSongMap);
                         startCommand(command);
                     }
                 }
@@ -232,6 +234,7 @@ public class MacroPresenter implements Presenter {
         configModel.setAccountPath(view.getAccountPath());
         configModel.setCacheDir(view.getCacheDir());
         configModel.setRecordUploadDelay(view.getRecordUploadDelay());
+        configModel.setScannerCaptureDelay(view.getScannerCaptureDelay());
         configModel.setScannerKeyInputDuration(view.getScannerKeyInputDuration());
         configModel.setSelectedDlcTabs(view.getSelectedDlcTabs());
 
@@ -297,6 +300,7 @@ public class MacroPresenter implements Presenter {
         view.setAccountPath(configModel.getAccountPath());
         view.setCacheDir(configModel.getCacheDir());
         view.setRecordUploadDelay(configModel.getRecordUploadDelay());
+        view.setScannerCaptureDelay(configModel.getScannerCaptureDelay());
         view.setScannerKeyInputDuration(configModel.getScannerKeyInputDuration());
         view.setSelectedDlcTabs(configModel.getSelectedDlcTabs());
 

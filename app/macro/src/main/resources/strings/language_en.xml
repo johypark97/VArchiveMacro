@@ -22,6 +22,7 @@
   <entry key="macro.view.selectAllButton">Select all</entry>
   <entry key="macro.view.setting.scanner.accountFile">Account file</entry>
   <entry key="macro.view.setting.scanner.cacheDirectory">Cached directory</entry>
+  <entry key="macro.view.setting.scanner.captureDelay">Capture delay [ms]</entry>
   <entry key="macro.view.setting.scanner.keyInputDuration">Key input duration [ms]</entry>
   <entry key="macro.view.setting.scanner.recordUploadDelay">Record upload delay [ms]</entry>
   <entry key="macro.view.setting.scanner.select">Select</entry>

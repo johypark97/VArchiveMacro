@@ -22,6 +22,7 @@
   <entry key="macro.view.selectAllButton">전체 선택</entry>
   <entry key="macro.view.setting.scanner.accountFile">계정 파일</entry>
   <entry key="macro.view.setting.scanner.cacheDirectory">캐시 디렉토리</entry>
+  <entry key="macro.view.setting.scanner.captureDelay">캡처 딜레이 [ms]</entry>
   <entry key="macro.view.setting.scanner.keyInputDuration">키 입력 시간 [ms]</entry>
   <entry key="macro.view.setting.scanner.recordUploadDelay">기록 업로드 딜레이 [ms]</entry>
   <entry key="macro.view.setting.scanner.select">선택</entry>

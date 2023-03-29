@@ -5,6 +5,7 @@ import java.util.Set;
 
 public interface MacroViewConfig {
     int RECORD_UPLOAD_DELAY = 40;
+    int SCANNER_CAPTURE_DELAY = 0;
     int SCANNER_KEY_INPUT_DURATION = 20;
 
     Path getAccountPath();
@@ -22,6 +23,10 @@ public interface MacroViewConfig {
     int getRecordUploadDelay();
 
     void setRecordUploadDelay(int value);
+
+    int getScannerCaptureDelay();
+
+    void setScannerCaptureDelay(int value);
 
     int getScannerKeyInputDuration();
 
