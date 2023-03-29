@@ -13,7 +13,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.Set;
 
 public class ConfigData {
@@ -33,8 +32,7 @@ public class ConfigData {
     public Integer scannerKeyInputDuration;
 
     @Expose
-    public Set<String> selectedDlcTabs =
-            new HashSet<>(Set.of("RESPECT", "PORTABLE 1", "PORTABLE 2"));
+    public Set<String> selectedDlcTabs = Set.of("PORTABLE 1", "PORTABLE 2");
 
     public void save(Path path) throws IOException {
         Files.writeString(path, createGson().toJson(this));

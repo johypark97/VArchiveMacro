@@ -77,7 +77,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     private static final int LOG_ROWS = 8;
     private static final int WINDOW_HEIGHT = 768;
     private static final int WINDOW_WIDTH = 1024;
-    protected static final Set<String> DEFAULT_DLCS = Set.of("RESPECT", "PORTABLE 1", "PORTABLE 2");
+    protected static final Set<String> DEFAULT_DLCS = Set.of("PORTABLE 1", "PORTABLE 2");
 
     // presenter
     public transient Presenter presenter;
