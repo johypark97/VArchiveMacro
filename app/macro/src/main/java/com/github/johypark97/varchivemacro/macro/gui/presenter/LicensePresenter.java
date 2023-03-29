@@ -34,7 +34,7 @@ public class LicensePresenter implements Presenter {
         }
         newView(parent);
 
-        view.setLicenses(licenseModel.getList());
+        view.setLicenseList(licenseModel.getList());
 
         view.showView();
     }
@@ -47,11 +47,13 @@ public class LicensePresenter implements Presenter {
     }
 
     @Override
-    public String getLicense(String key) {
+    public void getLicense(String key) {
         try {
-            return licenseModel.getText(key);
+            view.setLicenseText(licenseModel.getText(key));
+            view.setLicenseUrl(licenseModel.getUrl(key));
         } catch (Exception e) {
-            return e.getMessage();
+            view.setLicenseText(e.getMessage());
+            view.setLicenseUrl("");
         }
     }
 }

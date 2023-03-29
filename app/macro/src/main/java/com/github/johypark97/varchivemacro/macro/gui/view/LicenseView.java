@@ -2,6 +2,9 @@ package com.github.johypark97.varchivemacro.macro.gui.view;
 
 import com.github.johypark97.varchivemacro.macro.gui.presenter.ILicense.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.ILicense.View;
+import com.github.johypark97.varchivemacro.macro.gui.view.components.UrlLabel;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.resource.MacroViewKey;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -25,11 +28,10 @@ public class LicenseView extends JDialog implements View, WindowListener {
     @Serial
     private static final long serialVersionUID = -8568849941252758711L;
 
-    private static final String WINDOW_TITLE = "Open Source License";
     private static final int LIST_FONT_SIZE = 14;
     private static final int TEXT_AREA_FONT_SIZE = 12;
-    private static final int WINDOW_HEIGHT = 480;
-    private static final int WINDOW_WIDTH = 640;
+    private static final int WINDOW_HEIGHT = 600;
+    private static final int WINDOW_WIDTH = 800;
 
     // presenter
     public transient Presenter presenter;
@@ -37,10 +39,12 @@ public class LicenseView extends JDialog implements View, WindowListener {
     // components
     private JList<String> list;
     private JTextArea textArea;
+    private UrlLabel urlLabel;
 
     public LicenseView(JFrame parent) {
-        super(parent, WINDOW_TITLE, true);
+        super(parent, true);
 
+        setTitle(Language.getInstance().get(MacroViewKey.MENU_INFO_OSL));
         setFrameOption();
         setContentPanel();
         setContent();
@@ -68,13 +72,12 @@ public class LicenseView extends JDialog implements View, WindowListener {
 
     private Component createList() {
         list = new JList<>();
-        list.setFont(new Font(Font.MONOSPACED, Font.PLAIN, LIST_FONT_SIZE));
+        list.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, LIST_FONT_SIZE));
 
         list.addListSelectionListener((e) -> {
             String value = list.getSelectedValue();
             if (value != null) {
-                textArea.setText(presenter.getLicense(value));
-                textArea.setCaretPosition(0);
+                presenter.getLicense(value);
             }
         });
 
@@ -85,16 +88,20 @@ public class LicenseView extends JDialog implements View, WindowListener {
     }
 
     private Component createTextArea() {
+        JPanel panel = new JPanel(new BorderLayout());
+        Border in = BorderFactory.createLineBorder(Color.GRAY);
+        Border out = BorderFactory.createEmptyBorder(0, 5, 0, 0);
+        panel.setBorder(BorderFactory.createCompoundBorder(out, in));
+
         textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, TEXT_AREA_FONT_SIZE));
+        panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
 
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        Border in = BorderFactory.createLineBorder(Color.GRAY);
-        Border out = BorderFactory.createEmptyBorder(0, 5, 0, 0);
-        scrollPane.setBorder(BorderFactory.createCompoundBorder(out, in));
+        urlLabel = new UrlLabel();
+        panel.add(urlLabel, BorderLayout.PAGE_END);
 
-        return scrollPane;
+        return panel;
     }
 
     @Override
@@ -108,10 +115,21 @@ public class LicenseView extends JDialog implements View, WindowListener {
     }
 
     @Override
-    public void setLicenses(List<String> licenses) {
+    public void setLicenseList(List<String> licenses) {
         DefaultListModel<String> model = new DefaultListModel<>();
         model.addAll(licenses);
         list.setModel(model);
+    }
+
+    @Override
+    public void setLicenseText(String text) {
+        textArea.setText(text);
+        textArea.setCaretPosition(0);
+    }
+
+    @Override
+    public void setLicenseUrl(String url) {
+        urlLabel.setUrl(url);
     }
 
     @Override

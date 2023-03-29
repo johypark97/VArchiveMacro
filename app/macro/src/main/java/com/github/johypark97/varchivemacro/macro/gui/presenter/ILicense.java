@@ -9,7 +9,7 @@ public interface ILicense {
 
         void viewClosed();
 
-        String getLicense(String key);
+        void getLicense(String key);
     }
 
 
@@ -18,6 +18,10 @@ public interface ILicense {
 
         void showView();
 
-        void setLicenses(List<String> licenses);
+        void setLicenseList(List<String> licenses);
+
+        void setLicenseText(String text);
+
+        void setLicenseUrl(String url);
     }
 }

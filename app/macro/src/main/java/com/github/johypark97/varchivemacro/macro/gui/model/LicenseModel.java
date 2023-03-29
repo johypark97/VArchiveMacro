@@ -1,7 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
+import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_general;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
 
+import com.github.johypark97.varchivemacro.macro.gui.model.datastruct.LicenseData;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -9,25 +12,36 @@ import java.util.List;
 import java.util.Map;
 
 public class LicenseModel {
-    private static final String NEWLINE = System.lineSeparator();
-    private static final String PATH = "/licenses/";
+    private static final String BASE_PATH = "/licenses/";
+    private static final String JSON_PATH = BASE_PATH + "licenses.json";
 
-    private static final Map<String, String> LICENSES =
-            Map.ofEntries(Map.entry("Gson", PATH + "gson.txt"),
-                    Map.entry("JNativeHook", PATH + "jnativehook.txt"),
-                    Map.entry("Launch4j", PATH + "launch4j.txt"));
+    private final Map<String, LicenseData> licenses;
+
+    public LicenseModel() {
+        URL url = getClass().getResource(JSON_PATH);
+        if (url == null) {
+            throw new RuntimeException("file not found: " + JSON_PATH);
+        }
+
+        try (InputStream stream = url.openStream()) {
+            List<String> lines = readAllLines(stream);
+            String allLine = String.join("", lines);
+
+            Gson gson = newGsonBuilder_general().create();
+            licenses = gson.fromJson(allLine, new LicenseData.GsonTypeToken());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public List<String> getList() {
-        return LICENSES.keySet().stream().sorted().toList();
+        return licenses.keySet().stream().sorted().toList();
     }
 
     public String getText(String key) throws IOException {
-        String path = LICENSES.get(key);
-        if (path == null) {
-            return "ERROR: invalid key";
-        }
+        LicenseData data = licenses.get(key);
 
-        URL url = getClass().getResource(path);
+        URL url = getClass().getResource(BASE_PATH + data.path());
         if (url == null) {
             return "ERROR: resource not found";
         }
@@ -37,6 +51,11 @@ public class LicenseModel {
             lines = readAllLines(stream);
         }
 
-        return String.join(NEWLINE, lines);
+        return String.join(System.lineSeparator(), lines);
+    }
+
+    public String getUrl(String key) {
+        LicenseData data = licenses.get(key);
+        return data.url();
     }
 }

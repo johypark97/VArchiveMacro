@@ -1,0 +1,42 @@
+{
+  "Gson": {
+    "path": "gson.txt",
+    "url": "https://github.com/google/gson"
+  },
+  "Guava": {
+    "path": "guava.txt",
+    "url": "https://github.com/google/guava"
+  },
+  "JavaCPP Presets": {
+    "path": "javacpp-presets.txt",
+    "url": "https://github.com/bytedeco/javacpp-presets"
+  },
+  "JNativeHook": {
+    "path": "jnativehook.txt",
+    "url": "https://github.com/kwhat/jnativehook"
+  },
+  "Launch4j": {
+    "path": "launch4j.txt",
+    "url": "https://launch4j.sourceforge.net/"
+  },
+  "Leptonica": {
+    "path": "leptonica.txt",
+    "url": "https://github.com/danbloomberg/leptonica"
+  },
+  "Logback": {
+    "path": "logback.txt",
+    "url": "https://logback.qos.ch/"
+  },
+  "SLF4J": {
+    "path": "slf4j.txt",
+    "url": "https://www.slf4j.org/"
+  },
+  "tessdata": {
+    "path": "tessdata.txt",
+    "url": "https://github.com/tesseract-ocr/tessdata"
+  },
+  "Tesseract OCR": {
+    "path": "tesseract.txt",
+    "url": "https://github.com/tesseract-ocr/tesseract"
+  }
+}
