@@ -430,6 +430,8 @@ public class MacroView extends JFrame implements View, WindowListener {
                 // layout panel
                 JPanel layoutPanel = new JPanel();
                 EasyGroupLayout layout = new EasyGroupLayout(layoutPanel);
+                layout.setAutoCreateContainerGaps(true);
+                layout.setAutoCreateGaps(true);
                 layoutPanel.setLayout(layout);
                 basePanel.add(layoutPanel, BorderLayout.PAGE_START);
 
@@ -600,6 +602,8 @@ public class MacroView extends JFrame implements View, WindowListener {
             // layout panel
             JPanel layoutPanel = new JPanel();
             EasyGroupLayout layout = new EasyGroupLayout(layoutPanel);
+            layout.setAutoCreateContainerGaps(true);
+            layout.setAutoCreateGaps(true);
             layoutPanel.setLayout(layout);
             basePanel.add(layoutPanel, BorderLayout.PAGE_START);
 

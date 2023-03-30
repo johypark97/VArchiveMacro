@@ -23,6 +23,9 @@ public class ConfigData {
     public Path cacheDir = Path.of("cache");
 
     @Expose
+    public Set<String> selectedDlcTabs = Set.of("PORTABLE 1", "PORTABLE 2");
+
+    @Expose
     public Integer recordUploadDelay;
 
     @Expose
@@ -30,9 +33,6 @@ public class ConfigData {
 
     @Expose
     public Integer scannerKeyInputDuration;
-
-    @Expose
-    public Set<String> selectedDlcTabs = Set.of("PORTABLE 1", "PORTABLE 2");
 
     @Expose
     public String macroAnalyzeKey;
