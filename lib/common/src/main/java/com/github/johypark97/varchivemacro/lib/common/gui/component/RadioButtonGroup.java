@@ -1,17 +1,12 @@
 package com.github.johypark97.varchivemacro.lib.common.gui.component;
 
-import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.swing.ButtonGroup;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-public class RadioButtonGroup<T> extends JPanel {
-    @Serial
-    private static final long serialVersionUID = -5179533965452833323L;
-
+public class RadioButtonGroup<T> {
     private final ButtonGroup group = new ButtonGroup();
     private final Map<T, JRadioButton> buttons = new HashMap<>();
 
@@ -19,13 +14,16 @@ public class RadioButtonGroup<T> extends JPanel {
         return buttons.get(key);
     }
 
-    public void addButton(T key) {
-        if (!buttons.containsKey(key)) {
-            JRadioButton button = new JRadioButton();
-            buttons.put(key, button);
-            group.add(button);
-            add(button);
+    public JRadioButton addButton(T key) {
+        if (buttons.containsKey(key)) {
+            return null;
         }
+
+        JRadioButton button = new JRadioButton();
+        buttons.put(key, button);
+        group.add(button);
+
+        return button;
     }
 
     public void setSelected(T key) {

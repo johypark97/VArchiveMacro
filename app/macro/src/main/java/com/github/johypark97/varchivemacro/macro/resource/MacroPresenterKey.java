@@ -27,6 +27,7 @@ public enum MacroPresenterKey {
     WHEN_START_COLLECT_RESULT("when.start.collectResult"),
     WHEN_START_LOAD_IMAGES("when.start.loadImages"),
     WHEN_START_LOAD_REMOTE("when.start.loadRemote"),
+    WHEN_START_MACRO("when.start.macro"),
     WHEN_START_UPLOAD_RECORD("when.start.uploadRecord"),
     WHEN_THROWN("when.thrown"),
     ;

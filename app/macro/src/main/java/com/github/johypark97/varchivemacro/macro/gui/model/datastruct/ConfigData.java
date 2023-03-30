@@ -34,6 +34,21 @@ public class ConfigData {
     @Expose
     public Set<String> selectedDlcTabs = Set.of("PORTABLE 1", "PORTABLE 2");
 
+    @Expose
+    public String macroAnalyzeKey;
+
+    @Expose
+    public Integer macroCount;
+
+    @Expose
+    public Integer macroCaptureDelay;
+
+    @Expose
+    public Integer macroCaptureDuration;
+
+    @Expose
+    public Integer macroKeyInputDuration;
+
     public void save(Path path) throws IOException {
         Files.writeString(path, createGson().toJson(this));
     }

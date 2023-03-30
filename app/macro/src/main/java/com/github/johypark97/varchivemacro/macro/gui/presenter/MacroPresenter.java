@@ -15,6 +15,7 @@ import com.github.johypark97.varchivemacro.macro.gui.model.scanner.Scanner;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroCommandBuilder.Direction;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.johypark97.varchivemacro.macro.resource.MacroPresenterKey;
 import com.github.kwhat.jnativehook.NativeHookException;
@@ -45,6 +46,7 @@ public class MacroPresenter implements Presenter {
     private SongModel songModel;
     private final CommandRunner commandRunner = new CommandRunner();
     private final ConfigModel configModel = new ConfigModel();
+    private final MacroCommandBuilder macroCommandBuilder = new MacroCommandBuilder();
     private final RecordModel recordModel = new RecordModel();
     private final Scanner scanner = new Scanner();
 
@@ -101,6 +103,12 @@ public class MacroPresenter implements Presenter {
         scanner.whenStart_uploadRecord =
                 () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_UPLOAD_RECORD));
 
+        macroCommandBuilder.whenCanceled = whenCanceled;
+        macroCommandBuilder.whenDone = whenDone;
+        macroCommandBuilder.whenStart =
+                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_MACRO));
+        macroCommandBuilder.whenThrown = whenThrown;
+
         this.viewClass = viewClass;
     }
 
@@ -149,6 +157,17 @@ public class MacroPresenter implements Presenter {
         return new DefaultTreeModel(root);
     }
 
+    private void startMacro(boolean isDirectionUp) {
+        macroCommandBuilder.analyzeKey = view.getMacroAnalyzeKey();
+        macroCommandBuilder.captureDelay = view.getMacroCaptureDelay();
+        macroCommandBuilder.captureDuration = view.getMacroCaptureDuration();
+        macroCommandBuilder.count = view.getMacroCount();
+        macroCommandBuilder.direction = isDirectionUp ? Direction.UP : Direction.DOWN;
+        macroCommandBuilder.keyInputDuration = view.getMacroKeyInputDuration();
+
+        startCommand(macroCommandBuilder.create());
+    }
+
     private void startCommand(Command command) {
         if (commandRunner.start(command)) {
             view.addLog(lang.get(MacroPresenterKey.START_COMMAND));
@@ -164,10 +183,6 @@ public class MacroPresenter implements Presenter {
         HookWrapper.addKeyListener(new NativeKeyListener() {
             @Override
             public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-                if ((nativeEvent.getModifiers() & NativeKeyEvent.CTRL_MASK) == 0) {
-                    return;
-                }
-
                 if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_END) {
                     stopCommand();
                 }
@@ -180,6 +195,9 @@ public class MacroPresenter implements Presenter {
                 boolean ctrl = (mod & NativeKeyEvent.CTRL_MASK) != 0;
                 mod &= ~NativeKeyEvent.CTRL_MASK;
 
+                boolean alt = (mod & NativeKeyEvent.ALT_MASK) != 0;
+                mod &= ~NativeKeyEvent.ALT_MASK;
+
                 boolean shift = (mod & NativeKeyEvent.SHIFT_MASK) != 0;
                 mod &= ~NativeKeyEvent.SHIFT_MASK;
 
@@ -188,8 +206,9 @@ public class MacroPresenter implements Presenter {
                     return;
                 }
 
+                // start scanning
                 if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_HOME) {
-                    if (ctrl && !shift) {
+                    if (ctrl && !alt && !shift) {
                         Path path = view.getCacheDir();
                         int captureDelay = view.getScannerCaptureDelay();
                         int inputDuration = view.getScannerKeyInputDuration();
@@ -201,6 +220,14 @@ public class MacroPresenter implements Presenter {
                         Command command = scanner.getCommand_scan(path, captureDelay, inputDuration,
                                 tapSongMap);
                         startCommand(command);
+                    }
+                }
+
+                // start the client macro
+                if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_OPEN_BRACKET
+                        || nativeEvent.getKeyCode() == NativeKeyEvent.VC_CLOSE_BRACKET) {
+                    if (!ctrl && alt && !shift) {
+                        startMacro(nativeEvent.getKeyCode() == NativeKeyEvent.VC_OPEN_BRACKET);
                     }
                 }
             }
@@ -233,6 +260,11 @@ public class MacroPresenter implements Presenter {
 
         configModel.setAccountPath(view.getAccountPath());
         configModel.setCacheDir(view.getCacheDir());
+        configModel.setMacroAnalyzeKey(view.getMacroAnalyzeKey());
+        configModel.setMacroCaptureDelay(view.getMacroCaptureDelay());
+        configModel.setMacroCaptureDuration(view.getMacroCaptureDuration());
+        configModel.setMacroCount(view.getMacroCount());
+        configModel.setMacroKeyInputDuration(view.getMacroKeyInputDuration());
         configModel.setRecordUploadDelay(view.getRecordUploadDelay());
         configModel.setScannerCaptureDelay(view.getScannerCaptureDelay());
         configModel.setScannerKeyInputDuration(view.getScannerKeyInputDuration());
@@ -299,6 +331,11 @@ public class MacroPresenter implements Presenter {
 
         view.setAccountPath(configModel.getAccountPath());
         view.setCacheDir(configModel.getCacheDir());
+        view.setMacroAnalyzeKey(configModel.getMacroAnalyzeKey());
+        view.setMacroCaptureDelay(configModel.getMacroCaptureDelay());
+        view.setMacroCaptureDuration(configModel.getMacroCaptureDuration());
+        view.setMacroCount(configModel.getMacroCount());
+        view.setMacroKeyInputDuration(configModel.getMacroKeyInputDuration());
         view.setRecordUploadDelay(configModel.getRecordUploadDelay());
         view.setScannerCaptureDelay(configModel.getScannerCaptureDelay());
         view.setScannerKeyInputDuration(configModel.getScannerKeyInputDuration());

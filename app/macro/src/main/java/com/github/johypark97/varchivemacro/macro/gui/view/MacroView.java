@@ -1,12 +1,14 @@
 package com.github.johypark97.varchivemacro.macro.gui.view;
 
 import com.github.johypark97.varchivemacro.lib.common.gui.component.CheckboxGroup;
+import com.github.johypark97.varchivemacro.lib.common.gui.component.RadioButtonGroup;
 import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroAnalyzeKey;
 import com.github.johypark97.varchivemacro.macro.gui.view.components.UrlLabel;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
@@ -47,6 +49,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -118,6 +121,12 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JTextField accountFileTextField;
     protected JTextField cacheDirTextField;
     protected transient CheckboxGroup<String> dlcCheckboxGroup = new CheckboxGroup<>();
+
+    private transient RadioButtonGroup<MacroAnalyzeKey> macroAnalyzeKey;
+    private transient SliderSet macroCaptureDelay;
+    private transient SliderSet macroCaptureDuration;
+    private transient SliderSet macroCount;
+    private transient SliderSet macroKeyInputDuration;
 
     // event listeners
     private transient final ActionListener buttonListener = new MacroViewButtonListener(this);
@@ -494,7 +503,7 @@ public class MacroView extends JFrame implements View, WindowListener {
                     scannerCaptureDelay.setLimitMin(0);
 
                     scannerCaptureDelay.label.setText(
-                            lang.get(MacroViewKey.SETTING_SCANNER_CAPTURE_DELAY) + COLON);
+                            lang.get(MacroViewKey.SETTING_CAPTURE_DELAY) + COLON);
                     components.put(row, column++, scannerCaptureDelay.label);
 
                     scannerCaptureDelay.slider.setMajorTickSpacing(100);
@@ -514,12 +523,12 @@ public class MacroView extends JFrame implements View, WindowListener {
                     int column = 0;
 
                     scannerKeyInputDuration = new SliderSet();
-                    scannerKeyInputDuration.setDefault(SCANNER_KEY_INPUT_DURATION);
+                    scannerKeyInputDuration.setDefault(KEY_INPUT_DURATION);
                     scannerKeyInputDuration.setLimitMax(100);
                     scannerKeyInputDuration.setLimitMin(0);
 
                     scannerKeyInputDuration.label.setText(
-                            lang.get(MacroViewKey.SETTING_SCANNER_KEY_INPUT_DURATION) + COLON);
+                            lang.get(MacroViewKey.SETTING_KEY_INPUT_DURATION) + COLON);
                     components.put(row, column++, scannerKeyInputDuration.label);
 
                     scannerKeyInputDuration.slider.setMajorTickSpacing(20);
@@ -579,7 +588,149 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     private Component createMacroTab() {
-        return new JPanel();
+        String COLON = ": ";
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        {
+            // base panel
+            JPanel basePanel = new JPanel(new BorderLayout());
+            scrollPane.setViewportView(basePanel);
+
+            // layout panel
+            JPanel layoutPanel = new JPanel();
+            EasyGroupLayout layout = new EasyGroupLayout(layoutPanel);
+            layoutPanel.setLayout(layout);
+            basePanel.add(layoutPanel, BorderLayout.PAGE_START);
+
+            Table<Integer, Integer, Component> components = TreeBasedTable.create();
+            {
+                int row = 0;
+                int column = 0;
+
+                components.put(row, column++,
+                        new JLabel(lang.get(MacroViewKey.SETTING_MACRO_ANALYZE_KEY) + COLON));
+
+                macroAnalyzeKey = new RadioButtonGroup<>();
+                {
+                    Box radioBox = Box.createVerticalBox();
+                    for (MacroAnalyzeKey key : MacroAnalyzeKey.values()) {
+                        JRadioButton button = macroAnalyzeKey.addButton(key);
+                        button.setText("[Alt + " + key + "]");
+                        radioBox.add(button);
+                    }
+                    components.put(row, column, radioBox);
+                }
+            }
+            {
+                int row = 1;
+                int column = 0;
+
+                macroCount = new SliderSet();
+                macroCount.setDefault(MACRO_COUNT);
+                macroCount.setLimitMax(10000);
+                macroCount.setLimitMin(0);
+
+                macroCount.label.setText(lang.get(MacroViewKey.SETTING_MACRO_COUNT) + COLON);
+                components.put(row, column++, macroCount.label);
+
+                macroCount.slider.setMajorTickSpacing(200);
+                macroCount.slider.setMaximum(1000);
+                macroCount.slider.setMinimum(0);
+                macroCount.slider.setMinorTickSpacing(50);
+                macroCount.slider.setPaintLabels(true);
+                macroCount.slider.setPaintTicks(true);
+                components.put(row, column++, macroCount.slider);
+
+                macroCount.textField.setColumns(8);
+                ComponentSize.preventExpand(macroCount.textField);
+                components.put(row, column, macroCount.textField);
+            }
+            {
+                int row = 2;
+                int column = 0;
+
+                macroCaptureDelay = new SliderSet();
+                macroCaptureDelay.setDefault(MACRO_CAPTURE_DELAY);
+                macroCaptureDelay.setLimitMax(2000);
+                macroCaptureDelay.setLimitMin(200);
+
+                macroCaptureDelay.label.setText(
+                        lang.get(MacroViewKey.SETTING_CAPTURE_DELAY) + COLON);
+                components.put(row, column++, macroCaptureDelay.label);
+
+                macroCaptureDelay.slider.setMajorTickSpacing(100);
+                macroCaptureDelay.slider.setMaximum(1000);
+                macroCaptureDelay.slider.setMinimum(200);
+                macroCaptureDelay.slider.setMinorTickSpacing(50);
+                macroCaptureDelay.slider.setPaintLabels(true);
+                macroCaptureDelay.slider.setPaintTicks(true);
+                components.put(row, column++, macroCaptureDelay.slider);
+
+                macroCaptureDelay.textField.setColumns(8);
+                ComponentSize.preventExpand(macroCaptureDelay.textField);
+                components.put(row, column, macroCaptureDelay.textField);
+            }
+            {
+                int row = 3;
+                int column = 0;
+
+                macroCaptureDuration = new SliderSet();
+                macroCaptureDuration.setDefault(MACRO_CAPTURE_DURATION);
+                macroCaptureDuration.setLimitMax(500);
+                macroCaptureDuration.setLimitMin(0);
+
+                macroCaptureDuration.label.setText(
+                        lang.get(MacroViewKey.SETTING_MACRO_CAPTURE_DURATION) + COLON);
+                components.put(row, column++, macroCaptureDuration.label);
+
+                macroCaptureDuration.slider.setMajorTickSpacing(50);
+                macroCaptureDuration.slider.setMaximum(200);
+                macroCaptureDuration.slider.setMinimum(0);
+                macroCaptureDuration.slider.setMinorTickSpacing(10);
+                macroCaptureDuration.slider.setPaintLabels(true);
+                macroCaptureDuration.slider.setPaintTicks(true);
+                components.put(row, column++, macroCaptureDuration.slider);
+
+                macroCaptureDuration.textField.setColumns(8);
+                ComponentSize.preventExpand(macroCaptureDuration.textField);
+                components.put(row, column, macroCaptureDuration.textField);
+            }
+            {
+                int row = 4;
+                int column = 0;
+
+                macroKeyInputDuration = new SliderSet();
+                macroKeyInputDuration.setDefault(KEY_INPUT_DURATION);
+                macroKeyInputDuration.setLimitMax(100);
+                macroKeyInputDuration.setLimitMin(0);
+
+                macroKeyInputDuration.label.setText(
+                        lang.get(MacroViewKey.SETTING_KEY_INPUT_DURATION) + COLON);
+                components.put(row, column++, macroKeyInputDuration.label);
+
+                macroKeyInputDuration.slider.setMajorTickSpacing(20);
+                macroKeyInputDuration.slider.setMaximum(100);
+                macroKeyInputDuration.slider.setMinimum(0);
+                macroKeyInputDuration.slider.setMinorTickSpacing(10);
+                macroKeyInputDuration.slider.setPaintLabels(true);
+                macroKeyInputDuration.slider.setPaintTicks(true);
+                components.put(row, column++, macroKeyInputDuration.slider);
+
+                macroKeyInputDuration.textField.setColumns(8);
+                ComponentSize.preventExpand(macroKeyInputDuration.textField);
+                components.put(row, column, macroKeyInputDuration.textField);
+            }
+
+            layout.setContents(components);
+        }
+
+        Box box = Box.createHorizontalBox();
+        box.add(Box.createHorizontalGlue());
+        box.add(scrollPane);
+        box.add(Box.createHorizontalGlue());
+
+        return box;
     }
 
     private Component createBottom() {
@@ -599,12 +750,22 @@ public class MacroView extends JFrame implements View, WindowListener {
             textArea.setOpaque(false);
 
             StringBuilder builder = new StringBuilder();
-            builder.append("[Ctrl + Home]: ");
+            builder.append("( Ctrl + Home ): ");
             builder.append(lang.get(MacroViewKey.CONTROL_START_SCANNING));
             builder.append(System.lineSeparator());
-            builder.append("[Ctrl + End]: ");
+
+            builder.append("( Alt + [ ): ");
+            builder.append(lang.get(MacroViewKey.CONTROL_START_MACRO_UP));
+            builder.append(System.lineSeparator());
+
+            builder.append("( Alt + ] ): ");
+            builder.append(lang.get(MacroViewKey.CONTROL_START_MACRO_DOWN));
+            builder.append(System.lineSeparator());
+
+            builder.append("( End ): ");
             builder.append(lang.get(MacroViewKey.CONTROL_STOP));
             textArea.setText(builder.toString());
+
             controlPanel.add(textArea, BorderLayout.CENTER);
 
             stopCommandButton = new JButton(lang.get(MacroViewKey.CONTROL_STOP));
@@ -789,6 +950,56 @@ public class MacroView extends JFrame implements View, WindowListener {
     @Override
     public void setScannerKeyInputDuration(int value) {
         scannerKeyInputDuration.setValue(value);
+    }
+
+    @Override
+    public MacroAnalyzeKey getMacroAnalyzeKey() {
+        return macroAnalyzeKey.getSelected();
+    }
+
+    @Override
+    public void setMacroAnalyzeKey(MacroAnalyzeKey value) {
+        macroAnalyzeKey.setSelected(value);
+    }
+
+    @Override
+    public int getMacroCount() {
+        return macroCount.getValue();
+    }
+
+    @Override
+    public void setMacroCount(int value) {
+        macroCount.setValue(value);
+    }
+
+    @Override
+    public int getMacroCaptureDelay() {
+        return macroCaptureDelay.getValue();
+    }
+
+    @Override
+    public void setMacroCaptureDelay(int value) {
+        macroCaptureDelay.setValue(value);
+    }
+
+    @Override
+    public int getMacroCaptureDuration() {
+        return macroCaptureDuration.getValue();
+    }
+
+    @Override
+    public void setMacroCaptureDuration(int value) {
+        macroCaptureDuration.setValue(value);
+    }
+
+    @Override
+    public int getMacroKeyInputDuration() {
+        return macroKeyInputDuration.getValue();
+    }
+
+    @Override
+    public void setMacroKeyInputDuration(int value) {
+        macroKeyInputDuration.setValue(value);
     }
 
     @Override
