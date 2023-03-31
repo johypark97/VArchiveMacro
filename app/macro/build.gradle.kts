@@ -6,6 +6,8 @@ val appName = "VArchive Macro"
 val buildBasename = "macro"
 val buildVersion = Version.makeVersionString()
 
+var isDev = true
+
 plugins {
     id("project.java-application-conventions")
 
@@ -27,13 +29,13 @@ application {
     applicationName = appName
     executableDir = ""
 
-    // Include "$projectDir/data" directory in archive files of the distribution task.
+    // Include '$projectDir/data' directory in archive files of the distribution task.
     applicationDistribution.into("data") {
         from("data")
     }
 }
 
-// Another way to include the "$projectDir/data" directory.
+// Another way to include the '$projectDir/data' directory.
 // distributions.main.get().contents.into("data") {
 //     from("data")
 // }
@@ -46,8 +48,18 @@ tasks.register<WriteProperties>("processResources_buildProperties") {
     property("build.version", buildVersion)
 }
 
+tasks.register<Copy>("processResources_resourcesDev") {
+    description = "Copy 'resource-dev' directory."
+
+    if (isDev) {
+        from("src/main/resources-dev")
+        into("$buildDir/resources/main")
+    }
+}
+
 tasks.processResources {
     dependsOn(tasks.named("processResources_buildProperties"))
+    dependsOn(tasks.named("processResources_resourcesDev"))
 }
 
 tasks.jar {
@@ -60,8 +72,8 @@ tasks.jar {
     archiveVersion.set(buildVersion)
 }
 
-tasks.register<Copy>("copyDataDirectoryToLaunch4j") {
-    description = "Copy \"\$projectDir/data\" directory to launch4j outputDir."
+tasks.register<Copy>("copyDataDirToLaunch4j") {
+    description = "Copy '\$projectDir/data' directory to launch4j outputDir."
 
     val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
     from("data")
@@ -69,7 +81,7 @@ tasks.register<Copy>("copyDataDirectoryToLaunch4j") {
 }
 
 tasks.withType<DefaultLaunch4jTask> {
-    dependsOn(tasks.named("copyDataDirectoryToLaunch4j"))
+    dependsOn(tasks.named("copyDataDirToLaunch4j"))
 
     outfile = "$appName v$buildVersion.exe"
 
@@ -113,6 +125,8 @@ tasks.register<Zip>("release") {
 
     archiveBaseName.set(appName)
     archiveVersion.set(buildVersion)
+
+    isDev = false
 
     val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
     from("$buildDir/${launch4jTask.outputDir}")
