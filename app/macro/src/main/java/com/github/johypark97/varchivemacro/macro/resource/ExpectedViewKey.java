@@ -6,6 +6,7 @@ import java.util.List;
 public enum ExpectedViewKey {
     // @formatter:off
     ALWAYS_ON_TOP("alwaysOnTop"),
+    FONT_SIZE("fontSize"),
     WINDOW_TITLE("windowTitle"),
     ;
     // @formatter:on

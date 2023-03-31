@@ -69,6 +69,7 @@
   <entry key="macro.presenter.when.thrown">작업 도중 에러가 발생하였습니다.</entry>
 
   <entry key="expected.view.alwaysOnTop">항상 위에</entry>
+  <entry key="expected.view.fontSize">글꼴 크기</entry>
   <entry key="expected.view.windowTitle">예상 곡 목록</entry>
 
   <entry key="scannerTask.view.recordImage">기록 이미지</entry>

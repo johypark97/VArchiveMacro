@@ -69,6 +69,7 @@
   <entry key="macro.presenter.when.thrown">An error occurred while running a command.</entry>
 
   <entry key="expected.view.alwaysOnTop">Always on Top</entry>
+  <entry key="expected.view.fontSize">Font size</entry>
   <entry key="expected.view.windowTitle">Expected Song List</entry>
 
   <entry key="scannerTask.view.recordImage">Record images</entry>
