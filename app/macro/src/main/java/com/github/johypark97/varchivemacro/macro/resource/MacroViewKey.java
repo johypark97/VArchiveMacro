@@ -24,6 +24,8 @@ public enum MacroViewKey {
     MENU_INFO_ABOUT("menu.info.about"),
     MENU_INFO_OSL("menu.info.osl"),
     MENU_LANGUAGE("menu.language"),
+    MENU_LANGUAGE_ENG("menu.language.eng"),
+    MENU_LANGUAGE_KOR("menu.language.kor"),
     REFRESH_SCANNER_RESULT_BUTTON("refreshScannerResultButton"),
     SELECT_ALL_BUTTON("selectAllButton"),
     SETTING_CAPTURE_DELAY("setting.captureDelay"),

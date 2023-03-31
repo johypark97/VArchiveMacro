@@ -189,10 +189,10 @@ public class MacroView extends JFrame implements View, WindowListener {
         {
             List<JMenuItem> list = new LinkedList<>();
 
-            menuLangEng = new JMenuItem("English");
+            menuLangEng = new JMenuItem(lang.get(MacroViewKey.MENU_LANGUAGE_ENG));
             list.add(menuLangEng);
 
-            menuLangKor = new JMenuItem("한국어");
+            menuLangKor = new JMenuItem(lang.get(MacroViewKey.MENU_LANGUAGE_KOR));
             list.add(menuLangKor);
 
             list.forEach((x) -> {

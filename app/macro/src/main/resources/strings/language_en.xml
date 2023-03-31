@@ -20,6 +20,8 @@
   <entry key="macro.view.menu.info.about">About</entry>
   <entry key="macro.view.menu.info.osl">Open Source License</entry>
   <entry key="macro.view.menu.language">Language</entry>
+  <entry key="macro.view.menu.language.eng">English</entry>
+  <entry key="macro.view.menu.language.kor">한국어</entry>
   <entry key="macro.view.refreshScannerResultButton">Refresh</entry>
   <entry key="macro.view.selectAllButton">Select all</entry>
   <entry key="macro.view.setting.captureDelay">Capture delay [ms]</entry>
