@@ -17,7 +17,7 @@ public class UrlLabel extends JEditorPane {
         setEditable(false);
         setOpaque(false);
 
-        addHyperlinkListener(e -> {
+        addHyperlinkListener((e) -> {
             if (e.getEventType() != HyperlinkEvent.EventType.ACTIVATED) {
                 return;
             }
