@@ -91,16 +91,16 @@ JRE설치 환경에 따라 다음 세 가지 실행 파일을 제공합니다.
     RESPECT 탭에 추가되는 추가곡 목록은 다음과 같습니다.
     | 곡 제목 | 필요 DLC |
     |-|-|
-    | 너로피어오라 ~Original Ver.~ | VE + VE2 |
+    | 너로피어오라 \~Original Ver.\~ | VE + VE2 |
     | ALiCE | T3 |
     | ANALYS | BS |
-    | Airwave ~Extended Mix~ | BS + (CE / T1) |
+    | Airwave \~Extended Mix\~ | BS + (CE / T1) |
     | Do you want it | T1 |
     | End of Mythology | T2 |
-    | Here in the Moment ~Extended Mix~ | CE + (BS / T1) |
+    | Here in the Moment \~Extended Mix\~ | CE + (BS / T1) |
     | Nevermind | TR |
     | Rising The Sonic | CE |
-    | SON OF SUN ~Extended Mix~ | T1 + (BS / CE) |
+    | SON OF SUN \~Extended Mix\~ | T1 + (BS / CE) |
     | Techno Racer | TQ |
     | glory day (Mintorment Remix) | P3 |
     | glory day -JHS Remix- | P3 |
