@@ -1,6 +1,6 @@
 object Version {
     private const val ROOT_PROJECT = "1.1.0"
-    private const val ROOT_PROJECT_PREFIX = "dev"
+    private const val ROOT_PROJECT_PREFIX = "alpha1"
 
     fun makeVersionString(version: String = ""): String {
         val list = mutableListOf(ROOT_PROJECT)
