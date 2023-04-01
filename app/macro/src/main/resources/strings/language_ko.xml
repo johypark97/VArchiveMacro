@@ -11,7 +11,7 @@
   <entry key="macro.view.control.stop">작업 중지</entry>
   <entry key="macro.view.control.title">컨트롤</entry>
   <entry key="macro.view.dialog.djName">DJ 이름을 입력해주세요.</entry>
-  <entry key="macro.view.dlcCheckboxTitle">소유한 DLC</entry>
+  <entry key="macro.view.dlcCheckboxTitle">스캔할 DLC 탭</entry>
   <entry key="macro.view.loadCachedImagesButton">캐시된 이미지 불러오기</entry>
   <entry key="macro.view.loadRemoteRecordButton">서버 기록 불러오기</entry>
   <entry key="macro.view.menu.file">파일</entry>

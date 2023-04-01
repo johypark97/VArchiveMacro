@@ -4,7 +4,7 @@ import com.github.johypark97.varchivemacro.lib.common.database.DlcManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,16 +31,13 @@ public class SongModel {
         return dlcManager.getTabSongMap();
     }
 
-    public Map<String, List<LocalSong>> getTabSongMap(Set<String> ownedDlcTabs) {
-        Set<String> dlcCodes = new HashSet<>();
+    public Map<String, List<LocalSong>> getTabSongMap(Set<String> selectedTabs) {
+        Map<String, List<LocalSong>> map = new LinkedHashMap<>();
 
-        dlcManager.getDlcTabCodeMap().forEach((key, value) -> {
-            if (ownedDlcTabs.contains(key)) {
-                dlcCodes.addAll(value);
-            }
-        });
+        dlcManager.getTabSongMap().forEach(
+                (key, value) -> map.put(key, selectedTabs.contains(key) ? value : List.of()));
 
-        return dlcManager.getTabSongMap(dlcCodes);
+        return map;
     }
 
     public Set<Integer> duplicateTitleSet() {

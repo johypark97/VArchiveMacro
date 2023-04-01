@@ -404,8 +404,8 @@ public class MacroPresenter implements Presenter {
 
     @Override
     public void openExpected(JFrame frame) {
-        Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
-        Map<String, List<LocalSong>> tabSongMap = songModel.getTabSongMap(ownedDlcTabs);
+        Set<String> selectedTabs = view.getSelectedDlcTabs();
+        Map<String, List<LocalSong>> tabSongMap = songModel.getTabSongMap(selectedTabs);
         expectedPresenter.start(frame, createTabSongTreeModel("List", tabSongMap));
     }
 
