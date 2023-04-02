@@ -80,7 +80,6 @@ public class MacroView extends JFrame implements View, WindowListener {
     private static final int LOG_ROWS = 8;
     private static final int WINDOW_HEIGHT = 768;
     private static final int WINDOW_WIDTH = 1024;
-    protected static final Set<String> DEFAULT_DLCS = Set.of("PORTABLE 1", "PORTABLE 2");
 
     // presenter
     public transient Presenter presenter;
@@ -847,13 +846,7 @@ public class MacroView extends JFrame implements View, WindowListener {
         tabs.forEach((x) -> dlcCheckboxGroup.add(x, x));
 
         Box box = Box.createVerticalBox();
-        dlcCheckboxGroup.forEach((key, checkbox) -> {
-            if (DEFAULT_DLCS.contains(key)) {
-                checkbox.setEnabled(false);
-                checkbox.setSelected(true);
-            }
-            box.add(checkbox);
-        });
+        dlcCheckboxGroup.forEach((key, checkbox) -> box.add(checkbox));
 
         dlcCheckboxScrollPane.setViewportView(box);
         revalidate();
@@ -1129,9 +1122,9 @@ class MacroViewButtonListener implements ActionListener {
         } else if (source.equals(view.uploadRecordButton)) {
             view.presenter.uploadRecord(view.accountPath);
         } else if (source.equals(view.selectAllDlcButton)) {
-            view.dlcCheckboxGroup.selectAllExclude(MacroView.DEFAULT_DLCS);
+            view.dlcCheckboxGroup.selectAll();
         } else if (source.equals(view.unselectAllDlcButton)) {
-            view.dlcCheckboxGroup.unselectAllExclude(MacroView.DEFAULT_DLCS);
+            view.dlcCheckboxGroup.unselectAll();
         } else if (source.equals(view.showExpectedButton)) {
             view.presenter.openExpected(view);
         } else if (source.equals(view.stopCommandButton)) {

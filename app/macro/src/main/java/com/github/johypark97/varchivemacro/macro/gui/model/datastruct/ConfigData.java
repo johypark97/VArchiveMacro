@@ -23,7 +23,7 @@ public class ConfigData {
     public Path cacheDir = Path.of("cache");
 
     @Expose
-    public Set<String> selectedDlcTabs = Set.of("PORTABLE 1", "PORTABLE 2");
+    public Set<String> selectedDlcTabs = Set.of();
 
     @Expose
     public Integer recordUploadDelay;
