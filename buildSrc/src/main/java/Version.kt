@@ -1,14 +1,14 @@
 object Version {
     private const val ROOT_PROJECT = "1.1.0"
-    private const val ROOT_PROJECT_PREFIX = "alpha1"
+    private const val ROOT_PROJECT_SUFFIX = "alpha1-hotfix1"
 
     fun makeVersionString(version: String = ""): String {
         val list = mutableListOf(ROOT_PROJECT)
         if (version.isNotBlank()) {
             list.add(version)
         }
-        if (ROOT_PROJECT_PREFIX.isNotBlank()) {
-            list.add(ROOT_PROJECT_PREFIX)
+        if (ROOT_PROJECT_SUFFIX.isNotBlank()) {
+            list.add(ROOT_PROJECT_SUFFIX)
         }
 
         return list.joinToString("-")
