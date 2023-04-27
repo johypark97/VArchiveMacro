@@ -19,7 +19,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class DlcManager extends SongManager {
-    private static final String DLC_COLLABORATION_TAB = "COLLABORATION";
+    private static final Set<String> DLC_COLLABORATION_TABS = Set.of("MUSIC GAME", "VARIETY");
 
     protected final Map<Integer, String> tabs;
     protected final Map<Integer, Unlock> unlocks;
@@ -87,7 +87,7 @@ public class DlcManager extends SongManager {
         }
 
         map.forEach((key, value) -> {
-            if (!DLC_COLLABORATION_TAB.equals(key)) {
+            if (!DLC_COLLABORATION_TABS.contains(key)) {
                 value.sort(new LocalSongComparator());
             } else {
                 value.sort(new LocalSongComparator() {
