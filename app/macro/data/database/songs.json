@@ -1926,7 +1926,7 @@
     "composer": "COSIO",
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -1936,7 +1936,7 @@
     "composer": "t+pazolite",
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -1946,7 +1946,7 @@
     "composer": "E.G.G.",
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -1956,7 +1956,7 @@
     "composer": "COSIO",
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -1966,7 +1966,7 @@
     "composer": "Tsukasa Yatoki feat. Erica Masaki",
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -1976,7 +1976,7 @@
     "composer": "t+pazolite",
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -1986,7 +1986,7 @@
     "composer": "Cranky VS MASAKI",
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -1996,7 +1996,7 @@
     "composer": "REDALiCE feat. Ayumi Nomiya",
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2006,7 +2006,7 @@
     "composer": "t+pazolite",
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2016,7 +2016,7 @@
     "composer": "Cranky",
     "dlc": "GROOVE COASTER",
     "dlcCode": "GC",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2236,7 +2236,7 @@
     "composer": "Daisuke Ishiwatari",
     "dlc": "GUILTY GEAR",
     "dlcCode": "GG",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -2246,7 +2246,7 @@
     "composer": "Daisuke Ishiwatari",
     "dlc": "GUILTY GEAR",
     "dlcCode": "GG",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -2256,7 +2256,7 @@
     "composer": "Daisuke Ishiwatari",
     "dlc": "GUILTY GEAR",
     "dlcCode": "GG",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -2756,7 +2756,7 @@
     "composer": "3R2",
     "dlc": "Deemo",
     "dlcCode": "DM",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2766,7 +2766,7 @@
     "composer": "xi",
     "dlc": "Deemo",
     "dlcCode": "DM",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2776,7 +2776,7 @@
     "composer": "Rabpit",
     "dlc": "Deemo",
     "dlcCode": "DM",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2786,7 +2786,7 @@
     "composer": "switchworks",
     "dlc": "Deemo",
     "dlcCode": "DM",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2796,7 +2796,7 @@
     "composer": "M2U",
     "dlc": "Deemo",
     "dlcCode": "DM",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2806,7 +2806,7 @@
     "composer": "Mili",
     "dlc": "Deemo",
     "dlcCode": "DM",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2816,7 +2816,7 @@
     "composer": "Shinichi Kobayashi",
     "dlc": "Deemo",
     "dlcCode": "DM",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2826,7 +2826,7 @@
     "composer": "Yuk-cheung Chun",
     "dlc": "Deemo",
     "dlcCode": "DM",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2836,7 +2836,7 @@
     "composer": "Mili",
     "dlc": "Deemo",
     "dlcCode": "DM",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2846,7 +2846,7 @@
     "composer": "Mili",
     "dlc": "Deemo",
     "dlcCode": "DM",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2856,7 +2856,7 @@
     "composer": "sakuzyo",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2866,7 +2866,7 @@
     "composer": "NeLiME",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2876,7 +2876,7 @@
     "composer": "Cranky + siromaru",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2886,7 +2886,7 @@
     "composer": "SIHanatsuka",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2896,7 +2896,7 @@
     "composer": "Ice",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2906,7 +2906,7 @@
     "composer": "Ice",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2916,7 +2916,7 @@
     "composer": "naotyu-",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2926,7 +2926,7 @@
     "composer": "Teikyou",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2936,7 +2936,7 @@
     "composer": "M2U",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2946,7 +2946,7 @@
     "composer": "Cranky",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2956,7 +2956,7 @@
     "composer": "Tsukasa",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -2966,7 +2966,7 @@
     "composer": "onoken",
     "dlc": "Cytus",
     "dlcCode": "CY",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -3766,7 +3766,7 @@
     "composer": "Rikako Watanabe (Basiscape)",
     "dlc": "GIRLS' FRONTLINE",
     "dlcCode": "GF",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -3776,7 +3776,7 @@
     "composer": "B@kamin / M2U",
     "dlc": "GIRLS' FRONTLINE",
     "dlcCode": "GF",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -3786,7 +3786,7 @@
     "composer": "Haloweak",
     "dlc": "GIRLS' FRONTLINE",
     "dlcCode": "GF",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -3796,7 +3796,7 @@
     "composer": "sakuzyo",
     "dlc": "CHUNITHM",
     "dlcCode": "CHU",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -3806,7 +3806,7 @@
     "composer": "t+pazolite",
     "dlc": "CHUNITHM",
     "dlcCode": "CHU",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -3816,7 +3816,7 @@
     "composer": "Takenobu Mitsuyoshi",
     "dlc": "CHUNITHM",
     "dlcCode": "CHU",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -3826,7 +3826,7 @@
     "composer": "NayutalieN",
     "dlc": "CHUNITHM",
     "dlcCode": "CHU",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -3836,7 +3836,7 @@
     "composer": "Sampling Masters MEGA",
     "dlc": "CHUNITHM",
     "dlcCode": "CHU",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -3846,7 +3846,7 @@
     "composer": "s-don vs. Hino Isuka",
     "dlc": "CHUNITHM",
     "dlcCode": "CHU",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4126,7 +4126,7 @@
     "composer": "YUKIKA",
     "dlc": "ESTIMATE",
     "dlcCode": "ESTI",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4136,7 +4136,7 @@
     "composer": "ESTi",
     "dlc": "ESTIMATE",
     "dlcCode": "ESTI",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4146,7 +4146,7 @@
     "composer": "ESTi",
     "dlc": "ESTIMATE",
     "dlcCode": "ESTI",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4156,7 +4156,7 @@
     "composer": "ESTi & M2U",
     "dlc": "ESTIMATE",
     "dlcCode": "ESTI",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4166,7 +4166,7 @@
     "composer": "ESTi",
     "dlc": "ESTIMATE",
     "dlcCode": "ESTI",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4206,7 +4206,7 @@
     "composer": "Pierre Blanche / Yonce",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4216,7 +4216,7 @@
     "composer": "Studio EIM",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4226,7 +4226,7 @@
     "composer": "Blosso",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4236,7 +4236,7 @@
     "composer": "SiNA",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4246,7 +4246,7 @@
     "composer": "HanStone",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4256,7 +4256,7 @@
     "composer": "NEXON",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4266,7 +4266,7 @@
     "composer": "VoidRover",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4276,7 +4276,7 @@
     "composer": "Studio EIM",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4286,7 +4286,7 @@
     "composer": "HanStone",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4296,7 +4296,7 @@
     "composer": "Cosmograph",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4306,7 +4306,7 @@
     "composer": "Pure 100%",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4316,7 +4316,7 @@
     "composer": "CHUCK",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4326,7 +4326,7 @@
     "composer": "ESTi",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4336,7 +4336,7 @@
     "composer": "Mitsukiyo",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4346,7 +4346,7 @@
     "composer": "김동현",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4356,7 +4356,7 @@
     "composer": "NEXON",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4366,7 +4366,7 @@
     "composer": "Nauts",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4376,7 +4376,7 @@
     "composer": "SOPHI",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4386,7 +4386,7 @@
     "composer": "정영걸",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4396,7 +4396,7 @@
     "composer": "Studio EIM",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4406,7 +4406,7 @@
     "composer": "jam-jam",
     "dlc": "NEXON",
     "dlcCode": "NXN",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "VARIETY",
     "priority": 0
   },
   {
@@ -4656,7 +4656,7 @@
     "composer": "BOOGEY VOXX",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4666,7 +4666,7 @@
     "composer": "MK",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4676,7 +4676,7 @@
     "composer": "DJ Noriken & aran",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4686,7 +4686,7 @@
     "composer": "USAO",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4696,7 +4696,7 @@
     "composer": "Cosmograph",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4706,7 +4706,7 @@
     "composer": "a_hisa",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4716,7 +4716,7 @@
     "composer": "Tanchiky",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4726,7 +4726,7 @@
     "composer": "REDALiCE",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4736,7 +4736,7 @@
     "composer": "Ayatsugu_Otowa",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4746,7 +4746,7 @@
     "composer": "Dan@Yomi",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4756,7 +4756,7 @@
     "composer": "3R2",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4766,7 +4766,7 @@
     "composer": "Morimori Atsushi",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4776,7 +4776,7 @@
     "composer": "Sugar & Co.",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4786,7 +4786,7 @@
     "composer": "MYUKKE.",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -4796,7 +4796,7 @@
     "composer": "ginkiha",
     "dlc": "Muse Dash",
     "dlcCode": "MD",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5276,7 +5276,7 @@
     "composer": "Kang Eun Soo / eridanus",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5286,7 +5286,7 @@
     "composer": "Andy Lee",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5296,7 +5296,7 @@
     "composer": "CROOVE",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5306,7 +5306,7 @@
     "composer": "Ruby Tuesday",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5316,7 +5316,7 @@
     "composer": "CROOVE",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5326,7 +5326,7 @@
     "composer": "CROOVE / Mario Bolden",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5336,7 +5336,7 @@
     "composer": "Andy Lee",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5346,7 +5346,7 @@
     "composer": "Ruby Tuesday",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5356,7 +5356,7 @@
     "composer": "xxdbxx",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5366,7 +5366,7 @@
     "composer": "nato",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5376,7 +5376,7 @@
     "composer": "CROOVE",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5386,7 +5386,7 @@
     "composer": "Andy Lee",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 1
   },
   {
@@ -5396,7 +5396,7 @@
     "composer": "xxdbxx / CROOVE",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5406,7 +5406,7 @@
     "composer": "Jeon Jun Kye / Mario Bolden",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5416,7 +5416,7 @@
     "composer": "Joyrock",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5436,7 +5436,7 @@
     "composer": "STREME REVERIE",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5446,7 +5446,7 @@
     "composer": "Mori+",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {
@@ -5456,7 +5456,7 @@
     "composer": "Forte Escape",
     "dlc": "EZ2ON",
     "dlcCode": "EZ2",
-    "dlcTab": "COLLABORATION",
+    "dlcTab": "MUSIC GAME",
     "priority": 0
   },
   {

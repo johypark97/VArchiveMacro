@@ -59,40 +59,40 @@
     "name": "Technika Tune & Q",
     "priority": 14
   },
-  "GG": {
-    "name": "Guilty Gear",
-    "priority": 15
-  },
   "CHU": {
     "name": "Chunithm",
-    "priority": 16
+    "priority": 15
   },
   "CY": {
     "name": "Cytus",
-    "priority": 17
+    "priority": 16
   },
   "DM": {
     "name": "Deemo",
-    "priority": 18
-  },
-  "ESTI": {
-    "name": "Estimate",
-    "priority": 19
+    "priority": 17
   },
   "EZ2": {
     "name": "EZ2ON",
-    "priority": 20
+    "priority": 18
   },
   "GC": {
     "name": "Groove Coaster",
-    "priority": 21
-  },
-  "GF": {
-    "name": "Girls' Frontline",
-    "priority": 22
+    "priority": 19
   },
   "MD": {
     "name": "Muse Dash",
+    "priority": 20
+  },
+  "GG": {
+    "name": "Guilty Gear",
+    "priority": 21
+  },
+  "ESTI": {
+    "name": "Estimate",
+    "priority": 22
+  },
+  "GF": {
+    "name": "Girls' Frontline",
     "priority": 23
   },
   "NXN": {
