@@ -5428,5 +5428,45 @@
     "dlcCode": "R",
     "dlcTab": "RESPECT",
     "priority": 0
+  },
+  {
+    "id": 543,
+    "title": "A Site De La Rue",
+    "remote_title": null,
+    "composer": "STREME REVERIE",
+    "dlc": "EZ2ON",
+    "dlcCode": "EZ2",
+    "dlcTab": "COLLABORATION",
+    "priority": 0
+  },
+  {
+    "id": 544,
+    "title": "LIMBO",
+    "remote_title": null,
+    "composer": "Mori+",
+    "dlc": "EZ2ON",
+    "dlcCode": "EZ2",
+    "dlcTab": "COLLABORATION",
+    "priority": 0
+  },
+  {
+    "id": 545,
+    "title": "Zeroize",
+    "remote_title": null,
+    "composer": "Forte Escape",
+    "dlc": "EZ2ON",
+    "dlcCode": "EZ2",
+    "dlcTab": "COLLABORATION",
+    "priority": 0
+  },
+  {
+    "id": 546,
+    "title": "Dark Lightning",
+    "remote_title": null,
+    "composer": "AstroKid",
+    "dlc": "RESPECT",
+    "dlcCode": "R",
+    "dlcTab": "RESPECT",
+    "priority": 0
   }
 ]
