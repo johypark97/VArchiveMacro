@@ -11,6 +11,12 @@
   <entry key="macro.view.control.stop">Stop command</entry>
   <entry key="macro.view.control.title">Controls</entry>
   <entry key="macro.view.dialog.djName">Please enter your DJ Name.</entry>
+  <entry key="macro.view.dialog.upload.canceled">The checkbox is not checked. Upload canceled.</entry>
+  <entry key="macro.view.dialog.upload.checkbox">Yes, I will upload it.</entry>
+  <entry key="macro.view.dialog.upload.message0">This command cannot undo.</entry>
+  <entry key="macro.view.dialog.upload.message1">Please check if there are any records scanned incorrectly before uploading.</entry>
+  <entry key="macro.view.dialog.upload.message2">Are you sure you want to upload the scanned records?</entry>
+  <entry key="macro.view.dialog.upload.title">UPLOAD WARNING</entry>
   <entry key="macro.view.dlcCheckboxTitle">DLC tabs to scan</entry>
   <entry key="macro.view.loadCachedImagesButton">Load cached images</entry>
   <entry key="macro.view.loadRemoteRecordButton">Load server records</entry>

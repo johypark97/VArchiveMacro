@@ -41,6 +41,7 @@ import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -1163,7 +1164,31 @@ class MacroViewButtonListener implements ActionListener {
                 view.scannerResultTable.setValueAt(false, i, UPLOAD_COLUMN_INDEX);
             }
         } else if (source.equals(view.uploadRecordButton)) {
-            view.presenter.uploadRecord(view.accountPath);
+            Box box = Box.createVerticalBox();
+
+            JLabel message0 = new JLabel(lang.get(MacroViewKey.DIALOG_UPLOAD_MESSAGE0));
+            message0.setForeground(Color.RED);
+            box.add(message0);
+            box.add(Box.createVerticalStrut(10));
+
+            box.add(new JLabel(lang.get(MacroViewKey.DIALOG_UPLOAD_MESSAGE1)));
+            box.add(new JLabel(lang.get(MacroViewKey.DIALOG_UPLOAD_MESSAGE2)));
+            box.add(Box.createVerticalStrut(10));
+
+            JCheckBox checkBox = new JCheckBox(lang.get(MacroViewKey.DIALOG_UPLOAD_CHECKBOX));
+            box.add(checkBox);
+
+            int selected = JOptionPane.showConfirmDialog(view, box,
+                    lang.get(MacroViewKey.DIALOG_UPLOAD_TITLE), JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+            if (selected == JOptionPane.YES_OPTION) {
+                if (!checkBox.isSelected()) {
+                    view.addLog(lang.get(MacroViewKey.DIALOG_UPLOAD_CANCELED));
+                    return;
+                }
+
+                view.presenter.uploadRecord(view.accountPath);
+            }
         } else if (source.equals(view.selectAllDlcButton)) {
             view.dlcCheckboxGroup.selectAll();
         } else if (source.equals(view.unselectAllDlcButton)) {

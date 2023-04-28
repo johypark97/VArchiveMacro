@@ -11,6 +11,12 @@
   <entry key="macro.view.control.stop">작업 중지</entry>
   <entry key="macro.view.control.title">컨트롤</entry>
   <entry key="macro.view.dialog.djName">DJ 이름을 입력해주세요.</entry>
+  <entry key="macro.view.dialog.upload.canceled">체크박스가 선택되지 않았습니다. 업로드를 취소합니다.</entry>
+  <entry key="macro.view.dialog.upload.checkbox">네, 업로드 하겠습니다.</entry>
+  <entry key="macro.view.dialog.upload.message0">이 작업은 되돌릴 수 없습니다.</entry>
+  <entry key="macro.view.dialog.upload.message1">업로드 전 잘못 스캔된 기록이 없는지 확인해주세요.</entry>
+  <entry key="macro.view.dialog.upload.message2">정말로 스캔한 기록을 업로드하시겠습니까?</entry>
+  <entry key="macro.view.dialog.upload.title">업로드 경고</entry>
   <entry key="macro.view.dlcCheckboxTitle">스캔할 DLC 탭</entry>
   <entry key="macro.view.loadCachedImagesButton">캐시된 이미지 불러오기</entry>
   <entry key="macro.view.loadRemoteRecordButton">서버 기록 불러오기</entry>
