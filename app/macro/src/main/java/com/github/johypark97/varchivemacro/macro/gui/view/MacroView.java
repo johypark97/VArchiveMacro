@@ -901,9 +901,13 @@ public class MacroView extends JFrame implements View, WindowListener {
         tableColumnModel.removeColumn(tableColumnModel.getColumn(0));
         tableColumnModel.removeColumn(tableColumnModel.getColumn(0));
 
-        tableColumnModel.getColumn(0).setPreferredWidth(40);
-        tableColumnModel.getColumn(1).setPreferredWidth(320);
-        tableColumnModel.getColumn(2).setPreferredWidth(160);
+        tableColumnModel.getColumn(0).setPreferredWidth(60);
+        tableColumnModel.getColumn(1).setPreferredWidth(160);
+        tableColumnModel.getColumn(2).setPreferredWidth(80);
+        tableColumnModel.getColumn(3).setPreferredWidth(80);
+        tableColumnModel.getColumn(4).setPreferredWidth(80);
+        tableColumnModel.getColumn(5).setPreferredWidth(60);
+        tableColumnModel.getColumn(6).setPreferredWidth(160);
     }
 
     @Override
@@ -922,8 +926,9 @@ public class MacroView extends JFrame implements View, WindowListener {
         tableColumnModel.getColumn(8).setPreferredWidth(40);
         tableColumnModel.getColumn(9).setPreferredWidth(40);
         tableColumnModel.getColumn(10).setPreferredWidth(60);
-        tableColumnModel.getColumn(11).setPreferredWidth(80);
-        tableColumnModel.getColumn(12).setPreferredWidth(160);
+        tableColumnModel.getColumn(11).setPreferredWidth(40);
+        tableColumnModel.getColumn(12).setPreferredWidth(80);
+        tableColumnModel.getColumn(13).setPreferredWidth(160);
     }
 
     @Override

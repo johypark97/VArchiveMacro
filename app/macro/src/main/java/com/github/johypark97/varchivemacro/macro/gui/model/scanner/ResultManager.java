@@ -180,12 +180,13 @@ public class ResultManager {
         private static final String OLD_COLUMN = "Old";
         private static final String NEW_COLUMN = "New";
         private static final String NMAX_COLUMN = "NMax";
+        private static final String DELTA_COLUMN = "Delta";
         private static final String UPLOAD_COLUMN = "Upload";
 
         private static final List<String> COLUMNS =
                 List.of(NO_COLUMN, TASKNO_COLUMN, TITLE_COLUMN, "Composer", "Dlc", BUTTON_COLUMN,
                         PATTERN_COLUMN, OMAX_COLUMN, OLD_COLUMN, NEW_COLUMN, NMAX_COLUMN,
-                        UPLOAD_COLUMN, "Upload result");
+                        DELTA_COLUMN, UPLOAD_COLUMN, "Upload result");
 
         private static final int NO_COLUMN_INDEX = COLUMNS.indexOf(NO_COLUMN);
         private static final int TASKNO_COLUMN_INDEX = COLUMNS.indexOf(TASKNO_COLUMN);
@@ -196,12 +197,13 @@ public class ResultManager {
         private static final int OLD_COLUMN_INDEX = COLUMNS.indexOf(OLD_COLUMN);
         private static final int NEW_COLUMN_INDEX = COLUMNS.indexOf(NEW_COLUMN);
         private static final int NMAX_COLUMN_INDEX = COLUMNS.indexOf(NMAX_COLUMN);
+        private static final int DELTA_COLUMN_INDEX = COLUMNS.indexOf(DELTA_COLUMN);
         private static final int UPLOAD_COLUMN_INDEX = COLUMNS.indexOf(UPLOAD_COLUMN);
 
         private static final Set<Integer> BOOLEAN_COLUMNS =
                 Set.of(OMAX_COLUMN_INDEX, NMAX_COLUMN_INDEX);
         private static final Set<Integer> FLOAT_COLUMNS =
-                Set.of(OLD_COLUMN_INDEX, NEW_COLUMN_INDEX);
+                Set.of(OLD_COLUMN_INDEX, NEW_COLUMN_INDEX, DELTA_COLUMN_INDEX);
         private static final Set<Integer> INT_COLUMNS =
                 Set.of(NO_COLUMN_INDEX, TASKNO_COLUMN_INDEX, BUTTON_COLUMN_INDEX);
 
@@ -286,8 +288,9 @@ public class ResultManager {
                 case 8 -> data.oldRate;
                 case 9 -> data.newRecord.rate;
                 case 10 -> data.newRecord.maxCombo;
-                case 11 -> data.isSelected;
-                case 12 -> resultToString(data.result);
+                case 11 -> data.newRecord.rate - data.oldRate;
+                case 12 -> data.isSelected;
+                case 13 -> resultToString(data.result);
                 default -> ERROR_STRING;
             };
         }
@@ -313,6 +316,7 @@ public class ResultManager {
                 setComparator(OLD_COLUMN_INDEX, Comparator.reverseOrder());
                 setComparator(NEW_COLUMN_INDEX, Comparator.reverseOrder());
                 setComparator(NMAX_COLUMN_INDEX, Comparator.reverseOrder());
+                setComparator(DELTA_COLUMN_INDEX, Comparator.reverseOrder());
                 setComparator(UPLOAD_COLUMN_INDEX, Comparator.reverseOrder());
 
                 setSortKeys(List.of(new RowSorter.SortKey(NO_COLUMN_INDEX, SortOrder.ASCENDING)));

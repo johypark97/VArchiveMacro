@@ -51,7 +51,8 @@ class ScannerTaskManager {
         private static final long serialVersionUID = 2595265577036844112L;
 
         private static final List<String> COLUMNS =
-                List.of("index", "count", "No", "Title", "Status");
+                List.of("index", "count", "TaskNo", "Title", "Composer", "Dlc", "Tab", "SongNo",
+                        "Status");
         private static final String ERROR_STRING = "ERROR";
 
         private String statusToString(Status status) {
@@ -95,7 +96,11 @@ class ScannerTaskManager {
                 case 1 -> task.songCount;
                 case 2 -> task.taskNumber;
                 case 3 -> task.song.title();
-                case 4 -> statusToString(task.getStatus());
+                case 4 -> task.song.composer();
+                case 5 -> task.song.dlc();
+                case 6 -> task.song.dlcTab();
+                case 7 -> task.songIndex + 1 + " / " + task.songCount;
+                case 8 -> statusToString(task.getStatus());
                 default -> ERROR_STRING;
             };
         }
