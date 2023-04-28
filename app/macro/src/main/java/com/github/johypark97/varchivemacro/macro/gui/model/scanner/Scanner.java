@@ -230,14 +230,18 @@ public class Scanner {
                 taskManager.clear();
                 taskManager.setCacheDir(cachePath);
 
-                tabSongMap.values().forEach((songs) -> songs.forEach((song) -> {
-                    ScannerTask task = taskManager.create(song);
-                    if (Files.exists(task.filePath)) {
-                        task.setStatus(Status.CACHED);
-                    } else {
-                        task.setException(new IOException("File not found"));
+                tabSongMap.values().forEach((songs) -> {
+                    int count = songs.size();
+                    for (int i = 0; i < count; ++i) {
+                        LocalSong song = songs.get(i);
+                        ScannerTask task = taskManager.create(song, i, count);
+                        if (Files.exists(task.filePath)) {
+                            task.setStatus(Status.CACHED);
+                        } else {
+                            task.setException(new IOException("File not found"));
+                        }
                     }
-                }));
+                });
 
                 whenDone.run();
                 return true;

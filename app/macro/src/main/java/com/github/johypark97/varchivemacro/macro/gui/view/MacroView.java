@@ -81,6 +81,12 @@ public class MacroView extends JFrame implements View, WindowListener {
     private static final int WINDOW_HEIGHT = 768;
     private static final int WINDOW_WIDTH = 1024;
 
+    private static final Color TABLE_SELECTED_BACKGROUND_COLOR = new Color(0xE0E0E0);
+    private static final Color TABLE_SELECTED_FOREGROUND_COLOR = Color.BLACK;
+    private static final int TASK_TABLE_COLUMN_INDEX = 0;
+    private static final int TASK_TABLE_COLUMN_SIZE = 1;
+    private static final int TASK_TABLE_HIGHLIGHT_COUNT = 2;
+
     // presenter
     public transient Presenter presenter;
 
@@ -324,7 +330,39 @@ public class MacroView extends JFrame implements View, WindowListener {
                     scannerTaskTable.getTableHeader().setReorderingAllowed(false);
                     scannerTaskTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
                     scannerTaskTable.setBackground(Color.WHITE);
+                    scannerTaskTable.setSelectionBackground(TABLE_SELECTED_BACKGROUND_COLOR);
+                    scannerTaskTable.setSelectionForeground(TABLE_SELECTED_FOREGROUND_COLOR);
                     scannerTaskTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+                    scannerTaskTable.setDefaultRenderer(Object.class,
+                            new DefaultTableCellRenderer() {
+                                @Override
+                                public Component getTableCellRendererComponent(JTable table,
+                                        Object value, boolean isSelected, boolean hasFocus, int row,
+                                        int column) {
+                                    int rowIndex = table.convertRowIndexToModel(row);
+                                    int indexValue = (int) table.getModel()
+                                            .getValueAt(rowIndex, TASK_TABLE_COLUMN_INDEX);
+                                    int sizeValue = (int) table.getModel()
+                                            .getValueAt(rowIndex, TASK_TABLE_COLUMN_SIZE);
+
+                                    Color backgroundColor;
+                                    if (sizeValue - indexValue <= TASK_TABLE_HIGHLIGHT_COUNT) {
+                                        backgroundColor = isSelected ? Color.YELLOW : Color.ORANGE;
+                                    } else {
+                                        backgroundColor = isSelected
+                                                ? table.getSelectionBackground()
+                                                : table.getBackground();
+                                    }
+
+                                    Component component =
+                                            super.getTableCellRendererComponent(table, value,
+                                                    isSelected, hasFocus, row, column);
+                                    component.setBackground(backgroundColor);
+
+                                    return component;
+                                }
+                            });
 
                     scannerTableScrollPane = new JScrollPane(scannerTaskTable);
                     scannerTableScrollPane.getViewport().setBackground(Color.WHITE);
@@ -366,6 +404,8 @@ public class MacroView extends JFrame implements View, WindowListener {
                     scannerResultTable.getTableHeader().setReorderingAllowed(false);
                     scannerResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
                     scannerResultTable.setBackground(Color.WHITE);
+                    scannerResultTable.setSelectionBackground(TABLE_SELECTED_BACKGROUND_COLOR);
+                    scannerResultTable.setSelectionForeground(TABLE_SELECTED_FOREGROUND_COLOR);
                     scannerResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
                     scannerResultTable.setDefaultRenderer(Pattern.class,
@@ -857,6 +897,9 @@ public class MacroView extends JFrame implements View, WindowListener {
         scannerTaskTable.setModel(model);
 
         TableColumnModel tableColumnModel = scannerTaskTable.getColumnModel();
+        tableColumnModel.removeColumn(tableColumnModel.getColumn(0));
+        tableColumnModel.removeColumn(tableColumnModel.getColumn(0));
+
         tableColumnModel.getColumn(0).setPreferredWidth(40);
         tableColumnModel.getColumn(1).setPreferredWidth(320);
         tableColumnModel.getColumn(2).setPreferredWidth(160);

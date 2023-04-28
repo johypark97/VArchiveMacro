@@ -30,6 +30,8 @@ class ScannerTask {
 
     private final ScannerTaskManager manager;
     public final LocalSong song;
+    public final int songCount;
+    public final int songIndex;
     public final int taskNumber;
 
     private Exception exception;
@@ -37,9 +39,12 @@ class ScannerTask {
     private final Table<Button, Pattern, AnalyzedData> analyzedDataList = HashBasedTable.create();
     public final Path filePath;
 
-    public ScannerTask(ScannerTaskManager manager, int taskNumber, LocalSong song, Path dirPath) {
+    public ScannerTask(ScannerTaskManager manager, int taskNumber, LocalSong song, int songIndex,
+            int songCount, Path dirPath) {
         this.manager = manager;
         this.song = song;
+        this.songCount = songCount;
+        this.songIndex = songIndex;
         this.taskNumber = taskNumber;
 
         filePath = dirPath.resolve(String.format("%04d.%s", song.id(), FORMAT));

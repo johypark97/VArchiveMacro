@@ -77,11 +77,9 @@ class CaptureService {
                 for (List<LocalSong> songs : tabSongMap.values()) {
                     tabKey(KeyEvent.VK_SPACE);
 
-                    boolean isFirst = true;
-                    for (LocalSong song : songs) {
-                        if (isFirst) {
-                            isFirst = false;
-                        } else {
+                    int count = songs.size();
+                    for (int i = 0; i < count; ++i) {
+                        if (i != 0) {
                             tabKey(KeyEvent.VK_DOWN);
                         }
 
@@ -89,7 +87,8 @@ class CaptureService {
 
                         BufferedImage image = robot.createScreenCapture(screenRect);
 
-                        ScannerTask task = taskManager.create(song);
+                        LocalSong song = songs.get(i);
+                        ScannerTask task = taskManager.create(song, i, count);
                         task.setStatus(Status.CAPTURED);
 
                         while (true) {

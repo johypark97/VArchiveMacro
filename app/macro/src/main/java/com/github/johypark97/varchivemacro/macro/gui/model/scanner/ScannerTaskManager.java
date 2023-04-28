@@ -24,10 +24,9 @@ class ScannerTaskManager {
         tableModel.fireTableDataChanged();
     }
 
-    public ScannerTask create(LocalSong song) {
+    public ScannerTask create(LocalSong song, int songIndex, int songCount) {
         int taskNumber = tasks.size();
-
-        ScannerTask task = new ScannerTask(this, taskNumber, song, cacheDir);
+        ScannerTask task = new ScannerTask(this, taskNumber, song, songIndex, songCount, cacheDir);
         tasks.put(taskNumber, task);
 
         tableModel.fireTableRowsInserted(taskNumber, taskNumber);
@@ -51,7 +50,8 @@ class ScannerTaskManager {
         @Serial
         private static final long serialVersionUID = 2595265577036844112L;
 
-        private static final List<String> COLUMNS = List.of("No", "Title", "Status");
+        private static final List<String> COLUMNS =
+                List.of("index", "count", "No", "Title", "Status");
         private static final String ERROR_STRING = "ERROR";
 
         private String statusToString(Status status) {
@@ -91,9 +91,11 @@ class ScannerTaskManager {
             }
 
             return switch (columnIndex) {
-                case 0 -> task.taskNumber;
-                case 1 -> task.song.title();
-                case 2 -> statusToString(task.getStatus());
+                case 0 -> task.songIndex;
+                case 1 -> task.songCount;
+                case 2 -> task.taskNumber;
+                case 3 -> task.song.title();
+                case 4 -> statusToString(task.getStatus());
                 default -> ERROR_STRING;
             };
         }
