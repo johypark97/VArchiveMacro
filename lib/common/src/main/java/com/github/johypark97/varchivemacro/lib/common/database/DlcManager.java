@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.lib.common.database;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.Dlc;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.Tab;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.Unlock;
 import com.github.johypark97.varchivemacro.lib.common.database.util.LocalSongComparator;
 import java.io.IOException;
 import java.io.Serial;
@@ -22,16 +21,13 @@ public class DlcManager extends SongManager {
     private static final Set<String> DLC_COLLABORATION_TABS = Set.of("MUSIC GAME", "VARIETY");
 
     protected final Map<Integer, String> tabs;
-    protected final Map<Integer, Unlock> unlocks;
     protected final Map<String, Dlc> dlcs;
 
-    public DlcManager(Path songPath, Path dlcPath, Path tabPath, Path unlockPath)
-            throws IOException {
+    public DlcManager(Path songPath, Path dlcPath, Path tabPath) throws IOException {
         super(songPath);
 
         dlcs = Dlc.loadJson(dlcPath);
         tabs = Tab.loadJson(tabPath);
-        unlocks = Unlock.loadJson(unlockPath);
     }
 
     public List<String> getDlcCodeList() {
@@ -113,29 +109,8 @@ public class DlcManager extends SongManager {
         return map;
     }
 
-    public Map<String, List<LocalSong>> getTabSongMap(Set<String> ownedDlcs) {
-        Map<String, List<LocalSong>> map = getTabSongMap();
-        map.values().forEach((x) -> x.removeIf((localSong) -> !isUnlocked(localSong, ownedDlcs)));
-        return map;
-    }
-
     protected int getDlcPriority(String dlcCode) {
         Dlc dlc = dlcs.get(dlcCode);
         return (dlc != null) ? dlc.priority() : -1;
-    }
-
-    protected boolean isUnlocked(LocalSong localSong, Set<String> ownedDlcs) {
-        Unlock unlock = unlocks.get(localSong.id());
-        if (unlock == null) {
-            return ownedDlcs.contains(localSong.dlcCode());
-        }
-
-        for (Set<String> condition : unlock.conditions) {
-            if (ownedDlcs.containsAll(condition)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

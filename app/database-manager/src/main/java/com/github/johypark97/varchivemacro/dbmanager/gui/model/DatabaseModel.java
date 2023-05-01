@@ -19,7 +19,6 @@ public class DatabaseModel {
     private static final String DLC_FILENAME = "dlcs.json";
     private static final String SONG_FILENAME = "songs.json";
     private static final String TAB_FILENAME = "tabs.json";
-    private static final String UNLOCK_FILENAME = "unlocks.json";
 
     private DlcManager dlcManager;
 
@@ -33,8 +32,7 @@ public class DatabaseModel {
         Path dlcPath = baseDir.resolve(DLC_FILENAME);
         Path songPath = baseDir.resolve(SONG_FILENAME);
         Path tabPath = baseDir.resolve(TAB_FILENAME);
-        Path unlockPath = baseDir.resolve(UNLOCK_FILENAME);
-        dlcManager = new DlcManager(songPath, dlcPath, tabPath, unlockPath);
+        dlcManager = new DlcManager(songPath, dlcPath, tabPath);
 
         tableModel = new DatabaseTableModel(dlcManager);
         tableRowSorter = new DatabaseTableRowSorter(tableModel);

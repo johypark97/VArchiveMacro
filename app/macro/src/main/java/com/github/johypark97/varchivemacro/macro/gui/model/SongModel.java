@@ -15,10 +15,8 @@ public class SongModel {
     private static final Path DLC_PATH = BASE_PATH.resolve("dlcs.json");
     private static final Path SONG_PATH = BASE_PATH.resolve("songs.json");
     private static final Path TAB_PATH = BASE_PATH.resolve("tabs.json");
-    private static final Path UNLOCK_PATH = BASE_PATH.resolve("unlocks.json");
 
-    private final DlcManager dlcManager =
-            new DlcManager(SONG_PATH, DLC_PATH, TAB_PATH, UNLOCK_PATH);
+    private final DlcManager dlcManager = new DlcManager(SONG_PATH, DLC_PATH, TAB_PATH);
 
     public SongModel() throws IOException {
     }
