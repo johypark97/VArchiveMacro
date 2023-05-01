@@ -18,7 +18,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class DlcManager extends SongManager {
-    private static final Set<String> DLC_COLLABORATION_TABS = Set.of("MUSIC GAME", "VARIETY");
+    private static final int DLC_COUNT_CONDITION = 1;
 
     protected final Map<Integer, String> tabs;
     protected final Map<String, Dlc> dlcs;
@@ -83,7 +83,8 @@ public class DlcManager extends SongManager {
         }
 
         map.forEach((key, value) -> {
-            if (!DLC_COLLABORATION_TABS.contains(key)) {
+            int count = value.stream().map(LocalSong::dlc).collect(Collectors.toSet()).size();
+            if (count == DLC_COUNT_CONDITION) {
                 value.sort(new LocalSongComparator());
             } else {
                 value.sort(new LocalSongComparator() {
