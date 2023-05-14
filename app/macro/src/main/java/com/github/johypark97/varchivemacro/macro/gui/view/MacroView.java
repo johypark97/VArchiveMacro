@@ -9,6 +9,9 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroAnalyzeKey;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskViewModel.ColumnKey;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableColumnLookup;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableModelWithLookup;
 import com.github.johypark97.varchivemacro.macro.gui.view.components.UrlLabel;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
@@ -84,8 +87,6 @@ public class MacroView extends JFrame implements View, WindowListener {
 
     private static final Color TABLE_SELECTED_BACKGROUND_COLOR = new Color(0xE0E0E0);
     private static final Color TABLE_SELECTED_FOREGROUND_COLOR = Color.BLACK;
-    private static final int TASK_TABLE_COLUMN_INDEX = 0;
-    private static final int TASK_TABLE_COLUMN_SIZE = 1;
     private static final int TASK_TABLE_HIGHLIGHT_COUNT = 2;
 
     // presenter
@@ -126,6 +127,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JTable scannerTaskTable;
     protected JTextField accountFileTextField;
     protected JTextField cacheDirTextField;
+    protected TableModelWithLookup<ColumnKey> scannerTaskTableModel;
     protected transient CheckboxGroup<String> dlcCheckboxGroup = new CheckboxGroup<>();
 
     private transient RadioButtonGroup<MacroAnalyzeKey> macroAnalyzeKey;
@@ -342,13 +344,15 @@ public class MacroView extends JFrame implements View, WindowListener {
                                         Object value, boolean isSelected, boolean hasFocus, int row,
                                         int column) {
                                     int rowIndex = table.convertRowIndexToModel(row);
-                                    int indexValue = (int) table.getModel()
-                                            .getValueAt(rowIndex, TASK_TABLE_COLUMN_INDEX);
-                                    int sizeValue = (int) table.getModel()
-                                            .getValueAt(rowIndex, TASK_TABLE_COLUMN_SIZE);
+                                    int indexValue = (int) table.getModel().getValueAt(rowIndex,
+                                            scannerTaskTableModel.getTableColumnLookup()
+                                                    .getIndex(ColumnKey.INDEX));
+                                    int countValue = (int) table.getModel().getValueAt(rowIndex,
+                                            scannerTaskTableModel.getTableColumnLookup()
+                                                    .getIndex(ColumnKey.COUNT));
 
                                     Color backgroundColor;
-                                    if (sizeValue - indexValue <= TASK_TABLE_HIGHLIGHT_COUNT) {
+                                    if (countValue - indexValue <= TASK_TABLE_HIGHLIGHT_COUNT) {
                                         backgroundColor = isSelected ? Color.YELLOW : Color.ORANGE;
                                     } else {
                                         backgroundColor = isSelected
@@ -894,20 +898,23 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
-    public void setScannerTaskTableModel(TableModel model) {
+    public void setScannerTaskTableModel(TableModelWithLookup<ColumnKey> model) {
         scannerTaskTable.setModel(model);
+        scannerTaskTableModel = model;
 
-        TableColumnModel tableColumnModel = scannerTaskTable.getColumnModel();
-        tableColumnModel.removeColumn(tableColumnModel.getColumn(0));
-        tableColumnModel.removeColumn(tableColumnModel.getColumn(0));
+        TableColumnLookup<ColumnKey> columnLookup = model.getTableColumnLookup();
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.COMPOSER).setPreferredWidth(80);
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.DLC).setPreferredWidth(80);
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.SONG_NUMBER).setPreferredWidth(60);
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.STATUS).setPreferredWidth(160);
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.TAB).setPreferredWidth(80);
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.TASK_NUMBER).setPreferredWidth(60);
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.TITLE).setPreferredWidth(160);
 
-        tableColumnModel.getColumn(0).setPreferredWidth(60);
-        tableColumnModel.getColumn(1).setPreferredWidth(160);
-        tableColumnModel.getColumn(2).setPreferredWidth(80);
-        tableColumnModel.getColumn(3).setPreferredWidth(80);
-        tableColumnModel.getColumn(4).setPreferredWidth(80);
-        tableColumnModel.getColumn(5).setPreferredWidth(60);
-        tableColumnModel.getColumn(6).setPreferredWidth(160);
+        // Hide two columns, index, and count.
+        TableColumnModel columnModel = scannerTaskTable.getColumnModel();
+        columnModel.removeColumn(columnLookup.getColumn(scannerTaskTable, ColumnKey.COUNT));
+        columnModel.removeColumn(columnLookup.getColumn(scannerTaskTable, ColumnKey.INDEX));
     }
 
     @Override

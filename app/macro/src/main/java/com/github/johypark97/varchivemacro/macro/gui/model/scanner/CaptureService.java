@@ -1,7 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
 import java.awt.AWTException;
 import java.awt.Dimension;
@@ -89,7 +88,7 @@ class CaptureService {
 
                         LocalSong song = songs.get(i);
                         ScannerTask task = taskManager.create(song, i, count);
-                        task.setStatus(Status.CAPTURED);
+                        task.setStatus(ScannerTaskStatus.CAPTURED);
 
                         while (true) {
                             try {

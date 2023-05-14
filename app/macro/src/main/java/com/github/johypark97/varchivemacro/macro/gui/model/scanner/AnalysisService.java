@@ -6,7 +6,6 @@ import com.github.johypark97.varchivemacro.macro.core.ocr.OcrInitializationError
 import com.github.johypark97.varchivemacro.macro.core.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.macro.core.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
 import com.google.common.base.CharMatcher;
@@ -48,7 +47,7 @@ public class AnalysisService {
                         taskManager.getTasks().stream().filter((x) -> x.getException() == null)
                                 .toList();
 
-                queue.forEach((x) -> x.setStatus(Status.WAITING));
+                queue.forEach((x) -> x.setStatus(ScannerTaskStatus.WAITING));
 
                 Thread thread = Thread.currentThread();
                 for (ScannerTask task : queue) {
@@ -65,7 +64,7 @@ public class AnalysisService {
     }
 
     public static void analyze(OcrWrapper ocr, ScannerTask task) {
-        task.setStatus(Status.ANALYZING);
+        task.setStatus(ScannerTaskStatus.ANALYZING);
         task.clearAnalyzedData();
 
         try (PixWrapper pix = new PixWrapper(task.filePath)) {
@@ -110,7 +109,7 @@ public class AnalysisService {
                 }
             }
 
-            task.setStatus(Status.ANALYZED);
+            task.setStatus(ScannerTaskStatus.ANALYZED);
         } catch (Exception e) {
             task.setException(e);
             LOGGER.atError().log(e.getMessage(), e);

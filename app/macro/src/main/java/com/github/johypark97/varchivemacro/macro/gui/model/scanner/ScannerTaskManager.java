@@ -1,17 +1,21 @@
 package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
-import java.io.Serial;
+import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
+import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event.Type;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Request;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.ResponseData;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.swing.table.AbstractTableModel;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-class ScannerTaskManager {
+class ScannerTaskManager implements Server<Event, Object, Request> {
+    private final List<Client<Event, Object, Request>> clientList = new CopyOnWriteArrayList<>();
     private final Map<Integer, ScannerTask> tasks = new ConcurrentHashMap<>();
-    public final ScannerTaskTableModel tableModel = new ScannerTaskTableModel();
 
     private Path cacheDir = Path.of("");
 
@@ -21,7 +25,7 @@ class ScannerTaskManager {
 
     public void clear() {
         tasks.clear();
-        tableModel.fireTableDataChanged();
+        notify(new Event(Type.DATA_CHANGED));
     }
 
     public ScannerTask create(LocalSong song, int songIndex, int songCount) {
@@ -29,7 +33,7 @@ class ScannerTaskManager {
         ScannerTask task = new ScannerTask(this, taskNumber, song, songIndex, songCount, cacheDir);
         tasks.put(taskNumber, task);
 
-        tableModel.fireTableRowsInserted(taskNumber, taskNumber);
+        notify(new Event(Type.ROWS_INSERTED, taskNumber));
 
         return task;
     }
@@ -43,66 +47,42 @@ class ScannerTaskManager {
     }
 
     public void notify_statusUpdated(int taskNumber) {
-        tableModel.fireTableRowsUpdated(taskNumber, taskNumber);
+        notify(new Event(Type.ROWS_UPDATED, taskNumber));
     }
 
-    protected class ScannerTaskTableModel extends AbstractTableModel {
-        @Serial
-        private static final long serialVersionUID = 2595265577036844112L;
+    @Override
+    public void addClient(Client<Event, Object, Request> client) {
+        clientList.add(client);
+        client.onAddClient(r -> new Request() {
+            @Override
+            public ResponseData getValue(int index) {
+                ScannerTask task = tasks.get(index);
+                if (task == null) {
+                    return null;
+                }
 
-        private static final List<String> COLUMNS =
-                List.of("index", "count", "TaskNo", "Title", "Composer", "Dlc", "Tab", "SongNo",
-                        "Status");
-        private static final String ERROR_STRING = "ERROR";
+                ResponseData data = new ResponseData();
+                data.composer = task.song.composer();
+                data.count = task.songCount;
+                data.dlc = task.song.dlc();
+                data.index = task.songIndex;
+                data.status = task.getStatus();
+                data.tab = task.song.dlcTab();
+                data.taskNumber = task.taskNumber;
+                data.title = task.song.title();
 
-        private String statusToString(Status status) {
-            return switch (status) {
-                case ANALYZED -> "analyzed";
-                case ANALYZING -> "analyzing";
-                case CACHED -> "cached";
-                case CAPTURED -> "captured";
-                case DISK_LOADED -> "loaded from disk";
-                case DISK_SAVED -> "saved to disk";
-                case EXCEPTION -> "error occurred";
-                case NONE -> "none";
-                case WAITING -> "waiting";
-            };
-        }
-
-        @Override
-        public String getColumnName(int column) {
-            return COLUMNS.get(column);
-        }
-
-        @Override
-        public int getRowCount() {
-            return tasks.size();
-        }
-
-        @Override
-        public int getColumnCount() {
-            return COLUMNS.size();
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            ScannerTask task = tasks.get(rowIndex);
-            if (task == null) {
-                return ERROR_STRING;
+                return data;
             }
 
-            return switch (columnIndex) {
-                case 0 -> task.songIndex;
-                case 1 -> task.songCount;
-                case 2 -> task.taskNumber;
-                case 3 -> task.song.title();
-                case 4 -> task.song.composer();
-                case 5 -> task.song.dlc();
-                case 6 -> task.song.dlcTab();
-                case 7 -> task.songIndex + 1 + " / " + task.songCount;
-                case 8 -> statusToString(task.getStatus());
-                default -> ERROR_STRING;
-            };
-        }
+            @Override
+            public int getCount() {
+                return tasks.size();
+            }
+        });
+    }
+
+    @Override
+    public void notify(Event e) {
+        clientList.forEach((x) -> x.onNotify(e));
     }
 }

@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskViewModel.ColumnKey;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableModelWithLookup;
 import com.google.common.collect.Table;
 import java.nio.file.Path;
 import java.util.List;
@@ -64,7 +66,7 @@ public interface IMacro {
 
         void setSelectableDlcTabs(List<String> tabs);
 
-        void setScannerTaskTableModel(TableModel model);
+        void setScannerTaskTableModel(TableModelWithLookup<ColumnKey> model);
 
         void setScannerResultTableModel(TableModel model);
 

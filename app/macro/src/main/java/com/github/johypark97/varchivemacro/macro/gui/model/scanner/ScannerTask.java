@@ -14,11 +14,6 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 
 class ScannerTask {
-    public enum Status {
-        ANALYZED, ANALYZING, CACHED, CAPTURED, DISK_LOADED, DISK_SAVED, EXCEPTION, NONE, WAITING
-    }
-
-
     public static class AnalyzedData {
         public String rateText = "";
         public boolean isMaxCombo;
@@ -35,7 +30,7 @@ class ScannerTask {
     public final int taskNumber;
 
     private Exception exception;
-    private Status status = Status.NONE;
+    private ScannerTaskStatus status = ScannerTaskStatus.NONE;
     private final Table<Button, Pattern, AnalyzedData> analyzedDataList = HashBasedTable.create();
     public final Path filePath;
 
@@ -64,11 +59,11 @@ class ScannerTask {
         return ImageIO.read(filePath.toFile());
     }
 
-    public Status getStatus() {
+    public ScannerTaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status value) {
+    public void setStatus(ScannerTaskStatus value) {
         status = value;
         manager.notify_statusUpdated(taskNumber);
     }
@@ -79,7 +74,7 @@ class ScannerTask {
 
     public void setException(Exception value) {
         exception = value;
-        setStatus(Status.EXCEPTION);
+        setStatus(ScannerTaskStatus.EXCEPTION);
     }
 
     public void clearAnalyzedData() {

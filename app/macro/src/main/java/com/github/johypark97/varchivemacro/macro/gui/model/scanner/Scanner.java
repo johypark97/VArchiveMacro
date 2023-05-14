@@ -5,11 +5,13 @@ import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
+import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Request;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.Status;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
 import java.awt.Dimension;
@@ -37,8 +39,10 @@ public class Scanner {
     public Runnable whenStart_loadImages;
     public Runnable whenStart_uploadRecord;
 
-    public void setModels(SongModel songModel, RecordModel recordModel) {
+    public void setModels(SongModel songModel, RecordModel recordModel,
+            Client<Event, Object, Request> taskClient) {
         resultManager.setModels(songModel, recordModel);
+        taskManager.addClient(taskClient);
     }
 
     public Command getCommand_scan(Path cacheDir, int captureDelay, int inputDuration,
@@ -65,10 +69,6 @@ public class Scanner {
     public Command getCommand_loadCachedImages(Path cacheDir,
             Map<String, List<LocalSong>> tabSongMap) {
         return createCommand_loadCachedImages(cacheDir, tabSongMap);
-    }
-
-    public TableModel getTaskTableModel() {
-        return taskManager.tableModel;
     }
 
     public TableModel getResultTableModel() {
@@ -236,7 +236,7 @@ public class Scanner {
                         LocalSong song = songs.get(i);
                         ScannerTask task = taskManager.create(song, i, count);
                         if (Files.exists(task.filePath)) {
-                            task.setStatus(Status.CACHED);
+                            task.setStatus(ScannerTaskStatus.CACHED);
                         } else {
                             task.setException(new IOException("File not found"));
                         }
