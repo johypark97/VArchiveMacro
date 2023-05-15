@@ -9,6 +9,8 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroAnalyzeKey;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel.ResultViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskViewModel.ColumnKey;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableColumnLookup;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableModelWithLookup;
@@ -66,7 +68,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.BadLocationException;
 import javax.swing.tree.TreeModel;
@@ -128,6 +129,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JTextField accountFileTextField;
     protected JTextField cacheDirTextField;
     protected TableModelWithLookup<ColumnKey> scannerTaskTableModel;
+    protected TableModelWithLookup<ScannerResultViewModel.ColumnKey> scannerResultTableModel;
     protected transient CheckboxGroup<String> dlcCheckboxGroup = new CheckboxGroup<>();
 
     private transient RadioButtonGroup<MacroAnalyzeKey> macroAnalyzeKey;
@@ -918,28 +920,46 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
-    public void setScannerResultTableModel(TableModel model) {
+    public void setScannerResultTableModel(
+            TableModelWithLookup<ScannerResultViewModel.ColumnKey> model) {
         scannerResultTable.setModel(model);
+        scannerResultTableModel = model;
 
-        TableColumnModel tableColumnModel = scannerResultTable.getColumnModel();
-        tableColumnModel.getColumn(0).setPreferredWidth(40);
-        tableColumnModel.getColumn(1).setPreferredWidth(40);
-        tableColumnModel.getColumn(2).setPreferredWidth(160);
-        tableColumnModel.getColumn(3).setPreferredWidth(80);
-        tableColumnModel.getColumn(4).setPreferredWidth(80);
-        tableColumnModel.getColumn(5).setPreferredWidth(40);
-        tableColumnModel.getColumn(6).setPreferredWidth(40);
-        tableColumnModel.getColumn(7).setPreferredWidth(60);
-        tableColumnModel.getColumn(8).setPreferredWidth(40);
-        tableColumnModel.getColumn(9).setPreferredWidth(40);
-        tableColumnModel.getColumn(10).setPreferredWidth(60);
-        tableColumnModel.getColumn(11).setPreferredWidth(40);
-        tableColumnModel.getColumn(12).setPreferredWidth(80);
-        tableColumnModel.getColumn(13).setPreferredWidth(160);
+        TableColumnLookup<ScannerResultViewModel.ColumnKey> columnLookup =
+                model.getTableColumnLookup();
+
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.BUTTON)
+                .setPreferredWidth(40);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.COMPOSER)
+                .setPreferredWidth(80);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.DELTA_RATE)
+                .setPreferredWidth(40);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.DLC)
+                .setPreferredWidth(80);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.NEW_MAX_COMBO)
+                .setPreferredWidth(60);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.NEW_RATE)
+                .setPreferredWidth(40);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.OLD_MAX_COMBO)
+                .setPreferredWidth(60);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.OLD_RATE)
+                .setPreferredWidth(40);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.PATTERN)
+                .setPreferredWidth(40);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.RESULT_NUMBER)
+                .setPreferredWidth(40);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.STATUS)
+                .setPreferredWidth(160);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.TASK_NUMBER)
+                .setPreferredWidth(40);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.TITLE)
+                .setPreferredWidth(160);
+        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.UPLOAD)
+                .setPreferredWidth(80);
     }
 
     @Override
-    public void setScannerResultTableRowSorter(TableRowSorter<TableModel> rowSorter) {
+    public void setScannerResultTableRowSorter(TableRowSorter<ResultViewModel> rowSorter) {
         scannerResultTable.setRowSorter(rowSorter);
     }
 
@@ -1117,9 +1137,6 @@ class MacroViewMenuListener implements ActionListener {
 
 
 class MacroViewButtonListener implements ActionListener {
-    // TODO: Change to get the index from the model.
-    private static final int UPLOAD_COLUMN_INDEX = 11;
-
     private final AccountFileChooser accountFileChooser = new AccountFileChooser();
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private final MacroView view;
@@ -1167,13 +1184,19 @@ class MacroViewButtonListener implements ActionListener {
             view.presenter.refreshScannerResult();
         } else if (source.equals(view.selectAllRecordButton)) {
             int count = view.scannerResultTable.getRowCount();
+            int index = view.scannerResultTableModel.getTableColumnLookup()
+                    .getIndexInView(view.scannerResultTable,
+                            ScannerResultViewModel.ColumnKey.UPLOAD);
             for (int i = 0; i < count; ++i) {
-                view.scannerResultTable.setValueAt(true, i, UPLOAD_COLUMN_INDEX);
+                view.scannerResultTable.setValueAt(true, i, index);
             }
         } else if (source.equals(view.unselectAllRecordButton)) {
             int count = view.scannerResultTable.getRowCount();
+            int index = view.scannerResultTableModel.getTableColumnLookup()
+                    .getIndexInView(view.scannerResultTable,
+                            ScannerResultViewModel.ColumnKey.UPLOAD);
             for (int i = 0; i < count; ++i) {
-                view.scannerResultTable.setValueAt(false, i, UPLOAD_COLUMN_INDEX);
+                view.scannerResultTable.setValueAt(false, i, index);
             }
         } else if (source.equals(view.uploadRecordButton)) {
             Box box = Box.createVerticalBox();

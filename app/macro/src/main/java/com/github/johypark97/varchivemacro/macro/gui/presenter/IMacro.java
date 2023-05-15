@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel.ResultViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskViewModel.ColumnKey;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableModelWithLookup;
 import com.google.common.collect.Table;
@@ -9,7 +11,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.JFrame;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.tree.TreeModel;
 
@@ -68,8 +69,9 @@ public interface IMacro {
 
         void setScannerTaskTableModel(TableModelWithLookup<ColumnKey> model);
 
-        void setScannerResultTableModel(TableModel model);
+        void setScannerResultTableModel(
+                TableModelWithLookup<ScannerResultViewModel.ColumnKey> model);
 
-        void setScannerResultTableRowSorter(TableRowSorter<TableModel> rowSorter);
+        void setScannerResultTableRowSorter(TableRowSorter<ResultViewModel> rowSorter);
     }
 }

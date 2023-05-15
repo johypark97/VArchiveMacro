@@ -8,6 +8,7 @@ import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.command.CommandRunner;
 import com.github.johypark97.varchivemacro.macro.gui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData;
@@ -17,6 +18,7 @@ import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroCommandBuilder.Direction;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel.ResultViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskViewModel.TaskViewModel;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.johypark97.varchivemacro.macro.resource.MacroPresenterKey;
@@ -50,6 +52,7 @@ public class MacroPresenter implements Presenter {
     private final ConfigModel configModel = new ConfigModel();
     private final MacroCommandBuilder macroCommandBuilder = new MacroCommandBuilder();
     private final RecordModel recordModel = new RecordModel();
+    private final ResultModel scannerResultModel = new ResultModel();
     private final Scanner scanner = new Scanner();
     private final TaskModel scannerTaskModel = new TaskModel();
 
@@ -312,7 +315,7 @@ public class MacroPresenter implements Presenter {
             return;
         }
 
-        scanner.setModels(songModel, recordModel, scannerTaskModel);
+        scanner.setModels(songModel, recordModel, scannerTaskModel, scannerResultModel);
 
         TreeModel treeModel = createTabSongTreeModel("Records", songModel.getTabSongMap());
         view.setRecordViewerTreeModel(treeModel);
@@ -321,8 +324,11 @@ public class MacroPresenter implements Presenter {
         TaskViewModel taskViewModel = new TaskViewModel();
         scannerTaskModel.linkModel(taskViewModel);
 
-        view.setScannerResultTableModel(scanner.getResultTableModel());
-        view.setScannerResultTableRowSorter(scanner.getResultTableRowSorter());
+        ResultViewModel resultViewModel = new ResultViewModel();
+        scannerResultModel.linkModel(resultViewModel);
+
+        view.setScannerResultTableModel(resultViewModel);
+        view.setScannerResultTableRowSorter(resultViewModel.createRowSorter());
         view.setScannerTaskTableModel(taskViewModel);
 
         try {

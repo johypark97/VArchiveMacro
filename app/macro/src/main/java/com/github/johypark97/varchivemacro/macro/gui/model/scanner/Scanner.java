@@ -7,8 +7,8 @@ import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Request;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
@@ -22,8 +22,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 public class Scanner {
     private final ResultManager resultManager = new ResultManager();
@@ -40,8 +38,11 @@ public class Scanner {
     public Runnable whenStart_uploadRecord;
 
     public void setModels(SongModel songModel, RecordModel recordModel,
-            Client<Event, Object, Request> taskClient) {
+            Client<ScannerTaskModel.Event, Object, ScannerTaskModel.Request> taskClient,
+            Client<ScannerResultModel.Event, Object, ScannerResultModel.Request> resultClient) {
+        resultManager.addClient(resultClient);
         resultManager.setModels(songModel, recordModel);
+
         taskManager.addClient(taskClient);
     }
 
@@ -69,14 +70,6 @@ public class Scanner {
     public Command getCommand_loadCachedImages(Path cacheDir,
             Map<String, List<LocalSong>> tabSongMap) {
         return createCommand_loadCachedImages(cacheDir, tabSongMap);
-    }
-
-    public TableModel getResultTableModel() {
-        return resultManager.tableModel;
-    }
-
-    public TableRowSorter<TableModel> getResultTableRowSorter() {
-        return resultManager.rowSorter;
     }
 
     public CollectionTaskData getTaskData(int taskNumber) throws Exception {
