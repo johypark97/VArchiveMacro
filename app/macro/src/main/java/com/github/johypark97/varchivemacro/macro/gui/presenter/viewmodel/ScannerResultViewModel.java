@@ -213,7 +213,7 @@ public interface ScannerResultViewModel {
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if (columnIndex == COLUMN_LOOKUP.getIndex(ColumnKey.UPLOAD)
                     && aValue instanceof Boolean value) {
-                model.setSelected(rowIndex, value);
+                model.updateSelected(rowIndex, value);
             }
         }
 

@@ -58,7 +58,7 @@ public interface ScannerResultModel {
 
         ResponseData getData(int index);
 
-        void setSelected(int index, boolean value);
+        void updateSelected(int index, boolean value);
     }
 
 
@@ -105,7 +105,7 @@ public interface ScannerResultModel {
         }
 
         @Override
-        public void setSelected(int index, boolean value) {
+        public void updateSelected(int index, boolean value) {
             requester.request(null).setSelected(index, value);
         }
     }
