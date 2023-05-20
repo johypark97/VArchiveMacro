@@ -1,12 +1,12 @@
-package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
+package com.github.johypark97.varchivemacro.macro.core.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event.Type;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskServer;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.ResponseData;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskServer;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;

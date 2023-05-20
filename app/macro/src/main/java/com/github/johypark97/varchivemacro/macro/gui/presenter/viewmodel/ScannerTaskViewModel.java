@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel;
 
+import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTaskStatus;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Model;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.ViewModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTaskStatus;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;

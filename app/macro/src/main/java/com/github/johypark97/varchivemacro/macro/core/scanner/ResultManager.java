@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
+package com.github.johypark97.varchivemacro.macro.core.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader;
@@ -9,14 +9,14 @@ import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ResultManager.RecordData.Result;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.Event;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.Event.Type;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultServer;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResponseData;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultServer;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ResultManager.RecordData.Result;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;

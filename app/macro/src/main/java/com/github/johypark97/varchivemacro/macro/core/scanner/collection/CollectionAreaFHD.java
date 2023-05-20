@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection;
+package com.github.johypark97.varchivemacro.macro.core.scanner.collection;
 
 import java.awt.Dimension;
 import java.awt.Point;

@@ -1,7 +1,7 @@
-package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
+package com.github.johypark97.varchivemacro.macro.core.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
 import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Rectangle;

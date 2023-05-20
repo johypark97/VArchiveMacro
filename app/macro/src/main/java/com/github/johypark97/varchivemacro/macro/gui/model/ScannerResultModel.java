@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.macro.gui.model;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ResultManager.RecordData.Result;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ResultManager.RecordData.Result;
 
 public interface ScannerResultModel {
     class Event {

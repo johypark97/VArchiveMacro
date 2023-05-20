@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTaskStatus;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTaskStatus;
 
 public interface ScannerTaskModel {
     class Event {

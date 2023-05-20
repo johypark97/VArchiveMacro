@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.gui.model.scanner;
+package com.github.johypark97.varchivemacro.macro.core.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.Button;
@@ -6,16 +6,16 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
+import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData.RecordData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTask.AnalyzedData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
+import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultServer;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskServer;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData.RecordData;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionArea;
-import com.github.johypark97.varchivemacro.macro.gui.model.scanner.collection.CollectionAreaFactory;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
