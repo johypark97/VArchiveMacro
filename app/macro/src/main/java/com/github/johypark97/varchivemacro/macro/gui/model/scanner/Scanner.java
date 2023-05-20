@@ -8,7 +8,9 @@ import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultServer;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskServer;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.CollectionTaskData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTask.AnalyzedData;
@@ -38,8 +40,8 @@ public class Scanner {
     public Runnable whenStart_uploadRecord;
 
     public void setModels(SongModel songModel, RecordModel recordModel,
-            Client<ScannerTaskModel.Event, Object, ScannerTaskModel.Request> taskClient,
-            Client<ScannerResultModel.Event, Object, ScannerResultModel.Request> resultClient) {
+            Client<ScannerTaskModel.Event, TaskServer> taskClient,
+            Client<ScannerResultModel.Event, ResultServer> resultClient) {
         resultManager.addClient(resultClient);
         resultManager.setModels(songModel, recordModel);
 

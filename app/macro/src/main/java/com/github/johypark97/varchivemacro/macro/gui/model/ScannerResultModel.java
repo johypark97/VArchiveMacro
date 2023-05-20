@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.macro.gui.model;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Requester;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ResultManager.RecordData.Result;
 
 public interface ScannerResultModel {
@@ -25,15 +24,6 @@ public interface ScannerResultModel {
     }
 
 
-    interface Request {
-        ResponseData getValue(int index);
-
-        int getCount();
-
-        void setSelected(int index, boolean value);
-    }
-
-
     class ResponseData {
         public Button button;
         public Pattern pattern;
@@ -48,6 +38,15 @@ public interface ScannerResultModel {
         public float oldRate;
         public int resultNumber;
         public int taskNumber;
+    }
+
+
+    interface ResultServer {
+        ResponseData getValue(int index);
+
+        int getCount();
+
+        void updateSelected(int index, boolean value);
     }
 
 
@@ -71,20 +70,20 @@ public interface ScannerResultModel {
     }
 
 
-    class ResultModel implements Client<Event, Object, Request>, Model {
-        private Requester<Object, Request> requester;
+    class ResultModel implements Client<Event, ResultServer>, Model {
+        private ResultServer resultServer;
         private ViewModel viewModel;
 
         @Override
-        public void onAddClient(Requester<Object, Request> requester) {
-            this.requester = requester;
+        public void onAddClient(ResultServer channel) {
+            resultServer = channel;
         }
 
         @Override
-        public void onNotify(Event e) {
-            switch (e.type) {
+        public void onNotify(Event data) {
+            switch (data.type) {
                 case DATA_CHANGED -> viewModel.onDataChanged();
-                case ROWS_UPDATED -> viewModel.onRowsUpdated(e.value);
+                case ROWS_UPDATED -> viewModel.onRowsUpdated(data.value);
             }
         }
 
@@ -96,17 +95,17 @@ public interface ScannerResultModel {
 
         @Override
         public int getCount() {
-            return requester.request(null).getCount();
+            return resultServer.getCount();
         }
 
         @Override
         public ResponseData getData(int index) {
-            return requester.request(null).getValue(index);
+            return resultServer.getValue(index);
         }
 
         @Override
         public void updateSelected(int index, boolean value) {
-            requester.request(null).setSelected(index, value);
+            resultServer.updateSelected(index, value);
         }
     }
 }

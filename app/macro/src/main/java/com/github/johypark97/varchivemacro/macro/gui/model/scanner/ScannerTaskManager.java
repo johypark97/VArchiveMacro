@@ -5,7 +5,7 @@ import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Clien
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event.Type;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Request;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskServer;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.ResponseData;
 import java.nio.file.Path;
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-class ScannerTaskManager implements Server<Event, Object, Request> {
-    private final List<Client<Event, Object, Request>> clientList = new CopyOnWriteArrayList<>();
+class ScannerTaskManager implements Server<Event, TaskServer> {
+    private final List<Client<Event, TaskServer>> clientList = new CopyOnWriteArrayList<>();
     private final Map<Integer, ScannerTask> tasks = new ConcurrentHashMap<>();
 
     private Path cacheDir = Path.of("");
@@ -25,7 +25,7 @@ class ScannerTaskManager implements Server<Event, Object, Request> {
 
     public void clear() {
         tasks.clear();
-        notify(new Event(Type.DATA_CHANGED));
+        notifyClients(new Event(Type.DATA_CHANGED));
     }
 
     public ScannerTask create(LocalSong song, int songIndex, int songCount) {
@@ -33,7 +33,7 @@ class ScannerTaskManager implements Server<Event, Object, Request> {
         ScannerTask task = new ScannerTask(this, taskNumber, song, songIndex, songCount, cacheDir);
         tasks.put(taskNumber, task);
 
-        notify(new Event(Type.ROWS_INSERTED, taskNumber));
+        notifyClients(new Event(Type.ROWS_INSERTED, taskNumber));
 
         return task;
     }
@@ -47,13 +47,13 @@ class ScannerTaskManager implements Server<Event, Object, Request> {
     }
 
     public void notify_statusUpdated(int taskNumber) {
-        notify(new Event(Type.ROWS_UPDATED, taskNumber));
+        notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
     }
 
     @Override
-    public void addClient(Client<Event, Object, Request> client) {
+    public void addClient(Client<Event, TaskServer> client) {
         clientList.add(client);
-        client.onAddClient(r -> new Request() {
+        client.onAddClient(new TaskServer() {
             @Override
             public ResponseData getValue(int index) {
                 ScannerTask task = tasks.get(index);
@@ -82,7 +82,7 @@ class ScannerTaskManager implements Server<Event, Object, Request> {
     }
 
     @Override
-    public void notify(Event e) {
-        clientList.forEach((x) -> x.onNotify(e));
+    public void notifyClients(Event data) {
+        clientList.forEach((x) -> x.onNotify(data));
     }
 }

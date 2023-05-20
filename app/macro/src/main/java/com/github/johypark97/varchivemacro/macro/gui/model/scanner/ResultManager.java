@@ -12,7 +12,7 @@ import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Serve
 import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.Event;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.Event.Type;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.Request;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultServer;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ResultManager.RecordData.Result;
@@ -29,7 +29,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class ResultManager implements Server<Event, Object, Request> {
+public class ResultManager implements Server<Event, ResultServer> {
     public static class RecordData {
         public enum Result {
             CANCELED, HIGHER_RECORD_EXISTS, NOT_UPLOADED, SUSPENDED, UPLOADED, UPLOADING, WAITING
@@ -51,7 +51,7 @@ public class ResultManager implements Server<Event, Object, Request> {
     }
 
 
-    private final List<Client<Event, Object, Request>> clientList = new CopyOnWriteArrayList<>();
+    private final List<Client<Event, ResultServer>> clientList = new CopyOnWriteArrayList<>();
     private final List<RecordData> records = new CopyOnWriteArrayList<>();
 
     private RecordModel recordModel;
@@ -64,7 +64,7 @@ public class ResultManager implements Server<Event, Object, Request> {
 
     public void clearRecords() {
         records.clear();
-        notify(new Event(Type.DATA_CHANGED));
+        notifyClients(new Event(Type.DATA_CHANGED));
     }
 
     public void addRecords(List<ScannerTask> tasks) {
@@ -103,7 +103,7 @@ public class ResultManager implements Server<Event, Object, Request> {
         });
 
         records.addAll(dataList);
-        notify(new Event(Type.DATA_CHANGED));
+        notifyClients(new Event(Type.DATA_CHANGED));
     }
 
     public void upload(Path accountPath, int delay) throws IOException, GeneralSecurityException {
@@ -120,14 +120,14 @@ public class ResultManager implements Server<Event, Object, Request> {
                 RecordData data = queue.poll();
 
                 data.result = Result.UPLOADING;
-                notify(new Event(Type.ROWS_UPDATED, data.recordNumber));
+                notifyClients(new Event(Type.ROWS_UPDATED, data.recordNumber));
 
                 RequestJson requestJson = recordToRequest(data.song, data.newRecord);
                 api.upload(requestJson); // Throw an RuntimeException when an error occurs.
 
                 data.result = api.getResult() ? Result.UPLOADED : Result.HIGHER_RECORD_EXISTS;
                 recordModel.update(data.newRecord);
-                notify(new Event(Type.ROWS_UPDATED, data.recordNumber));
+                notifyClients(new Event(Type.ROWS_UPDATED, data.recordNumber));
 
                 TimeUnit.MILLISECONDS.sleep(delay);
             }
@@ -144,7 +144,7 @@ public class ResultManager implements Server<Event, Object, Request> {
         }
 
         recordModel.save();
-        notify(new Event(Type.DATA_CHANGED));
+        notifyClients(new Event(Type.DATA_CHANGED));
     }
 
     private RequestJson recordToRequest(LocalSong song, LocalRecord record) {
@@ -163,9 +163,9 @@ public class ResultManager implements Server<Event, Object, Request> {
     }
 
     @Override
-    public void addClient(Client<Event, Object, Request> client) {
+    public void addClient(Client<Event, ResultServer> client) {
         clientList.add(client);
-        client.onAddClient(r -> new Request() {
+        client.onAddClient(new ResultServer() {
             @Override
             public ResponseData getValue(int index) {
                 RecordData recordData = records.get(index);
@@ -194,18 +194,18 @@ public class ResultManager implements Server<Event, Object, Request> {
             }
 
             @Override
-            public void setSelected(int index, boolean value) {
+            public void updateSelected(int index, boolean value) {
                 RecordData recordData = records.get(index);
                 if (recordData != null) {
                     recordData.isSelected = value;
-                    ResultManager.this.notify(new Event(Type.ROWS_UPDATED, index));
+                    ResultManager.this.notifyClients(new Event(Type.ROWS_UPDATED, index));
                 }
             }
         });
     }
 
     @Override
-    public void notify(Event e) {
-        clientList.forEach((x) -> x.onNotify(e));
+    public void notifyClients(Event data) {
+        clientList.forEach((x) -> x.onNotify(data));
     }
 }

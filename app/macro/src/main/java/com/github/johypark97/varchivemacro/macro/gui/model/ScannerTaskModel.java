@@ -1,7 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Requester;
 import com.github.johypark97.varchivemacro.macro.gui.model.scanner.ScannerTaskStatus;
 
 public interface ScannerTaskModel {
@@ -23,7 +22,7 @@ public interface ScannerTaskModel {
     }
 
 
-    interface Request {
+    interface TaskServer {
         ResponseData getValue(int index);
 
         int getCount();
@@ -62,21 +61,21 @@ public interface ScannerTaskModel {
     }
 
 
-    class TaskModel implements Client<Event, Object, Request>, Model {
-        private Requester<Object, Request> requester;
+    class TaskModel implements Client<Event, TaskServer>, Model {
+        private TaskServer taskServer;
         private ViewModel viewModel;
 
         @Override
-        public void onAddClient(Requester<Object, Request> requester) {
-            this.requester = requester;
+        public void onAddClient(TaskServer channel) {
+            taskServer = channel;
         }
 
         @Override
-        public void onNotify(Event e) {
-            switch (e.type) {
+        public void onNotify(Event data) {
+            switch (data.type) {
                 case DATA_CHANGED -> viewModel.onDataChanged();
-                case ROWS_INSERTED -> viewModel.onRowsInserted(e.value);
-                case ROWS_UPDATED -> viewModel.onRowsUpdated(e.value);
+                case ROWS_INSERTED -> viewModel.onRowsInserted(data.value);
+                case ROWS_UPDATED -> viewModel.onRowsUpdated(data.value);
             }
         }
 
@@ -88,12 +87,12 @@ public interface ScannerTaskModel {
 
         @Override
         public int getCount() {
-            return requester.request(null).getCount();
+            return taskServer.getCount();
         }
 
         @Override
         public ResponseData getData(int index) {
-            return requester.request(null).getValue(index);
+            return taskServer.getValue(index);
         }
     }
 }

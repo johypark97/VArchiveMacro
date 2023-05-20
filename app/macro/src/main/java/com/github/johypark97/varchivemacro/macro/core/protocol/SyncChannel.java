@@ -2,34 +2,23 @@ package com.github.johypark97.varchivemacro.macro.core.protocol;
 
 public interface SyncChannel {
     /**
-     * @param <T> Request
-     * @param <U> Response
+     * @param <T> A data type that the server uses to send notifications to all clients
+     * @param <U> A channel type that the client uses to contact the server
      */
-    interface Requester<T, U> {
-        U request(T r);
+    interface Server<T, U> {
+        void addClient(Client<T, U> client);
+
+        void notifyClients(T data);
     }
 
 
     /**
-     * @param <T> Event
-     * @param <U> Request
-     * @param <V> Response
+     * @param <T> A data type that the server uses to send notifications to all clients
+     * @param <U> A channel type that the client uses to contact the server
      */
-    interface Server<T, U, V> {
-        void addClient(Client<T, U, V> client);
+    interface Client<T, U> {
+        void onAddClient(U channel);
 
-        void notify(T e);
-    }
-
-
-    /**
-     * @param <T> Event
-     * @param <U> Request
-     * @param <V> Response
-     */
-    interface Client<T, U, V> {
-        void onAddClient(Requester<U, V> requester);
-
-        void onNotify(T e);
+        void onNotify(T data);
     }
 }
