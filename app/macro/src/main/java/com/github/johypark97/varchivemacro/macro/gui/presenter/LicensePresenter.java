@@ -10,8 +10,8 @@ public class LicensePresenter implements Presenter {
     private final LicenseModel licenseModel = new LicenseModel();
 
     // view
+    private View view;
     private final Class<? extends View> viewClass;
-    public View view;
 
     public LicensePresenter(Class<? extends View> viewClass) {
         this.viewClass = viewClass;
@@ -47,7 +47,7 @@ public class LicensePresenter implements Presenter {
     }
 
     @Override
-    public void getLicense(String key) {
+    public synchronized void getLicense(String key) {
         try {
             view.setLicenseText(licenseModel.getText(key));
             view.setLicenseUrl(licenseModel.getUrl(key));

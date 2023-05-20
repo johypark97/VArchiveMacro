@@ -40,7 +40,7 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
     private static final int WINDOW_WIDTH = 960;
 
     // presenter
-    public transient Presenter presenter;
+    private transient Presenter presenter;
 
     // components
     private JLabel fullImage;

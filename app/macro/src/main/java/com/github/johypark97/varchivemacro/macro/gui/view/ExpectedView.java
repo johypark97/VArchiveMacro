@@ -33,7 +33,7 @@ public class ExpectedView extends JDialog implements View, WindowListener {
     private static final int WINDOW_WIDTH = 480;
 
     // presenter
-    public transient Presenter presenter;
+    private transient Presenter presenter;
 
     // components
     private JTree tree;

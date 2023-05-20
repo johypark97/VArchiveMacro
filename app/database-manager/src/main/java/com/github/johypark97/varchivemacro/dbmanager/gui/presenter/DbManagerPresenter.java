@@ -23,8 +23,8 @@ public class DbManagerPresenter implements Presenter {
     private final DatabaseModel databaseModel = new DatabaseModel();
 
     // view
+    private View view;
     private final Class<? extends View> viewClass;
-    public View view;
 
     public DbManagerPresenter(Class<? extends View> viewClass) {
         this.viewClass = viewClass;

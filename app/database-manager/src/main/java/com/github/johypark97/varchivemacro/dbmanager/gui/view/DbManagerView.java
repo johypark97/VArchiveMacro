@@ -49,7 +49,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     private static final int WINDOW_WIDTH = 800;
 
     // presenter
-    public transient Presenter presenter;
+    protected transient Presenter presenter;
 
     // components
     protected JMenuItem menuItemExit;

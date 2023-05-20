@@ -57,8 +57,8 @@ public class MacroPresenter implements Presenter {
     private final TaskModel scannerTaskModel = new TaskModel();
 
     // view
+    private View view;
     private final Class<? extends View> viewClass;
-    public View view;
 
     // other presenters
     private IExpected.Presenter expectedPresenter;

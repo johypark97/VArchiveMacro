@@ -91,7 +91,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     private static final int TASK_TABLE_HIGHLIGHT_COUNT = 2;
 
     // presenter
-    public transient Presenter presenter;
+    protected transient Presenter presenter;
 
     // components
     protected JMenuItem menuAbout;

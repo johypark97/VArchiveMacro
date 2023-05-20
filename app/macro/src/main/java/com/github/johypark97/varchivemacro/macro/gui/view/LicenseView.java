@@ -34,7 +34,7 @@ public class LicenseView extends JDialog implements View, WindowListener {
     private static final int WINDOW_WIDTH = 800;
 
     // presenter
-    public transient Presenter presenter;
+    private transient Presenter presenter;
 
     // components
     private JList<String> list;

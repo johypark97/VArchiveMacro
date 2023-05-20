@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 
 public class ScannerTaskPresenter implements Presenter {
     // view
+    private View view;
     private final Class<? extends View> viewClass;
-    public View view;
 
     public ScannerTaskPresenter(Class<? extends View> viewClass) {
         this.viewClass = viewClass;
