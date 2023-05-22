@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.common.database.util;
+package com.github.johypark97.varchivemacro.lib.common.database.comparator;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.Serial;

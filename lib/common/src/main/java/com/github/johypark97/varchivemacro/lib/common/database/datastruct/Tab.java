@@ -11,13 +11,14 @@ import java.nio.file.Path;
 import java.util.Map;
 
 public class Tab {
-    public static class GsonMapTypeToken extends TypeToken<Map<Integer, String>> {
-    }
-
     public static Map<Integer, String> loadJson(Path path) throws IOException {
         Gson gson = newGsonBuilder_dump().create();
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             return gson.fromJson(reader, new GsonMapTypeToken());
         }
+    }
+
+
+    public static class GsonMapTypeToken extends TypeToken<Map<Integer, String>> {
     }
 }

@@ -15,10 +15,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class LocalRecord {
-    public static class GsonListTypeToken extends TypeToken<List<LocalRecord>> {
-    }
-
-
     @Expose
     public final int id;
 
@@ -44,6 +40,19 @@ public class LocalRecord {
         this.maxCombo = maxCombo || rate == 100.0f;
         this.pattern = pattern;
         this.rate = rate;
+    }
+
+    public static List<LocalRecord> loadJson(Path path) throws IOException {
+        Gson gson = newGsonBuilder_dump().create();
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            return gson.fromJson(reader, new GsonListTypeToken());
+        }
+    }
+
+    public static void saveJson(Path path, List<LocalRecord> records) throws IOException {
+        GsonBuilder builder = newGsonBuilder_dump();
+        Gson gson = builder.registerTypeAdapter(Button.class, new Button.GsonSerializer()).create();
+        Files.writeString(path, gson.toJson(records));
     }
 
     public boolean isUpdated(LocalRecord record) {
@@ -74,16 +83,6 @@ public class LocalRecord {
         return String.format("%d. %sB %s %.2f(%b)", id, button, pattern, rate, maxCombo);
     }
 
-    public static List<LocalRecord> loadJson(Path path) throws IOException {
-        Gson gson = newGsonBuilder_dump().create();
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
-            return gson.fromJson(reader, new GsonListTypeToken());
-        }
-    }
-
-    public static void saveJson(Path path, List<LocalRecord> records) throws IOException {
-        GsonBuilder builder = newGsonBuilder_dump();
-        Gson gson = builder.registerTypeAdapter(Button.class, new Button.GsonSerializer()).create();
-        Files.writeString(path, gson.toJson(records));
+    public static class GsonListTypeToken extends TypeToken<List<LocalRecord>> {
     }
 }

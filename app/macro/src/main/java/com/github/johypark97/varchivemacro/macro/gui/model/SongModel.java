@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
 import com.github.johypark97.varchivemacro.lib.common.database.DlcManager;
+import com.github.johypark97.varchivemacro.lib.common.database.SongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,9 +17,14 @@ public class SongModel {
     private static final Path SONG_PATH = BASE_PATH.resolve("songs.json");
     private static final Path TAB_PATH = BASE_PATH.resolve("tabs.json");
 
-    private final DlcManager dlcManager = new DlcManager(SONG_PATH, DLC_PATH, TAB_PATH);
+    private final DlcManager dlcManager = new DlcManager();
+    private final SongManager songManager = new SongManager();
 
     public SongModel() throws IOException {
+        songManager.load(SONG_PATH);
+
+        dlcManager.load(DLC_PATH, TAB_PATH);
+        dlcManager.setSongManager(songManager);
     }
 
     public List<String> getTabs() {
@@ -39,6 +45,6 @@ public class SongModel {
     }
 
     public Set<Integer> duplicateTitleSet() {
-        return dlcManager.duplicateTitleSet();
+        return songManager.getDuplicateTitleSet();
     }
 }

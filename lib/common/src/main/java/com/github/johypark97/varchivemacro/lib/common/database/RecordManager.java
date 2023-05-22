@@ -20,51 +20,13 @@ import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class RecordManager {
+public class RecordManager implements IRecordManager {
     private static final List<Board> BOARDS = Arrays.stream(Board.values())
             .filter((x) -> !EnumSet.of(Board.SC5, Board.SC10, Board.SC15).contains(x)).toList();
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     private RecordMap managedRecords = new RecordMap();
-
-    public boolean update(LocalRecord record) {
-        lock.writeLock().lock();
-        try {
-            return managedRecords.add(record);
-        } finally {
-            lock.writeLock().unlock();
-        }
-    }
-
-    public LocalRecord getRecord(int id, Button button, Pattern pattern) {
-        lock.readLock().lock();
-        try {
-            return managedRecords.find(id, button, pattern);
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
-
-    public Map<Button, Map<Pattern, String>> getRecords(int id) {
-        Map<Button, Map<Pattern, String>> map = new EnumMap<>(Button.class);
-
-        lock.readLock().lock();
-        ButtonMap buttonMap = managedRecords.get(id);
-        if (buttonMap != null) {
-            buttonMap.forEach((button, patternMap) -> patternMap.forEach((pattern, record) -> {
-                Map<Pattern, String> subMap =
-                        map.computeIfAbsent(button, (x) -> new EnumMap<>(Pattern.class));
-
-                String rate = String.valueOf(record.rate);
-                String maxCombo = record.maxCombo ? " (Max)" : "";
-                subMap.put(pattern, rate + maxCombo);
-            }));
-        }
-        lock.readLock().unlock();
-
-        return map;
-    }
 
     public void loadJson(Path path) throws IOException {
         RecordMap map = new RecordMap();
@@ -119,6 +81,48 @@ public class RecordManager {
 
         LocalRecord.saveJson(path, recordList);
     }
+
+    @Override
+    public boolean updateRecord(LocalRecord record) {
+        lock.writeLock().lock();
+        try {
+            return managedRecords.add(record);
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public LocalRecord getRecord(int id, Button button, Pattern pattern) {
+        lock.readLock().lock();
+        try {
+            return managedRecords.find(id, button, pattern);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public Map<Button, Map<Pattern, String>> getRecordMap(int id) {
+        Map<Button, Map<Pattern, String>> map = new EnumMap<>(Button.class);
+
+        lock.readLock().lock();
+        ButtonMap buttonMap = managedRecords.get(id);
+        if (buttonMap != null) {
+            buttonMap.forEach((button, patternMap) -> patternMap.forEach((pattern, record) -> {
+                Map<Pattern, String> subMap =
+                        map.computeIfAbsent(button, (x) -> new EnumMap<>(Pattern.class));
+
+                String rate = String.valueOf(record.rate);
+                String maxCombo = record.maxCombo ? " (Max)" : "";
+                subMap.put(pattern, rate + maxCombo);
+            }));
+        }
+        lock.readLock().unlock();
+
+        return map;
+    }
+
 
     protected static class RecordMap extends HashMap<Integer, ButtonMap> {
         @Serial

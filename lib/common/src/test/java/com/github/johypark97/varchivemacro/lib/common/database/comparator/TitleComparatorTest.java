@@ -1,13 +1,9 @@
-package com.github.johypark97.varchivemacro.lib.common.database.util;
+package com.github.johypark97.varchivemacro.lib.common.database.comparator;
 
-import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_dump;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong.GsonListTypeToken;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -16,10 +12,8 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class LocalSongComparatorTest {
-    private static final String SAMPLE_PATH = "/localSongComparatorTestSample.json";
-
-    private static final Gson gson = newGsonBuilder_dump().create();
+class TitleComparatorTest {
+    private static final String SAMPLE_PATH = "/titleComparatorTestSample.txt";
 
     @Test
     void test_compare() {
@@ -29,19 +23,17 @@ class LocalSongComparatorTest {
             return;
         }
 
-        String sample;
+        List<String> expected;
         try (InputStream stream = url.openStream()) {
-            sample = String.join("", readAllLines(stream));
+            expected = readAllLines(stream);
         } catch (IOException e) {
             fail("resource io error");
             return;
         }
 
-        List<LocalSong> expected = gson.fromJson(sample, new GsonListTypeToken());
-
-        List<LocalSong> actual = new ArrayList<>(expected);
+        List<String> actual = new ArrayList<>(expected);
         Collections.reverse(actual);
-        actual.sort(new LocalSongComparator());
+        actual.sort(new TitleComparator());
 
         assertIterableEquals(expected, actual);
     }

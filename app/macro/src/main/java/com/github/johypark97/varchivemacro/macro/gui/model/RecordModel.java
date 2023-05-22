@@ -29,7 +29,7 @@ public class RecordModel {
     public Table<Button, Pattern, String> getRecords(int id) {
         Table<Button, Pattern, String> table = HashBasedTable.create();
 
-        recordManager.getRecords(id).forEach((button, patternMap) -> patternMap.forEach(
+        recordManager.getRecordMap(id).forEach((button, patternMap) -> patternMap.forEach(
                 (pattern, value) -> table.put(Button.valueOf(button), Pattern.valueOf(pattern),
                         value)));
 
@@ -37,7 +37,7 @@ public class RecordModel {
     }
 
     public void update(LocalRecord record) {
-        recordManager.update(record);
+        recordManager.updateRecord(record);
     }
 
     public boolean loadLocal() throws IOException {

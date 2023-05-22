@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct;
 
-import com.github.johypark97.varchivemacro.lib.common.database.util.TitleComparator;
+import com.github.johypark97.varchivemacro.lib.common.database.comparator.TitleComparator;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;

@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.lib.common.database;
 
+import com.github.johypark97.varchivemacro.lib.common.database.comparator.LocalSongComparator;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.Dlc;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.Tab;
-import com.github.johypark97.varchivemacro.lib.common.database.util.LocalSongComparator;
 import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Path;
@@ -17,47 +17,61 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class DlcManager extends SongManager {
+public class DlcManager implements IDlcManager {
     private static final int DLC_COUNT_CONDITION = 1;
 
-    protected final Map<Integer, String> tabs;
-    protected final Map<String, Dlc> dlcs;
+    private ISongManager songManager;
+    private Map<Integer, String> tabMap;
+    private Map<String, Dlc> dlcMap;
 
-    public DlcManager(Path songPath, Path dlcPath, Path tabPath) throws IOException {
-        super(songPath);
-
-        dlcs = Dlc.loadJson(dlcPath);
-        tabs = Tab.loadJson(tabPath);
+    public void setSongManager(ISongManager songManager) {
+        this.songManager = songManager;
     }
 
+    public void load(Path dlcPath, Path tabPath) throws IOException {
+        dlcMap = Dlc.loadJson(dlcPath);
+        tabMap = Tab.loadJson(tabPath);
+    }
+
+    private int getDlcPriority(String dlcCode) {
+        Dlc dlc = dlcMap.get(dlcCode);
+        return (dlc != null) ? dlc.priority() : -1;
+    }
+
+    @Override
     public List<String> getDlcCodeList() {
-        return dlcs.keySet().stream().toList();
+        return dlcMap.keySet().stream().toList();
     }
 
+    @Override
     public Set<String> getDlcCodeSet() {
-        return dlcs.keySet();
+        return dlcMap.keySet();
     }
 
+    @Override
     public List<String> getDlcTabList() {
-        return tabs.values().stream().toList();
+        return tabMap.values().stream().toList();
     }
 
+    @Override
     public Set<String> getDlcTabSet() {
-        return new HashSet<>(tabs.values());
+        return new HashSet<>(tabMap.values());
     }
 
+    @Override
     public Map<String, String> getDlcCodeNameMap() {
         Function<Entry<String, Dlc>, String> keyMapper = Entry::getKey;
         Function<Entry<String, Dlc>, String> valueMapper = (x) -> x.getValue().name();
 
-        return dlcs.entrySet().stream().collect(Collectors.toMap(keyMapper, valueMapper));
+        return dlcMap.entrySet().stream().collect(Collectors.toMap(keyMapper, valueMapper));
     }
 
+    @Override
     public Map<String, Set<String>> getDlcTabCodeMap() {
         Map<String, Set<String>> map = new LinkedHashMap<>();
-        tabs.forEach((key, value) -> map.putIfAbsent(value, new HashSet<>()));
+        tabMap.forEach((key, value) -> map.putIfAbsent(value, new HashSet<>()));
 
-        for (LocalSong song : songs) {
+        for (LocalSong song : songManager.getSongList()) {
             Set<String> set = map.get(song.dlcTab());
             if (set == null) {
                 throw new RuntimeException("tab does not exist: " + song.dlcTab());
@@ -69,11 +83,12 @@ public class DlcManager extends SongManager {
         return map;
     }
 
+    @Override
     public Map<String, List<LocalSong>> getTabSongMap() {
         Map<String, List<LocalSong>> map = new LinkedHashMap<>();
-        tabs.forEach((key, value) -> map.putIfAbsent(value, new ArrayList<>()));
+        tabMap.forEach((key, value) -> map.putIfAbsent(value, new ArrayList<>()));
 
-        for (LocalSong song : songs) {
+        for (LocalSong song : songManager.getSongList()) {
             List<LocalSong> list = map.get(song.dlcTab());
             if (list == null) {
                 throw new RuntimeException("tab does not exist: " + song.dlcTab());
@@ -108,10 +123,5 @@ public class DlcManager extends SongManager {
         });
 
         return map;
-    }
-
-    protected int getDlcPriority(String dlcCode) {
-        Dlc dlc = dlcs.get(dlcCode);
-        return (dlc != null) ? dlc.priority() : -1;
     }
 }

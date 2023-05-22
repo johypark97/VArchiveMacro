@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher.RemoteSong;
 import com.github.johypark97.varchivemacro.lib.common.database.DlcManager;
+import com.github.johypark97.varchivemacro.lib.common.database.SongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -20,7 +21,9 @@ public class DatabaseModel {
     private static final String SONG_FILENAME = "songs.json";
     private static final String TAB_FILENAME = "tabs.json";
 
-    private DlcManager dlcManager;
+    private final DlcManager dlcManager = new DlcManager();
+    private final SongManager songManager = new SongManager();
+    private boolean isManagerloaded;
 
     public DatabaseTableModel tableModel;
     public DatabaseTableRowSorter tableRowSorter;
@@ -32,14 +35,20 @@ public class DatabaseModel {
         Path dlcPath = baseDir.resolve(DLC_FILENAME);
         Path songPath = baseDir.resolve(SONG_FILENAME);
         Path tabPath = baseDir.resolve(TAB_FILENAME);
-        dlcManager = new DlcManager(songPath, dlcPath, tabPath);
 
-        tableModel = new DatabaseTableModel(dlcManager);
+        songManager.load(songPath);
+
+        dlcManager.load(dlcPath, tabPath);
+        dlcManager.setSongManager(songManager);
+
+        tableModel = new DatabaseTableModel(songManager);
         tableRowSorter = new DatabaseTableRowSorter(tableModel);
+
+        isManagerloaded = true;
     }
 
     public boolean isLoaded() {
-        return dlcManager != null;
+        return isManagerloaded;
     }
 
     public List<String> getFilterableColumns() {
@@ -53,7 +62,7 @@ public class DatabaseModel {
     }
 
     public List<LocalSong> getSongs() {
-        return dlcManager.getSongs();
+        return songManager.getSongList();
     }
 
     public List<String> getDlcCodeList() {
@@ -84,7 +93,7 @@ public class DatabaseModel {
 
         staticFetcher.fetchSongs();
         for (RemoteSong remoteSong : staticFetcher.getSongs()) {
-            LocalSong localSong = dlcManager.getSong(remoteSong.id);
+            LocalSong localSong = songManager.getSong(remoteSong.id);
             if (localSong == null) {
                 unclassified.add(remoteSong);
             } else if (!compareSong(localSong, remoteSong)) {
