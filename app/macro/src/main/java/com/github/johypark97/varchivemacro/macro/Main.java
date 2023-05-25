@@ -3,6 +3,11 @@ package com.github.johypark97.varchivemacro.macro;
 import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
 
 import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
+import com.github.johypark97.varchivemacro.macro.core.backend.Backend;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskDataModel.TaskDataModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.SongRecordDataModel.SongRecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.ExpectedPresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.LicensePresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroPresenter;
@@ -16,7 +21,28 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class Main {
+    private final Backend backend = new Backend();
     private final MacroPresenter macroPresenter = new MacroPresenter(MacroView.class);
+
+    private Main() {
+        backend.addClient(macroPresenter);
+
+        SongRecordModel songRecordModel = new SongRecordModel(backend.getSongRecordManager());
+        TaskDataModel taskDataModel = new TaskDataModel(backend.getTaskDataProvider());
+
+        TaskModel scannerTaskModel = new TaskModel();
+        backend.addTaskClient(scannerTaskModel);
+
+        ResultModel scannerResultModel = new ResultModel();
+        backend.addResultClient(scannerResultModel);
+
+        macroPresenter.setModels(songRecordModel, taskDataModel, scannerTaskModel,
+                scannerResultModel);
+
+        macroPresenter.setPresenters(new ExpectedPresenter(ExpectedView.class),
+                new LicensePresenter(LicenseView.class),
+                new ScannerTaskPresenter(ScannerTaskView.class));
+    }
 
     public static void main(String[] args) {
         ImageConverter.disableDiskCache();
@@ -35,11 +61,5 @@ public class Main {
             Main main = new Main();
             main.macroPresenter.start();
         });
-    }
-
-    private Main() {
-        macroPresenter.setPresenters(new ExpectedPresenter(ExpectedView.class),
-                new LicensePresenter(LicenseView.class),
-                new ScannerTaskPresenter(ScannerTaskView.class));
     }
 }

@@ -6,9 +6,9 @@ import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.github.johypark97.varchivemacro.macro.core.clientmacro.AnalyzeKey;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroAnalyzeKey;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel.ResultViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskViewModel.ColumnKey;
@@ -132,7 +132,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected TableModelWithLookup<ScannerResultViewModel.ColumnKey> scannerResultTableModel;
     protected transient CheckboxGroup<String> dlcCheckboxGroup = new CheckboxGroup<>();
 
-    private transient RadioButtonGroup<MacroAnalyzeKey> macroAnalyzeKey;
+    private transient RadioButtonGroup<AnalyzeKey> macroAnalyzeKey;
     private transient SliderSet macroCaptureDelay;
     private transient SliderSet macroCaptureDuration;
     private transient SliderSet macroCount;
@@ -664,7 +664,7 @@ public class MacroView extends JFrame implements View, WindowListener {
                 macroAnalyzeKey = new RadioButtonGroup<>();
                 {
                     Box radioBox = Box.createVerticalBox();
-                    for (MacroAnalyzeKey key : MacroAnalyzeKey.values()) {
+                    for (AnalyzeKey key : AnalyzeKey.values()) {
                         JRadioButton button = macroAnalyzeKey.addButton(key);
                         button.setText("[Alt + " + key + "]");
                         radioBox.add(button);
@@ -1026,12 +1026,12 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
-    public MacroAnalyzeKey getMacroAnalyzeKey() {
+    public AnalyzeKey getMacroAnalyzeKey() {
         return macroAnalyzeKey.getSelected();
     }
 
     @Override
-    public void setMacroAnalyzeKey(MacroAnalyzeKey value) {
+    public void setMacroAnalyzeKey(AnalyzeKey value) {
         macroAnalyzeKey.setSelected(value);
     }
 

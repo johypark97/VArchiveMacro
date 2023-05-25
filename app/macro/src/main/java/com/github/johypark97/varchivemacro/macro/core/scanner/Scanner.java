@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.core.scanner;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
@@ -10,12 +11,11 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData
 import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultServer;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskDataModel.TaskDataProvider;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskServer;
-import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -25,27 +25,49 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class Scanner {
+public class Scanner implements TaskDataProvider {
     private final ResultManager resultManager = new ResultManager();
     private final ScannerTaskManager taskManager = new ScannerTaskManager();
 
-    public Consumer<Exception> whenThrown;
-    public Runnable whenCanceled;
-    public Runnable whenCaptureDone;
-    public Runnable whenDone;
-    public Runnable whenStart_analyze;
-    public Runnable whenStart_capture;
-    public Runnable whenStart_collectResult;
-    public Runnable whenStart_loadImages;
-    public Runnable whenStart_uploadRecord;
+    private final Consumer<Exception> whenThrown;
+    private final Runnable whenCanceled;
+    private final Runnable whenCaptureDone;
+    private final Runnable whenDone;
+    private final Runnable whenStart_analyze;
+    private final Runnable whenStart_capture;
+    private final Runnable whenStart_collectResult;
+    private final Runnable whenStart_loadImages;
+    private final Runnable whenStart_uploadRecord;
 
-    public void setModels(SongModel songModel, RecordModel recordModel,
-            Client<ScannerTaskModel.Event, TaskServer> taskClient,
-            Client<ScannerResultModel.Event, ResultServer> resultClient) {
-        resultManager.addClient(resultClient);
-        resultManager.setModels(songModel, recordModel);
+    public Scanner(Consumer<Exception> whenThrown, Runnable whenCanceled, Runnable whenCaptureDone,
+            Runnable whenDone, Runnable whenStart_analyze, Runnable whenStart_capture,
+            Runnable whenStart_collectResult, Runnable whenStart_loadImages,
+            Runnable whenStart_uploadRecord) {
+        this.whenCanceled = whenCanceled;
+        this.whenCaptureDone = whenCaptureDone;
+        this.whenDone = whenDone;
+        this.whenStart_analyze = whenStart_analyze;
+        this.whenStart_capture = whenStart_capture;
+        this.whenStart_collectResult = whenStart_collectResult;
+        this.whenStart_loadImages = whenStart_loadImages;
+        this.whenStart_uploadRecord = whenStart_uploadRecord;
+        this.whenThrown = whenThrown;
+    }
 
-        taskManager.addClient(taskClient);
+    public void setModels(SongRecordManager songRecordManager) {
+        resultManager.setModels(songRecordManager);
+    }
+
+    public void addTaskClient(Client<ScannerTaskModel.Event, TaskServer> client) {
+        taskManager.addClient(client);
+    }
+
+    public void addResultClient(Client<ScannerResultModel.Event, ResultServer> client) {
+        resultManager.addClient(client);
+    }
+
+    public TaskDataProvider getTaskDataProvider() {
+        return this;
     }
 
     public Command getCommand_scan(Path cacheDir, int captureDelay, int inputDuration,
@@ -72,48 +94,6 @@ public class Scanner {
     public Command getCommand_loadCachedImages(Path cacheDir,
             Map<String, List<LocalSong>> tabSongMap) {
         return createCommand_loadCachedImages(cacheDir, tabSongMap);
-    }
-
-    public CollectionTaskData getTaskData(int taskNumber) throws Exception {
-        ScannerTask task = taskManager.getTask(taskNumber);
-        if (task == null) {
-            return null;
-        }
-
-        CollectionTaskData data = new CollectionTaskData();
-
-        Exception exception = task.getException();
-        if (exception != null) {
-            data.exception = exception;
-            return data;
-        }
-
-        BufferedImage image = task.loadImage();
-        data.fullImage = image;
-
-        Dimension size = new Dimension(image.getWidth(), image.getHeight());
-        CollectionArea area = CollectionAreaFactory.create(size);
-        data.titleImage = area.getTitle(image);
-
-        for (Button button : Button.values()) {
-            for (Pattern pattern : Pattern.values()) {
-                AnalyzedData analyzedData = task.getAnalyzedData(button, pattern);
-                CollectionArea.Button b = button.toCollectionArea();
-                CollectionArea.Pattern p = pattern.toCollectionArea();
-
-                if (analyzedData != null) {
-                    RecordData recordData = new RecordData();
-                    recordData.maxCombo = analyzedData.isMaxCombo;
-                    recordData.maxComboImage = area.getComboMark(image, b, p);
-                    recordData.rate = analyzedData.rateText;
-                    recordData.rateImage = area.getRate(image, b, p);
-
-                    data.addRecord(button, pattern, recordData);
-                }
-            }
-        }
-
-        return data;
     }
 
     protected Command createCommand_scan(Path cachePath, int captureDelay, int inputDuration,
@@ -242,5 +222,48 @@ public class Scanner {
                 return true;
             }
         };
+    }
+
+    @Override
+    public CollectionTaskData getTaskData(int taskNumber) throws Exception {
+        ScannerTask task = taskManager.getTask(taskNumber);
+        if (task == null) {
+            return null;
+        }
+
+        CollectionTaskData data = new CollectionTaskData();
+
+        Exception exception = task.getException();
+        if (exception != null) {
+            data.exception = exception;
+            return data;
+        }
+
+        BufferedImage image = task.loadImage();
+        data.fullImage = image;
+
+        Dimension size = new Dimension(image.getWidth(), image.getHeight());
+        CollectionArea area = CollectionAreaFactory.create(size);
+        data.titleImage = area.getTitle(image);
+
+        for (Button button : Button.values()) {
+            for (Pattern pattern : Pattern.values()) {
+                AnalyzedData analyzedData = task.getAnalyzedData(button, pattern);
+                CollectionArea.Button b = button.toCollectionArea();
+                CollectionArea.Pattern p = pattern.toCollectionArea();
+
+                if (analyzedData != null) {
+                    RecordData recordData = new RecordData();
+                    recordData.maxCombo = analyzedData.isMaxCombo;
+                    recordData.maxComboImage = area.getComboMark(image, b, p);
+                    recordData.rate = analyzedData.rateText;
+                    recordData.rateImage = area.getRate(image, b, p);
+
+                    data.addRecord(button, pattern, recordData);
+                }
+            }
+        }
+
+        return data;
     }
 }

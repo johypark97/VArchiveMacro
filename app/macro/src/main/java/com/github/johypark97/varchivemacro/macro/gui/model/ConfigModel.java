@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
+import com.github.johypark97.varchivemacro.macro.core.clientmacro.AnalyzeKey;
 import com.github.johypark97.varchivemacro.macro.gui.model.datastruct.ConfigData;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroAnalyzeKey;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroViewConfig;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -113,22 +113,22 @@ public class ConfigModel implements MacroViewConfig {
     }
 
     @Override
-    public MacroAnalyzeKey getMacroAnalyzeKey() {
-        MacroAnalyzeKey defaultValue = MacroAnalyzeKey.F11;
+    public AnalyzeKey getMacroAnalyzeKey() {
+        AnalyzeKey defaultValue = AnalyzeKey.F11;
 
         if (data.macroAnalyzeKey == null) {
             return defaultValue;
         }
 
         try {
-            return MacroAnalyzeKey.valueOf(data.macroAnalyzeKey);
+            return AnalyzeKey.valueOf(data.macroAnalyzeKey);
         } catch (IllegalArgumentException e) {
             return defaultValue;
         }
     }
 
     @Override
-    public void setMacroAnalyzeKey(MacroAnalyzeKey value) {
+    public void setMacroAnalyzeKey(AnalyzeKey value) {
         data.macroAnalyzeKey = value.toString();
     }
 

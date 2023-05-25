@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
+import com.github.johypark97.varchivemacro.macro.core.clientmacro.AnalyzeKey;
 import java.nio.file.Path;
 import java.util.Set;
 
@@ -35,9 +36,9 @@ public interface MacroViewConfig {
 
     void setScannerKeyInputDuration(int value);
 
-    MacroAnalyzeKey getMacroAnalyzeKey();
+    AnalyzeKey getMacroAnalyzeKey();
 
-    void setMacroAnalyzeKey(MacroAnalyzeKey value);
+    void setMacroAnalyzeKey(AnalyzeKey value);
 
     int getMacroCount();
 

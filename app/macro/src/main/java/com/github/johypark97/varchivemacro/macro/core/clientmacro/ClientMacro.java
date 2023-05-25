@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.gui.presenter;
+package com.github.johypark97.varchivemacro.macro.core.clientmacro;
 
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
@@ -8,25 +8,22 @@ import java.awt.event.KeyEvent;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class MacroCommandBuilder {
-    public enum Direction {
-        DOWN, UP
+public class ClientMacro {
+    private final Consumer<Exception> whenThrown;
+    private final Runnable whenCanceled;
+    private final Runnable whenDone;
+    private final Runnable whenStart;
+
+    public ClientMacro(Consumer<Exception> whenThrown, Runnable whenCanceled, Runnable whenDone,
+            Runnable whenStart) {
+        this.whenCanceled = whenCanceled;
+        this.whenDone = whenDone;
+        this.whenStart = whenStart;
+        this.whenThrown = whenThrown;
     }
 
-
-    public Consumer<Exception> whenThrown;
-    public Runnable whenCanceled;
-    public Runnable whenDone;
-    public Runnable whenStart;
-
-    public Direction direction;
-    public MacroAnalyzeKey analyzeKey;
-    public int captureDelay;
-    public int captureDuration;
-    public int count;
-    public int keyInputDuration;
-
-    public Command create() {
+    public Command createCommand(AnalyzeKey analyzeKey, Direction direction, int captureDelay,
+            int captureDuration, int count, int keyInputDuration) {
         int analyzeKeycode = switch (analyzeKey) {
             case F11 -> KeyEvent.VK_F11;
             case F12 -> KeyEvent.VK_F12;
@@ -39,18 +36,12 @@ public class MacroCommandBuilder {
             case UP -> KeyEvent.VK_UP;
         };
 
-        MacroCommand command =
-                new MacroCommand(count, captureDelay, captureDuration, keyInputDuration,
-                        analyzeKeycode, moveKeycode);
-        command.whenCanceled = whenCanceled;
-        command.whenDone = whenDone;
-        command.whenStart = whenStart;
-        command.whenThrown = whenThrown;
-
-        return command;
+        return new ClientMacroCommand(count, captureDelay, captureDuration, keyInputDuration,
+                analyzeKeycode, moveKeycode);
     }
 
-    protected static class MacroCommand extends AbstractCommand {
+
+    private class ClientMacroCommand extends AbstractCommand {
         private final Robot robot;
 
         private final int analyzeKeycode;
@@ -60,13 +51,8 @@ public class MacroCommandBuilder {
         private final int keyInputDuration;
         private final int moveKeycode;
 
-        public Consumer<Exception> whenThrown;
-        public Runnable whenCanceled;
-        public Runnable whenDone;
-        public Runnable whenStart;
-
-        public MacroCommand(int count, int captureDelay, int captureDuration, int keyInputDuration,
-                int analyzeKeycode, int moveKeycode) {
+        public ClientMacroCommand(int count, int captureDelay, int captureDuration,
+                int keyInputDuration, int analyzeKeycode, int moveKeycode) {
             try {
                 robot = new Robot();
             } catch (AWTException e) {

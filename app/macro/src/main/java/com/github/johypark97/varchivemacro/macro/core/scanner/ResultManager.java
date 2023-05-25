@@ -7,16 +7,15 @@ import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalR
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ResultManager.RecordData.Result;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTask.AnalyzedData;
-import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.Event;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.Event.Type;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultServer;
-import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
@@ -30,36 +29,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class ResultManager implements Server<Event, ResultServer> {
-    public static class RecordData {
-        public enum Result {
-            CANCELED, HIGHER_RECORD_EXISTS, NOT_UPLOADED, SUSPENDED, UPLOADED, UPLOADING, WAITING
-        }
-
-
-        public LocalRecord newRecord;
-        public LocalSong song;
-        public Result result = Result.NOT_UPLOADED;
-        public boolean isSelected = true;
-        public boolean oldMaxCombo;
-        public final int recordNumber;
-        public float oldRate;
-        public int taskNumber;
-
-        public RecordData(int recordNumber) {
-            this.recordNumber = recordNumber;
-        }
-    }
-
-
     private final List<Client<Event, ResultServer>> clientList = new CopyOnWriteArrayList<>();
     private final List<RecordData> records = new CopyOnWriteArrayList<>();
 
-    private RecordModel recordModel;
-    private SongModel songModel;
+    private SongRecordManager songRecordManager;
 
-    public void setModels(SongModel songModel, RecordModel recordModel) {
-        this.recordModel = recordModel;
-        this.songModel = songModel;
+    public void setModels(SongRecordManager songRecordManager) {
+        this.songRecordManager = songRecordManager;
     }
 
     public void clearRecords() {
@@ -87,7 +63,8 @@ public class ResultManager implements Server<Event, ResultServer> {
                 boolean maxCombo = analyzedData.isMaxCombo;
 
                 LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
-                LocalRecord oldRecord = recordModel.findSameRecord(newRecord);
+                LocalRecord oldRecord = songRecordManager.getRecord(newRecord.id, newRecord.button,
+                        newRecord.pattern);
 
                 if (oldRecord != null && oldRecord.isUpdated(newRecord)) {
                     RecordData data = new RecordData(dataList.size());
@@ -126,7 +103,7 @@ public class ResultManager implements Server<Event, ResultServer> {
                 api.upload(requestJson); // Throw an RuntimeException when an error occurs.
 
                 data.result = api.getResult() ? Result.UPLOADED : Result.HIGHER_RECORD_EXISTS;
-                recordModel.update(data.newRecord);
+                songRecordManager.updateRecord(data.newRecord);
                 notifyClients(new Event(Type.ROWS_UPDATED, data.recordNumber));
 
                 TimeUnit.MILLISECONDS.sleep(delay);
@@ -143,7 +120,7 @@ public class ResultManager implements Server<Event, ResultServer> {
             }
         }
 
-        recordModel.save();
+        songRecordManager.saveRecord();
         notifyClients(new Event(Type.DATA_CHANGED));
     }
 
@@ -155,7 +132,7 @@ public class ResultManager implements Server<Event, ResultServer> {
 
         RequestJson requestJson =
                 new RequestJson(title, record.button, record.pattern, record.rate, record.maxCombo);
-        if (songModel.duplicateTitleSet().contains(song.id())) {
+        if (songRecordManager.getDuplicateTitleSet().contains(song.id())) {
             requestJson.composer = song.composer();
         }
 
@@ -207,5 +184,25 @@ public class ResultManager implements Server<Event, ResultServer> {
     @Override
     public void notifyClients(Event data) {
         clientList.forEach((x) -> x.onNotify(data));
+    }
+
+
+    public static class RecordData {
+        public final int recordNumber;
+        public LocalRecord newRecord;
+        public LocalSong song;
+        public Result result = Result.NOT_UPLOADED;
+        public boolean isSelected = true;
+        public boolean oldMaxCombo;
+        public float oldRate;
+        public int taskNumber;
+
+        public RecordData(int recordNumber) {
+            this.recordNumber = recordNumber;
+        }
+
+        public enum Result {
+            CANCELED, HIGHER_RECORD_EXISTS, NOT_UPLOADED, SUSPENDED, UPLOADED, UPLOADING, WAITING
+        }
     }
 }

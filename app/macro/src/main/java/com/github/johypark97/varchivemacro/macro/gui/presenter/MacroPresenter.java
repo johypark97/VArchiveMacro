@@ -4,20 +4,21 @@ import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalS
 import com.github.johypark97.varchivemacro.lib.common.hook.HookWrapper;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
-import com.github.johypark97.varchivemacro.macro.core.command.Command;
-import com.github.johypark97.varchivemacro.macro.core.command.CommandRunner;
+import com.github.johypark97.varchivemacro.macro.core.backend.BackendEvent;
+import com.github.johypark97.varchivemacro.macro.core.backend.IBackend;
+import com.github.johypark97.varchivemacro.macro.core.clientmacro.AnalyzeKey;
+import com.github.johypark97.varchivemacro.macro.core.clientmacro.Direction;
+import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData.RecordData;
-import com.github.johypark97.varchivemacro.macro.core.scanner.Scanner;
 import com.github.johypark97.varchivemacro.macro.gui.model.ConfigModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskDataModel.IScannerTaskDataModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.SongModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.SongRecordDataModel.ISongRecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroCommandBuilder.Direction;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel.ResultViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskViewModel.TaskViewModel;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
@@ -33,7 +34,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -41,81 +41,46 @@ import javax.swing.tree.TreeModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MacroPresenter implements Presenter {
+public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MacroPresenter.class);
-    private static final String ERROR_LOG_PREFIX = "Error: ";
     private static final String COLON = ": ";
+    private static final String ERROR_LOG_PREFIX = "Error: ";
+
+    // language
+    private final Language lang = Language.getInstance();
 
     // model
-    private SongModel songModel;
-    private final CommandRunner commandRunner = new CommandRunner();
     private final ConfigModel configModel = new ConfigModel();
-    private final MacroCommandBuilder macroCommandBuilder = new MacroCommandBuilder();
-    private final RecordModel recordModel = new RecordModel();
-    private final ResultModel scannerResultModel = new ResultModel();
-    private final Scanner scanner = new Scanner();
-    private final TaskModel scannerTaskModel = new TaskModel();
 
     // view
-    private View view;
     private final Class<? extends View> viewClass;
+    private View view;
+
+    // backend channel
+    private IBackend backend;
+
+    // data models
+    private IScannerTaskDataModel scannerTaskDataModel;
+    private ISongRecordModel songRecordModel;
+    private ResultModel scannerResultModel;
+    private TaskModel scannerTaskModel;
 
     // other presenters
     private IExpected.Presenter expectedPresenter;
     private ILicense.Presenter licensePresenter;
     private IScannerTask.Presenter scannerTaskPresenter;
 
-    // variables
-    private final Language lang = Language.getInstance();
-
     public MacroPresenter(Class<? extends View> viewClass) {
-        Runnable whenDone = () -> {
-            Toolkit.getDefaultToolkit().beep();
-            view.addLog(lang.get(MacroPresenterKey.WHEN_DONE));
-        };
-        Runnable whenCanceled = () -> {
-            Toolkit.getDefaultToolkit().beep();
-            view.addLog(lang.get(MacroPresenterKey.WHEN_CANCELED));
-        };
-        Consumer<Exception> whenThrown = (e) -> {
-            Toolkit.getDefaultToolkit().beep();
-            LOGGER.atError().log("", e);
-            view.addLog(lang.get(MacroPresenterKey.WHEN_THROWN));
-            view.addLog(ERROR_LOG_PREFIX + e.getMessage());
-        };
-
-        recordModel.whenDone = whenDone;
-        recordModel.whenThrown = whenThrown;
-
-        recordModel.whenStart_loadRemote = (djName) -> view.addLog(
-                lang.get(MacroPresenterKey.WHEN_START_LOAD_REMOTE) + " " + djName);
-
-        scanner.whenCanceled = whenCanceled;
-        scanner.whenDone = whenDone;
-        scanner.whenThrown = whenThrown;
-
-        scanner.whenCaptureDone = () -> {
-            Toolkit.getDefaultToolkit().beep();
-            view.addLog(lang.get(MacroPresenterKey.WHEN_CAPTURE_DONE));
-        };
-        scanner.whenStart_analyze =
-                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_ANALYZE));
-        scanner.whenStart_capture =
-                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_CAPTURE));
-        scanner.whenStart_collectResult =
-                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_COLLECT_RESULT));
-        scanner.whenStart_loadImages =
-                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_LOAD_IMAGES));
-        scanner.whenStart_uploadRecord =
-                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_UPLOAD_RECORD));
-
-        macroCommandBuilder.whenCanceled = whenCanceled;
-        macroCommandBuilder.whenDone = whenDone;
-        macroCommandBuilder.whenStart =
-                () -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_MACRO));
-        macroCommandBuilder.whenThrown = whenThrown;
-
         this.viewClass = viewClass;
+    }
+
+    public void setModels(ISongRecordModel songRecordModel,
+            IScannerTaskDataModel scannerTaskDataModel, TaskModel scannerTaskModel,
+            ResultModel scannerResultModel) {
+        this.scannerResultModel = scannerResultModel;
+        this.scannerTaskDataModel = scannerTaskDataModel;
+        this.scannerTaskModel = scannerTaskModel;
+        this.songRecordModel = songRecordModel;
     }
 
     public void setPresenters(IExpected.Presenter expectedPresenter,
@@ -163,23 +128,16 @@ public class MacroPresenter implements Presenter {
         return new DefaultTreeModel(root);
     }
 
-    private void startMacro(boolean isDirectionUp) {
-        macroCommandBuilder.analyzeKey = view.getMacroAnalyzeKey();
-        macroCommandBuilder.captureDelay = view.getMacroCaptureDelay();
-        macroCommandBuilder.captureDuration = view.getMacroCaptureDuration();
-        macroCommandBuilder.count = view.getMacroCount();
-        macroCommandBuilder.direction = isDirectionUp ? Direction.UP : Direction.DOWN;
-        macroCommandBuilder.keyInputDuration = view.getMacroKeyInputDuration();
+    private void startClientMacro(boolean isDirectionUp) {
+        AnalyzeKey analyzeKey = view.getMacroAnalyzeKey();
+        Direction direction = isDirectionUp ? Direction.UP : Direction.DOWN;
+        int captureDelay = view.getMacroCaptureDelay();
+        int captureDuration = view.getMacroCaptureDuration();
+        int count = view.getMacroCount();
+        int keyInputDuration = view.getMacroKeyInputDuration();
 
-        startCommand(macroCommandBuilder.create());
-    }
-
-    private void startCommand(Command command) {
-        if (commandRunner.start(command)) {
-            view.addLog(lang.get(MacroPresenterKey.START_COMMAND));
-        } else {
-            view.addLog(lang.get(MacroPresenterKey.COMMAND_IS_RUNNING));
-        }
+        backend.runClientMacro(analyzeKey, direction, captureDelay, captureDuration, count,
+                keyInputDuration);
     }
 
     private void setupHook() throws NativeHookException {
@@ -218,14 +176,9 @@ public class MacroPresenter implements Presenter {
                         Path path = view.getCacheDir();
                         int captureDelay = view.getScannerCaptureDelay();
                         int inputDuration = view.getScannerKeyInputDuration();
-
                         Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
-                        Map<String, List<LocalSong>> tapSongMap =
-                                songModel.getTabSongMap(ownedDlcTabs);
 
-                        Command command = scanner.getCommand_scan(path, captureDelay, inputDuration,
-                                tapSongMap);
-                        startCommand(command);
+                        backend.startScan(path, captureDelay, inputDuration, ownedDlcTabs);
                     }
                 }
 
@@ -233,7 +186,8 @@ public class MacroPresenter implements Presenter {
                 if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_OPEN_BRACKET
                         || nativeEvent.getKeyCode() == NativeKeyEvent.VC_CLOSE_BRACKET) {
                     if (!ctrl && alt && !shift) {
-                        startMacro(nativeEvent.getKeyCode() == NativeKeyEvent.VC_OPEN_BRACKET);
+                        startClientMacro(
+                                nativeEvent.getKeyCode() == NativeKeyEvent.VC_OPEN_BRACKET);
                     }
                 }
             }
@@ -244,6 +198,53 @@ public class MacroPresenter implements Presenter {
         try {
             HookWrapper.unregister();
         } catch (NativeHookException ignored) {
+        }
+    }
+
+    @Override
+    public void onAddClient(IBackend channel) {
+        backend = channel;
+    }
+
+    @Override
+    public void onNotify(BackendEvent data) {
+        switch (data.type) {
+            case CANCELED -> {
+                Toolkit.getDefaultToolkit().beep();
+                view.addLog(lang.get(MacroPresenterKey.WHEN_CANCELED));
+            }
+            case CLIENT_MACRO_START -> view.addLog(lang.get(MacroPresenterKey.WHEN_START_MACRO));
+            case DONE -> {
+                Toolkit.getDefaultToolkit().beep();
+                view.addLog(lang.get(MacroPresenterKey.WHEN_DONE));
+            }
+            case EXCEPTION -> {
+                Toolkit.getDefaultToolkit().beep();
+                LOGGER.atError().log("", data.exception);
+                view.addLog(lang.get(MacroPresenterKey.WHEN_THROWN));
+                view.addLog(ERROR_LOG_PREFIX + data.exception.getMessage());
+            }
+            case IS_NOT_RUNNING -> view.addLog(lang.get(MacroPresenterKey.COMMAND_IS_NOT_RUNNING));
+            case IS_RUNNING -> view.addLog(lang.get(MacroPresenterKey.COMMAND_IS_RUNNING));
+            case LOAD_REMOTE_RECORD -> view.addLog(
+                    lang.get(MacroPresenterKey.WHEN_START_LOAD_REMOTE) + " " + (data.argList != null
+                            ? data.argList.get(0)
+                            : null));
+            case SCANNER_CAPTURE_DONE -> {
+                Toolkit.getDefaultToolkit().beep();
+                view.addLog(lang.get(MacroPresenterKey.WHEN_CAPTURE_DONE));
+            }
+            case SCANNER_START_ANALYZE ->
+                    view.addLog(lang.get(MacroPresenterKey.WHEN_START_ANALYZE));
+            case SCANNER_START_CAPTURE ->
+                    view.addLog(lang.get(MacroPresenterKey.WHEN_START_CAPTURE));
+            case SCANNER_START_COLLECT_RESULT ->
+                    view.addLog(lang.get(MacroPresenterKey.WHEN_START_COLLECT_RESULT));
+            case SCANNER_START_LOAD_IMAGES ->
+                    view.addLog(lang.get(MacroPresenterKey.WHEN_START_LOAD_IMAGES));
+            case SCANNER_START_UPLOAD_RECORD ->
+                    view.addLog(lang.get(MacroPresenterKey.WHEN_START_UPLOAD_RECORD));
+            case START_COMMAND -> view.addLog(lang.get(MacroPresenterKey.START_COMMAND));
         }
     }
 
@@ -259,7 +260,7 @@ public class MacroPresenter implements Presenter {
 
     @Override
     public synchronized void stop() {
-        if (commandRunner.isRunning()) {
+        if (backend.isCommandRunning()) {
             view.addLog(lang.get(MacroPresenterKey.COMMAND_IS_RUNNING_CANNOT_EXIT));
             return;
         }
@@ -303,9 +304,13 @@ public class MacroPresenter implements Presenter {
         }
 
         try {
-            songModel = new SongModel();
+            if (!backend.loadSongs()) {
+                view.showErrorDialog("All the database files were not found");
+                stop();
+                return;
+            }
         } catch (IOException e) {
-            view.showErrorDialog("File read error: " + e.getMessage());
+            view.showErrorDialog("Database file read error: " + e.getMessage());
             stop();
             return;
         } catch (Exception e) {
@@ -315,11 +320,9 @@ public class MacroPresenter implements Presenter {
             return;
         }
 
-        scanner.setModels(songModel, recordModel, scannerTaskModel, scannerResultModel);
-
-        TreeModel treeModel = createTabSongTreeModel("Records", songModel.getTabSongMap());
+        TreeModel treeModel = createTabSongTreeModel("Records", songRecordModel.getTabSongMap());
         view.setRecordViewerTreeModel(treeModel);
-        view.setSelectableDlcTabs(songModel.getTabs());
+        view.setSelectableDlcTabs(songRecordModel.getDlcTabList());
 
         TaskViewModel taskViewModel = new TaskViewModel();
         scannerTaskModel.linkModel(taskViewModel);
@@ -354,7 +357,7 @@ public class MacroPresenter implements Presenter {
         view.setSelectedDlcTabs(configModel.getSelectedDlcTabs());
 
         try {
-            if (recordModel.loadLocal()) {
+            if (backend.loadLocalRecord()) {
                 view.addLog(lang.get(MacroPresenterKey.LOADING_RECORD_LOADED));
             } else {
                 String message = lang.get(MacroPresenterKey.LOADING_RECORD_PLEASE_LOAD);
@@ -391,8 +394,7 @@ public class MacroPresenter implements Presenter {
 
     @Override
     public void loadServerRecord(String djName) {
-        Command command = recordModel.getCommand_loadRemote(djName);
-        startCommand(command);
+        backend.loadRemoteRecord(djName);
     }
 
     @Override
@@ -411,13 +413,13 @@ public class MacroPresenter implements Presenter {
         builder.append("DLC: ").append(song.dlc()).append(newline);
         builder.append("DLC Tab: ").append(song.dlcTab());
 
-        view.showRecord(builder.toString(), recordModel.getRecords(song.id()));
+        view.showRecord(builder.toString(), songRecordModel.getRecordTable(song.id()));
     }
 
     @Override
     public void openExpected(JFrame frame) {
         Set<String> selectedTabs = view.getSelectedDlcTabs();
-        Map<String, List<LocalSong>> tabSongMap = songModel.getTabSongMap(selectedTabs);
+        Map<String, List<LocalSong>> tabSongMap = songRecordModel.getTabSongMap(selectedTabs);
         expectedPresenter.start(frame, createTabSongTreeModel("List", tabSongMap));
     }
 
@@ -425,7 +427,7 @@ public class MacroPresenter implements Presenter {
     public void showScannerTask(JFrame frame, int taskNumber) {
         CollectionTaskData taskData;
         try {
-            taskData = scanner.getTaskData(taskNumber);
+            taskData = scannerTaskDataModel.getTaskData(taskNumber);
         } catch (Exception e) {
             view.addLog(lang.get(MacroPresenterKey.LOADING_TASK_DATA_EXCEPTION));
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
@@ -459,34 +461,28 @@ public class MacroPresenter implements Presenter {
     @Override
     public void loadCachedImages() {
         Path path = view.getCacheDir();
-        Map<String, List<LocalSong>> tapSongMap = songModel.getTabSongMap();
-        Command command = scanner.getCommand_loadCachedImages(path, tapSongMap);
-        startCommand(command);
+        Map<String, List<LocalSong>> tapSongMap = songRecordModel.getTabSongMap();
+        backend.loadCachedImages(path, tapSongMap);
     }
 
     @Override
     public void analyzeScannerTask() {
-        Command command = scanner.getCommand_analyze();
-        startCommand(command);
+        backend.startAnalyze();
     }
 
     @Override
     public void refreshScannerResult() {
-        Command command = scanner.getCommand_collectResult();
-        startCommand(command);
+        backend.collectResult();
     }
 
     @Override
     public void uploadRecord(Path accountPath) {
         int uploadDelay = view.getRecordUploadDelay();
-        Command command = scanner.getCommand_uploadRecord(accountPath, uploadDelay);
-        startCommand(command);
+        backend.uploadRecord(accountPath, uploadDelay);
     }
 
     @Override
     public void stopCommand() {
-        if (!commandRunner.stop()) {
-            view.addLog(lang.get(MacroPresenterKey.COMMAND_IS_NOT_RUNNING));
-        }
+        backend.stopCommand();
     }
 }
