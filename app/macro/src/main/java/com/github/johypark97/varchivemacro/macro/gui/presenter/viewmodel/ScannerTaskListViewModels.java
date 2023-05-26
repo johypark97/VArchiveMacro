@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel;
 
 import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTaskStatus;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Model;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.ResponseData;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.ViewModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Model;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ResponseData;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ViewModel;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
-public interface ScannerTaskViewModel {
+public interface ScannerTaskListViewModels {
     enum ColumnKey {COMPOSER, COUNT, DLC, INDEX, SONG_NUMBER, STATUS, TAB, TASK_NUMBER, TITLE}
 
 
@@ -87,7 +87,7 @@ public interface ScannerTaskViewModel {
     }
 
 
-    class TaskViewModel extends AbstractTableModel
+    class ScannerTaskListViewModel extends AbstractTableModel
             implements TableModelWithLookup<ColumnKey>, ViewModel {
         @Serial
         private static final long serialVersionUID = 2595265577036844112L;

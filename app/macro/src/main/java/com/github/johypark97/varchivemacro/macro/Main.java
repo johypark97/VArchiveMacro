@@ -4,10 +4,10 @@ import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookA
 
 import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.core.backend.Backend;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskDataModel.TaskDataModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.SongRecordDataModel.SongRecordModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ScannerResultListModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ScannerTaskListModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ScannerTaskModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.SongRecordModels.SongRecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.ExpectedPresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.LicensePresenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroPresenter;
@@ -27,17 +27,17 @@ public class Main {
     private Main() {
         backend.addClient(macroPresenter);
 
+        ScannerTaskModel scannerTaskModel = new ScannerTaskModel(backend.getTaskDataProvider());
         SongRecordModel songRecordModel = new SongRecordModel(backend.getSongRecordManager());
-        TaskDataModel taskDataModel = new TaskDataModel(backend.getTaskDataProvider());
 
-        TaskModel scannerTaskModel = new TaskModel();
-        backend.addTaskClient(scannerTaskModel);
+        ScannerTaskListModel scannerTaskListModel = new ScannerTaskListModel();
+        backend.addTaskListClient(scannerTaskListModel);
 
-        ResultModel scannerResultModel = new ResultModel();
-        backend.addResultClient(scannerResultModel);
+        ScannerResultListModel scannerResultListModel = new ScannerResultListModel();
+        backend.addResultListClient(scannerResultListModel);
 
-        macroPresenter.setModels(songRecordModel, taskDataModel, scannerTaskModel,
-                scannerResultModel);
+        macroPresenter.setModels(songRecordModel, scannerTaskModel, scannerTaskListModel,
+                scannerResultListModel);
 
         macroPresenter.setPresenters(new ExpectedPresenter(ExpectedView.class),
                 new LicensePresenter(LicenseView.class),

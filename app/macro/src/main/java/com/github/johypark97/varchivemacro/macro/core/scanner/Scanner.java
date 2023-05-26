@@ -11,11 +11,11 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData
 import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultServer;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskDataModel.TaskDataProvider;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskServer;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResultListProvider;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.TaskListProvider;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.TaskDataProvider;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -58,11 +58,12 @@ public class Scanner implements TaskDataProvider {
         resultManager.setModels(songRecordManager);
     }
 
-    public void addTaskClient(Client<ScannerTaskModel.Event, TaskServer> client) {
+    public void addTaskListClient(Client<ScannerTaskListModels.Event, TaskListProvider> client) {
         taskManager.addClient(client);
     }
 
-    public void addResultClient(Client<ScannerResultModel.Event, ResultServer> client) {
+    public void addResultListClient(
+            Client<ScannerResultListModels.Event, ResultListProvider> client) {
         resultManager.addClient(client);
     }
 

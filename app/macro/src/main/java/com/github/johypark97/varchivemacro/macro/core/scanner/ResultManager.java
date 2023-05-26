@@ -12,10 +12,10 @@ import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Clien
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ResultManager.RecordData.Result;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTask.AnalyzedData;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.Event;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.Event.Type;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResponseData;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultServer;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.Event;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.Event.Type;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResponseData;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResultListProvider;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
@@ -28,8 +28,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class ResultManager implements Server<Event, ResultServer> {
-    private final List<Client<Event, ResultServer>> clientList = new CopyOnWriteArrayList<>();
+public class ResultManager implements Server<Event, ResultListProvider> {
+    private final List<Client<Event, ResultListProvider>> clientList = new CopyOnWriteArrayList<>();
     private final List<RecordData> records = new CopyOnWriteArrayList<>();
 
     private SongRecordManager songRecordManager;
@@ -140,9 +140,9 @@ public class ResultManager implements Server<Event, ResultServer> {
     }
 
     @Override
-    public void addClient(Client<Event, ResultServer> client) {
+    public void addClient(Client<Event, ResultListProvider> client) {
         clientList.add(client);
-        client.onAddClient(new ResultServer() {
+        client.onAddClient(new ResultListProvider() {
             @Override
             public ResponseData getValue(int index) {
                 RecordData recordData = records.get(index);

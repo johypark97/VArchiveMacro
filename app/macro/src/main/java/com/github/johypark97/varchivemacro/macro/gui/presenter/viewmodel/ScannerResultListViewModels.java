@@ -4,9 +4,9 @@ import com.github.johypark97.varchivemacro.lib.common.database.comparator.TitleC
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ResultManager.RecordData.Result;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.Model;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResponseData;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ViewModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.Model;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResponseData;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ViewModel;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
@@ -19,7 +19,7 @@ import javax.swing.SortOrder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
-public interface ScannerResultViewModel {
+public interface ScannerResultListViewModels {
     enum ColumnKey {
         BUTTON, COMPOSER, DELTA_RATE, DLC, NEW_MAX_COMBO, NEW_RATE, OLD_MAX_COMBO, OLD_RATE, PATTERN, RESULT_NUMBER, STATUS, TASK_NUMBER, TITLE, UPLOAD
     }
@@ -105,7 +105,7 @@ public interface ScannerResultViewModel {
     }
 
 
-    class ResultViewModel extends AbstractTableModel
+    class ScannerResultListViewModel extends AbstractTableModel
             implements TableModelWithLookup<ColumnKey>, ViewModel {
         @Serial
         private static final long serialVersionUID = 3174993439149836273L;
@@ -217,8 +217,8 @@ public interface ScannerResultViewModel {
             }
         }
 
-        public static class ResultRowSorter extends TableRowSorter<ResultViewModel> {
-            public ResultRowSorter(ResultViewModel viewModel) {
+        public static class ResultRowSorter extends TableRowSorter<ScannerResultListViewModel> {
+            public ResultRowSorter(ScannerResultListViewModel viewModel) {
                 super(viewModel);
 
                 setComp(ColumnKey.BUTTON, Comparator.comparingInt(Button::getWeight));

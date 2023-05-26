@@ -9,9 +9,9 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.clientmacro.AnalyzeKey;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel.ResultViewModel;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskViewModel.ColumnKey;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels.ScannerResultListViewModel;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskListViewModels.ColumnKey;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableColumnLookup;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableModelWithLookup;
 import com.github.johypark97.varchivemacro.macro.gui.view.components.UrlLabel;
@@ -129,7 +129,7 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JTextField accountFileTextField;
     protected JTextField cacheDirTextField;
     protected TableModelWithLookup<ColumnKey> scannerTaskTableModel;
-    protected TableModelWithLookup<ScannerResultViewModel.ColumnKey> scannerResultTableModel;
+    protected TableModelWithLookup<ScannerResultListViewModels.ColumnKey> scannerResultTableModel;
     protected transient CheckboxGroup<String> dlcCheckboxGroup = new CheckboxGroup<>();
 
     private transient RadioButtonGroup<AnalyzeKey> macroAnalyzeKey;
@@ -921,45 +921,46 @@ public class MacroView extends JFrame implements View, WindowListener {
 
     @Override
     public void setScannerResultTableModel(
-            TableModelWithLookup<ScannerResultViewModel.ColumnKey> model) {
+            TableModelWithLookup<ScannerResultListViewModels.ColumnKey> model) {
         scannerResultTable.setModel(model);
         scannerResultTableModel = model;
 
-        TableColumnLookup<ScannerResultViewModel.ColumnKey> columnLookup =
+        TableColumnLookup<ScannerResultListViewModels.ColumnKey> columnLookup =
                 model.getTableColumnLookup();
 
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.BUTTON)
+        columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.BUTTON)
                 .setPreferredWidth(40);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.COMPOSER)
+        columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.COMPOSER)
                 .setPreferredWidth(80);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.DELTA_RATE)
+        columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.DELTA_RATE)
                 .setPreferredWidth(40);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.DLC)
+        columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.DLC)
                 .setPreferredWidth(80);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.NEW_MAX_COMBO)
-                .setPreferredWidth(60);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.NEW_RATE)
+        columnLookup.getColumn(scannerResultTable,
+                ScannerResultListViewModels.ColumnKey.NEW_MAX_COMBO).setPreferredWidth(60);
+        columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.NEW_RATE)
                 .setPreferredWidth(40);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.OLD_MAX_COMBO)
-                .setPreferredWidth(60);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.OLD_RATE)
+        columnLookup.getColumn(scannerResultTable,
+                ScannerResultListViewModels.ColumnKey.OLD_MAX_COMBO).setPreferredWidth(60);
+        columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.OLD_RATE)
                 .setPreferredWidth(40);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.PATTERN)
+        columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.PATTERN)
                 .setPreferredWidth(40);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.RESULT_NUMBER)
-                .setPreferredWidth(40);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.STATUS)
+        columnLookup.getColumn(scannerResultTable,
+                ScannerResultListViewModels.ColumnKey.RESULT_NUMBER).setPreferredWidth(40);
+        columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.STATUS)
                 .setPreferredWidth(160);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.TASK_NUMBER)
-                .setPreferredWidth(40);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.TITLE)
+        columnLookup.getColumn(scannerResultTable,
+                ScannerResultListViewModels.ColumnKey.TASK_NUMBER).setPreferredWidth(40);
+        columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.TITLE)
                 .setPreferredWidth(160);
-        columnLookup.getColumn(scannerResultTable, ScannerResultViewModel.ColumnKey.UPLOAD)
+        columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.UPLOAD)
                 .setPreferredWidth(80);
     }
 
     @Override
-    public void setScannerResultTableRowSorter(TableRowSorter<ResultViewModel> rowSorter) {
+    public void setScannerResultTableRowSorter(
+            TableRowSorter<ScannerResultListViewModel> rowSorter) {
         scannerResultTable.setRowSorter(rowSorter);
     }
 
@@ -1186,7 +1187,7 @@ class MacroViewButtonListener implements ActionListener {
             int count = view.scannerResultTable.getRowCount();
             int index = view.scannerResultTableModel.getTableColumnLookup()
                     .getIndexInView(view.scannerResultTable,
-                            ScannerResultViewModel.ColumnKey.UPLOAD);
+                            ScannerResultListViewModels.ColumnKey.UPLOAD);
             for (int i = 0; i < count; ++i) {
                 view.scannerResultTable.setValueAt(true, i, index);
             }
@@ -1194,7 +1195,7 @@ class MacroViewButtonListener implements ActionListener {
             int count = view.scannerResultTable.getRowCount();
             int index = view.scannerResultTableModel.getTableColumnLookup()
                     .getIndexInView(view.scannerResultTable,
-                            ScannerResultViewModel.ColumnKey.UPLOAD);
+                            ScannerResultListViewModels.ColumnKey.UPLOAD);
             for (int i = 0; i < count; ++i) {
                 view.scannerResultTable.setValueAt(false, i, index);
             }

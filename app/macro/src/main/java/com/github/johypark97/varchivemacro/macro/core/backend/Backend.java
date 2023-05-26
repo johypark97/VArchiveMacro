@@ -12,11 +12,11 @@ import com.github.johypark97.varchivemacro.macro.core.command.CommandRunner;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
 import com.github.johypark97.varchivemacro.macro.core.scanner.Scanner;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultServer;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskDataModel.TaskDataProvider;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskServer;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResultListProvider;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.TaskListProvider;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.TaskDataProvider;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -67,12 +67,13 @@ public class Backend implements Server<BackendEvent, IBackend>, IBackend {
         return scanner.getTaskDataProvider();
     }
 
-    public void addTaskClient(Client<Event, TaskServer> client) {
-        scanner.addTaskClient(client);
+    public void addTaskListClient(Client<Event, TaskListProvider> client) {
+        scanner.addTaskListClient(client);
     }
 
-    public void addResultClient(Client<ScannerResultModel.Event, ResultServer> client) {
-        scanner.addResultClient(client);
+    public void addResultListClient(
+            Client<ScannerResultListModels.Event, ResultListProvider> client) {
+        scanner.addResultListClient(client);
     }
 
     private Runnable createWhen(Type type) {

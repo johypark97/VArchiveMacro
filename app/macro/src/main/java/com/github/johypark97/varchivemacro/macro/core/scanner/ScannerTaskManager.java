@@ -3,18 +3,18 @@ package com.github.johypark97.varchivemacro.macro.core.scanner;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.Event.Type;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.ResponseData;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskServer;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event.Type;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ResponseData;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.TaskListProvider;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-class ScannerTaskManager implements Server<Event, TaskServer> {
-    private final List<Client<Event, TaskServer>> clientList = new CopyOnWriteArrayList<>();
+class ScannerTaskManager implements Server<Event, TaskListProvider> {
+    private final List<Client<Event, TaskListProvider>> clientList = new CopyOnWriteArrayList<>();
     private final Map<Integer, ScannerTask> tasks = new ConcurrentHashMap<>();
 
     private Path cacheDir = Path.of("");
@@ -51,9 +51,9 @@ class ScannerTaskManager implements Server<Event, TaskServer> {
     }
 
     @Override
-    public void addClient(Client<Event, TaskServer> client) {
+    public void addClient(Client<Event, TaskListProvider> client) {
         clientList.add(client);
-        client.onAddClient(new TaskServer() {
+        client.onAddClient(new TaskListProvider() {
             @Override
             public ResponseData getValue(int index) {
                 ScannerTask task = tasks.get(index);

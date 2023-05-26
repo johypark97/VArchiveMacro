@@ -2,9 +2,9 @@ package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel.ResultViewModel;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskViewModel.ColumnKey;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels.ScannerResultListViewModel;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskListViewModels.ColumnKey;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableModelWithLookup;
 import com.google.common.collect.Table;
 import java.nio.file.Path;
@@ -70,8 +70,8 @@ public interface IMacro {
         void setScannerTaskTableModel(TableModelWithLookup<ColumnKey> model);
 
         void setScannerResultTableModel(
-                TableModelWithLookup<ScannerResultViewModel.ColumnKey> model);
+                TableModelWithLookup<ScannerResultListViewModels.ColumnKey> model);
 
-        void setScannerResultTableRowSorter(TableRowSorter<ResultViewModel> rowSorter);
+        void setScannerResultTableRowSorter(TableRowSorter<ScannerResultListViewModel> rowSorter);
     }
 }

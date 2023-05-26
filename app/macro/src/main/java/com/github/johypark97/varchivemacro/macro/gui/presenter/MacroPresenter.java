@@ -12,15 +12,15 @@ import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Clien
 import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ConfigModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultModel.ResultModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskDataModel.IScannerTaskDataModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModel.TaskModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.SongRecordDataModel.ISongRecordModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ScannerResultListModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ScannerTaskListModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.IScannerTaskModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.SongRecordModels.ISongRecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultViewModel.ResultViewModel;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskViewModel.TaskViewModel;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels.ScannerResultListViewModel;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskListViewModels.ScannerTaskListViewModel;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.johypark97.varchivemacro.macro.resource.MacroPresenterKey;
 import com.github.kwhat.jnativehook.NativeHookException;
@@ -60,10 +60,10 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
     private IBackend backend;
 
     // data models
-    private IScannerTaskDataModel scannerTaskDataModel;
+    private IScannerTaskModel scannerTaskModel;
     private ISongRecordModel songRecordModel;
-    private ResultModel scannerResultModel;
-    private TaskModel scannerTaskModel;
+    private ScannerResultListModel scannerResultListModel;
+    private ScannerTaskListModel scannerTaskListModel;
 
     // other presenters
     private IExpected.Presenter expectedPresenter;
@@ -74,11 +74,11 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
         this.viewClass = viewClass;
     }
 
-    public void setModels(ISongRecordModel songRecordModel,
-            IScannerTaskDataModel scannerTaskDataModel, TaskModel scannerTaskModel,
-            ResultModel scannerResultModel) {
-        this.scannerResultModel = scannerResultModel;
-        this.scannerTaskDataModel = scannerTaskDataModel;
+    public void setModels(ISongRecordModel songRecordModel, IScannerTaskModel scannerTaskModel,
+            ScannerTaskListModel scannerTaskListModel,
+            ScannerResultListModel scannerResultListModel) {
+        this.scannerResultListModel = scannerResultListModel;
+        this.scannerTaskListModel = scannerTaskListModel;
         this.scannerTaskModel = scannerTaskModel;
         this.songRecordModel = songRecordModel;
     }
@@ -324,15 +324,15 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
         view.setRecordViewerTreeModel(treeModel);
         view.setSelectableDlcTabs(songRecordModel.getDlcTabList());
 
-        TaskViewModel taskViewModel = new TaskViewModel();
-        scannerTaskModel.linkModel(taskViewModel);
+        ScannerTaskListViewModel scannerTaskListViewModel = new ScannerTaskListViewModel();
+        scannerTaskListModel.linkModel(scannerTaskListViewModel);
 
-        ResultViewModel resultViewModel = new ResultViewModel();
-        scannerResultModel.linkModel(resultViewModel);
+        ScannerResultListViewModel scannerResultListViewModel = new ScannerResultListViewModel();
+        scannerResultListModel.linkModel(scannerResultListViewModel);
 
-        view.setScannerResultTableModel(resultViewModel);
-        view.setScannerResultTableRowSorter(resultViewModel.createRowSorter());
-        view.setScannerTaskTableModel(taskViewModel);
+        view.setScannerResultTableModel(scannerResultListViewModel);
+        view.setScannerResultTableRowSorter(scannerResultListViewModel.createRowSorter());
+        view.setScannerTaskTableModel(scannerTaskListViewModel);
 
         try {
             configModel.load();
@@ -427,7 +427,7 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
     public void showScannerTask(JFrame frame, int taskNumber) {
         CollectionTaskData taskData;
         try {
-            taskData = scannerTaskDataModel.getTaskData(taskNumber);
+            taskData = scannerTaskModel.getTaskData(taskNumber);
         } catch (Exception e) {
             view.addLog(lang.get(MacroPresenterKey.LOADING_TASK_DATA_EXCEPTION));
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());

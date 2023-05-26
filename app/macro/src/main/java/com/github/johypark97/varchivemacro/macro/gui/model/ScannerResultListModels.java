@@ -1,11 +1,13 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTaskStatus;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ResultManager.RecordData.Result;
 
-public interface ScannerTaskModel {
+public interface ScannerResultListModels {
     class Event {
-        public enum Type {DATA_CHANGED, ROWS_INSERTED, ROWS_UPDATED}
+        public enum Type {DATA_CHANGED, ROWS_UPDATED}
 
 
         public final Type type;
@@ -22,22 +24,29 @@ public interface ScannerTaskModel {
     }
 
 
-    interface TaskServer {
-        ResponseData getValue(int index);
-
-        int getCount();
+    class ResponseData {
+        public Button button;
+        public Pattern pattern;
+        public Result status;
+        public String composer;
+        public String dlc;
+        public String title;
+        public boolean isSelected;
+        public boolean newMaxCombo;
+        public boolean oldMaxCombo;
+        public float newRate;
+        public float oldRate;
+        public int resultNumber;
+        public int taskNumber;
     }
 
 
-    class ResponseData {
-        public ScannerTaskStatus status;
-        public String composer;
-        public String dlc;
-        public String tab;
-        public String title;
-        public int count;
-        public int index;
-        public int taskNumber;
+    interface ResultListProvider {
+        ResponseData getValue(int index);
+
+        int getCount();
+
+        void updateSelected(int index, boolean value);
     }
 
 
@@ -47,6 +56,8 @@ public interface ScannerTaskModel {
         int getCount();
 
         ResponseData getData(int index);
+
+        void updateSelected(int index, boolean value);
     }
 
 
@@ -55,26 +66,23 @@ public interface ScannerTaskModel {
 
         void onDataChanged();
 
-        void onRowsInserted(int row);
-
         void onRowsUpdated(int row);
     }
 
 
-    class TaskModel implements Client<Event, TaskServer>, Model {
-        private TaskServer taskServer;
+    class ScannerResultListModel implements Client<Event, ResultListProvider>, Model {
+        private ResultListProvider resultListProvider;
         private ViewModel viewModel;
 
         @Override
-        public void onAddClient(TaskServer channel) {
-            taskServer = channel;
+        public void onAddClient(ResultListProvider channel) {
+            resultListProvider = channel;
         }
 
         @Override
         public void onNotify(Event data) {
             switch (data.type) {
                 case DATA_CHANGED -> viewModel.onDataChanged();
-                case ROWS_INSERTED -> viewModel.onRowsInserted(data.value);
                 case ROWS_UPDATED -> viewModel.onRowsUpdated(data.value);
             }
         }
@@ -87,12 +95,17 @@ public interface ScannerTaskModel {
 
         @Override
         public int getCount() {
-            return taskServer.getCount();
+            return resultListProvider.getCount();
         }
 
         @Override
         public ResponseData getData(int index) {
-            return taskServer.getValue(index);
+            return resultListProvider.getValue(index);
+        }
+
+        @Override
+        public void updateSelected(int index, boolean value) {
+            resultListProvider.updateSelected(index, value);
         }
     }
 }
