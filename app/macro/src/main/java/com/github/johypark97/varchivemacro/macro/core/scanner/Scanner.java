@@ -7,7 +7,6 @@ import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData.RecordData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
@@ -15,6 +14,8 @@ import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListMode
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResultListProvider;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.TaskListProvider;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.TaskDataProvider;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -226,13 +227,13 @@ public class Scanner implements TaskDataProvider {
     }
 
     @Override
-    public CollectionTaskData getTaskData(int taskNumber) throws Exception {
+    public ResponseData getValue(int taskNumber) throws Exception {
         ScannerTask task = taskManager.getTask(taskNumber);
         if (task == null) {
             return null;
         }
 
-        CollectionTaskData data = new CollectionTaskData();
+        ResponseData data = new ResponseData();
 
         Exception exception = task.getException();
         if (exception != null) {

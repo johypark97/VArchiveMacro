@@ -2,23 +2,19 @@ package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.hook.HookWrapper;
-import com.github.johypark97.varchivemacro.macro.core.Button;
-import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.backend.BackendEvent;
 import com.github.johypark97.varchivemacro.macro.core.backend.IBackend;
 import com.github.johypark97.varchivemacro.macro.core.clientmacro.AnalyzeKey;
 import com.github.johypark97.varchivemacro.macro.core.clientmacro.Direction;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData;
-import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ScannerResultListModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ScannerTaskListModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.IScannerTaskModel;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.SongRecordModels.ISongRecordModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.Presenter;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels.ScannerResultListViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskListViewModels.ScannerTaskListViewModel;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
@@ -425,37 +421,26 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
 
     @Override
     public void showScannerTask(JFrame frame, int taskNumber) {
-        CollectionTaskData taskData;
+        ResponseData data;
         try {
-            taskData = scannerTaskModel.getTaskData(taskNumber);
+            data = scannerTaskModel.getData(taskNumber);
         } catch (Exception e) {
             view.addLog(lang.get(MacroPresenterKey.LOADING_TASK_DATA_EXCEPTION));
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
             return;
         }
 
-        if (taskData == null) {
+        if (data == null) {
             return;
         }
 
-        if (taskData.exception != null) {
+        if (data.exception != null) {
             view.addLog(lang.get(MacroPresenterKey.LOADING_TASK_DATA_OCCURRED) + COLON
-                    + taskData.exception.getMessage());
+                    + data.exception.getMessage());
             return;
         }
 
-        ScannerTaskViewData viewData = new ScannerTaskViewData();
-        viewData.fullImage = taskData.fullImage;
-        viewData.titleImage = taskData.titleImage;
-        taskData.records.cellSet().forEach((cell) -> {
-            Button button = cell.getRowKey();
-            Pattern pattern = cell.getColumnKey();
-            RecordData data = cell.getValue();
-            viewData.addRecord(button, pattern, data.rateImage, data.maxComboImage, data.rate,
-                    data.maxCombo);
-        });
-
-        scannerTaskPresenter.start(frame, viewData);
+        scannerTaskPresenter.start(frame, data);
     }
 
     @Override

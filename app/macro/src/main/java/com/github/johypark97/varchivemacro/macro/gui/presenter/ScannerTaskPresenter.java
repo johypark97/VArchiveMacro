@@ -1,14 +1,14 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.Presenter;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.View;
 import javax.swing.JFrame;
 
 public class ScannerTaskPresenter implements Presenter {
     // view
-    private View view;
     private final Class<? extends View> viewClass;
+    private View view;
 
     public ScannerTaskPresenter(Class<? extends View> viewClass) {
         this.viewClass = viewClass;
@@ -25,7 +25,7 @@ public class ScannerTaskPresenter implements Presenter {
     }
 
     @Override
-    public synchronized void start(JFrame parent, ScannerTaskViewData data) {
+    public synchronized void start(JFrame parent, ResponseData data) {
         if (view == null) {
             newView(parent);
         }

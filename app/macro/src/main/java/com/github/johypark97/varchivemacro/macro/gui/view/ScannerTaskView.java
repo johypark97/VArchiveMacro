@@ -3,9 +3,9 @@ package com.github.johypark97.varchivemacro.macro.gui.view;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.Presenter;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.ScannerTaskViewData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.IScannerTask.View;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.johypark97.varchivemacro.macro.resource.ScannerTaskViewKey;
@@ -39,16 +39,16 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
     private static final int WINDOW_HEIGHT = 480;
     private static final int WINDOW_WIDTH = 960;
 
-    // presenter
-    private transient Presenter presenter;
+    // language
+    private transient final Language lang = Language.getInstance();
 
     // components
+    private transient final Table<Button, Pattern, RecordBox> recordBoxes = HashBasedTable.create();
     private JLabel fullImage;
     private JLabel titleImage;
-    private transient final Table<Button, Pattern, RecordBox> recordBoxes = HashBasedTable.create();
 
-    // variables
-    private transient final Language lang = Language.getInstance();
+    // presenter
+    private transient Presenter presenter;
 
     public ScannerTaskView(JFrame parent) {
         super(parent, false);
@@ -152,18 +152,18 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
     }
 
     @Override
-    public void setData(ScannerTaskViewData viewData) {
+    public void setData(ResponseData data) {
         // full image
-        fullImage.setIcon(new ImageIcon(viewData.fullImage));
+        fullImage.setIcon(new ImageIcon(data.fullImage));
 
         // title image
-        titleImage.setIcon(new ImageIcon(viewData.titleImage));
+        titleImage.setIcon(new ImageIcon(data.titleImage));
 
         // records
         recordBoxes.cellSet().forEach((cell) -> {
-            RecordData data = viewData.records.get(cell.getRowKey(), cell.getColumnKey());
-            if (data != null) {
-                cell.getValue().setData(data);
+            RecordData recordData = data.recordTable.get(cell.getRowKey(), cell.getColumnKey());
+            if (recordData != null) {
+                cell.getValue().setData(recordData);
             } else {
                 cell.getValue().clear();
             }

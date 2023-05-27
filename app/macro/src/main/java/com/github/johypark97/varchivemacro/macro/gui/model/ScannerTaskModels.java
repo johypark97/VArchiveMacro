@@ -1,15 +1,39 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
-import com.github.johypark97.varchivemacro.macro.core.scanner.CollectionTaskData;
+import com.github.johypark97.varchivemacro.macro.core.Button;
+import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+import java.awt.Image;
 
 public interface ScannerTaskModels {
     interface TaskDataProvider {
-        CollectionTaskData getTaskData(int taskNumber) throws Exception;
+        ResponseData getValue(int taskNumber) throws Exception;
     }
 
 
     interface IScannerTaskModel {
-        CollectionTaskData getTaskData(int taskNumber) throws Exception;
+        ResponseData getData(int taskNumber) throws Exception;
+    }
+
+
+    class ResponseData {
+        public final Table<Button, Pattern, RecordData> recordTable = HashBasedTable.create();
+
+        public Exception exception;
+        public Image fullImage;
+        public Image titleImage;
+
+        public void addRecord(Button button, Pattern pattern, RecordData data) {
+            recordTable.put(button, pattern, data);
+        }
+
+        public static class RecordData {
+            public Image maxComboImage;
+            public Image rateImage;
+            public String rate;
+            public boolean maxCombo;
+        }
     }
 
 
@@ -21,8 +45,8 @@ public interface ScannerTaskModels {
         }
 
         @Override
-        public CollectionTaskData getTaskData(int taskNumber) throws Exception {
-            return taskDataProvider.getTaskData(taskNumber);
+        public ResponseData getData(int taskNumber) throws Exception {
+            return taskDataProvider.getValue(taskNumber);
         }
     }
 }
