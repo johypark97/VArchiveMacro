@@ -88,6 +88,11 @@ public class DefaultRecordManager implements RecordManager {
     }
 
     @Override
+    public LocalRecord findSameRecord(LocalRecord record) {
+        return getRecord(record.id, record.button, record.pattern);
+    }
+
+    @Override
     public LocalRecord getRecord(int id, Button button, Pattern pattern) {
         lock.readLock().lock();
         try {
@@ -98,32 +103,36 @@ public class DefaultRecordManager implements RecordManager {
     }
 
     @Override
-    public LocalRecord findSameRecord(LocalRecord record) {
-        return getRecord(record.id, record.button, record.pattern);
-    }
-
-
-    @Override
-    public Map<Button, Map<Pattern, String>> getRecordMap(int id) {
-        Map<Button, Map<Pattern, String>> map = new EnumMap<>(Button.class);
+    public Map<Pattern, LocalRecord> getRecord(int id, Button button) {
+        Map<Pattern, LocalRecord> map = new EnumMap<>(Pattern.class);
 
         lock.readLock().lock();
         ButtonMap buttonMap = recordMap.get(id);
         if (buttonMap != null) {
-            buttonMap.forEach((button, patternMap) -> patternMap.forEach((pattern, record) -> {
-                Map<Pattern, String> subMap =
-                        map.computeIfAbsent(button, (x) -> new EnumMap<>(Pattern.class));
-
-                String rate = String.valueOf(record.rate);
-                String maxCombo = record.maxCombo ? " (Max)" : "";
-                subMap.put(pattern, rate + maxCombo);
-            }));
+            PatternMap patternMap = buttonMap.get(button);
+            if (patternMap != null) {
+                map.putAll(patternMap);
+            }
         }
         lock.readLock().unlock();
 
         return map;
     }
 
+    @Override
+    public Map<Button, Map<Pattern, LocalRecord>> getRecord(int id) {
+        Map<Button, Map<Pattern, LocalRecord>> map = new EnumMap<>(Button.class);
+
+        lock.readLock().lock();
+        ButtonMap buttonMap = recordMap.get(id);
+        if (buttonMap != null) {
+            buttonMap.forEach((button, patternMap) -> map.computeIfAbsent(button,
+                    (x) -> new EnumMap<>(Pattern.class)).putAll(patternMap));
+        }
+        lock.readLock().unlock();
+
+        return map;
+    }
 
     protected static class RecordMap extends HashMap<Integer, ButtonMap> {
         @Serial
@@ -140,9 +149,13 @@ public class DefaultRecordManager implements RecordManager {
     }
 
 
-    protected static class ButtonMap extends HashMap<Button, PatternMap> {
+    protected static class ButtonMap extends EnumMap<Button, PatternMap> {
         @Serial
         private static final long serialVersionUID = -7755798461331119049L;
+
+        public ButtonMap() {
+            super(Button.class);
+        }
 
         public boolean add(LocalRecord record) {
             return computeIfAbsent(record.button, (x) -> new PatternMap()).add(record);
@@ -155,9 +168,13 @@ public class DefaultRecordManager implements RecordManager {
     }
 
 
-    protected static class PatternMap extends HashMap<Pattern, LocalRecord> {
+    protected static class PatternMap extends EnumMap<Pattern, LocalRecord> {
         @Serial
         private static final long serialVersionUID = -6011022680688092958L;
+
+        public PatternMap() {
+            super(Pattern.class);
+        }
 
         public boolean add(LocalRecord newRecord) {
             LocalRecord storedRecord = get(newRecord.pattern);

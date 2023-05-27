@@ -48,9 +48,14 @@ public interface SongRecordModels {
         public Table<Button, Pattern, String> getRecordTable(int id) {
             Table<Button, Pattern, String> table = HashBasedTable.create();
 
-            songRecordManager.getRecordMap(id).forEach((button, patternMap) -> patternMap.forEach(
-                    (pattern, value) -> table.put(Button.valueOf(button), Pattern.valueOf(pattern),
-                            value)));
+            songRecordManager.getRecord(id)
+                    .forEach((button, patternMap) -> patternMap.forEach((pattern, record) -> {
+                        String rate = String.valueOf(record.rate);
+                        String maxCombo = record.maxCombo ? " (Max)" : "";
+                        String value = rate + maxCombo;
+
+                        table.put(Button.valueOf(button), Pattern.valueOf(pattern), value);
+                    }));
 
             return table;
         }

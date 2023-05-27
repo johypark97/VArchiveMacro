@@ -91,18 +91,23 @@ public class SongRecordManager implements ISongRecordManager {
     }
 
     @Override
-    public LocalRecord getRecord(int id, Api.Button button, Api.Pattern pattern) {
-        return recordManager.getRecord(id, button, pattern);
-    }
-
-    @Override
     public LocalRecord findSameRecord(LocalRecord record) {
         return recordManager.findSameRecord(record);
     }
 
     @Override
-    public Map<Api.Button, Map<Api.Pattern, String>> getRecordMap(int id) {
-        return recordManager.getRecordMap(id);
+    public LocalRecord getRecord(int id, Api.Button button, Api.Pattern pattern) {
+        return recordManager.getRecord(id, button, pattern);
+    }
+
+    @Override
+    public Map<Api.Pattern, LocalRecord> getRecord(int id, Api.Button button) {
+        return recordManager.getRecord(id, button);
+    }
+
+    @Override
+    public Map<Api.Button, Map<Api.Pattern, LocalRecord>> getRecord(int id) {
+        return recordManager.getRecord(id);
     }
 
     @Override

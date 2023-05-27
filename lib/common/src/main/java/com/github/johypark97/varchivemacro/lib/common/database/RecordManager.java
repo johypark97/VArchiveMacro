@@ -8,9 +8,11 @@ import java.util.Map;
 public interface RecordManager {
     boolean updateRecord(LocalRecord record);
 
-    LocalRecord getRecord(int id, Button button, Pattern pattern);
-
     LocalRecord findSameRecord(LocalRecord record);
 
-    Map<Button, Map<Pattern, String>> getRecordMap(int id);
+    LocalRecord getRecord(int id, Button button, Pattern pattern);
+
+    Map<Pattern, LocalRecord> getRecord(int id, Button button);
+
+    Map<Button, Map<Pattern, LocalRecord>> getRecord(int id);
 }
