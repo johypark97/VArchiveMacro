@@ -188,18 +188,18 @@ public class DbManagerPresenter implements Presenter {
         Gson gson = newGsonBuilder_dump().create();
         StringBuilder builder = new StringBuilder();
 
-        if (!databaseModel.conflict.isEmpty()) {
+        if (!databaseModel.conflictList.isEmpty()) {
             builder.append("-------- conflict --------\n");
-            builder.append(gson.toJson(databaseModel.conflict)).append('\n');
+            builder.append(gson.toJson(databaseModel.conflictList)).append('\n');
         }
 
-        if (!databaseModel.unclassified.isEmpty()) {
+        if (!databaseModel.unclassifiedList.isEmpty()) {
             if (!builder.isEmpty()) {
                 builder.append('\n');
             }
 
             builder.append("-------- unclassified --------\n");
-            builder.append(gson.toJson(databaseModel.unclassified)).append('\n');
+            builder.append(gson.toJson(databaseModel.unclassifiedList)).append('\n');
         }
 
         if (builder.isEmpty()) {

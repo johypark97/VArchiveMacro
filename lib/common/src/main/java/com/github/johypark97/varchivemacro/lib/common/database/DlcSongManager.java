@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface IDlcManager {
+public interface DlcSongManager extends SongManager {
     List<String> getDlcCodeList();
 
     Set<String> getDlcCodeSet();

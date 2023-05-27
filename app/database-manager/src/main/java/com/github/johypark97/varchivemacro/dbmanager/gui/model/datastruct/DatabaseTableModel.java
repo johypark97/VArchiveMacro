@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct;
 
-import com.github.johypark97.varchivemacro.lib.common.database.ISongManager;
+import com.github.johypark97.varchivemacro.lib.common.database.SongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.Serial;
 import java.util.List;
@@ -18,7 +18,7 @@ public class DatabaseTableModel extends AbstractTableModel {
 
     private final List<LocalSong> songs;
 
-    public DatabaseTableModel(ISongManager songManager) {
+    public DatabaseTableModel(SongManager songManager) {
         songs = songManager.getSongList();
     }
 

@@ -63,8 +63,7 @@ public class ResultManager implements Server<Event, ResultListProvider> {
                 boolean maxCombo = analyzedData.isMaxCombo;
 
                 LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
-                LocalRecord oldRecord = songRecordManager.getRecord(newRecord.id, newRecord.button,
-                        newRecord.pattern);
+                LocalRecord oldRecord = songRecordManager.findSameRecord(newRecord);
 
                 if (oldRecord != null && oldRecord.isUpdated(newRecord)) {
                     RecordData data = new RecordData(dataList.size());

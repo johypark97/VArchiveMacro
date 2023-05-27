@@ -17,18 +17,15 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class DlcManager implements IDlcManager {
+public class DefaultDlcSongManager extends DefaultSongManager implements DlcSongManager {
     private static final int DLC_COUNT_CONDITION = 1;
 
-    private ISongManager songManager;
-    private Map<Integer, String> tabMap;
-    private Map<String, Dlc> dlcMap;
+    private final Map<Integer, String> tabMap;
+    private final Map<String, Dlc> dlcMap;
 
-    public void setSongManager(ISongManager songManager) {
-        this.songManager = songManager;
-    }
+    public DefaultDlcSongManager(Path songPath, Path dlcPath, Path tabPath) throws IOException {
+        super(songPath);
 
-    public void load(Path dlcPath, Path tabPath) throws IOException {
         dlcMap = Dlc.loadJson(dlcPath);
         tabMap = Tab.loadJson(tabPath);
     }
@@ -71,7 +68,7 @@ public class DlcManager implements IDlcManager {
         Map<String, Set<String>> map = new LinkedHashMap<>();
         tabMap.forEach((key, value) -> map.putIfAbsent(value, new HashSet<>()));
 
-        for (LocalSong song : songManager.getSongList()) {
+        for (LocalSong song : getSongList()) {
             Set<String> set = map.get(song.dlcTab());
             if (set == null) {
                 throw new RuntimeException("tab does not exist: " + song.dlcTab());
@@ -88,7 +85,7 @@ public class DlcManager implements IDlcManager {
         Map<String, List<LocalSong>> map = new LinkedHashMap<>();
         tabMap.forEach((key, value) -> map.putIfAbsent(value, new ArrayList<>()));
 
-        for (LocalSong song : songManager.getSongList()) {
+        for (LocalSong song : getSongList()) {
             List<LocalSong> list = map.get(song.dlcTab());
             if (list == null) {
                 throw new RuntimeException("tab does not exist: " + song.dlcTab());

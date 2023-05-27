@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.core;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcManager;
-import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
-import com.github.johypark97.varchivemacro.lib.common.database.SongManager;
+import com.github.johypark97.varchivemacro.lib.common.database.DefaultDlcSongManager;
+import com.github.johypark97.varchivemacro.lib.common.database.DefaultRecordManager;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
@@ -25,13 +25,12 @@ public class SongRecordManager implements ISongRecordManager {
     private static final Path SONG_PATH = BASE_PATH.resolve("songs.json");
     private static final Path TAB_PATH = BASE_PATH.resolve("tabs.json");
 
-    private final DlcManager dlcManager = new DlcManager();
-    private final RecordManager recordManager = new RecordManager();
-    private final SongManager songManager = new SongManager();
-
     private final Consumer<Exception> whenThrown;
     private final Consumer<String> whenStart;
     private final Runnable whenDone;
+
+    private DefaultRecordManager recordManager;
+    private DlcSongManager dlcSongManager;
 
     public SongRecordManager(Consumer<Exception> whenThrown, Consumer<String> whenStart,
             Runnable whenDone) {
@@ -45,11 +44,7 @@ public class SongRecordManager implements ISongRecordManager {
             return false;
         }
 
-        songManager.load(SONG_PATH);
-
-        dlcManager.load(DLC_PATH, TAB_PATH);
-        dlcManager.setSongManager(songManager);
-
+        dlcSongManager = new DefaultDlcSongManager(SONG_PATH, DLC_PATH, TAB_PATH);
         return true;
     }
 
@@ -58,7 +53,7 @@ public class SongRecordManager implements ISongRecordManager {
             return false;
         }
 
-        recordManager.loadJson(RECORD_PATH);
+        recordManager = new DefaultRecordManager(RECORD_PATH);
         return true;
     }
 
@@ -72,22 +67,22 @@ public class SongRecordManager implements ISongRecordManager {
 
     @Override
     public int getCount() {
-        return songManager.getCount();
+        return dlcSongManager.getCount();
     }
 
     @Override
     public LocalSong getSong(int id) {
-        return songManager.getSong(id);
+        return dlcSongManager.getSong(id);
     }
 
     @Override
     public List<LocalSong> getSongList() {
-        return songManager.getSongList();
+        return dlcSongManager.getSongList();
     }
 
     @Override
     public Set<Integer> getDuplicateTitleSet() {
-        return songManager.getDuplicateTitleSet();
+        return dlcSongManager.getDuplicateTitleSet();
     }
 
     @Override
@@ -101,50 +96,55 @@ public class SongRecordManager implements ISongRecordManager {
     }
 
     @Override
+    public LocalRecord findSameRecord(LocalRecord record) {
+        return recordManager.findSameRecord(record);
+    }
+
+    @Override
     public Map<Api.Button, Map<Api.Pattern, String>> getRecordMap(int id) {
         return recordManager.getRecordMap(id);
     }
 
     @Override
     public List<String> getDlcCodeList() {
-        return dlcManager.getDlcCodeList();
+        return dlcSongManager.getDlcCodeList();
     }
 
     @Override
     public Set<String> getDlcCodeSet() {
-        return dlcManager.getDlcCodeSet();
+        return dlcSongManager.getDlcCodeSet();
     }
 
     @Override
     public List<String> getDlcTabList() {
-        return dlcManager.getDlcTabList();
+        return dlcSongManager.getDlcTabList();
     }
 
     @Override
     public Set<String> getDlcTabSet() {
-        return dlcManager.getDlcTabSet();
+        return dlcSongManager.getDlcTabSet();
     }
 
     @Override
     public Map<String, String> getDlcCodeNameMap() {
-        return dlcManager.getDlcCodeNameMap();
+        return dlcSongManager.getDlcCodeNameMap();
     }
 
     @Override
     public Map<String, Set<String>> getDlcTabCodeMap() {
-        return dlcManager.getDlcTabCodeMap();
+        return dlcSongManager.getDlcTabCodeMap();
     }
 
     @Override
     public Map<String, List<LocalSong>> getTabSongMap() {
-        return dlcManager.getTabSongMap();
+        return dlcSongManager.getTabSongMap();
     }
 
     @Override
     public Map<String, List<LocalSong>> getTabSongMap(Set<String> selectedTabs) {
         Map<String, List<LocalSong>> map = new LinkedHashMap<>();
 
-        dlcManager.getTabSongMap().forEach(
+        dlcSongManager.getTabSongMap().forEach(
                 (key, value) -> map.put(key, selectedTabs.contains(key) ? value : List.of()));
 
         return map;
@@ -163,7 +163,7 @@ public class SongRecordManager implements ISongRecordManager {
             whenStart.accept(djName);
 
             try {
-                recordManager.loadRemote(djName);
+                recordManager = new DefaultRecordManager(djName);
                 saveRecord();
             } catch (Exception e) {
                 whenThrown.accept(e);

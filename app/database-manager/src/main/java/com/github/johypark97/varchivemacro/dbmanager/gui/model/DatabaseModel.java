@@ -5,8 +5,8 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.datastruct.Databa
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher.RemoteSong;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcManager;
-import com.github.johypark97.varchivemacro.lib.common.database.SongManager;
+import com.github.johypark97.varchivemacro.lib.common.database.DefaultDlcSongManager;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,34 +21,30 @@ public class DatabaseModel {
     private static final String SONG_FILENAME = "songs.json";
     private static final String TAB_FILENAME = "tabs.json";
 
-    private final DlcManager dlcManager = new DlcManager();
-    private final SongManager songManager = new SongManager();
-    private boolean isManagerloaded;
+    public final List<RemoteSong> conflictList = new ArrayList<>();
+    public final List<RemoteSong> unclassifiedList = new ArrayList<>();
+
+    private DlcSongManager dlcSongManager;
+    private boolean isManagerLoaded;
 
     public DatabaseTableModel tableModel;
     public DatabaseTableRowSorter tableRowSorter;
-
-    public List<RemoteSong> conflict;
-    public List<RemoteSong> unclassified;
 
     public void load(Path baseDir) throws IOException {
         Path dlcPath = baseDir.resolve(DLC_FILENAME);
         Path songPath = baseDir.resolve(SONG_FILENAME);
         Path tabPath = baseDir.resolve(TAB_FILENAME);
 
-        songManager.load(songPath);
+        dlcSongManager = new DefaultDlcSongManager(songPath, dlcPath, tabPath);
 
-        dlcManager.load(dlcPath, tabPath);
-        dlcManager.setSongManager(songManager);
-
-        tableModel = new DatabaseTableModel(songManager);
+        tableModel = new DatabaseTableModel(dlcSongManager);
         tableRowSorter = new DatabaseTableRowSorter(tableModel);
 
-        isManagerloaded = true;
+        isManagerLoaded = true;
     }
 
     public boolean isLoaded() {
-        return isManagerloaded;
+        return isManagerLoaded;
     }
 
     public List<String> getFilterableColumns() {
@@ -62,42 +58,42 @@ public class DatabaseModel {
     }
 
     public List<LocalSong> getSongs() {
-        return songManager.getSongList();
+        return dlcSongManager.getSongList();
     }
 
     public List<String> getDlcCodeList() {
-        return dlcManager.getDlcCodeList();
+        return dlcSongManager.getDlcCodeList();
     }
 
     public Set<String> getDlcCodeSet() {
-        return dlcManager.getDlcCodeSet();
+        return dlcSongManager.getDlcCodeSet();
     }
 
     public List<String> getDlcTabList() {
-        return dlcManager.getDlcTabList();
+        return dlcSongManager.getDlcTabList();
     }
 
     public Set<String> getDlcTabSet() {
-        return dlcManager.getDlcTabSet();
+        return dlcSongManager.getDlcTabSet();
     }
 
     public Map<String, Set<String>> getDlcTabCodeMap() {
-        return dlcManager.getDlcTabCodeMap();
+        return dlcSongManager.getDlcTabCodeMap();
     }
 
     public void checkRemote() throws GeneralSecurityException, IOException, InterruptedException {
         StaticFetcher staticFetcher = Api.newStaticFetcher();
 
-        conflict = new ArrayList<>();
-        unclassified = new ArrayList<>();
+        conflictList.clear();
+        unclassifiedList.clear();
 
         staticFetcher.fetchSongs();
         for (RemoteSong remoteSong : staticFetcher.getSongs()) {
-            LocalSong localSong = songManager.getSong(remoteSong.id);
+            LocalSong localSong = dlcSongManager.getSong(remoteSong.id);
             if (localSong == null) {
-                unclassified.add(remoteSong);
+                unclassifiedList.add(remoteSong);
             } else if (!compareSong(localSong, remoteSong)) {
-                conflict.add(remoteSong);
+                conflictList.add(remoteSong);
             }
         }
     }
