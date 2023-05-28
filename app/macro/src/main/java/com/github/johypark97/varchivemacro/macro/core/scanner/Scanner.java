@@ -7,9 +7,13 @@ import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultResultManager;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultTaskManager;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.AnalyzedData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResultListProvider;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels;
@@ -18,6 +22,7 @@ import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.Res
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.TaskDataProvider;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,8 +32,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class Scanner implements TaskDataProvider {
-    private final ResultManager resultManager = new ResultManager();
-    private final ScannerTaskManager taskManager = new ScannerTaskManager();
+    private final DefaultTaskManager taskManager = new DefaultTaskManager();
+    private final DefaultResultManager resultManager = new DefaultResultManager();
 
     private final Consumer<Exception> whenThrown;
     private final Runnable whenCanceled;
@@ -169,8 +174,8 @@ public class Scanner implements TaskDataProvider {
             public boolean run() {
                 whenStart_collectResult.run();
 
-                resultManager.clearRecords();
-                resultManager.addRecords(taskManager.getTasks());
+                resultManager.clear();
+                resultManager.addAll(taskManager);
 
                 whenDone.run();
                 return true;
@@ -208,12 +213,22 @@ public class Scanner implements TaskDataProvider {
                 taskManager.setCacheDir(cachePath);
 
                 tabSongMap.values().forEach((songs) -> {
+                    CollectionArea area;
+                    try {
+                        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                        area = CollectionAreaFactory.create(screenSize);
+                    } catch (Exception e) {
+                        whenThrown.accept(e);
+                        return;
+                    }
+
                     int count = songs.size();
                     for (int i = 0; i < count; ++i) {
                         LocalSong song = songs.get(i);
-                        ScannerTask task = taskManager.create(song, i, count);
-                        if (Files.exists(task.filePath)) {
-                            task.setStatus(ScannerTaskStatus.CACHED);
+                        TaskData task = taskManager.createTask(song, i, count, area);
+
+                        if (Files.exists(task.getImagePath())) {
+                            task.setStatus(TaskStatus.CACHED);
                         } else {
                             task.setException(new IOException("File not found"));
                         }
@@ -227,8 +242,8 @@ public class Scanner implements TaskDataProvider {
     }
 
     @Override
-    public ResponseData getValue(int taskNumber) throws Exception {
-        ScannerTask task = taskManager.getTask(taskNumber);
+    public ResponseData getValue(int taskNumber) throws IOException {
+        TaskData task = taskManager.getTaskData(taskNumber);
         if (task == null) {
             return null;
         }
@@ -244,8 +259,7 @@ public class Scanner implements TaskDataProvider {
         BufferedImage image = task.loadImage();
         data.fullImage = image;
 
-        Dimension size = new Dimension(image.getWidth(), image.getHeight());
-        CollectionArea area = CollectionAreaFactory.create(size);
+        CollectionArea area = task.getCollectionArea();
         data.titleImage = area.getTitle(image);
 
         for (Button button : Button.values()) {
@@ -256,9 +270,9 @@ public class Scanner implements TaskDataProvider {
 
                 if (analyzedData != null) {
                     RecordData recordData = new RecordData();
-                    recordData.maxCombo = analyzedData.isMaxCombo;
+                    recordData.maxCombo = analyzedData.isMaxCombo();
                     recordData.maxComboImage = area.getComboMark(image, b, p);
-                    recordData.rate = analyzedData.rateText;
+                    recordData.rate = analyzedData.getRateText();
                     recordData.rateImage = area.getRate(image, b, p);
 
                     data.addRecord(button, pattern, recordData);

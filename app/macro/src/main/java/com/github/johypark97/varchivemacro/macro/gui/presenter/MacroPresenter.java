@@ -424,7 +424,7 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
         ResponseData data;
         try {
             data = scannerTaskModel.getData(taskNumber);
-        } catch (Exception e) {
+        } catch (IOException e) {
             view.addLog(lang.get(MacroPresenterKey.LOADING_TASK_DATA_EXCEPTION));
             view.addLog(ERROR_LOG_PREFIX + e.getMessage());
             return;

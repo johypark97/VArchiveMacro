@@ -5,15 +5,16 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.awt.Image;
+import java.io.IOException;
 
 public interface ScannerTaskModels {
     interface TaskDataProvider {
-        ResponseData getValue(int taskNumber) throws Exception;
+        ResponseData getValue(int taskNumber) throws IOException;
     }
 
 
     interface IScannerTaskModel {
-        ResponseData getData(int taskNumber) throws Exception;
+        ResponseData getData(int taskNumber) throws IOException;
     }
 
 
@@ -45,7 +46,7 @@ public interface ScannerTaskModels {
         }
 
         @Override
-        public ResponseData getData(int taskNumber) throws Exception {
+        public ResponseData getData(int taskNumber) throws IOException {
             return taskDataProvider.getValue(taskNumber);
         }
     }

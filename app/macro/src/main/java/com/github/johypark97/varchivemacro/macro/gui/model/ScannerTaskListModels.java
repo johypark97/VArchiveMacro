@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTaskStatus;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 
 public interface ScannerTaskListModels {
     class Event {
@@ -30,7 +30,7 @@ public interface ScannerTaskListModels {
 
 
     class ResponseData {
-        public ScannerTaskStatus status;
+        public TaskStatus status;
         public String composer;
         public String dlc;
         public String tab;

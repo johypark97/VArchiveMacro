@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel;
 
-import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTaskStatus;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Model;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ViewModel;
@@ -97,14 +97,12 @@ public interface ScannerTaskListViewModels {
 
         private Model model;
 
-        private String convertStatus(ScannerTaskStatus status) {
+        private String convertStatus(TaskStatus status) {
             return switch (status) {
                 case ANALYZED -> "analyzed";
                 case ANALYZING -> "analyzing";
                 case CACHED -> "cached";
                 case CAPTURED -> "captured";
-                case DISK_LOADED -> "loaded from disk";
-                case DISK_SAVED -> "saved to disk";
                 case EXCEPTION -> "error occurred";
                 case NONE -> "none";
                 case WAITING -> "waiting";

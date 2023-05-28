@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel;
 import com.github.johypark97.varchivemacro.lib.common.database.comparator.TitleComparator;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
-import com.github.johypark97.varchivemacro.macro.core.scanner.ResultManager.RecordData.Result;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultManager.ResultStatus;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.Model;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ViewModel;
@@ -119,15 +119,14 @@ public interface ScannerResultListViewModels {
             return new ResultRowSorter(this);
         }
 
-        private String statusToString(Result result) {
-            return switch (result) {
+        private String statusToString(ResultStatus status) {
+            return switch (status) {
                 case CANCELED -> "canceled";
                 case HIGHER_RECORD_EXISTS -> "higher record exists";
                 case NOT_UPLOADED -> "";
                 case SUSPENDED -> "suspended";
                 case UPLOADED -> "uploaded";
                 case UPLOADING -> "uploading";
-                case WAITING -> "waiting";
             };
         }
 

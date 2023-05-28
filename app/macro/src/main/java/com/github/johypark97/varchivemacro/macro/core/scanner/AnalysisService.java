@@ -4,12 +4,17 @@ import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.macro.core.ocr.OcrWrapper;
+import com.github.johypark97.varchivemacro.macro.core.ocr.PixError;
 import com.github.johypark97.varchivemacro.macro.core.ocr.PixWrapper;
-import com.github.johypark97.varchivemacro.macro.core.scanner.ScannerTask.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
-import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultTaskManager.DefaultAnalyzedData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.AnalyzedData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 import com.google.common.base.CharMatcher;
-import java.awt.Dimension;
+import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,17 +45,17 @@ public class AnalysisService {
         }
     }
 
-    public void execute(ScannerTaskManager taskManager) {
+    public void execute(TaskManager taskManager) {
         executor.execute(() -> {
             try (OcrWrapper ocr = new OcrWrapper()) {
-                List<ScannerTask> queue =
-                        taskManager.getTasks().stream().filter((x) -> x.getException() == null)
-                                .toList();
-
-                queue.forEach((x) -> x.setStatus(ScannerTaskStatus.WAITING));
+                List<TaskData> queue = new LinkedList<>();
+                for (TaskData task : taskManager) {
+                    queue.add(task);
+                    task.setStatus(TaskStatus.WAITING);
+                }
 
                 Thread thread = Thread.currentThread();
-                for (ScannerTask task : queue) {
+                for (TaskData task : queue) {
                     analyze(ocr, task);
 
                     if (thread.isInterrupted()) {
@@ -63,13 +68,12 @@ public class AnalysisService {
         executor.shutdown();
     }
 
-    public static void analyze(OcrWrapper ocr, ScannerTask task) {
-        task.setStatus(ScannerTaskStatus.ANALYZING);
+    public void analyze(OcrWrapper ocr, TaskData task) {
+        task.setStatus(TaskStatus.ANALYZING);
         task.clearAnalyzedData();
 
-        try (PixWrapper pix = new PixWrapper(task.filePath)) {
-            Dimension size = new Dimension(pix.getWidth(), pix.getHeight());
-            CollectionArea area = CollectionAreaFactory.create(size);
+        try (PixWrapper pix = new PixWrapper(task.getImagePath())) {
+            CollectionArea area = task.getCollectionArea();
 
             // -------- preprocessing --------
             pix.convertRGBToLuminance();
@@ -94,40 +98,24 @@ public class AnalysisService {
                         String text = ocr.run(recordPix.pixInstance);
                         text = CharMatcher.whitespace().removeFrom(text);
 
-                        data = new AnalyzedData();
-                        data.rate = parseRateText(text);
-                        data.rateText = text;
+                        data = new DefaultAnalyzedData();
+                        data.setRateText(text);
                     }
 
                     try (PixWrapper comboMarkPix = pix.crop(area.getComboMark(b, p))) {
                         float r =
                                 comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR, COMBO_MARK_THRESHOLD);
-                        data.isMaxCombo = r >= COMBO_MARK_RATIO;
+                        data.setMaxCombo(r >= COMBO_MARK_RATIO);
                     }
 
                     task.addAnalyzedData(button, pattern, data);
                 }
             }
 
-            task.setStatus(ScannerTaskStatus.ANALYZED);
-        } catch (Exception e) {
+            task.setStatus(TaskStatus.ANALYZED);
+        } catch (IOException | PixError e) {
             task.setException(e);
             LOGGER.atError().log(e.getMessage(), e);
-        }
-    }
-
-    public static float parseRateText(String text) {
-        int index = text.indexOf('%');
-        if (index == -1) {
-            return -1;
-        }
-
-        try {
-            String s = text.substring(0, index);
-            float value = Float.parseFloat(s);
-            return (value >= 0 && value <= 100) ? value : -1;
-        } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            return -1;
         }
     }
 }

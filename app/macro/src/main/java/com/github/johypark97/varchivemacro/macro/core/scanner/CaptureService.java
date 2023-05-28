@@ -1,7 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -64,13 +68,13 @@ class CaptureService {
         }
     }
 
-    public void execute(ScannerTaskManager taskManager, Map<String, List<LocalSong>> tabSongMap) {
+    public void execute(TaskManager taskManager, Map<String, List<LocalSong>> tabSongMap) {
         executor.execute(() -> {
             try {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
                 // Check if the screen size is supported using whether an exception occurs.
-                CollectionAreaFactory.create(screenSize);
+                CollectionArea area = CollectionAreaFactory.create(screenSize);
 
                 Rectangle screenRect = new Rectangle(screenSize);
                 for (List<LocalSong> songs : tabSongMap.values()) {
@@ -87,8 +91,8 @@ class CaptureService {
                         BufferedImage image = robot.createScreenCapture(screenRect);
 
                         LocalSong song = songs.get(i);
-                        ScannerTask task = taskManager.create(song, i, count);
-                        task.setStatus(ScannerTaskStatus.CAPTURED);
+                        TaskData task = taskManager.createTask(song, i, count, area);
+                        task.setStatus(TaskStatus.CAPTURED);
 
                         while (true) {
                             try {
