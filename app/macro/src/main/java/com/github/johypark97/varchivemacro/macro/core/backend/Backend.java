@@ -46,12 +46,10 @@ public class Backend implements Server<BackendEvent, IBackend>, IBackend {
         Runnable whenStart_analyze = createWhen(Type.SCANNER_START_ANALYZE);
         Runnable whenStart_capture = createWhen(Type.SCANNER_START_CAPTURE);
         Runnable whenStart_collectResult = createWhen(Type.SCANNER_START_COLLECT_RESULT);
-        Runnable whenStart_loadImages = createWhen(Type.SCANNER_START_LOAD_IMAGES);
         Runnable whenStart_uploadRecord = createWhen(Type.SCANNER_START_UPLOAD_RECORD);
         scanner =
                 new Scanner(whenThrown, whenCanceled, whenCaptureDone, whenDone, whenStart_analyze,
-                        whenStart_capture, whenStart_collectResult, whenStart_loadImages,
-                        whenStart_uploadRecord);
+                        whenStart_capture, whenStart_collectResult, whenStart_uploadRecord);
 
         Runnable whenStart_macro = createWhen(Type.CLIENT_MACRO_START);
         clientMacro = new ClientMacro(whenThrown, whenCanceled, whenDone, whenStart_macro);
@@ -144,12 +142,6 @@ public class Backend implements Server<BackendEvent, IBackend>, IBackend {
         Map<String, List<LocalSong>> tabSongMap = songRecordManager.getTabSongMap(ownedDlcTabs);
         Command command =
                 scanner.getCommand_scan(cacheDir, captureDelay, inputDuration, tabSongMap);
-        startCommand(command);
-    }
-
-    @Override
-    public void loadCachedImages(Path cacheDir, Map<String, List<LocalSong>> tapSongMap) {
-        Command command = scanner.getCommand_loadCachedImages(cacheDir, tapSongMap);
         startCommand(command);
     }
 

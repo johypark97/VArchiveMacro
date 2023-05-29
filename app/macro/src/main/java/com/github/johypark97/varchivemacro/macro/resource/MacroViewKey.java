@@ -22,7 +22,6 @@ public enum MacroViewKey {
     DIALOG_UPLOAD_MESSAGE2("dialog.upload.message2"),
     DIALOG_UPLOAD_TITLE("dialog.upload.title"),
     DLC_CHECKBOX_TITLE("dlcCheckboxTitle"),
-    LOAD_CACHED_IMAGES_BUTTON("loadCachedImagesButton"),
     LOAD_REMOTE_RECORD_BUTTON("loadRemoteRecordButton"),
     MENU_FILE("menu.file"),
     MENU_FILE_EXIT("menu.file.exit"),

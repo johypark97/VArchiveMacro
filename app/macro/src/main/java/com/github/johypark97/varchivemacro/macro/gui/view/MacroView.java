@@ -112,7 +112,6 @@ public class MacroView extends JFrame implements View, WindowListener {
     private transient SliderSet scannerCaptureDelay;
     private transient SliderSet scannerKeyInputDuration;
     protected JButton analyzeScannerTaskButton;
-    protected JButton loadCachedImagesButton;
     protected JButton refreshScannerResultButton;
     protected JButton selectAccountFileButton;
     protected JButton selectAllDlcButton;
@@ -383,13 +382,6 @@ public class MacroView extends JFrame implements View, WindowListener {
                             new JButton(lang.get(MacroViewKey.SHOW_SCANNER_TASK_BUTTON));
                     showScannerTaskButton.addActionListener(buttonListener);
                     buttonBox.add(showScannerTaskButton);
-
-                    buttonBox.add(Box.createHorizontalGlue());
-
-                    loadCachedImagesButton =
-                            new JButton(lang.get(MacroViewKey.LOAD_CACHED_IMAGES_BUTTON));
-                    loadCachedImagesButton.addActionListener(buttonListener);
-                    buttonBox.add(loadCachedImagesButton);
 
                     buttonBox.add(Box.createHorizontalGlue());
 
@@ -1177,8 +1169,6 @@ class MacroViewButtonListener implements ActionListener {
                     view.presenter.showScannerTask(view, taskNumber);
                 }
             }
-        } else if (source.equals(view.loadCachedImagesButton)) {
-            view.presenter.loadCachedImages();
         } else if (source.equals(view.analyzeScannerTaskButton)) {
             view.presenter.analyzeScannerTask();
         } else if (source.equals(view.refreshScannerResultButton)) {

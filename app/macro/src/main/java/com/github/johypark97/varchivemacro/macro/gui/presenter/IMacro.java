@@ -36,8 +36,6 @@ public interface IMacro {
 
         void showScannerTask(JFrame frame, int taskNumber);
 
-        void loadCachedImages();
-
         void analyzeScannerTask();
 
         void refreshScannerResult();

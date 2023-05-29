@@ -18,7 +18,6 @@
   <entry key="macro.view.dialog.upload.message2">정말로 스캔한 기록을 업로드하시겠습니까?</entry>
   <entry key="macro.view.dialog.upload.title">업로드 경고</entry>
   <entry key="macro.view.dlcCheckboxTitle">스캔할 DLC 탭</entry>
-  <entry key="macro.view.loadCachedImagesButton">캐시된 이미지 불러오기</entry>
   <entry key="macro.view.loadRemoteRecordButton">서버 기록 불러오기</entry>
   <entry key="macro.view.menu.file">파일</entry>
   <entry key="macro.view.menu.file.exit">종료</entry>
@@ -70,7 +69,6 @@
   <entry key="macro.presenter.when.start.analyze">분석중...</entry>
   <entry key="macro.presenter.when.start.capture">스캔중...</entry>
   <entry key="macro.presenter.when.start.collectResult">새로고침 중...</entry>
-  <entry key="macro.presenter.when.start.loadImages">디스크에서 이미지를 불러오는 중...</entry>
   <entry key="macro.presenter.when.start.loadRemote">기록 불러오는 중... DJ 이름:</entry>
   <entry key="macro.presenter.when.start.macro">매크로 시작</entry>
   <entry key="macro.presenter.when.start.uploadRecord">기록 업로드 중...</entry>

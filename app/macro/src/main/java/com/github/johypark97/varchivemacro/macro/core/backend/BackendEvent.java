@@ -39,7 +39,6 @@ public class BackendEvent {
         SCANNER_START_ANALYZE,
         SCANNER_START_CAPTURE,
         SCANNER_START_COLLECT_RESULT,
-        SCANNER_START_LOAD_IMAGES,
         SCANNER_START_UPLOAD_RECORD,
         START_COMMAND,
         // @formatter:on

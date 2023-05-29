@@ -18,7 +18,6 @@
   <entry key="macro.view.dialog.upload.message2">Are you sure you want to upload the scanned records?</entry>
   <entry key="macro.view.dialog.upload.title">UPLOAD WARNING</entry>
   <entry key="macro.view.dlcCheckboxTitle">DLC tabs to scan</entry>
-  <entry key="macro.view.loadCachedImagesButton">Load cached images</entry>
   <entry key="macro.view.loadRemoteRecordButton">Load server records</entry>
   <entry key="macro.view.menu.file">File</entry>
   <entry key="macro.view.menu.file.exit">Exit</entry>
@@ -70,7 +69,6 @@
   <entry key="macro.presenter.when.start.analyze">Analyzing...</entry>
   <entry key="macro.presenter.when.start.capture">Scanning...</entry>
   <entry key="macro.presenter.when.start.collectResult">Refreshing...</entry>
-  <entry key="macro.presenter.when.start.loadImages">Loading images from disk...</entry>
   <entry key="macro.presenter.when.start.loadRemote">Loading record... DJ Name:</entry>
   <entry key="macro.presenter.when.start.macro">Start macro</entry>
   <entry key="macro.presenter.when.start.uploadRecord">Uploading records...</entry>

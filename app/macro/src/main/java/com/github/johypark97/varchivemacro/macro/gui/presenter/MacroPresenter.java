@@ -236,8 +236,6 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
                     view.addLog(lang.get(MacroPresenterKey.WHEN_START_CAPTURE));
             case SCANNER_START_COLLECT_RESULT ->
                     view.addLog(lang.get(MacroPresenterKey.WHEN_START_COLLECT_RESULT));
-            case SCANNER_START_LOAD_IMAGES ->
-                    view.addLog(lang.get(MacroPresenterKey.WHEN_START_LOAD_IMAGES));
             case SCANNER_START_UPLOAD_RECORD ->
                     view.addLog(lang.get(MacroPresenterKey.WHEN_START_UPLOAD_RECORD));
             case START_COMMAND -> view.addLog(lang.get(MacroPresenterKey.START_COMMAND));
@@ -441,13 +439,6 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
         }
 
         scannerTaskPresenter.start(frame, data);
-    }
-
-    @Override
-    public void loadCachedImages() {
-        Path path = view.getCacheDir();
-        Map<String, List<LocalSong>> tapSongMap = songRecordModel.getTabSongMap();
-        backend.loadCachedImages(path, tapSongMap);
     }
 
     @Override

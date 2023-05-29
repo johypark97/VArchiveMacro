@@ -8,12 +8,10 @@ import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
-import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultResultManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultTaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
-import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResultListProvider;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels;
@@ -21,11 +19,8 @@ import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData.RecordData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.TaskDataProvider;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -42,22 +37,19 @@ public class Scanner implements TaskDataProvider {
     private final Runnable whenStart_analyze;
     private final Runnable whenStart_capture;
     private final Runnable whenStart_collectResult;
-    private final Runnable whenStart_loadImages;
     private final Runnable whenStart_uploadRecord;
 
     private SongRecordManager songRecordManager;
 
     public Scanner(Consumer<Exception> whenThrown, Runnable whenCanceled, Runnable whenCaptureDone,
             Runnable whenDone, Runnable whenStart_analyze, Runnable whenStart_capture,
-            Runnable whenStart_collectResult, Runnable whenStart_loadImages,
-            Runnable whenStart_uploadRecord) {
+            Runnable whenStart_collectResult, Runnable whenStart_uploadRecord) {
         this.whenCanceled = whenCanceled;
         this.whenCaptureDone = whenCaptureDone;
         this.whenDone = whenDone;
         this.whenStart_analyze = whenStart_analyze;
         this.whenStart_capture = whenStart_capture;
         this.whenStart_collectResult = whenStart_collectResult;
-        this.whenStart_loadImages = whenStart_loadImages;
         this.whenStart_uploadRecord = whenStart_uploadRecord;
         this.whenThrown = whenThrown;
     }
@@ -100,11 +92,6 @@ public class Scanner implements TaskDataProvider {
 
     public Command getCommand_uploadRecord(Path accountPath, int uploadDelay) {
         return createCommand_uploadRecord(accountPath, uploadDelay);
-    }
-
-    public Command getCommand_loadCachedImages(Path cacheDir,
-            Map<String, List<LocalSong>> tabSongMap) {
-        return createCommand_loadCachedImages(cacheDir, tabSongMap);
     }
 
     protected Command createCommand_scan(Path cachePath, int captureDelay, int inputDuration,
@@ -209,45 +196,6 @@ public class Scanner implements TaskDataProvider {
                     whenThrown.accept(uploadService.exception);
                     return false;
                 }
-
-                whenDone.run();
-                return true;
-            }
-        };
-    }
-
-    protected Command createCommand_loadCachedImages(Path cachePath,
-            Map<String, List<LocalSong>> tabSongMap) {
-        return new AbstractCommand() {
-            @Override
-            public boolean run() {
-                whenStart_loadImages.run();
-
-                taskManager.clear();
-                taskManager.setCacheDir(cachePath);
-
-                tabSongMap.values().forEach((songs) -> {
-                    CollectionArea area;
-                    try {
-                        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                        area = CollectionAreaFactory.create(screenSize);
-                    } catch (Exception e) {
-                        whenThrown.accept(e);
-                        return;
-                    }
-
-                    int count = songs.size();
-                    for (int i = 0; i < count; ++i) {
-                        LocalSong song = songs.get(i);
-                        TaskData task = taskManager.createTask(song, i, count, area);
-
-                        if (Files.exists(task.getImagePath())) {
-                            task.setStatus(TaskStatus.CACHED);
-                        } else {
-                            task.setException(new IOException("File not found"));
-                        }
-                    }
-                });
 
                 whenDone.run();
                 return true;
