@@ -153,6 +153,11 @@ public class Scanner implements TaskDataProvider {
                     return false;
                 }
 
+                if (analysisService.exception != null) {
+                    whenThrown.accept(analysisService.exception);
+                    return false;
+                }
+
                 whenDone.run();
                 return true;
             }

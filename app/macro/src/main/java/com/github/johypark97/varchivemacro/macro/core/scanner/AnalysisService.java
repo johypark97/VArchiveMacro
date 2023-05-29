@@ -62,7 +62,9 @@ public class AnalysisService {
                         break;
                     }
                 }
-            } catch (OcrInitializationError ignored) {
+            } catch (OcrInitializationError e) {
+                LOGGER.atError().log(e.getMessage(), e);
+                exception = e;
             }
         });
         executor.shutdown();
