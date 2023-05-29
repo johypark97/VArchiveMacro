@@ -45,6 +45,8 @@ public class Scanner implements TaskDataProvider {
     private final Runnable whenStart_loadImages;
     private final Runnable whenStart_uploadRecord;
 
+    private SongRecordManager songRecordManager;
+
     public Scanner(Consumer<Exception> whenThrown, Runnable whenCanceled, Runnable whenCaptureDone,
             Runnable whenDone, Runnable whenStart_analyze, Runnable whenStart_capture,
             Runnable whenStart_collectResult, Runnable whenStart_loadImages,
@@ -61,6 +63,8 @@ public class Scanner implements TaskDataProvider {
     }
 
     public void setModels(SongRecordManager songRecordManager) {
+        this.songRecordManager = songRecordManager;
+
         resultManager.setModels(songRecordManager);
     }
 
@@ -189,10 +193,20 @@ public class Scanner implements TaskDataProvider {
             public boolean run() {
                 whenStart_uploadRecord.run();
 
+                UploadService uploadService =
+                        new UploadService(songRecordManager, accountPath, uploadDelay);
+                uploadService.execute(resultManager);
+
                 try {
-                    resultManager.upload(accountPath, uploadDelay);
-                } catch (Exception e) {
-                    whenThrown.accept(e);
+                    uploadService.await();
+                } catch (InterruptedException e) {
+                    uploadService.shutdownNow();
+                    whenCanceled.run();
+                    return false;
+                }
+
+                if (uploadService.exception != null) {
+                    whenThrown.accept(uploadService.exception);
                     return false;
                 }
 
