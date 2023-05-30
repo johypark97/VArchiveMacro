@@ -161,29 +161,6 @@ public interface ScannerResultListViewModels {
         }
 
         @Override
-        public String getColumnName(int column) {
-            ColumnKey key = COLUMN_LOOKUP.getKey(column);
-            return COLUMN_LOOKUP.getName(key);
-        }
-
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
-                case BUTTON -> Button.class;
-                case COMPOSER, DLC, STATUS, TITLE -> String.class;
-                case DELTA_RATE, NEW_RATE, OLD_RATE -> Float.class;
-                case NEW_MAX_COMBO, OLD_MAX_COMBO, UPLOAD -> Boolean.class;
-                case PATTERN -> Pattern.class;
-                case RESULT_NUMBER, TASK_NUMBER -> Integer.class;
-            };
-        }
-
-        @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return columnIndex == COLUMN_LOOKUP.getIndex(ColumnKey.UPLOAD);
-        }
-
-        @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             ResponseData data = model.getData(rowIndex);
             if (data == null) {
@@ -206,6 +183,29 @@ public interface ScannerResultListViewModels {
                 case TITLE -> data.title;
                 case UPLOAD -> data.isSelected;
             };
+        }
+
+        @Override
+        public String getColumnName(int column) {
+            ColumnKey key = COLUMN_LOOKUP.getKey(column);
+            return COLUMN_LOOKUP.getName(key);
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
+                case BUTTON -> Button.class;
+                case COMPOSER, DLC, STATUS, TITLE -> String.class;
+                case DELTA_RATE, NEW_RATE, OLD_RATE -> Float.class;
+                case NEW_MAX_COMBO, OLD_MAX_COMBO, UPLOAD -> Boolean.class;
+                case PATTERN -> Pattern.class;
+                case RESULT_NUMBER, TASK_NUMBER -> Integer.class;
+            };
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return columnIndex == COLUMN_LOOKUP.getIndex(ColumnKey.UPLOAD);
         }
 
         @Override

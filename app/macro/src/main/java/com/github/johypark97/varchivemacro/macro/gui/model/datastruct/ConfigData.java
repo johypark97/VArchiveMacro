@@ -49,10 +49,6 @@ public class ConfigData {
     @Expose
     public Integer macroKeyInputDuration;
 
-    public void save(Path path) throws IOException {
-        Files.writeString(path, createGson().toJson(this));
-    }
-
     public static ConfigData load(Path path) throws IOException {
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             return createGson().fromJson(reader, ConfigData.class);
@@ -76,5 +72,9 @@ public class ConfigData {
         builder.registerTypeAdapter(Path.class, pathDeserializer);
 
         return builder.create();
+    }
+
+    public void save(Path path) throws IOException {
+        Files.writeString(path, createGson().toJson(this));
     }
 }

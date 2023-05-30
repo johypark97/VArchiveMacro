@@ -102,7 +102,7 @@ public class Scanner implements TaskDataProvider {
             public boolean run() {
                 whenStart_capture.run();
 
-                taskManager.clear();
+                taskManager.clearTask();
                 taskManager.setImageCacheManager(new DefaultImageCacheManager(cachePath));
 
                 CaptureService captureService = new CaptureService(captureDelay, inputDuration);
@@ -211,7 +211,7 @@ public class Scanner implements TaskDataProvider {
 
     @Override
     public ResponseData getValue(int taskNumber) throws IOException {
-        TaskData task = taskManager.getTaskData(taskNumber);
+        TaskData task = taskManager.getTask(taskNumber);
         if (task == null) {
             return null;
         }

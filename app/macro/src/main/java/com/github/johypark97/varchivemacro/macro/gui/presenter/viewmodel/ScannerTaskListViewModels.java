@@ -155,20 +155,6 @@ public interface ScannerTaskListViewModels {
         }
 
         @Override
-        public String getColumnName(int column) {
-            ColumnKey key = COLUMN_LOOKUP.getKey(column);
-            return COLUMN_LOOKUP.getName(key);
-        }
-
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
-                case COMPOSER, DLC, SONG_NUMBER, STATUS, TAB, TITLE -> String.class;
-                case COUNT, INDEX, TASK_NUMBER -> Integer.class;
-            };
-        }
-
-        @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             ResponseData data = model.getData(rowIndex);
             if (data == null) {
@@ -185,6 +171,20 @@ public interface ScannerTaskListViewModels {
                 case TAB -> data.tab;
                 case TASK_NUMBER -> data.taskNumber;
                 case TITLE -> data.title;
+            };
+        }
+
+        @Override
+        public String getColumnName(int column) {
+            ColumnKey key = COLUMN_LOOKUP.getKey(column);
+            return COLUMN_LOOKUP.getName(key);
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
+                case COMPOSER, DLC, SONG_NUMBER, STATUS, TAB, TITLE -> String.class;
+                case COUNT, INDEX, TASK_NUMBER -> Integer.class;
             };
         }
 

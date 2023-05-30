@@ -10,8 +10,8 @@ public class LicensePresenter implements Presenter {
     private final LicenseModel licenseModel = new LicenseModel();
 
     // view
-    private View view;
     private final Class<? extends View> viewClass;
+    private View view;
 
     public LicensePresenter(Class<? extends View> viewClass) {
         this.viewClass = viewClass;

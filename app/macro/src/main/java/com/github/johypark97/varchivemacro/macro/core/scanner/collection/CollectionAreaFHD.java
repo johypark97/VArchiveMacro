@@ -5,8 +5,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 class CollectionAreaFHD extends AbstractCollectionArea {
-    public static final Dimension RESOLUTION = new Dimension(1920, 1080);
-
     private static final Rectangle TITLE = new Rectangle(612, 282, 810, 60);
 
     private static final Dimension NEXT_BUTTON = new Dimension(124, 0);
@@ -17,6 +15,8 @@ class CollectionAreaFHD extends AbstractCollectionArea {
     private static final Rectangle CELL = new Rectangle(0, 0, 120, 28);
     private static final Rectangle CELL_COMBO_MARK = new Rectangle(87, 0, 31, 28);
     private static final Rectangle CELL_RATE = new Rectangle(33, 0, 53, 28);
+
+    public static final Dimension RESOLUTION = new Dimension(1920, 1080);
 
     private Point getAnchor(Section section, Button button, Pattern pattern) {
         int x = ANCHOR.x;

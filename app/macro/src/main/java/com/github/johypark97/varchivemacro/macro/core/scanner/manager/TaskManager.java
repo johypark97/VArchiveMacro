@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public interface TaskManager extends Iterable<TaskData> {
-    void clear();
+    void clearTask();
 
     TaskData createTask(LocalSong song, int songIndex, int songCount,
             CollectionArea collectionArea);
 
-    TaskData getTaskData(int taskNumber);
+    TaskData getTask(int taskNumber);
 
     ImageCacheManager getImageCacheManager();
 
@@ -30,9 +30,9 @@ public interface TaskManager extends Iterable<TaskData> {
     interface TaskData extends Iterable<Cell<Button, Pattern, AnalyzedData>> {
         void clearAnalyzedData();
 
-        AnalyzedData getAnalyzedData(Button button, Pattern pattern);
-
         void addAnalyzedData(Button button, Pattern pattern, AnalyzedData data);
+
+        AnalyzedData getAnalyzedData(Button button, Pattern pattern);
 
         CollectionArea getCollectionArea();
 

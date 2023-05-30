@@ -6,41 +6,6 @@ import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Clien
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultManager.ResultStatus;
 
 public interface ScannerResultListModels {
-    class Event {
-        public enum Type {DATA_CHANGED, ROWS_UPDATED}
-
-
-        public final Type type;
-        public final int value;
-
-        public Event(Type type, int value) {
-            this.type = type;
-            this.value = value;
-        }
-
-        public Event(Type type) {
-            this(type, 0);
-        }
-    }
-
-
-    class ResponseData {
-        public Button button;
-        public Pattern pattern;
-        public ResultStatus status;
-        public String composer;
-        public String dlc;
-        public String title;
-        public boolean isSelected;
-        public boolean newMaxCombo;
-        public boolean oldMaxCombo;
-        public float newRate;
-        public float oldRate;
-        public int resultNumber;
-        public int taskNumber;
-    }
-
-
     interface ResultListProvider {
         ResponseData getValue(int index);
 
@@ -67,6 +32,42 @@ public interface ScannerResultListModels {
         void onDataChanged();
 
         void onRowsUpdated(int row);
+    }
+
+
+    class Event {
+        public final Type type;
+        public final int value;
+
+        public Event(Type type, int value) {
+            this.type = type;
+            this.value = value;
+        }
+
+        public Event(Type type) {
+            this(type, 0);
+        }
+
+        public enum Type {
+            DATA_CHANGED, ROWS_UPDATED
+        }
+    }
+
+
+    class ResponseData {
+        public Button button;
+        public Pattern pattern;
+        public ResultStatus status;
+        public String composer;
+        public String dlc;
+        public String title;
+        public boolean isSelected;
+        public boolean newMaxCombo;
+        public boolean oldMaxCombo;
+        public float newRate;
+        public float oldRate;
+        public int resultNumber;
+        public int taskNumber;
     }
 
 

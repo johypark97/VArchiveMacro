@@ -34,7 +34,7 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
     }
 
     @Override
-    public void clear() {
+    public void clearTask() {
         taskDataMap.clear();
         notifyClients(new Event(Type.DATA_CHANGED));
     }
@@ -53,7 +53,7 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
     }
 
     @Override
-    public TaskData getTaskData(int taskNumber) {
+    public TaskData getTask(int taskNumber) {
         return taskDataMap.get(taskNumber);
     }
 
@@ -102,7 +102,6 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
     public void notifyClients(Event data) {
         clientList.forEach((x) -> x.onNotify(data));
     }
-
 
     public static class DefaultAnalyzedData implements AnalyzedData {
         private String rateText;
@@ -163,13 +162,13 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         }
 
         @Override
-        public AnalyzedData getAnalyzedData(Button button, Pattern pattern) {
-            return analyzedDataTable.get(button, pattern);
+        public void addAnalyzedData(Button button, Pattern pattern, AnalyzedData data) {
+            analyzedDataTable.put(button, pattern, data);
         }
 
         @Override
-        public void addAnalyzedData(Button button, Pattern pattern, AnalyzedData data) {
-            analyzedDataTable.put(button, pattern, data);
+        public AnalyzedData getAnalyzedData(Button button, Pattern pattern) {
+            return analyzedDataTable.get(button, pattern);
         }
 
         @Override

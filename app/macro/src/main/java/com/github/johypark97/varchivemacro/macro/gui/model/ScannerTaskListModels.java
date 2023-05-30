@@ -4,40 +4,10 @@ import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Clien
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 
 public interface ScannerTaskListModels {
-    class Event {
-        public enum Type {DATA_CHANGED, ROWS_INSERTED, ROWS_UPDATED}
-
-
-        public final Type type;
-        public final int value;
-
-        public Event(Type type, int value) {
-            this.type = type;
-            this.value = value;
-        }
-
-        public Event(Type type) {
-            this(type, 0);
-        }
-    }
-
-
     interface TaskListProvider {
         ResponseData getValue(int index);
 
         int getCount();
-    }
-
-
-    class ResponseData {
-        public TaskStatus status;
-        public String composer;
-        public String dlc;
-        public String tab;
-        public String title;
-        public int count;
-        public int index;
-        public int taskNumber;
     }
 
 
@@ -58,6 +28,37 @@ public interface ScannerTaskListModels {
         void onRowsInserted(int row);
 
         void onRowsUpdated(int row);
+    }
+
+
+    class Event {
+        public final Type type;
+        public final int value;
+
+        public Event(Type type, int value) {
+            this.type = type;
+            this.value = value;
+        }
+
+        public Event(Type type) {
+            this(type, 0);
+        }
+
+        public enum Type {
+            DATA_CHANGED, ROWS_INSERTED, ROWS_UPDATED
+        }
+    }
+
+
+    class ResponseData {
+        public String composer;
+        public String dlc;
+        public String tab;
+        public String title;
+        public TaskStatus status;
+        public int count;
+        public int index;
+        public int taskNumber;
     }
 
 

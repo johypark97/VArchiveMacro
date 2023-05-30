@@ -32,14 +32,14 @@ public class ExpectedView extends JDialog implements View, WindowListener {
     private static final int WINDOW_HEIGHT = 640;
     private static final int WINDOW_WIDTH = 480;
 
+    // language
+    private transient final Language lang = Language.getInstance();
+
     // presenter
     private transient Presenter presenter;
 
     // components
     private JTree tree;
-
-    // variables
-    private transient final Language lang = Language.getInstance();
 
     public ExpectedView(JFrame parent) {
         super(parent, true);

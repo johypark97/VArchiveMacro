@@ -17,17 +17,20 @@ public enum Button {
         weight = w;
     }
 
+    public static Button valueOf(Api.Button button) {
+        return Converter.API_MAP.inverse().get(button);
+    }
+
+    public static Button valueOf(CollectionArea.Button button) {
+        return Converter.COLLECTION_AREA_MAP.inverse().get(button);
+    }
+
     public int getValue() {
         return value;
     }
 
     public int getWeight() {
         return weight;
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(value);
     }
 
     public Api.Button toApi() {
@@ -38,12 +41,9 @@ public enum Button {
         return Converter.COLLECTION_AREA_MAP.get(this);
     }
 
-    public static Button valueOf(Api.Button button) {
-        return Converter.API_MAP.inverse().get(button);
-    }
-
-    public static Button valueOf(CollectionArea.Button button) {
-        return Converter.COLLECTION_AREA_MAP.inverse().get(button);
+    @Override
+    public String toString() {
+        return String.valueOf(value);
     }
 
     public static class Converter {

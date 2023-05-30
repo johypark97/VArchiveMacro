@@ -7,8 +7,8 @@ import javax.swing.tree.TreeModel;
 
 public class ExpectedPresenter implements Presenter {
     // view
-    private View view;
     private final Class<? extends View> viewClass;
+    private View view;
 
     public ExpectedPresenter(Class<? extends View> viewClass) {
         this.viewClass = viewClass;

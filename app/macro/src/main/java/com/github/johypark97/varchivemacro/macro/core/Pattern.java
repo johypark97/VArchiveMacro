@@ -19,17 +19,20 @@ public enum Pattern {
         weight = w;
     }
 
+    public static Pattern valueOf(Api.Pattern pattern) {
+        return Converter.API_MAP.inverse().get(pattern);
+    }
+
+    public static Pattern valueOf(CollectionArea.Pattern pattern) {
+        return Converter.COLLECTION_AREA_MAP.inverse().get(pattern);
+    }
+
     public String getShortName() {
         return shortName;
     }
 
     public int getWeight() {
         return weight;
-    }
-
-    @Override
-    public String toString() {
-        return fullName;
     }
 
     public Api.Pattern toApi() {
@@ -40,12 +43,9 @@ public enum Pattern {
         return Converter.COLLECTION_AREA_MAP.get(this);
     }
 
-    public static Pattern valueOf(Api.Pattern pattern) {
-        return Converter.API_MAP.inverse().get(pattern);
-    }
-
-    public static Pattern valueOf(CollectionArea.Pattern pattern) {
-        return Converter.COLLECTION_AREA_MAP.inverse().get(pattern);
+    @Override
+    public String toString() {
+        return fullName;
     }
 
     public static class Converter {
