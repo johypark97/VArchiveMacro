@@ -1162,9 +1162,11 @@ class MacroViewButtonListener implements ActionListener {
                 view.cacheDirTextField.setText(path.toString());
             }
         } else if (source.equals(view.showScannerTaskButton)) {
-            int index = view.scannerTaskTable.getSelectedRow();
-            if (index != -1) {
-                Object value = view.scannerTaskTable.getValueAt(index, 0);
+            int rowIndex = view.scannerTaskTable.getSelectedRow();
+            if (rowIndex != -1) {
+                int columnIndex = view.scannerTaskTableModel.getTableColumnLookup()
+                        .getIndexInView(view.scannerTaskTable, ColumnKey.TASK_NUMBER);
+                Object value = view.scannerTaskTable.getValueAt(rowIndex, columnIndex);
                 if (value instanceof Integer taskNumber) {
                     view.presenter.showScannerTask(view, taskNumber);
                 }
