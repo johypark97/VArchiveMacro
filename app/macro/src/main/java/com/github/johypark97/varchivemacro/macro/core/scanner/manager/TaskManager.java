@@ -18,6 +18,9 @@ public interface TaskManager extends Iterable<TaskData> {
 
     TaskData getTaskData(int taskNumber);
 
+    ImageCacheManager getImageCacheManager();
+
+    void setImageCacheManager(ImageCacheManager imageCacheManager);
 
     enum TaskStatus {
         ANALYZED, ANALYZING, CACHED, CAPTURED, EXCEPTION, NONE, WAITING

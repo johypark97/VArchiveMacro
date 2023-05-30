@@ -8,6 +8,7 @@ import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultImageCacheManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultResultManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultTaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.AnalyzedData;
@@ -102,7 +103,7 @@ public class Scanner implements TaskDataProvider {
                 whenStart_capture.run();
 
                 taskManager.clear();
-                taskManager.setCacheDir(cachePath);
+                taskManager.setImageCacheManager(new DefaultImageCacheManager(cachePath));
 
                 CaptureService captureService = new CaptureService(captureDelay, inputDuration);
                 captureService.execute(taskManager, tabSongMap);

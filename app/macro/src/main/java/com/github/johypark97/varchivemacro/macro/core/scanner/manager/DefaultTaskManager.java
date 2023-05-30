@@ -15,24 +15,18 @@ import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import javax.imageio.ImageIO;
 
 public class DefaultTaskManager implements TaskManager, Server<Event, TaskListProvider> {
     private final List<Client<Event, TaskListProvider>> clientList = new CopyOnWriteArrayList<>();
     private final Map<Integer, TaskData> taskDataMap = new ConcurrentHashMap<>();
 
-    private Path cacheDir = Path.of("");
-
-    public void setCacheDir(Path path) {
-        cacheDir = path;
-    }
+    private ImageCacheManager imageCacheManager;
 
     @Override
     public Iterator<TaskData> iterator() {
@@ -61,6 +55,16 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
     @Override
     public TaskData getTaskData(int taskNumber) {
         return taskDataMap.get(taskNumber);
+    }
+
+    @Override
+    public ImageCacheManager getImageCacheManager() {
+        return imageCacheManager;
+    }
+
+    @Override
+    public void setImageCacheManager(ImageCacheManager imageCacheManager) {
+        this.imageCacheManager = imageCacheManager;
     }
 
     @Override
@@ -127,8 +131,6 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
 
 
     private class DefaultTaskData implements TaskData {
-        private static final String FORMAT = "png";
-
         private final Table<Button, Pattern, AnalyzedData> analyzedDataTable =
                 HashBasedTable.create();
 
@@ -197,25 +199,17 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
 
         @Override
         public Path getImagePath() {
-            return cacheDir.resolve(String.format("%04d.%s", song.id(), FORMAT));
+            return imageCacheManager.createPath(song);
         }
 
         @Override
         public void saveImage(BufferedImage image) throws IOException {
-            Path filePath = getImagePath();
-
-            Path dirPath = filePath.getParent();
-            if (dirPath != null) {
-                Files.createDirectories(dirPath);
-            }
-
-            Files.deleteIfExists(filePath);
-            ImageIO.write(image, FORMAT, filePath.toFile());
+            imageCacheManager.saveImage(song, image);
         }
 
         @Override
         public BufferedImage loadImage() throws IOException {
-            return ImageIO.read(getImagePath().toFile());
+            return imageCacheManager.loadImage(song);
         }
 
         @Override
