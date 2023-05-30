@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel;
 
+import com.github.johypark97.varchivemacro.lib.common.database.comparator.TitleComparator;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Model;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ResponseData;
@@ -9,12 +10,17 @@ import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import javax.swing.SortOrder;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
 
 public interface ScannerTaskListViewModels {
-    enum ColumnKey {COMPOSER, COUNT, DLC, INDEX, SONG_NUMBER, STATUS, TAB, TASK_NUMBER, TITLE}
+    enum ColumnKey {
+        COMPOSER, COUNT, DLC, INDEX, SONG_NUMBER, STATUS, TAB, TASK_NUMBER, TITLE
+    }
 
 
     class ColumnLookup implements TableColumnLookup<ColumnKey> {
@@ -97,6 +103,10 @@ public interface ScannerTaskListViewModels {
 
         private Model model;
 
+        public TaskRowSorter createRowSorter() {
+            return new TaskRowSorter(this);
+        }
+
         private String convertStatus(TaskStatus status) {
             return switch (status) {
                 case ANALYZED -> "analyzed";
@@ -151,6 +161,14 @@ public interface ScannerTaskListViewModels {
         }
 
         @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
+                case COMPOSER, DLC, SONG_NUMBER, STATUS, TAB, TITLE -> String.class;
+                case COUNT, INDEX, TASK_NUMBER -> Integer.class;
+            };
+        }
+
+        @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             ResponseData data = model.getData(rowIndex);
             if (data == null) {
@@ -168,6 +186,21 @@ public interface ScannerTaskListViewModels {
                 case TASK_NUMBER -> data.taskNumber;
                 case TITLE -> data.title;
             };
+        }
+
+        public static class TaskRowSorter extends TableRowSorter<ScannerTaskListViewModel> {
+            public TaskRowSorter(ScannerTaskListViewModel viewModel) {
+                super(viewModel);
+
+                setComp(ColumnKey.TITLE, new TitleComparator());
+
+                int taskNumberIndex = COLUMN_LOOKUP.getIndex(ColumnKey.TASK_NUMBER);
+                setSortKeys(List.of(new SortKey(taskNumberIndex, SortOrder.ASCENDING)));
+            }
+
+            private void setComp(ColumnKey key, Comparator<?> comparator) {
+                setComparator(COLUMN_LOOKUP.getIndex(key), comparator);
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ import com.github.johypark97.varchivemacro.macro.gui.presenter.IMacro.View;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels.ScannerResultListViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskListViewModels.ColumnKey;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskListViewModels.ScannerTaskListViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableColumnLookup;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableModelWithLookup;
 import com.github.johypark97.varchivemacro.macro.gui.view.components.UrlLabel;
@@ -67,6 +68,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.BadLocationException;
@@ -88,7 +90,6 @@ public class MacroView extends JFrame implements View, WindowListener {
 
     private static final Color TABLE_SELECTED_BACKGROUND_COLOR = new Color(0xE0E0E0);
     private static final Color TABLE_SELECTED_FOREGROUND_COLOR = Color.BLACK;
-    private static final int TASK_TABLE_HIGHLIGHT_COUNT = 2;
 
     // presenter
     protected transient Presenter presenter;
@@ -338,37 +339,9 @@ public class MacroView extends JFrame implements View, WindowListener {
                     scannerTaskTable.setSelectionForeground(TABLE_SELECTED_FOREGROUND_COLOR);
                     scannerTaskTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-                    scannerTaskTable.setDefaultRenderer(Object.class,
-                            new DefaultTableCellRenderer() {
-                                @Override
-                                public Component getTableCellRendererComponent(JTable table,
-                                        Object value, boolean isSelected, boolean hasFocus, int row,
-                                        int column) {
-                                    int rowIndex = table.convertRowIndexToModel(row);
-                                    int indexValue = (int) table.getModel().getValueAt(rowIndex,
-                                            scannerTaskTableModel.getTableColumnLookup()
-                                                    .getIndex(ColumnKey.INDEX));
-                                    int countValue = (int) table.getModel().getValueAt(rowIndex,
-                                            scannerTaskTableModel.getTableColumnLookup()
-                                                    .getIndex(ColumnKey.COUNT));
-
-                                    Color backgroundColor;
-                                    if (countValue - indexValue <= TASK_TABLE_HIGHLIGHT_COUNT) {
-                                        backgroundColor = isSelected ? Color.YELLOW : Color.ORANGE;
-                                    } else {
-                                        backgroundColor = isSelected
-                                                ? table.getSelectionBackground()
-                                                : table.getBackground();
-                                    }
-
-                                    Component component =
-                                            super.getTableCellRendererComponent(table, value,
-                                                    isSelected, hasFocus, row, column);
-                                    component.setBackground(backgroundColor);
-
-                                    return component;
-                                }
-                            });
+                    TableCellRenderer tableCellRenderer = new ScannerTaskTableCellRenderer(this);
+                    scannerTaskTable.setDefaultRenderer(Integer.class, tableCellRenderer);
+                    scannerTaskTable.setDefaultRenderer(Object.class, tableCellRenderer);
 
                     scannerTableScrollPane = new JScrollPane(scannerTaskTable);
                     scannerTableScrollPane.getViewport().setBackground(Color.WHITE);
@@ -912,6 +885,11 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
+    public void setScannerTaskTableRowSorter(TableRowSorter<ScannerTaskListViewModel> rowSorter) {
+        scannerTaskTable.setRowSorter(rowSorter);
+    }
+
+    @Override
     public void setScannerResultTableModel(
             TableModelWithLookup<ScannerResultListViewModels.ColumnKey> model) {
         scannerResultTable.setModel(model);
@@ -1357,5 +1335,43 @@ class EasyGroupLayout extends GroupLayout {
             vGroup.addGroup(group);
         });
         setVerticalGroup(vGroup);
+    }
+}
+
+
+class ScannerTaskTableCellRenderer extends DefaultTableCellRenderer {
+    @Serial
+    private static final long serialVersionUID = 8375384855667913329L;
+
+    private static final int TASK_TABLE_HIGHLIGHT_COUNT = 2;
+
+    private final MacroView view;
+
+    public ScannerTaskTableCellRenderer(MacroView view) {
+        this.view = view;
+    }
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+            boolean hasFocus, int row, int column) {
+        int rowIndex = table.convertRowIndexToModel(row);
+        int indexValue = (int) table.getModel().getValueAt(rowIndex,
+                view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.INDEX));
+        int countValue = (int) table.getModel().getValueAt(rowIndex,
+                view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.COUNT));
+
+        Color backgroundColor;
+        if (countValue - indexValue <= TASK_TABLE_HIGHLIGHT_COUNT) {
+            backgroundColor = isSelected ? Color.YELLOW : Color.ORANGE;
+        } else {
+            backgroundColor = isSelected ? table.getSelectionBackground() : table.getBackground();
+        }
+
+        Component component =
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+                        column);
+        component.setBackground(backgroundColor);
+
+        return component;
     }
 }

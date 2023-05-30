@@ -327,6 +327,7 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
         view.setScannerResultTableModel(scannerResultListViewModel);
         view.setScannerResultTableRowSorter(scannerResultListViewModel.createRowSorter());
         view.setScannerTaskTableModel(scannerTaskListViewModel);
+        view.setScannerTaskTableRowSorter(scannerTaskListViewModel.createRowSorter());
 
         try {
             configModel.load();

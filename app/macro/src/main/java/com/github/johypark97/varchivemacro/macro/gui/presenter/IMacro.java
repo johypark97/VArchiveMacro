@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels.ScannerResultListViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskListViewModels.ColumnKey;
+import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskListViewModels.ScannerTaskListViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableModelWithLookup;
 import com.google.common.collect.Table;
 import java.nio.file.Path;
@@ -66,6 +67,8 @@ public interface IMacro {
         void setSelectableDlcTabs(List<String> tabs);
 
         void setScannerTaskTableModel(TableModelWithLookup<ColumnKey> model);
+
+        void setScannerTaskTableRowSorter(TableRowSorter<ScannerTaskListViewModel> rowSorter);
 
         void setScannerResultTableModel(
                 TableModelWithLookup<ScannerResultListViewModels.ColumnKey> model);
