@@ -40,12 +40,10 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
     }
 
     @Override
-    public synchronized TaskData createTask(LocalSong song, int songIndex, int songCount,
-            CollectionArea collectionArea) {
+    public synchronized TaskData createTask(LocalSong song, CollectionArea collectionArea) {
         int taskNumber = taskDataMap.size();
 
-        DefaultTaskData data =
-                new DefaultTaskData(taskNumber, song, songIndex, songCount, collectionArea);
+        DefaultTaskData data = new DefaultTaskData(taskNumber, song, collectionArea);
         taskDataMap.put(taskNumber, data);
 
         notifyClients(new Event(Type.ROWS_INSERTED, taskNumber));
@@ -135,19 +133,16 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
 
         private final CollectionArea collectionArea;
         private final LocalSong song;
-        private final int songCount;
-        private final int songIndex;
         private final int taskNumber;
 
         private Exception exception;
         private TaskStatus status = TaskStatus.NONE;
+        private int songCount;
+        private int songIndex;
 
-        public DefaultTaskData(int taskNumber, LocalSong song, int songIndex, int songCount,
-                CollectionArea collectionArea) {
+        public DefaultTaskData(int taskNumber, LocalSong song, CollectionArea collectionArea) {
             this.collectionArea = collectionArea;
             this.song = song;
-            this.songCount = songCount;
-            this.songIndex = songIndex;
             this.taskNumber = taskNumber;
         }
 
@@ -172,8 +167,8 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         }
 
         @Override
-        public CollectionArea getCollectionArea() {
-            return collectionArea;
+        public int getTaskNumber() {
+            return taskNumber;
         }
 
         @Override
@@ -182,18 +177,8 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         }
 
         @Override
-        public int getSongCount() {
-            return songCount;
-        }
-
-        @Override
-        public int getSongIndex() {
-            return songIndex;
-        }
-
-        @Override
-        public int getTaskNumber() {
-            return taskNumber;
+        public CollectionArea getCollectionArea() {
+            return collectionArea;
         }
 
         @Override
@@ -220,6 +205,28 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         public void setException(Exception value) {
             exception = value;
             setStatus(TaskStatus.EXCEPTION);
+        }
+
+        @Override
+        public int getSongCount() {
+            return songCount;
+        }
+
+        @Override
+        public void setSongCount(int value) {
+            songCount = value;
+            notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
+        }
+
+        @Override
+        public int getSongIndex() {
+            return songIndex;
+        }
+
+        @Override
+        public void setSongIndex(int value) {
+            songIndex = value;
+            notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
         }
 
         @Override

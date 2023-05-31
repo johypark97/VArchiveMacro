@@ -91,7 +91,9 @@ class CaptureService {
                         BufferedImage image = robot.createScreenCapture(screenRect);
 
                         LocalSong song = songs.get(i);
-                        TaskData task = taskManager.createTask(song, i, count, area);
+                        TaskData task = taskManager.createTask(song, area);
+                        task.setSongIndex(i);
+                        task.setSongCount(count);
                         task.setStatus(TaskStatus.CAPTURED);
 
                         while (true) {

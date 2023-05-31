@@ -13,8 +13,7 @@ import java.nio.file.Path;
 public interface TaskManager extends Iterable<TaskData> {
     void clearTask();
 
-    TaskData createTask(LocalSong song, int songIndex, int songCount,
-            CollectionArea collectionArea);
+    TaskData createTask(LocalSong song, CollectionArea collectionArea);
 
     TaskData getTask(int taskNumber);
 
@@ -34,15 +33,11 @@ public interface TaskManager extends Iterable<TaskData> {
 
         AnalyzedData getAnalyzedData(Button button, Pattern pattern);
 
-        CollectionArea getCollectionArea();
+        int getTaskNumber();
 
         LocalSong getSong();
 
-        int getSongCount();
-
-        int getSongIndex();
-
-        int getTaskNumber();
+        CollectionArea getCollectionArea();
 
         Path getImagePath();
 
@@ -53,6 +48,14 @@ public interface TaskManager extends Iterable<TaskData> {
         Exception getException();
 
         void setException(Exception value);
+
+        int getSongCount();
+
+        void setSongCount(int value);
+
+        int getSongIndex();
+
+        void setSongIndex(int value);
 
         TaskStatus getStatus();
 
