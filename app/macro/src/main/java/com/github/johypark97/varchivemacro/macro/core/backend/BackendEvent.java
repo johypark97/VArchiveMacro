@@ -35,7 +35,6 @@ public class BackendEvent {
         IS_NOT_RUNNING,
         IS_RUNNING,
         LOAD_REMOTE_RECORD,
-        SCANNER_CAPTURE_DONE,
         SCANNER_START_ANALYZE,
         SCANNER_START_CAPTURE,
         SCANNER_START_COLLECT_RESULT,

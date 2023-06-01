@@ -20,7 +20,6 @@ public enum MacroPresenterKey {
     LOADING_TASK_DATA_OCCURRED("loadingTaskData.occurred"),
     START_COMMAND("startCommand"),
     WHEN_CANCELED("when.canceled"),
-    WHEN_CAPTURE_DONE("when.captureDone"),
     WHEN_DONE("when.done"),
     WHEN_START_ANALYZE("when.start.analyze"),
     WHEN_START_CAPTURE("when.start.capture"),

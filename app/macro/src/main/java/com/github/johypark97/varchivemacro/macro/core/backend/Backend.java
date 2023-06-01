@@ -42,14 +42,12 @@ public class Backend implements Server<BackendEvent, IBackend>, IBackend {
                 new BackendEvent(Type.LOAD_REMOTE_RECORD, List.of(djName)));
         songRecordManager = new SongRecordManager(whenThrown, whenStart_loadRemoteRecord, whenDone);
 
-        Runnable whenCaptureDone = createWhen(Type.SCANNER_CAPTURE_DONE);
         Runnable whenStart_analyze = createWhen(Type.SCANNER_START_ANALYZE);
         Runnable whenStart_capture = createWhen(Type.SCANNER_START_CAPTURE);
         Runnable whenStart_collectResult = createWhen(Type.SCANNER_START_COLLECT_RESULT);
         Runnable whenStart_uploadRecord = createWhen(Type.SCANNER_START_UPLOAD_RECORD);
-        scanner =
-                new Scanner(whenThrown, whenCanceled, whenCaptureDone, whenDone, whenStart_analyze,
-                        whenStart_capture, whenStart_collectResult, whenStart_uploadRecord);
+        scanner = new Scanner(whenThrown, whenCanceled, whenDone, whenStart_analyze,
+                whenStart_capture, whenStart_collectResult, whenStart_uploadRecord);
 
         Runnable whenStart_macro = createWhen(Type.CLIENT_MACRO_START);
         clientMacro = new ClientMacro(whenThrown, whenCanceled, whenDone, whenStart_macro);

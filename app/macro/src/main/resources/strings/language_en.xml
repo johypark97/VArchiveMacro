@@ -64,7 +64,6 @@
   <entry key="macro.presenter.loadingTaskData.occurred">Occurred error</entry>
   <entry key="macro.presenter.startCommand">-------- Start command --------</entry>
   <entry key="macro.presenter.when.canceled">Canceled</entry>
-  <entry key="macro.presenter.when.captureDone">Capture done</entry>
   <entry key="macro.presenter.when.done">Done</entry>
   <entry key="macro.presenter.when.start.analyze">Analyzing...</entry>
   <entry key="macro.presenter.when.start.capture">Scanning...</entry>

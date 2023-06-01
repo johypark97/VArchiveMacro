@@ -226,10 +226,6 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
                     lang.get(MacroPresenterKey.WHEN_START_LOAD_REMOTE) + " " + (data.argList != null
                             ? data.argList.get(0)
                             : null));
-            case SCANNER_CAPTURE_DONE -> {
-                Toolkit.getDefaultToolkit().beep();
-                view.addLog(lang.get(MacroPresenterKey.WHEN_CAPTURE_DONE));
-            }
             case SCANNER_START_ANALYZE ->
                     view.addLog(lang.get(MacroPresenterKey.WHEN_START_ANALYZE));
             case SCANNER_START_CAPTURE ->

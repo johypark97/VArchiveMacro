@@ -13,8 +13,10 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
@@ -53,16 +55,9 @@ class CaptureService {
 
     public void shutdownNow() {
         executor.shutdownNow();
-
-        imageCachingService.shutdownNow();
     }
 
     public void await() throws InterruptedException {
-        awaitCapture();
-        imageCachingService.await();
-    }
-
-    public void awaitCapture() throws InterruptedException {
         if (!executor.awaitTermination(1, TimeUnit.HOURS)) {
             throw new RuntimeException("unexpected timeout");
         }
@@ -71,44 +66,57 @@ class CaptureService {
     public void execute(TaskManager taskManager, Map<String, List<LocalSong>> tabSongMap) {
         executor.execute(() -> {
             try {
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
                 // Check if the screen size is supported using whether an exception occurs.
-                CollectionArea area = CollectionAreaFactory.create(screenSize);
-
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                CollectionArea collectionArea = CollectionAreaFactory.create(screenSize);
                 Rectangle screenRect = new Rectangle(screenSize);
-                for (List<LocalSong> songs : tabSongMap.values()) {
-                    tabKey(KeyEvent.VK_SPACE);
 
-                    int count = songs.size();
-                    for (int i = 0; i < count; ++i) {
-                        if (i != 0) {
-                            tabKey(KeyEvent.VK_DOWN);
-                        }
+                Queue<List<LocalSong>> tabQueue = new LinkedList<>(tabSongMap.values());
+                try {
+                    while (tabQueue.peek() != null) {
+                        List<LocalSong> songList = tabQueue.poll();
+                        int songListCount = songList.size();
 
-                        TimeUnit.MILLISECONDS.sleep(captureDelay);
-
-                        BufferedImage image = robot.createScreenCapture(screenRect);
-
-                        LocalSong song = songs.get(i);
-                        TaskData task = taskManager.createTask(song, area);
-                        task.setSongIndex(i);
-                        task.setSongCount(count);
-                        task.setStatus(TaskStatus.CAPTURED);
-
-                        while (true) {
-                            try {
-                                imageCachingService.execute(task, image);
-                                break;
-                            } catch (RejectedExecutionException ignored) {
+                        tabKey(KeyEvent.VK_SPACE);
+                        for (int i = 0; i < songListCount; ++i) {
+                            if (i != 0) {
+                                tabKey(KeyEvent.VK_DOWN);
                             }
-                            TimeUnit.MILLISECONDS.sleep(REJECTED_SLEEP_TIME);
+                            TimeUnit.MILLISECONDS.sleep(captureDelay);
+
+                            BufferedImage image = robot.createScreenCapture(screenRect);
+
+                            LocalSong song = songList.get(i);
+                            TaskData task = taskManager.createTask(song, collectionArea);
+                            task.setSongIndex(i);
+                            task.setSongCount(songListCount);
+                            task.setStatus(TaskStatus.CAPTURED);
+
+                            while (true) {
+                                try {
+                                    imageCachingService.execute(task, image);
+                                    break;
+                                } catch (RejectedExecutionException ignored) {
+                                }
+                                TimeUnit.MILLISECONDS.sleep(REJECTED_SLEEP_TIME);
+                            }
                         }
                     }
+                } catch (InterruptedException ignored) {
                 }
 
+                // shutting down the image caching service
                 imageCachingService.shutdown();
-            } catch (InterruptedException ignored) {
+
+                // return to the all tab
+                int count = tabQueue.size() + 2;
+                for (int i = 0; i < count; ++i) {
+                    tabKey(KeyEvent.VK_SPACE);
+                }
+
+                // wait for the imageCachingService to shut down
+                imageCachingService.await();
+            } catch (InterruptedException e) {
                 imageCachingService.shutdownNow();
             } catch (Exception e) {
                 imageCachingService.shutdownNow();
@@ -119,12 +127,41 @@ class CaptureService {
     }
 
     private void tabKey(int keycode) throws InterruptedException {
+        boolean interrupted = false;
+
+        robot.keyPress(keycode);
         try {
-            robot.keyPress(keycode);
-            TimeUnit.MILLISECONDS.sleep(inputDuration);
-        } finally {
-            robot.keyRelease(keycode);
+            sleep(inputDuration);
+        } catch (InterruptedException e) {
+            interrupted = true;
         }
-        TimeUnit.MILLISECONDS.sleep(inputDuration);
+
+        robot.keyRelease(keycode);
+        try {
+            sleep(inputDuration);
+        } catch (InterruptedException e) {
+            interrupted = true;
+        }
+
+        if (interrupted) {
+            throw new InterruptedException();
+        }
+    }
+
+    private void sleep(long timeout) throws InterruptedException {
+        boolean interrupted = false;
+
+        while (true) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(timeout);
+                break;
+            } catch (InterruptedException e) {
+                interrupted = true;
+            }
+        }
+
+        if (interrupted) {
+            throw new InterruptedException();
+        }
     }
 }

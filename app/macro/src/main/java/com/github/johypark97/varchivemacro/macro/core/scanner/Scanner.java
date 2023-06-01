@@ -33,7 +33,6 @@ public class Scanner implements TaskDataProvider {
 
     private final Consumer<Exception> whenThrown;
     private final Runnable whenCanceled;
-    private final Runnable whenCaptureDone;
     private final Runnable whenDone;
     private final Runnable whenStart_analyze;
     private final Runnable whenStart_capture;
@@ -42,11 +41,10 @@ public class Scanner implements TaskDataProvider {
 
     private SongRecordManager songRecordManager;
 
-    public Scanner(Consumer<Exception> whenThrown, Runnable whenCanceled, Runnable whenCaptureDone,
-            Runnable whenDone, Runnable whenStart_analyze, Runnable whenStart_capture,
+    public Scanner(Consumer<Exception> whenThrown, Runnable whenCanceled, Runnable whenDone,
+            Runnable whenStart_analyze, Runnable whenStart_capture,
             Runnable whenStart_collectResult, Runnable whenStart_uploadRecord) {
         this.whenCanceled = whenCanceled;
-        this.whenCaptureDone = whenCaptureDone;
         this.whenDone = whenDone;
         this.whenStart_analyze = whenStart_analyze;
         this.whenStart_capture = whenStart_capture;
@@ -108,25 +106,23 @@ public class Scanner implements TaskDataProvider {
                 CaptureService captureService = new CaptureService(captureDelay, inputDuration);
                 captureService.execute(taskManager, tabSongMap);
 
-                try {
-                    captureService.awaitCapture();
-                } catch (InterruptedException e) {
-                    captureService.shutdownNow();
-                    whenCanceled.run();
-                    return false;
+                // call await twice to allow the user to stop the macro returning to the ALL tab
+                boolean canceled = false;
+                for (int i = 0; i < 2; ++i) {
+                    try {
+                        captureService.await();
+                    } catch (InterruptedException e) {
+                        captureService.shutdownNow();
+                        canceled = true;
+                    }
+
+                    if (captureService.exception != null) {
+                        whenThrown.accept(captureService.exception);
+                        return false;
+                    }
                 }
 
-                if (captureService.exception != null) {
-                    whenThrown.accept(captureService.exception);
-                    return false;
-                }
-
-                whenCaptureDone.run();
-
-                try {
-                    captureService.await();
-                } catch (InterruptedException e) {
-                    captureService.shutdownNow();
+                if (canceled) {
                     whenCanceled.run();
                     return false;
                 }

@@ -64,7 +64,6 @@
   <entry key="macro.presenter.loadingTaskData.occurred">발생한 에러</entry>
   <entry key="macro.presenter.startCommand">-------- 작업 시작 --------</entry>
   <entry key="macro.presenter.when.canceled">취소됨</entry>
-  <entry key="macro.presenter.when.captureDone">캡처 완료</entry>
   <entry key="macro.presenter.when.done">완료</entry>
   <entry key="macro.presenter.when.start.analyze">분석중...</entry>
   <entry key="macro.presenter.when.start.capture">스캔중...</entry>
