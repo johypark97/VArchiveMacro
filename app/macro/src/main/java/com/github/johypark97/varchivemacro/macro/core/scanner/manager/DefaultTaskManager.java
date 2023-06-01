@@ -81,10 +81,12 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
                 data.count = task.getSongCount();
                 data.dlc = task.getSong().dlc();
                 data.index = task.getSongIndex();
+                data.scannedTitle = task.getScannedTitle();
                 data.status = task.getStatus();
                 data.tab = task.getSong().dlcTab();
                 data.taskNumber = task.getTaskNumber();
                 data.title = task.getSong().title();
+                data.valid = task.isValid();
 
                 return data;
             }
@@ -136,7 +138,9 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         private final int taskNumber;
 
         private Exception exception;
+        private String scannedTitle = "";
         private TaskStatus status = TaskStatus.NONE;
+        private boolean valid;
         private int songCount;
         private int songIndex;
 
@@ -208,6 +212,17 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         }
 
         @Override
+        public String getScannedTitle() {
+            return scannedTitle;
+        }
+
+        @Override
+        public void setScannedTitle(String value) {
+            scannedTitle = value;
+            notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
+        }
+
+        @Override
         public int getSongCount() {
             return songCount;
         }
@@ -237,6 +252,17 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         @Override
         public void setStatus(TaskStatus value) {
             status = value;
+            notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
+        }
+
+        @Override
+        public boolean isValid() {
+            return valid;
+        }
+
+        @Override
+        public void setValid(boolean value) {
+            valid = value;
             notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
         }
     }

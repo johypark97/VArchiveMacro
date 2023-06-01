@@ -1,11 +1,14 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
+import com.github.johypark97.varchivemacro.macro.core.ocr.PixError;
+import com.github.johypark97.varchivemacro.macro.core.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultImageCacheManager;
@@ -74,8 +77,17 @@ public class Scanner implements TaskDataProvider {
 
     public Command getCommand_scan(Path cacheDir, int captureDelay, int inputDuration,
             Map<String, List<LocalSong>> tabSongMap) {
-        Command root = createCommand_scan(cacheDir, captureDelay, inputDuration, tabSongMap);
+        CaptureService captureService = new AlphaCaptureService(captureDelay, inputDuration);
+        Command root = createCommand_scan(captureService, cacheDir, tabSongMap);
         root.setNext(getCommand_analyze());
+        return root;
+    }
+
+    public Command getCommand_safeScan(Path cacheDir, int captureDelay, int inputDuration,
+            Map<String, List<LocalSong>> tabSongMap) {
+        CaptureService captureService = new SafeCaptureService(captureDelay, inputDuration);
+        Command root = createCommand_scan(captureService, cacheDir, tabSongMap);
+        // root.setNext(getCommand_analyze());
         return root;
     }
 
@@ -93,7 +105,7 @@ public class Scanner implements TaskDataProvider {
         return createCommand_uploadRecord(accountPath, uploadDelay);
     }
 
-    protected Command createCommand_scan(Path cachePath, int captureDelay, int inputDuration,
+    protected Command createCommand_scan(CaptureService captureService, Path cachePath,
             Map<String, List<LocalSong>> tabSongMap) {
         return new AbstractCommand() {
             @Override
@@ -103,7 +115,6 @@ public class Scanner implements TaskDataProvider {
                 taskManager.clearTask();
                 taskManager.setImageCacheManager(new DefaultImageCacheManager(cachePath));
 
-                CaptureService captureService = new CaptureService(captureDelay, inputDuration);
                 captureService.execute(taskManager, tabSongMap);
 
                 // call await twice to allow the user to stop the macro returning to the ALL tab
@@ -116,8 +127,8 @@ public class Scanner implements TaskDataProvider {
                         canceled = true;
                     }
 
-                    if (captureService.exception != null) {
-                        whenThrown.accept(captureService.exception);
+                    if (captureService.hasException()) {
+                        whenThrown.accept(captureService.getException());
                         return false;
                     }
                 }
@@ -220,11 +231,24 @@ public class Scanner implements TaskDataProvider {
             return data;
         }
 
+        if (!task.isValid()) {
+            data.exception = new RuntimeException("is not valid");
+            return data;
+        }
+
         BufferedImage image = task.loadImage();
         data.fullImage = image;
 
         CollectionArea area = task.getCollectionArea();
-        data.titleImage = area.getTitle(image);
+        byte[] imageBytes = ImageConverter.imageToPngBytes(area.getTitle(image));
+        try (PixWrapper pix = new PixWrapper(imageBytes)) {
+            PixPreprocessor.preprocessTitle(pix);
+            imageBytes = pix.getPngBytes();
+        } catch (PixError e) {
+            data.exception = e;
+            return data;
+        }
+        data.titleImage = ImageConverter.pngBytesToImage(imageBytes);
 
         for (Button button : Button.values()) {
             for (Pattern pattern : Pattern.values()) {

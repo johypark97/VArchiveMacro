@@ -53,9 +53,11 @@ public interface ScannerTaskListModels {
     class ResponseData {
         public String composer;
         public String dlc;
+        public String scannedTitle;
         public String tab;
         public String title;
         public TaskStatus status;
+        public boolean valid;
         public int count;
         public int index;
         public int taskNumber;

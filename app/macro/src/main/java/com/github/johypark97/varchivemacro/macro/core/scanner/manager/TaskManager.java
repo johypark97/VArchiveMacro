@@ -49,6 +49,10 @@ public interface TaskManager extends Iterable<TaskData> {
 
         void setException(Exception value);
 
+        String getScannedTitle();
+
+        void setScannedTitle(String value);
+
         int getSongCount();
 
         void setSongCount(int value);
@@ -60,6 +64,10 @@ public interface TaskManager extends Iterable<TaskData> {
         TaskStatus getStatus();
 
         void setStatus(TaskStatus value);
+
+        boolean isValid();
+
+        void setValid(boolean value);
     }
 
 

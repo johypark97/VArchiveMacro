@@ -872,11 +872,13 @@ public class MacroView extends JFrame implements View, WindowListener {
         TableColumnLookup<ColumnKey> columnLookup = model.getTableColumnLookup();
         columnLookup.getColumn(scannerTaskTable, ColumnKey.COMPOSER).setPreferredWidth(80);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.DLC).setPreferredWidth(80);
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.SCANNED_TITLE).setPreferredWidth(160);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.SONG_NUMBER).setPreferredWidth(60);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.STATUS).setPreferredWidth(160);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.TAB).setPreferredWidth(80);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.TASK_NUMBER).setPreferredWidth(60);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.TITLE).setPreferredWidth(160);
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.VALID).setPreferredWidth(60);
 
         // Hide two columns, index, and count.
         TableColumnModel columnModel = scannerTaskTable.getColumnModel();
@@ -1355,16 +1357,30 @@ class ScannerTaskTableCellRenderer extends DefaultTableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
             boolean hasFocus, int row, int column) {
         int rowIndex = table.convertRowIndexToModel(row);
-        int indexValue = (int) table.getModel().getValueAt(rowIndex,
-                view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.INDEX));
         int countValue = (int) table.getModel().getValueAt(rowIndex,
                 view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.COUNT));
 
         Color backgroundColor;
-        if (countValue - indexValue <= TASK_TABLE_HIGHLIGHT_COUNT) {
-            backgroundColor = isSelected ? Color.YELLOW : Color.ORANGE;
+        if (countValue > 0) {
+            int indexValue = (int) table.getModel().getValueAt(rowIndex,
+                    view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.INDEX));
+
+            if (countValue - indexValue <= TASK_TABLE_HIGHLIGHT_COUNT) {
+                backgroundColor = isSelected ? Color.YELLOW : Color.ORANGE;
+            } else {
+                backgroundColor =
+                        isSelected ? table.getSelectionBackground() : table.getBackground();
+            }
         } else {
-            backgroundColor = isSelected ? table.getSelectionBackground() : table.getBackground();
+            boolean validValue = (boolean) table.getModel().getValueAt(rowIndex,
+                    view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.VALID));
+
+            if (validValue) {
+                backgroundColor = isSelected ? new Color(0x80FF80) : new Color(0xC0FFC0);
+            } else {
+                backgroundColor =
+                        isSelected ? table.getSelectionBackground() : table.getBackground();
+            }
         }
 
         Component component =

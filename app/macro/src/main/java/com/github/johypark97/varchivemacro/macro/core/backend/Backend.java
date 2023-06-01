@@ -139,7 +139,7 @@ public class Backend implements Server<BackendEvent, IBackend>, IBackend {
             Set<String> ownedDlcTabs) {
         Map<String, List<LocalSong>> tabSongMap = songRecordManager.getTabSongMap(ownedDlcTabs);
         Command command =
-                scanner.getCommand_scan(cacheDir, captureDelay, inputDuration, tabSongMap);
+                scanner.getCommand_safeScan(cacheDir, captureDelay, inputDuration, tabSongMap);
         startCommand(command);
     }
 
