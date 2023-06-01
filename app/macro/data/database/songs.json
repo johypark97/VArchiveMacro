@@ -5468,5 +5468,215 @@
     "dlcCode": "R",
     "dlcTab": "RESPECT",
     "priority": 0
+  },
+  {
+    "id": 547,
+    "title": "너에게로 갈래",
+    "remote_title": null,
+    "composer": "SOPHI(Feat.혜이)",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 548,
+    "title": "염라 ~Original Ver.~",
+    "remote_title": null,
+    "composer": "ampstyle",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 549,
+    "title": "!!New Game Start!!",
+    "remote_title": null,
+    "composer": "Teikyou",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 550,
+    "title": "ADDICT!ON (DJMAX Edit)",
+    "remote_title": null,
+    "composer": "아이리 칸나",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 551,
+    "title": "Back to the oldschool",
+    "remote_title": null,
+    "composer": "Blosso",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 552,
+    "title": "Deadly Bomber",
+    "remote_title": null,
+    "composer": "Daisuke Kurosawa",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 553,
+    "title": "DIE IN",
+    "remote_title": null,
+    "composer": "TAK x Sobrem",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 554,
+    "title": "Don't Cry",
+    "remote_title": null,
+    "composer": "Nauts",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 555,
+    "title": "Gloxinia",
+    "remote_title": null,
+    "composer": "Ruxxi / Milkoi",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 556,
+    "title": "Hell'o",
+    "remote_title": null,
+    "composer": "Pan",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 557,
+    "title": "Hyper Drive",
+    "remote_title": null,
+    "composer": "MINIMONSTER",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 558,
+    "title": "Hypernaid",
+    "remote_title": null,
+    "composer": "KATOMORI",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 559,
+    "title": "Like a Fool",
+    "remote_title": null,
+    "composer": "Mr.Funky x Purple J",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 560,
+    "title": "Love.Game.Money",
+    "remote_title": null,
+    "composer": "LeeZu",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 561,
+    "title": "LUV",
+    "remote_title": null,
+    "composer": "ND Lee",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 562,
+    "title": "New World",
+    "remote_title": null,
+    "composer": "Pure 100%",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 563,
+    "title": "Stay Alive",
+    "remote_title": null,
+    "composer": "NieN",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 564,
+    "title": "Stolen Memory",
+    "remote_title": null,
+    "composer": "Pierre Blanche",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 565,
+    "title": "The Four Seasons : Summer 2017",
+    "remote_title": null,
+    "composer": "Funtwo",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 566,
+    "title": "Vertical Eclipse",
+    "remote_title": null,
+    "composer": "TAG",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
+  },
+  {
+    "id": 567,
+    "title": "Weaponize",
+    "remote_title": null,
+    "composer": "causeluve",
+    "dlc": "V EXTENSION IV",
+    "dlcCode": "VE4",
+    "dlcTab": "V EXTENSION 4",
+    "priority": 0
   }
 ]

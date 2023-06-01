@@ -39,64 +39,68 @@
     "name": "V Extension 3",
     "priority": 9
   },
+  "VE4": {
+    "name": "V Extension 4",
+    "priority": 10
+  },
   "ES": {
     "name": "Emotional Sense",
-    "priority": 10
+    "priority": 11
   },
   "T1": {
     "name": "Technika",
-    "priority": 11
+    "priority": 12
   },
   "T2": {
     "name": "Technika 2",
-    "priority": 12
+    "priority": 13
   },
   "T3": {
     "name": "Technika 3",
-    "priority": 13
+    "priority": 14
   },
   "TQ": {
     "name": "Technika Tune & Q",
-    "priority": 14
+    "priority": 15
   },
   "CHU": {
     "name": "Chunithm",
-    "priority": 15
+    "priority": 16
   },
   "CY": {
     "name": "Cytus",
-    "priority": 16
+    "priority": 17
   },
   "DM": {
     "name": "Deemo",
-    "priority": 17
+    "priority": 18
   },
   "EZ2": {
     "name": "EZ2ON",
-    "priority": 18
+    "priority": 19
   },
   "GC": {
     "name": "Groove Coaster",
-    "priority": 19
+    "priority": 20
   },
   "MD": {
     "name": "Muse Dash",
-    "priority": 20
+    "priority": 21
   },
   "GG": {
     "name": "Guilty Gear",
-    "priority": 21
+    "priority": 22
   },
   "ESTI": {
     "name": "Estimate",
-    "priority": 22
+    "priority": 23
   },
   "GF": {
     "name": "Girls' Frontline",
-    "priority": 23
+    "priority": 24
   },
   "NXN": {
     "name": "Nexon",
-    "priority": 24
+    "priority": 25
   }
 }
