@@ -8,6 +8,8 @@
 너로피어오라
 너로피어오라 ~Original Ver.~
 너에게
+너에게로 갈래
+느낌
 모짜르트 교향곡 40번 1악장
 바람에게 부탁해
 바람에게 부탁해 ~Live Mix~
@@ -26,6 +28,7 @@
 어릴적 할머니가 들려주신 옛 전설
 연합군과 제국군
 염라
+염라 ~Original Ver.~
 영원
 유령
 전설이 시작된 곳 ~VoidRover Remix~
@@ -37,16 +40,19 @@
 태권부리
 피아노 협주곡 1번
 혜성
+!!New Game Start!!
 #mine (feat. Riho Iwamoto)
 2Nite
 A Lie
 A Lie ~Deep Inside Mix~
 A Life With You
+A Site De La Rue
 A Song of Sixpence
 A.I
 Access
 AD2222
 AD2222 ~Extended Mix~
+ADDICT!ON (DJMAX Edit)
 Airlock
 Airwave
 Airwave ~Extended Mix~
@@ -61,6 +67,8 @@ Angelic Tears
 ANiMA
 Another DAY
 Apparition
+Appeal
+Aquaris
 Arcade Love (feat. KNVWN)
 Area 7
 Armored Phantom
@@ -68,7 +76,9 @@ Astro Fight
 Attack
 Aurora Borealis
 AXION
+Back for more
 Back to Life
+Back to the oldschool
 Bamboo on Bamboo
 Bang!!
 Barbarous Funera
@@ -116,6 +126,7 @@ CODE NAME : ZERO
 Color
 Colours of Sorrow
 Comet Coaster
+Complex
 conflict
 Constant Moderato
 Cosmic Elevator
@@ -127,20 +138,25 @@ Cyberozar
 Cypher Gate
 D2
 Dance of the Dead
+Dancin' Planet
 DARK ENVY
+Dark Lightning
 Dark Prism
 DataErr0r
 Daydream
 Daylight
+Deadly Bomber
 Dear my Lady
 Deborah
 Desperado
 Desperado ~Nu Skool Mix~
+DIE IN
 Disappearing Act
 DIVINE SERVICE
 DJMAX
 Do it
 Do you want it
+Don't Cry
 Don't Die
 Dreadnought
 Dream
@@ -164,6 +180,7 @@ Enemy Storm ~Dark Jungle Mix~
 ENERGY SYNERGY MATRIX
 Enter The Universe
 Entrance
+Envy Mask
 Eternal Fantasy (Miya Vocal Mix)
 Eternal Fantasy ~유니의 꿈~
 Eternal Memory ~소녀의 꿈~
@@ -210,6 +227,7 @@ Give Me 5
 glory day
 glory day (Mintorment Remix)
 glory day -JHS Remix-
+Gloxinia
 Gone Astray
 Good Bye
 Good Night, Bad Luck.
@@ -224,6 +242,7 @@ HB-axeleration
 Heart of Witch
 Heavenly
 HELIX
+Hell'o
 Hello Pinky
 Here in the Moment
 Here in the Moment ~Extended Mix~
@@ -231,11 +250,14 @@ HEXAD
 Higher
 Holy Orders (Be Just Or Be Dead)
 Honeymoon
+Hyper Drive
+Hypernaid
 I want You
 I want You ~반짝 반짝 Sunshine~
 I’ve got a feeling
 IF
 Ikazuchi
+I'M ALIVE
 Imaginary dance
 In my Dream
 In My Heart
@@ -266,20 +288,26 @@ Lemonade
 Les Parfums de L'Amour
 Let's Go Baby
 Liar
+Lie Lie
 Lift You Up
 Light House
 Lights of Muse
+Like a Fool
+LIMBO
 Lisrim
 Long Vacation
+Look out ~Here comes my love~
 Lost n' found
 Lost Serenity
 Lost Temple
 Love is Beautiful
 Love Mode
+Love.Game.Money
 Love☆Panic
 Lovely hands
 Lover (BS Style)
 Lover (CE Style)
+LUV
 Luv Flow
 Luv Flow ~Funky House Mix~
 Luv is True
@@ -297,6 +325,7 @@ Melonaid
 Memoirs
 Memory of Beach
 Mess it Up
+Metagalactic
 Midnight Blood
 Miles
 Mind Control
@@ -331,7 +360,9 @@ Never Ending TECHNIKA
 Never let you go
 Never Say
 Nevermind
+New World
 Nightmare
+Nihilism
 Nine point eight
 Nova ~Mr.Funky Remix~
 Now a NEW Day
@@ -395,6 +426,7 @@ Ruti'n
 Ruti'n (GOTH Wild Electro Remix)
 Sad Machine
 Sairai
+Sand Storm
 Satisfiction
 Save My Dream
 Say it from your heart
@@ -408,6 +440,7 @@ Shadow Flower
 Shining My Boy
 Shoot out
 Shoreline
+Showdown
 Showdown
 Showtime
 SigNalize
@@ -424,12 +457,16 @@ SON OF SUN ~Extended Mix~
 Space Challenger
 Space Dream (feat. J.O.Y)
 Space of Soul
+Sparrow
 SQUEEZE
 STALKER
 StarFish
 Start The Adventure ~SOPHI Remix~
+Stay
+Stay Alive
 Stay with me
 STEP
+Stolen Memory
 STOP
 Streetlight
 Sunny Side
@@ -455,6 +492,7 @@ Temptation
 The 90's Decision
 The Clear Blue Sky
 The Feelings
+The Four Seasons : Summer 2017
 The Guilty
 The Last Dance
 The Little Adventurer
@@ -483,6 +521,7 @@ Urban Night
 Utopiosphere
 v o l d e n u i t
 Ventilator
+Vertical Eclipse
 Vertical Floating
 Ververg
 Vile Requiem
@@ -496,6 +535,8 @@ Waiting for you
 Wanna Be Your Lover
 Warrior
 Watch Your Step
+Weaponize
+Weird Wave
 welcome to the space (feat. Jisun)
 We're All Gonna Die
 What am I fighting for?
@@ -522,5 +563,6 @@ Your Smile
 YUBIKIRI-GENMAN
 Zero to the hunnit
 Zero-Break
+Zeroize
 ZET
 ZET ~Mr.Funky Remix~
