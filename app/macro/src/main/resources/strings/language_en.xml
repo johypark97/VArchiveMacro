@@ -28,6 +28,7 @@
   <entry key="macro.view.menu.language.eng">English</entry>
   <entry key="macro.view.menu.language.kor">한국어</entry>
   <entry key="macro.view.refreshScannerResultButton">Refresh</entry>
+  <entry key="macro.view.selectAbove100Button">Select only 100 from above</entry>
   <entry key="macro.view.selectAllButton">Select all</entry>
   <entry key="macro.view.setting.captureDelay">Capture delay [ms]</entry>
   <entry key="macro.view.setting.keyInputDuration">Key input duration [ms]</entry>
@@ -37,6 +38,14 @@
   <entry key="macro.view.setting.scanner.accountFile">Account file</entry>
   <entry key="macro.view.setting.scanner.cacheDirectory">Cached directory</entry>
   <entry key="macro.view.setting.scanner.recordUploadDelay">Record upload delay [ms]</entry>
+  <entry key="macro.view.setting.scanner.safeMode.checkBox">Use</entry>
+  <entry key="macro.view.setting.scanner.safeMode.dialog.message0">Disabling Safe Mode makes the Scanner run in non-recognition mode and may cause records to be uploaded incorrectly.</entry>
+  <entry key="macro.view.setting.scanner.safeMode.dialog.message1">(The non-recognition mode is only can use if you own all song DLCs and play all songs at least once.)</entry>
+  <entry key="macro.view.setting.scanner.safeMode.dialog.message2">Are you sure you want to disable the Safe Mode?</entry>
+  <entry key="macro.view.setting.scanner.safeMode.dialog.title">Safe Mode Disable Warning</entry>
+  <entry key="macro.view.setting.scanner.safeMode.label">Safe Mode (DANGER)</entry>
+  <entry key="macro.view.setting.scanner.safeMode.logMessage.toOff">WARNING: Scanner Safe Mode DISABLED</entry>
+  <entry key="macro.view.setting.scanner.safeMode.logMessage.toOn">Scanner Safe Mode enabled</entry>
   <entry key="macro.view.setting.scanner.select">Select</entry>
   <entry key="macro.view.showExpectedButton">Show expected song list</entry>
   <entry key="macro.view.showScannerTaskButton">Show</entry>

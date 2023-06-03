@@ -170,11 +170,13 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
                 if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_HOME) {
                     if (ctrl && !alt && !shift) {
                         Path path = view.getCacheDir();
+                        Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
+                        boolean safeMode = view.getScannerSafeMode();
                         int captureDelay = view.getScannerCaptureDelay();
                         int inputDuration = view.getScannerKeyInputDuration();
-                        Set<String> ownedDlcTabs = view.getSelectedDlcTabs();
 
-                        backend.startScan(path, captureDelay, inputDuration, ownedDlcTabs);
+                        backend.startScan(path, captureDelay, inputDuration, ownedDlcTabs,
+                                safeMode);
                     }
                 }
 

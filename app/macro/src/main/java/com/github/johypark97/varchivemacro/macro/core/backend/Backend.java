@@ -136,10 +136,17 @@ public class Backend implements Server<BackendEvent, IBackend>, IBackend {
 
     @Override
     public void startScan(Path cacheDir, int captureDelay, int inputDuration,
-            Set<String> ownedDlcTabs) {
+            Set<String> ownedDlcTabs, boolean safeMode) {
         Map<String, List<LocalSong>> tabSongMap = songRecordManager.getTabSongMap(ownedDlcTabs);
-        Command command =
-                scanner.getCommand_safeScan(cacheDir, captureDelay, inputDuration, tabSongMap);
+
+        Command command;
+        if (safeMode) {
+            command =
+                    scanner.getCommand_safeScan(cacheDir, captureDelay, inputDuration, tabSongMap);
+        } else {
+            command = scanner.getCommand_scan(cacheDir, captureDelay, inputDuration, tabSongMap);
+        }
+
         startCommand(command);
     }
 

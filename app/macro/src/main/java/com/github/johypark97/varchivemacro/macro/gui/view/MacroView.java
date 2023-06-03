@@ -31,6 +31,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.Serial;
@@ -42,12 +43,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -63,6 +66,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -118,12 +122,14 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JButton selectAllDlcButton;
     protected JButton selectAllRecordButton;
     protected JButton selectCacheDirectoryButton;
+    protected JButton selectAbove100Button;
     protected JButton showExpectedButton;
     protected JButton showScannerTaskButton;
     protected JButton stopCommandButton;
     protected JButton unselectAllDlcButton;
     protected JButton unselectAllRecordButton;
     protected JButton uploadRecordButton;
+    protected JCheckBox scannerSafeModeCheckbox;
     protected JTable scannerResultTable;
     protected JTable scannerTaskTable;
     protected JTextField accountFileTextField;
@@ -139,8 +145,9 @@ public class MacroView extends JFrame implements View, WindowListener {
     private transient SliderSet macroKeyInputDuration;
 
     // event listeners
-    private transient final ActionListener buttonListener = new MacroViewButtonListener(this);
     private transient final ActionListener menuListener = new MacroViewMenuListener(this);
+    private transient final MacroViewButtonListener buttonListener =
+            new MacroViewButtonListener(this);
 
     // variables
     private transient final Language lang = Language.getInstance();
@@ -340,8 +347,24 @@ public class MacroView extends JFrame implements View, WindowListener {
                     scannerTaskTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
                     TableCellRenderer tableCellRenderer = new ScannerTaskTableCellRenderer(this);
+                    scannerTaskTable.setDefaultRenderer(Boolean.class, tableCellRenderer);
                     scannerTaskTable.setDefaultRenderer(Integer.class, tableCellRenderer);
                     scannerTaskTable.setDefaultRenderer(Object.class, tableCellRenderer);
+
+                    KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+                    String actionMapKey = "showTask";
+                    int condition = JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
+
+                    scannerTaskTable.getInputMap(condition).put(keyStroke, actionMapKey);
+                    scannerTaskTable.getActionMap().put(actionMapKey, new AbstractAction() {
+                        @Serial
+                        private static final long serialVersionUID = 7359723706006863891L;
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            buttonListener.showScannerTask();
+                        }
+                    });
 
                     scannerTableScrollPane = new JScrollPane(scannerTaskTable);
                     scannerTableScrollPane.getViewport().setBackground(Color.WHITE);
@@ -413,6 +436,11 @@ public class MacroView extends JFrame implements View, WindowListener {
                     selectAllRecordButton = new JButton(lang.get(MacroViewKey.SELECT_ALL_BUTTON));
                     selectAllRecordButton.addActionListener(buttonListener);
                     buttonBox.add(selectAllRecordButton);
+
+                    selectAbove100Button =
+                            new JButton(lang.get(MacroViewKey.SELECT_ABOVE_100_BUTTON));
+                    selectAbove100Button.addActionListener(buttonListener);
+                    buttonBox.add(selectAbove100Button);
 
                     unselectAllRecordButton =
                             new JButton(lang.get(MacroViewKey.UNSELECT_ALL_BUTTON));
@@ -555,6 +583,21 @@ public class MacroView extends JFrame implements View, WindowListener {
                     scannerKeyInputDuration.textField.setColumns(8);
                     ComponentSize.preventExpand(scannerKeyInputDuration.textField);
                     components.put(row, column, scannerKeyInputDuration.textField);
+                }
+                {
+                    int row = 5;
+                    int column = 0;
+
+                    JLabel label = new JLabel(
+                            lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_LABEL) + COLON);
+                    label.setForeground(Color.RED);
+                    components.put(row, column++, label);
+
+                    scannerSafeModeCheckbox = new JCheckBox(
+                            lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_CHECKBOX));
+                    scannerSafeModeCheckbox.setSelected(true);
+                    scannerSafeModeCheckbox.addActionListener(buttonListener);
+                    components.put(row, column, scannerSafeModeCheckbox);
                 }
 
                 layout.setContents(components);
@@ -925,7 +968,7 @@ public class MacroView extends JFrame implements View, WindowListener {
         columnLookup.getColumn(scannerResultTable,
                 ScannerResultListViewModels.ColumnKey.TASK_NUMBER).setPreferredWidth(40);
         columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.TITLE)
-                .setPreferredWidth(160);
+                .setPreferredWidth(80);
         columnLookup.getColumn(scannerResultTable, ScannerResultListViewModels.ColumnKey.UPLOAD)
                 .setPreferredWidth(80);
     }
@@ -934,6 +977,11 @@ public class MacroView extends JFrame implements View, WindowListener {
     public void setScannerResultTableRowSorter(
             TableRowSorter<ScannerResultListViewModel> rowSorter) {
         scannerResultTable.setRowSorter(rowSorter);
+    }
+
+    @Override
+    public boolean getScannerSafeMode() {
+        return scannerSafeModeCheckbox.isSelected();
     }
 
     @Override
@@ -1110,13 +1158,27 @@ class MacroViewMenuListener implements ActionListener {
 
 
 class MacroViewButtonListener implements ActionListener {
+    private static final int SELECT_ABOVE_100_COUNT = 100;
+
     private final AccountFileChooser accountFileChooser = new AccountFileChooser();
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
-    private final MacroView view;
     private final Language lang = Language.getInstance();
+    private final MacroView view;
 
     public MacroViewButtonListener(MacroView view) {
         this.view = view;
+    }
+
+    public void showScannerTask() {
+        int rowIndex = view.scannerTaskTable.getSelectedRow();
+        if (rowIndex != -1) {
+            int columnIndex = view.scannerTaskTableModel.getTableColumnLookup()
+                    .getIndexInView(view.scannerTaskTable, ColumnKey.TASK_NUMBER);
+            Object value = view.scannerTaskTable.getValueAt(rowIndex, columnIndex);
+            if (value instanceof Integer taskNumber) {
+                view.presenter.showScannerTask(view, taskNumber);
+            }
+        }
     }
 
     @Override
@@ -1142,15 +1204,7 @@ class MacroViewButtonListener implements ActionListener {
                 view.cacheDirTextField.setText(path.toString());
             }
         } else if (source.equals(view.showScannerTaskButton)) {
-            int rowIndex = view.scannerTaskTable.getSelectedRow();
-            if (rowIndex != -1) {
-                int columnIndex = view.scannerTaskTableModel.getTableColumnLookup()
-                        .getIndexInView(view.scannerTaskTable, ColumnKey.TASK_NUMBER);
-                Object value = view.scannerTaskTable.getValueAt(rowIndex, columnIndex);
-                if (value instanceof Integer taskNumber) {
-                    view.presenter.showScannerTask(view, taskNumber);
-                }
-            }
+            showScannerTask();
         } else if (source.equals(view.analyzeScannerTaskButton)) {
             view.presenter.analyzeScannerTask();
         } else if (source.equals(view.refreshScannerResultButton)) {
@@ -1162,6 +1216,15 @@ class MacroViewButtonListener implements ActionListener {
                             ScannerResultListViewModels.ColumnKey.UPLOAD);
             for (int i = 0; i < count; ++i) {
                 view.scannerResultTable.setValueAt(true, i, index);
+            }
+        } else if (source.equals(view.selectAbove100Button)) {
+            int count = view.scannerResultTable.getRowCount();
+            int index = view.scannerResultTableModel.getTableColumnLookup()
+                    .getIndexInView(view.scannerResultTable,
+                            ScannerResultListViewModels.ColumnKey.UPLOAD);
+            for (int i = 0; i < count; ++i) {
+                boolean value = i < SELECT_ABOVE_100_COUNT;
+                view.scannerResultTable.setValueAt(value, i, index);
             }
         } else if (source.equals(view.unselectAllRecordButton)) {
             int count = view.scannerResultTable.getRowCount();
@@ -1196,6 +1259,32 @@ class MacroViewButtonListener implements ActionListener {
                 }
 
                 view.presenter.uploadRecord(view.accountPath);
+            }
+        } else if (source.equals(view.scannerSafeModeCheckbox)) {
+            if (view.scannerSafeModeCheckbox.isSelected()) {
+                view.addLog(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_LOG_TO_ON));
+                return;
+            }
+            view.scannerSafeModeCheckbox.setSelected(true);
+
+            Box box = Box.createVerticalBox();
+
+            JLabel message0 =
+                    new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE0));
+            message0.setForeground(Color.RED);
+            box.add(message0);
+            box.add(new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE1)));
+            box.add(Box.createVerticalStrut(10));
+
+            box.add(new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE2)));
+            box.add(Box.createVerticalStrut(10));
+
+            int selected = JOptionPane.showConfirmDialog(view, box,
+                    lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_TITLE),
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (selected == JOptionPane.YES_OPTION) {
+                view.scannerSafeModeCheckbox.setSelected(false);
+                view.addLog(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_LOG_TO_OFF));
             }
         } else if (source.equals(view.selectAllDlcButton)) {
             view.dlcCheckboxGroup.selectAll();
@@ -1383,9 +1472,17 @@ class ScannerTaskTableCellRenderer extends DefaultTableCellRenderer {
             }
         }
 
-        Component component =
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
-                        column);
+        Component component;
+        if (value instanceof Boolean booleanValue) {
+            JCheckBox checkBox = new JCheckBox();
+            checkBox.setSelected(booleanValue);
+            checkBox.setHorizontalAlignment(SwingConstants.CENTER);
+
+            component = checkBox;
+        } else {
+            component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+                    column);
+        }
         component.setBackground(backgroundColor);
 
         return component;

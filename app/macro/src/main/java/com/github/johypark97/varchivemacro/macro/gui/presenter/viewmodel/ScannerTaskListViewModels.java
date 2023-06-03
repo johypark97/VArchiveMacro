@@ -118,7 +118,7 @@ public interface ScannerTaskListViewModels {
                 case CACHED -> "cached";
                 case CAPTURED -> "captured";
                 case EXCEPTION -> "error occurred";
-                case NONE -> "none";
+                case NONE -> "";
                 case WAITING -> "waiting";
             };
         }
@@ -171,7 +171,7 @@ public interface ScannerTaskListViewModels {
                 case DLC -> data.dlc;
                 case INDEX -> data.index;
                 case SCANNED_TITLE -> data.scannedTitle;
-                case SONG_NUMBER -> data.index + 1 + " / " + data.count;
+                case SONG_NUMBER -> data.index + 1 + " / " + Math.abs(data.count);
                 case STATUS -> convertStatus(data.status);
                 case TAB -> data.tab;
                 case TASK_NUMBER -> data.taskNumber;

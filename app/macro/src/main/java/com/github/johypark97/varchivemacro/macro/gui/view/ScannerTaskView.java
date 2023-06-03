@@ -63,6 +63,7 @@ public class ScannerTaskView extends JDialog implements View, WindowListener {
 
     private void setFrameOption() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setFocusableWindowState(false);
         setMinimumSize(new Dimension(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
         setResizable(true);
         setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));

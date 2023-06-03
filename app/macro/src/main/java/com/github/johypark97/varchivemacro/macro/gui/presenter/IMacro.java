@@ -74,5 +74,7 @@ public interface IMacro {
                 TableModelWithLookup<ScannerResultListViewModels.ColumnKey> model);
 
         void setScannerResultTableRowSorter(TableRowSorter<ScannerResultListViewModel> rowSorter);
+
+        boolean getScannerSafeMode();
     }
 }

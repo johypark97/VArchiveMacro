@@ -20,7 +20,8 @@ public interface IBackend {
     void runClientMacro(AnalyzeKey analyzeKey, Direction direction, int captureDelay,
             int captureDuration, int count, int keyInputDuration);
 
-    void startScan(Path cacheDir, int captureDelay, int inputDuration, Set<String> ownedDlcTabs);
+    void startScan(Path cacheDir, int captureDelay, int inputDuration, Set<String> ownedDlcTabs,
+            boolean safeMode);
 
     void startAnalyze();
 
