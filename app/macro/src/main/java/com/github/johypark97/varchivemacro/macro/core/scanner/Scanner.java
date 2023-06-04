@@ -87,7 +87,7 @@ public class Scanner implements TaskDataProvider {
             Map<String, List<LocalSong>> tabSongMap) {
         CaptureService captureService = new SafeCaptureService(captureDelay, inputDuration);
         Command root = createCommand_scan(captureService, cacheDir, tabSongMap);
-        // root.setNext(getCommand_analyze());
+        root.setNext(getCommand_analyze());
         return root;
     }
 
@@ -225,9 +225,8 @@ public class Scanner implements TaskDataProvider {
 
         ResponseData data = new ResponseData();
 
-        Exception exception = task.getException();
-        if (exception != null) {
-            data.exception = exception;
+        if (task.hasException()) {
+            data.exception = task.getException();
             return data;
         }
 

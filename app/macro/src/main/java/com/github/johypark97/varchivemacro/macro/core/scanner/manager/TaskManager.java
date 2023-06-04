@@ -22,7 +22,7 @@ public interface TaskManager extends Iterable<TaskData> {
     void setImageCacheManager(ImageCacheManager imageCacheManager);
 
     enum TaskStatus {
-        ANALYZED, ANALYZING, CACHED, CAPTURED, EXCEPTION, NONE, WAITING
+        ANALYZED, ANALYZING, CACHED, CAPTURED, EXCEPTION, NONE, DUPLICATED, WAITING
     }
 
 
@@ -44,6 +44,8 @@ public interface TaskManager extends Iterable<TaskData> {
         void saveImage(BufferedImage image) throws IOException;
 
         BufferedImage loadImage() throws IOException;
+
+        boolean hasException();
 
         Exception getException();
 

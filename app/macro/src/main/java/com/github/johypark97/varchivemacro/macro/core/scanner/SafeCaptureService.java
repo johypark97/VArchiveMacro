@@ -18,6 +18,7 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -134,7 +135,23 @@ public class SafeCaptureService implements CaptureService {
                             String title = normalizeTitle(song.title());
                             queueMap.computeIfAbsent(title, (x) -> new LinkedList<>()).add(task);
                         }
-                        queueMap.values().removeIf((x) -> x.size() > 1);
+
+                        int breakCondition = 0;
+                        Iterator<Queue<TaskData>> iter = queueMap.values().iterator();
+                        while (iter.hasNext()) {
+                            Queue<TaskData> queue = iter.next();
+
+                            int count = queue.size();
+                            breakCondition = Math.max(breakCondition, count);
+
+                            if (count > 1) { // NOPMD
+                                queue.forEach((x) -> x.setStatus(TaskStatus.DUPLICATED));
+                                iter.remove();
+                            }
+                        }
+
+                        String previousTitle = "";
+                        int duplicateCount = 0;
 
                         tabKey(robot, KeyEvent.VK_SPACE, inputDuration);
                         for (int i = 0; i < songListCount; ++i) {
@@ -155,6 +172,15 @@ public class SafeCaptureService implements CaptureService {
                                 title = ocr.run(pix.pixInstance).trim();
                             }
                             String nTitle = normalizeTitle(title);
+
+                            // early exit
+                            if (title.equals(previousTitle)) {
+                                ++duplicateCount;
+                                if (duplicateCount == breakCondition) {
+                                    break;
+                                }
+                            }
+                            previousTitle = title;
 
                             // find song
                             TaskData task =

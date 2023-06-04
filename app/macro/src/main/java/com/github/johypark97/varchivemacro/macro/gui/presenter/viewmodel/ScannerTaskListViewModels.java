@@ -119,6 +119,7 @@ public interface ScannerTaskListViewModels {
                 case CAPTURED -> "captured";
                 case EXCEPTION -> "error occurred";
                 case NONE -> "";
+                case DUPLICATED -> "duplicated";
                 case WAITING -> "waiting";
             };
         }

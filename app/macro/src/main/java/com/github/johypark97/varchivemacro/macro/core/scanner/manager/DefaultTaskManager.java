@@ -201,6 +201,11 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         }
 
         @Override
+        public boolean hasException() {
+            return exception != null;
+        }
+
+        @Override
         public Exception getException() {
             return exception;
         }

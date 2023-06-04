@@ -50,7 +50,7 @@ public class AnalysisService {
             try (OcrWrapper ocr = new OcrWrapper()) {
                 List<TaskData> queue = new LinkedList<>();
                 for (TaskData task : taskManager) {
-                    if (task.isValid()) {
+                    if (!task.hasException() && task.isValid()) {
                         queue.add(task);
                         task.setStatus(TaskStatus.WAITING);
                     }
