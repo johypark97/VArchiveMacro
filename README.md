@@ -1,6 +1,6 @@
 # VArchiveMacro
 
-![screenshot](.github/screenshot.png)
+![screenshot](doc/screenshot.png)
 
 VArchiveMacro는 로키 스튜디오(Rocky Studio)가 개발, 네오위즈(NEOWIZ)가 배급하는 PC 플랫폼 게임
 [DJMAX RESPECT V](https://store.steampowered.com/app/960170/DJMAX_RESPECT_V/)의 유저 제작 웹 성과 관리 도구

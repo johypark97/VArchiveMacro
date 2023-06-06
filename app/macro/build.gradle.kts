@@ -33,6 +33,15 @@ application {
     applicationDistribution.into("data") {
         from("data")
     }
+
+    applicationDistribution.into("") {
+        from("${rootProject.projectDir}/LICENSE")
+        from("${rootProject.projectDir}/README.md")
+    }
+
+    applicationDistribution.into("doc") {
+        from("${rootProject.projectDir}/doc")
+    }
 }
 
 // Another way to include the '$projectDir/data' directory.
@@ -80,8 +89,27 @@ tasks.register<Copy>("copyDataDirToLaunch4j") {
     into("$buildDir/${launch4jTask.outputDir}/data")
 }
 
+tasks.register<Copy>("copyLicenseAndReadmeToLaunch4j") {
+    description = "Copy the LICENSE and README files to launch4j outputDir."
+
+    val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
+    from("${rootProject.projectDir}/LICENSE")
+    from("${rootProject.projectDir}/README.md")
+    into("$buildDir/${launch4jTask.outputDir}")
+}
+
+tasks.register<Copy>("copyDocDirToLaunch4j") {
+    description = "Copy '\${rootProject.projectDir}/doc' directory to launch4j outputDir."
+
+    val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
+    from("${rootProject.projectDir}/doc")
+    into("$buildDir/${launch4jTask.outputDir}/doc")
+}
+
 tasks.withType<DefaultLaunch4jTask> {
     dependsOn(tasks.named("copyDataDirToLaunch4j"))
+    dependsOn(tasks.named("copyDocDirToLaunch4j"))
+    dependsOn(tasks.named("copyLicenseAndReadmeToLaunch4j"))
 
     outfile = "$appName v$buildVersion.exe"
 
