@@ -219,7 +219,7 @@ public class Scanner implements TaskDataProvider {
     @Override
     public ResponseData getValue(int taskNumber) throws IOException {
         TaskData task = taskManager.getTask(taskNumber);
-        if (task == null) {
+        if (task == null || !task.isValid()) {
             return null;
         }
 
@@ -227,11 +227,6 @@ public class Scanner implements TaskDataProvider {
 
         if (task.hasException()) {
             data.exception = task.getException();
-            return data;
-        }
-
-        if (!task.isValid()) {
-            data.exception = new RuntimeException("is not valid");
             return data;
         }
 
