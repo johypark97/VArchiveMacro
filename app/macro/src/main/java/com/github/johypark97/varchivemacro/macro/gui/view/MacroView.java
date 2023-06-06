@@ -1273,10 +1273,13 @@ class MacroViewButtonListener implements ActionListener {
                     new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE0));
             message0.setForeground(Color.RED);
             box.add(message0);
-            box.add(new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE1)));
             box.add(Box.createVerticalStrut(10));
 
+            box.add(new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE1)));
             box.add(new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE2)));
+            box.add(Box.createVerticalStrut(10));
+
+            box.add(new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE3)));
             box.add(Box.createVerticalStrut(10));
 
             int selected = JOptionPane.showConfirmDialog(view, box,

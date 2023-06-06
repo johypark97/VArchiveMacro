@@ -40,8 +40,9 @@
   <entry key="macro.view.setting.scanner.recordUploadDelay">Record upload delay [ms]</entry>
   <entry key="macro.view.setting.scanner.safeMode.checkBox">Use</entry>
   <entry key="macro.view.setting.scanner.safeMode.dialog.message0">Disabling Safe Mode makes the Scanner run in non-recognition mode and may cause records to be uploaded incorrectly.</entry>
-  <entry key="macro.view.setting.scanner.safeMode.dialog.message1">(The non-recognition mode is only can use if you own all song DLCs and play all songs at least once.)</entry>
-  <entry key="macro.view.setting.scanner.safeMode.dialog.message2">Are you sure you want to disable the Safe Mode?</entry>
+  <entry key="macro.view.setting.scanner.safeMode.dialog.message1">The non-recognition mode is only can use if you own all song DLCs and play all songs at least once.</entry>
+  <entry key="macro.view.setting.scanner.safeMode.dialog.message2">However, the records can be uploaded incorrectly even if you meet the usage requirements.</entry>
+  <entry key="macro.view.setting.scanner.safeMode.dialog.message3">Are you sure you want to disable the Safe Mode?</entry>
   <entry key="macro.view.setting.scanner.safeMode.dialog.title">Safe Mode Disable Warning</entry>
   <entry key="macro.view.setting.scanner.safeMode.label">Safe Mode (DANGER)</entry>
   <entry key="macro.view.setting.scanner.safeMode.logMessage.toOff">WARNING: Scanner Safe Mode DISABLED</entry>

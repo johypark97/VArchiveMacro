@@ -46,6 +46,7 @@ public enum MacroViewKey {
     SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE0("setting.scanner.safeMode.dialog.message0"),
     SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE1("setting.scanner.safeMode.dialog.message1"),
     SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE2("setting.scanner.safeMode.dialog.message2"),
+    SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE3("setting.scanner.safeMode.dialog.message3"),
     SETTING_SCANNER_SAFE_MODE_DIALOG_TITLE("setting.scanner.safeMode.dialog.title"),
     SETTING_SCANNER_SAFE_MODE_LABEL("setting.scanner.safeMode.label"),
     SETTING_SCANNER_SAFE_MODE_LOG_TO_OFF("setting.scanner.safeMode.logMessage.toOff"),
