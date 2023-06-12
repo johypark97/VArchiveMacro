@@ -1,6 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.core.backend;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.ISongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.backend.BackendEvent.Type;
@@ -9,8 +11,6 @@ import com.github.johypark97.varchivemacro.macro.core.clientmacro.ClientMacro;
 import com.github.johypark97.varchivemacro.macro.core.clientmacro.Direction;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.command.CommandRunner;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
 import com.github.johypark97.varchivemacro.macro.core.scanner.Scanner;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResultListProvider;
@@ -25,20 +25,20 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-public class Backend implements Server<BackendEvent, IBackend>, IBackend {
+public class Backend implements Observable<BackendEvent>, IBackend {
     private final CommandRunner commandRunner = new CommandRunner();
-    private final List<Client<BackendEvent, IBackend>> clientList = new CopyOnWriteArrayList<>();
+    private final List<Observer<BackendEvent>> observerList = new CopyOnWriteArrayList<>();
 
     private final ClientMacro clientMacro;
     private final Scanner scanner;
     private final SongRecordManager songRecordManager;
 
     public Backend() {
-        Consumer<Exception> whenThrown = (x) -> notifyClients(new BackendEvent(x));
+        Consumer<Exception> whenThrown = (x) -> notifyObservers(new BackendEvent(x));
         Runnable whenCanceled = createWhen(Type.CANCELED);
         Runnable whenDone = createWhen(Type.DONE);
 
-        Consumer<String> whenStart_loadRemoteRecord = (djName) -> notifyClients(
+        Consumer<String> whenStart_loadRemoteRecord = (djName) -> notifyObservers(
                 new BackendEvent(Type.LOAD_REMOTE_RECORD, List.of(djName)));
         songRecordManager = new SongRecordManager(whenThrown, whenStart_loadRemoteRecord, whenDone);
 
@@ -59,42 +59,58 @@ public class Backend implements Server<BackendEvent, IBackend>, IBackend {
         return songRecordManager;
     }
 
+    public TaskListProvider getTaskListProvider() {
+        return scanner.getTaskListProvider();
+    }
+
     public TaskDataProvider getTaskDataProvider() {
         return scanner.getTaskDataProvider();
     }
 
-    public void addTaskListClient(Client<Event, TaskListProvider> client) {
-        scanner.addTaskListClient(client);
+    public ResultListProvider getResultListProvider() {
+        return scanner.getResultListProvider();
     }
 
-    public void addResultListClient(
-            Client<ScannerResultListModels.Event, ResultListProvider> client) {
-        scanner.addResultListClient(client);
+    public void addTaskListObserver(Observer<Event> observer) {
+        scanner.addTaskListObserver(observer);
+    }
+
+    public void addResultListObserver(Observer<ScannerResultListModels.Event> observer) {
+        scanner.addResultListObserver(observer);
     }
 
     private Runnable createWhen(Type type) {
-        return () -> notifyClients(new BackendEvent(type));
+        return () -> notifyObservers(new BackendEvent(type));
     }
 
     private synchronized void startCommand(Command command) {
         if (commandRunner.isRunning()) {
-            notifyClients(new BackendEvent(Type.IS_RUNNING));
+            notifyObservers(new BackendEvent(Type.IS_RUNNING));
             return;
         }
 
-        notifyClients(new BackendEvent(Type.START_COMMAND));
+        notifyObservers(new BackendEvent(Type.START_COMMAND));
         commandRunner.start(command);
     }
 
     @Override
-    public void addClient(Client<BackendEvent, IBackend> client) {
-        clientList.add(client);
-        client.onAddClient(this);
+    public void addObserver(Observer<BackendEvent> observer) {
+        observerList.add(observer);
     }
 
     @Override
-    public void notifyClients(BackendEvent data) {
-        clientList.forEach((x) -> x.onNotify(data));
+    public void deleteObservers() {
+        observerList.clear();
+    }
+
+    @Override
+    public void deleteObservers(Observer<BackendEvent> observer) {
+        observerList.removeIf((x) -> x.equals(observer));
+    }
+
+    @Override
+    public void notifyObservers(BackendEvent argument) {
+        observerList.forEach((x) -> x.onNotifyObservers(argument));
     }
 
     @Override
@@ -115,7 +131,7 @@ public class Backend implements Server<BackendEvent, IBackend>, IBackend {
     @Override
     public void stopCommand() {
         if (!commandRunner.stop()) {
-            notifyClients(new BackendEvent(Type.IS_NOT_RUNNING));
+            notifyObservers(new BackendEvent(Type.IS_NOT_RUNNING));
         }
     }
 

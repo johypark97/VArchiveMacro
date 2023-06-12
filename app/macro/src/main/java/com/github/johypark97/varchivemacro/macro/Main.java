@@ -25,16 +25,19 @@ public class Main {
     private final MacroPresenter macroPresenter = new MacroPresenter(MacroView.class);
 
     private Main() {
-        backend.addClient(macroPresenter);
+        backend.addObserver(macroPresenter);
+        macroPresenter.setBackend(backend);
 
         ScannerTaskModel scannerTaskModel = new ScannerTaskModel(backend.getTaskDataProvider());
         SongRecordModel songRecordModel = new SongRecordModel(backend.getSongRecordManager());
 
         ScannerTaskListModel scannerTaskListModel = new ScannerTaskListModel();
-        backend.addTaskListClient(scannerTaskListModel);
+        backend.addTaskListObserver(scannerTaskListModel);
+        scannerTaskListModel.linkTaskListProvider(backend.getTaskListProvider());
 
         ScannerResultListModel scannerResultListModel = new ScannerResultListModel();
-        backend.addResultListClient(scannerResultListModel);
+        backend.addResultListObserver(scannerResultListModel);
+        scannerResultListModel.linkResultListProvider(backend.getResultListProvider());
 
         macroPresenter.setModels(songRecordModel, scannerTaskModel, scannerTaskListModel,
                 scannerResultListModel);

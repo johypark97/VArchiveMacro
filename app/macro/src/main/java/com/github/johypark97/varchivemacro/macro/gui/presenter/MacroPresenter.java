@@ -2,11 +2,11 @@ package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.hook.HookWrapper;
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.backend.BackendEvent;
 import com.github.johypark97.varchivemacro.macro.core.backend.IBackend;
 import com.github.johypark97.varchivemacro.macro.core.clientmacro.AnalyzeKey;
 import com.github.johypark97.varchivemacro.macro.core.clientmacro.Direction;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.gui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ScannerResultListModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ScannerTaskListModel;
@@ -37,7 +37,7 @@ import javax.swing.tree.TreeModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend> {
+public class MacroPresenter implements Presenter, Observer<BackendEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MacroPresenter.class);
     private static final String COLON = ": ";
     private static final String ERROR_LOG_PREFIX = "Error: ";
@@ -68,6 +68,10 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
 
     public MacroPresenter(Class<? extends View> viewClass) {
         this.viewClass = viewClass;
+    }
+
+    public void setBackend(IBackend backend) {
+        this.backend = backend;
     }
 
     public void setModels(ISongRecordModel songRecordModel, IScannerTaskModel scannerTaskModel,
@@ -200,13 +204,8 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
     }
 
     @Override
-    public void onAddClient(IBackend channel) {
-        backend = channel;
-    }
-
-    @Override
-    public void onNotify(BackendEvent data) {
-        switch (data.type) {
+    public void onNotifyObservers(BackendEvent argument) {
+        switch (argument.type) {
             case CANCELED -> {
                 Toolkit.getDefaultToolkit().beep();
                 view.addLog(lang.get(MacroPresenterKey.WHEN_CANCELED));
@@ -218,16 +217,15 @@ public class MacroPresenter implements Presenter, Client<BackendEvent, IBackend>
             }
             case EXCEPTION -> {
                 Toolkit.getDefaultToolkit().beep();
-                LOGGER.atError().log("", data.exception);
+                LOGGER.atError().log("", argument.exception);
                 view.addLog(lang.get(MacroPresenterKey.WHEN_THROWN));
-                view.addLog(ERROR_LOG_PREFIX + data.exception.getMessage());
+                view.addLog(ERROR_LOG_PREFIX + argument.exception.getMessage());
             }
             case IS_NOT_RUNNING -> view.addLog(lang.get(MacroPresenterKey.COMMAND_IS_NOT_RUNNING));
             case IS_RUNNING -> view.addLog(lang.get(MacroPresenterKey.COMMAND_IS_RUNNING));
             case LOAD_REMOTE_RECORD -> view.addLog(
-                    lang.get(MacroPresenterKey.WHEN_START_LOAD_REMOTE) + " " + (data.argList != null
-                            ? data.argList.get(0)
-                            : null));
+                    lang.get(MacroPresenterKey.WHEN_START_LOAD_REMOTE) + " " + (
+                            argument.argList != null ? argument.argList.get(0) : null));
             case SCANNER_START_ANALYZE ->
                     view.addLog(lang.get(MacroPresenterKey.WHEN_START_ANALYZE));
             case SCANNER_START_CAPTURE ->

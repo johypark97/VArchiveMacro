@@ -1,10 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event.Type;
@@ -22,11 +22,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class DefaultTaskManager implements TaskManager, Server<Event, TaskListProvider> {
-    private final List<Client<Event, TaskListProvider>> clientList = new CopyOnWriteArrayList<>();
+public class DefaultTaskManager implements TaskManager, Observable<Event>, TaskListProvider {
+    private final List<Observer<Event>> observerList = new CopyOnWriteArrayList<>();
     private final Map<Integer, TaskData> taskDataMap = new ConcurrentHashMap<>();
 
     private ImageCacheManager imageCacheManager;
+
+    public TaskListProvider getTaskListProvider() {
+        return this;
+    }
 
     @Override
     public Iterator<TaskData> iterator() {
@@ -34,9 +38,56 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
     }
 
     @Override
+    public void addObserver(Observer<Event> observer) {
+        observerList.add(observer);
+    }
+
+    @Override
+    public void deleteObservers() {
+        observerList.clear();
+    }
+
+    @Override
+    public void deleteObservers(Observer<Event> observer) {
+        observerList.removeIf((x) -> x.equals(observer));
+    }
+
+    @Override
+    public void notifyObservers(Event argument) {
+        observerList.forEach((x) -> x.onNotifyObservers(argument));
+    }
+
+    @Override
+    public ResponseData getValue(int index) {
+        TaskData task = taskDataMap.get(index);
+        if (task == null) {
+            return null;
+        }
+
+        ResponseData data = new ResponseData();
+        data.composer = task.getSong().composer();
+        data.count = task.getSongCount();
+        data.dlc = task.getSong().dlc();
+        data.index = task.getSongIndex();
+        data.scannedTitle = task.getScannedTitle();
+        data.status = task.getStatus();
+        data.tab = task.getSong().dlcTab();
+        data.taskNumber = task.getTaskNumber();
+        data.title = task.getSong().title();
+        data.valid = task.isValid();
+
+        return data;
+    }
+
+    @Override
+    public int getCount() {
+        return taskDataMap.size();
+    }
+
+    @Override
     public void clearTask() {
         taskDataMap.clear();
-        notifyClients(new Event(Type.DATA_CHANGED));
+        notifyObservers(new Event(Type.DATA_CHANGED));
     }
 
     @Override
@@ -46,7 +97,7 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         DefaultTaskData data = new DefaultTaskData(taskNumber, song, collectionArea);
         taskDataMap.put(taskNumber, data);
 
-        notifyClients(new Event(Type.ROWS_INSERTED, taskNumber));
+        notifyObservers(new Event(Type.ROWS_INSERTED, taskNumber));
         return data;
     }
 
@@ -63,44 +114,6 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
     @Override
     public void setImageCacheManager(ImageCacheManager imageCacheManager) {
         this.imageCacheManager = imageCacheManager;
-    }
-
-    @Override
-    public void addClient(Client<Event, TaskListProvider> client) {
-        clientList.add(client);
-        client.onAddClient(new TaskListProvider() {
-            @Override
-            public ResponseData getValue(int index) {
-                TaskData task = taskDataMap.get(index);
-                if (task == null) {
-                    return null;
-                }
-
-                ResponseData data = new ResponseData();
-                data.composer = task.getSong().composer();
-                data.count = task.getSongCount();
-                data.dlc = task.getSong().dlc();
-                data.index = task.getSongIndex();
-                data.scannedTitle = task.getScannedTitle();
-                data.status = task.getStatus();
-                data.tab = task.getSong().dlcTab();
-                data.taskNumber = task.getTaskNumber();
-                data.title = task.getSong().title();
-                data.valid = task.isValid();
-
-                return data;
-            }
-
-            @Override
-            public int getCount() {
-                return taskDataMap.size();
-            }
-        });
-    }
-
-    @Override
-    public void notifyClients(Event data) {
-        clientList.forEach((x) -> x.onNotify(data));
     }
 
     public static class DefaultAnalyzedData implements AnalyzedData {
@@ -224,7 +237,7 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         @Override
         public void setScannedTitle(String value) {
             scannedTitle = value;
-            notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
+            notifyObservers(new Event(Type.ROWS_UPDATED, taskNumber));
         }
 
         @Override
@@ -235,7 +248,7 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         @Override
         public void setSongCount(int value) {
             songCount = value;
-            notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
+            notifyObservers(new Event(Type.ROWS_UPDATED, taskNumber));
         }
 
         @Override
@@ -246,7 +259,7 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         @Override
         public void setSongIndex(int value) {
             songIndex = value;
-            notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
+            notifyObservers(new Event(Type.ROWS_UPDATED, taskNumber));
         }
 
         @Override
@@ -257,7 +270,7 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         @Override
         public void setStatus(TaskStatus value) {
             status = value;
-            notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
+            notifyObservers(new Event(Type.ROWS_UPDATED, taskNumber));
         }
 
         @Override
@@ -268,7 +281,7 @@ public class DefaultTaskManager implements TaskManager, Server<Event, TaskListPr
         @Override
         public void setValid(boolean value) {
             valid = value;
-            notifyClients(new Event(Type.ROWS_UPDATED, taskNumber));
+            notifyObservers(new Event(Type.ROWS_UPDATED, taskNumber));
         }
     }
 }

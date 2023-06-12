@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.core.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
@@ -9,7 +10,6 @@ import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.ocr.PixError;
 import com.github.johypark97.varchivemacro.macro.core.ocr.PixWrapper;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultImageCacheManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultResultManager;
@@ -62,17 +62,24 @@ public class Scanner implements TaskDataProvider {
         resultManager.setModels(songRecordManager);
     }
 
-    public void addTaskListClient(Client<ScannerTaskListModels.Event, TaskListProvider> client) {
-        taskManager.addClient(client);
-    }
-
-    public void addResultListClient(
-            Client<ScannerResultListModels.Event, ResultListProvider> client) {
-        resultManager.addClient(client);
+    public TaskListProvider getTaskListProvider() {
+        return taskManager.getTaskListProvider();
     }
 
     public TaskDataProvider getTaskDataProvider() {
         return this;
+    }
+
+    public ResultListProvider getResultListProvider() {
+        return resultManager.getResultListProvider();
+    }
+
+    public void addTaskListObserver(Observer<ScannerTaskListModels.Event> observer) {
+        taskManager.addObserver(observer);
+    }
+
+    public void addResultListObserver(Observer<ScannerResultListModels.Event> observer) {
+        resultManager.addObserver(observer);
     }
 
     public Command getCommand_scan(Path cacheDir, int captureDelay, int inputDuration,

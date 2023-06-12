@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 
 public interface ScannerTaskListModels {
@@ -64,21 +64,20 @@ public interface ScannerTaskListModels {
     }
 
 
-    class ScannerTaskListModel implements Client<Event, TaskListProvider>, Model {
+    class ScannerTaskListModel implements Observer<Event>, Model {
         private TaskListProvider taskListProvider;
         private ViewModel viewModel;
 
-        @Override
-        public void onAddClient(TaskListProvider channel) {
-            taskListProvider = channel;
+        public void linkTaskListProvider(TaskListProvider provider) {
+            taskListProvider = provider;
         }
 
         @Override
-        public void onNotify(Event data) {
-            switch (data.type) {
+        public void onNotifyObservers(Event argument) {
+            switch (argument.type) {
                 case DATA_CHANGED -> viewModel.onDataChanged();
-                case ROWS_INSERTED -> viewModel.onRowsInserted(data.value);
-                case ROWS_UPDATED -> viewModel.onRowsUpdated(data.value);
+                case ROWS_INSERTED -> viewModel.onRowsInserted(argument.value);
+                case ROWS_UPDATED -> viewModel.onRowsUpdated(argument.value);
             }
         }
 

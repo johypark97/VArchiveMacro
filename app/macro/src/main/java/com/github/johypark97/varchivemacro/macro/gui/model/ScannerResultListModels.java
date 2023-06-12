@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultManager.ResultStatus;
 
 public interface ScannerResultListModels {
@@ -71,20 +71,19 @@ public interface ScannerResultListModels {
     }
 
 
-    class ScannerResultListModel implements Client<Event, ResultListProvider>, Model {
+    class ScannerResultListModel implements Observer<Event>, Model {
         private ResultListProvider resultListProvider;
         private ViewModel viewModel;
 
-        @Override
-        public void onAddClient(ResultListProvider channel) {
-            resultListProvider = channel;
+        public void linkResultListProvider(ResultListProvider provider) {
+            resultListProvider = provider;
         }
 
         @Override
-        public void onNotify(Event data) {
-            switch (data.type) {
+        public void onNotifyObservers(Event argument) {
+            switch (argument.type) {
                 case DATA_CHANGED -> viewModel.onDataChanged();
-                case ROWS_UPDATED -> viewModel.onRowsUpdated(data.value);
+                case ROWS_UPDATED -> viewModel.onRowsUpdated(argument.value);
             }
         }
 

@@ -3,11 +3,11 @@ package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Client;
-import com.github.johypark97.varchivemacro.macro.core.protocol.SyncChannel.Server;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.Event;
@@ -19,14 +19,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class DefaultResultManager implements ResultManager, Server<Event, ResultListProvider> {
-    private final List<Client<Event, ResultListProvider>> clientList = new CopyOnWriteArrayList<>();
+public class DefaultResultManager implements ResultManager, Observable<Event>, ResultListProvider {
+    private final List<Observer<Event>> observerList = new CopyOnWriteArrayList<>();
     private final List<ResultData> resultDataList = new CopyOnWriteArrayList<>();
 
     private SongRecordManager songRecordManager;
 
     public void setModels(SongRecordManager songRecordManager) {
         this.songRecordManager = songRecordManager;
+    }
+
+    public ResultListProvider getResultListProvider() {
+        return this;
     }
 
     private float parseRateText(String text) {
@@ -50,9 +54,64 @@ public class DefaultResultManager implements ResultManager, Server<Event, Result
     }
 
     @Override
+    public void addObserver(Observer<Event> observer) {
+        observerList.add(observer);
+    }
+
+    @Override
+    public void deleteObservers() {
+        observerList.clear();
+    }
+
+    @Override
+    public void deleteObservers(Observer<Event> observer) {
+        observerList.removeIf((x) -> x.equals(observer));
+    }
+
+    @Override
+    public void notifyObservers(Event argument) {
+        observerList.forEach((x) -> x.onNotifyObservers(argument));
+    }
+
+    @Override
+    public ResponseData getValue(int index) {
+        ResultData resultData = resultDataList.get(index);
+
+        ResponseData data = new ResponseData();
+        data.button = Button.valueOf(resultData.getNewRecord().button);
+        data.composer = resultData.getSong().composer();
+        data.dlc = resultData.getSong().dlc();
+        data.isSelected = resultData.isSelected();
+        data.newMaxCombo = resultData.getNewRecord().maxCombo;
+        data.newRate = resultData.getNewRecord().rate;
+        data.oldMaxCombo = resultData.getOldMaxCombo();
+        data.oldRate = resultData.getOldRate();
+        data.pattern = Pattern.valueOf(resultData.getNewRecord().pattern);
+        data.resultNumber = resultData.getResultNumber();
+        data.status = resultData.getStatus();
+        data.taskNumber = resultData.getTaskNumber();
+        data.title = resultData.getSong().title();
+
+        return data;
+    }
+
+    @Override
+    public int getCount() {
+        return resultDataList.size();
+    }
+
+    @Override
+    public void updateSelected(int index, boolean value) {
+        ResultData data = resultDataList.get(index);
+        if (data != null) {
+            data.updateSelected(value);
+        }
+    }
+
+    @Override
     public void clear() {
         resultDataList.clear();
-        notifyClients(new Event(Type.DATA_CHANGED));
+        notifyObservers(new Event(Type.DATA_CHANGED));
     }
 
     @Override
@@ -85,53 +144,7 @@ public class DefaultResultManager implements ResultManager, Server<Event, Result
             }
         }
 
-        notifyClients(new Event(Type.DATA_CHANGED));
-    }
-
-    @Override
-    public void addClient(Client<Event, ResultListProvider> client) {
-        clientList.add(client);
-        client.onAddClient(new ResultListProvider() {
-            @Override
-            public ResponseData getValue(int index) {
-                ResultData resultData = resultDataList.get(index);
-
-                ResponseData data = new ResponseData();
-                data.button = Button.valueOf(resultData.getNewRecord().button);
-                data.composer = resultData.getSong().composer();
-                data.dlc = resultData.getSong().dlc();
-                data.isSelected = resultData.isSelected();
-                data.newMaxCombo = resultData.getNewRecord().maxCombo;
-                data.newRate = resultData.getNewRecord().rate;
-                data.oldMaxCombo = resultData.getOldMaxCombo();
-                data.oldRate = resultData.getOldRate();
-                data.pattern = Pattern.valueOf(resultData.getNewRecord().pattern);
-                data.resultNumber = resultData.getResultNumber();
-                data.status = resultData.getStatus();
-                data.taskNumber = resultData.getTaskNumber();
-                data.title = resultData.getSong().title();
-
-                return data;
-            }
-
-            @Override
-            public int getCount() {
-                return resultDataList.size();
-            }
-
-            @Override
-            public void updateSelected(int index, boolean value) {
-                ResultData data = resultDataList.get(index);
-                if (data != null) {
-                    data.updateSelected(value);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void notifyClients(Event data) {
-        clientList.forEach((x) -> x.onNotify(data));
+        notifyObservers(new Event(Type.DATA_CHANGED));
     }
 
     private class DefaultResultData implements ResultData {
@@ -194,7 +207,7 @@ public class DefaultResultManager implements ResultManager, Server<Event, Result
         @Override
         public void setStatus(ResultStatus value) {
             status = value;
-            notifyClients(new Event(Type.ROWS_UPDATED, resultNumber));
+            notifyObservers(new Event(Type.ROWS_UPDATED, resultNumber));
         }
 
         @Override
@@ -205,7 +218,7 @@ public class DefaultResultManager implements ResultManager, Server<Event, Result
         @Override
         public void updateSelected(boolean value) {
             selected = value;
-            notifyClients(new Event(Type.ROWS_UPDATED, resultNumber));
+            notifyObservers(new Event(Type.ROWS_UPDATED, resultNumber));
         }
     }
 }
