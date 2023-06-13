@@ -1,13 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
-import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event.Type;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.TaskListProvider;
 import com.google.common.collect.HashBasedTable;
@@ -17,13 +13,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public class DefaultTaskManager implements TaskManager, Observable<Event>, TaskListProvider {
-    private final List<Observer<Event>> observerList = new CopyOnWriteArrayList<>();
+public class DefaultTaskManager implements TaskManager, TaskListProvider {
     private final Map<Integer, TaskData> taskDataMap = new ConcurrentHashMap<>();
 
     private ImageCacheManager imageCacheManager;
@@ -35,26 +28,6 @@ public class DefaultTaskManager implements TaskManager, Observable<Event>, TaskL
     @Override
     public Iterator<TaskData> iterator() {
         return taskDataMap.values().iterator();
-    }
-
-    @Override
-    public void addObserver(Observer<Event> observer) {
-        observerList.add(observer);
-    }
-
-    @Override
-    public void deleteObservers() {
-        observerList.clear();
-    }
-
-    @Override
-    public void deleteObservers(Observer<Event> observer) {
-        observerList.removeIf((x) -> x.equals(observer));
-    }
-
-    @Override
-    public void notifyObservers(Event argument) {
-        observerList.forEach((x) -> x.onNotifyObservers(argument));
     }
 
     @Override
@@ -87,7 +60,6 @@ public class DefaultTaskManager implements TaskManager, Observable<Event>, TaskL
     @Override
     public void clearTask() {
         taskDataMap.clear();
-        notifyObservers(new Event(Type.DATA_CHANGED));
     }
 
     @Override
@@ -97,7 +69,6 @@ public class DefaultTaskManager implements TaskManager, Observable<Event>, TaskL
         DefaultTaskData data = new DefaultTaskData(taskNumber, song, collectionArea);
         taskDataMap.put(taskNumber, data);
 
-        notifyObservers(new Event(Type.ROWS_INSERTED, taskNumber));
         return data;
     }
 
@@ -237,7 +208,6 @@ public class DefaultTaskManager implements TaskManager, Observable<Event>, TaskL
         @Override
         public void setScannedTitle(String value) {
             scannedTitle = value;
-            notifyObservers(new Event(Type.ROWS_UPDATED, taskNumber));
         }
 
         @Override
@@ -248,7 +218,6 @@ public class DefaultTaskManager implements TaskManager, Observable<Event>, TaskL
         @Override
         public void setSongCount(int value) {
             songCount = value;
-            notifyObservers(new Event(Type.ROWS_UPDATED, taskNumber));
         }
 
         @Override
@@ -259,7 +228,6 @@ public class DefaultTaskManager implements TaskManager, Observable<Event>, TaskL
         @Override
         public void setSongIndex(int value) {
             songIndex = value;
-            notifyObservers(new Event(Type.ROWS_UPDATED, taskNumber));
         }
 
         @Override
@@ -270,7 +238,6 @@ public class DefaultTaskManager implements TaskManager, Observable<Event>, TaskL
         @Override
         public void setStatus(TaskStatus value) {
             status = value;
-            notifyObservers(new Event(Type.ROWS_UPDATED, taskNumber));
         }
 
         @Override
@@ -281,7 +248,6 @@ public class DefaultTaskManager implements TaskManager, Observable<Event>, TaskL
         @Override
         public void setValid(boolean value) {
             valid = value;
-            notifyObservers(new Event(Type.ROWS_UPDATED, taskNumber));
         }
     }
 }

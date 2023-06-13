@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.core.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
+import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
@@ -16,9 +17,11 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultRes
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultTaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManagerWithEvent;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResultListProvider;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event;
+import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event.Type;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.TaskListProvider;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData.RecordData;
@@ -28,11 +31,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-public class Scanner implements TaskDataProvider {
-    private final DefaultTaskManager taskManager = new DefaultTaskManager();
+public class Scanner implements Observable<Event>, TaskDataProvider {
     private final DefaultResultManager resultManager = new DefaultResultManager();
+    private final DefaultTaskManager taskManager = new DefaultTaskManager();
+    private final List<Observer<Event>> observerList = new CopyOnWriteArrayList<>();
 
     private final Consumer<Exception> whenThrown;
     private final Runnable whenCanceled;
@@ -72,10 +77,6 @@ public class Scanner implements TaskDataProvider {
 
     public ResultListProvider getResultListProvider() {
         return resultManager.getResultListProvider();
-    }
-
-    public void addTaskListObserver(Observer<ScannerTaskListModels.Event> observer) {
-        taskManager.addObserver(observer);
     }
 
     public void addResultListObserver(Observer<ScannerResultListModels.Event> observer) {
@@ -121,6 +122,7 @@ public class Scanner implements TaskDataProvider {
 
                 taskManager.clearTask();
                 taskManager.setImageCacheManager(new DefaultImageCacheManager(cachePath));
+                notifyObservers(new Event(Type.DATA_CHANGED));
 
                 captureService.execute(taskManager, tabSongMap);
 
@@ -133,6 +135,8 @@ public class Scanner implements TaskDataProvider {
                         captureService.shutdownNow();
                         canceled = true;
                     }
+
+                    notifyObservers(new Event(Type.DATA_CHANGED));
 
                     if (captureService.hasException()) {
                         whenThrown.accept(captureService.getException());
@@ -158,7 +162,7 @@ public class Scanner implements TaskDataProvider {
                 whenStart_analyze.run();
 
                 AnalysisService analysisService = new AnalysisService();
-                analysisService.execute(taskManager);
+                analysisService.execute(new TaskManagerWithEvent(taskManager, Scanner.this));
 
                 try {
                     analysisService.await();
@@ -221,6 +225,26 @@ public class Scanner implements TaskDataProvider {
                 return true;
             }
         };
+    }
+
+    @Override
+    public void addObserver(Observer<Event> observer) {
+        observerList.add(observer);
+    }
+
+    @Override
+    public void deleteObservers() {
+        observerList.clear();
+    }
+
+    @Override
+    public void deleteObservers(Observer<Event> observer) {
+        observerList.removeIf((x) -> x.equals(observer));
+    }
+
+    @Override
+    public void notifyObservers(Event argument) {
+        observerList.forEach((x) -> x.onNotifyObservers(argument));
     }
 
     @Override

@@ -72,7 +72,7 @@ public class Backend implements Observable<BackendEvent>, IBackend {
     }
 
     public void addTaskListObserver(Observer<Event> observer) {
-        scanner.addTaskListObserver(observer);
+        scanner.addObserver(observer);
     }
 
     public void addResultListObserver(Observer<ScannerResultListModels.Event> observer) {
