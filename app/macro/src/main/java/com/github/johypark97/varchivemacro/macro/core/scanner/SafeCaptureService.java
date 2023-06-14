@@ -229,7 +229,7 @@ public class SafeCaptureService implements CaptureService {
                             if (task != null) {
                                 task.setScannedTitle(String.format("%s [%s] <-> %s", title, nTitle,
                                         randomSongTitle));
-                                task.setValid(nTitle.equals(randomSongTitle));
+                                task.setValid(randomSong.equals(task.getSong()));
                             } else {
                                 task = taskManager.createTask(randomSong, collectionArea);
                                 task.setScannedTitle(

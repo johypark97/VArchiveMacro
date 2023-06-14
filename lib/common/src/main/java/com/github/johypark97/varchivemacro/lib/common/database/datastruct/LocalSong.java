@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
 public record LocalSong(@Expose int id, @Expose String title, @Expose String remote_title,
                         @Expose String composer, @Expose String dlc, @Expose String dlcCode,
@@ -21,6 +22,24 @@ public record LocalSong(@Expose int id, @Expose String title, @Expose String rem
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        LocalSong song = (LocalSong) obj;
+        return id == song.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 
     public static class GsonListTypeToken extends TypeToken<List<LocalSong>> {
     }
