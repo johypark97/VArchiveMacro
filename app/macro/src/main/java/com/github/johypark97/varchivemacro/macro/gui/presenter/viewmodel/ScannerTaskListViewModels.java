@@ -6,10 +6,7 @@ import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ViewModel;
 import com.google.common.collect.BiMap;
-import com.google.common.collect.ImmutableBiMap;
-import com.google.common.collect.ImmutableMap;
 import java.io.Serial;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -26,58 +23,54 @@ public interface ScannerTaskListViewModels {
     class ColumnLookup implements TableColumnLookup<ColumnKey> {
         private final BiMap<ColumnKey, Integer> indexMap;
         private final Map<ColumnKey, String> nameMap;
-        public final int count;
 
         public ColumnLookup() {
-            count = ColumnKey.values().length;
             indexMap = createIndexMap();
             nameMap = createNameMap();
         }
 
         private BiMap<ColumnKey, Integer> createIndexMap() {
-            List<ColumnKey> list = new ArrayList<>();
-            list.add(ColumnKey.INDEX);
-            list.add(ColumnKey.COUNT);
-            list.add(ColumnKey.VALID);
-            list.add(ColumnKey.TASK_NUMBER);
-            list.add(ColumnKey.SCANNED_TITLE);
-            list.add(ColumnKey.TITLE);
-            list.add(ColumnKey.COMPOSER);
-            list.add(ColumnKey.DLC);
-            list.add(ColumnKey.TAB);
-            list.add(ColumnKey.SONG_NUMBER);
-            list.add(ColumnKey.STATUS);
+            IndexMapBuilder<ColumnKey> builder = new IndexMapBuilder<>();
 
-            ImmutableBiMap.Builder<ColumnKey, Integer> builder = ImmutableBiMap.builder();
-            int indexCount = list.size();
-            for (int i = 0; i < indexCount; ++i) {
-                builder.put(list.get(i), i);
-            }
+            builder.add(ColumnKey.INDEX);
+            builder.add(ColumnKey.COUNT);
+            builder.add(ColumnKey.VALID);
+            builder.add(ColumnKey.TASK_NUMBER);
+            builder.add(ColumnKey.SCANNED_TITLE);
+            builder.add(ColumnKey.TITLE);
+            builder.add(ColumnKey.COMPOSER);
+            builder.add(ColumnKey.DLC);
+            builder.add(ColumnKey.TAB);
+            builder.add(ColumnKey.SONG_NUMBER);
+            builder.add(ColumnKey.STATUS);
 
             return builder.build();
         }
 
         private Map<ColumnKey, String> createNameMap() {
-            ImmutableMap.Builder<ColumnKey, String> builder = ImmutableMap.builder();
+            NameMapBuilder<ColumnKey> builder = new NameMapBuilder<>();
 
-            for (ColumnKey key : ColumnKey.values()) {
-                String name = switch (key) {
-                    case COMPOSER -> "Composer";
-                    case COUNT -> "Count";
-                    case DLC -> "Dlc";
-                    case INDEX -> "Index";
-                    case SCANNED_TITLE -> "ScannedTitle";
-                    case SONG_NUMBER -> "SongNo";
-                    case STATUS -> "Status";
-                    case TAB -> "Tab";
-                    case TASK_NUMBER -> "TaskNo";
-                    case TITLE -> "Title";
-                    case VALID -> "isValid";
-                };
-                builder.put(key, name);
-            }
+            builder.setEnumClass(ColumnKey.class);
+            builder.setConverter((x) -> switch (x) {
+                case COMPOSER -> "Composer";
+                case COUNT -> "Count";
+                case DLC -> "Dlc";
+                case INDEX -> "Index";
+                case SCANNED_TITLE -> "ScannedTitle";
+                case SONG_NUMBER -> "SongNo";
+                case STATUS -> "Status";
+                case TAB -> "Tab";
+                case TASK_NUMBER -> "TaskNo";
+                case TITLE -> "Title";
+                case VALID -> "isValid";
+            });
 
             return builder.build();
+        }
+
+        @Override
+        public int getCount() {
+            return ColumnKey.values().length;
         }
 
         @Override
@@ -156,7 +149,7 @@ public interface ScannerTaskListViewModels {
 
         @Override
         public int getColumnCount() {
-            return COLUMN_LOOKUP.count;
+            return COLUMN_LOOKUP.getCount();
         }
 
         @Override

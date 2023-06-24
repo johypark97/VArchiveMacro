@@ -8,10 +8,7 @@ import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListMode
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ViewModel;
 import com.google.common.collect.BiMap;
-import com.google.common.collect.ImmutableBiMap;
-import com.google.common.collect.ImmutableMap;
 import java.io.Serial;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -28,64 +25,60 @@ public interface ScannerResultListViewModels {
     class ColumnLookup implements TableColumnLookup<ColumnKey> {
         private final BiMap<ColumnKey, Integer> indexMap;
         private final Map<ColumnKey, String> nameMap;
-        public final int count;
 
         public ColumnLookup() {
-            count = ColumnKey.values().length;
             indexMap = createIndexMap();
             nameMap = createNameMap();
         }
 
         private BiMap<ColumnKey, Integer> createIndexMap() {
-            List<ColumnKey> list = new ArrayList<>();
-            list.add(ColumnKey.RESULT_NUMBER);
-            list.add(ColumnKey.TASK_NUMBER);
-            list.add(ColumnKey.TITLE);
-            list.add(ColumnKey.COMPOSER);
-            list.add(ColumnKey.DLC);
-            list.add(ColumnKey.BUTTON);
-            list.add(ColumnKey.PATTERN);
-            list.add(ColumnKey.OLD_MAX_COMBO);
-            list.add(ColumnKey.OLD_RATE);
-            list.add(ColumnKey.NEW_RATE);
-            list.add(ColumnKey.NEW_MAX_COMBO);
-            list.add(ColumnKey.DELTA_RATE);
-            list.add(ColumnKey.UPLOAD);
-            list.add(ColumnKey.STATUS);
+            IndexMapBuilder<ColumnKey> builder = new IndexMapBuilder<>();
 
-            ImmutableBiMap.Builder<ColumnKey, Integer> builder = ImmutableBiMap.builder();
-            int indexCount = list.size();
-            for (int i = 0; i < indexCount; ++i) {
-                builder.put(list.get(i), i);
-            }
+            builder.add(ColumnKey.RESULT_NUMBER);
+            builder.add(ColumnKey.TASK_NUMBER);
+            builder.add(ColumnKey.TITLE);
+            builder.add(ColumnKey.COMPOSER);
+            builder.add(ColumnKey.DLC);
+            builder.add(ColumnKey.BUTTON);
+            builder.add(ColumnKey.PATTERN);
+            builder.add(ColumnKey.OLD_MAX_COMBO);
+            builder.add(ColumnKey.OLD_RATE);
+            builder.add(ColumnKey.NEW_RATE);
+            builder.add(ColumnKey.NEW_MAX_COMBO);
+            builder.add(ColumnKey.DELTA_RATE);
+            builder.add(ColumnKey.UPLOAD);
+            builder.add(ColumnKey.STATUS);
 
             return builder.build();
         }
 
         private Map<ColumnKey, String> createNameMap() {
-            ImmutableMap.Builder<ColumnKey, String> builder = ImmutableMap.builder();
+            NameMapBuilder<ColumnKey> builder = new NameMapBuilder<>();
 
-            for (ColumnKey key : ColumnKey.values()) {
-                String name = switch (key) {
-                    case RESULT_NUMBER -> "ResultNo";
-                    case TASK_NUMBER -> "TaskNo";
-                    case TITLE -> "Title";
-                    case COMPOSER -> "Composer";
-                    case DLC -> "Dlc";
-                    case BUTTON -> "Button";
-                    case PATTERN -> "Pattern";
-                    case OLD_MAX_COMBO -> "OMax";
-                    case OLD_RATE -> "Old";
-                    case NEW_RATE -> "New";
-                    case NEW_MAX_COMBO -> "NMax";
-                    case DELTA_RATE -> "Delta";
-                    case UPLOAD -> "Upload";
-                    case STATUS -> "Status";
-                };
-                builder.put(key, name);
-            }
+            builder.setEnumClass(ColumnKey.class);
+            builder.setConverter((x) -> switch (x) {
+                case RESULT_NUMBER -> "ResultNo";
+                case TASK_NUMBER -> "TaskNo";
+                case TITLE -> "Title";
+                case COMPOSER -> "Composer";
+                case DLC -> "Dlc";
+                case BUTTON -> "Button";
+                case PATTERN -> "Pattern";
+                case OLD_MAX_COMBO -> "OMax";
+                case OLD_RATE -> "Old";
+                case NEW_RATE -> "New";
+                case NEW_MAX_COMBO -> "NMax";
+                case DELTA_RATE -> "Delta";
+                case UPLOAD -> "Upload";
+                case STATUS -> "Status";
+            });
 
             return builder.build();
+        }
+
+        @Override
+        public int getCount() {
+            return ColumnKey.values().length;
         }
 
         @Override
@@ -157,7 +150,7 @@ public interface ScannerResultListViewModels {
 
         @Override
         public int getColumnCount() {
-            return COLUMN_LOOKUP.count;
+            return COLUMN_LOOKUP.getCount();
         }
 
         @Override
