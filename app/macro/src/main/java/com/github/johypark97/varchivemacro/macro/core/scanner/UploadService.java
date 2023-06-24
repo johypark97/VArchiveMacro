@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
+import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestJson;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
@@ -72,7 +73,7 @@ public class UploadService {
 
                         RequestJson requestJson =
                                 recordToRequest(data.getSong(), data.getNewRecord());
-                        api.upload(requestJson); // Throw an RuntimeException when an error occurs.
+                        api.upload(requestJson);
 
                         songRecordManager.updateRecord(data.getNewRecord());
                         data.setStatus(api.getResult()
@@ -94,7 +95,7 @@ public class UploadService {
                 }
 
                 songRecordManager.saveRecord();
-            } catch (GeneralSecurityException | IOException | RuntimeException e) {
+            } catch (ApiException | GeneralSecurityException | IOException e) {
                 LOGGER.atError().log(e.getMessage(), e);
                 exception = e;
             }

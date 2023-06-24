@@ -12,7 +12,7 @@ import java.io.IOException;
 public interface RecordUploader {
     boolean getResult();
 
-    void upload(RequestJson data) throws IOException, InterruptedException;
+    void upload(RequestJson data) throws IOException, InterruptedException, ApiException;
 
     class SuccessJson {
         @Expose

@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
+import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.FailureJson;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestJson;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.SuccessJson;
@@ -171,7 +172,7 @@ class RecordUploaderImplTest {
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
         Throwable throwable =
-                assertThrows(RuntimeException.class, () -> recordUploader.upload(dummyRequestJson));
+                assertThrows(ApiException.class, () -> recordUploader.upload(dummyRequestJson));
 
         String actual = throwable.getMessage();
         assertEquals(expected, actual);
@@ -185,7 +186,7 @@ class RecordUploaderImplTest {
 
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
-        assertThrows(RuntimeException.class, () -> recordUploader.upload(dummyRequestJson));
+        assertThrows(ApiException.class, () -> recordUploader.upload(dummyRequestJson));
     }
 
     @ParameterizedTest

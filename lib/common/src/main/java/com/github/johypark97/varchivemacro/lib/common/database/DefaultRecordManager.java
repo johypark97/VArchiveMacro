@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Board;
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Button;
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Pattern;
+import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class DefaultRecordManager implements RecordManager {
     }
 
     public DefaultRecordManager(String djName)
-            throws GeneralSecurityException, IOException, InterruptedException {
+            throws GeneralSecurityException, IOException, InterruptedException, ApiException {
         recordMap = new RecordMap();
 
         RecordFetcher fetcher = Api.newRecordFetcher(djName);

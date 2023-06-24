@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.lib.common.api.impl;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Board;
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Button;
+import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher;
 import java.io.IOException;
 import java.net.URI;
@@ -15,9 +16,9 @@ import java.nio.charset.StandardCharsets;
 public class RecordFetcherImpl implements RecordFetcher {
     private static final String URL_FORMAT = ImplBase.BASE_URL + "/api/archive/%s/board/%s/%s";
 
-    private SuccessJson result;
     private final HttpClient httpClient;
     private final String djName;
+    private SuccessJson result;
 
     public RecordFetcherImpl(HttpClient httpClient, String djName) {
         if (httpClient == null) {
@@ -50,7 +51,8 @@ public class RecordFetcherImpl implements RecordFetcher {
     }
 
     @Override
-    public void fetch(Button button, Board board) throws IOException, InterruptedException {
+    public void fetch(Button button, Board board)
+            throws IOException, InterruptedException, ApiException {
         URI uri = createUri(button.toString(), board.toString());
         HttpRequest request = createRequest(uri);
 
@@ -61,9 +63,9 @@ public class RecordFetcherImpl implements RecordFetcher {
             case 200 -> result = SuccessJson.fromJson(response.body());
             case 404, 500 -> {
                 FailureJson failure = FailureJson.fromJson(response.body());
-                throw new RuntimeException(failure.message);
+                throw new ApiException(failure.message);
             }
-            default -> throw new RuntimeException(statusCode + " Network Error");
+            default -> throw new ApiException(statusCode + " Network Error");
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.common.api.impl;
 
+import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader;
 import java.io.IOException;
 import java.net.URI;
@@ -13,10 +14,10 @@ import java.util.UUID;
 public class RecordUploaderImpl implements RecordUploader {
     private static final String URL_FORMAT = ImplBase.BASE_URL + "/client/open/%d/score";
 
-    private boolean result;
     private final HttpClient httpClient;
     private final UUID token;
     private final int userNo;
+    private boolean result;
 
     public RecordUploaderImpl(HttpClient httpClient, int userNo, UUID token) {
         if (httpClient == null) {
@@ -50,7 +51,7 @@ public class RecordUploaderImpl implements RecordUploader {
     }
 
     @Override
-    public void upload(RequestJson data) throws IOException, InterruptedException {
+    public void upload(RequestJson data) throws IOException, InterruptedException, ApiException {
         URI uri = createUri(userNo);
         HttpRequest request = createRequest(uri, data.toJson());
 
@@ -64,9 +65,9 @@ public class RecordUploaderImpl implements RecordUploader {
             }
             case 400, 404, 500 -> {
                 FailureJson failure = FailureJson.fromJson(response.body());
-                throw new RuntimeException(failure.message);
+                throw new ApiException(failure.message);
             }
-            default -> throw new RuntimeException(statusCode + " Network Error");
+            default -> throw new ApiException(statusCode + " Network Error");
         }
     }
 }

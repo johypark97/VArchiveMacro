@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Board;
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Button;
+import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher.FailureJson;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher.SuccessJson;
 import com.google.gson.Gson;
@@ -120,8 +121,8 @@ class RecordFetcherImplTest {
         when(httpResponseMock.body()).thenReturn(gson.toJson(data));
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
-        Throwable throwable = assertThrows(RuntimeException.class,
-                () -> recordFetcher.fetch(Button._4, Board._1));
+        Throwable throwable =
+                assertThrows(ApiException.class, () -> recordFetcher.fetch(Button._4, Board._1));
 
         String actual = throwable.getMessage();
         assertEquals(expected, actual);
@@ -134,7 +135,7 @@ class RecordFetcherImplTest {
 
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
-        assertThrows(RuntimeException.class, () -> recordFetcher.fetch(Button._4, Board._1));
+        assertThrows(ApiException.class, () -> recordFetcher.fetch(Button._4, Board._1));
     }
 
     @ParameterizedTest

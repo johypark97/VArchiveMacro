@@ -14,7 +14,7 @@ import java.util.List;
 public interface RecordFetcher {
     SuccessJson getResult();
 
-    void fetch(Button button, Board board) throws IOException, InterruptedException;
+    void fetch(Button button, Board board) throws IOException, InterruptedException, ApiException;
 
     class SuccessJson {
         @Expose
