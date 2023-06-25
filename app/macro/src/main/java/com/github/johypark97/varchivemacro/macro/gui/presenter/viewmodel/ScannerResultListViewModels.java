@@ -1,6 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel;
 
 import com.github.johypark97.varchivemacro.lib.common.database.comparator.TitleComparator;
+import com.github.johypark97.varchivemacro.lib.common.gui.viewmodel.TableColumnLookup;
+import com.github.johypark97.varchivemacro.lib.common.gui.viewmodel.TableModelWithLookup;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultManager.ResultStatus;

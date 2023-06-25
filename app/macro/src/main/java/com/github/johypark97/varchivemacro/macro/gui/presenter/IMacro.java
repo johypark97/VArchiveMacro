@@ -1,12 +1,12 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
+import com.github.johypark97.varchivemacro.lib.common.gui.viewmodel.TableModelWithLookup;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels.ScannerResultListViewModel;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskListViewModels.ColumnKey;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerTaskListViewModels.ScannerTaskListViewModel;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.TableModelWithLookup;
 import com.google.common.collect.Table;
 import java.nio.file.Path;
 import java.util.List;

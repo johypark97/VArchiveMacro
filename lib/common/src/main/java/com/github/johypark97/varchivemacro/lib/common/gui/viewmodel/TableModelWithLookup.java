@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel;
+package com.github.johypark97.varchivemacro.lib.common.gui.viewmodel;
 
 import javax.swing.table.TableModel;
 
