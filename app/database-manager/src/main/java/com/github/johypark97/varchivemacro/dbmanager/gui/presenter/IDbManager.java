@@ -1,8 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.presenter;
 
-import java.util.List;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModel;
 
 public interface IDbManager {
     interface Presenter {
@@ -11,8 +9,6 @@ public interface IDbManager {
         void stop();
 
         void loadDatabase(String path);
-
-        void updateFilter();
 
         void validateDatabase();
 
@@ -23,21 +19,13 @@ public interface IDbManager {
     interface View {
         void setPresenter(Presenter presenter);
 
+        void setViewModels(SongViewModel songViewModel);
+
         void showView();
 
         void disposeView();
 
         void showErrorDialog(String message);
-
-        void setSongsTableModel(TableModel tableModel);
-
-        void setSongsTableRowSorter(TableRowSorter<TableModel> tableRowSorter);
-
-        void setSongsTableFilterColumnItems(List<String> items);
-
-        String getSongsTableFilterColumn();
-
-        String getSongsTableFilterText();
 
         void setValidatorResultText(String value);
 

@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.view;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Presenter;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.View;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModel;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.TableUtil;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,7 +17,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.Serial;
 import java.nio.file.Path;
-import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -37,8 +37,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 public class DbManagerView extends JFrame implements View, WindowListener {
     @Serial
@@ -75,6 +73,9 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     private transient final DocumentListener documentListener =
             new DbManagerViewDocumentListener(this);
 
+    // view models
+    public SongViewModel songsTableViewModel;
+
     public DbManagerView() {
         super(TITLE);
 
@@ -83,6 +84,17 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         setContent();
 
         addWindowListener(this);
+    }
+
+    protected void updateSongFilter() {
+        Object value = songsFilterColumnComboBox.getSelectedItem();
+        if (value == null) {
+            return;
+        }
+
+        String columnName = (String) value;
+        String pattern = songsFilterTextField.getText();
+        songsTableViewModel.setFilter(columnName, pattern);
     }
 
     private void setFrameOption() {
@@ -287,6 +299,19 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     }
 
     @Override
+    public void setViewModels(SongViewModel songViewModel) {
+        songsTable.setModel(songViewModel);
+        songsTableViewModel = songViewModel;
+
+        songsTable.setRowSorter(songsTableViewModel.getRowSorter());
+
+        songsFilterColumnComboBox.removeAllItems(); // for reloading
+        songsTableViewModel.getFilterableColumnList().forEach(songsFilterColumnComboBox::addItem);
+
+        TableUtil.resizeColumnWidth(songsTable, 40, 400, 10);
+    }
+
+    @Override
     public void showView() {
         setVisible(true);
     }
@@ -299,34 +324,6 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     @Override
     public void showErrorDialog(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    @Override
-    public void setSongsTableModel(TableModel tableModel) {
-        songsTable.setModel(tableModel);
-        TableUtil.resizeColumnWidth(songsTable, 40, 400, 10);
-    }
-
-    @Override
-    public void setSongsTableRowSorter(TableRowSorter<TableModel> tableRowSorter) {
-        songsTable.setRowSorter(tableRowSorter);
-    }
-
-    @Override
-    public void setSongsTableFilterColumnItems(List<String> items) {
-        songsFilterColumnComboBox.removeAllItems();
-        items.forEach(songsFilterColumnComboBox::addItem);
-    }
-
-    @Override
-    public String getSongsTableFilterColumn() {
-        Object value = songsFilterColumnComboBox.getSelectedItem();
-        return (value != null) ? (String) value : "";
-    }
-
-    @Override
-    public String getSongsTableFilterText() {
-        return songsFilterTextField.getText();
     }
 
     @Override
@@ -416,7 +413,7 @@ class DbManagerViewButtonListener implements ActionListener {
         } else if (source.equals(view.songsFilterResetButton)) {
             view.songsFilterTextField.setText("");
         } else if (source.equals(view.songsFilterColumnComboBox)) {
-            view.presenter.updateFilter();
+            view.updateSongFilter();
         } else if (source.equals(view.validateButton)) {
             view.presenter.validateDatabase();
         } else if (source.equals(view.checkRemoteButton)) {
@@ -436,6 +433,10 @@ class DbManagerViewDocumentListener implements DocumentListener {
         this.view = view;
     }
 
+    private void update() {
+        view.updateSongFilter();
+    }
+
     @Override
     public void insertUpdate(DocumentEvent e) {
         update();
@@ -448,10 +449,6 @@ class DbManagerViewDocumentListener implements DocumentListener {
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-    }
-
-    private void update() {
-        view.presenter.updateFilter();
     }
 }
 
