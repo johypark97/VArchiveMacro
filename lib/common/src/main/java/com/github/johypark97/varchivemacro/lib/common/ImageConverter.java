@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.common.image;
+package com.github.johypark97.varchivemacro.lib.common;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;

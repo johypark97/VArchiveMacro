@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.common.api;
 
-import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_general;
+import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_general;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
@@ -15,10 +15,6 @@ public interface StaticFetcher {
     void fetchSongs() throws IOException, InterruptedException;
 
     class RemoteSong {
-        public static class GsonListTypeToken extends TypeToken<List<RemoteSong>> {
-        }
-
-
         @Expose
         @SerializedName("title")
         public int id;
@@ -39,6 +35,9 @@ public interface StaticFetcher {
         public static List<RemoteSong> fromJson(String json) {
             Gson gson = newGsonBuilder_general().create();
             return gson.fromJson(json, new GsonListTypeToken());
+        }
+
+        public static class GsonListTypeToken extends TypeToken<List<RemoteSong>> {
         }
     }
 }

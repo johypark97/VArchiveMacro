@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.common.api.impl;
 
-import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_general;
+import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_general;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,6 +37,10 @@ class StaticFetcherImplTest {
     private HttpResponse<String> httpResponseMock;
 
     private StaticFetcherImpl staticFetcher;
+
+    private OngoingStubbing<HttpResponse<String>> stubHttpClientSend() throws Exception {
+        return when(httpClientMock.send(any(HttpRequest.class), eq(BodyHandlers.ofString())));
+    }
 
     @BeforeEach
     void setup() {
@@ -112,9 +116,5 @@ class StaticFetcherImplTest {
         stubHttpClientSend().thenThrow(new InterruptedException());
 
         assertThrows(InterruptedException.class, () -> staticFetcher.fetchSongs());
-    }
-
-    private OngoingStubbing<HttpResponse<String>> stubHttpClientSend() throws Exception {
-        return when(httpClientMock.send(any(HttpRequest.class), eq(BodyHandlers.ofString())));
     }
 }

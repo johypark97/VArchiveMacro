@@ -12,8 +12,6 @@ module varchivemacro.lib.common {
     requires org.bytedeco.leptonica.windows.x86_64;
     requires org.bytedeco.tesseract.windows.x86_64;
 
-    exports com.github.johypark97.varchivemacro.lib.common.api;
-
     exports com.github.johypark97.varchivemacro.lib.common.database.comparator;
     exports com.github.johypark97.varchivemacro.lib.common.database.datastruct;
     exports com.github.johypark97.varchivemacro.lib.common.database;
@@ -22,11 +20,11 @@ module varchivemacro.lib.common {
     exports com.github.johypark97.varchivemacro.lib.common.gui.util;
     exports com.github.johypark97.varchivemacro.lib.common.gui.viewmodel;
 
+    exports com.github.johypark97.varchivemacro.lib.common.api;
     exports com.github.johypark97.varchivemacro.lib.common.area;
-    exports com.github.johypark97.varchivemacro.lib.common.hook;
-    exports com.github.johypark97.varchivemacro.lib.common.image;
-    exports com.github.johypark97.varchivemacro.lib.common.json;
     exports com.github.johypark97.varchivemacro.lib.common.ocr;
     exports com.github.johypark97.varchivemacro.lib.common.protocol;
     exports com.github.johypark97.varchivemacro.lib.common.resource;
+
+    exports com.github.johypark97.varchivemacro.lib.common;
 }

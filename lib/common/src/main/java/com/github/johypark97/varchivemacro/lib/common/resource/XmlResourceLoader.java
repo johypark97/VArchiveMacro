@@ -12,8 +12,9 @@ public abstract class XmlResourceLoader {
     private static final String FORMAT_SUFFIX = ".xml";
     private static final String LOCALE_DELIMITER = "_";
 
-    protected Locale locale;
     public final String path;
+
+    protected Locale locale;
 
     public XmlResourceLoader(String path) {
         this.path = path;

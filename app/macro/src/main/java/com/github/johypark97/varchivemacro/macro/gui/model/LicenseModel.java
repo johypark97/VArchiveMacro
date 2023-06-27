@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
-import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_general;
+import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_general;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
 
 import com.github.johypark97.varchivemacro.macro.gui.model.datastruct.LicenseData;

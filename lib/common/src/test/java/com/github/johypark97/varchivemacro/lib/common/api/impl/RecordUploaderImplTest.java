@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.common.api.impl;
 
-import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_general;
+import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_general;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,6 +54,14 @@ class RecordUploaderImplTest {
     private RequestJson dummyRequestJson;
 
     private RecordUploaderImpl recordUploader;
+
+    private void stubDummyRequestData() {
+        when(dummyRequestJson.toJson()).thenReturn("");
+    }
+
+    private OngoingStubbing<HttpResponse<String>> stubHttpClientSend() throws Exception {
+        return when(httpClientMock.send(any(HttpRequest.class), eq(BodyHandlers.ofString())));
+    }
 
     @BeforeEach
     void setup() {
@@ -217,13 +225,5 @@ class RecordUploaderImplTest {
         stubHttpClientSend().thenThrow(new InterruptedException());
 
         assertThrows(InterruptedException.class, () -> recordUploader.upload(dummyRequestJson));
-    }
-
-    private void stubDummyRequestData() {
-        when(dummyRequestJson.toJson()).thenReturn("");
-    }
-
-    private OngoingStubbing<HttpResponse<String>> stubHttpClientSend() throws Exception {
-        return when(httpClientMock.send(any(HttpRequest.class), eq(BodyHandlers.ofString())));
     }
 }

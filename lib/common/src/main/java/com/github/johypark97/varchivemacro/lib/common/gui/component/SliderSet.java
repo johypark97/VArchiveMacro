@@ -14,6 +14,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class SliderSet {
+    private final Listener listener = new Listener();
+
     public final JLabel label = new JLabel();
     public final JSlider slider = new JSlider();
     public final JTextField textField = new JTextField();
@@ -25,9 +27,6 @@ public class SliderSet {
     private int limitMax;
     private int limitMin;
     private int value = 0;
-
-    // event listener
-    private final Listener listener = new Listener();
 
     public SliderSet() {
         slider.addChangeListener(listener);

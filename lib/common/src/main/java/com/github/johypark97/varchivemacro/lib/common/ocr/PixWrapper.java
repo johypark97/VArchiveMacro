@@ -232,6 +232,38 @@ public class PixWrapper implements AutoCloseable {
         }
     }
 
+    // ---------------------------
+    // -------- Utilities --------
+    // ---------------------------
+
+    public float getGrayRatio(int factor, int threshold) throws PixError {
+        float black;
+        float sum = 0;
+        float[] histogram = getGrayHistogram(factor);
+
+        int length = histogram.length;
+        int limit = Math.min(length, threshold);
+        for (int i = 0; i < limit; ++i) {
+            sum += histogram[i];
+        }
+        black = sum;
+        for (int i = limit; i < length; ++i) {
+            sum += histogram[i];
+        }
+
+        return black / sum;
+    }
+
+    // ----------------------------------------------
+    // -------- Image processing - protected --------
+    // ----------------------------------------------
+
+    protected PixError copyToPixInstance(PIX pix) {
+        return (leptonica.pixCopy(pixInstance, pix) == null)
+                ? new PixError("Error: pixCopy()")
+                : null;
+    }
+
     protected SEL createSel(List<List<Integer>> kernel) throws PixError {
         int height = kernel.size();
         int width = kernel.stream().map(List::size).min(Integer::compareTo).orElse(0);
@@ -254,38 +286,6 @@ public class PixWrapper implements AutoCloseable {
         }
 
         return sel;
-    }
-
-    // ----------------------------------------------
-    // -------- Image processing - protected --------
-    // ----------------------------------------------
-
-    protected PixError copyToPixInstance(PIX pix) {
-        return (leptonica.pixCopy(pixInstance, pix) == null)
-                ? new PixError("Error: pixCopy()")
-                : null;
-    }
-
-    // ---------------------------
-    // -------- Utilities --------
-    // ---------------------------
-
-    public float getGrayRatio(int factor, int threshold) throws PixError {
-        float black;
-        float sum = 0;
-        float[] histogram = getGrayHistogram(factor);
-
-        int length = histogram.length;
-        int limit = Math.min(length, threshold);
-        for (int i = 0; i < limit; ++i) {
-            sum += histogram[i];
-        }
-        black = sum;
-        for (int i = limit; i < length; ++i) {
-            sum += histogram[i];
-        }
-
-        return black / sum;
     }
 
     // ----------------------------

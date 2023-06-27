@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
+import com.github.johypark97.varchivemacro.lib.common.HookWrapper;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.lib.common.hook.HookWrapper;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.backend.BackendEvent;
 import com.github.johypark97.varchivemacro.macro.core.backend.IBackend;

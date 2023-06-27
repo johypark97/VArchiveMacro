@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.common.database.comparator;
 
-import static com.github.johypark97.varchivemacro.lib.common.json.GsonWrapper.newGsonBuilder_dump;
+import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_dump;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.fail;

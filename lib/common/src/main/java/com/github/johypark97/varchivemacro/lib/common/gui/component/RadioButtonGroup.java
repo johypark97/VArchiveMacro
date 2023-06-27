@@ -26,13 +26,6 @@ public class RadioButtonGroup<T> {
         return button;
     }
 
-    public void setSelected(T key) {
-        JRadioButton button = buttons.get(key);
-        if (button != null) {
-            button.setSelected(true);
-        }
-    }
-
     public T getSelected() {
         for (Entry<T, JRadioButton> entry : buttons.entrySet()) {
             if (entry.getValue().isSelected()) {
@@ -41,5 +34,12 @@ public class RadioButtonGroup<T> {
         }
 
         return null;
+    }
+
+    public void setSelected(T key) {
+        JRadioButton button = buttons.get(key);
+        if (button != null) {
+            button.setSelected(true);
+        }
     }
 }
