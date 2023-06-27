@@ -13,13 +13,10 @@ plugins {
 
     // id("com.github.johnrengelman.shadow") version "7.1.2"
     id("edu.sc.seis.launch4j") version "2.5.4"
-    id("org.bytedeco.gradle-javacpp-platform") version "1.5.8"
 }
 
 dependencies {
     implementation(project(":lib:common"))
-
-    implementation("org.bytedeco:tesseract-platform:5.2.0-1.5.8")
 }
 
 application {

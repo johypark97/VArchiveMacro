@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
-import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;

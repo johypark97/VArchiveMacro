@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.core.scanner.collection;
+package com.github.johypark97.varchivemacro.lib.common.area;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;

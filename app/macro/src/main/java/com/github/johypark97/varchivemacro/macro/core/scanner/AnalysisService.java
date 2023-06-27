@@ -1,12 +1,13 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
+import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
+import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
+import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
+import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
-import com.github.johypark97.varchivemacro.macro.core.ocr.OcrInitializationError;
-import com.github.johypark97.varchivemacro.macro.core.ocr.OcrWrapper;
-import com.github.johypark97.varchivemacro.macro.core.ocr.PixError;
-import com.github.johypark97.varchivemacro.macro.core.ocr.PixWrapper;
-import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
+import com.github.johypark97.varchivemacro.macro.core.ScannerOcr;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultTaskManager.DefaultAnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.AnalyzedData;
@@ -47,7 +48,7 @@ public class AnalysisService {
 
     public void execute(TaskManager taskManager) {
         executor.execute(() -> {
-            try (OcrWrapper ocr = new OcrWrapper()) {
+            try (OcrWrapper ocr = new ScannerOcr()) {
                 List<TaskData> queue = new LinkedList<>();
                 for (TaskData task : taskManager) {
                     if (!task.hasException() && task.isValid()) {

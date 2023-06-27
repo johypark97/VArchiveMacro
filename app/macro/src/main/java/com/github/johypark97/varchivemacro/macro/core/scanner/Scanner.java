@@ -1,7 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
+import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
+import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.Button;
@@ -9,9 +12,6 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
-import com.github.johypark97.varchivemacro.macro.core.ocr.PixError;
-import com.github.johypark97.varchivemacro.macro.core.ocr.PixWrapper;
-import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultImageCacheManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultResultManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultTaskManager;

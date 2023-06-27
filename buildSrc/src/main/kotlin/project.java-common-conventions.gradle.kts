@@ -1,7 +1,12 @@
 import com.github.spotbugs.snom.SpotBugsTask
 
+val javacppPlatform by extra("windows-x86_64")
+
 plugins {
     java
+
+    // gradle-javacpp-platform
+    id("org.bytedeco.gradle-javacpp-platform")
 
     // Static analysis tools
     pmd

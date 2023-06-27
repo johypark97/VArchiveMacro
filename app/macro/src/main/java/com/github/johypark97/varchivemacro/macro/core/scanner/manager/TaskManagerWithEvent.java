@@ -1,10 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
-import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Event.Type;
 import com.google.common.collect.Table.Cell;

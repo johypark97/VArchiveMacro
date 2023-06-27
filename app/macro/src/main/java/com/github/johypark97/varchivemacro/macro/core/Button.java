@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core;
 
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
-import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.EnumBiMap;
 import com.google.common.collect.ImmutableBiMap;

@@ -1,11 +1,12 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.image.ImageConverter;
-import com.github.johypark97.varchivemacro.macro.core.ocr.OcrWrapper;
-import com.github.johypark97.varchivemacro.macro.core.ocr.PixWrapper;
-import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionArea;
-import com.github.johypark97.varchivemacro.macro.core.scanner.collection.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
+import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.macro.core.ScannerOcr;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
@@ -108,7 +109,7 @@ public class SafeCaptureService implements CaptureService {
     @Override
     public void execute(TaskManager taskManager, Map<String, List<LocalSong>> tabSongMap) {
         executor.execute(() -> {
-            try (OcrWrapper ocr = new OcrWrapper()) {
+            try (OcrWrapper ocr = new ScannerOcr()) {
                 ocr.setWhitelist(
                         " !#$%&'(),-./012345789:?ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~"
                                 + QUOTE_UNICODE);
