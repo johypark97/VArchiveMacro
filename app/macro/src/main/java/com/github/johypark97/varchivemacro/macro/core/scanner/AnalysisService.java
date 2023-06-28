@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
+import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
@@ -82,9 +83,7 @@ public class AnalysisService {
             CollectionArea area = task.getCollectionArea();
 
             // -------- preprocessing --------
-            pix.convertRGBToLuminance();
-            pix.gammaTRC(0.2f, 0, 255);
-            pix.invert();
+            PixPreprocessor.preprocessCell(pix);
 
             // -------- analyze records --------
             for (Button button : Button.values()) {

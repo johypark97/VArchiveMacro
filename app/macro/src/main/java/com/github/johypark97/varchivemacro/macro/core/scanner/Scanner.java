@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
+import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
