@@ -3,8 +3,8 @@ package com.github.johypark97.varchivemacro.lib.common.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.github.johypark97.varchivemacro.lib.common.api.Api.Button;
-import com.github.johypark97.varchivemacro.lib.common.api.Api.Pattern;
+import com.github.johypark97.varchivemacro.lib.common.Enums.Button;
+import com.github.johypark97.varchivemacro.lib.common.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestJson;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

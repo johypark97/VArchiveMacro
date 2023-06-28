@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
+import com.github.johypark97.varchivemacro.lib.common.Enums;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
@@ -89,8 +90,8 @@ public class AnalysisService {
             for (Button button : Button.values()) {
                 for (Pattern pattern : Pattern.values()) {
                     AnalyzedData data;
-                    CollectionArea.Button b = button.toCollectionArea();
-                    CollectionArea.Pattern p = pattern.toCollectionArea();
+                    Enums.Button b = button.toLib();
+                    Enums.Pattern p = pattern.toLib();
 
                     try (PixWrapper recordPix = pix.crop(area.getRate(b, p))) {
                         // test whether the image contains enough black pixels using the histogram.

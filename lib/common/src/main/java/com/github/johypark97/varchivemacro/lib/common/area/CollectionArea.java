@@ -1,5 +1,7 @@
 package com.github.johypark97.varchivemacro.lib.common.area;
 
+import com.github.johypark97.varchivemacro.lib.common.Enums.Button;
+import com.github.johypark97.varchivemacro.lib.common.Enums.Pattern;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -21,44 +23,14 @@ public interface CollectionArea {
     enum Section {
         COUNT(0), SCORE(1), RATE(2), COMBO(3);
 
-        private final int value;
+        private final int weight;
 
-        Section(int i) {
-            value = i;
+        Section(int w) {
+            weight = w;
         }
 
-        public int getValue() {
-            return value;
-        }
-    }
-
-
-    enum Button {
-        _4(0), _5(1), _6(2), _8(3);
-
-        private final int value;
-
-        Button(int i) {
-            value = i;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
-
-    enum Pattern {
-        NM(0), HD(1), MX(2), SC(3);
-
-        private final int value;
-
-        Pattern(int i) {
-            value = i;
-        }
-
-        public int getValue() {
-            return value;
+        public int getWeight() {
+            return weight;
         }
     }
 }

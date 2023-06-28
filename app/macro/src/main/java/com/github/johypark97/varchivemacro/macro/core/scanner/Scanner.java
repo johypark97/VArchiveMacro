@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
+import com.github.johypark97.varchivemacro.lib.common.Enums;
 import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
@@ -278,8 +279,8 @@ public class Scanner implements Observable<Event>, TaskDataProvider {
         for (Button button : Button.values()) {
             for (Pattern pattern : Pattern.values()) {
                 AnalyzedData analyzedData = task.getAnalyzedData(button, pattern);
-                CollectionArea.Button b = button.toCollectionArea();
-                CollectionArea.Pattern p = pattern.toCollectionArea();
+                Enums.Button b = button.toLib();
+                Enums.Pattern p = pattern.toLib();
 
                 if (analyzedData != null) {
                     RecordData recordData = new RecordData();

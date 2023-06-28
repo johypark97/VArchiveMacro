@@ -1,13 +1,12 @@
 package com.github.johypark97.varchivemacro.macro.core;
 
-import com.github.johypark97.varchivemacro.lib.common.api.Api;
-import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.EnumBiMap;
-import com.google.common.collect.ImmutableBiMap;
+import com.github.johypark97.varchivemacro.lib.common.Enums;
+import com.google.common.base.Converter;
 
 public enum Pattern {
     NM(0, "NORMAL", "NM"), HD(1, "HARD", "HD"), MX(2, "MAXIMUM", "MX"), SC(3, "SC", "SC");
+
+    private static final PatternConverter converter = new PatternConverter();
 
     private final String fullName;
     private final String shortName;
@@ -19,12 +18,8 @@ public enum Pattern {
         weight = w;
     }
 
-    public static Pattern valueOf(Api.Pattern pattern) {
-        return Converter.API_MAP.inverse().get(pattern);
-    }
-
-    public static Pattern valueOf(CollectionArea.Pattern pattern) {
-        return Converter.COLLECTION_AREA_MAP.inverse().get(pattern);
+    public static Pattern valueOf(Enums.Pattern pattern) {
+        return converter.reverse().convert(pattern);
     }
 
     public String getShortName() {
@@ -35,12 +30,8 @@ public enum Pattern {
         return weight;
     }
 
-    public Api.Pattern toApi() {
-        return Converter.API_MAP.get(this);
-    }
-
-    public CollectionArea.Pattern toCollectionArea() {
-        return Converter.COLLECTION_AREA_MAP.get(this);
+    public Enums.Pattern toLib() {
+        return converter.convert(this);
     }
 
     @Override
@@ -48,25 +39,35 @@ public enum Pattern {
         return fullName;
     }
 
-    public static class Converter {
-        public static final ImmutableBiMap<Pattern, Api.Pattern> API_MAP;
-        public static final ImmutableBiMap<Pattern, CollectionArea.Pattern> COLLECTION_AREA_MAP;
+    public static class PatternConverter extends Converter<Pattern, Enums.Pattern> {
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
 
-        static {
-            BiMap<Pattern, Api.Pattern> apiMap = EnumBiMap.create(Pattern.class, Api.Pattern.class);
-            apiMap.put(NM, Api.Pattern.NM);
-            apiMap.put(HD, Api.Pattern.HD);
-            apiMap.put(MX, Api.Pattern.MX);
-            apiMap.put(SC, Api.Pattern.SC);
-            API_MAP = ImmutableBiMap.copyOf(apiMap);
+        @Override
+        protected Enums.Pattern doForward(Pattern pattern) {
+            return switch (pattern) {
+                case NM -> Enums.Pattern.NM;
+                case HD -> Enums.Pattern.HD;
+                case MX -> Enums.Pattern.MX;
+                case SC -> Enums.Pattern.SC;
+            };
+        }
 
-            BiMap<Pattern, CollectionArea.Pattern> collectionAreaMap =
-                    EnumBiMap.create(Pattern.class, CollectionArea.Pattern.class);
-            collectionAreaMap.put(NM, CollectionArea.Pattern.NM);
-            collectionAreaMap.put(HD, CollectionArea.Pattern.HD);
-            collectionAreaMap.put(MX, CollectionArea.Pattern.MX);
-            collectionAreaMap.put(SC, CollectionArea.Pattern.SC);
-            COLLECTION_AREA_MAP = ImmutableBiMap.copyOf(collectionAreaMap);
+        @Override
+        protected Pattern doBackward(Enums.Pattern pattern) {
+            return switch (pattern) {
+                case NM -> NM;
+                case HD -> HD;
+                case MX -> MX;
+                case SC -> SC;
+            };
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            return super.equals(object);
         }
     }
 }

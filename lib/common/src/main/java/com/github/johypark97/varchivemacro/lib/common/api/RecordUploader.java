@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.lib.common.api;
 
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_general;
 
-import com.github.johypark97.varchivemacro.lib.common.api.Api.Button;
-import com.github.johypark97.varchivemacro.lib.common.api.Api.Pattern;
+import com.github.johypark97.varchivemacro.lib.common.Enums.Button;
+import com.github.johypark97.varchivemacro.lib.common.Enums.Pattern;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -59,7 +59,7 @@ public interface RecordUploader {
             }
 
             this.title = title;
-            this.button = button.getValue();
+            this.button = button.toInt();
             this.pattern = pattern.toString();
             this.rate = rate;
             this.maxCombo = (maxCombo || rate == 100.0f) ? 1 : 0;

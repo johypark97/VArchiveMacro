@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.lib.common.api.impl;
 
+import com.github.johypark97.varchivemacro.lib.common.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Board;
-import com.github.johypark97.varchivemacro.lib.common.api.Api.Button;
 import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher;
 import java.io.IOException;

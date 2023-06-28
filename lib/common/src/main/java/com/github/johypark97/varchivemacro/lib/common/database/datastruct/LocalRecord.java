@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.lib.common.database.datastruct;
 
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_dump;
 
-import com.github.johypark97.varchivemacro.lib.common.api.Api.Button;
-import com.github.johypark97.varchivemacro.lib.common.api.Api.Pattern;
+import com.github.johypark97.varchivemacro.lib.common.Enums.Button;
+import com.github.johypark97.varchivemacro.lib.common.Enums.Pattern;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;

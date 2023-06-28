@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core;
 
-import com.github.johypark97.varchivemacro.lib.common.api.Api;
+import com.github.johypark97.varchivemacro.lib.common.Enums;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultDlcSongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultRecordManager;
 import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
@@ -96,17 +96,17 @@ public class SongRecordManager implements ISongRecordManager {
     }
 
     @Override
-    public LocalRecord getRecord(int id, Api.Button button, Api.Pattern pattern) {
+    public LocalRecord getRecord(int id, Enums.Button button, Enums.Pattern pattern) {
         return recordManager.getRecord(id, button, pattern);
     }
 
     @Override
-    public Map<Api.Pattern, LocalRecord> getRecord(int id, Api.Button button) {
+    public Map<Enums.Pattern, LocalRecord> getRecord(int id, Enums.Button button) {
         return recordManager.getRecord(id, button);
     }
 
     @Override
-    public Map<Api.Button, Map<Api.Pattern, LocalRecord>> getRecord(int id) {
+    public Map<Enums.Button, Map<Enums.Pattern, LocalRecord>> getRecord(int id) {
         return recordManager.getRecord(id);
     }
 

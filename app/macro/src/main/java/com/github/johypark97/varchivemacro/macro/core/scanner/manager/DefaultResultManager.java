@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
-import com.github.johypark97.varchivemacro.lib.common.api.Api;
+import com.github.johypark97.varchivemacro.lib.common.Enums;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
@@ -127,8 +127,8 @@ public class DefaultResultManager implements ResultManager, Observable<Event>, R
                     continue;
                 }
 
-                Api.Button button = cell.getRowKey().toApi();
-                Api.Pattern pattern = cell.getColumnKey().toApi();
+                Enums.Button button = cell.getRowKey().toLib();
+                Enums.Pattern pattern = cell.getColumnKey().toLib();
                 boolean maxCombo = analyzedData.isMaxCombo();
 
                 LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);

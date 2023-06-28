@@ -1,70 +1,71 @@
 package com.github.johypark97.varchivemacro.macro.core;
 
-import com.github.johypark97.varchivemacro.lib.common.api.Api;
-import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.EnumBiMap;
-import com.google.common.collect.ImmutableBiMap;
+import com.github.johypark97.varchivemacro.lib.common.Enums;
+import com.google.common.base.Converter;
 
 public enum Button {
     _4(0, 4), _5(1, 5), _6(2, 6), _8(3, 8);
 
-    private final int value;
+    private static final ButtonConverter converter = new ButtonConverter();
+
+    private final int integer;
     private final int weight;
 
-    Button(int w, int v) {
-        value = v;
+    Button(int w, int i) {
+        integer = i;
         weight = w;
     }
 
-    public static Button valueOf(Api.Button button) {
-        return Converter.API_MAP.inverse().get(button);
-    }
-
-    public static Button valueOf(CollectionArea.Button button) {
-        return Converter.COLLECTION_AREA_MAP.inverse().get(button);
-    }
-
-    public int getValue() {
-        return value;
+    public static Button valueOf(Enums.Button button) {
+        return converter.reverse().convert(button);
     }
 
     public int getWeight() {
         return weight;
     }
 
-    public Api.Button toApi() {
-        return Converter.API_MAP.get(this);
+    public Enums.Button toLib() {
+        return converter.convert(this);
     }
 
-    public CollectionArea.Button toCollectionArea() {
-        return Converter.COLLECTION_AREA_MAP.get(this);
+    public int toInt() {
+        return integer;
     }
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        return String.valueOf(integer);
     }
 
-    public static class Converter {
-        public static final ImmutableBiMap<Button, Api.Button> API_MAP;
-        public static final ImmutableBiMap<Button, CollectionArea.Button> COLLECTION_AREA_MAP;
+    public static class ButtonConverter extends Converter<Button, Enums.Button> {
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
 
-        static {
-            BiMap<Button, Api.Button> apiMap = EnumBiMap.create(Button.class, Api.Button.class);
-            apiMap.put(_4, Api.Button._4);
-            apiMap.put(_5, Api.Button._5);
-            apiMap.put(_6, Api.Button._6);
-            apiMap.put(_8, Api.Button._8);
-            API_MAP = ImmutableBiMap.copyOf(apiMap);
+        @Override
+        protected Enums.Button doForward(Button button) {
+            return switch (button) {
+                case _4 -> Enums.Button._4;
+                case _5 -> Enums.Button._5;
+                case _6 -> Enums.Button._6;
+                case _8 -> Enums.Button._8;
+            };
+        }
 
-            BiMap<Button, CollectionArea.Button> collectionAreaMap =
-                    EnumBiMap.create(Button.class, CollectionArea.Button.class);
-            collectionAreaMap.put(_4, CollectionArea.Button._4);
-            collectionAreaMap.put(_5, CollectionArea.Button._5);
-            collectionAreaMap.put(_6, CollectionArea.Button._6);
-            collectionAreaMap.put(_8, CollectionArea.Button._8);
-            COLLECTION_AREA_MAP = ImmutableBiMap.copyOf(collectionAreaMap);
+        @Override
+        protected Button doBackward(Enums.Button button) {
+            return switch (button) {
+                case _4 -> _4;
+                case _5 -> _5;
+                case _6 -> _6;
+                case _8 -> _8;
+            };
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            return super.equals(object);
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.github.johypark97.varchivemacro.lib.common.area;
 
+import com.github.johypark97.varchivemacro.lib.common.Enums.Button;
+import com.github.johypark97.varchivemacro.lib.common.Enums.Pattern;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -20,14 +22,14 @@ class CollectionAreaFHD extends AbstractCollectionArea {
 
     private Point getAnchor(Section section, Button button, Pattern pattern) {
         int x = ANCHOR.x;
-        // x += NEXT_SECTION.width * section.getValue();
-        x += NEXT_BUTTON.width * button.getValue();
-        // x += NEXT_PATTERN.width * pattern.getValue();
+        // x += NEXT_SECTION.width * section.getWeight();
+        x += NEXT_BUTTON.width * button.getWeight();
+        // x += NEXT_PATTERN.width * pattern.getWeight();
 
         int y = ANCHOR.y;
-        y += NEXT_SECTION.height * section.getValue();
-        // y += NEXT_BUTTON.height * button.getValue();
-        y += NEXT_PATTERN.height * pattern.getValue();
+        y += NEXT_SECTION.height * section.getWeight();
+        // y += NEXT_BUTTON.height * button.getWeight();
+        y += NEXT_PATTERN.height * pattern.getWeight();
 
         return new Point(x, y);
     }

@@ -8,8 +8,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
+import com.github.johypark97.varchivemacro.lib.common.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Board;
-import com.github.johypark97.varchivemacro.lib.common.api.Api.Button;
 import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher.FailureJson;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher.SuccessJson;
