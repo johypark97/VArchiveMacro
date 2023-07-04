@@ -2,7 +2,11 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.view;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Presenter;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.View;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.CacheGeneratorConfig;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModel;
+import com.github.johypark97.varchivemacro.lib.common.gui.component.GrowBoxCreator;
+import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
+import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.TableUtil;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -66,6 +70,10 @@ public class DbManagerView extends JFrame implements View, WindowListener {
 
     private JTextArea remoteCheckerTextArea;
     protected JButton checkRemoteButton;
+
+    private transient Path cacheGeneratorDir;
+    private transient SliderSet captureDelaySliderSet;
+    private transient SliderSet inputDurationSliderSet;
 
     // event listeners
     private transient final ActionListener buttonListener = new DbManagerViewButtonListener(this);
@@ -141,6 +149,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
             tabbedPane.addTab("Viewer", createTabViewer());
             tabbedPane.addTab("Validator", createTabValidator());
             tabbedPane.addTab("Remote Checker", createTabRemoteChecker());
+            tabbedPane.addTab("Cache Generator", createTabCacheGenerator());
         }
         panel.add(tabbedPane, BorderLayout.CENTER);
 
@@ -293,6 +302,79 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         return panel;
     }
 
+    private Component createTabCacheGenerator() {
+        GrowBoxCreator growBoxCreator = new GrowBoxCreator();
+
+        Box pathBox = Box.createHorizontalBox();
+        {
+            pathBox.add(new JLabel("CacheDir : "));
+
+            cacheGeneratorDir = new CacheGeneratorConfig().cacheDir;
+
+            JTextField cacheGeneratorDirTextField = new JTextField(cacheGeneratorDir.toString());
+            cacheGeneratorDirTextField.setBackground(Color.WHITE);
+            cacheGeneratorDirTextField.setEditable(false);
+            pathBox.add(cacheGeneratorDirTextField);
+
+            JButton cacheGeneratorDirSelectButton = new JButton("Select");
+            cacheGeneratorDirSelectButton.setEnabled(false);
+            pathBox.add(cacheGeneratorDirSelectButton);
+        }
+        growBoxCreator.add(pathBox);
+
+        Box captureDelayBox = Box.createHorizontalBox();
+        {
+            captureDelaySliderSet = new SliderSet();
+            captureDelaySliderSet.setDefault(new CacheGeneratorConfig().captureDelay);
+            captureDelaySliderSet.setLimitMax(1000);
+            captureDelaySliderSet.setLimitMin(0);
+
+            captureDelaySliderSet.label.setText("CaptureDelay : ");
+            captureDelayBox.add(captureDelaySliderSet.label);
+
+            captureDelaySliderSet.slider.setMajorTickSpacing(100);
+            captureDelaySliderSet.slider.setMaximum(500);
+            captureDelaySliderSet.slider.setMinimum(0);
+            captureDelaySliderSet.slider.setMinorTickSpacing(50);
+            captureDelaySliderSet.slider.setPaintLabels(true);
+            captureDelaySliderSet.slider.setPaintTicks(true);
+            captureDelaySliderSet.setValue(new CacheGeneratorConfig().captureDelay);
+            captureDelayBox.add(captureDelaySliderSet.slider);
+
+            captureDelaySliderSet.textField.setColumns(8);
+            ComponentSize.preventExpand(captureDelaySliderSet.textField);
+            captureDelayBox.add(captureDelaySliderSet.textField);
+        }
+        growBoxCreator.add(captureDelayBox);
+
+        Box inputDurationBox = Box.createHorizontalBox();
+        {
+            inputDurationSliderSet = new SliderSet();
+            inputDurationSliderSet.setDefault(new CacheGeneratorConfig().inputDuration);
+            inputDurationSliderSet.setLimitMax(100);
+            inputDurationSliderSet.setLimitMin(0);
+
+            inputDurationSliderSet.label.setText("InputDuration : ");
+            inputDurationBox.add(inputDurationSliderSet.label);
+
+            inputDurationSliderSet.slider.setMajorTickSpacing(20);
+            inputDurationSliderSet.slider.setMaximum(100);
+            inputDurationSliderSet.slider.setMinimum(0);
+            inputDurationSliderSet.slider.setMinorTickSpacing(10);
+            inputDurationSliderSet.slider.setPaintLabels(true);
+            inputDurationSliderSet.slider.setPaintTicks(true);
+            inputDurationSliderSet.setValue(new CacheGeneratorConfig().inputDuration);
+            inputDurationBox.add(inputDurationSliderSet.slider);
+
+            inputDurationSliderSet.textField.setColumns(8);
+            ComponentSize.preventExpand(inputDurationSliderSet.textField);
+            inputDurationBox.add(inputDurationSliderSet.textField);
+        }
+        growBoxCreator.add(inputDurationBox);
+
+        return growBoxCreator.create();
+    }
+
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
@@ -339,7 +421,19 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     }
 
     @Override
+    public CacheGeneratorConfig getCacheGeneratorConfig() {
+        CacheGeneratorConfig config = new CacheGeneratorConfig();
+
+        config.cacheDir = cacheGeneratorDir;
+        config.captureDelay = captureDelaySliderSet.getValue();
+        config.inputDuration = inputDurationSliderSet.getValue();
+
+        return config;
+    }
+
+    @Override
     public void windowOpened(WindowEvent e) {
+        presenter.viewOpened();
     }
 
     @Override
