@@ -1,0 +1,37 @@
+{
+  "titleChars": " !#$%&'(),-./012345789:?ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~’",
+  "shortTitles": [
+    { // sO mUCH iN LUV ~Melodic Twisted Mix~
+      "id": 211,
+      "value": "sO mUCH iN LUV ~Melodic Twisted"
+    },
+    { // Your Own Miracle ~Disco House Mix~
+      "id": 220,
+      "value": "Your Own Miracle ~Disco House Mix"
+    },
+    { // SuperSonic ~Mr.Funky Dirty Planet Remix~
+      "id": 405,
+      "value": "SuperSonic ~Mr.Funky Dirty Planet R"
+    },
+    { // 공성전 ~Pierre Blanche, Yonce Remix~
+      "id": 420,
+      "value": "공성전 ~Pierre Blanche, Yonce Remix"
+    },
+    { // 카트라이더 Mashup ~Cosmograph Remix~
+      "id": 429,
+      "value": "카트라이더 Mashup ~Cosmograph Re"
+    },
+    { // 카트라이더 Mashup ~Pure 100% Remix~
+      "id": 430,
+      "value": "카트라이더 Mashup ~Pure 100% Remi"
+    },
+    { // 카트라이더, 크레이지아케이드, 버블파이터 Main theme ~CHUCK Remix~
+      "id": 431,
+      "value": "카트라이더, 크레이지아케이드, 버블파"
+    },
+    { // The Raindrop Flower ~jam-jam Remix~
+      "id": 440,
+      "value": "The Raindrop Flower ~jam-jam Remix"
+    }
+  ]
+}
