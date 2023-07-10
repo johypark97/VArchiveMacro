@@ -53,6 +53,7 @@ pmd {
 }
 
 spotbugs {
+    excludeFilter.set(file("$rootDir/buildSrc/config/spotbugs/exclude.xml"))
     ignoreFailures.set(false)
     toolVersion.set("4.7.3")
 }
