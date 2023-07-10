@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.view;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Presenter;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.View;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.CacheGeneratorConfig;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModel;
 import com.github.johypark97.varchivemacro.lib.common.gui.component.GrowBoxCreator;
 import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
@@ -74,6 +75,10 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     private transient Path cacheGeneratorDir;
     private transient SliderSet captureDelaySliderSet;
     private transient SliderSet inputDurationSliderSet;
+
+    private transient Path groundTruthGeneratorInputDir;
+    private transient Path groundTruthGeneratorOutputDir;
+    protected JButton generateGroundTruthButton;
 
     // event listeners
     private transient final ActionListener buttonListener = new DbManagerViewButtonListener(this);
@@ -150,6 +155,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
             tabbedPane.addTab("Validator", createTabValidator());
             tabbedPane.addTab("Remote Checker", createTabRemoteChecker());
             tabbedPane.addTab("Cache Generator", createTabCacheGenerator());
+            tabbedPane.addTab("Ground Truth Generator", createTabGroundTruthGenerator());
         }
         panel.add(tabbedPane, BorderLayout.CENTER);
 
@@ -375,6 +381,58 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         return growBoxCreator.create();
     }
 
+    private Component createTabGroundTruthGenerator() {
+        GrowBoxCreator growBoxCreator = new GrowBoxCreator();
+
+        Box inputDirBox = Box.createHorizontalBox();
+        {
+            inputDirBox.add(new JLabel("input : "));
+
+            groundTruthGeneratorInputDir = new GroundTruthGeneratorConfig().inputDir;
+
+            JTextField textField = new JTextField(groundTruthGeneratorInputDir.toString());
+            textField.setBackground(Color.WHITE);
+            textField.setEditable(false);
+            inputDirBox.add(textField);
+
+            JButton button = new JButton("Select");
+            button.setEnabled(false);
+            inputDirBox.add(button);
+        }
+        growBoxCreator.add(inputDirBox);
+
+        Box outputDirBox = Box.createHorizontalBox();
+        {
+            outputDirBox.add(new JLabel("output : "));
+
+            groundTruthGeneratorOutputDir = new GroundTruthGeneratorConfig().outputDir;
+
+            JTextField textField = new JTextField(groundTruthGeneratorOutputDir.toString());
+            textField.setBackground(Color.WHITE);
+            textField.setEditable(false);
+            outputDirBox.add(textField);
+
+            JButton button = new JButton("Select");
+            button.setEnabled(false);
+            outputDirBox.add(button);
+        }
+        growBoxCreator.add(outputDirBox);
+
+        Box buttonBox = Box.createHorizontalBox();
+        {
+            buttonBox.add(Box.createHorizontalGlue());
+
+            generateGroundTruthButton = new JButton("generate");
+            generateGroundTruthButton.addActionListener(buttonListener);
+            buttonBox.add(generateGroundTruthButton);
+
+            buttonBox.add(Box.createHorizontalGlue());
+        }
+        growBoxCreator.add(buttonBox);
+
+        return growBoxCreator.create();
+    }
+
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
@@ -404,6 +462,11 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     }
 
     @Override
+    public void showMessageDialog(String message) {
+        JOptionPane.showMessageDialog(this, message, "Message", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
     public void showErrorDialog(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -427,6 +490,16 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         config.cacheDir = cacheGeneratorDir;
         config.captureDelay = captureDelaySliderSet.getValue();
         config.inputDuration = inputDurationSliderSet.getValue();
+
+        return config;
+    }
+
+    @Override
+    public GroundTruthGeneratorConfig getGroundTruthGeneratorConfig() {
+        GroundTruthGeneratorConfig config = new GroundTruthGeneratorConfig();
+
+        config.inputDir = groundTruthGeneratorInputDir;
+        config.outputDir = groundTruthGeneratorOutputDir;
 
         return config;
     }
@@ -512,6 +585,8 @@ class DbManagerViewButtonListener implements ActionListener {
             view.presenter.validateDatabase();
         } else if (source.equals(view.checkRemoteButton)) {
             view.presenter.checkRemote();
+        } else if (source.equals(view.generateGroundTruthButton)) {
+            view.presenter.generateGroundTruth();
         } else {
             // TODO: Remove println after completing the view.
             System.out.println(source); // NOPMD

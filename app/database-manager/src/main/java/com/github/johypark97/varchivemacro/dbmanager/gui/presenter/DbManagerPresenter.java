@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Pr
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.View;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.CacheCaptureTask;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.DatabaseValidator;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.GroundTruthGenerateTask;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.RemoteValidator;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.TaskRunner;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.DefaultSongViewModel;
@@ -19,6 +20,8 @@ import java.security.GeneralSecurityException;
 import java.util.concurrent.Callable;
 
 public class DbManagerPresenter implements Presenter {
+    private static final String SONG_MODEL_NOT_LOADED_MESSAGE = "The song model is not loaded";
+
     // task runner
     private final TaskRunner taskRunner;
 
@@ -35,7 +38,7 @@ public class DbManagerPresenter implements Presenter {
         taskRunner = new TaskRunner((e) -> {
             e.printStackTrace(); // NOPMD
             return null;
-        });
+        }, () -> view.showMessageDialog("done"));
     }
 
     public void setModels(SongModel songModel) {
@@ -89,7 +92,7 @@ public class DbManagerPresenter implements Presenter {
                 if (nativeEvent.getKeyCode() == NativeKeyEvent.VC_HOME) {
                     if (ctrl && !alt && !shift) {
                         if (!songModel.isLoaded()) {
-                            view.showErrorDialog("The song model is not loaded");
+                            view.showErrorDialog(SONG_MODEL_NOT_LOADED_MESSAGE);
                             return;
                         }
 
@@ -181,5 +184,19 @@ public class DbManagerPresenter implements Presenter {
             view.showErrorDialog(e.getMessage());
         } catch (InterruptedException ignored) {
         }
+    }
+
+    @Override
+    public void generateGroundTruth() {
+        if (!songModel.isLoaded()) {
+            view.showErrorDialog(SONG_MODEL_NOT_LOADED_MESSAGE);
+            return;
+        }
+
+        GroundTruthGenerateTask task = new GroundTruthGenerateTask();
+        task.setConfig(view.getGroundTruthGeneratorConfig());
+        task.setSongModel(songModel);
+
+        runTask(task);
     }
 }

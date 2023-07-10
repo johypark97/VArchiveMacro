@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.presenter;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.CacheGeneratorConfig;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModel;
 
 public interface IDbManager {
@@ -16,6 +17,8 @@ public interface IDbManager {
         void validateDatabase();
 
         void checkRemote();
+
+        void generateGroundTruth();
     }
 
 
@@ -28,6 +31,8 @@ public interface IDbManager {
 
         void disposeView();
 
+        void showMessageDialog(String message);
+
         void showErrorDialog(String message);
 
         void setValidatorResultText(String value);
@@ -35,5 +40,7 @@ public interface IDbManager {
         void setCheckerResultText(String value);
 
         CacheGeneratorConfig getCacheGeneratorConfig();
+
+        GroundTruthGeneratorConfig getGroundTruthGeneratorConfig();
     }
 }

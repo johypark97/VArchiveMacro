@@ -9,13 +9,10 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
-import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
 public class CacheCaptureTask implements Callable<Void> {
@@ -47,23 +44,7 @@ public class CacheCaptureTask implements Callable<Void> {
         Objects.requireNonNull(config);
         Objects.requireNonNull(songList);
 
-        if (!Files.exists(config.cacheDir)) {
-            Files.createDirectories(config.cacheDir);
-        } else if (!Files.isDirectory(config.cacheDir)) {
-            throw new RuntimeException("path is a file");
-        } else {
-            List<Path> list;
-            try (Stream<Path> stream = Files.walk(config.cacheDir)) {
-                list = stream.sorted(Comparator.reverseOrder()).toList();
-            }
-
-            Path absDir = config.cacheDir.toAbsolutePath();
-            for (Path path : list) {
-                if (!absDir.equals(path.toAbsolutePath())) {
-                    Files.delete(path);
-                }
-            }
-        }
+        CacheHelper.clearAndReadyDirectory(config.cacheDir);
 
         int count = songList.size();
         try {
@@ -80,8 +61,8 @@ public class CacheCaptureTask implements Callable<Void> {
                 Thread.sleep(config.captureDelay);
                 BufferedImage image = robot.createScreenCapture(screenRect);
 
-                Path path = CacheHelper.createPath(config.cacheDir, song);
-                ImageIO.write(image, CacheHelper.FORMAT, path.toFile());
+                Path path = CacheHelper.createImagePath(config.cacheDir, song);
+                ImageIO.write(image, CacheHelper.IMAGE_FORMAT, path.toFile());
             }
         } catch (InterruptedException ignored) {
         }

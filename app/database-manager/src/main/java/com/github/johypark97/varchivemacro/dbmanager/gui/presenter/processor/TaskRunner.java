@@ -10,10 +10,12 @@ import java.util.function.Function;
 
 public class TaskRunner {
     private final Function<Throwable, Void> whenThrown;
+    private final Runnable whenDone;
 
     private ExecutorService executor;
 
-    public TaskRunner(Function<Throwable, Void> whenThrown) {
+    public TaskRunner(Function<Throwable, Void> whenThrown, Runnable whenDone) {
+        this.whenDone = whenDone;
         this.whenThrown = whenThrown;
     }
 
@@ -33,6 +35,7 @@ public class TaskRunner {
         CompletableFuture.runAsync(() -> {
             try {
                 future.get();
+                whenDone.run();
             } catch (InterruptedException ignored) {
             } catch (ExecutionException e) {
                 whenThrown.apply(e);

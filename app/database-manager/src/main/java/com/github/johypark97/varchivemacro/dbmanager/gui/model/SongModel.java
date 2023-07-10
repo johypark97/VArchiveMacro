@@ -27,4 +27,10 @@ public interface SongModel {
     Set<String> getDlcTabSet();
 
     Map<String, Set<String>> getDlcTabCodeMap();
+
+    String normalizeTitle(String value);
+
+    boolean hasShortTitle(LocalSong song);
+
+    String getShortTitle(LocalSong song);
 }
