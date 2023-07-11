@@ -1,14 +1,19 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.presenter;
 
+import com.github.johypark97.varchivemacro.dbmanager.gui.model.OcrTesterModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Presenter;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.View;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.CacheCaptureTask;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.DatabaseValidator;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.GroundTruthGenerateTask;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.OcrTestTask;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.RemoteValidator;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.TaskRunner;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.DefaultOcrTesterViewModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.DefaultSongViewModel;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.OcrTesterViewModel;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModel;
 import com.github.johypark97.varchivemacro.lib.common.HookWrapper;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
@@ -18,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 public class DbManagerPresenter implements Presenter {
     private static final String SONG_MODEL_NOT_LOADED_MESSAGE = "The song model is not loaded";
@@ -29,19 +35,25 @@ public class DbManagerPresenter implements Presenter {
     private final Class<? extends View> viewClass;
     private View view;
 
+    // view models
+    private OcrTesterViewModel ocrTesterViewModel;
+
     // models
-    private SongModel songModel;
+    public SongModel songModel;
+    public OcrTesterModel ocrTesterModel;
 
     public DbManagerPresenter(Class<? extends View> viewClass) {
         this.viewClass = viewClass;
 
         taskRunner = new TaskRunner((e) -> {
+            view.showMessageDialog(e.getMessage());
             e.printStackTrace(); // NOPMD
             return null;
         }, () -> view.showMessageDialog("done"));
     }
 
-    public void setModels(SongModel songModel) {
+    public void setModels(SongModel songModel, OcrTesterModel ocrTesterModel) {
+        this.ocrTesterModel = ocrTesterModel;
         this.songModel = songModel;
     }
 
@@ -149,7 +161,11 @@ public class DbManagerPresenter implements Presenter {
     public void loadDatabase(String path) {
         try {
             songModel.load(Path.of(path));
-            view.setViewModels(new DefaultSongViewModel(songModel));
+
+            SongViewModel songViewModel = new DefaultSongViewModel(songModel);
+            ocrTesterViewModel = new DefaultOcrTesterViewModel(ocrTesterModel);
+
+            view.setViewModels(songViewModel, ocrTesterViewModel);
         } catch (IOException e) {
             view.showErrorDialog("Cannot read the file");
         } catch (RuntimeException e) {
@@ -196,6 +212,24 @@ public class DbManagerPresenter implements Presenter {
         GroundTruthGenerateTask task = new GroundTruthGenerateTask();
         task.setConfig(view.getGroundTruthGeneratorConfig());
         task.setSongModel(songModel);
+
+        runTask(task);
+    }
+
+    @Override
+    public void runOcrTest() {
+        if (!songModel.isLoaded()) {
+            view.showErrorDialog(SONG_MODEL_NOT_LOADED_MESSAGE);
+            return;
+        }
+
+        OcrTestTask task = new OcrTestTask();
+        task.setConfig(view.getOcrTesterConfig());
+        task.setModels(songModel, ocrTesterModel);
+
+        Runnable whenChanged = () -> ocrTesterViewModel.notifyDataUpdated();
+        Consumer<Integer> whenAdded = (x) -> ocrTesterViewModel.notifyDataAdded(x);
+        task.setEvents(whenChanged, whenAdded, whenChanged);
 
         runTask(task);
     }

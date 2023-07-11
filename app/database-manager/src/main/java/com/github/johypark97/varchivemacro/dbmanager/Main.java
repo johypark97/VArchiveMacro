@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.dbmanager;
 
 import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
 
+import com.github.johypark97.varchivemacro.dbmanager.gui.model.DefaultOcrTesterModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.DefaultSongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.DbManagerPresenter;
 import com.github.johypark97.varchivemacro.dbmanager.gui.view.DbManagerView;
@@ -13,7 +14,7 @@ public class Main {
             new DbManagerPresenter(DbManagerView.class);
 
     private Main() {
-        dbManagerPresenter.setModels(new DefaultSongModel());
+        dbManagerPresenter.setModels(new DefaultSongModel(), new DefaultOcrTesterModel());
     }
 
     public static void main(String[] args) {

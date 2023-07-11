@@ -4,11 +4,15 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Pr
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.View;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.CacheGeneratorConfig;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.OcrTesterConfig;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.OcrTesterViewModel;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.OcrTesterViewModelColumn.ColumnKey;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModel;
 import com.github.johypark97.varchivemacro.lib.common.gui.component.GrowBoxCreator;
 import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
 import com.github.johypark97.varchivemacro.lib.common.gui.util.TableUtil;
+import com.github.johypark97.varchivemacro.lib.common.gui.viewmodel.TableColumnLookup;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -42,14 +46,20 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class DbManagerView extends JFrame implements View, WindowListener {
     @Serial
     private static final long serialVersionUID = 1539051679420322263L;
 
+    private static final String SELECT_TEXT = "Select";
     private static final String TITLE = "Database Manager";
     private static final int WINDOW_HEIGHT = 600;
     private static final int WINDOW_WIDTH = 800;
+
+    private static final Color TABLE_SELECTED_BACKGROUND_COLOR = new Color(0xE0E0E0);
+    private static final Color TABLE_SELECTED_FOREGROUND_COLOR = Color.BLACK;
 
     // presenter
     protected transient Presenter presenter;
@@ -80,6 +90,13 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     private transient Path groundTruthGeneratorOutputDir;
     protected JButton generateGroundTruthButton;
 
+    private JTable ocrTesterTable;
+    private transient Path ocrTesterCacheDirPath;
+    protected JButton ocrTesterRunTestButton;
+    protected JButton ocrTesterSelectTrainedDataButton;
+    protected JTextField ocrTesterTrainedDataTextField;
+    protected transient Path ocrTesterTrainedDataPath;
+
     // event listeners
     private transient final ActionListener buttonListener = new DbManagerViewButtonListener(this);
     private transient final ActionListener menuListener = new DbManagerViewMenuListener(this);
@@ -87,6 +104,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
             new DbManagerViewDocumentListener(this);
 
     // view models
+    public OcrTesterViewModel ocrTesterTableViewModel;
     public SongViewModel songsTableViewModel;
 
     public DbManagerView() {
@@ -156,6 +174,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
             tabbedPane.addTab("Remote Checker", createTabRemoteChecker());
             tabbedPane.addTab("Cache Generator", createTabCacheGenerator());
             tabbedPane.addTab("Ground Truth Generator", createTabGroundTruthGenerator());
+            tabbedPane.addTab("Ocr Tester", createTabOcrTester());
         }
         panel.add(tabbedPane, BorderLayout.CENTER);
 
@@ -173,7 +192,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         box.add(databaseDirectoryTextField);
 
         // button
-        songsFileSelectButton = new JButton("select");
+        songsFileSelectButton = new JButton(SELECT_TEXT);
         songsFileSelectButton.addActionListener(buttonListener);
         box.add(songsFileSelectButton);
 
@@ -322,7 +341,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
             cacheGeneratorDirTextField.setEditable(false);
             pathBox.add(cacheGeneratorDirTextField);
 
-            JButton cacheGeneratorDirSelectButton = new JButton("Select");
+            JButton cacheGeneratorDirSelectButton = new JButton(SELECT_TEXT);
             cacheGeneratorDirSelectButton.setEnabled(false);
             pathBox.add(cacheGeneratorDirSelectButton);
         }
@@ -395,7 +414,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
             textField.setEditable(false);
             inputDirBox.add(textField);
 
-            JButton button = new JButton("Select");
+            JButton button = new JButton(SELECT_TEXT);
             button.setEnabled(false);
             inputDirBox.add(button);
         }
@@ -412,7 +431,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
             textField.setEditable(false);
             outputDirBox.add(textField);
 
-            JButton button = new JButton("Select");
+            JButton button = new JButton(SELECT_TEXT);
             button.setEnabled(false);
             outputDirBox.add(button);
         }
@@ -433,22 +452,136 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         return growBoxCreator.create();
     }
 
+    private Component createTabOcrTester() {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        Box toolBox = Box.createVerticalBox();
+        {
+            Box dataBox = Box.createHorizontalBox();
+            {
+                dataBox.add(new JLabel("trainedData : "));
+
+                ocrTesterTrainedDataPath = new OcrTesterConfig().trainedDataPath;
+
+                ocrTesterTrainedDataTextField = new JTextField(ocrTesterTrainedDataPath.toString());
+                ocrTesterTrainedDataTextField.setBackground(Color.WHITE);
+                ocrTesterTrainedDataTextField.setEditable(false);
+                dataBox.add(ocrTesterTrainedDataTextField);
+
+                ocrTesterSelectTrainedDataButton = new JButton(SELECT_TEXT);
+                ocrTesterSelectTrainedDataButton.addActionListener(buttonListener);
+                dataBox.add(ocrTesterSelectTrainedDataButton);
+            }
+            toolBox.add(dataBox);
+
+            Box cacheBox = Box.createHorizontalBox();
+            {
+                cacheBox.add(new JLabel("cacheDir : "));
+
+                ocrTesterCacheDirPath = new OcrTesterConfig().cachePath;
+
+                JTextField textField = new JTextField(ocrTesterCacheDirPath.toString());
+                textField.setBackground(Color.WHITE);
+                textField.setEditable(false);
+                cacheBox.add(textField);
+
+                JButton button = new JButton(SELECT_TEXT);
+                button.setEnabled(false);
+                cacheBox.add(button);
+            }
+            toolBox.add(cacheBox);
+
+            Box buttonBox = Box.createHorizontalBox();
+            {
+                buttonBox.add(Box.createHorizontalGlue());
+
+                ocrTesterRunTestButton = new JButton("run test");
+                ocrTesterRunTestButton.addActionListener(buttonListener);
+                buttonBox.add(ocrTesterRunTestButton);
+
+                buttonBox.add(Box.createHorizontalGlue());
+            }
+            toolBox.add(buttonBox);
+        }
+        panel.add(toolBox, BorderLayout.PAGE_START);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getViewport().setBackground(Color.WHITE);
+        {
+            ocrTesterTable = new JTable();
+            ocrTesterTable.getTableHeader().setReorderingAllowed(false);
+            ocrTesterTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            ocrTesterTable.setSelectionBackground(TABLE_SELECTED_BACKGROUND_COLOR);
+            ocrTesterTable.setSelectionForeground(TABLE_SELECTED_FOREGROUND_COLOR);
+            ocrTesterTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+            ocrTesterTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value,
+                        boolean isSelected, boolean hasFocus, int row, int column) {
+                    int rowIndex = table.convertRowIndexToModel(row);
+
+                    boolean isMatch = (boolean) table.getModel().getValueAt(rowIndex,
+                            ocrTesterTableViewModel.getTableColumnLookup()
+                                    .getIndexInView(table, ColumnKey.MATCH));
+
+                    Color backgroundColor;
+                    if (isMatch) {
+                        backgroundColor = isSelected ? new Color(0x80FF80) : new Color(0xC0FFC0);
+                    } else {
+                        backgroundColor =
+                                isSelected ? table.getSelectionBackground() : table.getBackground();
+                    }
+
+                    Component component =
+                            super.getTableCellRendererComponent(table, value, isSelected, hasFocus,
+                                    row, column);
+                    component.setBackground(backgroundColor);
+
+                    return component;
+                }
+            });
+
+            scrollPane.setViewportView(ocrTesterTable);
+        }
+        panel.add(scrollPane);
+
+        return panel;
+    }
+
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void setViewModels(SongViewModel songViewModel) {
+    public void setViewModels(SongViewModel songViewModel, OcrTesterViewModel ocrTesterViewModel) {
+        // song view model
         songsTable.setModel(songViewModel);
         songsTableViewModel = songViewModel;
 
         songsTable.setRowSorter(songsTableViewModel.getRowSorter());
+        TableUtil.resizeColumnWidth(songsTable, 40, 400, 10);
 
         songsFilterColumnComboBox.removeAllItems(); // for reloading
         songsTableViewModel.getFilterableColumnList().forEach(songsFilterColumnComboBox::addItem);
 
-        TableUtil.resizeColumnWidth(songsTable, 40, 400, 10);
+        // ocr tester view model
+        ocrTesterTable.setModel(ocrTesterViewModel);
+        ocrTesterTableViewModel = ocrTesterViewModel;
+
+        ocrTesterTable.setRowSorter(ocrTesterViewModel.getRowSorter());
+
+        TableColumnLookup<ColumnKey> columnLookup = ocrTesterViewModel.getTableColumnLookup();
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.ID).setPreferredWidth(40);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.MATCH).setPreferredWidth(40);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.NORMALIZED_TITLE).setPreferredWidth(160);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.SCANNED_TITLE).setPreferredWidth(160);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.SONG_COMPOSER).setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.SONG_DLC).setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.SONG_DLC_TAB).setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.SONG_TITLE).setPreferredWidth(160);
     }
 
     @Override
@@ -500,6 +633,16 @@ public class DbManagerView extends JFrame implements View, WindowListener {
 
         config.inputDir = groundTruthGeneratorInputDir;
         config.outputDir = groundTruthGeneratorOutputDir;
+
+        return config;
+    }
+
+    @Override
+    public OcrTesterConfig getOcrTesterConfig() {
+        OcrTesterConfig config = new OcrTesterConfig();
+
+        config.cachePath = ocrTesterCacheDirPath;
+        config.trainedDataPath = ocrTesterTrainedDataPath;
 
         return config;
     }
@@ -558,11 +701,18 @@ class DbManagerViewMenuListener implements ActionListener {
 
 
 class DbManagerViewButtonListener implements ActionListener {
+    private static final String trainedDataExt = "traineddata";
+
     private final DbManagerView view;
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
+    private final FileChooser fileChooser = new FileChooser();
+
+    private final String trainedDataDesc;
 
     public DbManagerViewButtonListener(DbManagerView view) {
         this.view = view;
+
+        trainedDataDesc = String.format("Trained data file (*.%s)", trainedDataExt);
     }
 
     @Override
@@ -587,6 +737,14 @@ class DbManagerViewButtonListener implements ActionListener {
             view.presenter.checkRemote();
         } else if (source.equals(view.generateGroundTruthButton)) {
             view.presenter.generateGroundTruth();
+        } else if (source.equals(view.ocrTesterSelectTrainedDataButton)) {
+            Path path = fileChooser.get(view, trainedDataDesc, trainedDataExt);
+            if (path != null) {
+                view.ocrTesterTrainedDataPath = path;
+                view.ocrTesterTrainedDataTextField.setText(path.toString());
+            }
+        } else if (source.equals(view.ocrTesterRunTestButton)) {
+            view.presenter.runOcrTest();
         } else {
             // TODO: Remove println after completing the view.
             System.out.println(source); // NOPMD
@@ -635,6 +793,30 @@ class DirectoryChooser extends JFileChooser {
     }
 
     public Path get(JFrame frame) {
+        if (showOpenDialog(frame) != JFileChooser.APPROVE_OPTION) {
+            return null;
+        }
+
+        Path path = getSelectedFile().toPath();
+        return path.startsWith(CURRENT_DIRECTORY) ? CURRENT_DIRECTORY.relativize(path) : path;
+    }
+}
+
+
+class FileChooser extends JFileChooser {
+    @Serial
+    private static final long serialVersionUID = -1344444442212656120L;
+
+    private static final Path CURRENT_DIRECTORY = Path.of("").toAbsolutePath();
+
+    public FileChooser() {
+        setCurrentDirectory(CURRENT_DIRECTORY.toFile());
+        setMultiSelectionEnabled(false);
+    }
+
+    public Path get(JFrame frame, String description, String... extensions) {
+        setFileFilter(new FileNameExtensionFilter(description, extensions));
+
         if (showOpenDialog(frame) != JFileChooser.APPROVE_OPTION) {
             return null;
         }
