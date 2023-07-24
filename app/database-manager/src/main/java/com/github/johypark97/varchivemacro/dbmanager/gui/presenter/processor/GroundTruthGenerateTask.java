@@ -20,7 +20,10 @@ import java.util.concurrent.Callable;
 import javax.imageio.ImageIO;
 
 public class GroundTruthGenerateTask implements Callable<Void> {
+    private static final String ENG_DIRECTORY_NAME = "eng";
     private static final String EXCEEDED_DIRECTORY_NAME = "exceeded";
+    private static final String KOR_DIRECTORY_NAME = "kor";
+    private static final String MIXED_DIRECTORY_NAME = "mixed";
 
     public GroundTruthGeneratorConfig config;
     public SongModel songModel;
@@ -76,17 +79,14 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         ImageIO.write(image, CacheHelper.IMAGE_FORMAT, path.toFile());
     }
 
-    private void createGt(Path outputDir, LocalSong song) throws IOException {
+    private void createGt(Path outputDir, LocalSong song, String title) throws IOException {
         Path path = CacheHelper.createGtPath(outputDir, song);
-        String title = songModel.getShortTitle(song);
-        Files.writeString(path, songModel.normalizeTitle(title));
+        Files.writeString(path, title);
     }
 
-    private void createBox(Path outputDir, LocalSong song, BufferedImage image) throws IOException {
+    private void createBox(Path outputDir, LocalSong song, String title, BufferedImage image)
+            throws IOException {
         StringBuilder builder = new StringBuilder();
-
-        String title = songModel.getShortTitle(song);
-        title = songModel.normalizeTitle(title);
         title.codePoints().forEach((x) -> {
             // write the file using LF only
             String line = String.format("%c 0 0 %d %d 0\n", x, image.getWidth(), image.getHeight());
@@ -104,22 +104,51 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         }
 
         Path inputDir = config.inputDir;
-        Path normalOutputDir = config.outputDir;
-        Path exceededOutputDir = normalOutputDir.resolve(EXCEEDED_DIRECTORY_NAME);
-        Thread thread = Thread.currentThread();
 
-        CacheHelper.clearAndReadyDirectory(normalOutputDir);
+        Path baseOutputDir = config.outputDir;
+        Path engOutputDir = baseOutputDir.resolve(ENG_DIRECTORY_NAME);
+        Path korOutputDir = baseOutputDir.resolve(KOR_DIRECTORY_NAME);
+        Path mixedOutputDir = baseOutputDir.resolve(MIXED_DIRECTORY_NAME);
+        Path exceededOutputDir = baseOutputDir.resolve(EXCEEDED_DIRECTORY_NAME);
+
+        CacheHelper.clearAndReadyDirectory(baseOutputDir);
+        Files.createDirectories(engOutputDir);
+        Files.createDirectories(korOutputDir);
+        Files.createDirectories(mixedOutputDir);
         Files.createDirectories(exceededOutputDir);
 
+        Thread thread = Thread.currentThread();
         for (LocalSong song : songModel.getSongList()) {
-            Path outputDir = songModel.hasShortTitle(song) ? exceededOutputDir : normalOutputDir;
+            String title = songModel.getShortTitle(song);
+            title = songModel.normalizeTitle(title);
+
+            boolean containEng = false;
+            boolean containKor = false;
+            for (int c : title.codePoints().toArray()) {
+                if (c >= 0x41 && c <= 0x5A || c >= 0x61 && c <= 0x7A) {
+                    containEng = true;
+                } else if (c >= 0xAC00 && c <= 0xD7A3) {
+                    containKor = true;
+                }
+            }
+
+            Path outputDir;
+            if (songModel.hasShortTitle(song)) {
+                outputDir = exceededOutputDir;
+            } else if (containEng && !containKor) {
+                outputDir = engOutputDir;
+            } else if (!containEng && containKor) {
+                outputDir = korOutputDir;
+            } else {
+                outputDir = mixedOutputDir;
+            }
 
             BufferedImage titleImage = readTitleImage(inputDir, song);
             titleImage = trimImage(titleImage);
 
             writeTitleImage(outputDir, song, titleImage);
-            createGt(outputDir, song);
-            createBox(outputDir, song, titleImage);
+            createGt(outputDir, song, title);
+            createBox(outputDir, song, title, titleImage);
 
             if (thread.isInterrupted()) {
                 break;
