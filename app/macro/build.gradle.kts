@@ -112,6 +112,7 @@ tasks.withType<DefaultLaunch4jTask> {
 
     headerType = "gui"
     icon = "$projectDir/src/main/resources/icon.ico"
+    jvmOptions = setOf("-Dfile.encoding=UTF-8")
     mainClassName = application.mainClass.get()
 
     copyright = "johypark97"

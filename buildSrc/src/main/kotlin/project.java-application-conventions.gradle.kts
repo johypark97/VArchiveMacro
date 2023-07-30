@@ -3,3 +3,7 @@ plugins {
 
     application
 }
+
+application {
+    applicationDefaultJvmArgs = listOf("-Dfile.encoding=UTF-8")
+}
