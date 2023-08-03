@@ -83,7 +83,9 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     protected JButton checkRemoteButton;
 
     private transient Path cacheGeneratorDir;
+    private transient SliderSet captureCountSet;
     private transient SliderSet captureDelaySliderSet;
+    private transient SliderSet continuousCaptureDelaySet;
     private transient SliderSet inputDurationSliderSet;
 
     private transient Path groundTruthGeneratorInputDir;
@@ -347,6 +349,31 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         }
         growBoxCreator.add(pathBox);
 
+        Box countBox = Box.createHorizontalBox();
+        {
+            captureCountSet = new SliderSet();
+            captureCountSet.setDefault(new CacheGeneratorConfig().count);
+            captureCountSet.setLimitMax(100);
+            captureCountSet.setLimitMin(1);
+
+            captureCountSet.label.setText("CaptureCount : ");
+            countBox.add(captureCountSet.label);
+
+            captureCountSet.slider.setMajorTickSpacing(10);
+            captureCountSet.slider.setMaximum(50);
+            captureCountSet.slider.setMinimum(0);
+            captureCountSet.slider.setMinorTickSpacing(5);
+            captureCountSet.slider.setPaintLabels(true);
+            captureCountSet.slider.setPaintTicks(true);
+            captureCountSet.setValue(new CacheGeneratorConfig().count);
+            countBox.add(captureCountSet.slider);
+
+            captureCountSet.textField.setColumns(8);
+            ComponentSize.preventExpand(captureCountSet.textField);
+            countBox.add(captureCountSet.textField);
+        }
+        growBoxCreator.add(countBox);
+
         Box captureDelayBox = Box.createHorizontalBox();
         {
             captureDelaySliderSet = new SliderSet();
@@ -371,6 +398,31 @@ public class DbManagerView extends JFrame implements View, WindowListener {
             captureDelayBox.add(captureDelaySliderSet.textField);
         }
         growBoxCreator.add(captureDelayBox);
+
+        Box continuousCaptureDelayBox = Box.createHorizontalBox();
+        {
+            continuousCaptureDelaySet = new SliderSet();
+            continuousCaptureDelaySet.setDefault(new CacheGeneratorConfig().continuousCaptureDelay);
+            continuousCaptureDelaySet.setLimitMax(1000);
+            continuousCaptureDelaySet.setLimitMin(0);
+
+            continuousCaptureDelaySet.label.setText("ContinuousCaptureDelay : ");
+            continuousCaptureDelayBox.add(continuousCaptureDelaySet.label);
+
+            continuousCaptureDelaySet.slider.setMajorTickSpacing(100);
+            continuousCaptureDelaySet.slider.setMaximum(500);
+            continuousCaptureDelaySet.slider.setMinimum(0);
+            continuousCaptureDelaySet.slider.setMinorTickSpacing(50);
+            continuousCaptureDelaySet.slider.setPaintLabels(true);
+            continuousCaptureDelaySet.slider.setPaintTicks(true);
+            continuousCaptureDelaySet.setValue(new CacheGeneratorConfig().continuousCaptureDelay);
+            continuousCaptureDelayBox.add(continuousCaptureDelaySet.slider);
+
+            continuousCaptureDelaySet.textField.setColumns(8);
+            ComponentSize.preventExpand(continuousCaptureDelaySet.textField);
+            continuousCaptureDelayBox.add(continuousCaptureDelaySet.textField);
+        }
+        growBoxCreator.add(continuousCaptureDelayBox);
 
         Box inputDurationBox = Box.createHorizontalBox();
         {
@@ -622,6 +674,8 @@ public class DbManagerView extends JFrame implements View, WindowListener {
 
         config.cacheDir = cacheGeneratorDir;
         config.captureDelay = captureDelaySliderSet.getValue();
+        config.continuousCaptureDelay = continuousCaptureDelaySet.getValue();
+        config.count = captureCountSet.getValue();
         config.inputDuration = inputDurationSliderSet.getValue();
 
         return config;

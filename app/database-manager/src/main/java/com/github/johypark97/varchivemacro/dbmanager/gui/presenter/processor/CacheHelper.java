@@ -13,16 +13,16 @@ public class CacheHelper {
     public static final String GT_FORMAT = "gt.txt";
     public static final String IMAGE_FORMAT = "png";
 
-    public static Path createBoxPath(Path baseDir, LocalSong song) {
-        return baseDir.resolve(makeFilename(song.id(), BOX_FORMAT));
+    public static Path createBoxPath(Path baseDir, LocalSong song, int number) {
+        return baseDir.resolve(makeFilename(song.id(), number, BOX_FORMAT));
     }
 
-    public static Path createGtPath(Path baseDir, LocalSong song) {
-        return baseDir.resolve(makeFilename(song.id(), GT_FORMAT));
+    public static Path createGtPath(Path baseDir, LocalSong song, int number) {
+        return baseDir.resolve(makeFilename(song.id(), number, GT_FORMAT));
     }
 
-    public static Path createImagePath(Path baseDir, LocalSong song) {
-        return baseDir.resolve(makeFilename(song.id(), IMAGE_FORMAT));
+    public static Path createImagePath(Path baseDir, LocalSong song, int number) {
+        return baseDir.resolve(makeFilename(song.id(), number, IMAGE_FORMAT));
     }
 
     public static void clearAndReadyDirectory(Path path) throws IOException {
@@ -45,7 +45,7 @@ public class CacheHelper {
         }
     }
 
-    private static String makeFilename(int id, String format) {
-        return String.format("%05d.%s", id, format);
+    private static String makeFilename(int id, int number, String format) {
+        return String.format("%05d_%d.%s", id, number, format);
     }
 }

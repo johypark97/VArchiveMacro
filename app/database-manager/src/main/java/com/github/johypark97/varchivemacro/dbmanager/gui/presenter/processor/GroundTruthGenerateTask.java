@@ -36,11 +36,9 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         this.songModel = songModel;
     }
 
-    private BufferedImage readTitleImage(Path inputDir, LocalSong song)
+    private BufferedImage readTitleImage(Path imagePath)
             throws IOException, NotSupportedResolutionException, PixError {
-        Path inputPath = CacheHelper.createImagePath(inputDir, song);
-
-        BufferedImage image = ImageIO.read(inputPath.toFile());
+        BufferedImage image = ImageIO.read(imagePath.toFile());
         Dimension imageSize = new Dimension(image.getWidth(), image.getHeight());
         CollectionArea area = CollectionAreaFactory.create(imageSize);
 
@@ -73,19 +71,20 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         return image.getSubimage(left, top, right - left + 1, bottom - top + 1);
     }
 
-    private void writeTitleImage(Path outputDir, LocalSong song, BufferedImage image)
+    private void writeTitleImage(Path outputDir, LocalSong song, int number, BufferedImage image)
             throws IOException {
-        Path path = CacheHelper.createImagePath(outputDir, song);
+        Path path = CacheHelper.createImagePath(outputDir, song, number);
         ImageIO.write(image, CacheHelper.IMAGE_FORMAT, path.toFile());
     }
 
-    private void createGt(Path outputDir, LocalSong song, String title) throws IOException {
-        Path path = CacheHelper.createGtPath(outputDir, song);
+    private void createGt(Path outputDir, LocalSong song, int number, String title)
+            throws IOException {
+        Path path = CacheHelper.createGtPath(outputDir, song, number);
         Files.writeString(path, title);
     }
 
-    private void createBox(Path outputDir, LocalSong song, String title, BufferedImage image)
-            throws IOException {
+    private void createBox(Path outputDir, LocalSong song, int number, String title,
+            BufferedImage image) throws IOException {
         StringBuilder builder = new StringBuilder();
         title.codePoints().forEach((x) -> {
             // write the file using LF only
@@ -93,7 +92,7 @@ public class GroundTruthGenerateTask implements Callable<Void> {
             builder.append(line);
         });
 
-        Path path = CacheHelper.createBoxPath(outputDir, song);
+        Path path = CacheHelper.createBoxPath(outputDir, song, number);
         Files.writeString(path, builder.toString());
     }
 
@@ -143,12 +142,22 @@ public class GroundTruthGenerateTask implements Callable<Void> {
                 outputDir = mixedOutputDir;
             }
 
-            BufferedImage titleImage = readTitleImage(inputDir, song);
-            titleImage = trimImage(titleImage);
+            int number = -1;
+            while (true) {
+                ++number;
 
-            writeTitleImage(outputDir, song, titleImage);
-            createGt(outputDir, song, title);
-            createBox(outputDir, song, title, titleImage);
+                Path imagePath = CacheHelper.createImagePath(inputDir, song, number);
+                if (!Files.exists(imagePath)) {
+                    break;
+                }
+
+                BufferedImage titleImage = readTitleImage(imagePath);
+                titleImage = trimImage(titleImage);
+
+                writeTitleImage(outputDir, song, number, titleImage);
+                createGt(outputDir, song, number, title);
+                createBox(outputDir, song, number, title, titleImage);
+            }
 
             if (thread.isInterrupted()) {
                 break;

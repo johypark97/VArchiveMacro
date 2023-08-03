@@ -19,6 +19,7 @@ import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.awt.AWTException;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
@@ -67,6 +68,21 @@ public class DbManagerPresenter implements Presenter {
         view.setPresenter(this);
     }
 
+    private Callable<Void> createCacheCaptureTask() {
+        CacheCaptureTask task;
+
+        try {
+            task = new CacheCaptureTask(() -> Toolkit.getDefaultToolkit().beep());
+        } catch (AWTException e) {
+            throw new RuntimeException(e);
+        }
+
+        task.setConfig(view.getCacheGeneratorConfig());
+        task.setSongList(songModel.getSongList());
+
+        return task;
+    }
+
     private void runTask(Callable<Void> task) {
         if (!taskRunner.run(task)) {
             view.showErrorDialog("another task is already running");
@@ -108,17 +124,8 @@ public class DbManagerPresenter implements Presenter {
                             return;
                         }
 
-                        CacheCaptureTask cacheCaptureTask;
-                        try {
-                            cacheCaptureTask = new CacheCaptureTask();
-                        } catch (AWTException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                        cacheCaptureTask.setConfig(view.getCacheGeneratorConfig());
-                        cacheCaptureTask.setSongList(songModel.getSongList());
-
-                        runTask(cacheCaptureTask);
+                        Callable<Void> task = createCacheCaptureTask();
+                        runTask(task);
                     }
                 }
             }

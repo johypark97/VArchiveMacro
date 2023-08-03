@@ -79,7 +79,7 @@ public class OcrTestTask implements Callable<Void> {
                     break;
                 }
 
-                Path imagePath = CacheHelper.createImagePath(config.cachePath, song);
+                Path imagePath = CacheHelper.createImagePath(config.cachePath, song, 0);
                 BufferedImage image = ImageIO.read(imagePath.toFile());
 
                 Dimension imageSize = new Dimension(image.getWidth(), image.getHeight());
