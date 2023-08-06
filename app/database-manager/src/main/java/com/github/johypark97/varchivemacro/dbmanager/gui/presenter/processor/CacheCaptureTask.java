@@ -1,6 +1,8 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.CacheGeneratorConfig;
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.awt.AWTException;
 import java.awt.Dimension;
@@ -53,6 +55,7 @@ public class CacheCaptureTask implements Callable<Void> {
         try {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             Rectangle screenRect = new Rectangle(screenSize);
+            CollectionArea area = CollectionAreaFactory.create(screenSize);
 
             for (int i = 0; i < count; ++i) {
                 LocalSong song = songList.get(i);
@@ -79,8 +82,9 @@ public class CacheCaptureTask implements Callable<Void> {
                 for (BufferedImage image : imageList) {
                     ++imageNumber;
 
+                    BufferedImage titleImage = area.getTitle(image);
                     Path path = CacheHelper.createImagePath(config.cacheDir, song, imageNumber);
-                    ImageIO.write(image, CacheHelper.IMAGE_FORMAT, path.toFile());
+                    ImageIO.write(titleImage, CacheHelper.IMAGE_FORMAT, path.toFile());
                 }
             }
         } catch (InterruptedException ignored) {

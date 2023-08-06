@@ -3,15 +3,11 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
 import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
-import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.common.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.common.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,14 +32,8 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         this.songModel = songModel;
     }
 
-    private BufferedImage readTitleImage(Path imagePath)
-            throws IOException, NotSupportedResolutionException, PixError {
-        BufferedImage image = ImageIO.read(imagePath.toFile());
-        Dimension imageSize = new Dimension(image.getWidth(), image.getHeight());
-        CollectionArea area = CollectionAreaFactory.create(imageSize);
-
-        byte[] bytes = ImageConverter.imageToPngBytes(area.getTitle(image));
-        try (PixWrapper pix = new PixWrapper(bytes)) {
+    private BufferedImage readTitleImage(Path imagePath) throws IOException, PixError {
+        try (PixWrapper pix = new PixWrapper(imagePath)) {
             PixPreprocessor.preprocessTitle(pix);
             return ImageConverter.pngBytesToImage(pix.getPngBytes());
         }

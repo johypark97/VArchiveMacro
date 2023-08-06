@@ -174,9 +174,14 @@ public class DbManagerView extends JFrame implements View, WindowListener {
             tabbedPane.addTab("Viewer", createTabViewer());
             tabbedPane.addTab("Validator", createTabValidator());
             tabbedPane.addTab("Remote Checker", createTabRemoteChecker());
-            tabbedPane.addTab("Cache Generator", createTabCacheGenerator());
-            tabbedPane.addTab("Ground Truth Generator", createTabGroundTruthGenerator());
-            tabbedPane.addTab("Ocr Tester", createTabOcrTester());
+
+            JTabbedPane titleOcrTab = new JTabbedPane();
+            {
+                titleOcrTab.addTab("Cache Generator", createTabCacheGenerator());
+                titleOcrTab.addTab("Ground Truth Generator", createTabGroundTruthGenerator());
+                titleOcrTab.addTab("Ocr Tester", createTabOcrTester());
+            }
+            tabbedPane.addTab("Title OCR Tools", titleOcrTab);
         }
         panel.add(tabbedPane, BorderLayout.CENTER);
 
