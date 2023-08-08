@@ -7,12 +7,17 @@ import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalS
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
+import com.google.common.base.CharMatcher;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.function.Function;
 import javax.imageio.ImageIO;
 
 public class GroundTruthGenerateTask implements Callable<Void> {
@@ -21,8 +26,30 @@ public class GroundTruthGenerateTask implements Callable<Void> {
     private static final String KOR_DIRECTORY_NAME = "kor";
     private static final String MIXED_DIRECTORY_NAME = "mixed";
 
+    private static final String NUMBERS_FILENAME = "foo.numbers";
+    private static final String PUNC_FILENAME = "foo.punc";
+    private static final String WORDLIST_FILENAME = "foo.wordlist";
+
+    private final CharMatcher letterMatcher;
+    private final CharMatcher numberMatcher;
+    private final Function<Set<String>, String> joiner;
+    private final Function<String, List<String>> splitter;
+
     public GroundTruthGeneratorConfig config;
     public SongModel songModel;
+
+    public GroundTruthGenerateTask() {
+        letterMatcher = CharMatcher.forPredicate((x) -> {
+            if (x >= 0x41 && x <= 0x5A || x >= 0x61 && x <= 0x7A) { // ascii eng
+                return true;
+            }
+            return x >= 0xAC00 && x <= 0xD7A3; // kor
+        }).precomputed();
+        numberMatcher = CharMatcher.inRange('0', '9').precomputed();
+
+        joiner = (x) -> String.join("\n", x);
+        splitter = (x) -> List.of(x.split("\\s+"));
+    }
 
     public void setConfig(GroundTruthGeneratorConfig config) {
         this.config = config;
@@ -100,16 +127,34 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         Path mixedOutputDir = baseOutputDir.resolve(MIXED_DIRECTORY_NAME);
         Path exceededOutputDir = baseOutputDir.resolve(EXCEEDED_DIRECTORY_NAME);
 
+        Path numbersPath = baseOutputDir.resolve(NUMBERS_FILENAME);
+        Path puncPath = baseOutputDir.resolve(PUNC_FILENAME);
+        Path wordlistPath = baseOutputDir.resolve(WORDLIST_FILENAME);
+
         CacheHelper.clearAndReadyDirectory(baseOutputDir);
         Files.createDirectories(engOutputDir);
         Files.createDirectories(korOutputDir);
         Files.createDirectories(mixedOutputDir);
         Files.createDirectories(exceededOutputDir);
 
+        Set<String> numberSet = new HashSet<>();
+        Set<String> puncSet = new HashSet<>();
+        Set<String> wordSet = new HashSet<>();
+
         Thread thread = Thread.currentThread();
         for (LocalSong song : songModel.getSongList()) {
             String title = songModel.getShortTitle(song);
             title = songModel.normalizeTitle(title);
+
+            String numberString = numberMatcher.negate().replaceFrom(title, ' ');
+            numberSet.addAll(splitter.apply(numberString));
+
+            String wordString = letterMatcher.negate().replaceFrom(title, ' ');
+            wordSet.addAll(splitter.apply(wordString));
+
+            String puncString = letterMatcher.replaceFrom(title, ' ');
+            puncString = numberMatcher.replaceFrom(puncString, ' ');
+            puncSet.addAll(splitter.apply(puncString));
 
             boolean containEng = false;
             boolean containKor = false;
@@ -153,6 +198,10 @@ public class GroundTruthGenerateTask implements Callable<Void> {
                 break;
             }
         }
+
+        Files.writeString(wordlistPath, joiner.apply(wordSet));
+        Files.writeString(puncPath, joiner.apply(puncSet));
+        Files.writeString(numbersPath, joiner.apply(numberSet));
 
         return null;
     }
