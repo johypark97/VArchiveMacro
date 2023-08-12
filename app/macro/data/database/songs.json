@@ -5678,5 +5678,25 @@
     "dlcCode": "VE4",
     "dlcTab": "V EXTENSION 4",
     "priority": 0
+  },
+  {
+    "id": 568,
+    "title": "From Hell to Breakfast",
+    "remote_title": null,
+    "composer": "Daisuke Kurosawa",
+    "dlc": "CLEAR PASS",
+    "dlcCode": "CP",
+    "dlcTab": "CLEARPASS+",
+    "priority": 0
+  },
+  {
+    "id": 569,
+    "title": "Celestial Tears",
+    "remote_title": null,
+    "composer": "Tsukasa",
+    "dlc": "RESPECT",
+    "dlcCode": "R",
+    "dlcTab": "RESPECT",
+    "priority": 0
   }
 ]
