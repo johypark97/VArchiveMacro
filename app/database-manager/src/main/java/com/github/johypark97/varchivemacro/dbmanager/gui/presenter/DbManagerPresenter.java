@@ -15,6 +15,8 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.Def
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.OcrTesterViewModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModel;
 import com.github.johypark97.varchivemacro.lib.common.HookWrapper;
+import com.github.johypark97.varchivemacro.lib.common.area.NotSupportedResolutionException;
+import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
@@ -25,6 +27,7 @@ import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import javax.swing.JFrame;
 
 public class DbManagerPresenter implements Presenter {
     private static final String SONG_MODEL_NOT_LOADED_MESSAGE = "The song model is not loaded";
@@ -38,6 +41,9 @@ public class DbManagerPresenter implements Presenter {
 
     // view models
     private OcrTesterViewModel ocrTesterViewModel;
+
+    // presenters
+    public LiveTesterPresenter liveTesterPresenter;
 
     // models
     public SongModel songModel;
@@ -56,6 +62,10 @@ public class DbManagerPresenter implements Presenter {
     public void setModels(SongModel songModel, OcrTesterModel ocrTesterModel) {
         this.ocrTesterModel = ocrTesterModel;
         this.songModel = songModel;
+    }
+
+    public void setPresenters(LiveTesterPresenter liveTesterPresenter) {
+        this.liveTesterPresenter = liveTesterPresenter;
     }
 
     private void newView() {
@@ -239,5 +249,20 @@ public class DbManagerPresenter implements Presenter {
         task.setEvents(whenChanged, whenAdded, whenChanged);
 
         runTask(task);
+    }
+
+    @Override
+    public void openLiveTester(JFrame parent) {
+        try {
+            liveTesterPresenter.start(parent, view.getLiveTesterConfig());
+        } catch (OcrInitializationError | NotSupportedResolutionException | AWTException |
+                IOException e) {
+            view.showErrorDialog(e.getMessage());
+        }
+    }
+
+    @Override
+    public void closeLiveTester() {
+        liveTesterPresenter.stop();
     }
 }

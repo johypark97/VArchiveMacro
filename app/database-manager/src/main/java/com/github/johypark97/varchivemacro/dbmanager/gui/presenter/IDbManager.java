@@ -2,9 +2,11 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.presenter;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.CacheGeneratorConfig;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.LiveTesterConfig;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.OcrTesterConfig;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.OcrTesterViewModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModel;
+import javax.swing.JFrame;
 
 public interface IDbManager {
     interface Presenter {
@@ -23,6 +25,10 @@ public interface IDbManager {
         void generateGroundTruth();
 
         void runOcrTest();
+
+        void openLiveTester(JFrame parent);
+
+        void closeLiveTester();
     }
 
 
@@ -48,5 +54,7 @@ public interface IDbManager {
         GroundTruthGeneratorConfig getGroundTruthGeneratorConfig();
 
         OcrTesterConfig getOcrTesterConfig();
+
+        LiveTesterConfig getLiveTesterConfig();
     }
 }

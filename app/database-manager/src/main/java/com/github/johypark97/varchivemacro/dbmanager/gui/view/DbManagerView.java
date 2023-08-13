@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Pr
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.View;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.CacheGeneratorConfig;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.LiveTesterConfig;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.OcrTesterConfig;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.OcrTesterViewModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.OcrTesterViewModelColumn.ColumnKey;
@@ -99,6 +100,13 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     protected JTextField ocrTesterTrainedDataTextField;
     protected transient Path ocrTesterTrainedDataPath;
 
+    protected JButton liveTesterCloseViewButton;
+    protected JButton liveTesterOpenViewButton;
+    protected JButton liveTesterSelectTrainedDataButton;
+    protected JTextField liveTesterTrainedDataDirectoryTextField;
+    protected JTextField liveTesterTrainedDataLanguageTextField;
+    protected transient Path liveTesterTrainedDataPath;
+
     // event listeners
     private transient final ActionListener buttonListener = new DbManagerViewButtonListener(this);
     private transient final ActionListener menuListener = new DbManagerViewMenuListener(this);
@@ -180,6 +188,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
                 titleOcrTab.addTab("Cache Generator", createTabCacheGenerator());
                 titleOcrTab.addTab("Ground Truth Generator", createTabGroundTruthGenerator());
                 titleOcrTab.addTab("Ocr Tester", createTabOcrTester());
+                titleOcrTab.addTab("Live Tester", createTabLiveTester());
             }
             tabbedPane.addTab("Title OCR Tools", titleOcrTab);
         }
@@ -607,6 +616,56 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         return panel;
     }
 
+    private Component createTabLiveTester() {
+        GrowBoxCreator growBoxCreator = new GrowBoxCreator();
+
+        Box directoryBox = Box.createHorizontalBox();
+        {
+            directoryBox.add(new JLabel("trainedData directory : "));
+
+            liveTesterTrainedDataPath = new LiveTesterConfig().trainedDataDirectory;
+
+            liveTesterTrainedDataDirectoryTextField =
+                    new JTextField(liveTesterTrainedDataPath.toString());
+            liveTesterTrainedDataDirectoryTextField.setBackground(Color.WHITE);
+            liveTesterTrainedDataDirectoryTextField.setEditable(false);
+            directoryBox.add(liveTesterTrainedDataDirectoryTextField);
+
+            liveTesterSelectTrainedDataButton = new JButton(SELECT_TEXT);
+            liveTesterSelectTrainedDataButton.addActionListener(buttonListener);
+            directoryBox.add(liveTesterSelectTrainedDataButton);
+        }
+        growBoxCreator.add(directoryBox);
+
+        Box languageBox = Box.createHorizontalBox();
+        {
+            languageBox.add(new JLabel("trainedData language : "));
+
+            liveTesterTrainedDataLanguageTextField =
+                    new JTextField(new LiveTesterConfig().trainedDataLanguage);
+            languageBox.add(liveTesterTrainedDataLanguageTextField);
+        }
+        growBoxCreator.add(languageBox);
+
+        Box buttonBox = Box.createHorizontalBox();
+        {
+            buttonBox.add(Box.createHorizontalGlue());
+
+            liveTesterOpenViewButton = new JButton("open");
+            liveTesterOpenViewButton.addActionListener(buttonListener);
+            buttonBox.add(liveTesterOpenViewButton);
+
+            liveTesterCloseViewButton = new JButton("close");
+            liveTesterCloseViewButton.addActionListener(buttonListener);
+            buttonBox.add(liveTesterCloseViewButton);
+
+            buttonBox.add(Box.createHorizontalGlue());
+        }
+        growBoxCreator.add(buttonBox);
+
+        return growBoxCreator.create();
+    }
+
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
@@ -702,6 +761,16 @@ public class DbManagerView extends JFrame implements View, WindowListener {
 
         config.cachePath = ocrTesterCacheDirPath;
         config.trainedDataPath = ocrTesterTrainedDataPath;
+
+        return config;
+    }
+
+    @Override
+    public LiveTesterConfig getLiveTesterConfig() {
+        LiveTesterConfig config = new LiveTesterConfig();
+
+        config.trainedDataDirectory = liveTesterTrainedDataPath;
+        config.trainedDataLanguage = liveTesterTrainedDataLanguageTextField.getText();
 
         return config;
     }
@@ -804,6 +873,16 @@ class DbManagerViewButtonListener implements ActionListener {
             }
         } else if (source.equals(view.ocrTesterRunTestButton)) {
             view.presenter.runOcrTest();
+        } else if (source.equals(view.liveTesterSelectTrainedDataButton)) {
+            Path path = directoryChooser.get(view);
+            if (path != null) {
+                view.liveTesterTrainedDataPath = path;
+                view.liveTesterTrainedDataDirectoryTextField.setText(path.toString());
+            }
+        } else if (source.equals(view.liveTesterOpenViewButton)) {
+            view.presenter.openLiveTester(view);
+        } else if (source.equals(view.liveTesterCloseViewButton)) {
+            view.presenter.closeLiveTester();
         } else {
             // TODO: Remove println after completing the view.
             System.out.println(source); // NOPMD
