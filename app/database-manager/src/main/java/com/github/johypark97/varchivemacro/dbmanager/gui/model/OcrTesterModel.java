@@ -26,6 +26,14 @@ public interface OcrTesterModel {
 
         String getTitle();
 
+        float getAccuracy();
+
+        void setAccuracy(float value);
+
+        int getDistance();
+
+        void setDistance(int value);
+
         int getId();
     }
 }

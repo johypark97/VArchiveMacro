@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface OcrTesterViewModelColumn {
     enum ColumnKey {
-        ID, MATCH, NORMALIZED_TITLE, SCANNED_TITLE, SONG_COMPOSER, SONG_DLC, SONG_DLC_TAB, SONG_TITLE
+        ACCURACY, DISTANCE, ID, MATCH, NORMALIZED_TITLE, SCANNED_TITLE, SONG_COMPOSER, SONG_DLC, SONG_DLC_TAB, SONG_TITLE
     }
 
 
@@ -24,6 +24,8 @@ public interface OcrTesterViewModelColumn {
 
             builder.add(ColumnKey.MATCH);
             builder.add(ColumnKey.ID);
+            builder.add(ColumnKey.DISTANCE);
+            builder.add(ColumnKey.ACCURACY);
             builder.add(ColumnKey.SCANNED_TITLE);
             builder.add(ColumnKey.NORMALIZED_TITLE);
             builder.add(ColumnKey.SONG_TITLE);
@@ -39,6 +41,8 @@ public interface OcrTesterViewModelColumn {
 
             builder.setEnumClass(ColumnKey.class);
             builder.setConverter((x) -> switch (x) {
+                case ACCURACY -> "accuracy";
+                case DISTANCE -> "distance";
                 case ID -> "id";
                 case MATCH -> "isMatch";
                 case NORMALIZED_TITLE -> "normalizedTitle";

@@ -46,6 +46,8 @@ public class DefaultOcrTesterViewModel extends AbstractTableModel implements Ocr
         }
 
         return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
+            case ACCURACY -> data.getAccuracy() * 100;
+            case DISTANCE -> data.getDistance();
             case ID -> data.getId();
             case MATCH -> data.getNormalizedTitle().equals(data.getScannedTitle());
             case NORMALIZED_TITLE -> data.getNormalizedTitle();
@@ -66,7 +68,8 @@ public class DefaultOcrTesterViewModel extends AbstractTableModel implements Ocr
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
-            case ID -> Integer.class;
+            case ACCURACY -> Float.class;
+            case DISTANCE, ID -> Integer.class;
             case MATCH -> Boolean.class;
             case NORMALIZED_TITLE, SCANNED_TITLE, SONG_COMPOSER, SONG_DLC, SONG_DLC_TAB, SONG_TITLE ->
                     String.class;
@@ -102,6 +105,8 @@ public class DefaultOcrTesterViewModel extends AbstractTableModel implements Ocr
             Comparator<String> titleComparator = new TitleComparator();
 
             setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.ID), intComparator);
+            setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.DISTANCE), intComparator);
+            setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.ACCURACY), Comparator.reverseOrder());
             setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.MATCH), Comparator.reverseOrder());
             setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.NORMALIZED_TITLE), titleComparator);
             setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.SCANNED_TITLE), titleComparator);

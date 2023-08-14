@@ -36,6 +36,8 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
 
         private String normalizedTitle;
         private String scannedTitle;
+        private float accuracy;
+        private int distance;
 
         public DefaultOcrTesterData(LocalSong song) {
             composer = song.composer();
@@ -83,6 +85,26 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
         @Override
         public String getTitle() {
             return title;
+        }
+
+        @Override
+        public float getAccuracy() {
+            return accuracy;
+        }
+
+        @Override
+        public void setAccuracy(float value) {
+            accuracy = value;
+        }
+
+        @Override
+        public int getDistance() {
+            return distance;
+        }
+
+        @Override
+        public void setDistance(int value) {
+            distance = value;
         }
 
         @Override

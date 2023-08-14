@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.DefaultOcrTesterM
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.OcrTesterModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.OcrTesterConfig;
+import com.github.johypark97.varchivemacro.lib.common.StringUtils;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
@@ -81,8 +82,15 @@ public class OcrTestTask implements Callable<Void> {
                     scannedTitle = ocr.run(pix.pixInstance).trim();
                 }
 
+                String nTitle = songModel.normalizeTitle(songModel.getShortTitle(song));
+                int distance = StringUtils.calculateEditDistance(scannedTitle, nTitle);
+                int length = Math.max(scannedTitle.length(), nTitle.length());
+                float accuracy = (float) (length - distance) / length;
+
                 DefaultOcrTesterData data = new DefaultOcrTesterData(song);
-                data.setNormalizedTitle(songModel.normalizeTitle(songModel.getShortTitle(song)));
+                data.setAccuracy(accuracy);
+                data.setDistance(distance);
+                data.setNormalizedTitle(nTitle);
                 data.setScannedTitle(scannedTitle);
 
                 ocrTesterModel.addData(data);
