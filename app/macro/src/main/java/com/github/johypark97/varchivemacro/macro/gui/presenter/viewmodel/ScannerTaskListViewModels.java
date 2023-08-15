@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.SortOrder;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -126,17 +127,17 @@ public interface ScannerTaskListViewModels {
 
         @Override
         public void onDataChanged() {
-            fireTableDataChanged();
+            SwingUtilities.invokeLater(this::fireTableDataChanged);
         }
 
         @Override
         public void onRowsInserted(int row) {
-            fireTableRowsInserted(row, row);
+            SwingUtilities.invokeLater(() -> fireTableRowsInserted(row, row));
         }
 
         @Override
         public void onRowsUpdated(int row) {
-            fireTableRowsUpdated(row, row);
+            SwingUtilities.invokeLater(() -> fireTableRowsUpdated(row, row));
         }
 
         @Override

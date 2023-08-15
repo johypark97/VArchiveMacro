@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -88,12 +89,12 @@ public class DefaultOcrTesterViewModel extends AbstractTableModel implements Ocr
 
     @Override
     public void notifyDataUpdated() {
-        fireTableDataChanged();
+        SwingUtilities.invokeLater(this::fireTableDataChanged);
     }
 
     @Override
     public void notifyDataAdded(int row) {
-        fireTableRowsInserted(row, row);
+        SwingUtilities.invokeLater(() -> fireTableRowsInserted(row, row));
     }
 
     private class DefaultOcrTesterViewModelRowSorter extends TableRowSorter<OcrTesterViewModel> {
