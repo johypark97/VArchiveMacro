@@ -4,5 +4,6 @@ import java.nio.file.Path;
 
 public class OcrTesterConfig {
     public Path cachePath = Path.of("cache");
-    public Path trainedDataPath = Path.of("");
+    public Path trainedDataDirectory = Path.of("");
+    public String trainedDataLanguage = "";
 }

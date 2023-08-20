@@ -97,7 +97,8 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     private transient Path ocrTesterCacheDirPath;
     protected JButton ocrTesterRunTestButton;
     protected JButton ocrTesterSelectTrainedDataButton;
-    protected JTextField ocrTesterTrainedDataTextField;
+    protected JTextField ocrTesterTrainedDataDirectoryTextField;
+    protected JTextField ocrTesterTrainedDataLanguageTextField;
     protected transient Path ocrTesterTrainedDataPath;
 
     protected JButton liveTesterCloseViewButton;
@@ -523,22 +524,33 @@ public class DbManagerView extends JFrame implements View, WindowListener {
 
         Box toolBox = Box.createVerticalBox();
         {
-            Box dataBox = Box.createHorizontalBox();
+            Box directoryBox = Box.createHorizontalBox();
             {
-                dataBox.add(new JLabel("trainedData : "));
+                directoryBox.add(new JLabel("trainedData directory : "));
 
-                ocrTesterTrainedDataPath = new OcrTesterConfig().trainedDataPath;
+                ocrTesterTrainedDataPath = new OcrTesterConfig().trainedDataDirectory;
 
-                ocrTesterTrainedDataTextField = new JTextField(ocrTesterTrainedDataPath.toString());
-                ocrTesterTrainedDataTextField.setBackground(Color.WHITE);
-                ocrTesterTrainedDataTextField.setEditable(false);
-                dataBox.add(ocrTesterTrainedDataTextField);
+                ocrTesterTrainedDataDirectoryTextField =
+                        new JTextField(ocrTesterTrainedDataPath.toString());
+                ocrTesterTrainedDataDirectoryTextField.setBackground(Color.WHITE);
+                ocrTesterTrainedDataDirectoryTextField.setEditable(false);
+                directoryBox.add(ocrTesterTrainedDataDirectoryTextField);
 
                 ocrTesterSelectTrainedDataButton = new JButton(SELECT_TEXT);
                 ocrTesterSelectTrainedDataButton.addActionListener(buttonListener);
-                dataBox.add(ocrTesterSelectTrainedDataButton);
+                directoryBox.add(ocrTesterSelectTrainedDataButton);
             }
-            toolBox.add(dataBox);
+            toolBox.add(directoryBox);
+
+            Box languageBox = Box.createHorizontalBox();
+            {
+                languageBox.add(new JLabel("trainedData language : "));
+
+                ocrTesterTrainedDataLanguageTextField =
+                        new JTextField(new OcrTesterConfig().trainedDataLanguage);
+                languageBox.add(ocrTesterTrainedDataLanguageTextField);
+            }
+            toolBox.add(languageBox);
 
             Box cacheBox = Box.createHorizontalBox();
             {
@@ -762,7 +774,8 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         OcrTesterConfig config = new OcrTesterConfig();
 
         config.cachePath = ocrTesterCacheDirPath;
-        config.trainedDataPath = ocrTesterTrainedDataPath;
+        config.trainedDataDirectory = ocrTesterTrainedDataPath;
+        config.trainedDataLanguage = ocrTesterTrainedDataLanguageTextField.getText();
 
         return config;
     }
@@ -831,18 +844,11 @@ class DbManagerViewMenuListener implements ActionListener {
 
 
 class DbManagerViewButtonListener implements ActionListener {
-    private static final String trainedDataExt = "traineddata";
-
     private final DbManagerView view;
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
-    private final FileChooser fileChooser = new FileChooser();
-
-    private final String trainedDataDesc;
 
     public DbManagerViewButtonListener(DbManagerView view) {
         this.view = view;
-
-        trainedDataDesc = String.format("Trained data file (*.%s)", trainedDataExt);
     }
 
     @Override
@@ -868,10 +874,10 @@ class DbManagerViewButtonListener implements ActionListener {
         } else if (source.equals(view.generateGroundTruthButton)) {
             view.presenter.generateGroundTruth();
         } else if (source.equals(view.ocrTesterSelectTrainedDataButton)) {
-            Path path = fileChooser.get(view, trainedDataDesc, trainedDataExt);
+            Path path = directoryChooser.get(view);
             if (path != null) {
                 view.ocrTesterTrainedDataPath = path;
-                view.ocrTesterTrainedDataTextField.setText(path.toString());
+                view.ocrTesterTrainedDataDirectoryTextField.setText(path.toString());
             }
         } else if (source.equals(view.ocrTesterRunTestButton)) {
             view.presenter.runOcrTest();

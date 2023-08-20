@@ -10,7 +10,6 @@ import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,23 +51,18 @@ public class OcrTestTask implements Callable<Void> {
         Objects.requireNonNull(whenCleared);
         Objects.requireNonNull(whenDone);
 
-        if (!Files.exists(config.trainedDataPath)) {
-            throw new FileNotFoundException("trained data file not found");
-        } else if (!Files.isRegularFile(config.trainedDataPath)) {
-            throw new IOException("trained data path is not a file");
+        if (config.trainedDataDirectory.equals(Path.of(""))) {
+            throw new IOException("directory not designated");
+        } else if (!Files.isDirectory(config.trainedDataDirectory)) {
+            throw new IOException("invalid directory");
+        } else if (config.trainedDataLanguage.isBlank()) {
+            throw new IOException("invalid language");
         }
-
-        Path dataDir = config.trainedDataPath.toAbsolutePath().getParent();
-        Path filenamePath = config.trainedDataPath.getFileName();
-        if (filenamePath == null) {
-            throw new RuntimeException();
-        }
-        String filename = filenamePath.toString();
-        String language = filename.substring(0, filename.indexOf('.'));
 
         ocrTesterModel.clear();
         whenCleared.run();
-        try (OcrWrapper ocr = new DefaultOcrWrapper(dataDir, language)) {
+        try (OcrWrapper ocr = new DefaultOcrWrapper(config.trainedDataDirectory,
+                config.trainedDataLanguage)) {
             for (LocalSong song : songModel.getSongList()) {
                 if (Thread.currentThread().isInterrupted()) {
                     break;
