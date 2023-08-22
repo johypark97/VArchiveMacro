@@ -4,27 +4,25 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
 import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import com.google.common.base.CharMatcher;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
 public class GroundTruthGenerateTask implements Callable<Void> {
-    private static final String ENG_DIRECTORY_NAME = "eng";
-    private static final String EXCEEDED_DIRECTORY_NAME = "exceeded";
-    private static final String KOR_DIRECTORY_NAME = "kor";
-    private static final String MIXED_DIRECTORY_NAME = "mixed";
+    private static final String GT_OUTPUT_DIRECTORY_NAME = "gt";
 
     private static final String NUMBERS_FILENAME = "foo.numbers";
     private static final String PUNC_FILENAME = "foo.punc";
@@ -59,13 +57,6 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         this.songModel = songModel;
     }
 
-    private BufferedImage readTitleImage(Path imagePath) throws IOException, PixError {
-        try (PixWrapper pix = new PixWrapper(imagePath)) {
-            PixPreprocessor.preprocessTitle(pix);
-            return ImageConverter.pngBytesToImage(pix.getPngBytes());
-        }
-    }
-
     private BufferedImage trimImage(BufferedImage image) {
         int bottom = 0;
         int left = image.getWidth();
@@ -88,60 +79,87 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         return image.getSubimage(left, top, right - left + 1, bottom - top + 1);
     }
 
-    private void writeTitleImage(Path outputDir, LocalSong song, int number, BufferedImage image)
-            throws IOException {
-        Path path = CacheHelper.createImagePath(outputDir, song, number);
-        ImageIO.write(image, CacheHelper.IMAGE_FORMAT, path.toFile());
-    }
-
-    private void createGt(Path outputDir, LocalSong song, int number, String title)
-            throws IOException {
-        Path path = CacheHelper.createGtPath(outputDir, song, number);
-        Files.writeString(path, title);
-    }
-
-    private void createBox(Path outputDir, LocalSong song, int number, String title,
-            BufferedImage image) throws IOException {
-        StringBuilder builder = new StringBuilder();
-        title.codePoints().forEach((x) -> {
-            // write the file using LF only
-            String line = String.format("%c 0 0 %d %d 0\n", x, image.getWidth(), image.getHeight());
-            builder.append(line);
-        });
-
-        Path path = CacheHelper.createBoxPath(outputDir, song, number);
-        Files.writeString(path, builder.toString());
-    }
-
     @Override
     public Void call() throws Exception {
-        if (!Files.exists(config.inputDir)) {
-            throw new RuntimeException("It seems caches are not ready.");
+        Path inputDir = config.preparedDir;
+        Path outputDir = config.groundTruthDir;
+
+        if (!Files.exists(inputDir)) {
+            throw new RuntimeException("It seems gt files are not prepared.");
         }
 
-        Path inputDir = config.inputDir;
+        Path gtOutputDir = outputDir.resolve(GT_OUTPUT_DIRECTORY_NAME);
 
-        Path baseOutputDir = config.outputDir;
-        Path engOutputDir = baseOutputDir.resolve(ENG_DIRECTORY_NAME);
-        Path korOutputDir = baseOutputDir.resolve(KOR_DIRECTORY_NAME);
-        Path mixedOutputDir = baseOutputDir.resolve(MIXED_DIRECTORY_NAME);
-        Path exceededOutputDir = baseOutputDir.resolve(EXCEEDED_DIRECTORY_NAME);
+        Path numbersPath = outputDir.resolve(NUMBERS_FILENAME);
+        Path puncPath = outputDir.resolve(PUNC_FILENAME);
+        Path wordlistPath = outputDir.resolve(WORDLIST_FILENAME);
 
-        Path numbersPath = baseOutputDir.resolve(NUMBERS_FILENAME);
-        Path puncPath = baseOutputDir.resolve(PUNC_FILENAME);
-        Path wordlistPath = baseOutputDir.resolve(WORDLIST_FILENAME);
+        CacheHelper.clearAndReadyDirectory(outputDir);
+        Files.createDirectories(gtOutputDir);
 
-        CacheHelper.clearAndReadyDirectory(baseOutputDir);
-        Files.createDirectories(engOutputDir);
-        Files.createDirectories(korOutputDir);
-        Files.createDirectories(mixedOutputDir);
-        Files.createDirectories(exceededOutputDir);
+        // create ground truth files
+        List<Path> imagePathList;
+        try (Stream<Path> stream = Files.walk(inputDir)) {
+            imagePathList = stream.filter((x) -> {
+                String filename = x.getFileName().toString();
+                return filename.endsWith(CacheHelper.IMAGE_FORMAT);
+            }).sorted(Comparator.reverseOrder()).toList();
+        }
 
+        Thread thread = Thread.currentThread();
+        for (Path imagePath : imagePathList) {
+            Path filenamePath = imagePath.getFileName();
+            if (filenamePath == null) {
+                throw new RuntimeException("filenamePath is null. unexpected error.");
+            }
+
+            String filename = filenamePath.toString();
+            filename = filename.substring(0, filename.indexOf(CacheHelper.IMAGE_FORMAT) - 1);
+
+            Path gtPath = imagePath.resolveSibling(filename + '.' + CacheHelper.GT_FORMAT);
+            if (!Files.exists(gtPath)) {
+                throw new FileNotFoundException(gtPath.toString());
+            }
+
+            BufferedImage image = ImageIO.read(imagePath.toFile());
+            byte[] imageBytes = ImageConverter.imageToPngBytes(image);
+
+            for (int i = 0; i < 3; ++i) {
+                for (int j = 0; j < 5; ++j) {
+                    for (int k = 0; k < 5; ++k) {
+                        float sx = 1 + 0.05f * j;
+                        float sy = 1 + 0.05f * k;
+                        String outFilename = String.format("%s_%d_%.2f_%.2f.", filename, i, sx, sy);
+
+                        BufferedImage preprocessedImage;
+                        try (PixWrapper pix = new PixWrapper(imageBytes)) {
+                            PixPreprocessor.preprocessTitle(pix, i, sx, sy);
+                            preprocessedImage = ImageConverter.pngBytesToImage(pix.getPngBytes());
+                        }
+                        preprocessedImage = trimImage(preprocessedImage);
+
+                        Path imageOutputPath =
+                                gtOutputDir.resolve(outFilename + CacheHelper.IMAGE_FORMAT);
+                        ImageIO.write(preprocessedImage, CacheHelper.IMAGE_FORMAT,
+                                imageOutputPath.toFile());
+
+                        Path gtOutputPath =
+                                gtOutputDir.resolve(outFilename + CacheHelper.GT_FORMAT);
+                        Files.copy(gtPath, gtOutputPath);
+                    }
+                }
+            }
+
+            if (thread.isInterrupted()) {
+                break;
+            }
+        }
+
+        // create optional files
         Set<String> numberSet = new HashSet<>();
         Set<String> puncSet = new HashSet<>();
         Set<String> wordSet = new HashSet<>();
 
-        Thread thread = Thread.currentThread();
         for (LocalSong song : songModel.getSongList()) {
             String title = songModel.getShortTitle(song);
             title = songModel.normalizeTitle(title);
@@ -155,48 +173,6 @@ public class GroundTruthGenerateTask implements Callable<Void> {
             String puncString = letterMatcher.replaceFrom(title, ' ');
             puncString = numberMatcher.replaceFrom(puncString, ' ');
             puncSet.addAll(splitter.apply(puncString));
-
-            boolean containEng = false;
-            boolean containKor = false;
-            for (int c : title.codePoints().toArray()) {
-                if (c >= 0x41 && c <= 0x5A || c >= 0x61 && c <= 0x7A) {
-                    containEng = true;
-                } else if (c >= 0xAC00 && c <= 0xD7A3) {
-                    containKor = true;
-                }
-            }
-
-            Path outputDir;
-            if (songModel.hasShortTitle(song)) {
-                outputDir = exceededOutputDir;
-            } else if (containEng && !containKor) {
-                outputDir = engOutputDir;
-            } else if (!containEng && containKor) {
-                outputDir = korOutputDir;
-            } else {
-                outputDir = mixedOutputDir;
-            }
-
-            int number = -1;
-            while (true) {
-                ++number;
-
-                Path imagePath = CacheHelper.createImagePath(inputDir, song, number);
-                if (!Files.exists(imagePath)) {
-                    break;
-                }
-
-                BufferedImage titleImage = readTitleImage(imagePath);
-                titleImage = trimImage(titleImage);
-
-                writeTitleImage(outputDir, song, number, titleImage);
-                createGt(outputDir, song, number, title);
-                createBox(outputDir, song, number, title, titleImage);
-            }
-
-            if (thread.isInterrupted()) {
-                break;
-            }
         }
 
         Files.writeString(wordlistPath, joiner.apply(wordSet));

@@ -22,6 +22,8 @@ public interface IDbManager {
 
         void checkRemote();
 
+        void prepareGroundTruth();
+
         void generateGroundTruth();
 
         void runOcrTest();

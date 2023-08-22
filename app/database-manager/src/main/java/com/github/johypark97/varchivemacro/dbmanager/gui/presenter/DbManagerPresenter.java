@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.IDbManager.Vi
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.CacheCaptureTask;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.DatabaseValidator;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.GroundTruthGenerateTask;
+import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.GroundTruthPrepareTask;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.OcrTestTask;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.RemoteValidator;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor.TaskRunner;
@@ -217,6 +218,20 @@ public class DbManagerPresenter implements Presenter {
             view.showErrorDialog(e.getMessage());
         } catch (InterruptedException ignored) {
         }
+    }
+
+    @Override
+    public void prepareGroundTruth() {
+        if (!songModel.isLoaded()) {
+            view.showErrorDialog(SONG_MODEL_NOT_LOADED_MESSAGE);
+            return;
+        }
+
+        GroundTruthPrepareTask task = new GroundTruthPrepareTask();
+        task.setConfig(view.getGroundTruthGeneratorConfig());
+        task.setSongModel(songModel);
+
+        runTask(task);
     }
 
     @Override

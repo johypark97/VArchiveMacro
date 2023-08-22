@@ -89,9 +89,11 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     private transient SliderSet continuousCaptureDelaySet;
     private transient SliderSet inputDurationSliderSet;
 
-    private transient Path groundTruthGeneratorInputDir;
-    private transient Path groundTruthGeneratorOutputDir;
+    private transient Path groundTruthGeneratorCacheDir;
+    private transient Path groundTruthGeneratorGroundTruthDir;
+    private transient Path groundTruthGeneratorPreparedDir;
     protected JButton generateGroundTruthButton;
+    protected JButton prepareGroundTruthButton;
 
     private JTable ocrTesterTable;
     private transient Path ocrTesterCacheDirPath;
@@ -472,11 +474,11 @@ public class DbManagerView extends JFrame implements View, WindowListener {
 
         Box inputDirBox = Box.createHorizontalBox();
         {
-            inputDirBox.add(new JLabel("input : "));
+            inputDirBox.add(new JLabel("cache : "));
 
-            groundTruthGeneratorInputDir = new GroundTruthGeneratorConfig().inputDir;
+            groundTruthGeneratorCacheDir = new GroundTruthGeneratorConfig().cacheDir;
 
-            JTextField textField = new JTextField(groundTruthGeneratorInputDir.toString());
+            JTextField textField = new JTextField(groundTruthGeneratorCacheDir.toString());
             textField.setBackground(Color.WHITE);
             textField.setEditable(false);
             inputDirBox.add(textField);
@@ -487,13 +489,30 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         }
         growBoxCreator.add(inputDirBox);
 
+        Box preparedDirBox = Box.createHorizontalBox();
+        {
+            preparedDirBox.add(new JLabel("prepared output : "));
+
+            groundTruthGeneratorPreparedDir = new GroundTruthGeneratorConfig().preparedDir;
+
+            JTextField textField = new JTextField(groundTruthGeneratorPreparedDir.toString());
+            textField.setBackground(Color.WHITE);
+            textField.setEditable(false);
+            preparedDirBox.add(textField);
+
+            JButton button = new JButton(SELECT_TEXT);
+            button.setEnabled(false);
+            preparedDirBox.add(button);
+        }
+        growBoxCreator.add(preparedDirBox);
+
         Box outputDirBox = Box.createHorizontalBox();
         {
-            outputDirBox.add(new JLabel("output : "));
+            outputDirBox.add(new JLabel("generated output : "));
 
-            groundTruthGeneratorOutputDir = new GroundTruthGeneratorConfig().outputDir;
+            groundTruthGeneratorGroundTruthDir = new GroundTruthGeneratorConfig().groundTruthDir;
 
-            JTextField textField = new JTextField(groundTruthGeneratorOutputDir.toString());
+            JTextField textField = new JTextField(groundTruthGeneratorGroundTruthDir.toString());
             textField.setBackground(Color.WHITE);
             textField.setEditable(false);
             outputDirBox.add(textField);
@@ -507,6 +526,10 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         Box buttonBox = Box.createHorizontalBox();
         {
             buttonBox.add(Box.createHorizontalGlue());
+
+            prepareGroundTruthButton = new JButton("prepare");
+            prepareGroundTruthButton.addActionListener(buttonListener);
+            buttonBox.add(prepareGroundTruthButton);
 
             generateGroundTruthButton = new JButton("generate");
             generateGroundTruthButton.addActionListener(buttonListener);
@@ -763,8 +786,9 @@ public class DbManagerView extends JFrame implements View, WindowListener {
     public GroundTruthGeneratorConfig getGroundTruthGeneratorConfig() {
         GroundTruthGeneratorConfig config = new GroundTruthGeneratorConfig();
 
-        config.inputDir = groundTruthGeneratorInputDir;
-        config.outputDir = groundTruthGeneratorOutputDir;
+        config.cacheDir = groundTruthGeneratorCacheDir;
+        config.groundTruthDir = groundTruthGeneratorGroundTruthDir;
+        config.preparedDir = groundTruthGeneratorPreparedDir;
 
         return config;
     }
@@ -871,6 +895,8 @@ class DbManagerViewButtonListener implements ActionListener {
             view.presenter.validateDatabase();
         } else if (source.equals(view.checkRemoteButton)) {
             view.presenter.checkRemote();
+        } else if (source.equals(view.prepareGroundTruthButton)) {
+            view.presenter.prepareGroundTruth();
         } else if (source.equals(view.generateGroundTruthButton)) {
             view.presenter.generateGroundTruth();
         } else if (source.equals(view.ocrTesterSelectTrainedDataButton)) {

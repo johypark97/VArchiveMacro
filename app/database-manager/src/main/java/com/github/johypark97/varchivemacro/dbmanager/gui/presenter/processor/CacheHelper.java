@@ -9,13 +9,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class CacheHelper {
-    public static final String BOX_FORMAT = "box";
     public static final String GT_FORMAT = "gt.txt";
     public static final String IMAGE_FORMAT = "png";
-
-    public static Path createBoxPath(Path baseDir, LocalSong song, int number) {
-        return baseDir.resolve(makeFilename(song.id(), number, BOX_FORMAT));
-    }
 
     public static Path createGtPath(Path baseDir, LocalSong song, int number) {
         return baseDir.resolve(makeFilename(song.id(), number, GT_FORMAT));
