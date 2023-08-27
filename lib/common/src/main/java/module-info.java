@@ -24,6 +24,7 @@ module varchivemacro.lib.common {
     exports com.github.johypark97.varchivemacro.lib.common.area;
     exports com.github.johypark97.varchivemacro.lib.common.ocr;
     exports com.github.johypark97.varchivemacro.lib.common.protocol;
+    exports com.github.johypark97.varchivemacro.lib.common.recognizer;
     exports com.github.johypark97.varchivemacro.lib.common.resource;
 
     exports com.github.johypark97.varchivemacro.lib.common;

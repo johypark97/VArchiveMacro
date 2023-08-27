@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model;
 
+import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -33,4 +34,6 @@ public interface SongModel {
     boolean hasShortTitle(LocalSong song);
 
     String getShortTitle(LocalSong song);
+
+    TitleTool getTitleTool();
 }

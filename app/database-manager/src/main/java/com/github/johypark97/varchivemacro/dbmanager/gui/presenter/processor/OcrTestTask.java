@@ -4,12 +4,15 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.DefaultOcrTesterM
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.OcrTesterModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.OcrTesterConfig;
-import com.github.johypark97.varchivemacro.lib.common.StringUtils.StringDiff;
+import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer;
+import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer.Recognized;
+import com.google.common.base.CharMatcher;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,6 +44,13 @@ public class OcrTestTask implements Callable<Void> {
         this.whenDone = whenDone;
     }
 
+    private String normalizeString(String value) {
+        String s = songModel.getTitleTool().normalizeTitle(value);
+        s = CharMatcher.whitespace().removeFrom(s);
+
+        return s;
+    }
+
     @Override
     public Void call() throws Exception {
         Objects.requireNonNull(config);
@@ -61,6 +71,11 @@ public class OcrTestTask implements Callable<Void> {
 
         ocrTesterModel.clear();
         whenCleared.run();
+
+        TitleSongRecognizer recognizer =
+                new TitleSongRecognizer(songModel.getTitleTool(), this::normalizeString);
+        recognizer.setSongList(songModel.getSongList());
+
         try (OcrWrapper ocr = new DefaultOcrWrapper(config.trainedDataDirectory,
                 config.trainedDataLanguage)) {
             for (LocalSong song : songModel.getSongList()) {
@@ -73,17 +88,35 @@ public class OcrTestTask implements Callable<Void> {
                 String scannedTitle;
                 try (PixWrapper pix = new PixWrapper(imagePath)) {
                     PixPreprocessor.preprocessTitle(pix);
-                    scannedTitle = ocr.run(pix.pixInstance).trim();
+                    scannedTitle = ocr.run(pix.pixInstance);
                 }
 
-                String nTitle = songModel.normalizeTitle(songModel.getShortTitle(song));
-                StringDiff diff = new StringDiff(scannedTitle, nTitle);
+                TitleTool titleTool = songModel.getTitleTool();
+                String nTitle = normalizeString(titleTool.getShortTitle(song));
 
                 DefaultOcrTesterData data = new DefaultOcrTesterData(song);
-                data.setAccuracy((float) diff.getSimilarity());
-                data.setDistance(diff.getDistance());
-                data.setNormalizedTitle(nTitle);
-                data.setScannedTitle(scannedTitle);
+
+                Recognized recognized = recognizer.recognize(scannedTitle);
+                switch (recognized.status()) {
+                    case DUPLICATED_SONG -> {
+                        data.setNormalizedTitle("");
+                        data.setScannedTitle("duplicated song");
+                    }
+                    case FOUND -> {
+                        if (recognized.song().equals(song)) {
+                            data.setAccuracy(recognized.similarity());
+                            data.setDistance(recognized.distance());
+                            data.setNormalizedTitle(nTitle);
+                            data.setScannedTitle(normalizeString(scannedTitle));
+                        } else {
+                            data.setScannedTitle("found wrong: " + recognized.song().title());
+                        }
+                    }
+                    case NOT_FOUND -> {
+                        data.setNormalizedTitle("");
+                        data.setScannedTitle("not found");
+                    }
+                }
 
                 ocrTesterModel.addData(data);
                 whenAdded.accept(ocrTesterModel.getCount() - 1);
