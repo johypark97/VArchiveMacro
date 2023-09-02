@@ -6,7 +6,22 @@ import java.util.Map;
 
 public interface OcrTesterViewModelColumn {
     enum ColumnKey {
-        ACCURACY, DISTANCE, ID, MATCH, NORMALIZED_TITLE, SCANNED_TITLE, SONG_COMPOSER, SONG_DLC, SONG_DLC_TAB, SONG_TITLE
+        // @formatter:off
+        ACCURACY,
+        DISTANCE,
+        NORM_SCANNED_TITLE,
+        NOTE,
+        PASS,
+        RECOGNIZED_SONG_COMPOSER,
+        RECOGNIZED_SONG_ID,
+        RECOGNIZED_SONG_TITLE,
+        TEST_SONG_COMPOSER,
+        TEST_SONG_DLC,
+        TEST_SONG_DLC_TAB,
+        TEST_SONG_ID,
+        TEST_SONG_NORM_TITLE,
+        TEST_SONG_TITLE,
+        // @formatter:on
     }
 
 
@@ -22,16 +37,20 @@ public interface OcrTesterViewModelColumn {
         private BiMap<ColumnKey, Integer> createIndexMap() {
             IndexMapBuilder<ColumnKey> builder = new IndexMapBuilder<>();
 
-            builder.add(ColumnKey.MATCH);
-            builder.add(ColumnKey.ID);
-            builder.add(ColumnKey.DISTANCE);
+            builder.add(ColumnKey.TEST_SONG_ID);
+            builder.add(ColumnKey.TEST_SONG_TITLE);
+            builder.add(ColumnKey.TEST_SONG_COMPOSER);
+            builder.add(ColumnKey.TEST_SONG_DLC);
+            builder.add(ColumnKey.TEST_SONG_DLC_TAB);
+            builder.add(ColumnKey.TEST_SONG_NORM_TITLE);
+            builder.add(ColumnKey.NORM_SCANNED_TITLE);
+            builder.add(ColumnKey.RECOGNIZED_SONG_ID);
+            builder.add(ColumnKey.RECOGNIZED_SONG_TITLE);
+            builder.add(ColumnKey.RECOGNIZED_SONG_COMPOSER);
             builder.add(ColumnKey.ACCURACY);
-            builder.add(ColumnKey.SCANNED_TITLE);
-            builder.add(ColumnKey.NORMALIZED_TITLE);
-            builder.add(ColumnKey.SONG_TITLE);
-            builder.add(ColumnKey.SONG_COMPOSER);
-            builder.add(ColumnKey.SONG_DLC);
-            builder.add(ColumnKey.SONG_DLC_TAB);
+            builder.add(ColumnKey.DISTANCE);
+            builder.add(ColumnKey.NOTE);
+            builder.add(ColumnKey.PASS);
 
             return builder.build();
         }
@@ -43,14 +62,18 @@ public interface OcrTesterViewModelColumn {
             builder.setConverter((x) -> switch (x) {
                 case ACCURACY -> "accuracy";
                 case DISTANCE -> "distance";
-                case ID -> "id";
-                case MATCH -> "isMatch";
-                case NORMALIZED_TITLE -> "normalizedTitle";
-                case SCANNED_TITLE -> "scannedTitle";
-                case SONG_COMPOSER -> "composer";
-                case SONG_DLC -> "dlc";
-                case SONG_DLC_TAB -> "dlcTab";
-                case SONG_TITLE -> "title";
+                case NORM_SCANNED_TITLE -> "normScannedTitle";
+                case NOTE -> "note";
+                case PASS -> "test pass";
+                case RECOGNIZED_SONG_COMPOSER -> "r.composer";
+                case RECOGNIZED_SONG_ID -> "r.id";
+                case RECOGNIZED_SONG_TITLE -> "r.title";
+                case TEST_SONG_COMPOSER -> "t.composer";
+                case TEST_SONG_DLC -> "t.dlc";
+                case TEST_SONG_DLC_TAB -> "t.dlcTab";
+                case TEST_SONG_ID -> "t.id";
+                case TEST_SONG_NORM_TITLE -> "t.normTitle";
+                case TEST_SONG_TITLE -> "t.title";
             });
 
             return builder.build();

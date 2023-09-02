@@ -1,8 +1,10 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model;
 
+import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 
 public class DefaultOcrTesterModel implements OcrTesterModel {
     private final List<OcrTesterData> dataList = new CopyOnWriteArrayList<>();
@@ -28,63 +30,50 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
     }
 
     public static class DefaultOcrTesterData implements OcrTesterData {
-        private final String composer;
-        private final String dlc;
-        private final String dlcTab;
-        private final String title;
-        private final int id;
+        private final LocalSong testSong;
+        private final String testSong_normalizedTitle;
 
-        private String normalizedTitle;
-        private String scannedTitle;
+        private LocalSong recognizedSong;
+        private String note = "";
+        private String scannedNormalizedTitle = "";
         private float accuracy;
         private int distance;
 
-        public DefaultOcrTesterData(LocalSong song) {
-            composer = song.composer();
-            dlc = song.dlc();
-            dlcTab = song.dlcTab();
-            id = song.id();
-            title = song.title();
+        public DefaultOcrTesterData(LocalSong testSong, TitleTool titleTool,
+                Function<String, String> normalizer) {
+            this.testSong = testSong;
+
+            testSong_normalizedTitle = normalizer.apply(titleTool.getShortTitle(testSong));
         }
 
         @Override
-        public String getComposer() {
-            return composer;
+        public LocalSong getTestSong() {
+            return testSong;
         }
 
         @Override
-        public String getDlc() {
-            return dlc;
+        public String getTestSong_normalizedTitle() {
+            return testSong_normalizedTitle;
         }
 
         @Override
-        public String getDlcTab() {
-            return dlcTab;
+        public LocalSong getRecognizedSong() {
+            return recognizedSong;
         }
 
         @Override
-        public String getNormalizedTitle() {
-            return normalizedTitle;
+        public void setRecognizedSong(LocalSong value) {
+            recognizedSong = value;
         }
 
         @Override
-        public void setNormalizedTitle(String value) {
-            normalizedTitle = value;
+        public String getScannedNormalizedTitle() {
+            return scannedNormalizedTitle;
         }
 
         @Override
-        public String getScannedTitle() {
-            return scannedTitle;
-        }
-
-        @Override
-        public void setScannedTitle(String value) {
-            scannedTitle = value;
-        }
-
-        @Override
-        public String getTitle() {
-            return title;
+        public void setScannedNormalizedTitle(String value) {
+            scannedNormalizedTitle = value;
         }
 
         @Override
@@ -108,8 +97,13 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
         }
 
         @Override
-        public int getId() {
-            return id;
+        public String getNote() {
+            return note;
+        }
+
+        @Override
+        public void setNote(String value) {
+            note = value;
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model;
 
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+
 public interface OcrTesterModel {
     int getCount();
 
@@ -10,21 +12,17 @@ public interface OcrTesterModel {
     OcrTesterData getData(int index);
 
     interface OcrTesterData {
-        String getComposer();
+        LocalSong getTestSong();
 
-        String getDlc();
+        String getTestSong_normalizedTitle();
 
-        String getDlcTab();
+        LocalSong getRecognizedSong();
 
-        String getNormalizedTitle();
+        void setRecognizedSong(LocalSong value);
 
-        void setNormalizedTitle(String value);
+        String getScannedNormalizedTitle();
 
-        String getScannedTitle();
-
-        void setScannedTitle(String value);
-
-        String getTitle();
+        void setScannedNormalizedTitle(String value);
 
         float getAccuracy();
 
@@ -34,6 +32,8 @@ public interface OcrTesterModel {
 
         void setDistance(int value);
 
-        int getId();
+        String getNote();
+
+        void setNote(String value);
     }
 }

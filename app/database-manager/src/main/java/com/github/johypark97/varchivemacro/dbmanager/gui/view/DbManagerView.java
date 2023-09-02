@@ -623,13 +623,23 @@ public class DbManagerView extends JFrame implements View, WindowListener {
                         boolean isSelected, boolean hasFocus, int row, int column) {
                     int rowIndex = table.convertRowIndexToModel(row);
 
-                    boolean isMatch = (boolean) table.getModel().getValueAt(rowIndex,
+                    boolean isPassed = (boolean) table.getModel().getValueAt(rowIndex,
                             ocrTesterTableViewModel.getTableColumnLookup()
-                                    .getIndexInView(table, ColumnKey.MATCH));
+                                    .getIndexInView(table, ColumnKey.PASS));
 
                     Color backgroundColor;
-                    if (isMatch) {
-                        backgroundColor = isSelected ? new Color(0x80FF80) : new Color(0xC0FFC0);
+                    if (isPassed) {
+                        int distance = (int) table.getModel().getValueAt(rowIndex,
+                                ocrTesterTableViewModel.getTableColumnLookup()
+                                        .getIndexInView(table, ColumnKey.DISTANCE));
+
+                        if (distance == 0) {
+                            backgroundColor =
+                                    isSelected ? new Color(0x80FF80) : new Color(0xC0FFC0);
+                        } else {
+                            backgroundColor =
+                                    isSelected ? new Color(0xFFFF80) : new Color(0xFFFFC0);
+                        }
                     } else {
                         backgroundColor =
                                 isSelected ? table.getSelectionBackground() : table.getBackground();
@@ -727,14 +737,21 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         TableColumnLookup<ColumnKey> columnLookup = ocrTesterViewModel.getTableColumnLookup();
         columnLookup.getColumn(ocrTesterTable, ColumnKey.ACCURACY).setPreferredWidth(80);
         columnLookup.getColumn(ocrTesterTable, ColumnKey.DISTANCE).setPreferredWidth(40);
-        columnLookup.getColumn(ocrTesterTable, ColumnKey.ID).setPreferredWidth(40);
-        columnLookup.getColumn(ocrTesterTable, ColumnKey.MATCH).setPreferredWidth(40);
-        columnLookup.getColumn(ocrTesterTable, ColumnKey.NORMALIZED_TITLE).setPreferredWidth(160);
-        columnLookup.getColumn(ocrTesterTable, ColumnKey.SCANNED_TITLE).setPreferredWidth(160);
-        columnLookup.getColumn(ocrTesterTable, ColumnKey.SONG_COMPOSER).setPreferredWidth(80);
-        columnLookup.getColumn(ocrTesterTable, ColumnKey.SONG_DLC).setPreferredWidth(80);
-        columnLookup.getColumn(ocrTesterTable, ColumnKey.SONG_DLC_TAB).setPreferredWidth(80);
-        columnLookup.getColumn(ocrTesterTable, ColumnKey.SONG_TITLE).setPreferredWidth(160);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.NORM_SCANNED_TITLE).setPreferredWidth(160);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.NOTE).setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.PASS).setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.RECOGNIZED_SONG_COMPOSER)
+                .setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.RECOGNIZED_SONG_ID).setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.RECOGNIZED_SONG_TITLE)
+                .setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.TEST_SONG_COMPOSER).setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.TEST_SONG_DLC).setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.TEST_SONG_DLC_TAB).setPreferredWidth(80);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.TEST_SONG_ID).setPreferredWidth(40);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.TEST_SONG_NORM_TITLE)
+                .setPreferredWidth(160);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.TEST_SONG_TITLE).setPreferredWidth(80);
     }
 
     @Override

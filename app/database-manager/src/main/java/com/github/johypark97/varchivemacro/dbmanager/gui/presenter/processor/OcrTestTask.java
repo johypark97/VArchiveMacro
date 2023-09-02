@@ -4,7 +4,6 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.DefaultOcrTesterM
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.OcrTesterModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.OcrTesterConfig;
-import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
@@ -91,31 +90,29 @@ public class OcrTestTask implements Callable<Void> {
                     scannedTitle = ocr.run(pix.pixInstance);
                 }
 
-                TitleTool titleTool = songModel.getTitleTool();
-                String nTitle = normalizeString(titleTool.getShortTitle(song));
-
-                DefaultOcrTesterData data = new DefaultOcrTesterData(song);
+                DefaultOcrTesterData data = new DefaultOcrTesterData(song, songModel.getTitleTool(),
+                        this::normalizeString);
 
                 Recognized recognized = recognizer.recognize(scannedTitle);
+                data.setScannedNormalizedTitle(recognized.normalizedInput());
+
                 switch (recognized.status()) {
                     case DUPLICATED_SONG -> {
-                        data.setNormalizedTitle("");
-                        data.setScannedTitle("duplicated song");
+                        data.setNote("duplicated");
+                        data.setRecognizedSong(recognized.song());
                     }
                     case FOUND -> {
+                        data.setAccuracy(recognized.similarity());
+                        data.setDistance(recognized.distance());
+                        data.setRecognizedSong(recognized.song());
+
                         if (recognized.song().equals(song)) {
-                            data.setAccuracy(recognized.similarity());
-                            data.setDistance(recognized.distance());
-                            data.setNormalizedTitle(nTitle);
-                            data.setScannedTitle(normalizeString(scannedTitle));
+                            data.setNote((recognized.distance() == 0) ? "exact" : "similar");
                         } else {
-                            data.setScannedTitle("found wrong: " + recognized.song().title());
+                            data.setNote("wrong");
                         }
                     }
-                    case NOT_FOUND -> {
-                        data.setNormalizedTitle("");
-                        data.setScannedTitle("not found");
-                    }
+                    case NOT_FOUND -> data.setNote("not found");
                 }
 
                 ocrTesterModel.addData(data);
