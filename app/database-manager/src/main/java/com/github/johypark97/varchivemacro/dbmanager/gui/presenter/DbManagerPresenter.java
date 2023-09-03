@@ -268,8 +268,13 @@ public class DbManagerPresenter implements Presenter {
 
     @Override
     public void openLiveTester(JFrame parent) {
+        if (!songModel.isLoaded()) {
+            view.showErrorDialog(SONG_MODEL_NOT_LOADED_MESSAGE);
+            return;
+        }
+
         try {
-            liveTesterPresenter.start(parent, view.getLiveTesterConfig());
+            liveTesterPresenter.start(parent, songModel, view.getLiveTesterConfig());
         } catch (OcrInitializationError | NotSupportedResolutionException | AWTException |
                 IOException e) {
             view.showErrorDialog(e.getMessage());

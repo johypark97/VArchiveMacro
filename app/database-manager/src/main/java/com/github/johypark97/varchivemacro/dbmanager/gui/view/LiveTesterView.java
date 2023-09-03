@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.view;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.ILiveTester.Presenter;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.ILiveTester.View;
+import com.github.johypark97.varchivemacro.lib.common.gui.component.GrowBoxCreator;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -53,11 +54,12 @@ public class LiveTesterView implements View {
     }
 
     @Override
-    public void showResult(BufferedImage image, String text) {
+    public void showResult(BufferedImage image, String scannedText, String note) {
         DefaultView defaultView = view;
         SwingUtilities.invokeLater(() -> {
             defaultView.setTestImage(image);
-            defaultView.setTestText(text);
+            defaultView.setTestNoteText(note);
+            defaultView.setTestScannedText(scannedText);
         });
     }
 
@@ -68,7 +70,8 @@ public class LiveTesterView implements View {
 
         // components
         private JLabel testImage;
-        private JTextField testText;
+        private JTextField testNoteText;
+        private JTextField testScannedText;
 
         public DefaultView(JFrame parent) {
             super(parent, false);
@@ -84,8 +87,12 @@ public class LiveTesterView implements View {
             testImage.setIcon(new ImageIcon(image));
         }
 
-        public void setTestText(String text) {
-            testText.setText(text);
+        public void setTestScannedText(String text) {
+            testScannedText.setText(text);
+        }
+
+        public void setTestNoteText(String text) {
+            testNoteText.setText(text);
         }
 
         private void setFrameOption() {
@@ -103,9 +110,17 @@ public class LiveTesterView implements View {
             testImage.setBorder(BorderFactory.createTitledBorder("image"));
             add(testImage, BorderLayout.CENTER);
 
-            testText = new JTextField();
-            testText.setBorder(BorderFactory.createTitledBorder("text"));
-            add(testText, BorderLayout.PAGE_END);
+            GrowBoxCreator endBoxCreator = new GrowBoxCreator();
+            {
+                testScannedText = new JTextField();
+                testScannedText.setBorder(BorderFactory.createTitledBorder("scannedText"));
+                endBoxCreator.add(testScannedText);
+
+                testNoteText = new JTextField();
+                testNoteText.setBorder(BorderFactory.createTitledBorder("note"));
+                endBoxCreator.add(testNoteText);
+            }
+            add(endBoxCreator.create(), BorderLayout.PAGE_END);
         }
     }
 }

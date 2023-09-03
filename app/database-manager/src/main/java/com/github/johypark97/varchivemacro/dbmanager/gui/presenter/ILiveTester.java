@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.presenter;
 
+import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.LiveTesterConfig;
 import com.github.johypark97.varchivemacro.lib.common.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
@@ -12,7 +13,7 @@ public interface ILiveTester {
     interface Presenter {
         void linkView(View view);
 
-        void start(JFrame parent, LiveTesterConfig config)
+        void start(JFrame parent, SongModel songModel, LiveTesterConfig config)
                 throws OcrInitializationError, NotSupportedResolutionException, AWTException,
                 IOException;
 
@@ -37,6 +38,6 @@ public interface ILiveTester {
 
         void disposeView();
 
-        void showResult(BufferedImage image, String text);
+        void showResult(BufferedImage image, String scannedText, String note);
     }
 }

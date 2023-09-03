@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.presenter;
 
+import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.ILiveTester.Presenter;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.ILiveTester.View;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.LiveTesterConfig;
@@ -8,12 +9,15 @@ import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.common.area.NotSupportedResolutionException;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer;
+import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer.Recognized;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.awt.AWTException;
@@ -34,24 +38,36 @@ public class LiveTesterPresenter implements Presenter {
     private OcrWrapper ocrWrapper;
     private Rectangle screenRect;
     private Robot robot;
+    private TitleSongRecognizer recognizer;
     private View view;
 
     private synchronized void runTest() {
         BufferedImage image = robot.createScreenCapture(screenRect);
         image = area.getTitle(image);
 
-        String text;
+        String scannedText;
         try (PixWrapper pix = new PixWrapper(ImageConverter.imageToPngBytes(image))) {
             PixPreprocessor.preprocessTitle(pix);
 
             image = ImageConverter.pngBytesToImage(pix.getPngBytes());
-            text = ocrWrapper.run(pix.pixInstance).trim();
+            scannedText = ocrWrapper.run(pix.pixInstance);
         } catch (PixError | IOException e) {
-            view.showResult(null, e.getMessage());
+            view.showResult(null, e.getMessage(), null);
             return;
         }
 
-        view.showResult(image, text);
+        Recognized recognized = recognizer.recognize(scannedText);
+        String note = switch (recognized.status()) {
+            case DUPLICATED_SONG -> "duplicated";
+            case FOUND -> {
+                LocalSong song = recognized.song();
+                yield String.format("%s - %s (%s) (%d, %f)", song.title(), song.composer(),
+                        song.dlc(), recognized.distance(), recognized.similarity());
+            }
+            case NOT_FOUND -> "not found";
+        };
+
+        view.showResult(image, scannedText, note);
     }
 
     @Override
@@ -61,7 +77,7 @@ public class LiveTesterPresenter implements Presenter {
     }
 
     @Override
-    public synchronized void start(JFrame parent, LiveTesterConfig config)
+    public synchronized void start(JFrame parent, SongModel songModel, LiveTesterConfig config)
             throws OcrInitializationError, NotSupportedResolutionException, AWTException,
             IOException {
         if (view.isActive()) {
@@ -82,6 +98,9 @@ public class LiveTesterPresenter implements Presenter {
 
         ocrWrapper = new DefaultOcrWrapper(config.trainedDataDirectory, config.trainedDataLanguage);
         robot = new Robot();
+
+        recognizer = new TitleSongRecognizer(songModel.getTitleTool());
+        recognizer.setSongList(songModel.getSongList());
 
         view.showView(parent);
     }
