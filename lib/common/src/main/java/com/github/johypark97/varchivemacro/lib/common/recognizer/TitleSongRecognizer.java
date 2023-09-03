@@ -16,6 +16,10 @@ public class TitleSongRecognizer {
     private final Map<String, LocalSong> songMap = new HashMap<>();
     private final TitleTool titleTool;
 
+    public TitleSongRecognizer(TitleTool titleTool) {
+        this(titleTool, TitleTool::normalizeTitle_recognition);
+    }
+
     public TitleSongRecognizer(TitleTool titleTool, Function<String, String> titleNormalizer) {
         this.titleNormalizer = titleNormalizer;
         this.titleTool = titleTool;

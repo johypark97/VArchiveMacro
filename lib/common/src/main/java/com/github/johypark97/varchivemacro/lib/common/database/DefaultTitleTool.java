@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultTitleTool implements TitleTool {
-    // private static final char RIGHT_SINGLE_QUOTATION_MARK = '\u2019';
-
     private final Map<Integer, String> shortTitleMap = new HashMap<>();
     private final String titleChars;
 
@@ -23,14 +21,6 @@ public class DefaultTitleTool implements TitleTool {
     @Override
     public String getTitleChars() {
         return titleChars;
-    }
-
-    @Override
-    public String normalizeTitle(String value) {
-        String s = value.replace('l', 'I');
-        // s = s.replace(RIGHT_SINGLE_QUOTATION_MARK, '\'');
-
-        return s;
     }
 
     @Override

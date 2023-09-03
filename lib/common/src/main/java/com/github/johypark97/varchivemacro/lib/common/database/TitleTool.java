@@ -1,11 +1,26 @@
 package com.github.johypark97.varchivemacro.lib.common.database;
 
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.google.common.base.CharMatcher;
 
 public interface TitleTool {
-    String getTitleChars();
+    // char RIGHT_SINGLE_QUOTATION_MARK = '\u2019';
 
-    String normalizeTitle(String value);
+    static String normalizeTitle_training(String value) {
+        String s = value.replace('l', 'I');
+        // s = s.replace(RIGHT_SINGLE_QUOTATION_MARK, '\'');
+
+        return s;
+    }
+
+    static String normalizeTitle_recognition(String value) {
+        String s = normalizeTitle_training(value);
+        s = CharMatcher.whitespace().removeFrom(s);
+
+        return s;
+    }
+
+    String getTitleChars();
 
     boolean hasShortTitle(LocalSong song);
 

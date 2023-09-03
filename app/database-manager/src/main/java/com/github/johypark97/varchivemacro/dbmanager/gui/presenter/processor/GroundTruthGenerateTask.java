@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
 import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
+import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
@@ -161,8 +162,8 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         Set<String> wordSet = new HashSet<>();
 
         for (LocalSong song : songModel.getSongList()) {
-            String title = songModel.getShortTitle(song);
-            title = songModel.normalizeTitle(title);
+            String title = songModel.getTitleTool().getShortTitle(song);
+            title = TitleTool.normalizeTitle_training(title);
 
             String numberString = numberMatcher.negate().replaceFrom(title, ' ');
             numberSet.addAll(splitter.apply(numberString));

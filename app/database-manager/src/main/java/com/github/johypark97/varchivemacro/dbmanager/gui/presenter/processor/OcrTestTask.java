@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.DefaultOcrTesterM
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.OcrTesterModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.OcrTesterConfig;
+import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
@@ -11,7 +12,6 @@ import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer;
 import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer.Recognized;
-import com.google.common.base.CharMatcher;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,13 +43,6 @@ public class OcrTestTask implements Callable<Void> {
         this.whenDone = whenDone;
     }
 
-    private String normalizeString(String value) {
-        String s = songModel.getTitleTool().normalizeTitle(value);
-        s = CharMatcher.whitespace().removeFrom(s);
-
-        return s;
-    }
-
     @Override
     public Void call() throws Exception {
         Objects.requireNonNull(config);
@@ -71,8 +64,7 @@ public class OcrTestTask implements Callable<Void> {
         ocrTesterModel.clear();
         whenCleared.run();
 
-        TitleSongRecognizer recognizer =
-                new TitleSongRecognizer(songModel.getTitleTool(), this::normalizeString);
+        TitleSongRecognizer recognizer = new TitleSongRecognizer(songModel.getTitleTool());
         recognizer.setSongList(songModel.getSongList());
 
         try (OcrWrapper ocr = new DefaultOcrWrapper(config.trainedDataDirectory,
@@ -91,7 +83,7 @@ public class OcrTestTask implements Callable<Void> {
                 }
 
                 DefaultOcrTesterData data = new DefaultOcrTesterData(song, songModel.getTitleTool(),
-                        this::normalizeString);
+                        TitleTool::normalizeTitle_recognition);
 
                 Recognized recognized = recognizer.recognize(scannedTitle);
                 data.setScannedNormalizedTitle(recognized.normalizedInput());

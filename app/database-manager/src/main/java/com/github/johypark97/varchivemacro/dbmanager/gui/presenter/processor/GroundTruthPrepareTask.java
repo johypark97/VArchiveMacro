@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
+import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,8 +47,8 @@ public class GroundTruthPrepareTask implements Callable<Void> {
 
         Thread thread = Thread.currentThread();
         for (LocalSong song : songModel.getSongList()) {
-            String title = songModel.getShortTitle(song);
-            title = songModel.normalizeTitle(title);
+            String title = songModel.getTitleTool().getShortTitle(song);
+            title = TitleTool.normalizeTitle_training(title);
 
             boolean containEng = false;
             boolean containKor = false;
@@ -60,7 +61,7 @@ public class GroundTruthPrepareTask implements Callable<Void> {
             }
 
             Path baseDir;
-            if (songModel.hasShortTitle(song)) {
+            if (songModel.getTitleTool().hasShortTitle(song)) {
                 baseDir = exceededOutputDir;
             } else if (containEng && !containKor) {
                 baseDir = engOutputDir;

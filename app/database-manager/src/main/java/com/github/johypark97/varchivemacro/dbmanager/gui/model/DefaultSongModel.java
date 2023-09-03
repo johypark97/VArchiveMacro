@@ -77,21 +77,6 @@ public class DefaultSongModel implements SongModel {
     }
 
     @Override
-    public String normalizeTitle(String value) {
-        return titleTool.normalizeTitle(value);
-    }
-
-    @Override
-    public boolean hasShortTitle(LocalSong song) {
-        return titleTool.hasShortTitle(song);
-    }
-
-    @Override
-    public String getShortTitle(LocalSong song) {
-        return titleTool.getShortTitle(song);
-    }
-
-    @Override
     public TitleTool getTitleTool() {
         return titleTool;
     }
