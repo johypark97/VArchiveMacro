@@ -737,6 +737,7 @@ public class DbManagerView extends JFrame implements View, WindowListener {
         TableColumnLookup<ColumnKey> columnLookup = ocrTesterViewModel.getTableColumnLookup();
         columnLookup.getColumn(ocrTesterTable, ColumnKey.ACCURACY).setPreferredWidth(80);
         columnLookup.getColumn(ocrTesterTable, ColumnKey.DISTANCE).setPreferredWidth(40);
+        columnLookup.getColumn(ocrTesterTable, ColumnKey.FOUND).setPreferredWidth(160);
         columnLookup.getColumn(ocrTesterTable, ColumnKey.NORM_SCANNED_TITLE).setPreferredWidth(160);
         columnLookup.getColumn(ocrTesterTable, ColumnKey.NOTE).setPreferredWidth(80);
         columnLookup.getColumn(ocrTesterTable, ColumnKey.PASS).setPreferredWidth(80);

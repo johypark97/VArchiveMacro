@@ -49,6 +49,7 @@ public class DefaultOcrTesterViewModel extends AbstractTableModel implements Ocr
         return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
             case ACCURACY -> data.getAccuracy() * 100;
             case DISTANCE -> data.getDistance();
+            case FOUND -> data.getFound();
             case NORM_SCANNED_TITLE -> data.getScannedNormalizedTitle();
             case NOTE -> data.getNote();
             case PASS -> data.getTestSong().equals(data.getRecognizedSong());
@@ -78,6 +79,7 @@ public class DefaultOcrTesterViewModel extends AbstractTableModel implements Ocr
         return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
             case ACCURACY -> Float.class;
             case DISTANCE -> Integer.class;
+            case FOUND -> String.class;
             case NORM_SCANNED_TITLE -> String.class;
             case NOTE -> String.class;
             case PASS -> Boolean.class;
@@ -123,6 +125,7 @@ public class DefaultOcrTesterViewModel extends AbstractTableModel implements Ocr
 
             setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.ACCURACY), Comparator.reverseOrder());
             setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.DISTANCE), intComparator);
+            setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.FOUND), titleComparator);
             setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.NORM_SCANNED_TITLE), titleComparator);
             setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.NOTE), strComparator);
             setComparator(COLUMN_LOOKUP.getIndex(ColumnKey.PASS), Comparator.reverseOrder());

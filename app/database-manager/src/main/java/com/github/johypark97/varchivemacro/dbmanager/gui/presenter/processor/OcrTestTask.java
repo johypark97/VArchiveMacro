@@ -86,6 +86,7 @@ public class OcrTestTask implements Callable<Void> {
                         TitleTool::normalizeTitle_recognition);
 
                 Recognized recognized = recognizer.recognize(scannedTitle);
+                data.setFound(recognized.foundKey());
                 data.setScannedNormalizedTitle(recognized.normalizedInput());
 
                 switch (recognized.status()) {

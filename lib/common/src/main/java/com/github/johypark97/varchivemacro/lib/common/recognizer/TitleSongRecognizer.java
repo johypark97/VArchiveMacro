@@ -51,7 +51,7 @@ public class TitleSongRecognizer {
 
             return new Recognized(
                     (song != null) ? RecognizedStatus.FOUND : RecognizedStatus.DUPLICATED_SONG,
-                    song, normalizedValue, 0, 1);
+                    song, normalizedValue, normalizedValue, 0, 1);
         }
 
         List<Entry<String, StringDiff>> candidateList = new ArrayList<>();
@@ -77,10 +77,10 @@ public class TitleSongRecognizer {
             LocalSong song = songMap.get(key);
             return new Recognized(
                     (song != null) ? RecognizedStatus.FOUND : RecognizedStatus.DUPLICATED_SONG,
-                    song, normalizedValue, diff.getDistance(), (float) diff.getSimilarity());
+                    song, normalizedValue, key, diff.getDistance(), (float) diff.getSimilarity());
         }
 
-        return new Recognized(RecognizedStatus.NOT_FOUND, null, normalizedValue, 0, 0);
+        return new Recognized(RecognizedStatus.NOT_FOUND, null, normalizedValue, "", 0, 0);
     }
 
     private boolean hasOneElement(List<?> list) {
@@ -93,6 +93,6 @@ public class TitleSongRecognizer {
 
 
     public record Recognized(RecognizedStatus status, LocalSong song, String normalizedInput,
-                             int distance, float similarity) {
+                             String foundKey, int distance, float similarity) {
     }
 }

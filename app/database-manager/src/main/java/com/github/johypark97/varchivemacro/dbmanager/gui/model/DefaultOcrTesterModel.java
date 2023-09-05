@@ -34,6 +34,7 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
         private final String testSong_normalizedTitle;
 
         private LocalSong recognizedSong;
+        private String found = "";
         private String note = "";
         private String scannedNormalizedTitle = "";
         private float accuracy;
@@ -94,6 +95,16 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
         @Override
         public void setDistance(int value) {
             distance = value;
+        }
+
+        @Override
+        public String getFound() {
+            return found;
+        }
+
+        @Override
+        public void setFound(String value) {
+            found = value;
         }
 
         @Override

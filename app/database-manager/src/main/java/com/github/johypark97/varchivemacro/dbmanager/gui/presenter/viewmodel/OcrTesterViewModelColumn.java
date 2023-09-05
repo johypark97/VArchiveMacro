@@ -9,6 +9,7 @@ public interface OcrTesterViewModelColumn {
         // @formatter:off
         ACCURACY,
         DISTANCE,
+        FOUND,
         NORM_SCANNED_TITLE,
         NOTE,
         PASS,
@@ -44,12 +45,13 @@ public interface OcrTesterViewModelColumn {
             builder.add(ColumnKey.TEST_SONG_DLC_TAB);
             builder.add(ColumnKey.TEST_SONG_NORM_TITLE);
             builder.add(ColumnKey.NORM_SCANNED_TITLE);
-            builder.add(ColumnKey.RECOGNIZED_SONG_ID);
-            builder.add(ColumnKey.RECOGNIZED_SONG_TITLE);
-            builder.add(ColumnKey.RECOGNIZED_SONG_COMPOSER);
+            builder.add(ColumnKey.FOUND);
             builder.add(ColumnKey.ACCURACY);
             builder.add(ColumnKey.DISTANCE);
             builder.add(ColumnKey.NOTE);
+            builder.add(ColumnKey.RECOGNIZED_SONG_ID);
+            builder.add(ColumnKey.RECOGNIZED_SONG_TITLE);
+            builder.add(ColumnKey.RECOGNIZED_SONG_COMPOSER);
             builder.add(ColumnKey.PASS);
 
             return builder.build();
@@ -62,6 +64,7 @@ public interface OcrTesterViewModelColumn {
             builder.setConverter((x) -> switch (x) {
                 case ACCURACY -> "accuracy";
                 case DISTANCE -> "distance";
+                case FOUND -> "foundKey";
                 case NORM_SCANNED_TITLE -> "normScannedTitle";
                 case NOTE -> "note";
                 case PASS -> "test pass";

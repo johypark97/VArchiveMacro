@@ -58,11 +58,13 @@ public class LiveTesterPresenter implements Presenter {
 
         Recognized recognized = recognizer.recognize(scannedText);
         String note = switch (recognized.status()) {
-            case DUPLICATED_SONG -> "duplicated";
+            case DUPLICATED_SONG -> String.format("duplicated (%s, %d, %f)", recognized.foundKey(),
+                    recognized.distance(), recognized.similarity());
             case FOUND -> {
                 LocalSong song = recognized.song();
-                yield String.format("%s - %s (%s) (%d, %f)", song.title(), song.composer(),
-                        song.dlc(), recognized.distance(), recognized.similarity());
+                yield String.format("%s - %s (%s) (%s, %d, %f)", song.title(), song.composer(),
+                        song.dlc(), recognized.foundKey(), recognized.distance(),
+                        recognized.similarity());
             }
             case NOT_FOUND -> "not found";
         };

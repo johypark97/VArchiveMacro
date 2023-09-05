@@ -32,6 +32,10 @@ public interface OcrTesterModel {
 
         void setDistance(int value);
 
+        String getFound();
+
+        void setFound(String value);
+
         String getNote();
 
         void setNote(String value);
