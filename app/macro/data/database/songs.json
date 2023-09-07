@@ -5698,5 +5698,155 @@
     "dlcCode": "R",
     "dlcTab": "RESPECT",
     "priority": 0
+  },
+  {
+    "id": 570,
+    "title": "Ariant ~ned Remix~",
+    "remote_title": null,
+    "composer": "ned",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 571,
+    "title": "Catch Your Dreams!",
+    "remote_title": null,
+    "composer": "StudioEIM",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 572,
+    "title": "Dynamic Universe",
+    "remote_title": null,
+    "composer": "유종호 (NEXON)",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 573,
+    "title": "Fairytale ~Pan Remix~",
+    "remote_title": null,
+    "composer": "Pan",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 574,
+    "title": "Frozen Link",
+    "remote_title": null,
+    "composer": "유종호 (NEXON)",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 575,
+    "title": "Leafre (EDM ver.)",
+    "remote_title": null,
+    "composer": "신유식 (NEXON)",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 576,
+    "title": "Missing You ~SOPHI Remix~",
+    "remote_title": null,
+    "composer": "SOPHI",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 577,
+    "title": "Moonlight Shadow ~Paul Bazooka Remix~",
+    "remote_title": null,
+    "composer": "Paul Bazooka",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 578,
+    "title": "Smile",
+    "remote_title": null,
+    "composer": "S.I.D-Sound",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 579,
+    "title": "Star Bubble",
+    "remote_title": null,
+    "composer": "Yeyosound",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 580,
+    "title": "Story of Maple",
+    "remote_title": null,
+    "composer": "Mycin.T x ned",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 581,
+    "title": "Temple of Time (EDM ver.)",
+    "remote_title": null,
+    "composer": "유종호 / 박지훈 (NEXON)",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 582,
+    "title": "The Lake of Oblivion ~jam-jam Remix~",
+    "remote_title": null,
+    "composer": "jam-jam",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 583,
+    "title": "The Tune of the Azure Light ~Parang Remix~",
+    "remote_title": null,
+    "composer": "Parang",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
+  },
+  {
+    "id": 584,
+    "title": "Where Stars Rest",
+    "remote_title": null,
+    "composer": "Initium SoundLab",
+    "dlc": "MAPLESTORY",
+    "dlcCode": "MAP",
+    "dlcTab": "VARIETY",
+    "priority": 0
   }
 ]

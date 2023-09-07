@@ -32,6 +32,18 @@
     { // The Raindrop Flower ~jam-jam Remix~
       "id": 440,
       "value": "The Raindrop Flower ~jam-jam Remix"
+    },
+    { // Moonlight Shadow ~Paul Bazooka Remix~
+      "id": 577,
+      "value": "Moonlight Shadow ~Paul Bazooka Re"
+    },
+    { // The Lake of Oblivion ~jam-jam Remix~
+      "id": 582,
+      "value": "The Lake of Oblivion ~jam-jam Remix"
+    },
+    { // The Tune of the Azure Light ~Parang Remix~
+      "id": 583,
+      "value": "The Tune of the Azure Light ~Parang"
     }
   ]
 }

@@ -99,12 +99,16 @@
     "name": "Girls' Frontline",
     "priority": 24
   },
+  "MAP": {
+    "name": "MapleStory",
+    "priority": 25
+  },
   "NXN": {
     "name": "Nexon",
-    "priority": 25
+    "priority": 26
   },
   "CP": {
     "name": "Clear Pass",
-    "priority": 26
+    "priority": 27
   }
 }
