@@ -13,7 +13,7 @@ import java.nio.file.Path;
 public interface TaskManager extends Iterable<TaskData> {
     void clearTask();
 
-    TaskData createTask(LocalSong song, CollectionArea collectionArea);
+    TaskData createTask(CollectionArea collectionArea);
 
     TaskData getTask(int taskNumber);
 
@@ -22,7 +22,7 @@ public interface TaskManager extends Iterable<TaskData> {
     void setImageCacheManager(ImageCacheManager imageCacheManager);
 
     enum TaskStatus {
-        ANALYZED, ANALYZING, CACHED, CAPTURED, EXCEPTION, NONE, DUPLICATED, WAITING
+        ANALYZED, ANALYZING, DUPLICATED, EXCEPTION, FOUND, NONE, NOT_FOUND, WAITING
     }
 
 
@@ -35,8 +35,6 @@ public interface TaskManager extends Iterable<TaskData> {
 
         int getTaskNumber();
 
-        LocalSong getSong();
-
         CollectionArea getCollectionArea();
 
         Path getImagePath();
@@ -44,6 +42,14 @@ public interface TaskManager extends Iterable<TaskData> {
         void saveImage(BufferedImage image) throws IOException;
 
         BufferedImage loadImage() throws IOException;
+
+        float getAccuracy();
+
+        void setAccuracy(float value);
+
+        int getDistance();
+
+        void setDistance(int value);
 
         boolean hasException();
 
@@ -55,21 +61,17 @@ public interface TaskManager extends Iterable<TaskData> {
 
         void setScannedTitle(String value);
 
-        int getSongCount();
+        boolean isSelected();
 
-        void setSongCount(int value);
+        void setSelected(boolean value);
 
-        int getSongIndex();
+        LocalSong getSong();
 
-        void setSongIndex(int value);
+        void setSong(LocalSong value);
 
         TaskStatus getStatus();
 
         void setStatus(TaskStatus value);
-
-        boolean isValid();
-
-        void setValid(boolean value);
     }
 
 

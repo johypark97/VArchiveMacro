@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.core.backend;
 
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.ISongRecordManager;
@@ -20,7 +19,6 @@ import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.Tas
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
@@ -151,19 +149,9 @@ public class Backend implements Observable<BackendEvent>, IBackend {
     }
 
     @Override
-    public void startScan(Path cacheDir, int captureDelay, int inputDuration,
-            Set<String> ownedDlcTabs, boolean safeMode) {
-        Map<String, List<LocalSong>> tabSongMap = songRecordManager.getTabSongMap(ownedDlcTabs);
-
-        Command command;
-        if (safeMode) {
-            command =
-                    scanner.getCommand_safeScan(cacheDir, captureDelay, inputDuration, tabSongMap);
-        } else {
-            command = scanner.getCommand_scan(cacheDir, captureDelay, inputDuration, tabSongMap);
-        }
-
-        startCommand(command);
+    public void startScan_beta(Path cacheDir, int captureDelay, int inputDuration,
+            Set<String> dlcTabs) {
+        startCommand(scanner.getCommand_betaScan(cacheDir, captureDelay, inputDuration, dlcTabs));
     }
 
     @Override

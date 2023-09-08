@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
@@ -85,20 +86,15 @@ public class Scanner implements Observable<Event>, TaskDataProvider {
         resultManager.addObserver(observer);
     }
 
-    public Command getCommand_scan(Path cacheDir, int captureDelay, int inputDuration,
-            Map<String, List<LocalSong>> tabSongMap) {
-        CaptureService captureService = new AlphaCaptureService(captureDelay, inputDuration);
-        Command root = createCommand_scan(captureService, cacheDir, tabSongMap);
-        root.setNext(getCommand_analyze());
-        return root;
-    }
+    public Command getCommand_betaScan(Path cacheDir, int captureDelay, int inputDuration,
+            Set<String> dlcTabs) {
+        Map<String, List<LocalSong>> tabSongMap = songRecordManager.getTabSongMap(dlcTabs);
 
-    public Command getCommand_safeScan(Path cacheDir, int captureDelay, int inputDuration,
-            Map<String, List<LocalSong>> tabSongMap) {
-        CaptureService captureService = new SafeCaptureService(captureDelay, inputDuration);
-        Command root = createCommand_scan(captureService, cacheDir, tabSongMap);
-        root.setNext(getCommand_analyze());
-        return root;
+        CaptureService captureService =
+                new BetaCaptureService(songRecordManager.getTitleTool(), captureDelay,
+                        inputDuration);
+
+        return createCommand_betaScan(captureService, cacheDir, tabSongMap);
     }
 
     public Command getCommand_analyze() {
@@ -115,7 +111,7 @@ public class Scanner implements Observable<Event>, TaskDataProvider {
         return createCommand_uploadRecord(accountPath, uploadDelay);
     }
 
-    protected Command createCommand_scan(CaptureService captureService, Path cachePath,
+    protected Command createCommand_betaScan(CaptureService captureService, Path cachePath,
             Map<String, List<LocalSong>> tabSongMap) {
         return new AbstractCommand() {
             @Override
@@ -252,7 +248,7 @@ public class Scanner implements Observable<Event>, TaskDataProvider {
     @Override
     public ResponseData getValue(int taskNumber) throws IOException {
         TaskData task = taskManager.getTask(taskNumber);
-        if (task == null || !task.isValid()) {
+        if (task == null) {
             return null;
         }
 

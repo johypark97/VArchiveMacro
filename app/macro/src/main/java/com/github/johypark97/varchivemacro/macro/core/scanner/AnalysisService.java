@@ -17,6 +17,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManage
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 import com.google.common.base.CharMatcher;
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -27,6 +28,10 @@ import org.slf4j.LoggerFactory;
 
 public class AnalysisService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisService.class);
+
+    private static final EnumSet<TaskStatus> ALLOWED_TASK_STATUS =
+            EnumSet.of(TaskStatus.ANALYZED, TaskStatus.ANALYZING, TaskStatus.FOUND,
+                    TaskStatus.WAITING);
 
     public static final float COMBO_MARK_RATIO = 0.01f;
     public static final float RATE_RATIO = 0.01f;
@@ -53,7 +58,8 @@ public class AnalysisService {
             try (OcrWrapper ocr = new ScannerOcr()) {
                 List<TaskData> queue = new LinkedList<>();
                 for (TaskData task : taskManager) {
-                    if (!task.hasException() && task.isValid()) {
+                    if (ALLOWED_TASK_STATUS.contains(task.getStatus()) && task.isSelected()
+                            && !task.hasException()) {
                         queue.add(task);
                         task.setStatus(TaskStatus.WAITING);
                     }

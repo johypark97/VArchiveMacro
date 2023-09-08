@@ -45,8 +45,8 @@ public class TaskManagerWithEvent implements TaskManager {
     }
 
     @Override
-    public TaskData createTask(LocalSong song, CollectionArea collectionArea) {
-        return new TaskDataWithEvent(decorated.createTask(song, collectionArea));
+    public TaskData createTask(CollectionArea collectionArea) {
+        return new TaskDataWithEvent(decorated.createTask(collectionArea));
     }
 
     @Override
@@ -101,11 +101,6 @@ public class TaskManagerWithEvent implements TaskManager {
         }
 
         @Override
-        public LocalSong getSong() {
-            return decorated.getSong();
-        }
-
-        @Override
         public CollectionArea getCollectionArea() {
             return decorated.getCollectionArea();
         }
@@ -123,6 +118,26 @@ public class TaskManagerWithEvent implements TaskManager {
         @Override
         public BufferedImage loadImage() throws IOException {
             return decorated.loadImage();
+        }
+
+        @Override
+        public float getAccuracy() {
+            return decorated.getAccuracy();
+        }
+
+        @Override
+        public void setAccuracy(float value) {
+            decorated.setAccuracy(value);
+        }
+
+        @Override
+        public int getDistance() {
+            return decorated.getDistance();
+        }
+
+        @Override
+        public void setDistance(int value) {
+            decorated.setDistance(value);
         }
 
         @Override
@@ -152,23 +167,23 @@ public class TaskManagerWithEvent implements TaskManager {
         }
 
         @Override
-        public int getSongCount() {
-            return decorated.getSongCount();
+        public boolean isSelected() {
+            return decorated.isSelected();
         }
 
         @Override
-        public void setSongCount(int value) {
-            decorated.setSongCount(value);
+        public void setSelected(boolean value) {
+            decorated.setSelected(value);
         }
 
         @Override
-        public int getSongIndex() {
-            return decorated.getSongIndex();
+        public LocalSong getSong() {
+            return decorated.getSong();
         }
 
         @Override
-        public void setSongIndex(int value) {
-            decorated.setSongIndex(value);
+        public void setSong(LocalSong value) {
+            decorated.setSong(value);
         }
 
         @Override
@@ -180,16 +195,6 @@ public class TaskManagerWithEvent implements TaskManager {
         public void setStatus(TaskStatus value) {
             decorated.setStatus(value);
             notifyRowsUpdated();
-        }
-
-        @Override
-        public boolean isValid() {
-            return decorated.isValid();
-        }
-
-        @Override
-        public void setValid(boolean value) {
-            decorated.setValid(value);
         }
     }
 }

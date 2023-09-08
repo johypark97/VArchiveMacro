@@ -43,6 +43,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.Predicate;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -73,7 +74,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.BadLocationException;
 import javax.swing.tree.TreeModel;
@@ -118,16 +119,19 @@ public class MacroView extends JFrame implements View, WindowListener {
     private transient SliderSet scannerKeyInputDuration;
     protected JButton analyzeScannerTaskButton;
     protected JButton refreshScannerResultButton;
+    protected JButton selectAbove100Button;
     protected JButton selectAccountFileButton;
     protected JButton selectAllDlcButton;
     protected JButton selectAllRecordButton;
     protected JButton selectCacheDirectoryButton;
-    protected JButton selectAbove100Button;
     protected JButton showExpectedButton;
     protected JButton showScannerTaskButton;
     protected JButton stopCommandButton;
+    protected JButton toggleAllExactScannerTaskButton;
+    protected JButton toggleAllSimilarScannerTaskButton;
     protected JButton unselectAllDlcButton;
     protected JButton unselectAllRecordButton;
+    protected JButton unselectAllScannerTaskButton;
     protected JButton uploadRecordButton;
     protected JCheckBox scannerSafeModeCheckbox;
     protected JTable scannerResultTable;
@@ -348,6 +352,7 @@ public class MacroView extends JFrame implements View, WindowListener {
 
                     TableCellRenderer tableCellRenderer = new ScannerTaskTableCellRenderer(this);
                     scannerTaskTable.setDefaultRenderer(Boolean.class, tableCellRenderer);
+                    scannerTaskTable.setDefaultRenderer(Float.class, tableCellRenderer);
                     scannerTaskTable.setDefaultRenderer(Integer.class, tableCellRenderer);
                     scannerTaskTable.setDefaultRenderer(Object.class, tableCellRenderer);
 
@@ -378,6 +383,20 @@ public class MacroView extends JFrame implements View, WindowListener {
                             new JButton(lang.get(MacroViewKey.SHOW_SCANNER_TASK_BUTTON));
                     showScannerTaskButton.addActionListener(buttonListener);
                     buttonBox.add(showScannerTaskButton);
+
+                    buttonBox.add(Box.createHorizontalGlue());
+
+                    toggleAllExactScannerTaskButton = new JButton("toggle all exact");
+                    toggleAllExactScannerTaskButton.addActionListener(buttonListener);
+                    buttonBox.add(toggleAllExactScannerTaskButton);
+
+                    toggleAllSimilarScannerTaskButton = new JButton("toggle all similar");
+                    toggleAllSimilarScannerTaskButton.addActionListener(buttonListener);
+                    buttonBox.add(toggleAllSimilarScannerTaskButton);
+
+                    unselectAllScannerTaskButton = new JButton("unselect all");
+                    unselectAllScannerTaskButton.addActionListener(buttonListener);
+                    buttonBox.add(unselectAllScannerTaskButton);
 
                     buttonBox.add(Box.createHorizontalGlue());
 
@@ -913,20 +932,16 @@ public class MacroView extends JFrame implements View, WindowListener {
         scannerTaskTableModel = model;
 
         TableColumnLookup<ColumnKey> columnLookup = model.getTableColumnLookup();
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.ACCURACY).setPreferredWidth(60);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.COMPOSER).setPreferredWidth(80);
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.DISTANCE).setPreferredWidth(40);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.DLC).setPreferredWidth(80);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.SCANNED_TITLE).setPreferredWidth(160);
-        columnLookup.getColumn(scannerTaskTable, ColumnKey.SONG_NUMBER).setPreferredWidth(60);
+        columnLookup.getColumn(scannerTaskTable, ColumnKey.SELECTED).setPreferredWidth(60);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.STATUS).setPreferredWidth(160);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.TAB).setPreferredWidth(80);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.TASK_NUMBER).setPreferredWidth(60);
         columnLookup.getColumn(scannerTaskTable, ColumnKey.TITLE).setPreferredWidth(160);
-        columnLookup.getColumn(scannerTaskTable, ColumnKey.VALID).setPreferredWidth(60);
-
-        // Hide two columns, index, and count.
-        TableColumnModel columnModel = scannerTaskTable.getColumnModel();
-        columnModel.removeColumn(columnLookup.getColumn(scannerTaskTable, ColumnKey.COUNT));
-        columnModel.removeColumn(columnLookup.getColumn(scannerTaskTable, ColumnKey.INDEX));
     }
 
     @Override
@@ -1181,6 +1196,37 @@ class MacroViewButtonListener implements ActionListener {
         }
     }
 
+    private void toggleAllScannerTask(Predicate<Integer> distanceFilter) {
+        int count = view.scannerTaskTable.getRowCount();
+
+        TableColumnLookup<ColumnKey> lookup = view.scannerTaskTableModel.getTableColumnLookup();
+        int distanceIndex = lookup.getIndexInView(view.scannerTaskTable, ColumnKey.DISTANCE);
+        int selectedIndex = lookup.getIndexInView(view.scannerTaskTable, ColumnKey.SELECTED);
+        int titleIndex = lookup.getIndexInView(view.scannerTaskTable, ColumnKey.TITLE);
+
+        List<Integer> targetIndexList = new LinkedList<>();
+
+        TableModel model = view.scannerTaskTable.getModel();
+        boolean isAllSelected = true;
+        for (int i = 0; i < count; ++i) {
+            String title = (String) model.getValueAt(i, titleIndex);
+            boolean isSelected = (boolean) model.getValueAt(i, selectedIndex);
+            int distance = (int) model.getValueAt(i, distanceIndex);
+
+            if (!title.isBlank() && distanceFilter.test(distance)) {
+                targetIndexList.add(i);
+                isAllSelected &= isSelected;
+            }
+        }
+
+        for (int i : targetIndexList) {
+            int index = view.scannerTaskTable.convertRowIndexToView(i);
+            view.scannerTaskTable.setValueAt(!isAllSelected, index, selectedIndex);
+        }
+
+        view.scannerTaskTable.updateUI();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -1205,6 +1251,21 @@ class MacroViewButtonListener implements ActionListener {
             }
         } else if (source.equals(view.showScannerTaskButton)) {
             showScannerTask();
+        } else if (source.equals(view.toggleAllExactScannerTaskButton)) {
+            toggleAllScannerTask((x) -> x == 0);
+        } else if (source.equals(view.toggleAllSimilarScannerTaskButton)) {
+            toggleAllScannerTask((x) -> x != 0);
+        } else if (source.equals(view.unselectAllScannerTaskButton)) {
+            int count = view.scannerTaskTable.getRowCount();
+
+            int selectedIndex = view.scannerTaskTableModel.getTableColumnLookup()
+                    .getIndexInView(view.scannerTaskTable, ColumnKey.SELECTED);
+
+            for (int i = 0; i < count; ++i) {
+                view.scannerTaskTable.setValueAt(false, i, selectedIndex);
+            }
+
+            view.scannerTaskTable.updateUI();
         } else if (source.equals(view.analyzeScannerTaskButton)) {
             view.presenter.analyzeScannerTask();
         } else if (source.equals(view.refreshScannerResultButton)) {
@@ -1437,8 +1498,6 @@ class ScannerTaskTableCellRenderer extends DefaultTableCellRenderer {
     @Serial
     private static final long serialVersionUID = 8375384855667913329L;
 
-    private static final int TASK_TABLE_HIGHLIGHT_COUNT = 2;
-
     private final MacroView view;
 
     public ScannerTaskTableCellRenderer(MacroView view) {
@@ -1449,30 +1508,19 @@ class ScannerTaskTableCellRenderer extends DefaultTableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
             boolean hasFocus, int row, int column) {
         int rowIndex = table.convertRowIndexToModel(row);
-        int countValue = (int) table.getModel().getValueAt(rowIndex,
-                view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.COUNT));
+
+        String title = (String) table.getModel().getValueAt(rowIndex,
+                view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.TITLE));
+        int distance = (int) table.getModel().getValueAt(rowIndex,
+                view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.DISTANCE));
 
         Color backgroundColor;
-        if (countValue > 0) {
-            int indexValue = (int) table.getModel().getValueAt(rowIndex,
-                    view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.INDEX));
-
-            if (countValue - indexValue <= TASK_TABLE_HIGHLIGHT_COUNT) {
-                backgroundColor = isSelected ? Color.YELLOW : Color.ORANGE;
-            } else {
-                backgroundColor =
-                        isSelected ? table.getSelectionBackground() : table.getBackground();
-            }
+        if (title.isBlank()) {
+            backgroundColor = isSelected ? table.getSelectionBackground() : table.getBackground();
+        } else if (distance == 0) {
+            backgroundColor = isSelected ? new Color(0x80FF80) : new Color(0xC0FFC0);
         } else {
-            boolean validValue = (boolean) table.getModel().getValueAt(rowIndex,
-                    view.scannerTaskTableModel.getTableColumnLookup().getIndex(ColumnKey.VALID));
-
-            if (validValue) {
-                backgroundColor = isSelected ? new Color(0x80FF80) : new Color(0xC0FFC0);
-            } else {
-                backgroundColor =
-                        isSelected ? table.getSelectionBackground() : table.getBackground();
-            }
+            backgroundColor = isSelected ? new Color(0xFFFF80) : new Color(0xFFFFC0);
         }
 
         Component component;

@@ -38,16 +38,20 @@ public class DefaultTaskManager implements TaskManager, TaskListProvider {
         }
 
         ResponseData data = new ResponseData();
-        data.composer = task.getSong().composer();
-        data.count = task.getSongCount();
-        data.dlc = task.getSong().dlc();
-        data.index = task.getSongIndex();
+
+        data.accuracy = task.getAccuracy();
+        data.distance = task.getDistance();
         data.scannedTitle = task.getScannedTitle();
+        data.selected = task.isSelected();
         data.status = task.getStatus();
-        data.tab = task.getSong().dlcTab();
         data.taskNumber = task.getTaskNumber();
-        data.title = task.getSong().title();
-        data.valid = task.isValid();
+
+        if (task.getSong() != null) {
+            data.composer = task.getSong().composer();
+            data.dlc = task.getSong().dlc();
+            data.tab = task.getSong().dlcTab();
+            data.title = task.getSong().title();
+        }
 
         return data;
     }
@@ -58,15 +62,23 @@ public class DefaultTaskManager implements TaskManager, TaskListProvider {
     }
 
     @Override
+    public void updateSelected(int index, boolean value) {
+        TaskData task = taskDataMap.get(index);
+        if (task != null) {
+            task.setSelected(value);
+        }
+    }
+
+    @Override
     public void clearTask() {
         taskDataMap.clear();
     }
 
     @Override
-    public synchronized TaskData createTask(LocalSong song, CollectionArea collectionArea) {
+    public synchronized TaskData createTask(CollectionArea collectionArea) {
         int taskNumber = taskDataMap.size();
 
-        DefaultTaskData data = new DefaultTaskData(taskNumber, song, collectionArea);
+        DefaultTaskData data = new DefaultTaskData(taskNumber, collectionArea);
         taskDataMap.put(taskNumber, data);
 
         return data;
@@ -118,19 +130,18 @@ public class DefaultTaskManager implements TaskManager, TaskListProvider {
                 HashBasedTable.create();
 
         private final CollectionArea collectionArea;
-        private final LocalSong song;
         private final int taskNumber;
 
         private Exception exception;
+        private LocalSong song;
         private String scannedTitle = "";
         private TaskStatus status = TaskStatus.NONE;
-        private boolean valid;
-        private int songCount;
-        private int songIndex;
+        private boolean selected;
+        private float accuracy;
+        private int distance;
 
-        public DefaultTaskData(int taskNumber, LocalSong song, CollectionArea collectionArea) {
+        public DefaultTaskData(int taskNumber, CollectionArea collectionArea) {
             this.collectionArea = collectionArea;
-            this.song = song;
             this.taskNumber = taskNumber;
         }
 
@@ -160,28 +171,43 @@ public class DefaultTaskManager implements TaskManager, TaskListProvider {
         }
 
         @Override
-        public LocalSong getSong() {
-            return song;
-        }
-
-        @Override
         public CollectionArea getCollectionArea() {
             return collectionArea;
         }
 
         @Override
         public Path getImagePath() {
-            return imageCacheManager.createPath(song);
+            return imageCacheManager.createPath(taskNumber);
         }
 
         @Override
         public void saveImage(BufferedImage image) throws IOException {
-            imageCacheManager.saveImage(song, image);
+            imageCacheManager.saveImage(taskNumber, image);
         }
 
         @Override
         public BufferedImage loadImage() throws IOException {
-            return imageCacheManager.loadImage(song);
+            return imageCacheManager.loadImage(taskNumber);
+        }
+
+        @Override
+        public float getAccuracy() {
+            return accuracy;
+        }
+
+        @Override
+        public void setAccuracy(float value) {
+            accuracy = value;
+        }
+
+        @Override
+        public int getDistance() {
+            return distance;
+        }
+
+        @Override
+        public void setDistance(int value) {
+            distance = value;
         }
 
         @Override
@@ -211,23 +237,23 @@ public class DefaultTaskManager implements TaskManager, TaskListProvider {
         }
 
         @Override
-        public int getSongCount() {
-            return songCount;
+        public boolean isSelected() {
+            return selected;
         }
 
         @Override
-        public void setSongCount(int value) {
-            songCount = value;
+        public void setSelected(boolean value) {
+            selected = value;
         }
 
         @Override
-        public int getSongIndex() {
-            return songIndex;
+        public LocalSong getSong() {
+            return song;
         }
 
         @Override
-        public void setSongIndex(int value) {
-            songIndex = value;
+        public void setSong(LocalSong value) {
+            song = value;
         }
 
         @Override
@@ -238,16 +264,6 @@ public class DefaultTaskManager implements TaskManager, TaskListProvider {
         @Override
         public void setStatus(TaskStatus value) {
             status = value;
-        }
-
-        @Override
-        public boolean isValid() {
-            return valid;
-        }
-
-        @Override
-        public void setValid(boolean value) {
-            valid = value;
         }
     }
 }

@@ -8,6 +8,8 @@ public interface ScannerTaskListModels {
         ResponseData getValue(int index);
 
         int getCount();
+
+        void updateSelected(int index, boolean value);
     }
 
 
@@ -17,6 +19,8 @@ public interface ScannerTaskListModels {
         int getCount();
 
         ResponseData getData(int index);
+
+        void updateSelected(int index, boolean value);
     }
 
 
@@ -51,15 +55,15 @@ public interface ScannerTaskListModels {
 
 
     class ResponseData {
-        public String composer;
-        public String dlc;
-        public String scannedTitle;
-        public String tab;
-        public String title;
-        public TaskStatus status;
-        public boolean valid;
-        public int count;
-        public int index;
+        public String composer = "";
+        public String dlc = "";
+        public String scannedTitle = "";
+        public String tab = "";
+        public String title = "";
+        public TaskStatus status = TaskStatus.NONE;
+        public boolean selected;
+        public float accuracy;
+        public int distance;
         public int taskNumber;
     }
 
@@ -95,6 +99,11 @@ public interface ScannerTaskListModels {
         @Override
         public ResponseData getData(int index) {
             return taskListProvider.getValue(index);
+        }
+
+        @Override
+        public void updateSelected(int index, boolean value) {
+            taskListProvider.updateSelected(index, value);
         }
     }
 }

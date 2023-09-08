@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,13 +21,13 @@ public class DefaultImageCacheManager implements ImageCacheManager {
     }
 
     @Override
-    public Path createPath(LocalSong song) {
-        return cacheDir.resolve(String.format("%04d.%s", song.id(), FORMAT));
+    public Path createPath(int number) {
+        return cacheDir.resolve(String.format("%04d.%s", number, FORMAT));
     }
 
     @Override
-    public void saveImage(LocalSong song, BufferedImage image) throws IOException {
-        Path filePath = createPath(song);
+    public void saveImage(int number, BufferedImage image) throws IOException {
+        Path filePath = createPath(number);
 
         Path dirPath = filePath.getParent();
         if (dirPath != null) {
@@ -40,7 +39,7 @@ public class DefaultImageCacheManager implements ImageCacheManager {
     }
 
     @Override
-    public BufferedImage loadImage(LocalSong song) throws IOException {
-        return ImageIO.read(createPath(song).toFile());
+    public BufferedImage loadImage(int number) throws IOException {
+        return ImageIO.read(createPath(number).toFile());
     }
 }

@@ -19,7 +19,7 @@ import javax.swing.table.TableRowSorter;
 
 public interface ScannerTaskListViewModels {
     enum ColumnKey {
-        COMPOSER, COUNT, DLC, INDEX, SCANNED_TITLE, SONG_NUMBER, STATUS, TAB, TASK_NUMBER, TITLE, VALID
+        ACCURACY, COMPOSER, DISTANCE, DLC, SCANNED_TITLE, SELECTED, STATUS, TAB, TASK_NUMBER, TITLE
     }
 
 
@@ -35,16 +35,15 @@ public interface ScannerTaskListViewModels {
         private BiMap<ColumnKey, Integer> createIndexMap() {
             IndexMapBuilder<ColumnKey> builder = new IndexMapBuilder<>();
 
-            builder.add(ColumnKey.INDEX);
-            builder.add(ColumnKey.COUNT);
-            builder.add(ColumnKey.VALID);
+            builder.add(ColumnKey.SELECTED);
             builder.add(ColumnKey.TASK_NUMBER);
+            builder.add(ColumnKey.ACCURACY);
+            builder.add(ColumnKey.DISTANCE);
             builder.add(ColumnKey.SCANNED_TITLE);
             builder.add(ColumnKey.TITLE);
             builder.add(ColumnKey.COMPOSER);
             builder.add(ColumnKey.DLC);
             builder.add(ColumnKey.TAB);
-            builder.add(ColumnKey.SONG_NUMBER);
             builder.add(ColumnKey.STATUS);
 
             return builder.build();
@@ -55,17 +54,16 @@ public interface ScannerTaskListViewModels {
 
             builder.setEnumClass(ColumnKey.class);
             builder.setConverter((x) -> switch (x) {
+                case ACCURACY -> "Accuracy";
                 case COMPOSER -> "Composer";
-                case COUNT -> "Count";
+                case DISTANCE -> "Differences";
                 case DLC -> "Dlc";
-                case INDEX -> "Index";
                 case SCANNED_TITLE -> "ScannedTitle";
-                case SONG_NUMBER -> "SongNo";
+                case SELECTED -> "isSelected";
                 case STATUS -> "Status";
                 case TAB -> "Tab";
                 case TASK_NUMBER -> "TaskNo";
                 case TITLE -> "Title";
-                case VALID -> "isValid";
             });
 
             return builder.build();
@@ -111,9 +109,9 @@ public interface ScannerTaskListViewModels {
             return switch (status) {
                 case ANALYZED -> "analyzed";
                 case ANALYZING -> "analyzing";
-                case CACHED -> "cached";
-                case CAPTURED -> "captured";
                 case EXCEPTION -> "error occurred";
+                case NOT_FOUND -> "not found";
+                case FOUND -> "found";
                 case NONE -> "";
                 case DUPLICATED -> "duplicated";
                 case WAITING -> "waiting";
@@ -163,17 +161,16 @@ public interface ScannerTaskListViewModels {
             }
 
             return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
+                case ACCURACY -> data.accuracy * 100;
                 case COMPOSER -> data.composer;
-                case COUNT -> data.count;
+                case DISTANCE -> data.distance;
                 case DLC -> data.dlc;
-                case INDEX -> data.index;
                 case SCANNED_TITLE -> data.scannedTitle;
-                case SONG_NUMBER -> data.index + 1 + " / " + Math.abs(data.count);
+                case SELECTED -> data.selected;
                 case STATUS -> convertStatus(data.status);
                 case TAB -> data.tab;
                 case TASK_NUMBER -> data.taskNumber;
                 case TITLE -> data.title;
-                case VALID -> data.valid;
             };
         }
 
@@ -186,19 +183,40 @@ public interface ScannerTaskListViewModels {
         @Override
         public Class<?> getColumnClass(int columnIndex) {
             return switch (COLUMN_LOOKUP.getKey(columnIndex)) {
-                case COMPOSER, DLC, SCANNED_TITLE, SONG_NUMBER, STATUS, TAB, TITLE -> String.class;
-                case COUNT, INDEX, TASK_NUMBER -> Integer.class;
-                case VALID -> Boolean.class;
+                case ACCURACY -> Float.class;
+                case COMPOSER -> String.class;
+                case DISTANCE -> Integer.class;
+                case DLC -> String.class;
+                case SCANNED_TITLE -> String.class;
+                case SELECTED -> Boolean.class;
+                case STATUS -> String.class;
+                case TAB -> String.class;
+                case TASK_NUMBER -> Integer.class;
+                case TITLE -> String.class;
             };
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return columnIndex == COLUMN_LOOKUP.getIndex(ColumnKey.SELECTED);
+        }
+
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            if (columnIndex == COLUMN_LOOKUP.getIndex(ColumnKey.SELECTED)
+                    && aValue instanceof Boolean value) {
+                model.updateSelected(rowIndex, value);
+            }
         }
 
         public static class TaskRowSorter extends TableRowSorter<ScannerTaskListViewModel> {
             public TaskRowSorter(ScannerTaskListViewModel viewModel) {
                 super(viewModel);
 
+                setComp(ColumnKey.ACCURACY, Comparator.reverseOrder());
                 setComp(ColumnKey.SCANNED_TITLE, new TitleComparator());
+                setComp(ColumnKey.SELECTED, Comparator.reverseOrder());
                 setComp(ColumnKey.TITLE, new TitleComparator());
-                setComp(ColumnKey.VALID, Comparator.reverseOrder());
 
                 int taskNumberIndex = COLUMN_LOOKUP.getIndex(ColumnKey.TASK_NUMBER);
                 setSortKeys(List.of(new SortKey(taskNumberIndex, SortOrder.ASCENDING)));

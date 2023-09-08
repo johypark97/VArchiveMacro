@@ -10,6 +10,7 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.Event;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.Event.Type;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResponseData;
@@ -117,8 +118,11 @@ public class DefaultResultManager implements ResultManager, Observable<Event>, R
     @Override
     public void addAll(TaskManager taskManager) {
         for (TaskData taskData : taskManager) {
-            LocalSong song = taskData.getSong();
+            if (!taskData.isSelected() || taskData.getStatus() != TaskStatus.ANALYZED) {
+                continue;
+            }
 
+            LocalSong song = taskData.getSong();
             for (Cell<Button, Pattern, AnalyzedData> cell : taskData) {
                 AnalyzedData analyzedData = cell.getValue();
 

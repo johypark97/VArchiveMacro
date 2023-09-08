@@ -3,7 +3,9 @@ package com.github.johypark97.varchivemacro.macro.core;
 import com.github.johypark97.varchivemacro.lib.common.Enums;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultDlcSongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultRecordManager;
+import com.github.johypark97.varchivemacro.lib.common.database.DefaultTitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
+import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
@@ -24,6 +26,7 @@ public class SongRecordManager implements ISongRecordManager {
     private static final Path RECORD_PATH = Path.of("records.json");
     private static final Path SONG_PATH = BASE_PATH.resolve("songs.json");
     private static final Path TAB_PATH = BASE_PATH.resolve("tabs.json");
+    private static final Path TITLES_PATH = BASE_PATH.resolve("titles.json");
 
     private final Consumer<Exception> whenThrown;
     private final Consumer<String> whenStart;
@@ -31,6 +34,7 @@ public class SongRecordManager implements ISongRecordManager {
 
     private DefaultRecordManager recordManager;
     private DlcSongManager dlcSongManager;
+    private TitleTool titleTool;
 
     public SongRecordManager(Consumer<Exception> whenThrown, Consumer<String> whenStart,
             Runnable whenDone) {
@@ -45,6 +49,8 @@ public class SongRecordManager implements ISongRecordManager {
         }
 
         dlcSongManager = new DefaultDlcSongManager(SONG_PATH, DLC_PATH, TAB_PATH);
+        titleTool = new DefaultTitleTool(TITLES_PATH);
+
         return true;
     }
 
@@ -155,6 +161,10 @@ public class SongRecordManager implements ISongRecordManager {
         return map;
     }
 
+    @Override
+    public TitleTool getTitleTool() {
+        return titleTool;
+    }
 
     private class RemoteLoadCommand extends AbstractCommand {
         public final String djName;
