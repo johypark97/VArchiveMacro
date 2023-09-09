@@ -6,14 +6,18 @@ public class PixPreprocessor {
     private static final List<List<Integer>> KERNEL33 =
             List.of(List.of(1, 1, 1), List.of(1, 1, 1), List.of(1, 1, 1));
 
+    public static void thresholdWhite(PixWrapper pix) throws PixError {
+        pix.convertRGBToLuminance();
+        pix.thresholdToBinary(255);
+    }
+
     public static void preprocessTitle(PixWrapper pix) throws PixError {
         preprocessTitle(pix, 1, 1, 1);
     }
 
     public static void preprocessTitle(PixWrapper pix, int dilation, float sx, float sy)
             throws PixError {
-        pix.convertRGBToLuminance();
-        pix.thresholdToBinary(255);
+        thresholdWhite(pix);
         pix.invert();
 
         for (int i = 0; i < dilation; ++i) {
