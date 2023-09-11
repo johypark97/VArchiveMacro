@@ -7,7 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 class CollectionAreaFHD extends AbstractCollectionArea {
-    private static final Rectangle TITLE = new Rectangle(612, 285, 810, 55);
+    private static final Rectangle TITLE = new Rectangle(613, 286, 799, 50);
 
     private static final Dimension NEXT_BUTTON = new Dimension(124, 0);
     private static final Dimension NEXT_PATTERN = new Dimension(0, 30);

@@ -64,7 +64,7 @@ public class CacheCaptureTask implements Callable<Void> {
             Rectangle screenRect = new Rectangle(screenSize);
             CollectionArea area = CollectionAreaFactory.create(screenSize);
 
-            Dimension titleSize = area.getTitle().getSize();
+            Dimension titleSize = area.getTitle_training().getSize();
             BufferedImage overlayImage = new BufferedImage(titleSize.width, titleSize.height,
                     BufferedImage.TYPE_INT_RGB);
 
@@ -93,7 +93,7 @@ public class CacheCaptureTask implements Callable<Void> {
                 for (BufferedImage image : imageList) {
                     ++imageNumber;
 
-                    BufferedImage titleImage = area.getTitle(image);
+                    BufferedImage titleImage = area.getTitle_training(image);
 
                     try (PixWrapper pix = new PixWrapper(
                             ImageConverter.imageToPngBytes(titleImage))) {

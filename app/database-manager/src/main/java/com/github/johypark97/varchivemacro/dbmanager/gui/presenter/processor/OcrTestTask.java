@@ -4,6 +4,8 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.DefaultOcrTesterM
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.OcrTesterModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.OcrTesterConfig;
+import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
+import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
@@ -12,12 +14,14 @@ import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer;
 import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer.Recognized;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import javax.imageio.ImageIO;
 
 public class OcrTestTask implements Callable<Void> {
     public OcrTesterConfig config;
@@ -75,9 +79,11 @@ public class OcrTestTask implements Callable<Void> {
                 }
 
                 Path imagePath = CacheHelper.createImagePath(config.cachePath, song, 0);
+                BufferedImage image = ImageIO.read(imagePath.toFile());
+                image = CollectionArea.cropTitleMargin(image);
 
                 String scannedTitle;
-                try (PixWrapper pix = new PixWrapper(imagePath)) {
+                try (PixWrapper pix = new PixWrapper(ImageConverter.imageToPngBytes(image))) {
                     PixPreprocessor.preprocessTitle(pix);
                     scannedTitle = ocr.run(pix.pixInstance);
                 }

@@ -4,18 +4,16 @@ import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalS
 import com.google.common.base.CharMatcher;
 
 public interface TitleTool {
-    // char RIGHT_SINGLE_QUOTATION_MARK = '\u2019';
+    char RIGHT_SINGLE_QUOTATION_MARK = '\u2019';
 
     static String normalizeTitle_training(String value) {
-        String s = value.replace('l', 'I');
-        // s = s.replace(RIGHT_SINGLE_QUOTATION_MARK, '\'');
-
-        return s;
+        return value.replace('l', 'I');
     }
 
     static String normalizeTitle_recognition(String value) {
         String s = normalizeTitle_training(value);
         s = CharMatcher.whitespace().removeFrom(s);
+        s = s.replace(RIGHT_SINGLE_QUOTATION_MARK, '\'');
 
         return s;
     }
