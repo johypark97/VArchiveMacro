@@ -133,7 +133,6 @@ public class MacroView extends JFrame implements View, WindowListener {
     protected JButton unselectAllRecordButton;
     protected JButton unselectAllScannerTaskButton;
     protected JButton uploadRecordButton;
-    protected JCheckBox scannerSafeModeCheckbox;
     protected JTable scannerResultTable;
     protected JTable scannerTaskTable;
     protected JTextField accountFileTextField;
@@ -603,21 +602,6 @@ public class MacroView extends JFrame implements View, WindowListener {
                     ComponentSize.preventExpand(scannerKeyInputDuration.textField);
                     components.put(row, column, scannerKeyInputDuration.textField);
                 }
-                {
-                    int row = 5;
-                    int column = 0;
-
-                    JLabel label = new JLabel(
-                            lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_LABEL) + COLON);
-                    label.setForeground(Color.RED);
-                    components.put(row, column++, label);
-
-                    scannerSafeModeCheckbox = new JCheckBox(
-                            lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_CHECKBOX));
-                    scannerSafeModeCheckbox.setSelected(true);
-                    scannerSafeModeCheckbox.addActionListener(buttonListener);
-                    components.put(row, column, scannerSafeModeCheckbox);
-                }
 
                 layout.setContents(components);
             }
@@ -995,11 +979,6 @@ public class MacroView extends JFrame implements View, WindowListener {
     }
 
     @Override
-    public boolean getScannerSafeMode() {
-        return scannerSafeModeCheckbox.isSelected();
-    }
-
-    @Override
     public Path getAccountPath() {
         return accountPath;
     }
@@ -1320,35 +1299,6 @@ class MacroViewButtonListener implements ActionListener {
                 }
 
                 view.presenter.uploadRecord(view.accountPath);
-            }
-        } else if (source.equals(view.scannerSafeModeCheckbox)) {
-            if (view.scannerSafeModeCheckbox.isSelected()) {
-                view.addLog(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_LOG_TO_ON));
-                return;
-            }
-            view.scannerSafeModeCheckbox.setSelected(true);
-
-            Box box = Box.createVerticalBox();
-
-            JLabel message0 =
-                    new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE0));
-            message0.setForeground(Color.RED);
-            box.add(message0);
-            box.add(Box.createVerticalStrut(10));
-
-            box.add(new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE1)));
-            box.add(new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE2)));
-            box.add(Box.createVerticalStrut(10));
-
-            box.add(new JLabel(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_MESSAGE3)));
-            box.add(Box.createVerticalStrut(10));
-
-            int selected = JOptionPane.showConfirmDialog(view, box,
-                    lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_DIALOG_TITLE),
-                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (selected == JOptionPane.YES_OPTION) {
-                view.scannerSafeModeCheckbox.setSelected(false);
-                view.addLog(lang.get(MacroViewKey.SETTING_SCANNER_SAFE_MODE_LOG_TO_OFF));
             }
         } else if (source.equals(view.selectAllDlcButton)) {
             view.dlcCheckboxGroup.selectAll();

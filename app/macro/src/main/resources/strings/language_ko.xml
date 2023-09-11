@@ -38,15 +38,6 @@
   <entry key="macro.view.setting.scanner.accountFile">계정 파일</entry>
   <entry key="macro.view.setting.scanner.cacheDirectory">캐시 디렉토리</entry>
   <entry key="macro.view.setting.scanner.recordUploadDelay">기록 업로드 딜레이 [ms]</entry>
-  <entry key="macro.view.setting.scanner.safeMode.checkBox">사용하기</entry>
-  <entry key="macro.view.setting.scanner.safeMode.dialog.message0">안전 모드를 끄게되면 비인식 모드로 작동하여 기록이 잘못 올라갈 수 있습니다.</entry>
-  <entry key="macro.view.setting.scanner.safeMode.dialog.message1">비인식 모드는 모든 곡 DLC 소유 및 전곡 순회를 마쳐야 사용 가능합니다.</entry>
-  <entry key="macro.view.setting.scanner.safeMode.dialog.message2">그러나 사용 조건을 만족하였더라도 기록이 잘못 올라갈 수 있습니다.</entry>
-  <entry key="macro.view.setting.scanner.safeMode.dialog.message3">정말로 안전 모드를 끄시겠습니까?</entry>
-  <entry key="macro.view.setting.scanner.safeMode.dialog.title">안전 모드 해제 경고</entry>
-  <entry key="macro.view.setting.scanner.safeMode.label">안전 모드 (위험)</entry>
-  <entry key="macro.view.setting.scanner.safeMode.logMessage.toOff">경고: 스캐너 안전 모드 꺼짐</entry>
-  <entry key="macro.view.setting.scanner.safeMode.logMessage.toOn">스캐너 안전 모드 켜짐</entry>
   <entry key="macro.view.setting.scanner.select">선택</entry>
   <entry key="macro.view.showExpectedButton">예상 곡 목록 보기</entry>
   <entry key="macro.view.showScannerTaskButton">보기</entry>
