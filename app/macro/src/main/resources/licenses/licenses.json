@@ -33,7 +33,7 @@
   },
   "tessdata": {
     "path": "tessdata.txt",
-    "url": "https://github.com/tesseract-ocr/tessdata"
+    "url": "https://github.com/tesseract-ocr/tessdata_best"
   },
   "Tesseract OCR": {
     "path": "tesseract.txt",
