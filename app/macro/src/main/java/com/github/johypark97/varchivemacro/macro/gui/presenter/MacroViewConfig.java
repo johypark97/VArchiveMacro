@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.Set;
 
 public interface MacroViewConfig {
-    int KEY_INPUT_DURATION = 20;
+    int KEY_INPUT_DURATION = 40;
     int MACRO_CAPTURE_DELAY = 500;
     int MACRO_CAPTURE_DURATION = 20;
     int MACRO_COUNT = 100;
