@@ -385,15 +385,18 @@ public class MacroView extends JFrame implements View, WindowListener {
 
                     buttonBox.add(Box.createHorizontalGlue());
 
-                    toggleAllExactScannerTaskButton = new JButton("toggle all exact");
+                    toggleAllExactScannerTaskButton =
+                            new JButton(lang.get(MacroViewKey.TOGGLE_ALL_EXACT_BUTTON));
                     toggleAllExactScannerTaskButton.addActionListener(buttonListener);
                     buttonBox.add(toggleAllExactScannerTaskButton);
 
-                    toggleAllSimilarScannerTaskButton = new JButton("toggle all similar");
+                    toggleAllSimilarScannerTaskButton =
+                            new JButton(lang.get(MacroViewKey.TOGGLE_ALL_SIMILAR_BUTTON));
                     toggleAllSimilarScannerTaskButton.addActionListener(buttonListener);
                     buttonBox.add(toggleAllSimilarScannerTaskButton);
 
-                    unselectAllScannerTaskButton = new JButton("unselect all");
+                    unselectAllScannerTaskButton =
+                            new JButton(lang.get(MacroViewKey.UNSELECT_ALL_BUTTON));
                     unselectAllScannerTaskButton.addActionListener(buttonListener);
                     buttonBox.add(unselectAllScannerTaskButton);
 

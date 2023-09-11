@@ -47,8 +47,50 @@
   <entry key="macro.view.tab.scanner.result">Result</entry>
   <entry key="macro.view.tab.scanner.setting">Settings</entry>
   <entry key="macro.view.tab.scanner.task">Task</entry>
+  <entry key="macro.view.toggleAllExact">Toggle all exact</entry>
+  <entry key="macro.view.toggleAllSimilar">Toggle all similar</entry>
   <entry key="macro.view.unselectAllButton">Unselect all</entry>
   <entry key="macro.view.uploadRecordButton">Upload</entry>
+
+  <entry key="macro.view.tab.scanner.task.table.accuracy">Accuracy</entry>
+  <entry key="macro.view.tab.scanner.task.table.composer">Composer</entry>
+  <entry key="macro.view.tab.scanner.task.table.distance">Differences</entry>
+  <entry key="macro.view.tab.scanner.task.table.dlc">DLC</entry>
+  <entry key="macro.view.tab.scanner.task.table.scannedTitle">Scanned title</entry>
+  <entry key="macro.view.tab.scanner.task.table.selected">Selected</entry>
+  <entry key="macro.view.tab.scanner.task.table.status">Status</entry>
+  <entry key="macro.view.tab.scanner.task.table.tab">Tab</entry>
+  <entry key="macro.view.tab.scanner.task.table.taskNumber">TaskNo</entry>
+  <entry key="macro.view.tab.scanner.task.table.title">Title</entry>
+
+  <entry key="macro.view.tab.scanner.task.table.status.analyzed">Analyzed</entry>
+  <entry key="macro.view.tab.scanner.task.table.status.analyzing">Analyzing</entry>
+  <entry key="macro.view.tab.scanner.task.table.status.duplicated">Duplicated</entry>
+  <entry key="macro.view.tab.scanner.task.table.status.exception">Error occurred</entry>
+  <entry key="macro.view.tab.scanner.task.table.status.found">Found</entry>
+  <entry key="macro.view.tab.scanner.task.table.status.notFound">Not found</entry>
+  <entry key="macro.view.tab.scanner.task.table.status.waiting">Waiting</entry>
+
+  <entry key="macro.view.tab.scanner.result.table.button">Button</entry>
+  <entry key="macro.view.tab.scanner.result.table.composer">Composer</entry>
+  <entry key="macro.view.tab.scanner.result.table.delta">Delta</entry>
+  <entry key="macro.view.tab.scanner.result.table.dlc">DLC</entry>
+  <entry key="macro.view.tab.scanner.result.table.nMax">NMax</entry>
+  <entry key="macro.view.tab.scanner.result.table.new">New</entry>
+  <entry key="macro.view.tab.scanner.result.table.oMax">OMax</entry>
+  <entry key="macro.view.tab.scanner.result.table.old">Old</entry>
+  <entry key="macro.view.tab.scanner.result.table.pattern">Pattern</entry>
+  <entry key="macro.view.tab.scanner.result.table.resultNo">ResultNo</entry>
+  <entry key="macro.view.tab.scanner.result.table.status">Status</entry>
+  <entry key="macro.view.tab.scanner.result.table.taskNo">TaskNo</entry>
+  <entry key="macro.view.tab.scanner.result.table.title">Title</entry>
+  <entry key="macro.view.tab.scanner.result.table.upload">Upload</entry>
+
+  <entry key="macro.view.task.scanner.result.table.status.canceled">Canceled</entry>
+  <entry key="macro.view.task.scanner.result.table.status.higherRecordExists">Higher record exists</entry>
+  <entry key="macro.view.task.scanner.result.table.status.suspended">Suspended</entry>
+  <entry key="macro.view.task.scanner.result.table.status.uploaded">Uploaded</entry>
+  <entry key="macro.view.task.scanner.result.table.status.uploading">Uploading</entry>
 
   <entry key="macro.presenter.changeLanguage">The changed language applies after restarting the program.</entry>
   <entry key="macro.presenter.commandIsNotRunning">No command is running.</entry>

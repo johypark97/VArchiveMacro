@@ -9,6 +9,8 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultMana
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.Model;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ViewModel;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.resource.MacroViewKey;
 import com.google.common.collect.BiMap;
 import java.io.Serial;
 import java.util.Comparator;
@@ -26,6 +28,8 @@ public interface ScannerResultListViewModels {
 
 
     class ColumnLookup implements TableColumnLookup<ColumnKey> {
+        private final Language lang = Language.getInstance();
+
         private final BiMap<ColumnKey, Integer> indexMap;
         private final Map<ColumnKey, String> nameMap;
 
@@ -60,20 +64,20 @@ public interface ScannerResultListViewModels {
 
             builder.setEnumClass(ColumnKey.class);
             builder.setConverter((x) -> switch (x) {
-                case RESULT_NUMBER -> "ResultNo";
-                case TASK_NUMBER -> "TaskNo";
-                case TITLE -> "Title";
-                case COMPOSER -> "Composer";
-                case DLC -> "Dlc";
-                case BUTTON -> "Button";
-                case PATTERN -> "Pattern";
-                case OLD_MAX_COMBO -> "OMax";
-                case OLD_RATE -> "Old";
-                case NEW_RATE -> "New";
-                case NEW_MAX_COMBO -> "NMax";
-                case DELTA_RATE -> "Delta";
-                case UPLOAD -> "Upload";
-                case STATUS -> "Status";
+                case RESULT_NUMBER -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_RESULT_NUMBER);
+                case TASK_NUMBER -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_TASK_NUMBER);
+                case TITLE -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_TITLE);
+                case COMPOSER -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_COMPOSER);
+                case DLC -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_DLC);
+                case BUTTON -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_BUTTON);
+                case PATTERN -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_PATTERN);
+                case OLD_MAX_COMBO -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_OLD_MAX_COMBO);
+                case OLD_RATE -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_OLD_RATE);
+                case NEW_RATE -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_NEW_RATE);
+                case NEW_MAX_COMBO -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_NEW_MAX_COMBO);
+                case DELTA_RATE -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_DELTA_RATE);
+                case UPLOAD -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_UPLOAD);
+                case STATUS -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_STATUS);
             });
 
             return builder.build();
@@ -109,6 +113,8 @@ public interface ScannerResultListViewModels {
         private static final ColumnLookup COLUMN_LOOKUP = new ColumnLookup();
         private static final String ERROR_STRING = "ERROR";
 
+        private final Language lang = Language.getInstance();
+
         private Model model;
 
         public ResultRowSorter createRowSorter() {
@@ -117,12 +123,13 @@ public interface ScannerResultListViewModels {
 
         private String statusToString(ResultStatus status) {
             return switch (status) {
-                case CANCELED -> "canceled";
-                case HIGHER_RECORD_EXISTS -> "higher record exists";
+                case CANCELED -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_STATUS_CANCELED);
+                case HIGHER_RECORD_EXISTS ->
+                        lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_STATUS_HIGHER_RECORD_EXISTS);
                 case NOT_UPLOADED -> "";
-                case SUSPENDED -> "suspended";
-                case UPLOADED -> "uploaded";
-                case UPLOADING -> "uploading";
+                case SUSPENDED -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_STATUS_SUSPENDED);
+                case UPLOADED -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_STATUS_UPLOADED);
+                case UPLOADING -> lang.get(MacroViewKey.TAB_SCANNER_RESULT_TABLE_STATUS_UPLOADING);
             };
         }
 

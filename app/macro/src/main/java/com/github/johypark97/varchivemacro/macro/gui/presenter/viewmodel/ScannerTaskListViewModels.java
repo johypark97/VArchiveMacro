@@ -7,6 +7,8 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManage
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.Model;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ResponseData;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ViewModel;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.resource.MacroViewKey;
 import com.google.common.collect.BiMap;
 import java.io.Serial;
 import java.util.Comparator;
@@ -24,6 +26,8 @@ public interface ScannerTaskListViewModels {
 
 
     class ColumnLookup implements TableColumnLookup<ColumnKey> {
+        private final Language lang = Language.getInstance();
+
         private final BiMap<ColumnKey, Integer> indexMap;
         private final Map<ColumnKey, String> nameMap;
 
@@ -54,16 +58,16 @@ public interface ScannerTaskListViewModels {
 
             builder.setEnumClass(ColumnKey.class);
             builder.setConverter((x) -> switch (x) {
-                case ACCURACY -> "Accuracy";
-                case COMPOSER -> "Composer";
-                case DISTANCE -> "Differences";
-                case DLC -> "Dlc";
-                case SCANNED_TITLE -> "ScannedTitle";
-                case SELECTED -> "isSelected";
-                case STATUS -> "Status";
-                case TAB -> "Tab";
-                case TASK_NUMBER -> "TaskNo";
-                case TITLE -> "Title";
+                case ACCURACY -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_ACCURACY);
+                case COMPOSER -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_COMPOSER);
+                case DISTANCE -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_DISTANCE);
+                case DLC -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_DLC);
+                case SCANNED_TITLE -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_SCANNED_TITLE);
+                case SELECTED -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_SELECTED);
+                case STATUS -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_STATUS);
+                case TAB -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_TAB);
+                case TASK_NUMBER -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_TASK_NUMBER);
+                case TITLE -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_TITLE);
             });
 
             return builder.build();
@@ -99,6 +103,8 @@ public interface ScannerTaskListViewModels {
         private static final ColumnLookup COLUMN_LOOKUP = new ColumnLookup();
         private static final String ERROR_STRING = "ERROR";
 
+        private final Language lang = Language.getInstance();
+
         private Model model;
 
         public TaskRowSorter createRowSorter() {
@@ -107,14 +113,14 @@ public interface ScannerTaskListViewModels {
 
         private String convertStatus(TaskStatus status) {
             return switch (status) {
-                case ANALYZED -> "analyzed";
-                case ANALYZING -> "analyzing";
-                case EXCEPTION -> "error occurred";
-                case NOT_FOUND -> "not found";
-                case FOUND -> "found";
+                case ANALYZED -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_STATUS_ANALYZED);
+                case ANALYZING -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_STATUS_ANALYZING);
+                case EXCEPTION -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_STATUS_EXCEPTION);
+                case NOT_FOUND -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_STATUS_NOT_FOUND);
+                case FOUND -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_STATUS_FOUND);
                 case NONE -> "";
-                case DUPLICATED -> "duplicated";
-                case WAITING -> "waiting";
+                case DUPLICATED -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_STATUS_DUPLICATED);
+                case WAITING -> lang.get(MacroViewKey.TAB_SCANNER_TASK_TABLE_STATUS_WAITING);
             };
         }
 
