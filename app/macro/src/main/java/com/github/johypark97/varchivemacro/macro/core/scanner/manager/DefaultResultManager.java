@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
 import com.github.johypark97.varchivemacro.lib.common.Enums;
+import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
@@ -8,6 +9,7 @@ import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observe
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
+import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.AnalyzedData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
@@ -116,7 +118,12 @@ public class DefaultResultManager implements ResultManager, Observable<Event>, R
     }
 
     @Override
-    public void addAll(TaskManager taskManager) {
+    public void addAll(TaskManager taskManager) throws RecordNotLoadedException {
+        RecordManager recordManager = songRecordManager.getRecordManager();
+        if (recordManager == null) {
+            throw new RecordNotLoadedException();
+        }
+
         for (TaskData taskData : taskManager) {
             if (!taskData.isSelected() || taskData.getStatus() != TaskStatus.ANALYZED) {
                 continue;
@@ -136,7 +143,7 @@ public class DefaultResultManager implements ResultManager, Observable<Event>, R
                 boolean maxCombo = analyzedData.isMaxCombo();
 
                 LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
-                LocalRecord oldRecord = songRecordManager.findSameRecord(newRecord);
+                LocalRecord oldRecord = recordManager.findSameRecord(newRecord);
 
                 if (oldRecord != null && oldRecord.isUpdated(newRecord)) {
                     int resultNumber = resultDataList.size();

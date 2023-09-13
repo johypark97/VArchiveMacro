@@ -4,9 +4,11 @@ import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestJson;
+import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
+import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultManager.ResultData;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultManager.ResultStatus;
@@ -51,6 +53,11 @@ public class UploadService {
     public void execute(ResultManager resultManager) {
         executor.execute(() -> {
             try {
+                RecordManager recordManager = songRecordManager.getRecordManager();
+                if (recordManager == null) {
+                    throw new RecordNotLoadedException();
+                }
+
                 Account account = new Account(accountPath);
                 RecordUploader api = Api.newRecordUploader(account.userNo, account.token);
 
@@ -75,7 +82,7 @@ public class UploadService {
                                 recordToRequest(data.getSong(), data.getNewRecord());
                         api.upload(requestJson);
 
-                        songRecordManager.updateRecord(data.getNewRecord());
+                        recordManager.updateRecord(data.getNewRecord());
                         data.setStatus(api.getResult()
                                 ? ResultStatus.UPLOADED
                                 : ResultStatus.HIGHER_RECORD_EXISTS);
@@ -95,7 +102,8 @@ public class UploadService {
                 }
 
                 songRecordManager.saveRecord();
-            } catch (ApiException | GeneralSecurityException | IOException e) {
+            } catch (ApiException | GeneralSecurityException | IOException |
+                    RecordNotLoadedException e) {
                 LOGGER.atError().log(e.getMessage(), e);
                 exception = e;
             }

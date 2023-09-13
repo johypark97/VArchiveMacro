@@ -1,15 +1,15 @@
 package com.github.johypark97.varchivemacro.macro.core;
 
-import com.github.johypark97.varchivemacro.lib.common.Enums;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultDlcSongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultRecordManager;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultTitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
+import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
+import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -67,7 +67,11 @@ public class SongRecordManager implements ISongRecordManager {
         return new RemoteLoadCommand(djName);
     }
 
-    public void saveRecord() throws IOException {
+    public void saveRecord() throws IOException, RecordNotLoadedException {
+        if (recordManager == null) {
+            throw new RecordNotLoadedException();
+        }
+
         recordManager.saveJson(RECORD_PATH);
     }
 
@@ -89,31 +93,6 @@ public class SongRecordManager implements ISongRecordManager {
     @Override
     public Set<Integer> getDuplicateTitleSet() {
         return dlcSongManager.getDuplicateTitleSet();
-    }
-
-    @Override
-    public boolean updateRecord(LocalRecord record) {
-        return recordManager.updateRecord(record);
-    }
-
-    @Override
-    public LocalRecord findSameRecord(LocalRecord record) {
-        return recordManager.findSameRecord(record);
-    }
-
-    @Override
-    public LocalRecord getRecord(int id, Enums.Button button, Enums.Pattern pattern) {
-        return recordManager.getRecord(id, button, pattern);
-    }
-
-    @Override
-    public Map<Enums.Pattern, LocalRecord> getRecord(int id, Enums.Button button) {
-        return recordManager.getRecord(id, button);
-    }
-
-    @Override
-    public Map<Enums.Button, Map<Enums.Pattern, LocalRecord>> getRecord(int id) {
-        return recordManager.getRecord(id);
     }
 
     @Override
@@ -149,6 +128,11 @@ public class SongRecordManager implements ISongRecordManager {
     @Override
     public Map<String, List<LocalSong>> getTabSongMap() {
         return dlcSongManager.getTabSongMap();
+    }
+
+    @Override
+    public RecordManager getRecordManager() {
+        return recordManager;
     }
 
     @Override

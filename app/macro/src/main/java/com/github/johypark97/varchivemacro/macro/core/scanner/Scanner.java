@@ -14,6 +14,7 @@ import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
+import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultImageCacheManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultResultManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.DefaultTaskManager;
@@ -188,7 +189,12 @@ public class Scanner implements Observable<Event>, TaskDataProvider {
                 whenStart_collectResult.run();
 
                 resultManager.clear();
-                resultManager.addAll(taskManager);
+                try {
+                    resultManager.addAll(taskManager);
+                } catch (RecordNotLoadedException e) {
+                    whenThrown.accept(e);
+                    return false;
+                }
 
                 whenDone.run();
                 return true;

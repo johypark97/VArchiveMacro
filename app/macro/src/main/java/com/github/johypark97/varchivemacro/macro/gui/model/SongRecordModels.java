@@ -1,9 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
+import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.ISongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
+import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.List;
@@ -18,7 +20,7 @@ public interface SongRecordModels {
 
         Map<String, List<LocalSong>> getTabSongMap(Set<String> selectedTabs);
 
-        Table<Button, Pattern, String> getRecordTable(int id);
+        Table<Button, Pattern, String> getRecordTable(int id) throws RecordNotLoadedException;
     }
 
 
@@ -45,10 +47,16 @@ public interface SongRecordModels {
         }
 
         @Override
-        public Table<Button, Pattern, String> getRecordTable(int id) {
+        public Table<Button, Pattern, String> getRecordTable(int id)
+                throws RecordNotLoadedException {
+            RecordManager recordManager = songRecordManager.getRecordManager();
+            if (recordManager == null) {
+                throw new RecordNotLoadedException();
+            }
+
             Table<Button, Pattern, String> table = HashBasedTable.create();
 
-            songRecordManager.getRecord(id)
+            recordManager.getRecord(id)
                     .forEach((button, patternMap) -> patternMap.forEach((pattern, record) -> {
                         String rate = String.valueOf(record.rate);
                         String maxCombo = record.maxCombo ? " (Max)" : "";

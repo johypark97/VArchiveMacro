@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.macro.core.backend.BackendEvent;
 import com.github.johypark97.varchivemacro.macro.core.backend.IBackend;
 import com.github.johypark97.varchivemacro.macro.core.clientmacro.AnalyzeKey;
 import com.github.johypark97.varchivemacro.macro.core.clientmacro.Direction;
+import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;
 import com.github.johypark97.varchivemacro.macro.gui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ScannerResultListModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ScannerTaskListModel;
@@ -402,7 +403,10 @@ public class MacroPresenter implements Presenter, Observer<BackendEvent> {
         builder.append("DLC: ").append(song.dlc()).append(newline);
         builder.append("DLC Tab: ").append(song.dlcTab());
 
-        view.showRecord(builder.toString(), songRecordModel.getRecordTable(song.id()));
+        try {
+            view.showRecord(builder.toString(), songRecordModel.getRecordTable(song.id()));
+        } catch (RecordNotLoadedException ignored) {
+        }
     }
 
     @Override

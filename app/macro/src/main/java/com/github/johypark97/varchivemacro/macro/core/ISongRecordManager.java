@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface ISongRecordManager extends DlcSongManager, RecordManager {
+public interface ISongRecordManager extends DlcSongManager {
+    RecordManager getRecordManager();
+
     Map<String, List<LocalSong>> getTabSongMap(Set<String> selectedTabs);
 
     TitleTool getTitleTool();
