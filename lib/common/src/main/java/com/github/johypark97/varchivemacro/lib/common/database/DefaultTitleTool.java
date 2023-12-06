@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.common.database;
 
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.SongManager.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.database.datastruct.TitleData;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -25,11 +25,11 @@ public class DefaultTitleTool implements TitleTool {
 
     @Override
     public boolean hasShortTitle(LocalSong song) {
-        return shortTitleMap.containsKey(song.id());
+        return shortTitleMap.containsKey(song.id);
     }
 
     @Override
     public String getShortTitle(LocalSong song) {
-        return shortTitleMap.getOrDefault(song.id(), song.title());
+        return shortTitleMap.getOrDefault(song.id, song.title);
     }
 }

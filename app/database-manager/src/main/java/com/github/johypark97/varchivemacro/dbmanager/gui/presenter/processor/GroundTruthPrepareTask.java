@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
@@ -46,7 +46,7 @@ public class GroundTruthPrepareTask implements Callable<Void> {
         Files.createDirectories(exceededOutputDir);
 
         Thread thread = Thread.currentThread();
-        for (LocalSong song : songModel.getSongList()) {
+        for (LocalDlcSong song : songModel.getSongList()) {
             String title = songModel.getTitleTool().getShortTitle(song);
             title = TitleTool.normalizeTitle_training(title);
 

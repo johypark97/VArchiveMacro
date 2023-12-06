@@ -6,7 +6,7 @@ import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.Api.Board;
 import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordFetcher;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.RecordData;
 import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Path;
@@ -36,8 +36,8 @@ public class DefaultRecordManager implements RecordManager {
     public DefaultRecordManager(Path path) throws IOException {
         recordMap = new RecordMap();
 
-        List<LocalRecord> recordList = LocalRecord.loadJson(path);
-        recordList.forEach(recordMap::add);
+        List<RecordData> recordDataList = RecordData.loadJson(path);
+        recordDataList.stream().map(RecordData::toLocalRecord).forEach(recordMap::add);
     }
 
     public DefaultRecordManager(String djName)
@@ -65,17 +65,18 @@ public class DefaultRecordManager implements RecordManager {
     }
 
     public void saveJson(Path path) throws IOException {
-        List<LocalRecord> recordList = new LinkedList<>();
+        List<RecordData> recordList = new LinkedList<>();
 
         lock.readLock().lock();
         try {
             recordMap.forEach((id, buttonMap) -> buttonMap.forEach(
-                    (button, patternMap) -> recordList.addAll(patternMap.values())));
+                    (button, patternMap) -> patternMap.values().stream()
+                            .map(RecordData::fromLocalRecord).forEach(recordList::add)));
         } finally {
             lock.readLock().unlock();
         }
 
-        LocalRecord.saveJson(path, recordList);
+        RecordData.saveJson(path, recordList);
     }
 
     @Override

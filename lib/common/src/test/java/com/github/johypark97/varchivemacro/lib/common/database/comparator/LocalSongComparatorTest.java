@@ -5,8 +5,9 @@ import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUt
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong.GsonListTypeToken;
+import com.github.johypark97.varchivemacro.lib.common.database.SongManager.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.SongData;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.SongData.GsonListTypeToken;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +38,9 @@ class LocalSongComparatorTest {
             return;
         }
 
-        List<LocalSong> expected = gson.fromJson(sample, new GsonListTypeToken());
+        List<LocalSong> expected =
+                gson.fromJson(sample, new GsonListTypeToken()).stream().map(SongData::toLocalSong)
+                        .toList();
 
         List<LocalSong> actual = new ArrayList<>(expected);
         Collections.reverse(actual);

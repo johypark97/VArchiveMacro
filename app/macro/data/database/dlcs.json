@@ -1,6 +1,6 @@
 {
   "R": {
-    "name": "Respect",
+    "name": "RESPECT",
     "priority": 0
   },
   "P1": {
@@ -16,7 +16,7 @@
     "priority": 3
   },
   "TR": {
-    "name": "Trilogy",
+    "name": "TRILOGY",
     "priority": 4
   },
   "CE": {
@@ -24,7 +24,7 @@
     "priority": 5
   },
   "BS": {
-    "name": "Black Square",
+    "name": "BLACK SQUARE",
     "priority": 6
   },
   "VE": {
@@ -32,15 +32,15 @@
     "priority": 7
   },
   "VE2": {
-    "name": "V Extension 2",
+    "name": "V EXTENSION II",
     "priority": 8
   },
   "VE3": {
-    "name": "V Extension 3",
+    "name": "V EXTENSION III",
     "priority": 9
   },
   "VE4": {
-    "name": "V Extension 4",
+    "name": "V EXTENSION IV",
     "priority": 10
   },
   "ES": {
@@ -48,23 +48,23 @@
     "priority": 11
   },
   "T1": {
-    "name": "Technika",
+    "name": "TECHNIKA",
     "priority": 12
   },
   "T2": {
-    "name": "Technika 2",
+    "name": "TECHNIKA 2",
     "priority": 13
   },
   "T3": {
-    "name": "Technika 3",
+    "name": "TECHNIKA 3",
     "priority": 14
   },
   "TQ": {
-    "name": "Technika Tune & Q",
+    "name": "TECHNIKA TUNE & Q",
     "priority": 15
   },
   "CHU": {
-    "name": "Chunithm",
+    "name": "CHUNITHM",
     "priority": 16
   },
   "CY": {
@@ -80,7 +80,7 @@
     "priority": 19
   },
   "GC": {
-    "name": "Groove Coaster",
+    "name": "GROOVE COASTER",
     "priority": 20
   },
   "MD": {
@@ -88,27 +88,27 @@
     "priority": 21
   },
   "GG": {
-    "name": "Guilty Gear",
+    "name": "GUILTY GEAR",
     "priority": 22
   },
   "ESTI": {
-    "name": "Estimate",
+    "name": "ESTIMATE",
     "priority": 23
   },
   "GF": {
-    "name": "Girls' Frontline",
+    "name": "GIRLS' FRONTLINE",
     "priority": 24
   },
   "MAP": {
-    "name": "MapleStory",
+    "name": "MAPLESTORY",
     "priority": 25
   },
   "NXN": {
-    "name": "Nexon",
+    "name": "NEXON",
     "priority": 26
   },
   "CP": {
-    "name": "Clear Pass",
+    "name": "CLEAR PASS",
     "priority": 27
   }
 }

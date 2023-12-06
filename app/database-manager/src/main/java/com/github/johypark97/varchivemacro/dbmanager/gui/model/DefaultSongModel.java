@@ -3,8 +3,8 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.model;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultDlcSongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultTitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -42,13 +42,13 @@ public class DefaultSongModel implements SongModel {
     }
 
     @Override
-    public LocalSong getSong(int id) {
-        return dlcSongManager.getSong(id);
+    public LocalDlcSong getSong(int id) {
+        return dlcSongManager.getDlcSong(id);
     }
 
     @Override
-    public List<LocalSong> getSongList() {
-        return dlcSongManager.getSongList();
+    public List<LocalDlcSong> getSongList() {
+        return dlcSongManager.getDlcSongList();
     }
 
     @Override

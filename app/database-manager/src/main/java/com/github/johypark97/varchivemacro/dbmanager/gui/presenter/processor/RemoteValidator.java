@@ -6,7 +6,7 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher;
 import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher.RemoteSong;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -29,7 +29,7 @@ public class RemoteValidator {
 
         staticFetcher.fetchSongs();
         for (RemoteSong remoteSong : staticFetcher.getSongs()) {
-            LocalSong localSong = songModel.getSong(remoteSong.id);
+            LocalDlcSong localSong = songModel.getSong(remoteSong.id);
             if (localSong == null) {
                 unclassifiedList.add(remoteSong);
             } else if (!compareSongData(localSong, remoteSong)) {
@@ -60,18 +60,17 @@ public class RemoteValidator {
         return builder.toString();
     }
 
-    private boolean compareSongData(LocalSong localSong, RemoteSong remoteSong) {
-        if (localSong.title().equals(remoteSong.title)) {
-            if (localSong.remote_title() != null) {
+    private boolean compareSongData(LocalDlcSong localSong, RemoteSong remoteSong) {
+        if (localSong.title.equals(remoteSong.title)) {
+            if (localSong.remoteTitle != null) {
                 return false;
             }
         } else {
-            if (localSong.remote_title() == null || !localSong.remote_title()
-                    .equals(remoteSong.title)) {
+            if (localSong.remoteTitle == null || !localSong.remoteTitle.equals(remoteSong.title)) {
                 return false;
             }
         }
 
-        return localSong.dlcCode().equals(remoteSong.dlcCode);
+        return localSong.dlcCode.equals(remoteSong.dlcCode);
     }
 }

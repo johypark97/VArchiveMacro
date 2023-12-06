@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ResponseData;
@@ -47,10 +47,10 @@ public class DefaultTaskManager implements TaskManager, TaskListProvider {
         data.taskNumber = task.getTaskNumber();
 
         if (task.getSong() != null) {
-            data.composer = task.getSong().composer();
-            data.dlc = task.getSong().dlc();
-            data.tab = task.getSong().dlcTab();
-            data.title = task.getSong().title();
+            data.composer = task.getSong().composer;
+            data.dlc = task.getSong().dlc;
+            data.tab = task.getSong().dlcTab;
+            data.title = task.getSong().title;
         }
 
         return data;
@@ -132,8 +132,8 @@ public class DefaultTaskManager implements TaskManager, TaskListProvider {
         private final CollectionArea collectionArea;
         private final int taskNumber;
 
+        private LocalDlcSong song;
         private Exception exception;
-        private LocalSong song;
         private String scannedTitle = "";
         private TaskStatus status = TaskStatus.NONE;
         private boolean selected;
@@ -247,12 +247,12 @@ public class DefaultTaskManager implements TaskManager, TaskListProvider {
         }
 
         @Override
-        public LocalSong getSong() {
+        public LocalDlcSong getSong() {
             return song;
         }
 
         @Override
-        public void setSong(LocalSong value) {
+        public void setSong(LocalDlcSong value) {
             song = value;
         }
 

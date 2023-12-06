@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.model;
 
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
@@ -30,17 +30,17 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
     }
 
     public static class DefaultOcrTesterData implements OcrTesterData {
-        private final LocalSong testSong;
+        private final LocalDlcSong testSong;
         private final String testSong_normalizedTitle;
 
-        private LocalSong recognizedSong;
+        private LocalDlcSong recognizedSong;
         private String found = "";
         private String note = "";
         private String scannedNormalizedTitle = "";
         private float accuracy;
         private int distance;
 
-        public DefaultOcrTesterData(LocalSong testSong, TitleTool titleTool,
+        public DefaultOcrTesterData(LocalDlcSong testSong, TitleTool titleTool,
                 Function<String, String> normalizer) {
             this.testSong = testSong;
 
@@ -48,7 +48,7 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
         }
 
         @Override
-        public LocalSong getTestSong() {
+        public LocalDlcSong getTestSong() {
             return testSong;
         }
 
@@ -58,12 +58,12 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
         }
 
         @Override
-        public LocalSong getRecognizedSong() {
+        public LocalDlcSong getRecognizedSong() {
             return recognizedSong;
         }
 
         @Override
-        public void setRecognizedSong(LocalSong value) {
+        public void setRecognizedSong(LocalDlcSong value) {
             recognizedSong = value;
         }
 

@@ -4,7 +4,7 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.Ca
 import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import java.awt.AWTException;
@@ -30,7 +30,7 @@ public class CacheCaptureTask implements Callable<Void> {
     private final Runnable whenContinuousCaptureDone;
 
     public CacheGeneratorConfig config;
-    public List<LocalSong> songList;
+    public List<LocalDlcSong> songList;
 
     public CacheCaptureTask(Runnable whenContinuousCaptureDone) throws AWTException {
         this.whenContinuousCaptureDone = whenContinuousCaptureDone;
@@ -40,7 +40,7 @@ public class CacheCaptureTask implements Callable<Void> {
         this.config = config;
     }
 
-    public void setSongList(List<LocalSong> songList) {
+    public void setSongList(List<LocalDlcSong> songList) {
         this.songList = songList;
     }
 
@@ -69,7 +69,7 @@ public class CacheCaptureTask implements Callable<Void> {
                     BufferedImage.TYPE_INT_RGB);
 
             for (int i = 0; i < count; ++i) {
-                LocalSong song = songList.get(i);
+                LocalDlcSong song = songList.get(i);
 
                 if (i != 0) {
                     tabKey(KeyEvent.VK_DOWN, config.inputDuration);

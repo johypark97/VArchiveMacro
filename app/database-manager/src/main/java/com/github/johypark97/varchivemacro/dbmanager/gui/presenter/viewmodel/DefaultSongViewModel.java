@@ -3,8 +3,8 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModelColumn.ColumnKey;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.viewmodel.SongViewModelColumn.ColumnLookup;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.comparator.TitleComparator;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.gui.viewmodel.TableColumnLookup;
 import java.io.Serial;
 import java.util.Arrays;
@@ -42,21 +42,21 @@ public class DefaultSongViewModel extends AbstractTableModel implements SongView
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        LocalSong localSong = model.getSong(rowIndex);
-        if (localSong == null) {
+        LocalDlcSong song = model.getSong(rowIndex);
+        if (song == null) {
             return ERROR_STRING;
         }
 
         return switch (columnIndex) {
             case 0 -> rowIndex + 1;
-            case 1 -> localSong.id();
-            case 2 -> localSong.title();
-            case 3 -> localSong.remote_title();
-            case 4 -> localSong.composer();
-            case 5 -> localSong.dlc();
-            case 6 -> localSong.dlcCode();
-            case 7 -> localSong.dlcTab();
-            case 8 -> localSong.priority();
+            case 1 -> song.id;
+            case 2 -> song.title;
+            case 3 -> song.remoteTitle;
+            case 4 -> song.composer;
+            case 5 -> song.dlc;
+            case 6 -> song.dlcCode;
+            case 7 -> song.dlcTab;
+            case 8 -> song.priority;
             default -> ERROR_STRING;
         };
     }

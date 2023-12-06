@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor;
 
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,12 +12,12 @@ public class CacheHelper {
     public static final String GT_FORMAT = "gt.txt";
     public static final String IMAGE_FORMAT = "png";
 
-    public static Path createGtPath(Path baseDir, LocalSong song, int number) {
-        return baseDir.resolve(makeFilename(song.id(), number, GT_FORMAT));
+    public static Path createGtPath(Path baseDir, LocalDlcSong song, int number) {
+        return baseDir.resolve(makeFilename(song.id, number, GT_FORMAT));
     }
 
-    public static Path createImagePath(Path baseDir, LocalSong song, int number) {
-        return baseDir.resolve(makeFilename(song.id(), number, IMAGE_FORMAT));
+    public static Path createImagePath(Path baseDir, LocalDlcSong song, int number) {
+        return baseDir.resolve(makeFilename(song.id, number, IMAGE_FORMAT));
     }
 
     public static void clearAndReadyDirectory(Path path) throws IOException {

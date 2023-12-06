@@ -6,7 +6,6 @@ import com.github.johypark97.varchivemacro.lib.common.database.DefaultTitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;
@@ -96,6 +95,16 @@ public class SongRecordManager implements ISongRecordManager {
     }
 
     @Override
+    public LocalDlcSong getDlcSong(int id) {
+        return dlcSongManager.getDlcSong(id);
+    }
+
+    @Override
+    public List<LocalDlcSong> getDlcSongList() {
+        return dlcSongManager.getDlcSongList();
+    }
+
+    @Override
     public List<String> getDlcCodeList() {
         return dlcSongManager.getDlcCodeList();
     }
@@ -126,7 +135,7 @@ public class SongRecordManager implements ISongRecordManager {
     }
 
     @Override
-    public Map<String, List<LocalSong>> getTabSongMap() {
+    public Map<String, List<LocalDlcSong>> getTabSongMap() {
         return dlcSongManager.getTabSongMap();
     }
 
@@ -136,8 +145,8 @@ public class SongRecordManager implements ISongRecordManager {
     }
 
     @Override
-    public Map<String, List<LocalSong>> getTabSongMap(Set<String> selectedTabs) {
-        Map<String, List<LocalSong>> map = new LinkedHashMap<>();
+    public Map<String, List<LocalDlcSong>> getTabSongMap(Set<String> selectedTabs) {
+        Map<String, List<LocalDlcSong>> map = new LinkedHashMap<>();
 
         dlcSongManager.getTabSongMap().forEach(
                 (key, value) -> map.put(key, selectedTabs.contains(key) ? value : List.of()));

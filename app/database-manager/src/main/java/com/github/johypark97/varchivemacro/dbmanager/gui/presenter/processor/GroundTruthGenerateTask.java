@@ -3,8 +3,8 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor;
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.GroundTruthGeneratorConfig;
 import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import com.google.common.base.CharMatcher;
@@ -161,7 +161,7 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         Set<String> puncSet = new HashSet<>();
         Set<String> wordSet = new HashSet<>();
 
-        for (LocalSong song : songModel.getSongList()) {
+        for (LocalDlcSong song : songModel.getSongList()) {
             String title = songModel.getTitleTool().getShortTitle(song);
             title = TitleTool.normalizeTitle_training(title);
 

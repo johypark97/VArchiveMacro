@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.common.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultManager.ResultData;
 
@@ -18,7 +18,7 @@ public interface ResultManager extends Iterable<ResultData> {
     interface ResultData {
         LocalRecord getNewRecord();
 
-        LocalSong getSong();
+        LocalDlcSong getSong();
 
         boolean getOldMaxCombo();
 

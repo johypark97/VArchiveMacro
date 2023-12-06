@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.lib.common.recognizer;
 
 import com.github.johypark97.varchivemacro.lib.common.StringUtils.StringDiff;
+import com.github.johypark97.varchivemacro.lib.common.database.SongManager.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
 
-public class TitleSongRecognizer {
+public class TitleSongRecognizer<T extends LocalSong> {
     private final Function<String, String> titleNormalizer;
-    private final Map<String, LocalSong> songMap = new HashMap<>();
+    private final Map<String, T> songMap = new HashMap<>();
     private final TitleTool titleTool;
 
     public TitleSongRecognizer(TitleTool titleTool) {
@@ -25,31 +25,31 @@ public class TitleSongRecognizer {
         this.titleTool = titleTool;
     }
 
-    public void setSongList(List<LocalSong> songList) {
-        Map<String, List<LocalSong>> map = new HashMap<>();
+    public void setSongList(List<T> songList) {
+        Map<String, List<T>> map = new HashMap<>();
         songList.forEach((song) -> {
             String title =
-                    titleTool.hasShortTitle(song) ? titleTool.getShortTitle(song) : song.title();
+                    titleTool.hasShortTitle(song) ? titleTool.getShortTitle(song) : song.title;
             title = titleNormalizer.apply(title);
 
-            List<LocalSong> list = map.computeIfAbsent(title, (x) -> new LinkedList<>());
+            List<T> list = map.computeIfAbsent(title, (x) -> new LinkedList<>());
             list.add(song);
         });
 
         songMap.clear();
-        for (Entry<String, List<LocalSong>> entry : map.entrySet()) {
-            List<LocalSong> list = entry.getValue();
-            LocalSong value = (hasOneElement(list)) ? list.get(0) : null;
+        for (Entry<String, List<T>> entry : map.entrySet()) {
+            List<T> list = entry.getValue();
+            T value = (hasOneElement(list)) ? list.get(0) : null;
             songMap.put(entry.getKey(), value);
         }
     }
 
-    public Recognized recognize(String value) {
+    public Recognized<T> recognize(String value) {
         String normalizedValue = titleNormalizer.apply(value);
         if (songMap.containsKey(normalizedValue)) {
-            LocalSong song = songMap.get(normalizedValue);
+            T song = songMap.get(normalizedValue);
 
-            return new Recognized(
+            return new Recognized<>(
                     (song != null) ? RecognizedStatus.FOUND : RecognizedStatus.DUPLICATED_SONG,
                     song, normalizedValue, normalizedValue, 0, 1);
         }
@@ -74,13 +74,13 @@ public class TitleSongRecognizer {
             String key = entry.getKey();
             StringDiff diff = entry.getValue();
 
-            LocalSong song = songMap.get(key);
-            return new Recognized(
+            T song = songMap.get(key);
+            return new Recognized<>(
                     (song != null) ? RecognizedStatus.FOUND : RecognizedStatus.DUPLICATED_SONG,
                     song, normalizedValue, key, diff.getDistance(), (float) diff.getSimilarity());
         }
 
-        return new Recognized(RecognizedStatus.NOT_FOUND, null, normalizedValue, "", 0, 0);
+        return new Recognized<>(RecognizedStatus.NOT_FOUND, null, normalizedValue, "", 0, 0);
     }
 
     private boolean hasOneElement(List<?> list) {
@@ -92,7 +92,7 @@ public class TitleSongRecognizer {
     }
 
 
-    public record Recognized(RecognizedStatus status, LocalSong song, String normalizedInput,
-                             String foundKey, int distance, float similarity) {
+    public record Recognized<T>(RecognizedStatus status, T song, String normalizedInput,
+                                String foundKey, int distance, float similarity) {
     }
 }

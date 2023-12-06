@@ -13,7 +13,7 @@ module varchivemacro.lib.common {
     requires org.bytedeco.tesseract.windows.x86_64;
 
     exports com.github.johypark97.varchivemacro.lib.common.database.comparator;
-    exports com.github.johypark97.varchivemacro.lib.common.database.datastruct;
+    exports com.github.johypark97.varchivemacro.lib.common.database.datastruct to com.google.gson;
     exports com.github.johypark97.varchivemacro.lib.common.database;
 
     exports com.github.johypark97.varchivemacro.lib.common.gui.component;

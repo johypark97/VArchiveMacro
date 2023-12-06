@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
 import com.github.johypark97.varchivemacro.lib.common.Enums;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.Button;
@@ -82,8 +82,8 @@ public class DefaultResultManager implements ResultManager, Observable<Event>, R
 
         ResponseData data = new ResponseData();
         data.button = Button.valueOf(resultData.getNewRecord().button);
-        data.composer = resultData.getSong().composer();
-        data.dlc = resultData.getSong().dlc();
+        data.composer = resultData.getSong().composer;
+        data.dlc = resultData.getSong().dlc;
         data.isSelected = resultData.isSelected();
         data.newMaxCombo = resultData.getNewRecord().maxCombo;
         data.newRate = resultData.getNewRecord().rate;
@@ -93,7 +93,7 @@ public class DefaultResultManager implements ResultManager, Observable<Event>, R
         data.resultNumber = resultData.getResultNumber();
         data.status = resultData.getStatus();
         data.taskNumber = resultData.getTaskNumber();
-        data.title = resultData.getSong().title();
+        data.title = resultData.getSong().title;
 
         return data;
     }
@@ -129,7 +129,7 @@ public class DefaultResultManager implements ResultManager, Observable<Event>, R
                 continue;
             }
 
-            LocalSong song = taskData.getSong();
+            LocalDlcSong song = taskData.getSong();
             for (Cell<Button, Pattern, AnalyzedData> cell : taskData) {
                 AnalyzedData analyzedData = cell.getValue();
 
@@ -142,7 +142,7 @@ public class DefaultResultManager implements ResultManager, Observable<Event>, R
                 Enums.Pattern pattern = cell.getColumnKey().toLib();
                 boolean maxCombo = analyzedData.isMaxCombo();
 
-                LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
+                LocalRecord newRecord = new LocalRecord(song.id, button, pattern, rate, maxCombo);
                 LocalRecord oldRecord = recordManager.findSameRecord(newRecord);
 
                 if (oldRecord != null && oldRecord.isUpdated(newRecord)) {
@@ -159,8 +159,8 @@ public class DefaultResultManager implements ResultManager, Observable<Event>, R
     }
 
     private class DefaultResultData implements ResultData {
+        private final LocalDlcSong song;
         private final LocalRecord newRecord;
-        private final LocalSong song;
         private final boolean oldMaxCombo;
         private final float oldRate;
         private final int resultNumber;
@@ -186,7 +186,7 @@ public class DefaultResultManager implements ResultManager, Observable<Event>, R
         }
 
         @Override
-        public LocalSong getSong() {
+        public LocalDlcSong getSong() {
             return song;
         }
 

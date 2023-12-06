@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.common.database;
 
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.SongManager.LocalSong;
 import com.google.common.base.CharMatcher;
 
 public interface TitleTool {

@@ -54,17 +54,17 @@ public class DefaultOcrTesterViewModel extends AbstractTableModel implements Ocr
             case NOTE -> data.getNote();
             case PASS -> data.getTestSong().equals(data.getRecognizedSong());
             case RECOGNIZED_SONG_COMPOSER ->
-                    (data.getRecognizedSong()) != null ? data.getRecognizedSong().composer() : "";
+                    (data.getRecognizedSong()) != null ? data.getRecognizedSong().composer : "";
             case RECOGNIZED_SONG_ID ->
-                    (data.getRecognizedSong()) != null ? data.getRecognizedSong().id() : -1;
+                    (data.getRecognizedSong()) != null ? data.getRecognizedSong().id : -1;
             case RECOGNIZED_SONG_TITLE ->
-                    (data.getRecognizedSong()) != null ? data.getRecognizedSong().title() : "";
-            case TEST_SONG_COMPOSER -> data.getTestSong().composer();
-            case TEST_SONG_DLC -> data.getTestSong().dlc();
-            case TEST_SONG_DLC_TAB -> data.getTestSong().dlcTab();
-            case TEST_SONG_ID -> data.getTestSong().id();
+                    (data.getRecognizedSong()) != null ? data.getRecognizedSong().title : "";
+            case TEST_SONG_COMPOSER -> data.getTestSong().composer;
+            case TEST_SONG_DLC -> data.getTestSong().dlc;
+            case TEST_SONG_DLC_TAB -> data.getTestSong().dlcTab;
+            case TEST_SONG_ID -> data.getTestSong().id;
             case TEST_SONG_NORM_TITLE -> data.getTestSong_normalizedTitle();
-            case TEST_SONG_TITLE -> data.getTestSong().title();
+            case TEST_SONG_TITLE -> data.getTestSong().title;
         };
     }
 

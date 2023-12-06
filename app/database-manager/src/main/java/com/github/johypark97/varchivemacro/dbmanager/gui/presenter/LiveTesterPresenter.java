@@ -9,7 +9,7 @@ import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.common.area.NotSupportedResolutionException;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
@@ -38,7 +38,7 @@ public class LiveTesterPresenter implements Presenter {
     private OcrWrapper ocrWrapper;
     private Rectangle screenRect;
     private Robot robot;
-    private TitleSongRecognizer recognizer;
+    private TitleSongRecognizer<LocalDlcSong> recognizer;
     private View view;
 
     private synchronized void runTest() {
@@ -56,14 +56,14 @@ public class LiveTesterPresenter implements Presenter {
             return;
         }
 
-        Recognized recognized = recognizer.recognize(scannedText);
+        Recognized<LocalDlcSong> recognized = recognizer.recognize(scannedText);
         String note = switch (recognized.status()) {
             case DUPLICATED_SONG -> String.format("duplicated (%s, %d, %f)", recognized.foundKey(),
                     recognized.distance(), recognized.similarity());
             case FOUND -> {
-                LocalSong song = recognized.song();
-                yield String.format("%s - %s (%s) (%s, %d, %f)", song.title(), song.composer(),
-                        song.dlc(), recognized.foundKey(), recognized.distance(),
+                LocalDlcSong song = recognized.song();
+                yield String.format("%s - %s (%s) (%s, %d, %f)", song.title, song.composer,
+                        song.dlc, recognized.foundKey(), recognized.distance(),
                         recognized.similarity());
             }
             case NOT_FOUND -> "not found";
@@ -101,7 +101,7 @@ public class LiveTesterPresenter implements Presenter {
         ocrWrapper = new DefaultOcrWrapper(config.trainedDataDirectory, config.trainedDataLanguage);
         robot = new Robot();
 
-        recognizer = new TitleSongRecognizer(songModel.getTitleTool());
+        recognizer = new TitleSongRecognizer<>(songModel.getTitleTool());
         recognizer.setSongList(songModel.getSongList());
 
         view.showView(parent);

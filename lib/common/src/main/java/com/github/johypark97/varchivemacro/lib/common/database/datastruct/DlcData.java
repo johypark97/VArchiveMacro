@@ -11,14 +11,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
-public record Dlc(@Expose String name, @Expose int priority) {
-    public static Map<String, Dlc> loadJson(Path path) throws IOException {
+public record DlcData(@Expose String name, @Expose int priority) {
+    public static Map<String, DlcData> loadJson(Path path) throws IOException {
         Gson gson = newGsonBuilder_dump().create();
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             return gson.fromJson(reader, new GsonMapTypeToken());
         }
     }
 
-    public static class GsonMapTypeToken extends TypeToken<Map<String, Dlc>> {
+    public static class GsonMapTypeToken extends TypeToken<Map<String, DlcData>> {
     }
 }

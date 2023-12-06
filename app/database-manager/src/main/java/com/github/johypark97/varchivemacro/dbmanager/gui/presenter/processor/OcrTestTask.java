@@ -6,8 +6,8 @@ import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
 import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.datastruct.OcrTesterConfig;
 import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
@@ -68,12 +68,13 @@ public class OcrTestTask implements Callable<Void> {
         ocrTesterModel.clear();
         whenCleared.run();
 
-        TitleSongRecognizer recognizer = new TitleSongRecognizer(songModel.getTitleTool());
+        TitleSongRecognizer<LocalDlcSong> recognizer =
+                new TitleSongRecognizer<>(songModel.getTitleTool());
         recognizer.setSongList(songModel.getSongList());
 
         try (OcrWrapper ocr = new DefaultOcrWrapper(config.trainedDataDirectory,
                 config.trainedDataLanguage)) {
-            for (LocalSong song : songModel.getSongList()) {
+            for (LocalDlcSong song : songModel.getSongList()) {
                 if (Thread.currentThread().isInterrupted()) {
                     break;
                 }
@@ -91,7 +92,7 @@ public class OcrTestTask implements Callable<Void> {
                 DefaultOcrTesterData data = new DefaultOcrTesterData(song, songModel.getTitleTool(),
                         TitleTool::normalizeTitle_recognition);
 
-                Recognized recognized = recognizer.recognize(scannedTitle);
+                Recognized<LocalDlcSong> recognized = recognizer.recognize(scannedTitle);
                 data.setFound(recognized.foundKey());
                 data.setScannedNormalizedTitle(recognized.normalizedInput());
 

@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.HookWrapper;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
 import com.github.johypark97.varchivemacro.macro.core.backend.BackendEvent;
 import com.github.johypark97.varchivemacro.macro.core.backend.IBackend;
@@ -102,7 +102,7 @@ public class MacroPresenter implements Presenter, Observer<BackendEvent> {
     }
 
     private TreeModel createTabSongTreeModel(String title,
-            Map<String, List<LocalSong>> tabSongMap) {
+            Map<String, List<LocalDlcSong>> tabSongMap) {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(title);
 
         tabSongMap.forEach((key, value) -> {
@@ -115,8 +115,8 @@ public class MacroPresenter implements Presenter, Observer<BackendEvent> {
 
                     @Override
                     public String toString() {
-                        LocalSong song = (LocalSong) getUserObject();
-                        return String.format("%s ...... %s", song.title(), song.composer());
+                        LocalDlcSong song = (LocalDlcSong) getUserObject();
+                        return String.format("%s ...... %s", song.title, song.composer);
                     }
                 };
 
@@ -394,17 +394,17 @@ public class MacroPresenter implements Presenter, Observer<BackendEvent> {
             return;
         }
 
-        LocalSong song = (LocalSong) node.getUserObject();
+        LocalDlcSong song = (LocalDlcSong) node.getUserObject();
 
         String newline = System.lineSeparator();
         StringBuilder builder = new StringBuilder();
-        builder.append("Title: ").append(song.title()).append(newline);
-        builder.append("Composer: ").append(song.composer()).append(newline);
-        builder.append("DLC: ").append(song.dlc()).append(newline);
-        builder.append("DLC Tab: ").append(song.dlcTab());
+        builder.append("Title: ").append(song.title).append(newline);
+        builder.append("Composer: ").append(song.composer).append(newline);
+        builder.append("DLC: ").append(song.dlc).append(newline);
+        builder.append("DLC Tab: ").append(song.dlcTab);
 
         try {
-            view.showRecord(builder.toString(), songRecordModel.getRecordTable(song.id()));
+            view.showRecord(builder.toString(), songRecordModel.getRecordTable(song.id));
         } catch (RecordNotLoadedException ignored) {
         }
     }
@@ -412,7 +412,7 @@ public class MacroPresenter implements Presenter, Observer<BackendEvent> {
     @Override
     public void openExpected(JFrame frame) {
         Set<String> selectedTabs = view.getSelectedDlcTabs();
-        Map<String, List<LocalSong>> tabSongMap = songRecordModel.getTabSongMap(selectedTabs);
+        Map<String, List<LocalDlcSong>> tabSongMap = songRecordModel.getTabSongMap(selectedTabs);
         expectedPresenter.start(frame, createTabSongTreeModel("List", tabSongMap));
     }
 

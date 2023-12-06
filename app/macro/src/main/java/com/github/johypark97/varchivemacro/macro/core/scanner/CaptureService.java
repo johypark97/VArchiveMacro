@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager;
 import java.awt.Robot;
 import java.util.List;
@@ -12,7 +12,7 @@ public interface CaptureService {
 
     void await() throws InterruptedException;
 
-    void execute(TaskManager taskManager, Map<String, List<LocalSong>> tabSongMap);
+    void execute(TaskManager taskManager, Map<String, List<LocalDlcSong>> tabSongMap);
 
     boolean hasException();
 

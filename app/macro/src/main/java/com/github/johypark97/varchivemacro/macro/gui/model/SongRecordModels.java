@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.ISongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
@@ -16,9 +16,9 @@ public interface SongRecordModels {
     interface ISongRecordModel {
         List<String> getDlcTabList();
 
-        Map<String, List<LocalSong>> getTabSongMap();
+        Map<String, List<LocalDlcSong>> getTabSongMap();
 
-        Map<String, List<LocalSong>> getTabSongMap(Set<String> selectedTabs);
+        Map<String, List<LocalDlcSong>> getTabSongMap(Set<String> selectedTabs);
 
         Table<Button, Pattern, String> getRecordTable(int id) throws RecordNotLoadedException;
     }
@@ -37,12 +37,12 @@ public interface SongRecordModels {
         }
 
         @Override
-        public Map<String, List<LocalSong>> getTabSongMap() {
+        public Map<String, List<LocalDlcSong>> getTabSongMap() {
             return songRecordManager.getTabSongMap();
         }
 
         @Override
-        public Map<String, List<LocalSong>> getTabSongMap(Set<String> selectedTabs) {
+        public Map<String, List<LocalDlcSong>> getTabSongMap(Set<String> selectedTabs) {
             return songRecordManager.getTabSongMap(selectedTabs);
         }
 

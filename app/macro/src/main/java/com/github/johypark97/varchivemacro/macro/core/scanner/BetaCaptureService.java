@@ -3,8 +3,8 @@ package com.github.johypark97.varchivemacro.macro.core.scanner;
 import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
@@ -80,9 +80,9 @@ public class BetaCaptureService implements CaptureService {
     }
 
     @Override
-    public void execute(TaskManager taskManager, Map<String, List<LocalSong>> tabSongMap) {
+    public void execute(TaskManager taskManager, Map<String, List<LocalDlcSong>> tabSongMap) {
         executor.execute(() -> {
-            TitleSongRecognizer recognizer = new TitleSongRecognizer(titleTool);
+            TitleSongRecognizer<LocalDlcSong> recognizer = new TitleSongRecognizer<>(titleTool);
 
             try (OcrWrapper ocr = new TitleOcr()) {
                 // Check if the screen size is supported using whether an exception occurs.
@@ -90,8 +90,8 @@ public class BetaCaptureService implements CaptureService {
                 CollectionArea collectionArea = CollectionAreaFactory.create(screenSize);
                 Rectangle screenRect = new Rectangle(screenSize);
 
-                Queue<List<LocalSong>> tabQueue = new LinkedList<>();
-                for (Entry<String, List<LocalSong>> entry : tabSongMap.entrySet()) {
+                Queue<List<LocalDlcSong>> tabQueue = new LinkedList<>();
+                for (Entry<String, List<LocalDlcSong>> entry : tabSongMap.entrySet()) {
                     // Add an empty list before ClearPass+ tab to skip the favorite tab.
                     if (TAB_NAME_CLEAR_PASS_PLUS.equals(entry.getKey())) {
                         tabQueue.add(List.of());
@@ -102,7 +102,7 @@ public class BetaCaptureService implements CaptureService {
 
                 try {
                     while (tabQueue.peek() != null) {
-                        List<LocalSong> songList = tabQueue.poll();
+                        List<LocalDlcSong> songList = tabQueue.poll();
                         recognizer.setSongList(songList);
 
                         tabKey(robot, KeyEvent.VK_SPACE, inputDuration);
@@ -111,7 +111,7 @@ public class BetaCaptureService implements CaptureService {
                             continue;
                         }
 
-                        LocalSong previousRecognizedSong = null;
+                        LocalDlcSong previousRecognizedSong = null;
                         boolean isFirst = true;
                         int duplicatedCount = 0;
                         while (true) {
@@ -134,7 +134,8 @@ public class BetaCaptureService implements CaptureService {
                                 scannedTitle = ocr.run(pix.pixInstance);
                             }
 
-                            Recognized recognized = recognizer.recognize(scannedTitle);
+                            Recognized<LocalDlcSong> recognized =
+                                    recognizer.recognize(scannedTitle);
                             if (Objects.equals(recognized.song(), previousRecognizedSong)) {
                                 ++duplicatedCount;
                                 if (duplicatedCount >= DUPLICATED_CONDITION) {

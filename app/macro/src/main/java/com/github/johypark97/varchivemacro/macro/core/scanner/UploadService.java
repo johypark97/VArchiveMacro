@@ -4,9 +4,9 @@ import com.github.johypark97.varchivemacro.lib.common.api.Api;
 import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader;
 import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestJson;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalRecord;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultManager;
@@ -111,16 +111,16 @@ public class UploadService {
         executor.shutdown();
     }
 
-    private RequestJson recordToRequest(LocalSong song, LocalRecord record) {
-        String title = song.remote_title();
+    private RequestJson recordToRequest(LocalDlcSong song, LocalRecord record) {
+        String title = song.remoteTitle;
         if (title == null) {
-            title = song.title();
+            title = song.title;
         }
 
         RequestJson requestJson =
                 new RequestJson(title, record.button, record.pattern, record.rate, record.maxCombo);
-        if (songRecordManager.getDuplicateTitleSet().contains(song.id())) {
-            requestJson.composer = song.composer();
+        if (songRecordManager.getDuplicateTitleSet().contains(song.id)) {
+            requestJson.composer = song.composer;
         }
 
         return requestJson;

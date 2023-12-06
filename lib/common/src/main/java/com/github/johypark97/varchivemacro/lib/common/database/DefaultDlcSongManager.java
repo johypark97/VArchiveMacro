@@ -1,38 +1,67 @@
 package com.github.johypark97.varchivemacro.lib.common.database;
 
+import com.github.johypark97.varchivemacro.lib.common.database.comparator.DlcLocalSongComparator;
 import com.github.johypark97.varchivemacro.lib.common.database.comparator.LocalSongComparator;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.Dlc;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.Tab;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.DlcData;
+import com.github.johypark97.varchivemacro.lib.common.database.datastruct.TabData;
 import java.io.IOException;
-import java.io.Serial;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DefaultDlcSongManager extends DefaultSongManager implements DlcSongManager {
-    private static final int DLC_COUNT_CONDITION = 1;
+    private final List<LocalDlcSong> dlcSongList;
 
-    private final Map<Integer, String> tabMap;
-    private final Map<String, Dlc> dlcMap;
+    private final Map<Integer, LocalDlcSong> lookupId;
+    private final Map<String, DlcData> dlcMap; // dlc code - dlc data
+    private final Map<String, TabData> tabMap; // tab name - tab data
 
     public DefaultDlcSongManager(Path songPath, Path dlcPath, Path tabPath) throws IOException {
         super(songPath);
 
-        dlcMap = Dlc.loadJson(dlcPath);
-        tabMap = Tab.loadJson(tabPath);
+        dlcMap = DlcData.loadJson(dlcPath);
+        tabMap = TabData.loadJson(tabPath);
+
+        Map<String, String> codeTabMap = new HashMap<>(); // dlc code - tab name
+        tabMap.forEach((tabName, tab) -> tab.dlcCode.forEach(
+                (dlcCode) -> codeTabMap.put(dlcCode, tabName)));
+
+        dlcSongList = getSongList().stream().map((x) -> {
+            DlcData dlc = dlcMap.get(x.dlcCode);
+
+            String dlcName = (dlc != null) ? dlc.name() : "";
+            String dlcTab = codeTabMap.getOrDefault(x.dlcCode, "");
+            int dlcPriority = (dlc != null) ? dlc.priority() : -1;
+
+            return new LocalDlcSong(x, dlcName, dlcTab, dlcPriority);
+        }).toList();
+
+        lookupId = newLookupId(dlcSongList);
     }
 
-    private int getDlcPriority(String dlcCode) {
-        Dlc dlc = dlcMap.get(dlcCode);
-        return (dlc != null) ? dlc.priority() : -1;
+    private static Map<Integer, LocalDlcSong> newLookupId(List<LocalDlcSong> songList) {
+        Function<LocalDlcSong, Integer> keyMapper = (x) -> x.id;
+        Function<LocalDlcSong, LocalDlcSong> valueMapper = (x) -> x;
+
+        return songList.stream().collect(Collectors.toMap(keyMapper, valueMapper));
+    }
+
+    @Override
+    public LocalDlcSong getDlcSong(int id) {
+        return lookupId.get(id);
+    }
+
+    @Override
+    public List<LocalDlcSong> getDlcSongList() {
+        return dlcSongList.stream().sorted(new LocalSongComparator()).toList();
     }
 
     @Override
@@ -47,76 +76,41 @@ public class DefaultDlcSongManager extends DefaultSongManager implements DlcSong
 
     @Override
     public List<String> getDlcTabList() {
-        return tabMap.values().stream().toList();
+        return tabMap.keySet().stream().toList();
     }
 
     @Override
     public Set<String> getDlcTabSet() {
-        return new HashSet<>(tabMap.values());
+        return tabMap.keySet();
     }
 
     @Override
     public Map<String, String> getDlcCodeNameMap() {
-        Function<Entry<String, Dlc>, String> keyMapper = Entry::getKey;
-        Function<Entry<String, Dlc>, String> valueMapper = (x) -> x.getValue().name();
+        Function<Entry<String, DlcData>, String> keyMapper = Entry::getKey;
+        Function<Entry<String, DlcData>, String> valueMapper = (x) -> x.getValue().name();
 
         return dlcMap.entrySet().stream().collect(Collectors.toMap(keyMapper, valueMapper));
     }
 
     @Override
     public Map<String, Set<String>> getDlcTabCodeMap() {
-        Map<String, Set<String>> map = new LinkedHashMap<>();
-        tabMap.forEach((key, value) -> map.putIfAbsent(value, new HashSet<>()));
+        BinaryOperator<Set<String>> mergeFunction =
+                (o1, o2) -> Stream.of(o1, o2).flatMap(Set::stream).collect(Collectors.toSet());
 
-        for (LocalSong song : getSongList()) {
-            Set<String> set = map.get(song.dlcTab());
-            if (set == null) {
-                throw new RuntimeException("tab does not exist: " + song.dlcTab());
-            }
-
-            set.add(song.dlcCode());
-        }
-
-        return map;
+        return tabMap.entrySet().stream().collect(
+                Collectors.toMap(Entry::getKey, (x) -> x.getValue().dlcCode, mergeFunction,
+                        LinkedHashMap::new));
     }
 
     @Override
-    public Map<String, List<LocalSong>> getTabSongMap() {
-        Map<String, List<LocalSong>> map = new LinkedHashMap<>();
-        tabMap.forEach((key, value) -> map.putIfAbsent(value, new ArrayList<>()));
+    public Map<String, List<LocalDlcSong>> getTabSongMap() {
+        Map<String, List<LocalDlcSong>> map = new LinkedHashMap<>();
 
-        for (LocalSong song : getSongList()) {
-            List<LocalSong> list = map.get(song.dlcTab());
-            if (list == null) {
-                throw new RuntimeException("tab does not exist: " + song.dlcTab());
-            }
-
-            list.add(song);
-        }
-
-        map.forEach((key, value) -> {
-            int count = value.stream().map(LocalSong::dlc).collect(Collectors.toSet()).size();
-            if (count == DLC_COUNT_CONDITION) {
-                value.sort(new LocalSongComparator());
-            } else {
-                value.sort(new LocalSongComparator() {
-                    @Serial
-                    private static final long serialVersionUID = -217358984531426514L;
-
-                    @Override
-                    public int compare(LocalSong o1, LocalSong o2) {
-                        int left = getDlcPriority(o1.dlcCode());
-                        int right = getDlcPriority(o2.dlcCode());
-
-                        int diff = left - right;
-                        if (diff != 0) {
-                            return diff;
-                        }
-
-                        return super.compare(o1, o2);
-                    }
-                });
-            }
+        tabMap.forEach((key, value) -> {
+            List<LocalDlcSong> list =
+                    dlcSongList.stream().filter((x) -> value.dlcCode.contains(x.dlcCode))
+                            .sorted(new DlcLocalSongComparator()).toList();
+            map.put(key, list);
         });
 
         return map;

@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor;
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_dump;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class DatabaseValidator {
     public String validate() {
         StringBuilder builder = new StringBuilder();
 
-        List<LocalSong> songs = songModel.getSongList();
+        List<LocalDlcSong> songs = songModel.getSongList();
         Set<String> dlcCodeSet = songModel.getDlcCodeSet();
         Set<String> dlcTabSet = songModel.getDlcTabSet();
 
@@ -33,7 +33,7 @@ public class DatabaseValidator {
 
         builder.append("dlcCode (songs.json - dlcs.json)\n");
         {
-            Set<String> set = songs.stream().map(LocalSong::dlcCode).collect(Collectors.toSet());
+            Set<String> set = songs.stream().map((x) -> x.dlcCode).collect(Collectors.toSet());
             if (set.equals(dlcCodeSet)) {
                 builder.append("- ok\n");
             } else {
@@ -54,7 +54,7 @@ public class DatabaseValidator {
 
         builder.append("dlcTab (songs.json - tabs.json)\n");
         {
-            Set<String> set = songs.stream().map(LocalSong::dlcTab).collect(Collectors.toSet());
+            Set<String> set = songs.stream().map((x) -> x.dlcTab).collect(Collectors.toSet());
             if (set.equals(dlcTabSet)) {
                 builder.append("- ok\n");
             } else {
@@ -78,8 +78,8 @@ public class DatabaseValidator {
         builder.append("dlc (pack names) - dlcCode\n");
         {
             Map<String, Set<String>> map = new HashMap<>();
-            songs.forEach((song) -> map.computeIfAbsent(song.dlc(), (x) -> new HashSet<>())
-                    .add(song.dlcCode()));
+            songs.forEach((song) -> map.computeIfAbsent(song.dlc, (x) -> new HashSet<>())
+                    .add(song.dlcCode));
             List<String> list =
                     map.entrySet().stream().map((x) -> x.getKey() + " - " + x.getValue()).sorted()
                             .toList();

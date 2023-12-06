@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.macro.core.scanner;
 import com.github.johypark97.varchivemacro.lib.common.Enums;
 import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
@@ -89,7 +89,7 @@ public class Scanner implements Observable<Event>, TaskDataProvider {
 
     public Command getCommand_betaScan(Path cacheDir, int captureDelay, int inputDuration,
             Set<String> dlcTabs) {
-        Map<String, List<LocalSong>> tabSongMap = songRecordManager.getTabSongMap(dlcTabs);
+        Map<String, List<LocalDlcSong>> tabSongMap = songRecordManager.getTabSongMap(dlcTabs);
 
         CaptureService captureService =
                 new BetaCaptureService(songRecordManager.getTitleTool(), captureDelay,
@@ -113,7 +113,7 @@ public class Scanner implements Observable<Event>, TaskDataProvider {
     }
 
     protected Command createCommand_betaScan(CaptureService captureService, Path cachePath,
-            Map<String, List<LocalSong>> tabSongMap) {
+            Map<String, List<LocalDlcSong>> tabSongMap) {
         return new AbstractCommand() {
             @Override
             public boolean run() {

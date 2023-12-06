@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
@@ -65,9 +65,9 @@ public interface TaskManager extends Iterable<TaskData> {
 
         void setSelected(boolean value);
 
-        LocalSong getSong();
+        LocalDlcSong getSong();
 
-        void setSong(LocalSong value);
+        void setSong(LocalDlcSong value);
 
         TaskStatus getStatus();
 

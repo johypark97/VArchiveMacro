@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.common.database.datastruct.LocalSong;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
@@ -177,12 +177,12 @@ public class TaskManagerWithEvent implements TaskManager {
         }
 
         @Override
-        public LocalSong getSong() {
+        public LocalDlcSong getSong() {
             return decorated.getSong();
         }
 
         @Override
-        public void setSong(LocalSong value) {
+        public void setSong(LocalDlcSong value) {
             decorated.setSong(value);
         }
 
