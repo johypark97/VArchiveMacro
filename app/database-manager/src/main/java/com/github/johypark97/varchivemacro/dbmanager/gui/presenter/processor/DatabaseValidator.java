@@ -3,11 +3,8 @@ package com.github.johypark97.varchivemacro.dbmanager.gui.presenter.processor;
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_dump;
 
 import com.github.johypark97.varchivemacro.dbmanager.gui.model.SongModel;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,79 +21,92 @@ public class DatabaseValidator {
     public String validate() {
         StringBuilder builder = new StringBuilder();
 
-        List<LocalDlcSong> songs = songModel.getSongList();
-        Set<String> dlcCodeSet = songModel.getDlcCodeSet();
-        Set<String> dlcTabSet = songModel.getDlcTabSet();
-
         builder.append("-------- validation --------\n");
         builder.append('\n');
 
-        builder.append("dlcCode (songs.json - dlcs.json)\n");
-        {
-            Set<String> set = songs.stream().map((x) -> x.dlcCode).collect(Collectors.toSet());
-            if (set.equals(dlcCodeSet)) {
-                builder.append("- ok\n");
-            } else {
-                builder.append("- failed\n");
-                builder.append("songs.json: ").append(Sets.difference(set, dlcCodeSet))
-                        .append('\n');
-                builder.append("dlcs.json: ").append(Sets.difference(dlcCodeSet, set)).append('\n');
-            }
-        }
+        validate_dlcCode_songs_dlcs(builder);
+        print_dlcCodeList(builder);
+
+        validate_dlcCode_tabs_dlcs(builder);
+        print_dlcTabList(builder);
+
+        builder.append("-------- key relation map --------\n");
         builder.append('\n');
 
-        builder.append("dlcCode list\n");
-        {
-            List<String> list = songModel.getDlcCodeList();
-            builder.append(gson.toJson(list)).append('\n');
-        }
-        builder.append('\n');
-
-        builder.append("dlcTab (songs.json - tabs.json)\n");
-        {
-            Set<String> set = songs.stream().map((x) -> x.dlcTab).collect(Collectors.toSet());
-            if (set.equals(dlcTabSet)) {
-                builder.append("- ok\n");
-            } else {
-                builder.append("- failed\n");
-                builder.append("songs.json: ").append(Sets.difference(set, dlcTabSet)).append('\n');
-                builder.append("tabs.json: ").append(Sets.difference(dlcTabSet, set)).append('\n');
-            }
-        }
-        builder.append('\n');
-
-        builder.append("dlcTab list\n");
-        {
-            List<String> list = songModel.getDlcTabList();
-            builder.append(gson.toJson(list)).append('\n');
-        }
-        builder.append('\n');
-
-        builder.append("-------- songs.json data check --------\n");
-        builder.append('\n');
-
-        builder.append("dlc (pack names) - dlcCode\n");
-        {
-            Map<String, Set<String>> map = new HashMap<>();
-            songs.forEach((song) -> map.computeIfAbsent(song.dlc, (x) -> new HashSet<>())
-                    .add(song.dlcCode));
-            List<String> list =
-                    map.entrySet().stream().map((x) -> x.getKey() + " - " + x.getValue()).sorted()
-                            .toList();
-            builder.append(gson.toJson(list)).append('\n');
-        }
-        builder.append('\n');
-
-        builder.append("dlcTab - dlcCode\n");
-        {
-            Map<String, Set<String>> map = songModel.getDlcTabCodeMap();
-            List<String> list =
-                    map.entrySet().stream().map((x) -> x.getKey() + " - " + x.getValue()).sorted()
-                            .toList();
-            builder.append(gson.toJson(list)).append('\n');
-        }
-        builder.append('\n');
+        print_dlcCodeNameMap(builder);
+        print_dlcTabCodeMap(builder);
 
         return builder.toString();
+    }
+
+    private void validate_dlcCode_songs_dlcs(StringBuilder builder) {
+        Set<String> codeSetFromDlcsJson = songModel.getDlcCodeSet();
+        Set<String> codeSetFromSongsJson =
+                songModel.getSongList().stream().map((x) -> x.dlcCode).collect(Collectors.toSet());
+
+        builder.append("dlcCode (songs.json - dlcs.json)\n");
+        if (codeSetFromDlcsJson.equals(codeSetFromSongsJson)) {
+            builder.append("- ok\n");
+        } else {
+            builder.append("- failed\n");
+            builder.append("songs.json: ")
+                    .append(Sets.difference(codeSetFromSongsJson, codeSetFromDlcsJson))
+                    .append('\n');
+            builder.append("dlcs.json: ")
+                    .append(Sets.difference(codeSetFromDlcsJson, codeSetFromSongsJson))
+                    .append('\n');
+        }
+        builder.append('\n');
+    }
+
+    private void print_dlcCodeList(StringBuilder builder) {
+        List<String> list = songModel.getDlcCodeList();
+
+        builder.append("dlcCode list in priority order\n");
+        builder.append(gson.toJson(list)).append('\n');
+        builder.append('\n');
+    }
+
+    private void validate_dlcCode_tabs_dlcs(StringBuilder builder) {
+        Set<String> codeSetFromDlcsJson = songModel.getDlcCodeSet();
+        Set<String> codeSetFromTabsJson =
+                songModel.getDlcTabCodeMap().values().stream().flatMap(Set::stream)
+                        .collect(Collectors.toSet());
+
+        builder.append("dlcCode (tabs.json - dlcs.json)\n");
+        if (codeSetFromDlcsJson.equals(codeSetFromTabsJson)) {
+            builder.append("- ok\n");
+        } else {
+            builder.append("- failed\n");
+            builder.append("tabs.json: ")
+                    .append(Sets.difference(codeSetFromTabsJson, codeSetFromDlcsJson)).append('\n');
+            builder.append("dlcs.json: ")
+                    .append(Sets.difference(codeSetFromDlcsJson, codeSetFromTabsJson)).append('\n');
+        }
+        builder.append('\n');
+    }
+
+    private void print_dlcTabList(StringBuilder builder) {
+        List<String> list = songModel.getDlcTabList();
+
+        builder.append("dlcTab list in priority order\n");
+        builder.append(gson.toJson(list)).append('\n');
+        builder.append('\n');
+    }
+
+    private void print_dlcCodeNameMap(StringBuilder builder) {
+        Map<String, String> dlcCodeNameMap = songModel.getDlcCodeNameMap();
+
+        builder.append("dlcCode - dlcName\n");
+        builder.append(gson.toJson(dlcCodeNameMap)).append('\n');
+        builder.append('\n');
+    }
+
+    private void print_dlcTabCodeMap(StringBuilder builder) {
+        Map<String, Set<String>> dlcTabCodeMap = songModel.getDlcTabCodeMap();
+
+        builder.append("dlcTab - dlcCode\n");
+        builder.append(gson.toJson(dlcTabCodeMap)).append('\n');
+        builder.append('\n');
     }
 }

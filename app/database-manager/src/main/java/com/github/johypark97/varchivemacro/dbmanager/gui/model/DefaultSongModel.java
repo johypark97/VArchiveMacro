@@ -67,8 +67,8 @@ public class DefaultSongModel implements SongModel {
     }
 
     @Override
-    public Set<String> getDlcTabSet() {
-        return dlcSongManager.getDlcTabSet();
+    public Map<String, String> getDlcCodeNameMap() {
+        return dlcSongManager.getDlcCodeNameMap();
     }
 
     @Override

@@ -25,7 +25,7 @@ public interface SongModel {
 
     List<String> getDlcTabList();
 
-    Set<String> getDlcTabSet();
+    Map<String, String> getDlcCodeNameMap();
 
     Map<String, Set<String>> getDlcTabCodeMap();
 
