@@ -4694,5 +4694,165 @@
     "composer": "Forte Escape",
     "dlcCode": "R",
     "priority": 0
+  },
+  {
+    "id": 587,
+    "title": "별빛너머",
+    "remote_title": null,
+    "composer": "ned",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 588,
+    "title": "3:33",
+    "remote_title": null,
+    "composer": "Pierre Blanche",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 589,
+    "title": "Accelerate",
+    "remote_title": null,
+    "composer": "Teminite & Skybreak",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 590,
+    "title": "Behemoth",
+    "remote_title": null,
+    "composer": "Paul Bazooka",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 591,
+    "title": "Carrot Carrot",
+    "remote_title": null,
+    "composer": "Sobrem",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 592,
+    "title": "Critical Point",
+    "remote_title": null,
+    "composer": "ND Lee",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 593,
+    "title": "ECiLA",
+    "remote_title": null,
+    "composer": "seibin",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 594,
+    "title": "glory MAX -나의 최대치로 너와 함께할게-",
+    "remote_title": null,
+    "composer": "TAK",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 595,
+    "title": "God Machine",
+    "remote_title": null,
+    "composer": "VoidRover",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 596,
+    "title": "Inside the Light",
+    "remote_title": null,
+    "composer": "danbi",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 597,
+    "title": "My Wonderland",
+    "remote_title": null,
+    "composer": "NieN",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 598,
+    "title": "Paradise",
+    "remote_title": null,
+    "composer": "Blosso",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 599,
+    "title": "Peace Comes At a Price",
+    "remote_title": null,
+    "composer": "Pure 100%",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 600,
+    "title": "Pitter-patter",
+    "remote_title": null,
+    "composer": "SOPHI",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 601,
+    "title": "Revenger",
+    "remote_title": null,
+    "composer": "Sampling Masters AYA",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 602,
+    "title": "Rhapsody for The VEndetta",
+    "remote_title": null,
+    "composer": "Ice",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 603,
+    "title": "Right Time",
+    "remote_title": null,
+    "composer": "Faver / Hax Haus",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 604,
+    "title": "Rocket Launcher",
+    "remote_title": null,
+    "composer": "MINIMONSTER",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 605,
+    "title": "S.A.V.E",
+    "remote_title": null,
+    "composer": "RiraN",
+    "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 606,
+    "title": "Shining Light (feat. Shabel Tonya)",
+    "remote_title": null,
+    "composer": "INFX / MIIM",
+    "dlcCode": "VE5",
+    "priority": 0
   }
 ]

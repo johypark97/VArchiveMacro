@@ -65,35 +65,41 @@
     ],
     "priority": 10
   },
+  "V EXTENSION 5": {
+    "dlcCode": [
+      "VE5"
+    ],
+    "priority": 11
+  },
   "EMOTIONAL S.": {
     "dlcCode": [
       "ES"
     ],
-    "priority": 11
+    "priority": 12
   },
   "TECHNIKA 1": {
     "dlcCode": [
       "T1"
     ],
-    "priority": 12
+    "priority": 13
   },
   "TECHNIKA 2": {
     "dlcCode": [
       "T2"
     ],
-    "priority": 13
+    "priority": 14
   },
   "TECHNIKA 3": {
     "dlcCode": [
       "T3"
     ],
-    "priority": 14
+    "priority": 15
   },
   "TECHNIKA TUNE Q": {
     "dlcCode": [
       "TQ"
     ],
-    "priority": 15
+    "priority": 16
   },
   "MUSIC GAME": {
     "dlcCode": [
@@ -104,7 +110,7 @@
       "GC",
       "MD"
     ],
-    "priority": 16
+    "priority": 17
   },
   "VARIETY": {
     "dlcCode": [
@@ -114,12 +120,12 @@
       "MAP",
       "NXN"
     ],
-    "priority": 17
+    "priority": 18
   },
   "CLEARPASS+": {
     "dlcCode": [
       "CP"
     ],
-    "priority": 18
+    "priority": 19
   }
 }
