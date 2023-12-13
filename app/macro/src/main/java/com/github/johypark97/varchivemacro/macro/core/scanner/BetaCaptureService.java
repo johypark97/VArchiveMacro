@@ -16,11 +16,14 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManage
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskStatus;
 import java.awt.AWTException;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.MultiResolutionImage;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +70,23 @@ public class BetaCaptureService implements CaptureService {
         this.titleTool = titleTool;
     }
 
+    public static BufferedImage captureScreenshot(Robot robot) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        MultiResolutionImage multiResolutionImage =
+                robot.createMultiResolutionScreenCapture(new Rectangle(screenSize));
+        List<Image> variantList = multiResolutionImage.getResolutionVariants();
+        Image image = variantList.get(variantList.size() - 1);
+
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
+                BufferedImage.TYPE_INT_RGB);
+        Graphics graphics = bufferedImage.getGraphics();
+        graphics.drawImage(image, 0, 0, null);
+        graphics.dispose();
+
+        return bufferedImage;
+    }
+
     @Override
     public void shutdownNow() {
         executor.shutdownNow();
@@ -85,10 +105,15 @@ public class BetaCaptureService implements CaptureService {
             TitleSongRecognizer<LocalDlcSong> recognizer = new TitleSongRecognizer<>(titleTool);
 
             try (OcrWrapper ocr = new TitleOcr()) {
-                // Check if the screen size is supported using whether an exception occurs.
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                CollectionArea collectionArea = CollectionAreaFactory.create(screenSize);
-                Rectangle screenRect = new Rectangle(screenSize);
+                CollectionArea collectionArea;
+                {
+                    Image screenImage = captureScreenshot(robot);
+                    Dimension screenSize =
+                            new Dimension(screenImage.getWidth(null), screenImage.getHeight(null));
+
+                    // Check if the screen size is supported using whether an exception occurs.
+                    collectionArea = CollectionAreaFactory.create(screenSize);
+                }
 
                 Queue<List<LocalDlcSong>> tabQueue = new LinkedList<>();
                 for (Entry<String, List<LocalDlcSong>> entry : tabSongMap.entrySet()) {
@@ -123,7 +148,7 @@ public class BetaCaptureService implements CaptureService {
                             TimeUnit.MILLISECONDS.sleep(captureDelay);
 
                             // capture
-                            BufferedImage image = robot.createScreenCapture(screenRect);
+                            BufferedImage image = captureScreenshot(robot);
 
                             // analyze title image
                             byte[] imageBytes =
