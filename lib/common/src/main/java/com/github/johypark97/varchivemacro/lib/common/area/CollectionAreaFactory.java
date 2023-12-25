@@ -5,9 +5,7 @@ import java.awt.Dimension;
 public final class CollectionAreaFactory {
     public static CollectionArea create(Dimension resolution)
             throws NotSupportedResolutionException {
-        if (resolution.equals(CollectionAreaHD.RESOLUTION)) {
-            return new CollectionAreaHD();
-        } else if (resolution.equals(CollectionAreaFHD.RESOLUTION)) {
+        if (resolution.equals(CollectionAreaFHD.RESOLUTION)) {
             return new CollectionAreaFHD();
         } else if (resolution.equals(CollectionAreaQHD.RESOLUTION)) {
             return new CollectionAreaQHD();
