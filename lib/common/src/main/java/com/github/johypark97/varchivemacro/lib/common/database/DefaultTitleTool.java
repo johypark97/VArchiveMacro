@@ -15,7 +15,7 @@ public class DefaultTitleTool implements TitleTool {
         TitleData titleData = TitleData.loadJson(path);
 
         titleData.clipped.forEach((x) -> clippedTitleMap.put(x.id(), x.value()));
-        titleData.remap.forEach((x) -> x.from().forEach((y) -> scannedTitleRemap.put(y, x.to())));
+        titleData.remap.forEach((x) -> x.from.forEach((y) -> scannedTitleRemap.put(y, x.to)));
     }
 
     @Override

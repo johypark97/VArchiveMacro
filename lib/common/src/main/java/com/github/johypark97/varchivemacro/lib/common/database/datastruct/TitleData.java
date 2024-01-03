@@ -33,6 +33,11 @@ public class TitleData {
     }
 
 
-    public record RemapData(@Expose String to, @Expose List<String> from) {
+    public static class RemapData {
+        @Expose
+        public String to;
+
+        @Expose
+        public List<String> from;
     }
 }
