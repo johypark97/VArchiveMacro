@@ -44,7 +44,7 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
                 Function<String, String> normalizer) {
             this.testSong = testSong;
 
-            testSong_normalizedTitle = normalizer.apply(titleTool.getShortTitle(testSong));
+            testSong_normalizedTitle = normalizer.apply(titleTool.getClippedTitle(testSong));
         }
 
         @Override

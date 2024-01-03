@@ -162,7 +162,7 @@ public class GroundTruthGenerateTask implements Callable<Void> {
         Set<String> wordSet = new HashSet<>();
 
         for (LocalDlcSong song : songModel.getSongList()) {
-            String title = songModel.getTitleTool().getShortTitle(song);
+            String title = songModel.getTitleTool().getClippedTitle(song);
             title = TitleTool.normalizeTitle_training(title);
 
             String numberString = numberMatcher.negate().replaceFrom(title, ' ');

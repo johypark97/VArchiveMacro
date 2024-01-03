@@ -29,7 +29,7 @@ public class TitleSongRecognizer<T extends LocalSong> {
         Map<String, List<T>> map = new HashMap<>();
         songList.forEach((song) -> {
             String title =
-                    titleTool.hasShortTitle(song) ? titleTool.getShortTitle(song) : song.title;
+                    titleTool.hasClippedTitle(song) ? titleTool.getClippedTitle(song) : song.title;
             title = titleNormalizer.apply(title);
 
             List<T> list = map.computeIfAbsent(title, (x) -> new LinkedList<>());
@@ -46,19 +46,21 @@ public class TitleSongRecognizer<T extends LocalSong> {
 
     public Recognized<T> recognize(String value) {
         String normalizedValue = titleNormalizer.apply(value);
-        if (songMap.containsKey(normalizedValue)) {
-            T song = songMap.get(normalizedValue);
+        String remappedValue = titleTool.remapScannedTitle(normalizedValue);
+
+        if (songMap.containsKey(remappedValue)) {
+            T song = songMap.get(remappedValue);
 
             return new Recognized<>(
                     (song != null) ? RecognizedStatus.FOUND : RecognizedStatus.DUPLICATED_SONG,
-                    song, normalizedValue, normalizedValue, 0, 1);
+                    song, remappedValue, remappedValue, 0, 1);
         }
 
         List<Entry<String, StringDiff>> candidateList = new ArrayList<>();
 
         double maximumSimilarity = -1;
         for (String key : songMap.keySet()) {
-            StringDiff diff = new StringDiff(normalizedValue, key);
+            StringDiff diff = new StringDiff(remappedValue, key);
             if (diff.getSimilarity() >= maximumSimilarity) {
                 if (diff.getSimilarity() > maximumSimilarity) {
                     maximumSimilarity = diff.getSimilarity();
@@ -77,10 +79,10 @@ public class TitleSongRecognizer<T extends LocalSong> {
             T song = songMap.get(key);
             return new Recognized<>(
                     (song != null) ? RecognizedStatus.FOUND : RecognizedStatus.DUPLICATED_SONG,
-                    song, normalizedValue, key, diff.getDistance(), (float) diff.getSimilarity());
+                    song, remappedValue, key, diff.getDistance(), (float) diff.getSimilarity());
         }
 
-        return new Recognized<>(RecognizedStatus.NOT_FOUND, null, normalizedValue, "", 0, 0);
+        return new Recognized<>(RecognizedStatus.NOT_FOUND, null, remappedValue, "", 0, 0);
     }
 
     private boolean hasOneElement(List<?> list) {

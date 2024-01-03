@@ -1,53 +1,184 @@
 {
-  "titleChars": " !#$%&'(),-./012345789:?ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~’",
-  "shortTitles": [
-    { // sO mUCH iN LUV ~Melodic Twisted Mix~
+  "clipped": [
+    {
+      // sO mUCH iN LUV ~Melodic Twisted Mix~
       "id": 211,
       "value": "sO mUCH iN LUV ~Melodic Twisted"
     },
-    { // Your Own Miracle ~Disco House Mix~
+    {
+      // Your Own Miracle ~Disco House Mix~
       "id": 220,
       "value": "Your Own Miracle ~Disco House Mix"
     },
-    { // SuperSonic ~Mr.Funky Dirty Planet Remix~
+    {
+      // SuperSonic ~Mr.Funky Dirty Planet Remix~
       "id": 405,
       "value": "SuperSonic ~Mr.Funky Dirty Planet R"
     },
-    { // 공성전 ~Pierre Blanche, Yonce Remix~
+    {
+      // 공성전 ~Pierre Blanche, Yonce Remix~
       "id": 420,
       "value": "공성전 ~Pierre Blanche, Yonce Remix"
     },
-    { // 카트라이더 Mashup ~Cosmograph Remix~
+    {
+      // 카트라이더 Mashup ~Cosmograph Remix~
       "id": 429,
       "value": "카트라이더 Mashup ~Cosmograph Re"
     },
-    { // 카트라이더 Mashup ~Pure 100% Remix~
+    {
+      // 카트라이더 Mashup ~Pure 100% Remix~
       "id": 430,
       "value": "카트라이더 Mashup ~Pure 100% Remi"
     },
-    { // 카트라이더, 크레이지아케이드, 버블파이터 Main theme ~CHUCK Remix~
+    {
+      // 카트라이더, 크레이지아케이드, 버블파이터 Main theme ~CHUCK Remix~
       "id": 431,
       "value": "카트라이더, 크레이지아케이드, 버블파"
     },
-    { // The Raindrop Flower ~jam-jam Remix~
+    {
+      // The Raindrop Flower ~jam-jam Remix~
       "id": 440,
       "value": "The Raindrop Flower ~jam-jam Remix"
     },
-    { // Moonlight Shadow ~Paul Bazooka Remix~
+    {
+      // Moonlight Shadow ~Paul Bazooka Remix~
       "id": 577,
       "value": "Moonlight Shadow ~Paul Bazooka Re"
     },
-    { // The Lake of Oblivion ~jam-jam Remix~
+    {
+      // The Lake of Oblivion ~jam-jam Remix~
       "id": 582,
       "value": "The Lake of Oblivion ~jam-jam Remix"
     },
-    { // The Tune of the Azure Light ~Parang Remix~
+    {
+      // The Tune of the Azure Light ~Parang Remix~
       "id": 583,
       "value": "The Tune of the Azure Light ~Parang"
     },
-    { // glory MAX -나의 최대치로 너와 함께할게-
+    {
+      // glory MAX -나의 최대치로 너와 함께할게-
       "id": 594,
       "value": "glory MAX -나의 최대치로 너와 함께할"
+    }
+  ],
+  "remap": [
+    {
+      // id: 211
+      "to": "sOmUCHiNLUV~MeIodicTwisted",
+      "from": [
+        "sOmUCHiNLUV~MeIodicTwistedA",
+        "sOmUCHiNLUV~MeIodicTwistedN"
+      ]
+    },
+    {
+      // id: 230
+      "to": "YourOwnMiracIe~DiscoHouseMix",
+      "from": [
+        "YourOwnMiracIe~DiscoHouseMix-",
+        "YourOwnMiracIe~DiscoHouseMix~-"
+      ]
+    },
+    {
+      // id: 291
+      "to": "LesParfumsdeL'Amour",
+      "from": [
+        "LesParfumsdeL'AmourI"
+      ]
+    },
+    {
+      // id: 405
+      "to": "SuperSonic~Mr.FunkyDirtyPIanetR",
+      "from": [
+        "SuperSonic~Mr.FunkyDirtyPIanetRe"
+      ]
+    },
+    {
+      // id: 420
+      "to": "공성전~PierreBIanche,YonceRemix",
+      "from": [
+        "공성전~PierreBIanche,YonceRemix~"
+      ]
+    },
+    {
+      // id: 428
+      "to": "최종무곡",
+      "from": [
+        "치고모고최종무곡",
+        "치국모고최종무곡"
+      ]
+    },
+    {
+      // id: 429
+      "to": "카트라이더Mashup~CosmographRe",
+      "from": [
+        "카트라이더Mashup~CosmographRer",
+        "카트라이더Mashup~CosmographRetr"
+      ]
+    },
+    {
+      // id: 490
+      "to": "KaI_wrnw",
+      "from": [
+        "KaILwrnw"
+      ]
+    },
+    {
+      // id: 299
+      "to": "유령",
+      "from": [
+        "유려t우"
+      ]
+    },
+    {
+      // id: 527
+      "to": "느낌",
+      "from": [
+        "느낌혈",
+        "낌혈"
+      ]
+    },
+    {
+      // id: 577
+      "to": "MoonIightShadow~PauIBazookaRe",
+      "from": [
+        "MoonIightShadow~PauIBazookaRer"
+      ]
+    },
+    {
+      // id: 582
+      "to": "TheLakeofObIivion~jam-jamRemix",
+      "from": [
+        "TheLakeofObIivion~jam-jamRemix~"
+      ]
+    },
+    {
+      // id: 583
+      "to": "TheTuneoftheAzureLight~Parang",
+      "from": [
+        "TheTuneoftheAzureLight~Parangr",
+        "TheTuneoftheAzureLight~ParangF"
+      ]
+    },
+    {
+      // id: 588
+      "to": "3:33",
+      "from": [
+        "3:333"
+      ]
+    },
+    {
+      // id: 600
+      "to": "Pitter-patter",
+      "from": [
+        "Pitter-patterI"
+      ]
+    },
+    {
+      // id: 603
+      "to": "RightTime[ScreaMRecords]",
+      "from": [
+        "RightTimeIScreaMRecordsI"
+      ]
     }
   ]
 }

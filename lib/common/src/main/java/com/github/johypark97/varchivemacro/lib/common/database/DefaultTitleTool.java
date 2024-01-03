@@ -8,28 +8,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultTitleTool implements TitleTool {
-    private final Map<Integer, String> shortTitleMap = new HashMap<>();
-    private final String titleChars;
+    private final Map<Integer, String> clippedTitleMap = new HashMap<>();
+    private final Map<String, String> scannedTitleRemap = new HashMap<>();
 
     public DefaultTitleTool(Path path) throws IOException {
         TitleData titleData = TitleData.loadJson(path);
 
-        titleChars = titleData.titleChars;
-        titleData.shortTitles.forEach((x) -> shortTitleMap.put(x.id(), x.value()));
+        titleData.clipped.forEach((x) -> clippedTitleMap.put(x.id(), x.value()));
+        titleData.remap.forEach((x) -> x.from().forEach((y) -> scannedTitleRemap.put(y, x.to())));
     }
 
     @Override
-    public String getTitleChars() {
-        return titleChars;
+    public boolean hasClippedTitle(LocalSong song) {
+        return clippedTitleMap.containsKey(song.id);
     }
 
     @Override
-    public boolean hasShortTitle(LocalSong song) {
-        return shortTitleMap.containsKey(song.id);
+    public String getClippedTitle(LocalSong song) {
+        return clippedTitleMap.getOrDefault(song.id, song.title);
     }
 
     @Override
-    public String getShortTitle(LocalSong song) {
-        return shortTitleMap.getOrDefault(song.id, song.title);
+    public String remapScannedTitle(String scannedTitle) {
+        return scannedTitleRemap.getOrDefault(scannedTitle, scannedTitle);
     }
 }

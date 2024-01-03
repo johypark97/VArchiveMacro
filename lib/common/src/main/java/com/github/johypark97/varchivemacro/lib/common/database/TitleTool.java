@@ -18,9 +18,9 @@ public interface TitleTool {
         return s;
     }
 
-    String getTitleChars();
+    boolean hasClippedTitle(LocalSong song);
 
-    boolean hasShortTitle(LocalSong song);
+    String getClippedTitle(LocalSong song);
 
-    String getShortTitle(LocalSong song);
+    String remapScannedTitle(String scannedTitle);
 }

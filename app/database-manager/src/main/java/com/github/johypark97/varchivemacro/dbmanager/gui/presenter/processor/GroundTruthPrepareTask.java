@@ -47,7 +47,7 @@ public class GroundTruthPrepareTask implements Callable<Void> {
 
         Thread thread = Thread.currentThread();
         for (LocalDlcSong song : songModel.getSongList()) {
-            String title = songModel.getTitleTool().getShortTitle(song);
+            String title = songModel.getTitleTool().getClippedTitle(song);
             title = TitleTool.normalizeTitle_training(title);
 
             boolean containEng = false;
@@ -61,7 +61,7 @@ public class GroundTruthPrepareTask implements Callable<Void> {
             }
 
             Path baseDir;
-            if (songModel.getTitleTool().hasShortTitle(song)) {
+            if (songModel.getTitleTool().hasClippedTitle(song)) {
                 baseDir = exceededOutputDir;
             } else if (containEng && !containKor) {
                 baseDir = engOutputDir;

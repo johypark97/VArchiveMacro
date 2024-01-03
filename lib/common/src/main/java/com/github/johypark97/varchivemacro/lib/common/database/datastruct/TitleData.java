@@ -12,14 +12,14 @@ import java.util.List;
 
 public class TitleData {
     @Expose
-    public final String titleChars;
+    public final List<ClippedData> clipped;
 
     @Expose
-    public final List<ShortTitle> shortTitles;
+    public final List<RemapData> remap;
 
-    public TitleData(String titleChars, List<ShortTitle> shortTitles) {
-        this.shortTitles = shortTitles;
-        this.titleChars = titleChars;
+    public TitleData(List<ClippedData> clipped, List<RemapData> remap) {
+        this.clipped = clipped;
+        this.remap = remap;
     }
 
     public static TitleData loadJson(Path path) throws IOException {
@@ -29,6 +29,10 @@ public class TitleData {
         }
     }
 
-    public record ShortTitle(@Expose int id, @Expose String value) {
+    public record ClippedData(@Expose int id, @Expose String value) {
+    }
+
+
+    public record RemapData(@Expose String to, @Expose List<String> from) {
     }
 }
