@@ -12,4 +12,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.bytedeco/gradle-javacpp
     implementation("org.bytedeco:gradle-javacpp:1.5.8")
+
+    // https://plugins.gradle.org/plugin/org.openjfx.javafxplugin
+    implementation("org.openjfx:javafx-plugin:0.1.0")
 }

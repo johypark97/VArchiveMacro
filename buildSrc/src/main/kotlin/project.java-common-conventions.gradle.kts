@@ -5,6 +5,9 @@ val javacppPlatform by extra("windows-x86_64")
 plugins {
     java
 
+    // JavaFX
+    id("org.openjfx.javafxplugin")
+
     // gradle-javacpp-platform
     id("org.bytedeco.gradle-javacpp-platform")
 
@@ -42,6 +45,10 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
+}
+
+javafx {
+    version = "21"
 }
 
 pmd {
