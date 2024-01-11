@@ -4,8 +4,8 @@ module varchivemacro.lib.common {
     requires transitive java.desktop;
 
     // javafx
+    requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.graphics;
 
     requires com.google.common;
     requires transitive com.github.kwhat.jnativehook;
@@ -19,6 +19,8 @@ module varchivemacro.lib.common {
     exports com.github.johypark97.varchivemacro.lib.common.database.comparator;
     exports com.github.johypark97.varchivemacro.lib.common.database.datastruct to com.google.gson;
     exports com.github.johypark97.varchivemacro.lib.common.database;
+
+    exports com.github.johypark97.varchivemacro.lib.common.fxgui;
 
     exports com.github.johypark97.varchivemacro.lib.common.gui.component;
     exports com.github.johypark97.varchivemacro.lib.common.gui.util;
