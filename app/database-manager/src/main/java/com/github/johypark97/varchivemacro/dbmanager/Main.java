@@ -1,34 +1,29 @@
 package com.github.johypark97.varchivemacro.dbmanager;
 
-import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DefaultDatabaseModel;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.HomePresenterImpl;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.HomeViewImpl;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
-import com.github.johypark97.varchivemacro.dbmanager.gui.model.DefaultOcrTesterModel;
-import com.github.johypark97.varchivemacro.dbmanager.gui.model.DefaultSongModel;
-import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.DbManagerPresenter;
-import com.github.johypark97.varchivemacro.dbmanager.gui.presenter.LiveTesterPresenter;
-import com.github.johypark97.varchivemacro.dbmanager.gui.view.DbManagerView;
-import com.github.johypark97.varchivemacro.dbmanager.gui.view.LiveTesterView;
-import javax.swing.SwingUtilities;
+public class Main extends Application {
+    public static void main(String[] args) {
+        System.setProperty("prism.lcdtext", "false");
 
-public class Main {
-    // dbManager
-    private final DbManagerPresenter dbManagerPresenter =
-            new DbManagerPresenter(DbManagerView.class);
-
-    private Main() {
-        LiveTesterPresenter liveTesterPresenter = new LiveTesterPresenter();
-        liveTesterPresenter.linkView(new LiveTesterView());
-
-        dbManagerPresenter.setModels(new DefaultSongModel(), new DefaultOcrTesterModel());
-        dbManagerPresenter.setPresenters(liveTesterPresenter);
+        launch(args);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            setSystemLookAndFeel();
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        DatabaseModel databaseModel = new DefaultDatabaseModel();
 
-            Main main = new Main();
-            main.dbManagerPresenter.start();
-        });
+        HomePresenterImpl homePresenter = new HomePresenterImpl(HomeViewImpl::new);
+        homePresenter.setModel(databaseModel);
+
+        if (!homePresenter.start()) {
+            Platform.exit();
+        }
     }
 }
