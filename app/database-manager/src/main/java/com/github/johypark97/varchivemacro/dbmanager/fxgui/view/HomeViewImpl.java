@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.view;
 
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component.HomeComponent;
@@ -33,5 +34,16 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
         getStage().setMinHeight(STAGE_HEIGHT);
         getStage().setMinWidth(STAGE_WIDTH);
+
+        getStage().setOnShowing(event -> {
+            getPresenter().linkViewerTable(homeComponent.viewerTableView);
+            getPresenter().setFilterableColumn(homeComponent.viewerFilterComboBox);
+        });
+    }
+
+    public void updateViewerFilter() {
+        String regex = homeComponent.viewerFilterTextField.getText();
+        SongProperty property = homeComponent.viewerFilterComboBox.getValue();
+        getPresenter().updateViewerTableFilter(regex, property);
     }
 }
