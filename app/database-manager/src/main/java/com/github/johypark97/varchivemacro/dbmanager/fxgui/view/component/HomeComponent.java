@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongProperty;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.lib.common.database.comparator.TitleComparator;
 import com.github.johypark97.varchivemacro.lib.common.mvp.MvpFxml;
@@ -25,7 +25,7 @@ public class HomeComponent extends TabPane {
     public TextField viewerFilterTextField;
 
     @FXML
-    public ComboBox<SongProperty> viewerFilterComboBox;
+    public ComboBox<SongDataProperty> viewerFilterComboBox;
 
     @FXML
     public Button viewerFilterResetButton;
@@ -42,16 +42,20 @@ public class HomeComponent extends TabPane {
 
     @FXML
     public void initialize() {
-        setupViewerTableView();
+        setupViewerTab();
+    }
+
+    private void setupViewerTab() {
+        setupViewerTab_tableView();
 
         viewerFilterTextField.textProperty()
-                .addListener((observable, oldValue, newValue) -> view.updateViewerFilter());
+                .addListener((observable, oldValue, newValue) -> view.updateViewerTableFilter());
         viewerFilterComboBox.valueProperty()
-                .addListener((observable, oldValue, newValue) -> view.updateViewerFilter());
+                .addListener((observable, oldValue, newValue) -> view.updateViewerTableFilter());
         viewerFilterResetButton.setOnAction(event -> viewerFilterTextField.clear());
     }
 
-    private void setupViewerTableView() {
+    private void setupViewerTab_tableView() {
         TableColumn<SongData, Integer> id = new TableColumn<>("Id");
         TableColumn<SongData, String> title = new TableColumn<>("Title");
         TableColumn<SongData, String> remoteTitle = new TableColumn<>("Remote Title");
@@ -69,9 +73,9 @@ public class HomeComponent extends TabPane {
         title.setComparator(new TitleComparator());
         remoteTitle.setComparator(new TitleComparator());
 
-        viewerTableView.getSortOrder().setAll(List.of(title, priority));
-
         viewerTableView.getColumns()
                 .setAll(List.of(id, title, remoteTitle, composer, dlc, priority));
+
+        viewerTableView.getSortOrder().setAll(List.of(title, priority));
     }
 }

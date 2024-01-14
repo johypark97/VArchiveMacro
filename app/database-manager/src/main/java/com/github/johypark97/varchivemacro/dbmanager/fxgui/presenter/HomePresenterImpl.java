@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.Dialogs;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongProperty;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpPresenter;
@@ -47,20 +47,20 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void linkViewerTable(TableView<SongData> tableView) {
+    public void onLinkViewerTable(TableView<SongData> tableView) {
         SortedList<SongData> list = new SortedList<>(databaseModel.getFilteredSongList());
         list.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(list);
     }
 
     @Override
-    public void setFilterableColumn(ComboBox<SongProperty> comboBox) {
-        comboBox.setItems(FXCollections.observableArrayList(SongProperty.values()));
-        comboBox.getSelectionModel().select(SongProperty.TITLE);
+    public void onSetViewerTableFilterColumn(ComboBox<SongDataProperty> comboBox) {
+        comboBox.setItems(FXCollections.observableArrayList(SongDataProperty.values()));
+        comboBox.getSelectionModel().select(SongDataProperty.TITLE);
     }
 
     @Override
-    public void updateViewerTableFilter(String regex, SongProperty property) {
+    public void onUpdateViewerTableFilter(String regex, SongDataProperty property) {
         databaseModel.updateFilteredSongListFilter(regex, property);
     }
 

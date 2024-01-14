@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongProperty;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultDlcSongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultTitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
@@ -48,7 +48,7 @@ public class DefaultDatabaseModel implements DatabaseModel {
     }
 
     @Override
-    public void updateFilteredSongListFilter(String regex, SongProperty property) {
+    public void updateFilteredSongListFilter(String regex, SongDataProperty property) {
         if (filteredSongList == null) {
             return;
         }

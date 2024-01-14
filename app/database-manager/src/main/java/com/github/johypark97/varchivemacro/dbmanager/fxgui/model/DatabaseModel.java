@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongProperty;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
 import java.io.IOException;
 import java.nio.file.Path;
 import javafx.collections.transformation.FilteredList;
@@ -11,5 +11,5 @@ public interface DatabaseModel {
 
     FilteredList<SongData> getFilteredSongList();
 
-    void updateFilteredSongListFilter(String regex, SongProperty property);
+    void updateFilteredSongListFilter(String regex, SongDataProperty property);
 }

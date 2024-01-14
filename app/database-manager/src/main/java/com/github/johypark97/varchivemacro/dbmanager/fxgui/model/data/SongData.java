@@ -38,7 +38,7 @@ public class SongData {
         return song.priority;
     }
 
-    public enum SongProperty {
+    public enum SongDataProperty {
         ID, TITLE, REMOTE_TITLE, COMPOSER, DLC, PRIORITY;
 
         @Override

@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.view;
 
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongProperty;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component.HomeComponent;
@@ -36,14 +36,14 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         getStage().setMinWidth(STAGE_WIDTH);
 
         getStage().setOnShowing(event -> {
-            getPresenter().linkViewerTable(homeComponent.viewerTableView);
-            getPresenter().setFilterableColumn(homeComponent.viewerFilterComboBox);
+            getPresenter().onLinkViewerTable(homeComponent.viewerTableView);
+            getPresenter().onSetViewerTableFilterColumn(homeComponent.viewerFilterComboBox);
         });
     }
 
-    public void updateViewerFilter() {
+    public void updateViewerTableFilter() {
         String regex = homeComponent.viewerFilterTextField.getText();
-        SongProperty property = homeComponent.viewerFilterComboBox.getValue();
-        getPresenter().updateViewerTableFilter(regex, property);
+        SongDataProperty property = homeComponent.viewerFilterComboBox.getValue();
+        getPresenter().onUpdateViewerTableFilter(regex, property);
     }
 }
