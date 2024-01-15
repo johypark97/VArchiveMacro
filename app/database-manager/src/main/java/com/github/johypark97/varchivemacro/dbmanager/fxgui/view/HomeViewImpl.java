@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component.HomeCo
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpView;
 import java.net.URL;
 import java.util.Objects;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 
 public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> implements HomeView {
@@ -45,5 +46,18 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         String regex = homeComponent.viewerFilterTextField.getText();
         SongDataProperty property = homeComponent.viewerFilterComboBox.getValue();
         getPresenter().onUpdateViewerTableFilter(regex, property);
+    }
+
+    public void validateDatabase() {
+        getPresenter().onValidateDatabase();
+    }
+
+    public void compareDatabaseWithRemote() {
+        getPresenter().onCompareDatabaseWithRemote();
+    }
+
+    @Override
+    public void setCheckerTextAreaText(String value) {
+        Platform.runLater(() -> homeComponent.checkerTextArea.setText(value));
     }
 }

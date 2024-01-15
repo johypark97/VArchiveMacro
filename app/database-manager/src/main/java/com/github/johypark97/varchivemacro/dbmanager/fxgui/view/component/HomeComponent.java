@@ -13,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -33,6 +34,15 @@ public class HomeComponent extends TabPane {
     @FXML
     public TableView<SongData> viewerTableView;
 
+    @FXML
+    public TextArea checkerTextArea;
+
+    @FXML
+    public Button checkerValidateButton;
+
+    @FXML
+    public Button checkerCompareWithRemoteButton;
+
     public HomeComponent(HomeViewImpl view) {
         this.view = view;
 
@@ -43,6 +53,7 @@ public class HomeComponent extends TabPane {
     @FXML
     public void initialize() {
         setupViewerTab();
+        setupCheckerTab();
     }
 
     private void setupViewerTab() {
@@ -77,5 +88,10 @@ public class HomeComponent extends TabPane {
                 .setAll(List.of(id, title, remoteTitle, composer, dlc, priority));
 
         viewerTableView.getSortOrder().setAll(List.of(title, priority));
+    }
+
+    private void setupCheckerTab() {
+        checkerValidateButton.setOnAction(event -> view.validateDatabase());
+        checkerCompareWithRemoteButton.setOnAction(event -> view.compareDatabaseWithRemote());
     }
 }

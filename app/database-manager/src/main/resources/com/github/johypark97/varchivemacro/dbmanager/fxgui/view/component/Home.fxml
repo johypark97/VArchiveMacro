@@ -46,11 +46,11 @@
       <content>
         <VBox spacing="10.0">
           <children>
-            <TextArea VBox.vgrow="ALWAYS"/>
+            <TextArea VBox.vgrow="ALWAYS" fx:id="checkerTextArea"/>
             <ButtonBar>
               <buttons>
-                <Button text="Validate"/>
-                <Button text="Compare with remote"/>
+                <Button text="Validate" fx:id="checkerValidateButton"/>
+                <Button text="Compare with remote" fx:id="checkerCompareWithRemoteButton"/>
               </buttons>
             </ButtonBar>
           </children>

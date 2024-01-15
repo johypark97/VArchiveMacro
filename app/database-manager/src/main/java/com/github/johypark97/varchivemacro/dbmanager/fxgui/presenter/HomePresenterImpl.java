@@ -10,7 +10,9 @@ import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpPresenter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ComboBox;
@@ -62,6 +64,19 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     public void onUpdateViewerTableFilter(String regex, SongDataProperty property) {
         databaseModel.updateFilteredSongListFilter(regex, property);
+    }
+
+    @Override
+    public void onValidateDatabase() {
+        databaseModel.validateDatabase(getView()::setCheckerTextAreaText);
+    }
+
+    @Override
+    public void onCompareDatabaseWithRemote() {
+        Consumer<String> onDone = getView()::setCheckerTextAreaText;
+        Consumer<Throwable> onThrow = x -> Platform.runLater(() -> Dialogs.showException(x));
+
+        databaseModel.compareDatabaseWithRemote(onDone, onThrow);
     }
 
     @Override

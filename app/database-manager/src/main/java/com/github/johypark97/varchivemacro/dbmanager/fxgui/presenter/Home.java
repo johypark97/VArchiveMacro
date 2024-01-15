@@ -14,9 +14,14 @@ public interface Home {
         void onSetViewerTableFilterColumn(ComboBox<SongDataProperty> comboBox);
 
         void onUpdateViewerTableFilter(String regex, SongDataProperty property);
+
+        void onValidateDatabase();
+
+        void onCompareDatabaseWithRemote();
     }
 
 
     interface HomeView extends MvpView<HomePresenter> {
+        void setCheckerTextAreaText(String value);
     }
 }
