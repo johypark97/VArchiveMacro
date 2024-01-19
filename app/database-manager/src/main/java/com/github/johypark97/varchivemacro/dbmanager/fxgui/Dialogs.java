@@ -9,6 +9,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 
 public final class Dialogs {
+    private static final String STACK_PREFIX = "\tat ";
+
     public static void showException(Throwable throwable) {
         Alert alert = new Alert(AlertType.ERROR);
 
@@ -16,14 +18,68 @@ public final class Dialogs {
         alert.setHeaderText("Exception has been thrown.");
         alert.setContentText(throwable.toString());
 
-        String stackText = Arrays.stream(throwable.getStackTrace()).map(StackTraceElement::toString)
-                .collect(Collectors.joining(System.lineSeparator()));
-        alert.getDialogPane().setExpandableContent(new TextArea(stackText));
+        StringBuilder builder = new StringBuilder();
+        Throwable pThrowable = throwable;
+        do {
+            String stack = Arrays.stream(pThrowable.getStackTrace()).map(x -> STACK_PREFIX + x)
+                    .collect(Collectors.joining(System.lineSeparator()));
+
+            builder.append(pThrowable).append(System.lineSeparator());
+            builder.append(stack).append(System.lineSeparator());
+
+            pThrowable = pThrowable.getCause();
+        } while (pThrowable != null);
+        alert.getDialogPane().setExpandableContent(new TextArea(builder.toString()));
 
         String style = new StyleBuilder().useFontMonospaced().useFontSize16px().build();
         alert.getDialogPane().setStyle(style);
 
         alert.showAndWait();
+    }
+
+    public static void showAlert(String content, String header, String title, AlertType type) {
+        Alert alert = new Alert(type);
+
+        if (title != null) {
+            alert.setTitle(title);
+        }
+
+        if (header != null) {
+            alert.setHeaderText(header);
+        }
+
+        if (content != null) {
+            alert.setContentText(content);
+        }
+
+        String style = new StyleBuilder().useFontSansSerif().useFontSize16px().build();
+        alert.getDialogPane().setStyle(style);
+
+        alert.showAndWait();
+    }
+
+    public static void showInformation(String content, String header, String title) {
+        showAlert(content, header, title, AlertType.INFORMATION);
+    }
+
+    public static void showInformation(String content, String header) {
+        showInformation(content, header, null);
+    }
+
+    public static void showInformation(String content) {
+        showInformation(content, null);
+    }
+
+    public static void showWarning(String content, String header, String title) {
+        showAlert(content, header, title, AlertType.WARNING);
+    }
+
+    public static void showWarning(String content, String header) {
+        showWarning(content, header, null);
+    }
+
+    public static void showWarning(String content) {
+        showWarning(content, null);
     }
 
     public static class StyleBuilder {

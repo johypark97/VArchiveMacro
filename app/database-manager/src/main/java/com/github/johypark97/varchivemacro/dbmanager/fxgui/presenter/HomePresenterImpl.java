@@ -74,7 +74,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     public void onCompareDatabaseWithRemote() {
         Consumer<String> onDone = getView()::setCheckerTextAreaText;
-        Consumer<Throwable> onThrow = x -> Platform.runLater(() -> Dialogs.showException(x));
+        Consumer<Throwable> onThrow = x -> {
+            x.printStackTrace(); // NOPMD
+            Platform.runLater(() -> Dialogs.showException(x));
+        };
 
         databaseModel.compareDatabaseWithRemote(onDone, onThrow);
     }
@@ -94,8 +97,9 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         try {
             databaseModel.load(path);
         } catch (IOException | RuntimeException e) {
+            e.printStackTrace(); // NOPMD
             Dialogs.showException(e);
-            throw new RuntimeException(e);
+            return false;
         }
 
         return true;
