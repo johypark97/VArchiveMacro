@@ -14,6 +14,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     private static final String TITLE = "Database Manager";
 
     private static final String GLOBAL_CSS_FILENAME = "global.css";
+    private static final String TABLE_COLOR_CSS_FILENAME = "table-color.css";
 
     private static final int STAGE_HEIGHT = 540;
     private static final int STAGE_WIDTH = 960;
@@ -24,8 +25,12 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         URL globalCss = HomeViewImpl.class.getResource(GLOBAL_CSS_FILENAME);
         Objects.requireNonNull(globalCss);
 
+        URL tableColorCss = HomeViewImpl.class.getResource(TABLE_COLOR_CSS_FILENAME);
+        Objects.requireNonNull(tableColorCss);
+
         Scene scene = new Scene(homeComponent);
         scene.getStylesheets().add(globalCss.toExternalForm());
+        scene.getStylesheets().add(tableColorCss.toExternalForm());
         getStage().setScene(scene);
 
         getStage().setTitle(TITLE);
@@ -39,6 +44,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         getStage().setOnShowing(event -> {
             getPresenter().onLinkViewerTable(homeComponent.viewerTableView);
             getPresenter().onSetViewerTableFilterColumn(homeComponent.viewerFilterComboBox);
+
+            getPresenter().onLinkOcrTesterTable(homeComponent.ocrTesterTableView);
         });
     }
 
@@ -56,8 +63,47 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         getPresenter().onCompareDatabaseWithRemote();
     }
 
+    public void showOcrTesterCacheDirectorySelector() {
+        getPresenter().onShowOcrTesterCacheDirectorySelector(getStage());
+    }
+
+    public void showOcrTesterTessdataDirectorySelector() {
+        getPresenter().onShowOcrTesterTessdataDirectorySelector(getStage());
+    }
+
+    public void startOcrTester() {
+        String cacheDirectory = homeComponent.ocrTesterCacheDirectoryTextField.getText();
+        String tessdataDirectory = homeComponent.ocrTesterTessdataDirectoryTextField.getText();
+        String tessdataLanguage = homeComponent.ocrTesterTessdataLanguageTextField.getText();
+
+        getPresenter().onStartOcrTester(cacheDirectory, tessdataDirectory, tessdataLanguage);
+    }
+
+    public void stopOcrTester() {
+        getPresenter().onStopOcrTester();
+    }
+
     @Override
     public void setCheckerTextAreaText(String value) {
         Platform.runLater(() -> homeComponent.checkerTextArea.setText(value));
+    }
+
+    @Override
+    public void setOcrTesterCacheDirectoryText(String value) {
+        Platform.runLater(() -> homeComponent.ocrTesterCacheDirectoryTextField.setText(value));
+    }
+
+    @Override
+    public void setOcrTesterTessdataDirectoryText(String value) {
+        Platform.runLater(() -> homeComponent.ocrTesterTessdataDirectoryTextField.setText(value));
+    }
+
+    @Override
+    public void updateOcrTesterProgressIndicator(double value) {
+        Platform.runLater(() -> {
+            homeComponent.ocrTesterProgressBar.setProgress(value);
+            homeComponent.ocrTesterProgressLabel.setText(
+                    (value >= 0 && value <= 1) ? String.format("%.2f%%", value * 100) : "");
+        });
     }
 }

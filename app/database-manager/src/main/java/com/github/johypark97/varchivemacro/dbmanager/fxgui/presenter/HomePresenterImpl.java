@@ -1,7 +1,10 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter;
 
+import com.github.johypark97.varchivemacro.dbmanager.core.GlobalExecutor;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.Dialogs;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrTesterModel;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
@@ -9,6 +12,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeVi
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpPresenter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -18,29 +22,33 @@ import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeView>
         implements HomePresenter {
     private static final Path INITIAL_DIRECTORY = Path.of("").toAbsolutePath();
 
     public DatabaseModel databaseModel;
+    public OcrTesterModel ocrTesterModel;
 
     public HomePresenterImpl(Supplier<HomeView> viewConstructor) {
         super(viewConstructor);
     }
 
-    public void setModel(DatabaseModel databaseModel) {
+    public void setModel(DatabaseModel databaseModel, OcrTesterModel ocrTesterModel) {
         this.databaseModel = databaseModel;
+        this.ocrTesterModel = ocrTesterModel;
     }
 
-    private Path openDirectorySelector() {
+    private Path openDirectorySelector(Window ownerWindow) {
         String TITLE = "Select database directory";
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(INITIAL_DIRECTORY.toFile());
         directoryChooser.setTitle(TITLE);
 
-        File file = directoryChooser.showDialog(null);
+        File file = directoryChooser.showDialog(ownerWindow);
         if (file == null) {
             return null;
         }
@@ -83,13 +91,75 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
+    public void onLinkOcrTesterTable(TableView<OcrTestData> tableView) {
+        SortedList<OcrTestData> list = new SortedList<>(ocrTesterModel.getOcrTestDataList());
+        list.comparatorProperty().bind(tableView.comparatorProperty());
+        tableView.setItems(list);
+    }
+
+    @Override
+    public void onShowOcrTesterCacheDirectorySelector(Stage stage) {
+        Path path = openDirectorySelector(stage);
+        if (path != null) {
+            getView().setOcrTesterCacheDirectoryText(path.toString());
+        }
+    }
+
+    @Override
+    public void onShowOcrTesterTessdataDirectorySelector(Stage stage) {
+        Path path = openDirectorySelector(stage);
+        if (path != null) {
+            getView().setOcrTesterTessdataDirectoryText(path.toString());
+        }
+    }
+
+    @Override
+    public void onStartOcrTester(String cacheDirectory, String tessdataDirectory,
+            String tessdataLanguage) {
+        Path cachePath;
+        Path tessdataPath;
+        try {
+            cachePath = Path.of(cacheDirectory);
+            tessdataPath = Path.of(tessdataDirectory);
+        } catch (InvalidPathException e) {
+            e.printStackTrace(); // NOPMD
+            Platform.runLater(() -> Dialogs.showException(e));
+            return;
+        }
+
+        Consumer<Double> onUpdateProgress = getView()::updateOcrTesterProgressIndicator;
+        Consumer<Throwable> onThrow = x -> {
+            x.printStackTrace(); // NOPMD
+            Platform.runLater(() -> Dialogs.showException(x));
+        };
+        Runnable onCancel =
+                () -> Platform.runLater(() -> Dialogs.showInformation("OcrTest canceled."));
+        Runnable onDone = () -> Platform.runLater(() -> Dialogs.showInformation("OcrTest done."));
+
+        if (!ocrTesterModel.runTest(databaseModel.getDlcSongList(), databaseModel.getTitleTool(),
+                cachePath, tessdataPath, tessdataLanguage, onDone, onCancel, onThrow,
+                onUpdateProgress)) {
+            Platform.runLater(() -> Dialogs.showWarning("Another task is running."));
+        }
+    }
+
+    @Override
+    public void onStopOcrTester() {
+        if (GlobalExecutor.getInstance().shutdownNow()) {
+            return;
+        }
+
+        Platform.runLater(() -> Dialogs.showWarning("No tasks are running."));
+    }
+
+    @Override
     protected HomePresenter getInstance() {
         return this;
     }
 
     @Override
     protected boolean initialize() {
-        Path path = openDirectorySelector();
+        Path path = openDirectorySelector(null);
         if (path == null) {
             return false;
         }
@@ -103,5 +173,16 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         }
 
         return true;
+    }
+
+    @Override
+    protected boolean terminate() {
+        if (GlobalExecutor.getInstance().isIdle()) {
+            return true;
+        }
+
+        Platform.runLater(() -> Dialogs.showWarning("The task is running.", "Unable to exit."));
+
+        return false;
     }
 }

@@ -7,9 +7,11 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.task.RemoteVali
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultDlcSongManager;
 import com.github.johypark97.varchivemacro.lib.common.database.DefaultTitleTool;
 import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
+import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -83,5 +85,15 @@ public class DefaultDatabaseModel implements DatabaseModel {
                     onThrow.accept(x);
                     return "Error";
                 }).thenAccept(onDone);
+    }
+
+    @Override
+    public List<LocalDlcSong> getDlcSongList() {
+        return dlcSongManager.getDlcSongList();
+    }
+
+    @Override
+    public TitleTool getTitleTool() {
+        return titleTool;
     }
 }

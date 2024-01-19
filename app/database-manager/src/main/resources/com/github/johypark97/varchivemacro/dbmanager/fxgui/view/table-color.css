@@ -1,0 +1,42 @@
+// ===============================
+// -------- Default color --------
+// ===============================
+
+.table-cell {
+    -fx-text-fill: #202020;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: black;
+}
+
+.table-row-cell {
+    -fx-border-color: #808080;
+    -fx-border-width: 0 0 1px 0;
+    -fx-cell-size: 32px;
+    -fx-table-cell-border-color: #808080;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #E0E0E0;
+}
+
+// ==================================
+// -------- Additional color --------
+// ==================================
+
+.table-row-cell.table-row-color-green {
+    -fx-background-color: #C0FFC0;
+}
+
+.table-row-cell:selected.table-row-color-green {
+    -fx-background-color: #80FF80;
+}
+
+.table-row-cell.table-row-color-yellow {
+    -fx-background-color: #FFFFC0;
+}
+
+.table-row-cell:selected.table-row-color-yellow {
+    -fx-background-color: #FFFF80;
+}
