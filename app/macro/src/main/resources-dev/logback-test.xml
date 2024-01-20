@@ -27,7 +27,7 @@
     </filter>
   </appender>
 
-  <appender name="FILE_DEBUG" class="FileAppender" level="INFO">
+  <appender name="FILE_DEBUG" class="FileAppender">
     <file>${logPath}/debug.log</file>
     <encoder class="PatternLayoutEncoder">
       <pattern>${pattern}</pattern>
