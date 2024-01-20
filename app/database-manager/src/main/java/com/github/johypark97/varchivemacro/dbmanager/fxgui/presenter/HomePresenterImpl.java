@@ -24,9 +24,14 @@ import javafx.scene.control.TableView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeView>
         implements HomePresenter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomePresenterImpl.class);
+    private static final String EXCEPTION_LOG_MESSAGE = "Exception";
+
     private static final Path INITIAL_DIRECTORY = Path.of("").toAbsolutePath();
 
     public DatabaseModel databaseModel;
@@ -82,9 +87,9 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     public void onCompareDatabaseWithRemote() {
         Consumer<String> onDone = getView()::setCheckerTextAreaText;
-        Consumer<Throwable> onThrow = x -> {
-            x.printStackTrace(); // NOPMD
-            Platform.runLater(() -> Dialogs.showException(x));
+        Consumer<Throwable> onThrow = e -> {
+            LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, e);
+            Platform.runLater(() -> Dialogs.showException(e));
         };
 
         databaseModel.compareDatabaseWithRemote(onDone, onThrow);
@@ -122,15 +127,15 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             cachePath = Path.of(cacheDirectory);
             tessdataPath = Path.of(tessdataDirectory);
         } catch (InvalidPathException e) {
-            e.printStackTrace(); // NOPMD
+            LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, e);
             Platform.runLater(() -> Dialogs.showException(e));
             return;
         }
 
         Consumer<Double> onUpdateProgress = getView()::updateOcrTesterProgressIndicator;
-        Consumer<Throwable> onThrow = x -> {
-            x.printStackTrace(); // NOPMD
-            Platform.runLater(() -> Dialogs.showException(x));
+        Consumer<Throwable> onThrow = e -> {
+            LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, e);
+            Platform.runLater(() -> Dialogs.showException(e));
         };
         Runnable onCancel =
                 () -> Platform.runLater(() -> Dialogs.showInformation("OcrTest canceled."));
@@ -167,7 +172,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         try {
             databaseModel.load(path);
         } catch (IOException | RuntimeException e) {
-            e.printStackTrace(); // NOPMD
+            LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, e);
             Dialogs.showException(e);
             return false;
         }

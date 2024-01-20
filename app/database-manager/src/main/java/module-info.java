@@ -11,5 +11,8 @@ module varchivemacro.dbmanager {
     // guava
     requires com.google.common;
 
+    // slf4j
+    requires org.slf4j;
+
     exports com.github.johypark97.varchivemacro.dbmanager;
 }
