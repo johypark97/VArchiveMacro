@@ -46,6 +46,27 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         this.ocrTesterModel = ocrTesterModel;
     }
 
+    private void defaultOnThrow(Throwable throwable) {
+        LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, throwable);
+        Platform.runLater(() -> Dialogs.showException(throwable));
+    }
+
+    private void defaultOnTaskRunning() {
+        Platform.runLater(() -> Dialogs.showWarning("Another task is running."));
+    }
+
+    private Runnable showMessage(String message) {
+        return () -> Platform.runLater(() -> Dialogs.showInformation(message));
+    }
+
+    private void stopAllTask() {
+        if (GlobalExecutor.getInstance().shutdownNow()) {
+            return;
+        }
+
+        Platform.runLater(() -> Dialogs.showWarning("No tasks are running."));
+    }
+
     private Path openDirectorySelector(Window ownerWindow) {
         String TITLE = "Select database directory";
 
@@ -87,10 +108,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     public void onCompareDatabaseWithRemote() {
         Consumer<String> onDone = getView()::setCheckerTextAreaText;
-        Consumer<Throwable> onThrow = e -> {
-            LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, e);
-            Platform.runLater(() -> Dialogs.showException(e));
-        };
+        Consumer<Throwable> onThrow = this::defaultOnThrow;
 
         databaseModel.compareDatabaseWithRemote(onDone, onThrow);
     }
@@ -127,34 +145,25 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             cachePath = Path.of(cacheDirectory);
             tessdataPath = Path.of(tessdataDirectory);
         } catch (InvalidPathException e) {
-            LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, e);
-            Platform.runLater(() -> Dialogs.showException(e));
+            defaultOnThrow(e);
             return;
         }
 
         Consumer<Double> onUpdateProgress = getView()::updateOcrTesterProgressIndicator;
-        Consumer<Throwable> onThrow = e -> {
-            LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, e);
-            Platform.runLater(() -> Dialogs.showException(e));
-        };
-        Runnable onCancel =
-                () -> Platform.runLater(() -> Dialogs.showInformation("OcrTest canceled."));
-        Runnable onDone = () -> Platform.runLater(() -> Dialogs.showInformation("OcrTest done."));
+        Consumer<Throwable> onThrow = this::defaultOnThrow;
+        Runnable onCancel = showMessage("OcrTest canceled.");
+        Runnable onDone = showMessage("OcrTest done.");
 
         if (!ocrTesterModel.runTest(databaseModel.getDlcSongList(), databaseModel.getTitleTool(),
                 cachePath, tessdataPath, tessdataLanguage, onDone, onCancel, onThrow,
                 onUpdateProgress)) {
-            Platform.runLater(() -> Dialogs.showWarning("Another task is running."));
+            defaultOnTaskRunning();
         }
     }
 
     @Override
     public void onStopOcrTester() {
-        if (GlobalExecutor.getInstance().shutdownNow()) {
-            return;
-        }
-
-        Platform.runLater(() -> Dialogs.showWarning("No tasks are running."));
+        stopAllTask();
     }
 
     @Override
@@ -182,12 +191,11 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     protected boolean terminate() {
-        if (GlobalExecutor.getInstance().isIdle()) {
-            return true;
+        if (!GlobalExecutor.getInstance().isIdle()) {
+            Platform.runLater(() -> Dialogs.showWarning("The task is running.", "Unable to exit."));
+            return false;
         }
 
-        Platform.runLater(() -> Dialogs.showWarning("The task is running.", "Unable to exit."));
-
-        return false;
+        return true;
     }
 }

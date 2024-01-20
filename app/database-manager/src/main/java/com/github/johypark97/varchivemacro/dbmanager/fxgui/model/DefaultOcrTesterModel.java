@@ -43,24 +43,7 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
             ocrTester.onUpdateProgress = onUpdateProgress;
 
             CompletableFuture.runAsync(ocrTester, executorService)
-                    .whenComplete((unused, throwable) -> {
-                        if (throwable == null) {
-                            onDone.run();
-                            return;
-                        }
-
-                        Throwable pThrowable = throwable;
-                        do {
-                            if (pThrowable instanceof InterruptedException) {
-                                onCancel.run();
-                                return;
-                            }
-
-                            pThrowable = pThrowable.getCause();
-                        } while (pThrowable != null);
-
-                        onThrow.accept(throwable);
-                    });
+                    .whenComplete(ModelHelper.defaultWhenComplete(onDone, onCancel, onThrow));
         });
     }
 }
