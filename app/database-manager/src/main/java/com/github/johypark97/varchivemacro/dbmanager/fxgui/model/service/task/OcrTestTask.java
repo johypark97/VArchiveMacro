@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.task;
+package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData.Status;
@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 import javafx.concurrent.Task;
 import javax.imageio.ImageIO;
 
-public class OcrTester extends Task<Void> {
+public class OcrTestTask extends Task<Void> {
     public List<LocalDlcSong> dlcSongList;
     public Path cachePath;
     public Path tessdataPath;

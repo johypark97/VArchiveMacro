@@ -2,16 +2,16 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
 import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrTesterService;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrTesterService.Builder;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.task.OcrTester;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrTestService;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrTestService.Builder;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrTestTask;
 import java.nio.file.Path;
 import java.util.Objects;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class DefaultOcrTesterModel implements OcrTesterModel {
+public class DefaultOcrTestModel implements OcrTestModel {
     public ObservableList<OcrTestData> ocrTestDataList;
 
     @Override
@@ -24,20 +24,20 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
     }
 
     @Override
-    public OcrTesterService.Builder setupTest() {
+    public OcrTestService.Builder setupOcrTestService() {
         return new Builder();
     }
 
     @Override
-    public boolean startTest(Path cachePath, Path tessdataPath, String tessdataLanguage) {
-        OcrTesterService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(OcrTesterService.class));
+    public boolean startOcrTestService(Path cachePath, Path tessdataPath, String tessdataLanguage) {
+        OcrTestService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(OcrTestService.class));
         if (service.isRunning()) {
             return false;
         }
 
         service.setTaskConstructor(() -> {
-            OcrTester task = new OcrTester();
+            OcrTestTask task = new OcrTestTask();
 
             task.cachePath = cachePath;
             task.tessdataLanguage = tessdataLanguage;
@@ -56,7 +56,7 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
     }
 
     @Override
-    public boolean stopTest() {
-        return ModelHelper.stopService(OcrTesterService.class);
+    public boolean stopOcrTestService() {
+        return ModelHelper.stopService(OcrTestService.class);
     }
 }

@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter;
 import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.Dialogs;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrTesterModel;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrTestModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
@@ -35,15 +35,15 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     private static final Path INITIAL_DIRECTORY = Path.of("").toAbsolutePath();
 
     public DatabaseModel databaseModel;
-    public OcrTesterModel ocrTesterModel;
+    public OcrTestModel ocrTestModel;
 
     public HomePresenterImpl(Supplier<HomeView> viewConstructor) {
         super(viewConstructor);
     }
 
-    public void setModel(DatabaseModel databaseModel, OcrTesterModel ocrTesterModel) {
+    public void setModel(DatabaseModel databaseModel, OcrTestModel ocrTestModel) {
         this.databaseModel = databaseModel;
-        this.ocrTesterModel = ocrTesterModel;
+        this.ocrTestModel = ocrTestModel;
     }
 
     private void defaultOnThrow(Throwable throwable) {
@@ -81,7 +81,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     public void onSetupModel() {
         // @formatter:off
-        ocrTesterModel.setupTest()
+        ocrTestModel.setupOcrTestService()
                 .setDlcSongList(databaseModel.getDlcSongList())
                 .setTitleTool(databaseModel.getTitleTool())
                 .setOnDone(showMessage("OcrTest done."))
@@ -125,7 +125,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void onLinkOcrTesterTable(TableView<OcrTestData> tableView) {
-        SortedList<OcrTestData> list = new SortedList<>(ocrTesterModel.getOcrTestDataList());
+        SortedList<OcrTestData> list = new SortedList<>(ocrTestModel.getOcrTestDataList());
         list.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(list);
     }
@@ -159,14 +159,14 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             return;
         }
 
-        if (!ocrTesterModel.startTest(cachePath, tessdataPath, tessdataLanguage)) {
+        if (!ocrTestModel.startOcrTestService(cachePath, tessdataPath, tessdataLanguage)) {
             defaultOnTaskRunning();
         }
     }
 
     @Override
     public void onStopOcrTester() {
-        if (!ocrTesterModel.stopTest()) {
+        if (!ocrTestModel.stopOcrTestService()) {
             defaultOnTaskNotRunning();
         }
     }
