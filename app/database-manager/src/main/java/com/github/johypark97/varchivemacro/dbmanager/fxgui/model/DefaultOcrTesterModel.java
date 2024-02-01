@@ -1,14 +1,12 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
-import com.github.johypark97.varchivemacro.dbmanager.core.GlobalExecutor;
+import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrTesterService;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrTesterService.Builder;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.task.OcrTester;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
-import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
+import java.util.Objects;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,24 +24,39 @@ public class DefaultOcrTesterModel implements OcrTesterModel {
     }
 
     @Override
-    public boolean runTest(List<LocalDlcSong> dlcSongList, TitleTool titleTool, Path cachePath,
-            Path tessdataPath, String tessdataLanguage, Runnable onDone, Runnable onCancel,
-            Consumer<Throwable> onThrow, Consumer<Double> onUpdateProgress) {
-        return GlobalExecutor.getInstance().use(executorService -> {
-            OcrTester ocrTester = new OcrTester();
+    public OcrTesterService.Builder setupTest() {
+        return new Builder();
+    }
 
-            ocrTester.cachePath = cachePath;
-            ocrTester.songList = dlcSongList;
-            ocrTester.tessdataLanguage = tessdataLanguage;
-            ocrTester.tessdataPath = tessdataPath;
-            ocrTester.titleTool = titleTool;
+    @Override
+    public boolean startTest(Path cachePath, Path tessdataPath, String tessdataLanguage) {
+        OcrTesterService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(OcrTesterService.class));
+        if (service.isRunning()) {
+            return false;
+        }
 
-            ocrTester.onAddData = x -> Platform.runLater(() -> getOcrTestDataList().add(x));
-            ocrTester.onClearData = () -> Platform.runLater(() -> getOcrTestDataList().clear());
-            ocrTester.onUpdateProgress = onUpdateProgress;
+        service.setTaskConstructor(() -> {
+            OcrTester task = new OcrTester();
 
-            CompletableFuture.runAsync(ocrTester, executorService)
-                    .whenComplete(ModelHelper.defaultWhenComplete(onDone, onCancel, onThrow));
+            task.cachePath = cachePath;
+            task.tessdataLanguage = tessdataLanguage;
+            task.tessdataPath = tessdataPath;
+
+            task.onAddData = x -> Platform.runLater(() -> getOcrTestDataList().add(x));
+            task.onClearData = () -> Platform.runLater(() -> getOcrTestDataList().clear());
+
+            return task;
         });
+
+        service.reset();
+        service.start();
+
+        return true;
+    }
+
+    @Override
+    public boolean stopTest() {
+        return ModelHelper.stopService(OcrTesterService.class);
     }
 }

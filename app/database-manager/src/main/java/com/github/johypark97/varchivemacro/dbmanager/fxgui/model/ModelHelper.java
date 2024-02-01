@@ -1,28 +1,17 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
+import javafx.concurrent.Service;
 
 public class ModelHelper {
-    public static BiConsumer<Void, Throwable> defaultWhenComplete(Runnable onDone,
-            Runnable onCancel, Consumer<Throwable> onThrow) {
-        return (unused, throwable) -> {
-            if (throwable == null) {
-                onDone.run();
-                return;
-            }
+    public static boolean stopService(Class<? extends Service<?>> cls) {
+        Service<?> service = ServiceManager.getInstance().get(cls);
+        if (service == null || !service.isRunning()) {
+            return false;
+        }
 
-            Throwable pThrowable = throwable;
-            do {
-                if (pThrowable instanceof InterruptedException) {
-                    onCancel.run();
-                    return;
-                }
+        service.cancel();
 
-                pThrowable = pThrowable.getCause();
-            } while (pThrowable != null);
-
-            onThrow.accept(throwable);
-        };
+        return true;
     }
 }

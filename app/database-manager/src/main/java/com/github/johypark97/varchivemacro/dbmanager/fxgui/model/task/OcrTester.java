@@ -8,9 +8,7 @@ import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
-import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
-import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer;
@@ -22,59 +20,54 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import javafx.concurrent.Task;
 import javax.imageio.ImageIO;
 
-public class OcrTester implements Runnable {
-    public List<LocalDlcSong> songList;
+public class OcrTester extends Task<Void> {
+    public List<LocalDlcSong> dlcSongList;
     public Path cachePath;
     public Path tessdataPath;
     public String tessdataLanguage;
     public TitleTool titleTool;
 
-    public Consumer<Double> onUpdateProgress;
     public Consumer<OcrTestData> onAddData;
     public Runnable onClearData;
 
     @Override
-    public void run() {
+    protected Void call() throws Exception {
         Objects.requireNonNull(cachePath);
-        Objects.requireNonNull(songList);
+        Objects.requireNonNull(dlcSongList);
         Objects.requireNonNull(tessdataLanguage);
         Objects.requireNonNull(tessdataPath);
         Objects.requireNonNull(titleTool);
 
         Objects.requireNonNull(onAddData);
         Objects.requireNonNull(onClearData);
-        Objects.requireNonNull(onUpdateProgress);
 
-        onUpdateProgress.accept(-1.0);
+        updateProgress(-1, 0);
 
-        try {
-            if (!Files.isDirectory(cachePath)) {
-                throw new IOException("Invalid cache directory");
-            } else if (!Files.isDirectory(tessdataPath)) {
-                throw new IOException("Invalid tessdata directory");
-            } else if (tessdataLanguage.isBlank()) {
-                throw new IOException("Invalid tessdata language");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (!Files.isDirectory(cachePath)) {
+            throw new IOException("Invalid cache directory");
+        } else if (!Files.isDirectory(tessdataPath)) {
+            throw new IOException("Invalid tessdata directory");
+        } else if (tessdataLanguage.isBlank()) {
+            throw new IOException("Invalid tessdata language");
         }
 
         onClearData.run();
-        onUpdateProgress.accept(0.0);
+        updateProgress(0, 1);
 
         TitleSongRecognizer<LocalDlcSong> recognizer = new TitleSongRecognizer<>(titleTool);
-        recognizer.setSongList(songList);
+        recognizer.setSongList(dlcSongList);
 
         try (OcrWrapper ocr = new DefaultOcrWrapper(tessdataPath, tessdataLanguage)) {
-            int count = songList.size();
+            int count = dlcSongList.size();
             for (int i = 0; i < count; ++i) {
                 if (Thread.currentThread().isInterrupted()) {
                     throw new InterruptedException();
                 }
 
-                LocalDlcSong song = songList.get(i);
+                LocalDlcSong song = dlcSongList.get(i);
 
                 Path imagePath = CacheHelper.createImagePath(cachePath, song);
                 BufferedImage image = ImageIO.read(imagePath.toFile());
@@ -119,10 +112,10 @@ public class OcrTester implements Runnable {
                 }
 
                 onAddData.accept(data);
-                onUpdateProgress.accept((i + 1.0) / count);
+                updateProgress(i + 1, count);
             }
-        } catch (IOException | InterruptedException | OcrInitializationError | PixError e) {
-            throw new RuntimeException(e);
         }
+
+        return null;
     }
 }

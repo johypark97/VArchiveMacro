@@ -42,6 +42,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         getStage().setMinWidth(STAGE_WIDTH);
 
         getStage().setOnShowing(event -> {
+            getPresenter().onSetupModel();
+
             getPresenter().onLinkViewerTable(homeComponent.viewerTableView);
             getPresenter().onSetViewerTableFilterColumn(homeComponent.viewerFilterComboBox);
 

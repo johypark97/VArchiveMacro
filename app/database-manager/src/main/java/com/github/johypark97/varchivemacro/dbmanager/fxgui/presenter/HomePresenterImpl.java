@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter;
 
-import com.github.johypark97.varchivemacro.dbmanager.core.GlobalExecutor;
+import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.Dialogs;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrTesterModel;
@@ -52,19 +52,15 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     private void defaultOnTaskRunning() {
-        Platform.runLater(() -> Dialogs.showWarning("Another task is running."));
+        Platform.runLater(() -> Dialogs.showWarning("The task is running."));
+    }
+
+    private void defaultOnTaskNotRunning() {
+        Platform.runLater(() -> Dialogs.showWarning("The task is not running."));
     }
 
     private Runnable showMessage(String message) {
         return () -> Platform.runLater(() -> Dialogs.showInformation(message));
-    }
-
-    private void stopAllTask() {
-        if (GlobalExecutor.getInstance().shutdownNow()) {
-            return;
-        }
-
-        Platform.runLater(() -> Dialogs.showWarning("No tasks are running."));
     }
 
     private Path openDirectorySelector(Window ownerWindow) {
@@ -80,6 +76,20 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         }
 
         return file.toPath();
+    }
+
+    @Override
+    public void onSetupModel() {
+        // @formatter:off
+        ocrTesterModel.setupTest()
+                .setDlcSongList(databaseModel.getDlcSongList())
+                .setTitleTool(databaseModel.getTitleTool())
+                .setOnDone(showMessage("OcrTest done."))
+                .setOnCancel(showMessage("OcrTest canceled."))
+                .setOnThrow(this::defaultOnThrow)
+                .setOnUpdateProgress(getView()::updateOcrTesterProgressIndicator)
+                .build();
+        // @formatter:on
     }
 
     @Override
@@ -149,21 +159,16 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             return;
         }
 
-        Consumer<Double> onUpdateProgress = getView()::updateOcrTesterProgressIndicator;
-        Consumer<Throwable> onThrow = this::defaultOnThrow;
-        Runnable onCancel = showMessage("OcrTest canceled.");
-        Runnable onDone = showMessage("OcrTest done.");
-
-        if (!ocrTesterModel.runTest(databaseModel.getDlcSongList(), databaseModel.getTitleTool(),
-                cachePath, tessdataPath, tessdataLanguage, onDone, onCancel, onThrow,
-                onUpdateProgress)) {
+        if (!ocrTesterModel.startTest(cachePath, tessdataPath, tessdataLanguage)) {
             defaultOnTaskRunning();
         }
     }
 
     @Override
     public void onStopOcrTester() {
-        stopAllTask();
+        if (!ocrTesterModel.stopTest()) {
+            defaultOnTaskNotRunning();
+        }
     }
 
     @Override
@@ -191,8 +196,9 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     protected boolean terminate() {
-        if (!GlobalExecutor.getInstance().isIdle()) {
-            Platform.runLater(() -> Dialogs.showWarning("The task is running.", "Unable to exit."));
+        if (ServiceManager.getInstance().isRunningAny()) {
+            Platform.runLater(
+                    () -> Dialogs.showWarning("Some tasks are still running.", "Unable to exit."));
             return false;
         }
 

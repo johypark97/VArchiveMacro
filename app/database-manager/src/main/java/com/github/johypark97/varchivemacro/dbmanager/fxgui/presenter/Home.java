@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 public interface Home {
     interface HomePresenter extends MvpPresenter<HomeView> {
+        void onSetupModel();
+
         void onLinkViewerTable(TableView<SongData> tableView);
 
         void onSetViewerTableFilterColumn(ComboBox<SongDataProperty> comboBox);
