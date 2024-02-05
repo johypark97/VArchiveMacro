@@ -1,15 +1,22 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter;
 
+import com.github.johypark97.varchivemacro.dbmanager.core.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.Dialogs;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrTestModel;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrToolModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrCacheCaptureTask;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.lib.common.FxHookWrapper;
+import com.github.johypark97.varchivemacro.lib.common.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpPresenter;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
@@ -34,16 +41,68 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private static final Path INITIAL_DIRECTORY = Path.of("").toAbsolutePath();
 
+    private final NativeKeyListener nativeKeyListener;
+
     public DatabaseModel databaseModel;
     public OcrTestModel ocrTestModel;
+    public OcrToolModel ocrToolModel;
 
     public HomePresenterImpl(Supplier<HomeView> viewConstructor) {
         super(viewConstructor);
+
+        nativeKeyListener = new NativeKeyListener() {
+            private void runOcrCacheCaptureService() {
+                Path outputPath;
+                try {
+                    outputPath = Path.of(getView().getOcrCacheCapturerOutputDirectoryText());
+                } catch (InvalidPathException e) {
+                    defaultOnThrow(e);
+                    return;
+                }
+
+                int captureDelay = getView().getOcrCacheCapturerCaptureDelay();
+                int keyInputDelay = getView().getOcrCacheCapturerKeyInputDelay();
+                int keyInputDuration = getView().getOcrCacheCapturerKeyInputDuration();
+
+                ocrToolModel.startOcrCacheCaptureService(captureDelay, keyInputDelay,
+                        keyInputDuration, outputPath);
+            }
+
+            @Override
+            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
+                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
+                if (data.isOtherMod()) {
+                    return;
+                }
+
+                if (data.isPressed(NativeKeyEvent.VC_END)) {
+                    if (!ocrToolModel.stopOcrCacheCaptureService()) {
+                        defaultOnTaskNotRunning();
+                    }
+                }
+            }
+
+            @Override
+            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
+                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
+                if (data.isOtherMod()) {
+                    return;
+                }
+
+                if (data.isCtrl() && !data.isAlt() && !data.isShift()) {
+                    if (data.isPressed(NativeKeyEvent.VC_HOME)) {
+                        runOcrCacheCaptureService();
+                    }
+                }
+            }
+        };
     }
 
-    public void setModel(DatabaseModel databaseModel, OcrTestModel ocrTestModel) {
+    public void setModel(DatabaseModel databaseModel, OcrTestModel ocrTestModel,
+            OcrToolModel ocrToolModel) {
         this.databaseModel = databaseModel;
         this.ocrTestModel = ocrTestModel;
+        this.ocrToolModel = ocrToolModel;
     }
 
     private void defaultOnThrow(Throwable throwable) {
@@ -88,6 +147,13 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
                 .setOnCancel(showMessage("OcrTest canceled."))
                 .setOnThrow(this::defaultOnThrow)
                 .setOnUpdateProgress(getView()::updateOcrTesterProgressIndicator)
+                .build();
+
+        ocrToolModel.setupOcrCacheCaptureService()
+                .setDlcSongList(databaseModel.getDlcSongList())
+                .setOnCancel(showMessage("OcrCapture canceled."))
+                .setOnDone(showMessage("OcrCapture done."))
+                .setOnThrow(this::defaultOnThrow)
                 .build();
         // @formatter:on
     }
@@ -172,6 +238,38 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
+    public void onSetupOcrCacheCapturerCaptureDelayLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(OcrCacheCaptureTask.CAPTURE_DELAY_DEFAULT);
+        linker.setLimitMax(OcrCacheCaptureTask.CAPTURE_DELAY_MAX);
+        linker.setLimitMin(OcrCacheCaptureTask.CAPTURE_DELAY_MIN);
+        linker.setValue(OcrCacheCaptureTask.CAPTURE_DELAY_DEFAULT);
+    }
+
+    @Override
+    public void onSetupOcrCacheCapturerKeyInputDelayLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(OcrCacheCaptureTask.KEY_INPUT_DELAY_DEFAULT);
+        linker.setLimitMax(OcrCacheCaptureTask.KEY_INPUT_DELAY_MAX);
+        linker.setLimitMin(OcrCacheCaptureTask.KEY_INPUT_DELAY_MIN);
+        linker.setValue(OcrCacheCaptureTask.KEY_INPUT_DELAY_DEFAULT);
+    }
+
+    @Override
+    public void onSetupOcrCacheCapturerKeyInputDurationLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(OcrCacheCaptureTask.KEY_INPUT_DURATION_DEFAULT);
+        linker.setLimitMax(OcrCacheCaptureTask.KEY_INPUT_DURATION_MAX);
+        linker.setLimitMin(OcrCacheCaptureTask.KEY_INPUT_DURATION_MIN);
+        linker.setValue(OcrCacheCaptureTask.KEY_INPUT_DURATION_DEFAULT);
+    }
+
+    @Override
+    public void onShowOcrCacheCapturerOutputDirectorySelector(Stage stage) {
+        Path path = openDirectorySelector(stage);
+        if (path != null) {
+            getView().setOcrCacheCapturerOutputDirectoryText(path.toString());
+        }
+    }
+
+    @Override
     protected HomePresenter getInstance() {
         return this;
     }
@@ -191,6 +289,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             return false;
         }
 
+        FxHookWrapper.addKeyListener(nativeKeyListener);
+
         return true;
     }
 
@@ -201,6 +301,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
                     () -> Dialogs.showWarning("Some tasks are still running.", "Unable to exit."));
             return false;
         }
+
+        FxHookWrapper.removeKeyListener(nativeKeyListener);
 
         return true;
     }

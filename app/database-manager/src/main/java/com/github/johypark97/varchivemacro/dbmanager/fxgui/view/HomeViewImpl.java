@@ -48,6 +48,13 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
             getPresenter().onSetViewerTableFilterColumn(homeComponent.viewerFilterComboBox);
 
             getPresenter().onLinkOcrTesterTable(homeComponent.ocrTesterTableView);
+
+            getPresenter().onSetupOcrCacheCapturerCaptureDelayLinker(
+                    homeComponent.ocrCacheCapturerCaptureDelayLinker);
+            getPresenter().onSetupOcrCacheCapturerKeyInputDelayLinker(
+                    homeComponent.ocrCacheCapturerKeyInputDelayLinker);
+            getPresenter().onSetupOcrCacheCapturerKeyInputDurationLinker(
+                    homeComponent.ocrCacheCapturerKeyInputDurationLinker);
         });
     }
 
@@ -85,6 +92,10 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         getPresenter().onStopOcrTester();
     }
 
+    public void showOcrCacheCapturerOutputDirectorySelector() {
+        getPresenter().onShowOcrCacheCapturerOutputDirectorySelector(getStage());
+    }
+
     @Override
     public void setCheckerTextAreaText(String value) {
         Platform.runLater(() -> homeComponent.checkerTextArea.setText(value));
@@ -107,5 +118,31 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
             homeComponent.ocrTesterProgressLabel.setText(
                     (value >= 0 && value <= 1) ? String.format("%.2f%%", value * 100) : "");
         });
+    }
+
+    @Override
+    public int getOcrCacheCapturerCaptureDelay() {
+        return homeComponent.ocrCacheCapturerCaptureDelayLinker.getValue();
+    }
+
+    @Override
+    public int getOcrCacheCapturerKeyInputDelay() {
+        return homeComponent.ocrCacheCapturerKeyInputDelayLinker.getValue();
+    }
+
+    @Override
+    public int getOcrCacheCapturerKeyInputDuration() {
+        return homeComponent.ocrCacheCapturerKeyInputDurationLinker.getValue();
+    }
+
+    @Override
+    public String getOcrCacheCapturerOutputDirectoryText() {
+        return homeComponent.ocrCacheCapturerOutputDirectoryTextField.getText();
+    }
+
+    @Override
+    public void setOcrCacheCapturerOutputDirectoryText(String value) {
+        Platform.runLater(
+                () -> homeComponent.ocrCacheCapturerOutputDirectoryTextField.setText(value));
     }
 }

@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.lib.common.database.comparator.TitleComparator;
+import com.github.johypark97.varchivemacro.lib.common.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.common.mvp.MvpFxml;
 import java.net.URL;
 import java.util.List;
@@ -15,6 +16,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -80,6 +82,34 @@ public class HomeComponent extends TabPane {
     @FXML
     public Button ocrTesterStopButton;
 
+    @FXML
+    public Slider ocrCacheCapturerCaptureDelaySlider;
+
+    @FXML
+    public TextField ocrCacheCapturerCaptureDelayTextField;
+
+    @FXML
+    public Slider ocrCacheCapturerKeyInputDelaySlider;
+
+    @FXML
+    public TextField ocrCacheCapturerKeyInputDelayTextField;
+
+    @FXML
+    public Slider ocrCacheCapturerKeyInputDurationSlider;
+
+    @FXML
+    public TextField ocrCacheCapturerKeyInputDurationTextField;
+
+    @FXML
+    public TextField ocrCacheCapturerOutputDirectoryTextField;
+
+    @FXML
+    public Button ocrCacheCapturerOutputDirectorySelectButton;
+
+    public SliderTextFieldLinker ocrCacheCapturerCaptureDelayLinker;
+    public SliderTextFieldLinker ocrCacheCapturerKeyInputDelayLinker;
+    public SliderTextFieldLinker ocrCacheCapturerKeyInputDurationLinker;
+
     public HomeComponent(HomeViewImpl view) {
         this.view = view;
 
@@ -92,6 +122,7 @@ public class HomeComponent extends TabPane {
         setupViewerTab();
         setupCheckerTab();
         setupOcrTesterTab();
+        setupCacheCapturer();
     }
 
     private void setupViewerTab() {
@@ -264,5 +295,22 @@ public class HomeComponent extends TabPane {
                 }
             }
         });
+    }
+
+    private void setupCacheCapturer() {
+        ocrCacheCapturerCaptureDelayLinker =
+                new SliderTextFieldLinker(ocrCacheCapturerCaptureDelaySlider,
+                        ocrCacheCapturerCaptureDelayTextField);
+
+        ocrCacheCapturerKeyInputDelayLinker =
+                new SliderTextFieldLinker(ocrCacheCapturerKeyInputDelaySlider,
+                        ocrCacheCapturerKeyInputDelayTextField);
+
+        ocrCacheCapturerKeyInputDurationLinker =
+                new SliderTextFieldLinker(ocrCacheCapturerKeyInputDurationSlider,
+                        ocrCacheCapturerKeyInputDurationTextField);
+
+        ocrCacheCapturerOutputDirectorySelectButton.setOnAction(
+                event -> view.showOcrCacheCapturerOutputDirectorySelector());
     }
 }

@@ -115,7 +115,7 @@
               <content>
                 <VBox>
                   <children>
-                    <TitledPane animated="false" collapsible="false" text="Cache Generator">
+                    <TitledPane animated="false" collapsible="false" text="Cache Capturer">
                       <content>
                         <VBox spacing="10.0">
                           <children>
@@ -133,17 +133,17 @@
                               </rowConstraints>
                               <children>
                                 <Label text="Capture delay [ms]"/>
-                                <Slider GridPane.columnIndex="1" showTickLabels="true" showTickMarks="true"/>
-                                <TextField GridPane.columnIndex="2" prefColumnCount="0"/>
-                                <Label GridPane.rowIndex="1" text="Input delay [ms]"/>
-                                <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" showTickLabels="true" showTickMarks="true"/>
-                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" prefColumnCount="0"/>
-                                <Label GridPane.rowIndex="2" text="Input duration [ms]"/>
-                                <Slider GridPane.columnIndex="1" GridPane.rowIndex="2" showTickLabels="true" showTickMarks="true"/>
-                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" prefColumnCount="0"/>
+                                <Slider GridPane.columnIndex="1" blockIncrement="50.0" majorTickUnit="100.0" max="500.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="ocrCacheCapturerCaptureDelaySlider"/>
+                                <TextField GridPane.columnIndex="2" prefColumnCount="0" fx:id="ocrCacheCapturerCaptureDelayTextField"/>
+                                <Label GridPane.rowIndex="1" text="Key input delay [ms]"/>
+                                <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" majorTickUnit="50.0" max="250.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" fx:id="ocrCacheCapturerKeyInputDelaySlider"/>
+                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" prefColumnCount="0" fx:id="ocrCacheCapturerKeyInputDelayTextField"/>
+                                <Label GridPane.rowIndex="2" text="Key input duration [ms]"/>
+                                <Slider GridPane.columnIndex="1" GridPane.rowIndex="2" blockIncrement="5.0" majorTickUnit="20.0" showTickLabels="true" showTickMarks="true" fx:id="ocrCacheCapturerKeyInputDurationSlider"/>
+                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" prefColumnCount="0" fx:id="ocrCacheCapturerKeyInputDurationTextField"/>
                                 <Label GridPane.rowIndex="3" text="Output directory"/>
-                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                                <Button GridPane.columnIndex="2" GridPane.rowIndex="3" prefWidth="100.0" text="Select"/>
+                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="ocrCacheCapturerOutputDirectoryTextField"/>
+                                <Button GridPane.columnIndex="2" GridPane.rowIndex="3" prefWidth="100.0" text="Select" fx:id="ocrCacheCapturerOutputDirectorySelectButton"/>
                               </children>
                             </GridPane>
                             <Separator/>

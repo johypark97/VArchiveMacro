@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
+import com.github.johypark97.varchivemacro.lib.common.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.common.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.common.mvp.MvpView;
 import javafx.scene.control.ComboBox;
@@ -33,6 +34,14 @@ public interface Home {
                 String tessdataLanguage);
 
         void onStopOcrTester();
+
+        void onSetupOcrCacheCapturerCaptureDelayLinker(SliderTextFieldLinker linker);
+
+        void onSetupOcrCacheCapturerKeyInputDelayLinker(SliderTextFieldLinker linker);
+
+        void onSetupOcrCacheCapturerKeyInputDurationLinker(SliderTextFieldLinker linker);
+
+        void onShowOcrCacheCapturerOutputDirectorySelector(Stage stage);
     }
 
 
@@ -44,5 +53,15 @@ public interface Home {
         void setOcrTesterTessdataDirectoryText(String value);
 
         void updateOcrTesterProgressIndicator(double value);
+
+        int getOcrCacheCapturerCaptureDelay();
+
+        int getOcrCacheCapturerKeyInputDelay();
+
+        int getOcrCacheCapturerKeyInputDuration();
+
+        String getOcrCacheCapturerOutputDirectoryText();
+
+        void setOcrCacheCapturerOutputDirectoryText(String value);
     }
 }
