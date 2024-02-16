@@ -42,6 +42,10 @@ public interface Home {
         void onSetupOcrCacheCapturerKeyInputDurationLinker(SliderTextFieldLinker linker);
 
         void onShowOcrCacheCapturerOutputDirectorySelector(Stage stage);
+
+        boolean initialize();
+
+        boolean terminate();
     }
 
 

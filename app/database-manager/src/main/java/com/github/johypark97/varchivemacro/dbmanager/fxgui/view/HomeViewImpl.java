@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.Objects;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> implements HomeView {
     private static final String TITLE = "Database Manager";
@@ -20,43 +21,6 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     private static final int STAGE_WIDTH = 960;
 
     private final HomeComponent homeComponent = new HomeComponent(this);
-
-    public HomeViewImpl() {
-        URL globalCss = HomeViewImpl.class.getResource(GLOBAL_CSS_FILENAME);
-        Objects.requireNonNull(globalCss);
-
-        URL tableColorCss = HomeViewImpl.class.getResource(TABLE_COLOR_CSS_FILENAME);
-        Objects.requireNonNull(tableColorCss);
-
-        Scene scene = new Scene(homeComponent);
-        scene.getStylesheets().add(globalCss.toExternalForm());
-        scene.getStylesheets().add(tableColorCss.toExternalForm());
-        getStage().setScene(scene);
-
-        getStage().setTitle(TITLE);
-
-        getStage().setHeight(STAGE_HEIGHT);
-        getStage().setWidth(STAGE_WIDTH);
-
-        getStage().setMinHeight(STAGE_HEIGHT);
-        getStage().setMinWidth(STAGE_WIDTH);
-
-        getStage().setOnShowing(event -> {
-            getPresenter().onSetupModel();
-
-            getPresenter().onLinkViewerTable(homeComponent.viewerTableView);
-            getPresenter().onSetViewerTableFilterColumn(homeComponent.viewerFilterComboBox);
-
-            getPresenter().onLinkOcrTesterTable(homeComponent.ocrTesterTableView);
-
-            getPresenter().onSetupOcrCacheCapturerCaptureDelayLinker(
-                    homeComponent.ocrCacheCapturerCaptureDelayLinker);
-            getPresenter().onSetupOcrCacheCapturerKeyInputDelayLinker(
-                    homeComponent.ocrCacheCapturerKeyInputDelayLinker);
-            getPresenter().onSetupOcrCacheCapturerKeyInputDurationLinker(
-                    homeComponent.ocrCacheCapturerKeyInputDurationLinker);
-        });
-    }
 
     public void updateViewerTableFilter() {
         String regex = homeComponent.viewerFilterTextField.getText();
@@ -144,5 +108,62 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     public void setOcrCacheCapturerOutputDirectoryText(String value) {
         Platform.runLater(
                 () -> homeComponent.ocrCacheCapturerOutputDirectoryTextField.setText(value));
+    }
+
+    @Override
+    protected HomeView getInstance() {
+        return this;
+    }
+
+    @Override
+    protected Stage newStage() {
+        URL globalCss = HomeViewImpl.class.getResource(GLOBAL_CSS_FILENAME);
+        Objects.requireNonNull(globalCss);
+
+        URL tableColorCss = HomeViewImpl.class.getResource(TABLE_COLOR_CSS_FILENAME);
+        Objects.requireNonNull(tableColorCss);
+
+        Scene scene = new Scene(homeComponent);
+        scene.getStylesheets().add(globalCss.toExternalForm());
+        scene.getStylesheets().add(tableColorCss.toExternalForm());
+
+        Stage stage = new Stage();
+        stage.setScene(scene);
+
+        stage.setTitle(TITLE);
+
+        stage.setHeight(STAGE_HEIGHT);
+        stage.setWidth(STAGE_WIDTH);
+
+        stage.setMinHeight(STAGE_HEIGHT);
+        stage.setMinWidth(STAGE_WIDTH);
+
+        stage.setOnShowing(event -> {
+            getPresenter().onSetupModel();
+
+            getPresenter().onLinkViewerTable(homeComponent.viewerTableView);
+            getPresenter().onSetViewerTableFilterColumn(homeComponent.viewerFilterComboBox);
+
+            getPresenter().onLinkOcrTesterTable(homeComponent.ocrTesterTableView);
+
+            getPresenter().onSetupOcrCacheCapturerCaptureDelayLinker(
+                    homeComponent.ocrCacheCapturerCaptureDelayLinker);
+            getPresenter().onSetupOcrCacheCapturerKeyInputDelayLinker(
+                    homeComponent.ocrCacheCapturerKeyInputDelayLinker);
+            getPresenter().onSetupOcrCacheCapturerKeyInputDurationLinker(
+                    homeComponent.ocrCacheCapturerKeyInputDurationLinker);
+        });
+
+        return stage;
+    }
+
+    @Override
+    protected boolean onStartView() {
+        return getPresenter().initialize();
+    }
+
+    @Override
+    protected boolean onStopView() {
+        return getPresenter().terminate();
     }
 }

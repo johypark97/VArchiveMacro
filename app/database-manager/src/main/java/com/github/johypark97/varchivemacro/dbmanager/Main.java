@@ -33,10 +33,13 @@ public class Main extends Application {
         OcrTestModel ocrTestModel = new DefaultOcrTestModel();
         OcrToolModel ocrToolModel = new DefaultOcrToolModel();
 
-        HomePresenterImpl homePresenter = new HomePresenterImpl(HomeViewImpl::new);
+        HomePresenterImpl homePresenter = new HomePresenterImpl();
         homePresenter.setModel(databaseModel, ocrTestModel, ocrToolModel);
 
-        if (!homePresenter.start()) {
+        HomeViewImpl homeView = new HomeViewImpl();
+        homeView.linkPresenter(homePresenter);
+
+        if (!homeView.startView()) {
             Platform.exit();
         }
     }

@@ -1,46 +1,75 @@
 package com.github.johypark97.varchivemacro.lib.common.mvp;
 
-import java.util.function.Supplier;
+import java.util.Objects;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public abstract class AbstractMvpView<P extends MvpPresenter<V>, V extends MvpView<P>>
         implements MvpView<P> {
-    private final Stage stage = new Stage();
-
-    private Supplier<P> presenterSupplier;
-
-    public AbstractMvpView() {
-        stage.setOnCloseRequest(event -> {
-            event.consume();
-            getPresenter().stop();
-        });
-    }
+    private P presenter;
+    private Stage stage;
 
     protected final P getPresenter() {
-        return presenterSupplier.get();
+        return presenter;
     }
 
     protected final Stage getStage() {
         return stage;
     }
 
-    @Override
-    public final void onLinkView(P presenter) {
-        presenterSupplier = () -> presenter;
+    protected abstract V getInstance();
+
+    protected abstract Stage newStage();
+
+    protected boolean onStartView() {
+        return true;
+    }
+
+    protected boolean onStopView() {
+        return true;
+    }
+
+    private void onCloseRequestHandler(WindowEvent event) {
+        event.consume();
+        stopView();
     }
 
     @Override
-    public final void onUnlinkView() {
-        presenterSupplier = null; // NOPMD
+    public final void linkPresenter(P presenter) {
+        if (this.presenter != null) {
+            return;
+        }
+
+        this.presenter = presenter;
+        this.presenter.onLinkPresenter(Objects.requireNonNull(getInstance()));
     }
 
     @Override
-    public final void show() {
+    public final boolean startView() {
+        Objects.requireNonNull(presenter);
+
+        if (stage != null || !onStartView()) {
+            return false;
+        }
+
+        stage = newStage();
+        stage.setOnCloseRequest(this::onCloseRequestHandler);
         stage.show();
+
+        return true;
     }
 
     @Override
-    public final void hide() {
+    public final boolean stopView() {
+        Objects.requireNonNull(presenter);
+
+        if (stage == null || !onStopView()) {
+            return false;
+        }
+
         stage.hide();
+        stage = null; // NOPMD
+
+        return true;
     }
 }

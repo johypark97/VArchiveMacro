@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.SortedList;
@@ -47,9 +46,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     public OcrTestModel ocrTestModel;
     public OcrToolModel ocrToolModel;
 
-    public HomePresenterImpl(Supplier<HomeView> viewConstructor) {
-        super(viewConstructor);
-
+    public HomePresenterImpl() {
         nativeKeyListener = new NativeKeyListener() {
             private void runOcrCacheCaptureService() {
                 Path outputPath;
@@ -270,12 +267,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    protected HomePresenter getInstance() {
-        return this;
-    }
-
-    @Override
-    protected boolean initialize() {
+    public boolean initialize() {
         Path path = openDirectorySelector(null);
         if (path == null) {
             return false;
@@ -295,7 +287,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    protected boolean terminate() {
+    public boolean terminate() {
         if (ServiceManager.getInstance().isRunningAny()) {
             Platform.runLater(
                     () -> Dialogs.showWarning("Some tasks are still running.", "Unable to exit."));

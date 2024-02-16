@@ -1,77 +1,21 @@
 package com.github.johypark97.varchivemacro.lib.common.mvp;
 
-import java.util.Objects;
-import java.util.function.Supplier;
+import java.lang.ref.WeakReference;
 
 public abstract class AbstractMvpPresenter<P extends MvpPresenter<V>, V extends MvpView<P>>
         implements MvpPresenter<V> {
-    private final Supplier<V> viewConstructor;
-
-    private Supplier<V> viewSupplier;
-
-    public AbstractMvpPresenter(Supplier<V> viewConstructor) {
-        this.viewConstructor = viewConstructor;
-    }
-
-    protected abstract P getInstance();
-
-    protected boolean initialize() {
-        return true;
-    }
-
-    protected boolean terminate() {
-        return true;
-    }
+    private WeakReference<V> viewReference;
 
     protected final V getView() {
-        return viewSupplier.get();
-    }
-
-    private boolean isViewLinked() {
-        return viewSupplier != null;
+        return viewReference.get();
     }
 
     @Override
-    public final void linkView(V view) {
-        viewSupplier = () -> view;
-        viewSupplier.get().onLinkView(Objects.requireNonNull(getInstance()));
-    }
-
-    @Override
-    public final void unlinkView() {
-        viewSupplier.get().onUnlinkView();
-        viewSupplier = null; // NOPMD
-    }
-
-    @Override
-    public final boolean start() {
-        if (isViewLinked()) {
-            return false;
+    public final void onLinkPresenter(V view) {
+        if (viewReference != null) {
+            return;
         }
 
-        if (!initialize()) {
-            return false;
-        }
-
-        linkView(viewConstructor.get());
-        getView().show();
-
-        return true;
-    }
-
-    @Override
-    public final boolean stop() {
-        if (!isViewLinked()) {
-            return false;
-        }
-
-        if (!terminate()) {
-            return false;
-        }
-
-        getView().hide();
-        unlinkView();
-
-        return true;
+        viewReference = new WeakReference<>(view);
     }
 }
