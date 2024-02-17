@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.function.Consumer;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ComboBox;
@@ -49,19 +48,15 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private void defaultOnThrow(Throwable throwable) {
         LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, throwable);
-        Platform.runLater(() -> Dialogs.showException(throwable));
+        Dialogs.showException(throwable);
     }
 
     private void defaultOnTaskRunning() {
-        Platform.runLater(() -> Dialogs.showWarning("The task is running."));
+        Dialogs.showWarning("The task is running.");
     }
 
     private void defaultOnTaskNotRunning() {
-        Platform.runLater(() -> Dialogs.showWarning("The task is not running."));
-    }
-
-    private Runnable showMessage(String message) {
-        return () -> Platform.runLater(() -> Dialogs.showInformation(message));
+        Dialogs.showWarning("The task is not running.");
     }
 
     private Path openDirectorySelector(String title) {
@@ -100,16 +95,16 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         ocrTestModel.setupOcrTestService()
                 .setDlcSongList(databaseModel.getDlcSongList())
                 .setTitleTool(databaseModel.getTitleTool())
-                .setOnDone(showMessage("OcrTest done."))
-                .setOnCancel(showMessage("OcrTest canceled."))
+                .setOnDone(() -> Dialogs.showInformation("OcrTest done."))
+                .setOnCancel(() -> Dialogs.showInformation("OcrTest canceled."))
                 .setOnThrow(this::defaultOnThrow)
                 .setOnUpdateProgress(getView()::ocrTester_updateProgressIndicator)
                 .build();
 
         ocrToolModel.setupOcrCacheCaptureService()
                 .setDlcSongList(databaseModel.getDlcSongList())
-                .setOnCancel(showMessage("OcrCapture canceled."))
-                .setOnDone(showMessage("OcrCapture done."))
+                .setOnCancel(() -> Dialogs.showInformation("OcrCapture canceled."))
+                .setOnDone(() -> Dialogs.showInformation("OcrCapture done."))
                 .setOnThrow(this::defaultOnThrow)
                 .build();
         // @formatter:on
@@ -120,8 +115,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     public boolean terminate() {
         if (ServiceManager.getInstance().isRunningAny()) {
-            Platform.runLater(
-                    () -> Dialogs.showWarning("Some tasks are still running.", "Unable to exit."));
+            Dialogs.showWarning("Some tasks are still running.", "Unable to exit.");
             return false;
         }
 

@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 
@@ -75,16 +76,17 @@ public class DefaultDatabaseModel implements DatabaseModel {
 
     @Override
     public void validateDatabase(Consumer<String> onDone) {
-        CompletableFuture.supplyAsync(new DatabaseValidator(dlcSongManager)).thenAccept(onDone);
+        CompletableFuture.supplyAsync(new DatabaseValidator(dlcSongManager))
+                .thenAccept(x -> Platform.runLater(() -> onDone.accept(x)));
     }
 
     @Override
     public void compareDatabaseWithRemote(Consumer<String> onDone, Consumer<Throwable> onThrow) {
         CompletableFuture.supplyAsync(new RemoteValidator(dlcSongManager))
                 .orTimeout(4, TimeUnit.SECONDS).exceptionally(x -> {
-                    onThrow.accept(x);
+                    Platform.runLater(() -> onThrow.accept(x));
                     return "Error";
-                }).thenAccept(onDone);
+                }).thenAccept(x -> Platform.runLater(() -> onDone.accept(x)));
     }
 
     @Override

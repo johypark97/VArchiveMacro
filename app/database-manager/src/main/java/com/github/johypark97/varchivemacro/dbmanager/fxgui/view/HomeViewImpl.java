@@ -12,7 +12,6 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Objects;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -69,7 +68,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     public void checker_setResultText(String value) {
-        Platform.runLater(() -> homeComponent.checker_textArea.setText(value));
+        homeComponent.checker_textArea.setText(value);
     }
 
     @Override
@@ -114,11 +113,9 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     public void ocrTester_updateProgressIndicator(double value) {
-        Platform.runLater(() -> {
-            homeComponent.ocrTester_progressBar.setProgress(value);
-            homeComponent.ocrTester_progressLabel.setText(
-                    (value >= 0 && value <= 1) ? String.format("%.2f%%", value * 100) : "");
-        });
+        homeComponent.ocrTester_progressBar.setProgress(value);
+        homeComponent.ocrTester_progressLabel.setText(
+                (value >= 0 && value <= 1) ? String.format("%.2f%%", value * 100) : "");
     }
 
     @Override
