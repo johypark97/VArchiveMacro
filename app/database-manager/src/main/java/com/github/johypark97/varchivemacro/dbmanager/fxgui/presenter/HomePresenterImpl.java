@@ -64,12 +64,14 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         return () -> Platform.runLater(() -> Dialogs.showInformation(message));
     }
 
-    private Path openDirectorySelector(Window ownerWindow) {
-        String TITLE = "Select database directory";
+    private Path openDirectorySelector(String title) {
+        return openDirectorySelector(title, null);
+    }
 
+    private Path openDirectorySelector(String title, Window ownerWindow) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(INITIAL_DIRECTORY.toFile());
-        directoryChooser.setTitle(TITLE);
+        directoryChooser.setTitle(title);
 
         File file = directoryChooser.showDialog(ownerWindow);
         if (file == null) {
@@ -193,12 +195,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public Path ocrTester_onSelectCacheDirectory(Stage stage) {
-        return openDirectorySelector(stage);
+        return openDirectorySelector("Select OcrTester cache directory", stage);
     }
 
     @Override
     public Path ocrTester_onSelectTessdataDirectory(Stage stage) {
-        return openDirectorySelector(stage);
+        return openDirectorySelector("Select OcrTester tessdata directory", stage);
     }
 
     @Override
@@ -228,7 +230,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public Path ocrCacheCapturer_onSelectOutputDirectory(Stage stage) {
-        return openDirectorySelector(stage);
+        return openDirectorySelector("Select OcrCacheCapturer output directory", stage);
     }
 
     @Override
