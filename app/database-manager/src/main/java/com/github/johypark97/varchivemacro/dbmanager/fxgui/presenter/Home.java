@@ -6,66 +6,77 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.S
 import com.github.johypark97.varchivemacro.lib.common.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.common.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.common.mvp.MvpView;
+import java.nio.file.Path;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 public interface Home {
     interface HomePresenter extends MvpPresenter<HomeView> {
-        void onSetupModel();
-
-        void onLinkViewerTable(TableView<SongData> tableView);
-
-        void onSetViewerTableFilterColumn(ComboBox<SongDataProperty> comboBox);
-
-        void onUpdateViewerTableFilter(String regex, SongDataProperty property);
-
-        void onValidateDatabase();
-
-        void onCompareDatabaseWithRemote();
-
-        void onLinkOcrTesterTable(TableView<OcrTestData> tableView);
-
-        void onShowOcrTesterCacheDirectorySelector(Stage stage);
-
-        void onShowOcrTesterTessdataDirectorySelector(Stage stage);
-
-        void onStartOcrTester(String cacheDirectory, String tessdataDirectory,
-                String tessdataLanguage);
-
-        void onStopOcrTester();
-
-        void onSetupOcrCacheCapturerCaptureDelayLinker(SliderTextFieldLinker linker);
-
-        void onSetupOcrCacheCapturerKeyInputDelayLinker(SliderTextFieldLinker linker);
-
-        void onSetupOcrCacheCapturerKeyInputDurationLinker(SliderTextFieldLinker linker);
-
-        void onShowOcrCacheCapturerOutputDirectorySelector(Stage stage);
-
         boolean initialize();
 
         boolean terminate();
+
+        void onViewShowing_viewer_linkTableView(TableView<SongData> tableView);
+
+        void onViewShowing_viewer_setFilterColumn(ComboBox<SongDataProperty> comboBox);
+
+        void onViewShowing_ocrTester_linkTableView(TableView<OcrTestData> tableView);
+
+        void onViewShowing_ocrCacheCapturer_setupCaptureDelayLinker(SliderTextFieldLinker linker);
+
+        void onViewShowing_ocrCacheCapturer_setupKeyInputDelayLinker(SliderTextFieldLinker linker);
+
+        void onViewShowing_ocrCacheCapturer_setupKeyInputDurationLinker(
+                SliderTextFieldLinker linker);
+
+        void viewer_onUpdateTableFilter(String regex, SongDataProperty property);
+
+        void checker_onValidateDatabase();
+
+        void checker_onCompareDatabaseWithRemote();
+
+        Path ocrTester_onSelectCacheDirectory(Stage stage);
+
+        Path ocrTester_onSelectTessdataDirectory(Stage stage);
+
+        void ocrTester_onStart(String cacheDirectory, String tessdataDirectory,
+                String tessdataLanguage);
+
+        void ocrTester_onStop();
+
+        Path ocrCacheCapturer_onSelectOutputDirectory(Stage stage);
+
+        void ocrCacheCapturer_onStart(int captureDelay, int keyInputDelay, int keyInputDuration,
+                String outputDirectory);
+
+        void ocrCacheCapturer_onStop();
     }
 
 
     interface HomeView extends MvpView<HomePresenter> {
-        void setCheckerTextAreaText(String value);
+        void viewer_updateTableFilter();
 
-        void setOcrTesterCacheDirectoryText(String value);
+        void checker_setResultText(String value);
 
-        void setOcrTesterTessdataDirectoryText(String value);
+        void checker_validateDatabase();
 
-        void updateOcrTesterProgressIndicator(double value);
+        void checker_compareDatabaseWithRemote();
 
-        int getOcrCacheCapturerCaptureDelay();
+        void ocrTester_selectCacheDirectory();
 
-        int getOcrCacheCapturerKeyInputDelay();
+        void ocrTester_selectTessdataDirectory();
 
-        int getOcrCacheCapturerKeyInputDuration();
+        void ocrTester_start();
 
-        String getOcrCacheCapturerOutputDirectoryText();
+        void ocrTester_stop();
 
-        void setOcrCacheCapturerOutputDirectoryText(String value);
+        void ocrTester_updateProgressIndicator(double value);
+
+        void ocrCacheCapturer_selectOutputDirectory();
+
+        void ocrCacheCapturer_start();
+
+        void ocrCacheCapturer_stop();
     }
 }

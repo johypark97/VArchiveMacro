@@ -32,83 +32,83 @@ public class HomeComponent extends TabPane {
     public final HomeViewImpl view;
 
     @FXML
-    public TextField viewerFilterTextField;
+    public TextField viewer_filterTextField;
 
     @FXML
-    public ComboBox<SongDataProperty> viewerFilterComboBox;
+    public ComboBox<SongDataProperty> viewer_filterComboBox;
 
     @FXML
-    public Button viewerFilterResetButton;
+    public Button viewer_filterResetButton;
 
     @FXML
-    public TableView<SongData> viewerTableView;
+    public TableView<SongData> viewer_tableView;
 
     @FXML
-    public TextArea checkerTextArea;
+    public TextArea checker_textArea;
 
     @FXML
-    public Button checkerValidateButton;
+    public Button checker_validateButton;
 
     @FXML
-    public Button checkerCompareWithRemoteButton;
+    public Button checker_compareWithRemoteButton;
 
     @FXML
-    public TextField ocrTesterCacheDirectoryTextField;
+    public TextField ocrTester_cacheDirectoryTextField;
 
     @FXML
-    public Button ocrTesterCacheDirectorySelectButton;
+    public Button ocrTester_cacheDirectorySelectButton;
 
     @FXML
-    public TextField ocrTesterTessdataDirectoryTextField;
+    public TextField ocrTester_tessdataDirectoryTextField;
 
     @FXML
-    public Button ocrTesterTessdataDirectorySelectButton;
+    public Button ocrTester_tessdataDirectorySelectButton;
 
     @FXML
-    public TextField ocrTesterTessdataLanguageTextField;
+    public TextField ocrTester_tessdataLanguageTextField;
 
     @FXML
-    public TableView<OcrTestData> ocrTesterTableView;
+    public TableView<OcrTestData> ocrTester_tableView;
 
     @FXML
-    public ProgressBar ocrTesterProgressBar;
+    public ProgressBar ocrTester_progressBar;
 
     @FXML
-    public Label ocrTesterProgressLabel;
+    public Label ocrTester_progressLabel;
 
     @FXML
-    public Button ocrTesterStartButton;
+    public Button ocrTester_startButton;
 
     @FXML
-    public Button ocrTesterStopButton;
+    public Button ocrTester_stopButton;
 
     @FXML
-    public Slider ocrCacheCapturerCaptureDelaySlider;
+    public Slider ocrCacheCapturer_captureDelaySlider;
 
     @FXML
-    public TextField ocrCacheCapturerCaptureDelayTextField;
+    public TextField ocrCacheCapturer_captureDelayTextField;
 
     @FXML
-    public Slider ocrCacheCapturerKeyInputDelaySlider;
+    public Slider ocrCacheCapturer_keyInputDelaySlider;
 
     @FXML
-    public TextField ocrCacheCapturerKeyInputDelayTextField;
+    public TextField ocrCacheCapturer_keyInputDelayTextField;
 
     @FXML
-    public Slider ocrCacheCapturerKeyInputDurationSlider;
+    public Slider ocrCacheCapturer_keyInputDurationSlider;
 
     @FXML
-    public TextField ocrCacheCapturerKeyInputDurationTextField;
+    public TextField ocrCacheCapturer_keyInputDurationTextField;
 
     @FXML
-    public TextField ocrCacheCapturerOutputDirectoryTextField;
+    public TextField ocrCacheCapturer_outputDirectoryTextField;
 
     @FXML
-    public Button ocrCacheCapturerOutputDirectorySelectButton;
+    public Button ocrCacheCapturer_outputDirectorySelectButton;
 
-    public SliderTextFieldLinker ocrCacheCapturerCaptureDelayLinker;
-    public SliderTextFieldLinker ocrCacheCapturerKeyInputDelayLinker;
-    public SliderTextFieldLinker ocrCacheCapturerKeyInputDurationLinker;
+    public SliderTextFieldLinker ocrCacheCapturer_captureDelayLinker;
+    public SliderTextFieldLinker ocrCacheCapturer_keyInputDelayLinker;
+    public SliderTextFieldLinker ocrCacheCapturer_keyInputDurationLinker;
 
     public HomeComponent(HomeViewImpl view) {
         this.view = view;
@@ -128,11 +128,11 @@ public class HomeComponent extends TabPane {
     private void setupViewerTab() {
         setupViewerTab_tableView();
 
-        viewerFilterTextField.textProperty()
-                .addListener((observable, oldValue, newValue) -> view.updateViewerTableFilter());
-        viewerFilterComboBox.valueProperty()
-                .addListener((observable, oldValue, newValue) -> view.updateViewerTableFilter());
-        viewerFilterResetButton.setOnAction(event -> viewerFilterTextField.clear());
+        viewer_filterTextField.textProperty()
+                .addListener((observable, oldValue, newValue) -> view.viewer_updateTableFilter());
+        viewer_filterComboBox.valueProperty()
+                .addListener((observable, oldValue, newValue) -> view.viewer_updateTableFilter());
+        viewer_filterResetButton.setOnAction(event -> viewer_filterTextField.clear());
     }
 
     private void setupViewerTab_tableView() {
@@ -153,26 +153,27 @@ public class HomeComponent extends TabPane {
         title.setComparator(new TitleComparator());
         remoteTitle.setComparator(new TitleComparator());
 
-        viewerTableView.getColumns()
+        viewer_tableView.getColumns()
                 .setAll(List.of(id, title, remoteTitle, composer, dlc, priority));
 
-        viewerTableView.getSortOrder().setAll(List.of(title, priority));
+        viewer_tableView.getSortOrder().setAll(List.of(title, priority));
     }
 
     private void setupCheckerTab() {
-        checkerValidateButton.setOnAction(event -> view.validateDatabase());
-        checkerCompareWithRemoteButton.setOnAction(event -> view.compareDatabaseWithRemote());
+        checker_validateButton.setOnAction(event -> view.checker_validateDatabase());
+        checker_compareWithRemoteButton.setOnAction(
+                event -> view.checker_compareDatabaseWithRemote());
     }
 
     private void setupOcrTesterTab() {
         setupOcrTesterTab_tableView();
 
-        ocrTesterCacheDirectorySelectButton.setOnAction(
-                event -> view.showOcrTesterCacheDirectorySelector());
-        ocrTesterTessdataDirectorySelectButton.setOnAction(
-                event -> view.showOcrTesterTessdataDirectorySelector());
-        ocrTesterStartButton.setOnAction(event -> view.startOcrTester());
-        ocrTesterStopButton.setOnAction(event -> view.stopOcrTester());
+        ocrTester_cacheDirectorySelectButton.setOnAction(
+                event -> view.ocrTester_selectCacheDirectory());
+        ocrTester_tessdataDirectorySelectButton.setOnAction(
+                event -> view.ocrTester_selectTessdataDirectory());
+        ocrTester_startButton.setOnAction(event -> view.ocrTester_start());
+        ocrTester_stopButton.setOnAction(event -> view.ocrTester_stop());
     }
 
     private void setupOcrTesterTab_tableView() {
@@ -273,9 +274,9 @@ public class HomeComponent extends TabPane {
             test.getColumns().setAll(List.of(distance, accuracy, status, pass));
         }
 
-        ocrTesterTableView.getColumns().setAll(List.of(target, match, recognized, test));
+        ocrTester_tableView.getColumns().setAll(List.of(target, match, recognized, test));
 
-        ocrTesterTableView.setRowFactory(param -> new TableRow<>() {
+        ocrTester_tableView.setRowFactory(param -> new TableRow<>() {
             private static final String STYLE_CLASS_EXACT = "table-row-color-green";
             private static final String STYLE_CLASS_SIMILAR = "table-row-color-yellow";
 
@@ -298,19 +299,19 @@ public class HomeComponent extends TabPane {
     }
 
     private void setupCacheCapturer() {
-        ocrCacheCapturerCaptureDelayLinker =
-                new SliderTextFieldLinker(ocrCacheCapturerCaptureDelaySlider,
-                        ocrCacheCapturerCaptureDelayTextField);
+        ocrCacheCapturer_captureDelayLinker =
+                new SliderTextFieldLinker(ocrCacheCapturer_captureDelaySlider,
+                        ocrCacheCapturer_captureDelayTextField);
 
-        ocrCacheCapturerKeyInputDelayLinker =
-                new SliderTextFieldLinker(ocrCacheCapturerKeyInputDelaySlider,
-                        ocrCacheCapturerKeyInputDelayTextField);
+        ocrCacheCapturer_keyInputDelayLinker =
+                new SliderTextFieldLinker(ocrCacheCapturer_keyInputDelaySlider,
+                        ocrCacheCapturer_keyInputDelayTextField);
 
-        ocrCacheCapturerKeyInputDurationLinker =
-                new SliderTextFieldLinker(ocrCacheCapturerKeyInputDurationSlider,
-                        ocrCacheCapturerKeyInputDurationTextField);
+        ocrCacheCapturer_keyInputDurationLinker =
+                new SliderTextFieldLinker(ocrCacheCapturer_keyInputDurationSlider,
+                        ocrCacheCapturer_keyInputDurationTextField);
 
-        ocrCacheCapturerOutputDirectorySelectButton.setOnAction(
-                event -> view.showOcrCacheCapturerOutputDirectorySelector());
+        ocrCacheCapturer_outputDirectorySelectButton.setOnAction(
+                event -> view.ocrCacheCapturer_selectOutputDirectory());
     }
 }
