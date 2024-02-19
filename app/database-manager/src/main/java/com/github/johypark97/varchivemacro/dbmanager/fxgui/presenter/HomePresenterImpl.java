@@ -18,7 +18,10 @@ import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
@@ -34,6 +37,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     private static final String EXCEPTION_LOG_MESSAGE = "Exception";
 
     private static final Path INITIAL_DIRECTORY = Path.of("").toAbsolutePath();
+
+    private FilteredList<SongData> filteredDlcSongList;
 
     public DatabaseModel databaseModel;
     public OcrTestModel ocrTestModel;
@@ -124,7 +129,9 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void onViewShowing_viewer_linkTableView(TableView<SongData> tableView) {
-        SortedList<SongData> list = new SortedList<>(databaseModel.getFilteredSongList());
+        filteredDlcSongList = new FilteredList<>(databaseModel.getObservableDlcSongList());
+
+        SortedList<SongData> list = new SortedList<>(filteredDlcSongList);
         list.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(list);
     }
@@ -171,7 +178,21 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void viewer_onUpdateTableFilter(String regex, SongDataProperty property) {
-        databaseModel.updateFilteredSongListFilter(regex, property);
+        if (filteredDlcSongList == null) {
+            return;
+        }
+
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Function<SongData, String> valueGetter = switch (property) {
+            case ID -> x -> String.valueOf(x.getId());
+            case TITLE -> SongData::getTitle;
+            case REMOTE_TITLE -> SongData::getRemoteTitle;
+            case COMPOSER -> SongData::getComposer;
+            case DLC -> SongData::getDlc;
+            case PRIORITY -> x -> String.valueOf(x.getPriority());
+        };
+
+        filteredDlcSongList.setPredicate(x -> pattern.matcher(valueGetter.apply(x)).find());
     }
 
     @Override
