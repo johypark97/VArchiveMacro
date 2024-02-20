@@ -83,7 +83,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public boolean initialize() {
-        Path path = openDirectorySelector(null);
+        Path path = openDirectorySelector("Select database directory");
         if (path == null) {
             return false;
         }
@@ -111,6 +111,24 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
                 .setOnCancel(() -> Dialogs.showInformation("OcrCapture canceled."))
                 .setOnDone(() -> Dialogs.showInformation("OcrCapture done."))
                 .setOnThrow(this::defaultOnThrow)
+                .build();
+
+        ocrToolModel.setupOcrCacheClassificationService()
+                .setDlcSongList(databaseModel.getDlcSongList())
+                .setTitleTool(databaseModel.getTitleTool())
+                .setOnCancel(() -> Dialogs.showInformation("OcrCacheClassification canceled."))
+                .setOnDone(() -> Dialogs.showInformation("OcrCacheClassification done."))
+                .setOnThrow(this::defaultOnThrow)
+                .setOnUpdateProgress(getView()::ocrCacheClassifier_updateProgressIndicator)
+                .build();
+
+        ocrToolModel.setupOcrGroundTruthGenerationService()
+                .setDlcSongList(databaseModel.getDlcSongList())
+                .setTitleTool(databaseModel.getTitleTool())
+                .setOnCancel(() -> Dialogs.showInformation("OcrGroundTruthGeneration canceled."))
+                .setOnDone(() -> Dialogs.showInformation("OcrGroundTruthGeneration done."))
+                .setOnThrow(this::defaultOnThrow)
+                .setOnUpdateProgress(getView()::ocrGroundTruthGenerator_updateProgressIndicator)
                 .build();
         // @formatter:on
 
@@ -266,6 +284,74 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     public void ocrCacheCapturer_onStop() {
         if (!ocrToolModel.stopOcrCacheCaptureService()) {
+            defaultOnTaskNotRunning();
+        }
+    }
+
+    @Override
+    public Path ocrCacheClassifier_onSelectInputDirectory(Stage stage) {
+        return openDirectorySelector("Select OcrCacheClassifier input directory", stage);
+    }
+
+    @Override
+    public Path ocrCacheClassifier_onSelectOutputDirectory(Stage stage) {
+        return openDirectorySelector("Select OcrCacheClassifier output directory", stage);
+    }
+
+    @Override
+    public void ocrCacheClassifier_onStart(String inputDirectory, String outputDirectory) {
+        Path inputPath;
+        Path outputPath;
+        try {
+            inputPath = Path.of(inputDirectory);
+            outputPath = Path.of(outputDirectory);
+        } catch (InvalidPathException e) {
+            defaultOnThrow(e);
+            return;
+        }
+
+        if (!ocrToolModel.startOcrCacheClassificationService(inputPath, outputPath)) {
+            defaultOnTaskRunning();
+        }
+    }
+
+    @Override
+    public void ocrCacheClassifier_onStop() {
+        if (!ocrToolModel.stopOcrCacheClassificationService()) {
+            defaultOnTaskNotRunning();
+        }
+    }
+
+    @Override
+    public Path ocrGroundTruthGenerator_onSelectInputDirectory(Stage stage) {
+        return openDirectorySelector("Select OcrGroundTruthGenerator input directory", stage);
+    }
+
+    @Override
+    public Path ocrGroundTruthGenerator_onSelectOutputDirectory(Stage stage) {
+        return openDirectorySelector("Select OcrGroundTruthGenerator output directory", stage);
+    }
+
+    @Override
+    public void ocrGroundTruthGenerator_onStart(String inputDirectory, String outputDirectory) {
+        Path inputPath;
+        Path outputPath;
+        try {
+            inputPath = Path.of(inputDirectory);
+            outputPath = Path.of(outputDirectory);
+        } catch (InvalidPathException e) {
+            defaultOnThrow(e);
+            return;
+        }
+
+        if (!ocrToolModel.startOcrGroundTruthGenerationService(inputPath, outputPath)) {
+            defaultOnTaskRunning();
+        }
+    }
+
+    @Override
+    public void ocrGroundTruthGenerator_onStop() {
+        if (!ocrToolModel.stopOcrGroundTruthGenerationService()) {
             defaultOnTaskNotRunning();
         }
     }

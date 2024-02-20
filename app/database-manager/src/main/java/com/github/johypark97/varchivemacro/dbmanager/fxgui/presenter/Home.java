@@ -51,6 +51,22 @@ public interface Home {
                 String outputDirectory);
 
         void ocrCacheCapturer_onStop();
+
+        Path ocrCacheClassifier_onSelectInputDirectory(Stage stage);
+
+        Path ocrCacheClassifier_onSelectOutputDirectory(Stage stage);
+
+        void ocrCacheClassifier_onStart(String inputDirectory, String outputDirectory);
+
+        void ocrCacheClassifier_onStop();
+
+        Path ocrGroundTruthGenerator_onSelectInputDirectory(Stage stage);
+
+        Path ocrGroundTruthGenerator_onSelectOutputDirectory(Stage stage);
+
+        void ocrGroundTruthGenerator_onStart(String inputDirectory, String outputDirectory);
+
+        void ocrGroundTruthGenerator_onStop();
     }
 
 
@@ -78,5 +94,25 @@ public interface Home {
         void ocrCacheCapturer_start();
 
         void ocrCacheCapturer_stop();
+
+        void ocrCacheClassifier_selectInputDirectory();
+
+        void ocrCacheClassifier_selectOutputDirectory();
+
+        void ocrCacheClassifier_updateProgressIndicator(double value);
+
+        void ocrCacheClassifier_start();
+
+        void ocrCacheClassifier_stop();
+
+        void ocrGroundTruthGenerator_selectInputDirectory();
+
+        void ocrGroundTruthGenerator_selectOutputDirectory();
+
+        void ocrGroundTruthGenerator_updateProgressIndicator(double value);
+
+        void ocrGroundTruthGenerator_start();
+
+        void ocrGroundTruthGenerator_stop();
     }
 }

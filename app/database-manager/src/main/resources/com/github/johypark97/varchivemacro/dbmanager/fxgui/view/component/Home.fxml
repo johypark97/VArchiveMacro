@@ -172,19 +172,26 @@
                                   </rowConstraints>
                                   <children>
                                     <Label text="Input directory"/>
-                                    <TextField GridPane.columnIndex="1"/>
-                                    <Button GridPane.columnIndex="2" prefWidth="100.0" text="Select"/>
+                                    <TextField GridPane.columnIndex="1" fx:id="ocrCacheClassifier_inputDirectoryTextField"/>
+                                    <Button GridPane.columnIndex="2" prefWidth="100.0" text="Select" fx:id="ocrCacheClassifier_inputDirectorySelectButton"/>
                                     <Label GridPane.rowIndex="1" text="Output directory"/>
-                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                    <Button GridPane.columnIndex="2" GridPane.rowIndex="1" prefWidth="100.0" text="Select"/>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="ocrCacheClassifier_outputDirectoryTextField"/>
+                                    <Button GridPane.columnIndex="2" GridPane.rowIndex="1" prefWidth="100.0" text="Select" fx:id="ocrCacheClassifier_outputDirectorySelectButton"/>
                                   </children>
                                 </GridPane>
                                 <Separator/>
-                                <ButtonBar>
-                                  <buttons>
-                                    <Button text="Start"/>
-                                  </buttons>
-                                </ButtonBar>
+                                <HBox alignment="CENTER" spacing="10.0">
+                                  <children>
+                                    <ProgressBar progress="0.0" fx:id="ocrCacheClassifier_progressBar"/>
+                                    <Label fx:id="ocrCacheClassifier_progressLabel"/>
+                                    <ButtonBar HBox.hgrow="ALWAYS">
+                                      <buttons>
+                                        <Button text="Start" fx:id="ocrCacheClassifier_startButton"/>
+                                        <Button text="Stop" fx:id="ocrCacheClassifier_stopButton"/>
+                                      </buttons>
+                                    </ButtonBar>
+                                  </children>
+                                </HBox>
                               </children>
                             </VBox>
                             <Separator orientation="VERTICAL"/>
@@ -204,19 +211,26 @@
                                   </rowConstraints>
                                   <children>
                                     <Label text="Input directory"/>
-                                    <TextField GridPane.columnIndex="1"/>
-                                    <Button GridPane.columnIndex="2" prefWidth="100.0" text="Select"/>
+                                    <TextField GridPane.columnIndex="1" fx:id="ocrGroundTruthGenerator_inputDirectoryTextField"/>
+                                    <Button GridPane.columnIndex="2" prefWidth="100.0" text="Select" fx:id="ocrGroundTruthGenerator_inputDirectorySelectButton"/>
                                     <Label GridPane.rowIndex="1" text="Output directory"/>
-                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                    <Button GridPane.columnIndex="2" GridPane.rowIndex="1" prefWidth="100.0" text="Select"/>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="ocrGroundTruthGenerator_outputDirectoryTextField"/>
+                                    <Button GridPane.columnIndex="2" GridPane.rowIndex="1" prefWidth="100.0" text="Select" fx:id="ocrGroundTruthGenerator_outputDirectorySelectButton"/>
                                   </children>
                                 </GridPane>
                                 <Separator/>
-                                <ButtonBar>
-                                  <buttons>
-                                    <Button text="Start"/>
-                                  </buttons>
-                                </ButtonBar>
+                                <HBox alignment="CENTER" spacing="10.0">
+                                  <children>
+                                    <ProgressBar progress="0.0" fx:id="ocrGroundTruthGenerator_progressBar"/>
+                                    <Label fx:id="ocrGroundTruthGenerator_progressLabel"/>
+                                    <ButtonBar HBox.hgrow="ALWAYS">
+                                      <buttons>
+                                        <Button text="Start" fx:id="ocrGroundTruthGenerator_startButton"/>
+                                        <Button text="Stop" fx:id="ocrGroundTruthGenerator_stopButton"/>
+                                      </buttons>
+                                    </ButtonBar>
+                                  </children>
+                                </HBox>
                               </children>
                             </VBox>
                           </children>

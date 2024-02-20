@@ -143,6 +143,81 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void ocrCacheClassifier_selectInputDirectory() {
+        Path path = getPresenter().ocrCacheClassifier_onSelectInputDirectory(getStage());
+        if (path != null) {
+            homeComponent.ocrCacheClassifier_inputDirectoryTextField.setText(path.toString());
+        }
+    }
+
+    @Override
+    public void ocrCacheClassifier_selectOutputDirectory() {
+        Path path = getPresenter().ocrCacheClassifier_onSelectOutputDirectory(getStage());
+        if (path != null) {
+            homeComponent.ocrCacheClassifier_outputDirectoryTextField.setText(path.toString());
+        }
+    }
+
+    @Override
+    public void ocrCacheClassifier_updateProgressIndicator(double value) {
+        homeComponent.ocrCacheClassifier_progressBar.setProgress(value);
+        homeComponent.ocrCacheClassifier_progressLabel.setText(
+                (value >= 0 && value <= 1) ? String.format("%.2f%%", value * 100) : "");
+    }
+
+    @Override
+    public void ocrCacheClassifier_start() {
+        String inputDirectory = homeComponent.ocrCacheClassifier_inputDirectoryTextField.getText();
+        String outputDirectory =
+                homeComponent.ocrCacheClassifier_outputDirectoryTextField.getText();
+
+        getPresenter().ocrCacheClassifier_onStart(inputDirectory, outputDirectory);
+    }
+
+    @Override
+    public void ocrCacheClassifier_stop() {
+        getPresenter().ocrCacheClassifier_onStop();
+    }
+
+    @Override
+    public void ocrGroundTruthGenerator_selectInputDirectory() {
+        Path path = getPresenter().ocrGroundTruthGenerator_onSelectInputDirectory(getStage());
+        if (path != null) {
+            homeComponent.ocrGroundTruthGenerator_inputDirectoryTextField.setText(path.toString());
+        }
+    }
+
+    @Override
+    public void ocrGroundTruthGenerator_selectOutputDirectory() {
+        Path path = getPresenter().ocrGroundTruthGenerator_onSelectOutputDirectory(getStage());
+        if (path != null) {
+            homeComponent.ocrGroundTruthGenerator_outputDirectoryTextField.setText(path.toString());
+        }
+    }
+
+    @Override
+    public void ocrGroundTruthGenerator_updateProgressIndicator(double value) {
+        homeComponent.ocrGroundTruthGenerator_progressBar.setProgress(value);
+        homeComponent.ocrGroundTruthGenerator_progressLabel.setText(
+                (value >= 0 && value <= 1) ? String.format("%.2f%%", value * 100) : "");
+    }
+
+    @Override
+    public void ocrGroundTruthGenerator_start() {
+        String inputDirectory =
+                homeComponent.ocrGroundTruthGenerator_inputDirectoryTextField.getText();
+        String outputDirectory =
+                homeComponent.ocrGroundTruthGenerator_outputDirectoryTextField.getText();
+
+        getPresenter().ocrGroundTruthGenerator_onStart(inputDirectory, outputDirectory);
+    }
+
+    @Override
+    public void ocrGroundTruthGenerator_stop() {
+        getPresenter().ocrGroundTruthGenerator_onStop();
+    }
+
+    @Override
     protected HomeView getInstance() {
         return this;
     }

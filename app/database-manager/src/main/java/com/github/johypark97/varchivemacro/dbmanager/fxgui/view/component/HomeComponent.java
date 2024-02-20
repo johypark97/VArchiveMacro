@@ -106,6 +106,54 @@ public class HomeComponent extends TabPane {
     @FXML
     public Button ocrCacheCapturer_outputDirectorySelectButton;
 
+    @FXML
+    public TextField ocrCacheClassifier_inputDirectoryTextField;
+
+    @FXML
+    public Button ocrCacheClassifier_inputDirectorySelectButton;
+
+    @FXML
+    public TextField ocrCacheClassifier_outputDirectoryTextField;
+
+    @FXML
+    public Button ocrCacheClassifier_outputDirectorySelectButton;
+
+    @FXML
+    public ProgressBar ocrCacheClassifier_progressBar;
+
+    @FXML
+    public Label ocrCacheClassifier_progressLabel;
+
+    @FXML
+    public Button ocrCacheClassifier_startButton;
+
+    @FXML
+    public Button ocrCacheClassifier_stopButton;
+
+    @FXML
+    public TextField ocrGroundTruthGenerator_inputDirectoryTextField;
+
+    @FXML
+    public Button ocrGroundTruthGenerator_inputDirectorySelectButton;
+
+    @FXML
+    public TextField ocrGroundTruthGenerator_outputDirectoryTextField;
+
+    @FXML
+    public Button ocrGroundTruthGenerator_outputDirectorySelectButton;
+
+    @FXML
+    public ProgressBar ocrGroundTruthGenerator_progressBar;
+
+    @FXML
+    public Label ocrGroundTruthGenerator_progressLabel;
+
+    @FXML
+    public Button ocrGroundTruthGenerator_startButton;
+
+    @FXML
+    public Button ocrGroundTruthGenerator_stopButton;
+
     public SliderTextFieldLinker ocrCacheCapturer_captureDelayLinker;
     public SliderTextFieldLinker ocrCacheCapturer_keyInputDelayLinker;
     public SliderTextFieldLinker ocrCacheCapturer_keyInputDurationLinker;
@@ -123,6 +171,8 @@ public class HomeComponent extends TabPane {
         setupCheckerTab();
         setupOcrTesterTab();
         setupCacheCapturer();
+        setupOcrClassifier();
+        setupOcrGroundTruthGenerator();
     }
 
     private void setupViewerTab() {
@@ -313,5 +363,31 @@ public class HomeComponent extends TabPane {
 
         ocrCacheCapturer_outputDirectorySelectButton.setOnAction(
                 event -> view.ocrCacheCapturer_selectOutputDirectory());
+    }
+
+    private void setupOcrClassifier() {
+        ocrCacheClassifier_inputDirectorySelectButton.setOnAction(
+                event -> view.ocrCacheClassifier_selectInputDirectory());
+
+        ocrCacheClassifier_outputDirectorySelectButton.setOnAction(
+                event -> view.ocrCacheClassifier_selectOutputDirectory());
+
+        ocrCacheClassifier_startButton.setOnAction(event -> view.ocrCacheClassifier_start());
+
+        ocrCacheClassifier_stopButton.setOnAction(event -> view.ocrCacheClassifier_stop());
+    }
+
+    private void setupOcrGroundTruthGenerator() {
+        ocrGroundTruthGenerator_inputDirectorySelectButton.setOnAction(
+                event -> view.ocrGroundTruthGenerator_selectInputDirectory());
+
+        ocrGroundTruthGenerator_outputDirectorySelectButton.setOnAction(
+                event -> view.ocrGroundTruthGenerator_selectOutputDirectory());
+
+        ocrGroundTruthGenerator_startButton.setOnAction(
+                event -> view.ocrGroundTruthGenerator_start());
+
+        ocrGroundTruthGenerator_stopButton.setOnAction(
+                event -> view.ocrGroundTruthGenerator_stop());
     }
 }
