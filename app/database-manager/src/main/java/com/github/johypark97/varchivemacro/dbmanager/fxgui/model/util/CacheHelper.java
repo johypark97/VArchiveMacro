@@ -13,11 +13,11 @@ public class CacheHelper {
     public static final String IMAGE_FORMAT = "png";
 
     public static Path createGtPath(Path baseDir, LocalDlcSong song) {
-        return baseDir.resolve(makeFilename(song.id, GT_FORMAT));
+        return baseDir.resolve(makeFileName(song.id, GT_FORMAT));
     }
 
     public static Path createImagePath(Path baseDir, LocalDlcSong song) {
-        return baseDir.resolve(makeFilename(song.id, IMAGE_FORMAT));
+        return baseDir.resolve(makeFileName(song.id, IMAGE_FORMAT));
     }
 
     public static void clearAndReadyDirectory(Path path) throws IOException {
@@ -40,7 +40,7 @@ public class CacheHelper {
         }
     }
 
-    private static String makeFilename(int id, String format) {
+    private static String makeFileName(int id, String format) {
         return String.format("%04d.%s", id, format);
     }
 }
