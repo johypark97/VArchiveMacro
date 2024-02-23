@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox" xmlns="http://javafx.com/javafx/21">
+  <children>
+    <TitledPane animated="false" collapsible="false" text="Title Image">
+      <content>
+        <ImageView fitHeight="50.0" fitWidth="799.0" preserveRatio="true" fx:id="imageView"/>
+      </content>
+    </TitledPane>
+    <TitledPane animated="false" collapsible="false" text="Recognition">
+      <content>
+        <GridPane hgap="10.0" vgap="10.0">
+          <columnConstraints>
+            <ColumnConstraints halignment="RIGHT"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints/>
+            <RowConstraints/>
+          </rowConstraints>
+          <children>
+            <Label text="OCR text"/>
+            <TextField GridPane.columnIndex="1" fx:id="ocrTextField"/>
+            <Label GridPane.rowIndex="1" text="Recognized song"/>
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="recognizedSongTextField"/>
+          </children>
+        </GridPane>
+      </content>
+    </TitledPane>
+  </children>
+</fx:root>

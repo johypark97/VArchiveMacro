@@ -4,6 +4,7 @@ module varchivemacro.dbmanager {
     // javafx
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.swing;
 
     opens com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data to javafx.base;
     opens com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component to javafx.fxml;

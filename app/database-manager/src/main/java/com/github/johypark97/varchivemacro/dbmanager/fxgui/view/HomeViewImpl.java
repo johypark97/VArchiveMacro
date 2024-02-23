@@ -4,6 +4,8 @@ import com.github.johypark97.varchivemacro.dbmanager.core.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterView;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component.HomeComponent;
 import com.github.johypark97.varchivemacro.lib.common.HookWrapper;
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpView;
@@ -27,6 +29,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     private final NativeKeyListener nativeKeyListener;
 
     private final HomeComponent homeComponent = new HomeComponent(this);
+
+    public LiveTesterView liveTesterView;
 
     public HomeViewImpl() {
         nativeKeyListener = new NativeKeyListener() {
@@ -56,6 +60,10 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                 }
             }
         };
+    }
+
+    public void setView(LiveTesterView liveTesterView) {
+        this.liveTesterView = liveTesterView;
     }
 
     @Override
@@ -218,6 +226,36 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void liveTester_selectTessdataDirectory() {
+        Path path = getPresenter().liveTester_onSelectTessdataDirectory(getStage());
+        if (path != null) {
+            homeComponent.liveTester_tessdataDirectoryTextField.setText(path.toString());
+        }
+    }
+
+    @Override
+    public void liveTester_open() {
+        if (liveTesterView.isStarted()) {
+            liveTesterView.requestFocus();
+            return;
+        }
+
+        String tessdataDirectory = homeComponent.liveTester_tessdataDirectoryTextField.getText();
+        String tessdataLanguage = homeComponent.liveTester_tessdataLanguageTextField.getText();
+
+        LiveTester.StartData data =
+                getPresenter().liveTester_onOpen(tessdataDirectory, tessdataLanguage);
+
+        liveTesterView.setStartData(data);
+        liveTesterView.startView();
+    }
+
+    @Override
+    public void liveTester_close() {
+        liveTesterView.stopView();
+    }
+
+    @Override
     protected HomeView getInstance() {
         return this;
     }
@@ -274,6 +312,10 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     protected boolean onStopView() {
+        if (liveTesterView.isStarted() && !liveTesterView.stopView()) {
+            return false;
+        }
+
         return getPresenter().terminate();
     }
 }

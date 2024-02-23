@@ -154,6 +154,21 @@ public class HomeComponent extends TabPane {
     @FXML
     public Button ocrGroundTruthGenerator_stopButton;
 
+    @FXML
+    public TextField liveTester_tessdataDirectoryTextField;
+
+    @FXML
+    public Button liveTester_tessdataDirectorySelectButton;
+
+    @FXML
+    public TextField liveTester_tessdataLanguageTextField;
+
+    @FXML
+    public Button liveTester_openButton;
+
+    @FXML
+    public Button liveTester_closeButton;
+
     public SliderTextFieldLinker ocrCacheCapturer_captureDelayLinker;
     public SliderTextFieldLinker ocrCacheCapturer_keyInputDelayLinker;
     public SliderTextFieldLinker ocrCacheCapturer_keyInputDurationLinker;
@@ -173,6 +188,7 @@ public class HomeComponent extends TabPane {
         setupCacheCapturer();
         setupOcrClassifier();
         setupOcrGroundTruthGenerator();
+        setupLiveTester();
     }
 
     private void setupViewerTab() {
@@ -389,5 +405,14 @@ public class HomeComponent extends TabPane {
 
         ocrGroundTruthGenerator_stopButton.setOnAction(
                 event -> view.ocrGroundTruthGenerator_stop());
+    }
+
+    private void setupLiveTester() {
+        liveTester_tessdataDirectorySelectButton.setOnAction(
+                event -> view.liveTester_selectTessdataDirectory());
+
+        liveTester_openButton.setOnAction(event -> view.liveTester_open());
+
+        liveTester_closeButton.setOnAction(event -> view.liveTester_close());
     }
 }

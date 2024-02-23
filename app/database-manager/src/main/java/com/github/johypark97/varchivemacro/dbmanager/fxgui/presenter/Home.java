@@ -67,6 +67,10 @@ public interface Home {
         void ocrGroundTruthGenerator_onStart(String inputDirectory, String outputDirectory);
 
         void ocrGroundTruthGenerator_onStop();
+
+        Path liveTester_onSelectTessdataDirectory(Stage stage);
+
+        LiveTester.StartData liveTester_onOpen(String tessdataDirectory, String tessdataLanguage);
     }
 
 
@@ -114,5 +118,11 @@ public interface Home {
         void ocrGroundTruthGenerator_start();
 
         void ocrGroundTruthGenerator_stop();
+
+        void liveTester_selectTessdataDirectory();
+
+        void liveTester_open();
+
+        void liveTester_close();
     }
 }

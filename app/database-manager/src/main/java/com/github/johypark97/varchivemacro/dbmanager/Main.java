@@ -2,12 +2,16 @@ package com.github.johypark97.varchivemacro.dbmanager;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DefaultDatabaseModel;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DefaultLiveTesterModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DefaultOcrTestModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DefaultOcrToolModel;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.LiveTesterModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrTestModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrToolModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.HomePresenterImpl;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTesterPresenterImpl;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.HomeViewImpl;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.LiveTesterViewImpl;
 import com.github.johypark97.varchivemacro.lib.common.FxHookWrapper;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -29,6 +33,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        LiveTesterModel liveTesterModel = new DefaultLiveTesterModel();
+
+        LiveTesterPresenterImpl liveTesterPresenter = new LiveTesterPresenterImpl();
+        liveTesterPresenter.setModel(liveTesterModel);
+
+        LiveTesterViewImpl liveTesterView = new LiveTesterViewImpl();
+        liveTesterView.linkPresenter(liveTesterPresenter);
+
         DatabaseModel databaseModel = new DefaultDatabaseModel();
         OcrTestModel ocrTestModel = new DefaultOcrTestModel();
         OcrToolModel ocrToolModel = new DefaultOcrToolModel();
@@ -38,6 +50,7 @@ public class Main extends Application {
 
         HomeViewImpl homeView = new HomeViewImpl();
         homeView.linkPresenter(homePresenter);
+        homeView.setView(liveTesterView);
 
         if (!homeView.startView()) {
             Platform.exit();

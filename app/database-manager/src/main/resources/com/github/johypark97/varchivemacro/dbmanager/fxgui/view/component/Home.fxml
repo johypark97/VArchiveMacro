@@ -253,17 +253,17 @@
                               </rowConstraints>
                               <children>
                                 <Label text="Tessdata directory"/>
-                                <TextField GridPane.columnIndex="1"/>
-                                <Button GridPane.columnIndex="2" prefWidth="100.0" text="Select"/>
+                                <TextField GridPane.columnIndex="1" fx:id="liveTester_tessdataDirectoryTextField"/>
+                                <Button GridPane.columnIndex="2" prefWidth="100.0" text="Select" fx:id="liveTester_tessdataDirectorySelectButton"/>
                                 <Label GridPane.rowIndex="1" text="Tessdata language"/>
-                                <TextField GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1"/>
+                                <TextField GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" fx:id="liveTester_tessdataLanguageTextField"/>
                               </children>
                             </GridPane>
                             <Separator/>
                             <ButtonBar>
                               <buttons>
-                                <Button text="Open"/>
-                                <Button text="Close"/>
+                                <Button text="Open" fx:id="liveTester_openButton"/>
+                                <Button text="Close" fx:id="liveTester_closeButton"/>
                               </buttons>
                             </ButtonBar>
                           </children>

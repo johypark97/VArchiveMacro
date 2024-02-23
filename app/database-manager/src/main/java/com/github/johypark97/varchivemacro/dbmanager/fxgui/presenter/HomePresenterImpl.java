@@ -11,6 +11,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.S
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrCacheCaptureTask;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterView;
 import com.github.johypark97.varchivemacro.lib.common.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpPresenter;
 import java.io.File;
@@ -354,5 +355,31 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         if (!ocrToolModel.stopOcrGroundTruthGenerationService()) {
             defaultOnTaskNotRunning();
         }
+    }
+
+    @Override
+    public Path liveTester_onSelectTessdataDirectory(Stage stage) {
+        return openDirectorySelector("Select LiveTester tessdata directory", stage);
+    }
+
+    @Override
+    public LiveTester.StartData liveTester_onOpen(String tessdataDirectory,
+            String tessdataLanguage) {
+        Path tessdataPath;
+        try {
+            tessdataPath = Path.of(tessdataDirectory);
+        } catch (InvalidPathException e) {
+            defaultOnThrow(e);
+            return null;
+        }
+
+        LiveTester.StartData data = new LiveTester.StartData();
+
+        data.dlcSongList = databaseModel.getDlcSongList();
+        data.tessdataLanguage = tessdataLanguage;
+        data.tessdataPath = tessdataPath;
+        data.titleTool = databaseModel.getTitleTool();
+
+        return data;
     }
 }
