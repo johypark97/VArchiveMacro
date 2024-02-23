@@ -45,6 +45,16 @@ public abstract class AbstractMvpView<P extends MvpPresenter<V>, V extends MvpVi
     }
 
     @Override
+    public void requestFocus() {
+        stage.requestFocus();
+    }
+
+    @Override
+    public final boolean isStarted() {
+        return stage != null;
+    }
+
+    @Override
     public final boolean startView() {
         Objects.requireNonNull(presenter);
 
