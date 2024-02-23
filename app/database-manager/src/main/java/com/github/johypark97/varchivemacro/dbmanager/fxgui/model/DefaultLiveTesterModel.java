@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.common.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.common.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
@@ -20,6 +21,7 @@ import java.awt.Dimension;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 import javafx.embed.swing.SwingFXUtils;
 
 public class DefaultLiveTesterModel implements LiveTesterModel {
@@ -29,7 +31,7 @@ public class DefaultLiveTesterModel implements LiveTesterModel {
     private TitleSongRecognizer<LocalDlcSong> recognizer;
 
     @Override
-    public void initialize(StartData data)
+    public void initialize(List<LocalDlcSong> dlcSongList, TitleTool titleTool, StartData data)
             throws AWTException, NotSupportedResolutionException, OcrInitializationError {
         ocr = new DefaultOcrWrapper(data.tessdataPath, data.tessdataLanguage);
         robot = new Robot();
@@ -37,8 +39,8 @@ public class DefaultLiveTesterModel implements LiveTesterModel {
         BufferedImage image = AwtRobotHelper.captureScreenshot(robot);
         area = CollectionAreaFactory.create(new Dimension(image.getWidth(), image.getHeight()));
 
-        recognizer = new TitleSongRecognizer<>(data.titleTool);
-        recognizer.setSongList(data.dlcSongList);
+        recognizer = new TitleSongRecognizer<>(titleTool);
+        recognizer.setSongList(dlcSongList);
     }
 
     @Override

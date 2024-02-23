@@ -1,11 +1,8 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter;
 
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
-import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.common.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.common.mvp.MvpView;
 import java.nio.file.Path;
-import java.util.List;
 import javafx.scene.image.Image;
 
 public interface LiveTester {
@@ -26,8 +23,6 @@ public interface LiveTester {
 
 
     class StartData {
-        public List<LocalDlcSong> dlcSongList;
-        public TitleTool titleTool;
         public Path tessdataPath;
         public String tessdataLanguage;
     }

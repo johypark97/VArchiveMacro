@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager;
 
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.Dialogs;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DefaultDatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DefaultLiveTesterModel;
@@ -13,15 +14,49 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTesterP
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.LiveTesterViewImpl;
 import com.github.johypark97.varchivemacro.lib.common.FxHookWrapper;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main extends Application {
+    private final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
+    private final DatabaseModel databaseModel = new DefaultDatabaseModel();
+    private final LiveTesterModel liveTesterModel = new DefaultLiveTesterModel();
+    private final OcrTestModel ocrTestModel = new DefaultOcrTestModel();
+    private final OcrToolModel ocrToolModel = new DefaultOcrToolModel();
+
     public static void main(String[] args) {
         System.setProperty("prism.lcdtext", "false");
 
         launch(args);
+    }
+
+    private boolean loadDatabaseModel(DatabaseModel databaseModel) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(Path.of("").toAbsolutePath().toFile());
+        directoryChooser.setTitle("Select database directory");
+
+        File file = directoryChooser.showDialog(null);
+        if (file == null) {
+            return false;
+        }
+
+        try {
+            databaseModel.load(file.toPath());
+        } catch (IOException | RuntimeException e) {
+            LOGGER.atError().log("DatabaseModel exception", e);
+            Dialogs.showException(e);
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -33,28 +68,25 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        LiveTesterModel liveTesterModel = new DefaultLiveTesterModel();
+        if (!loadDatabaseModel(databaseModel)) {
+            Platform.exit();
+            return;
+        }
 
         LiveTesterPresenterImpl liveTesterPresenter = new LiveTesterPresenterImpl();
-        liveTesterPresenter.setModel(liveTesterModel);
+        liveTesterPresenter.linkModel(databaseModel, liveTesterModel);
 
         LiveTesterViewImpl liveTesterView = new LiveTesterViewImpl();
         liveTesterView.linkPresenter(liveTesterPresenter);
 
-        DatabaseModel databaseModel = new DefaultDatabaseModel();
-        OcrTestModel ocrTestModel = new DefaultOcrTestModel();
-        OcrToolModel ocrToolModel = new DefaultOcrToolModel();
-
         HomePresenterImpl homePresenter = new HomePresenterImpl();
-        homePresenter.setModel(databaseModel, ocrTestModel, ocrToolModel);
+        homePresenter.linkModel(databaseModel, ocrTestModel, ocrToolModel);
 
         HomeViewImpl homeView = new HomeViewImpl();
         homeView.linkPresenter(homePresenter);
         homeView.setView(liveTesterView);
 
-        if (!homeView.startView()) {
-            Platform.exit();
-        }
+        homeView.startView();
     }
 
     @Override

@@ -11,11 +11,10 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.S
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrCacheCaptureTask;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterView;
 import com.github.johypark97.varchivemacro.lib.common.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpPresenter;
 import java.io.File;
-import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.function.Consumer;
@@ -39,17 +38,29 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private static final Path INITIAL_DIRECTORY = Path.of("").toAbsolutePath();
 
+    private WeakReference<DatabaseModel> databaseModelReference;
+    private WeakReference<OcrTestModel> ocrTestModelReference;
+    private WeakReference<OcrToolModel> ocrToolModelReference;
+
     private FilteredList<SongData> filteredDlcSongList;
 
-    public DatabaseModel databaseModel;
-    public OcrTestModel ocrTestModel;
-    public OcrToolModel ocrToolModel;
-
-    public void setModel(DatabaseModel databaseModel, OcrTestModel ocrTestModel,
+    public void linkModel(DatabaseModel databaseModel, OcrTestModel ocrTestModel,
             OcrToolModel ocrToolModel) {
-        this.databaseModel = databaseModel;
-        this.ocrTestModel = ocrTestModel;
-        this.ocrToolModel = ocrToolModel;
+        databaseModelReference = new WeakReference<>(databaseModel);
+        ocrTestModelReference = new WeakReference<>(ocrTestModel);
+        ocrToolModelReference = new WeakReference<>(ocrToolModel);
+    }
+
+    private DatabaseModel getDatabaseModel() {
+        return databaseModelReference.get();
+    }
+
+    private OcrTestModel getOcrTestModel() {
+        return ocrTestModelReference.get();
+    }
+
+    private OcrToolModel getOcrToolModel() {
+        return ocrToolModelReference.get();
     }
 
     private void defaultOnThrow(Throwable throwable) {
@@ -63,10 +74,6 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private void defaultOnTaskNotRunning() {
         Dialogs.showWarning("The task is not running.");
-    }
-
-    private Path openDirectorySelector(String title) {
-        return openDirectorySelector(title, null);
     }
 
     private Path openDirectorySelector(String title, Window ownerWindow) {
@@ -84,48 +91,35 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public boolean initialize() {
-        Path path = openDirectorySelector("Select database directory");
-        if (path == null) {
-            return false;
-        }
-
-        try {
-            databaseModel.load(path);
-        } catch (IOException | RuntimeException e) {
-            LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, e);
-            Dialogs.showException(e);
-            return false;
-        }
-
         // @formatter:off
-        ocrTestModel.setupOcrTestService()
-                .setDlcSongList(databaseModel.getDlcSongList())
-                .setTitleTool(databaseModel.getTitleTool())
+        getOcrTestModel().setupOcrTestService()
+                .setDlcSongList(getDatabaseModel().getDlcSongList())
+                .setTitleTool(getDatabaseModel().getTitleTool())
                 .setOnDone(() -> Dialogs.showInformation("OcrTest done."))
                 .setOnCancel(() -> Dialogs.showInformation("OcrTest canceled."))
                 .setOnThrow(this::defaultOnThrow)
                 .setOnUpdateProgress(getView()::ocrTester_updateProgressIndicator)
                 .build();
 
-        ocrToolModel.setupOcrCacheCaptureService()
-                .setDlcSongList(databaseModel.getDlcSongList())
+        getOcrToolModel().setupOcrCacheCaptureService()
+                .setDlcSongList(getDatabaseModel().getDlcSongList())
                 .setOnCancel(() -> Dialogs.showInformation("OcrCapture canceled."))
                 .setOnDone(() -> Dialogs.showInformation("OcrCapture done."))
                 .setOnThrow(this::defaultOnThrow)
                 .build();
 
-        ocrToolModel.setupOcrCacheClassificationService()
-                .setDlcSongList(databaseModel.getDlcSongList())
-                .setTitleTool(databaseModel.getTitleTool())
+        getOcrToolModel().setupOcrCacheClassificationService()
+                .setDlcSongList(getDatabaseModel().getDlcSongList())
+                .setTitleTool(getDatabaseModel().getTitleTool())
                 .setOnCancel(() -> Dialogs.showInformation("OcrCacheClassification canceled."))
                 .setOnDone(() -> Dialogs.showInformation("OcrCacheClassification done."))
                 .setOnThrow(this::defaultOnThrow)
                 .setOnUpdateProgress(getView()::ocrCacheClassifier_updateProgressIndicator)
                 .build();
 
-        ocrToolModel.setupOcrGroundTruthGenerationService()
-                .setDlcSongList(databaseModel.getDlcSongList())
-                .setTitleTool(databaseModel.getTitleTool())
+        getOcrToolModel().setupOcrGroundTruthGenerationService()
+                .setDlcSongList(getDatabaseModel().getDlcSongList())
+                .setTitleTool(getDatabaseModel().getTitleTool())
                 .setOnCancel(() -> Dialogs.showInformation("OcrGroundTruthGeneration canceled."))
                 .setOnDone(() -> Dialogs.showInformation("OcrGroundTruthGeneration done."))
                 .setOnThrow(this::defaultOnThrow)
@@ -148,7 +142,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void onViewShowing_viewer_linkTableView(TableView<SongData> tableView) {
-        filteredDlcSongList = new FilteredList<>(databaseModel.getObservableDlcSongList());
+        filteredDlcSongList = new FilteredList<>(getDatabaseModel().getObservableDlcSongList());
 
         SortedList<SongData> list = new SortedList<>(filteredDlcSongList);
         list.comparatorProperty().bind(tableView.comparatorProperty());
@@ -163,7 +157,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void onViewShowing_ocrTester_linkTableView(TableView<OcrTestData> tableView) {
-        SortedList<OcrTestData> list = new SortedList<>(ocrTestModel.getOcrTestDataList());
+        SortedList<OcrTestData> list = new SortedList<>(getOcrTestModel().getOcrTestDataList());
         list.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(list);
     }
@@ -216,7 +210,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void checker_onValidateDatabase() {
-        databaseModel.validateDatabase(getView()::checker_setResultText);
+        getDatabaseModel().validateDatabase(getView()::checker_setResultText);
     }
 
     @Override
@@ -224,7 +218,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         Consumer<String> onDone = getView()::checker_setResultText;
         Consumer<Throwable> onThrow = this::defaultOnThrow;
 
-        databaseModel.compareDatabaseWithRemote(onDone, onThrow);
+        getDatabaseModel().compareDatabaseWithRemote(onDone, onThrow);
     }
 
     @Override
@@ -250,14 +244,14 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             return;
         }
 
-        if (!ocrTestModel.startOcrTestService(cachePath, tessdataPath, tessdataLanguage)) {
+        if (!getOcrTestModel().startOcrTestService(cachePath, tessdataPath, tessdataLanguage)) {
             defaultOnTaskRunning();
         }
     }
 
     @Override
     public void ocrTester_onStop() {
-        if (!ocrTestModel.stopOcrTestService()) {
+        if (!getOcrTestModel().stopOcrTestService()) {
             defaultOnTaskNotRunning();
         }
     }
@@ -278,13 +272,13 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             return;
         }
 
-        ocrToolModel.startOcrCacheCaptureService(captureDelay, keyInputDelay, keyInputDuration,
+        getOcrToolModel().startOcrCacheCaptureService(captureDelay, keyInputDelay, keyInputDuration,
                 outputPath);
     }
 
     @Override
     public void ocrCacheCapturer_onStop() {
-        if (!ocrToolModel.stopOcrCacheCaptureService()) {
+        if (!getOcrToolModel().stopOcrCacheCaptureService()) {
             defaultOnTaskNotRunning();
         }
     }
@@ -311,14 +305,14 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             return;
         }
 
-        if (!ocrToolModel.startOcrCacheClassificationService(inputPath, outputPath)) {
+        if (!getOcrToolModel().startOcrCacheClassificationService(inputPath, outputPath)) {
             defaultOnTaskRunning();
         }
     }
 
     @Override
     public void ocrCacheClassifier_onStop() {
-        if (!ocrToolModel.stopOcrCacheClassificationService()) {
+        if (!getOcrToolModel().stopOcrCacheClassificationService()) {
             defaultOnTaskNotRunning();
         }
     }
@@ -345,14 +339,14 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             return;
         }
 
-        if (!ocrToolModel.startOcrGroundTruthGenerationService(inputPath, outputPath)) {
+        if (!getOcrToolModel().startOcrGroundTruthGenerationService(inputPath, outputPath)) {
             defaultOnTaskRunning();
         }
     }
 
     @Override
     public void ocrGroundTruthGenerator_onStop() {
-        if (!ocrToolModel.stopOcrGroundTruthGenerationService()) {
+        if (!getOcrToolModel().stopOcrGroundTruthGenerationService()) {
             defaultOnTaskNotRunning();
         }
     }
@@ -375,10 +369,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
         LiveTester.StartData data = new LiveTester.StartData();
 
-        data.dlcSongList = databaseModel.getDlcSongList();
         data.tessdataLanguage = tessdataLanguage;
         data.tessdataPath = tessdataPath;
-        data.titleTool = databaseModel.getTitleTool();
 
         return data;
     }
