@@ -5,25 +5,21 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterPresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterView;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.StartData;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.stage.LiveTesterStage;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component.LiveTesterComponent;
 import com.github.johypark97.varchivemacro.lib.common.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpView;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
-import java.net.URL;
+import java.lang.ref.WeakReference;
 import java.util.Objects;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, LiveTesterView>
         implements LiveTesterView {
-    private static final String TITLE = "OCR Live Tester";
-
-    private static final String GLOBAL_CSS_FILENAME = "global.css";
-
-    private LiveTesterComponent liveTesterComponent;
-
     private final NativeKeyListener nativeKeyListener;
+
+    private WeakReference<LiveTesterComponent> liveTesterComponentReference;
 
     private StartData startData;
 
@@ -45,6 +41,10 @@ public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, Liv
         };
     }
 
+    private LiveTesterComponent getLiveTesterComponent() {
+        return liveTesterComponentReference.get();
+    }
+
     @Override
     public void setStartData(StartData value) {
         startData = value;
@@ -57,9 +57,9 @@ public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, Liv
             return;
         }
 
-        liveTesterComponent.imageView.setImage(data.image);
-        liveTesterComponent.ocrTextField.setText(data.text);
-        liveTesterComponent.recognizedSongTextField.setText(data.recognized);
+        getLiveTesterComponent().imageView.setImage(data.image);
+        getLiveTesterComponent().ocrTextField.setText(data.text);
+        getLiveTesterComponent().recognizedSongTextField.setText(data.recognized);
     }
 
     @Override
@@ -69,18 +69,11 @@ public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, Liv
 
     @Override
     protected Stage newStage() {
-        URL globalCss = LiveTesterViewImpl.class.getResource(GLOBAL_CSS_FILENAME);
-        Objects.requireNonNull(globalCss);
+        LiveTesterStage stage = new LiveTesterStage();
 
-        liveTesterComponent = new LiveTesterComponent();
-        Scene scene = new Scene(liveTesterComponent);
-        scene.getStylesheets().add(globalCss.toExternalForm());
+        liveTesterComponentReference = new WeakReference<>(stage.liveTesterComponent);
 
-        Stage stage = new Stage();
-        stage.setScene(scene);
-
-        stage.setAlwaysOnTop(true);
-        stage.setTitle(TITLE);
+        stage.setOnShowing(event -> FxHookWrapper.addKeyListener(nativeKeyListener));
 
         stage.setOnShown(event -> {
             double height = stage.getHeight();
@@ -93,7 +86,6 @@ public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, Liv
             stage.setMinWidth(width);
         });
 
-        stage.setOnShowing(event -> FxHookWrapper.addKeyListener(nativeKeyListener));
         stage.setOnHiding(event -> FxHookWrapper.removeKeyListener(nativeKeyListener));
 
         return stage;
@@ -108,12 +100,6 @@ public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, Liv
 
     @Override
     protected boolean onStopView() {
-        if (!getPresenter().terminate()) {
-            return false;
-        }
-
-        liveTesterComponent = null; // NOPMD
-
-        return true;
+        return getPresenter().terminate();
     }
 }

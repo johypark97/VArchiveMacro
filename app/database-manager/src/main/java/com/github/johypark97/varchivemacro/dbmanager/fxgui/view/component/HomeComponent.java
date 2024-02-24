@@ -3,10 +3,11 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.HomeViewImpl;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.lib.common.database.comparator.TitleComparator;
 import com.github.johypark97.varchivemacro.lib.common.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.common.mvp.MvpFxml;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -29,7 +30,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class HomeComponent extends TabPane {
     private static final String FXML_FILENAME = "Home.fxml";
 
-    public final HomeViewImpl view;
+    private final WeakReference<HomeView> viewReference;
 
     @FXML
     public TextField viewer_filterTextField;
@@ -173,8 +174,8 @@ public class HomeComponent extends TabPane {
     public SliderTextFieldLinker ocrCacheCapturer_keyInputDelayLinker;
     public SliderTextFieldLinker ocrCacheCapturer_keyInputDurationLinker;
 
-    public HomeComponent(HomeViewImpl view) {
-        this.view = view;
+    public HomeComponent(HomeView view) {
+        viewReference = new WeakReference<>(view);
 
         URL url = HomeComponent.class.getResource(FXML_FILENAME);
         MvpFxml.loadRoot(this, url);
@@ -191,13 +192,17 @@ public class HomeComponent extends TabPane {
         setupLiveTester();
     }
 
+    private HomeView getView() {
+        return viewReference.get();
+    }
+
     private void setupViewerTab() {
         setupViewerTab_tableView();
 
-        viewer_filterTextField.textProperty()
-                .addListener((observable, oldValue, newValue) -> view.viewer_updateTableFilter());
-        viewer_filterComboBox.valueProperty()
-                .addListener((observable, oldValue, newValue) -> view.viewer_updateTableFilter());
+        viewer_filterTextField.textProperty().addListener(
+                (observable, oldValue, newValue) -> getView().viewer_updateTableFilter());
+        viewer_filterComboBox.valueProperty().addListener(
+                (observable, oldValue, newValue) -> getView().viewer_updateTableFilter());
         viewer_filterResetButton.setOnAction(event -> viewer_filterTextField.clear());
     }
 
@@ -226,20 +231,20 @@ public class HomeComponent extends TabPane {
     }
 
     private void setupCheckerTab() {
-        checker_validateButton.setOnAction(event -> view.checker_validateDatabase());
+        checker_validateButton.setOnAction(event -> getView().checker_validateDatabase());
         checker_compareWithRemoteButton.setOnAction(
-                event -> view.checker_compareDatabaseWithRemote());
+                event -> getView().checker_compareDatabaseWithRemote());
     }
 
     private void setupOcrTesterTab() {
         setupOcrTesterTab_tableView();
 
         ocrTester_cacheDirectorySelectButton.setOnAction(
-                event -> view.ocrTester_selectCacheDirectory());
+                event -> getView().ocrTester_selectCacheDirectory());
         ocrTester_tessdataDirectorySelectButton.setOnAction(
-                event -> view.ocrTester_selectTessdataDirectory());
-        ocrTester_startButton.setOnAction(event -> view.ocrTester_start());
-        ocrTester_stopButton.setOnAction(event -> view.ocrTester_stop());
+                event -> getView().ocrTester_selectTessdataDirectory());
+        ocrTester_startButton.setOnAction(event -> getView().ocrTester_start());
+        ocrTester_stopButton.setOnAction(event -> getView().ocrTester_stop());
     }
 
     private void setupOcrTesterTab_tableView() {
@@ -378,41 +383,41 @@ public class HomeComponent extends TabPane {
                         ocrCacheCapturer_keyInputDurationTextField);
 
         ocrCacheCapturer_outputDirectorySelectButton.setOnAction(
-                event -> view.ocrCacheCapturer_selectOutputDirectory());
+                event -> getView().ocrCacheCapturer_selectOutputDirectory());
     }
 
     private void setupOcrClassifier() {
         ocrCacheClassifier_inputDirectorySelectButton.setOnAction(
-                event -> view.ocrCacheClassifier_selectInputDirectory());
+                event -> getView().ocrCacheClassifier_selectInputDirectory());
 
         ocrCacheClassifier_outputDirectorySelectButton.setOnAction(
-                event -> view.ocrCacheClassifier_selectOutputDirectory());
+                event -> getView().ocrCacheClassifier_selectOutputDirectory());
 
-        ocrCacheClassifier_startButton.setOnAction(event -> view.ocrCacheClassifier_start());
+        ocrCacheClassifier_startButton.setOnAction(event -> getView().ocrCacheClassifier_start());
 
-        ocrCacheClassifier_stopButton.setOnAction(event -> view.ocrCacheClassifier_stop());
+        ocrCacheClassifier_stopButton.setOnAction(event -> getView().ocrCacheClassifier_stop());
     }
 
     private void setupOcrGroundTruthGenerator() {
         ocrGroundTruthGenerator_inputDirectorySelectButton.setOnAction(
-                event -> view.ocrGroundTruthGenerator_selectInputDirectory());
+                event -> getView().ocrGroundTruthGenerator_selectInputDirectory());
 
         ocrGroundTruthGenerator_outputDirectorySelectButton.setOnAction(
-                event -> view.ocrGroundTruthGenerator_selectOutputDirectory());
+                event -> getView().ocrGroundTruthGenerator_selectOutputDirectory());
 
         ocrGroundTruthGenerator_startButton.setOnAction(
-                event -> view.ocrGroundTruthGenerator_start());
+                event -> getView().ocrGroundTruthGenerator_start());
 
         ocrGroundTruthGenerator_stopButton.setOnAction(
-                event -> view.ocrGroundTruthGenerator_stop());
+                event -> getView().ocrGroundTruthGenerator_stop());
     }
 
     private void setupLiveTester() {
         liveTester_tessdataDirectorySelectButton.setOnAction(
-                event -> view.liveTester_selectTessdataDirectory());
+                event -> getView().liveTester_selectTessdataDirectory());
 
-        liveTester_openButton.setOnAction(event -> view.liveTester_open());
+        liveTester_openButton.setOnAction(event -> getView().liveTester_open());
 
-        liveTester_closeButton.setOnAction(event -> view.liveTester_close());
+        liveTester_closeButton.setOnAction(event -> getView().liveTester_close());
     }
 }

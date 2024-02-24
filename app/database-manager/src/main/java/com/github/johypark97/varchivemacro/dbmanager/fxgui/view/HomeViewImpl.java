@@ -7,30 +7,21 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeVi
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterView;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component.HomeComponent;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.stage.HomeStage;
 import com.github.johypark97.varchivemacro.lib.common.HookWrapper;
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpView;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
-import java.net.URL;
+import java.lang.ref.WeakReference;
 import java.nio.file.Path;
-import java.util.Objects;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> implements HomeView {
-    private static final String TITLE = "Database Manager";
-
-    private static final String GLOBAL_CSS_FILENAME = "global.css";
-    private static final String TABLE_COLOR_CSS_FILENAME = "table-color.css";
-
-    private static final int STAGE_HEIGHT = 540;
-    private static final int STAGE_WIDTH = 960;
-
     private final NativeKeyListener nativeKeyListener;
 
-    private final HomeComponent homeComponent = new HomeComponent(this);
+    private WeakReference<HomeComponent> homeComponentReference;
 
-    public LiveTesterView liveTesterView;
+    private WeakReference<LiveTesterView> liveTesterViewReference;
 
     public HomeViewImpl() {
         nativeKeyListener = new NativeKeyListener() {
@@ -62,21 +53,29 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         };
     }
 
-    public void setView(LiveTesterView liveTesterView) {
-        this.liveTesterView = liveTesterView;
+    public void linkView(LiveTesterView liveTesterView) {
+        liveTesterViewReference = new WeakReference<>(liveTesterView);
+    }
+
+    private HomeComponent getHomeComponent() {
+        return homeComponentReference.get();
+    }
+
+    private LiveTesterView getLiveTesterView() {
+        return liveTesterViewReference.get();
     }
 
     @Override
     public void viewer_updateTableFilter() {
-        String regex = homeComponent.viewer_filterTextField.getText();
-        SongDataProperty property = homeComponent.viewer_filterComboBox.getValue();
+        String regex = getHomeComponent().viewer_filterTextField.getText();
+        SongDataProperty property = getHomeComponent().viewer_filterComboBox.getValue();
 
         getPresenter().viewer_onUpdateTableFilter(regex, property);
     }
 
     @Override
     public void checker_setResultText(String value) {
-        homeComponent.checker_textArea.setText(value);
+        getHomeComponent().checker_textArea.setText(value);
     }
 
     @Override
@@ -93,7 +92,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     public void ocrTester_selectCacheDirectory() {
         Path path = getPresenter().ocrTester_onSelectCacheDirectory(getStage());
         if (path != null) {
-            homeComponent.ocrTester_cacheDirectoryTextField.setText(path.toString());
+            getHomeComponent().ocrTester_cacheDirectoryTextField.setText(path.toString());
         }
     }
 
@@ -101,15 +100,16 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     public void ocrTester_selectTessdataDirectory() {
         Path path = getPresenter().ocrTester_onSelectTessdataDirectory(getStage());
         if (path != null) {
-            homeComponent.ocrTester_tessdataDirectoryTextField.setText(path.toString());
+            getHomeComponent().ocrTester_tessdataDirectoryTextField.setText(path.toString());
         }
     }
 
     @Override
     public void ocrTester_start() {
-        String cacheDirectory = homeComponent.ocrTester_cacheDirectoryTextField.getText();
-        String tessdataDirectory = homeComponent.ocrTester_tessdataDirectoryTextField.getText();
-        String tessdataLanguage = homeComponent.ocrTester_tessdataLanguageTextField.getText();
+        String cacheDirectory = getHomeComponent().ocrTester_cacheDirectoryTextField.getText();
+        String tessdataDirectory =
+                getHomeComponent().ocrTester_tessdataDirectoryTextField.getText();
+        String tessdataLanguage = getHomeComponent().ocrTester_tessdataLanguageTextField.getText();
 
         getPresenter().ocrTester_onStart(cacheDirectory, tessdataDirectory, tessdataLanguage);
     }
@@ -121,8 +121,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     public void ocrTester_updateProgressIndicator(double value) {
-        homeComponent.ocrTester_progressBar.setProgress(value);
-        homeComponent.ocrTester_progressLabel.setText(
+        getHomeComponent().ocrTester_progressBar.setProgress(value);
+        getHomeComponent().ocrTester_progressLabel.setText(
                 (value >= 0 && value <= 1) ? String.format("%.2f%%", value * 100) : "");
     }
 
@@ -130,16 +130,18 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     public void ocrCacheCapturer_selectOutputDirectory() {
         Path path = getPresenter().ocrCacheCapturer_onSelectOutputDirectory(getStage());
         if (path != null) {
-            homeComponent.ocrCacheCapturer_outputDirectoryTextField.setText(path.toString());
+            getHomeComponent().ocrCacheCapturer_outputDirectoryTextField.setText(path.toString());
         }
     }
 
     @Override
     public void ocrCacheCapturer_start() {
-        int captureDelay = homeComponent.ocrCacheCapturer_captureDelayLinker.getValue();
-        int keyInputDelay = homeComponent.ocrCacheCapturer_keyInputDelayLinker.getValue();
-        int keyInputDuration = homeComponent.ocrCacheCapturer_keyInputDurationLinker.getValue();
-        String outputDirectory = homeComponent.ocrCacheCapturer_outputDirectoryTextField.getText();
+        int captureDelay = getHomeComponent().ocrCacheCapturer_captureDelayLinker.getValue();
+        int keyInputDelay = getHomeComponent().ocrCacheCapturer_keyInputDelayLinker.getValue();
+        int keyInputDuration =
+                getHomeComponent().ocrCacheCapturer_keyInputDurationLinker.getValue();
+        String outputDirectory =
+                getHomeComponent().ocrCacheCapturer_outputDirectoryTextField.getText();
 
         getPresenter().ocrCacheCapturer_onStart(captureDelay, keyInputDelay, keyInputDuration,
                 outputDirectory);
@@ -154,7 +156,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     public void ocrCacheClassifier_selectInputDirectory() {
         Path path = getPresenter().ocrCacheClassifier_onSelectInputDirectory(getStage());
         if (path != null) {
-            homeComponent.ocrCacheClassifier_inputDirectoryTextField.setText(path.toString());
+            getHomeComponent().ocrCacheClassifier_inputDirectoryTextField.setText(path.toString());
         }
     }
 
@@ -162,22 +164,23 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     public void ocrCacheClassifier_selectOutputDirectory() {
         Path path = getPresenter().ocrCacheClassifier_onSelectOutputDirectory(getStage());
         if (path != null) {
-            homeComponent.ocrCacheClassifier_outputDirectoryTextField.setText(path.toString());
+            getHomeComponent().ocrCacheClassifier_outputDirectoryTextField.setText(path.toString());
         }
     }
 
     @Override
     public void ocrCacheClassifier_updateProgressIndicator(double value) {
-        homeComponent.ocrCacheClassifier_progressBar.setProgress(value);
-        homeComponent.ocrCacheClassifier_progressLabel.setText(
+        getHomeComponent().ocrCacheClassifier_progressBar.setProgress(value);
+        getHomeComponent().ocrCacheClassifier_progressLabel.setText(
                 (value >= 0 && value <= 1) ? String.format("%.2f%%", value * 100) : "");
     }
 
     @Override
     public void ocrCacheClassifier_start() {
-        String inputDirectory = homeComponent.ocrCacheClassifier_inputDirectoryTextField.getText();
+        String inputDirectory =
+                getHomeComponent().ocrCacheClassifier_inputDirectoryTextField.getText();
         String outputDirectory =
-                homeComponent.ocrCacheClassifier_outputDirectoryTextField.getText();
+                getHomeComponent().ocrCacheClassifier_outputDirectoryTextField.getText();
 
         getPresenter().ocrCacheClassifier_onStart(inputDirectory, outputDirectory);
     }
@@ -191,7 +194,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     public void ocrGroundTruthGenerator_selectInputDirectory() {
         Path path = getPresenter().ocrGroundTruthGenerator_onSelectInputDirectory(getStage());
         if (path != null) {
-            homeComponent.ocrGroundTruthGenerator_inputDirectoryTextField.setText(path.toString());
+            getHomeComponent().ocrGroundTruthGenerator_inputDirectoryTextField.setText(
+                    path.toString());
         }
     }
 
@@ -199,23 +203,24 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     public void ocrGroundTruthGenerator_selectOutputDirectory() {
         Path path = getPresenter().ocrGroundTruthGenerator_onSelectOutputDirectory(getStage());
         if (path != null) {
-            homeComponent.ocrGroundTruthGenerator_outputDirectoryTextField.setText(path.toString());
+            getHomeComponent().ocrGroundTruthGenerator_outputDirectoryTextField.setText(
+                    path.toString());
         }
     }
 
     @Override
     public void ocrGroundTruthGenerator_updateProgressIndicator(double value) {
-        homeComponent.ocrGroundTruthGenerator_progressBar.setProgress(value);
-        homeComponent.ocrGroundTruthGenerator_progressLabel.setText(
+        getHomeComponent().ocrGroundTruthGenerator_progressBar.setProgress(value);
+        getHomeComponent().ocrGroundTruthGenerator_progressLabel.setText(
                 (value >= 0 && value <= 1) ? String.format("%.2f%%", value * 100) : "");
     }
 
     @Override
     public void ocrGroundTruthGenerator_start() {
         String inputDirectory =
-                homeComponent.ocrGroundTruthGenerator_inputDirectoryTextField.getText();
+                getHomeComponent().ocrGroundTruthGenerator_inputDirectoryTextField.getText();
         String outputDirectory =
-                homeComponent.ocrGroundTruthGenerator_outputDirectoryTextField.getText();
+                getHomeComponent().ocrGroundTruthGenerator_outputDirectoryTextField.getText();
 
         getPresenter().ocrGroundTruthGenerator_onStart(inputDirectory, outputDirectory);
     }
@@ -229,30 +234,31 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     public void liveTester_selectTessdataDirectory() {
         Path path = getPresenter().liveTester_onSelectTessdataDirectory(getStage());
         if (path != null) {
-            homeComponent.liveTester_tessdataDirectoryTextField.setText(path.toString());
+            getHomeComponent().liveTester_tessdataDirectoryTextField.setText(path.toString());
         }
     }
 
     @Override
     public void liveTester_open() {
-        if (liveTesterView.isStarted()) {
-            liveTesterView.requestFocus();
+        if (getLiveTesterView().isStarted()) {
+            getLiveTesterView().requestFocus();
             return;
         }
 
-        String tessdataDirectory = homeComponent.liveTester_tessdataDirectoryTextField.getText();
-        String tessdataLanguage = homeComponent.liveTester_tessdataLanguageTextField.getText();
+        String tessdataDirectory =
+                getHomeComponent().liveTester_tessdataDirectoryTextField.getText();
+        String tessdataLanguage = getHomeComponent().liveTester_tessdataLanguageTextField.getText();
 
         LiveTester.StartData data =
                 getPresenter().liveTester_onOpen(tessdataDirectory, tessdataLanguage);
 
-        liveTesterView.setStartData(data);
-        liveTesterView.startView();
+        getLiveTesterView().setStartData(data);
+        getLiveTesterView().startView();
     }
 
     @Override
     public void liveTester_close() {
-        liveTesterView.stopView();
+        getLiveTesterView().stopView();
     }
 
     @Override
@@ -262,40 +268,24 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     protected Stage newStage() {
-        URL globalCss = HomeViewImpl.class.getResource(GLOBAL_CSS_FILENAME);
-        Objects.requireNonNull(globalCss);
+        HomeStage stage = new HomeStage(this);
 
-        URL tableColorCss = HomeViewImpl.class.getResource(TABLE_COLOR_CSS_FILENAME);
-        Objects.requireNonNull(tableColorCss);
-
-        Scene scene = new Scene(homeComponent);
-        scene.getStylesheets().add(globalCss.toExternalForm());
-        scene.getStylesheets().add(tableColorCss.toExternalForm());
-
-        Stage stage = new Stage();
-        stage.setScene(scene);
-
-        stage.setTitle(TITLE);
-
-        stage.setHeight(STAGE_HEIGHT);
-        stage.setWidth(STAGE_WIDTH);
-
-        stage.setMinHeight(STAGE_HEIGHT);
-        stage.setMinWidth(STAGE_WIDTH);
+        homeComponentReference = new WeakReference<>(stage.homeComponent);
 
         stage.setOnShowing(event -> {
-            getPresenter().onViewShowing_viewer_linkTableView(homeComponent.viewer_tableView);
+            getPresenter().onViewShowing_viewer_linkTableView(getHomeComponent().viewer_tableView);
             getPresenter().onViewShowing_viewer_setFilterColumn(
-                    homeComponent.viewer_filterComboBox);
+                    getHomeComponent().viewer_filterComboBox);
 
-            getPresenter().onViewShowing_ocrTester_linkTableView(homeComponent.ocrTester_tableView);
+            getPresenter().onViewShowing_ocrTester_linkTableView(
+                    getHomeComponent().ocrTester_tableView);
 
             getPresenter().onViewShowing_ocrCacheCapturer_setupCaptureDelayLinker(
-                    homeComponent.ocrCacheCapturer_captureDelayLinker);
+                    getHomeComponent().ocrCacheCapturer_captureDelayLinker);
             getPresenter().onViewShowing_ocrCacheCapturer_setupKeyInputDelayLinker(
-                    homeComponent.ocrCacheCapturer_keyInputDelayLinker);
+                    getHomeComponent().ocrCacheCapturer_keyInputDelayLinker);
             getPresenter().onViewShowing_ocrCacheCapturer_setupKeyInputDurationLinker(
-                    homeComponent.ocrCacheCapturer_keyInputDurationLinker);
+                    getHomeComponent().ocrCacheCapturer_keyInputDurationLinker);
 
             HookWrapper.addKeyListener(nativeKeyListener);
         });
@@ -312,7 +302,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     protected boolean onStopView() {
-        if (liveTesterView.isStarted() && !liveTesterView.stopView()) {
+        if (getLiveTesterView().isStarted() && !getLiveTesterView().stopView()) {
             return false;
         }
 
