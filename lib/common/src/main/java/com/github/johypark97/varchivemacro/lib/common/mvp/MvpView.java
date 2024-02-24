@@ -1,13 +1,15 @@
 package com.github.johypark97.varchivemacro.lib.common.mvp;
 
 public interface MvpView<T extends MvpPresenter<?>> {
-    void linkPresenter(T presenter);
+    boolean isLinked(T presenter);
 
-    void requestFocus();
+    void onLinkView(T presenter);
+
+    void onUnlinkView();
 
     boolean isStarted();
 
-    boolean startView();
+    void onStartPresenter();
 
-    boolean stopView();
+    void onStopPresenter();
 }
