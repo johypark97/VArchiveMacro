@@ -32,8 +32,8 @@ public class Main extends Application {
     private final OcrTestModel ocrTestModel = new DefaultOcrTestModel();
     private final OcrToolModel ocrToolModel = new DefaultOcrToolModel();
 
-    private final HomeViewImpl homeView = new HomeViewImpl();
-    private final LiveTesterViewImpl liveTesterView = new LiveTesterViewImpl();
+    private final HomePresenterImpl homePresenter = new HomePresenterImpl();
+    private final LiveTesterPresenterImpl liveTesterPresenter = new LiveTesterPresenterImpl();
 
     public static void main(String[] args) {
         System.setProperty("prism.lcdtext", "false");
@@ -76,18 +76,14 @@ public class Main extends Application {
             return;
         }
 
-        LiveTesterPresenterImpl liveTesterPresenter = new LiveTesterPresenterImpl();
         liveTesterPresenter.linkModel(databaseModel, liveTesterModel);
+        liveTesterPresenter.linkView(new LiveTesterViewImpl());
 
-        liveTesterView.linkPresenter(liveTesterPresenter);
-
-        HomePresenterImpl homePresenter = new HomePresenterImpl();
         homePresenter.linkModel(databaseModel, ocrTestModel, ocrToolModel);
+        homePresenter.linkPresenter(liveTesterPresenter);
+        homePresenter.linkView(new HomeViewImpl());
 
-        homeView.linkPresenter(homePresenter);
-        homeView.linkView(liveTesterView);
-
-        homeView.startView();
+        homePresenter.startPresenter();
     }
 
     @Override

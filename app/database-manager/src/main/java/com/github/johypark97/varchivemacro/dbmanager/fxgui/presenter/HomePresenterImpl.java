@@ -11,6 +11,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.S
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrCacheCaptureTask;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterPresenter;
 import com.github.johypark97.varchivemacro.lib.common.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpPresenter;
 import java.io.File;
@@ -42,6 +43,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     private WeakReference<OcrTestModel> ocrTestModelReference;
     private WeakReference<OcrToolModel> ocrToolModelReference;
 
+    private WeakReference<LiveTesterPresenter> liveTesterPresenterReference;
+
     private FilteredList<SongData> filteredDlcSongList;
 
     public void linkModel(DatabaseModel databaseModel, OcrTestModel ocrTestModel,
@@ -49,6 +52,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         databaseModelReference = new WeakReference<>(databaseModel);
         ocrTestModelReference = new WeakReference<>(ocrTestModel);
         ocrToolModelReference = new WeakReference<>(ocrToolModel);
+    }
+
+    public void linkPresenter(LiveTesterPresenter liveTesterPresenter) {
+        liveTesterPresenterReference = new WeakReference<>(liveTesterPresenter);
     }
 
     private DatabaseModel getDatabaseModel() {
@@ -61,6 +68,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private OcrToolModel getOcrToolModel() {
         return ocrToolModelReference.get();
+    }
+
+    private LiveTesterPresenter getLiveTesterPresenter() {
+        return liveTesterPresenterReference.get();
     }
 
     private void defaultOnThrow(Throwable throwable) {
@@ -90,7 +101,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public boolean initialize() {
+    protected HomePresenter getInstance() {
+        return this;
+    }
+
+    @Override
+    protected boolean initialize() {
         // @formatter:off
         getOcrTestModel().setupOcrTestService()
                 .setDlcSongList(getDatabaseModel().getDlcSongList())
@@ -131,7 +147,13 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public boolean terminate() {
+    protected boolean terminate() {
+        if (getLiveTesterPresenter().isStarted()) {
+            if (!getLiveTesterPresenter().stopPresenter()) {
+                return false;
+            }
+        }
+
         if (ServiceManager.getInstance().isRunningAny()) {
             Dialogs.showWarning("Some tasks are still running.", "Unable to exit.");
             return false;
@@ -357,14 +379,18 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public LiveTester.StartData liveTester_onOpen(String tessdataDirectory,
-            String tessdataLanguage) {
+    public void liveTester_onOpen(String tessdataDirectory, String tessdataLanguage) {
+        if (getLiveTesterPresenter().isStarted()) {
+            getLiveTesterPresenter().focusView();
+            return;
+        }
+
         Path tessdataPath;
         try {
             tessdataPath = Path.of(tessdataDirectory);
         } catch (InvalidPathException e) {
             defaultOnThrow(e);
-            return null;
+            return;
         }
 
         LiveTester.StartData data = new LiveTester.StartData();
@@ -372,6 +398,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         data.tessdataLanguage = tessdataLanguage;
         data.tessdataPath = tessdataPath;
 
-        return data;
+        getLiveTesterPresenter().setStartData(data);
+        getLiveTesterPresenter().startPresenter();
+    }
+
+    @Override
+    public void liveTester_onClose() {
+        getLiveTesterPresenter().stopPresenter();
     }
 }

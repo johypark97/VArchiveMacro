@@ -4,15 +4,13 @@ import com.github.johypark97.varchivemacro.dbmanager.core.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterPresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterView;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.StartData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.stage.LiveTesterStage;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component.LiveTesterComponent;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.stage.LiveTesterStage;
 import com.github.johypark97.varchivemacro.lib.common.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpView;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.lang.ref.WeakReference;
-import java.util.Objects;
 import javafx.stage.Stage;
 
 public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, LiveTesterView>
@@ -20,8 +18,6 @@ public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, Liv
     private final NativeKeyListener nativeKeyListener;
 
     private WeakReference<LiveTesterComponent> liveTesterComponentReference;
-
-    private StartData startData;
 
     public LiveTesterViewImpl() {
         nativeKeyListener = new NativeKeyListener() {
@@ -46,8 +42,8 @@ public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, Liv
     }
 
     @Override
-    public void setStartData(StartData value) {
-        startData = value;
+    public void focusView() {
+        getStage().requestFocus();
     }
 
     @Override
@@ -60,11 +56,6 @@ public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, Liv
         getLiveTesterComponent().imageView.setImage(data.image);
         getLiveTesterComponent().ocrTextField.setText(data.text);
         getLiveTesterComponent().recognizedSongTextField.setText(data.recognized);
-    }
-
-    @Override
-    protected LiveTesterView getInstance() {
-        return this;
     }
 
     @Override
@@ -89,17 +80,5 @@ public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, Liv
         stage.setOnHiding(event -> FxHookWrapper.removeKeyListener(nativeKeyListener));
 
         return stage;
-    }
-
-    @Override
-    protected boolean onStartView() {
-        Objects.requireNonNull(startData);
-
-        return getPresenter().initialize(startData);
-    }
-
-    @Override
-    protected boolean onStopView() {
-        return getPresenter().terminate();
     }
 }

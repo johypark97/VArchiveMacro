@@ -13,10 +13,6 @@ import javafx.stage.Stage;
 
 public interface Home {
     interface HomePresenter extends MvpPresenter<HomeView> {
-        boolean initialize();
-
-        boolean terminate();
-
         void onViewShowing_viewer_linkTableView(TableView<SongData> tableView);
 
         void onViewShowing_viewer_setFilterColumn(ComboBox<SongDataProperty> comboBox);
@@ -70,7 +66,9 @@ public interface Home {
 
         Path liveTester_onSelectTessdataDirectory(Stage stage);
 
-        LiveTester.StartData liveTester_onOpen(String tessdataDirectory, String tessdataLanguage);
+        void liveTester_onOpen(String tessdataDirectory, String tessdataLanguage);
+
+        void liveTester_onClose();
     }
 
 

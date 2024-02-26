@@ -16,12 +16,15 @@ import java.awt.AWTException;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Objects;
 
 public class LiveTesterPresenterImpl
         extends AbstractMvpPresenter<LiveTesterPresenter, LiveTesterView>
         implements LiveTesterPresenter {
     private WeakReference<DatabaseModel> databaseModelReference;
     private WeakReference<LiveTesterModel> liveTesterModelReference;
+
+    private StartData startData;
 
     public void linkModel(DatabaseModel databaseModel, LiveTesterModel liveTesterModel) {
         databaseModelReference = new WeakReference<>(databaseModel);
@@ -37,12 +40,19 @@ public class LiveTesterPresenterImpl
     }
 
     @Override
-    public boolean initialize(StartData data) {
+    protected LiveTesterPresenter getInstance() {
+        return this;
+    }
+
+    @Override
+    protected boolean initialize() {
+        Objects.requireNonNull(startData);
+
         List<LocalDlcSong> dlcSongList = getDatabaseModel().getDlcSongList();
         TitleTool titleTool = getDatabaseModel().getTitleTool();
 
         try {
-            getLiveTesterModel().initialize(dlcSongList, titleTool, data);
+            getLiveTesterModel().initialize(dlcSongList, titleTool, startData);
         } catch (AWTException | NotSupportedResolutionException | OcrInitializationError e) {
             Dialogs.showException(e);
             return false;
@@ -52,10 +62,20 @@ public class LiveTesterPresenterImpl
     }
 
     @Override
-    public boolean terminate() {
+    protected boolean terminate() {
         getLiveTesterModel().terminate();
 
         return true;
+    }
+
+    @Override
+    public void focusView() {
+        getView().focusView();
+    }
+
+    @Override
+    public void setStartData(StartData value) {
+        startData = value;
     }
 
     @Override

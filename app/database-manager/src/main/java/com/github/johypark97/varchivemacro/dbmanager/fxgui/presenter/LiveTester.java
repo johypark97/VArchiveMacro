@@ -7,16 +7,16 @@ import javafx.scene.image.Image;
 
 public interface LiveTester {
     interface LiveTesterPresenter extends MvpPresenter<LiveTesterView> {
-        boolean initialize(StartData data);
+        void focusView();
 
-        boolean terminate();
+        void setStartData(StartData value);
 
         RecognizedData onRecognize();
     }
 
 
     interface LiveTesterView extends MvpView<LiveTesterPresenter> {
-        void setStartData(StartData value);
+        void focusView();
 
         void recognize();
     }
