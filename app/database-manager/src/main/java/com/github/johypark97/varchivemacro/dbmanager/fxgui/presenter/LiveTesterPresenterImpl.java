@@ -47,6 +47,12 @@ public class LiveTesterPresenterImpl
     @Override
     protected boolean initialize() {
         Objects.requireNonNull(startData);
+        Objects.requireNonNull(startData.tessdataLanguage);
+        Objects.requireNonNull(startData.tessdataPath);
+
+        if (startData.tessdataLanguage.isBlank()) {
+            Dialogs.showWarning("tessdataLanguage is blank. may not work properly.");
+        }
 
         List<LocalDlcSong> dlcSongList = getDatabaseModel().getDlcSongList();
         TitleTool titleTool = getDatabaseModel().getTitleTool();
