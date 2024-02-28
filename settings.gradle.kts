@@ -1,6 +1,6 @@
 rootProject.name = "VArchiveMacro"
 
-include("app:database-manager")
-include("app:macro")
+include("dbmanager")
+include("macro")
 
 include("lib:common")
