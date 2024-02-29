@@ -1,4 +1,4 @@
-val buildBasename = "libcommon"
+val buildBasename = "libjfx"
 val buildVersion = Version.makeVersionString()
 
 plugins {
@@ -6,8 +6,7 @@ plugins {
 }
 
 dependencies {
-    api("com.github.kwhat:jnativehook:2.2.2")
-    api("com.google.code.gson:gson:2.10")
+    api(project(":lib:common"))
 }
 
 tasks.jar {

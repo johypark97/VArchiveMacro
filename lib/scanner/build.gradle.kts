@@ -1,4 +1,4 @@
-val buildBasename = "libcommon"
+val buildBasename = "libscanner"
 val buildVersion = Version.makeVersionString()
 
 plugins {
@@ -6,8 +6,9 @@ plugins {
 }
 
 dependencies {
-    api("com.github.kwhat:jnativehook:2.2.2")
-    api("com.google.code.gson:gson:2.10")
+    api(project(":lib:common"))
+
+    api("org.bytedeco:tesseract-platform:5.2.0-1.5.8")
 }
 
 tasks.jar {
