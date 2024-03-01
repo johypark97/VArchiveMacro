@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.gui.model;
 
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
-import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.ISongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;

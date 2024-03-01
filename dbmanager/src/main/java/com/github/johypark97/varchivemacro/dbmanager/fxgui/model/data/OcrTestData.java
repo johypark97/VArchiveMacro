@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data;
 
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
-import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 
 public class OcrTestData {
     private final LocalDlcSong targetSong;

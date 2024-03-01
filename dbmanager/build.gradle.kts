@@ -10,6 +10,8 @@ plugins {
 
 dependencies {
     implementation(project(":lib:common"))
+    implementation(project(":lib:jfx"))
+    implementation(project(":lib:scanner"))
 }
 
 application {

@@ -1,12 +1,12 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
-import com.github.johypark97.varchivemacro.lib.common.Enums;
-import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
-import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
-import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
-import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
-import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.lib.scanner.Enums;
+import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrInitializationError;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.ScannerOcr;

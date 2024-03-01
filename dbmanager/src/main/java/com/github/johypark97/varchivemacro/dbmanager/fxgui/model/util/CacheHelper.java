@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.util;
 
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

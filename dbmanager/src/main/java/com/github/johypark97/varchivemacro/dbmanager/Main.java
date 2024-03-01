@@ -13,7 +13,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.HomePresent
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTesterPresenterImpl;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.LiveTesterViewImpl;
-import com.github.johypark97.varchivemacro.lib.common.FxHookWrapper;
+import com.github.johypark97.varchivemacro.lib.jfx.FxHookWrapper;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;

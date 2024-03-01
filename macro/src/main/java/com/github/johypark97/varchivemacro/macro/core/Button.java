@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core;
 
-import com.github.johypark97.varchivemacro.lib.common.Enums;
+import com.github.johypark97.varchivemacro.lib.scanner.Enums;
 import com.google.common.base.Converter;
 
 public enum Button {

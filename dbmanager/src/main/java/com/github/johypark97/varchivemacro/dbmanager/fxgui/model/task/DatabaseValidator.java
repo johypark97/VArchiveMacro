@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.task;
 
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_dump;
 
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import java.util.List;

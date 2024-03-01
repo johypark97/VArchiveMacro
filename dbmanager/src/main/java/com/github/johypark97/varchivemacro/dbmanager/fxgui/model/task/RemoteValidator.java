@@ -2,11 +2,11 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.task;
 
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_dump;
 
-import com.github.johypark97.varchivemacro.lib.common.api.Api;
-import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher;
-import com.github.johypark97.varchivemacro.lib.common.api.StaticFetcher.RemoteSong;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.api.Api;
+import com.github.johypark97.varchivemacro.lib.scanner.api.StaticFetcher;
+import com.github.johypark97.varchivemacro.lib.scanner.api.StaticFetcher.RemoteSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.security.GeneralSecurityException;

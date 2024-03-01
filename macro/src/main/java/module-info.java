@@ -1,10 +1,11 @@
 module varchivemacro.macro {
     requires varchivemacro.lib.common;
+    requires varchivemacro.lib.scanner;
 
-    // guava
+    // 3rd party
+    requires com.github.kwhat.jnativehook;
     requires com.google.common;
-
-    // slf4j
+    requires com.google.gson;
     requires org.slf4j;
 
     exports com.github.johypark97.varchivemacro.macro.gui.model.datastruct to com.google.gson;

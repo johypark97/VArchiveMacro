@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro;
 
 import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
 
-import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
+import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.core.backend.Backend;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ScannerResultListModel;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ScannerTaskListModel;

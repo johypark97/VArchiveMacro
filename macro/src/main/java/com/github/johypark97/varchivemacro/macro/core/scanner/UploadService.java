@@ -1,12 +1,12 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
-import com.github.johypark97.varchivemacro.lib.common.api.Api;
-import com.github.johypark97.varchivemacro.lib.common.api.ApiException;
-import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader;
-import com.github.johypark97.varchivemacro.lib.common.api.RecordUploader.RequestJson;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
-import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
-import com.github.johypark97.varchivemacro.lib.common.database.RecordManager.LocalRecord;
+import com.github.johypark97.varchivemacro.lib.scanner.api.Api;
+import com.github.johypark97.varchivemacro.lib.scanner.api.ApiException;
+import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader;
+import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader.RequestJson;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.ResultManager;

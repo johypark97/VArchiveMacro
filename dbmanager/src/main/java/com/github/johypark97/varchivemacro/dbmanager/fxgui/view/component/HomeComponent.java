@@ -4,9 +4,9 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestDat
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
-import com.github.johypark97.varchivemacro.lib.common.database.comparator.TitleComparator;
-import com.github.johypark97.varchivemacro.lib.common.fxgui.SliderTextFieldLinker;
-import com.github.johypark97.varchivemacro.lib.common.mvp.MvpFxml;
+import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
+import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
+import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.TitleComparator;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;

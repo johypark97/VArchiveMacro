@@ -7,7 +7,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeVi
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component.HomeComponent;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.stage.HomeStage;
 import com.github.johypark97.varchivemacro.lib.common.HookWrapper;
-import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpView;
+import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.lang.ref.WeakReference;

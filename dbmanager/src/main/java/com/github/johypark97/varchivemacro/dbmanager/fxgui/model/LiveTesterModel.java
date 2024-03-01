@@ -1,11 +1,11 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.StartData;
-import com.github.johypark97.varchivemacro.lib.common.area.NotSupportedResolutionException;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
-import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.ocr.OcrInitializationError;
-import com.github.johypark97.varchivemacro.lib.common.ocr.PixError;
+import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrInitializationError;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import java.awt.AWTException;
 import java.io.IOException;
 import java.util.List;

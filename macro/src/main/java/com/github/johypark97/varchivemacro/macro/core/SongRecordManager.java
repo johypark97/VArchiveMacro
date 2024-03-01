@@ -1,11 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.core;
 
-import com.github.johypark97.varchivemacro.lib.common.database.DefaultDlcSongManager;
-import com.github.johypark97.varchivemacro.lib.common.database.DefaultRecordManager;
-import com.github.johypark97.varchivemacro.lib.common.database.DefaultTitleTool;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager;
-import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
-import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultDlcSongManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultRecordManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultTitleTool;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.core.command.AbstractCommand;
 import com.github.johypark97.varchivemacro.macro.core.command.Command;
 import com.github.johypark97.varchivemacro.macro.core.exception.RecordNotLoadedException;

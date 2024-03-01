@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task;
 
 import com.github.johypark97.varchivemacro.dbmanager.core.PathHelper;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.util.CacheHelper;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
-import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;

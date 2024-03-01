@@ -12,8 +12,8 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.Oc
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterPresenter;
-import com.github.johypark97.varchivemacro.lib.common.fxgui.SliderTextFieldLinker;
-import com.github.johypark97.varchivemacro.lib.common.mvp.AbstractMvpPresenter;
+import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
+import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.nio.file.InvalidPathException;

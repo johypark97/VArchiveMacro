@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager;
 import java.awt.Robot;
 import java.util.List;

@@ -1,11 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.manager;
 
-import com.github.johypark97.varchivemacro.lib.common.Enums;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
-import com.github.johypark97.varchivemacro.lib.common.database.RecordManager;
-import com.github.johypark97.varchivemacro.lib.common.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observable;
 import com.github.johypark97.varchivemacro.lib.common.protocol.Observers.Observer;
+import com.github.johypark97.varchivemacro.lib.scanner.Enums;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.SongRecordManager;

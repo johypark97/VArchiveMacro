@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data;
 
-import com.github.johypark97.varchivemacro.lib.common.database.SongManager.LocalSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongManager.LocalSong;
 import com.google.common.base.CaseFormat;
 import java.util.Map;
 

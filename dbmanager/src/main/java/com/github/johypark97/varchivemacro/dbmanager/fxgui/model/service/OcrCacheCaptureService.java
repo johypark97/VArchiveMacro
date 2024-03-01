@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service;
 
 import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrCacheCaptureTask;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import java.util.List;
 import java.util.Objects;
 

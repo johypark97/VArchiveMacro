@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component;
 
-import com.github.johypark97.varchivemacro.lib.common.mvp.MvpFxml;
+import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

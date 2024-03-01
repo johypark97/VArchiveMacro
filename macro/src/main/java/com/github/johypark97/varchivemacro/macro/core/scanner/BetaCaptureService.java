@@ -1,15 +1,15 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner;
 
-import com.github.johypark97.varchivemacro.lib.common.ImageConverter;
-import com.github.johypark97.varchivemacro.lib.common.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.common.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.common.database.DlcSongManager.LocalDlcSong;
-import com.github.johypark97.varchivemacro.lib.common.database.TitleTool;
-import com.github.johypark97.varchivemacro.lib.common.ocr.OcrWrapper;
-import com.github.johypark97.varchivemacro.lib.common.ocr.PixPreprocessor;
-import com.github.johypark97.varchivemacro.lib.common.ocr.PixWrapper;
-import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer;
-import com.github.johypark97.varchivemacro.lib.common.recognizer.TitleSongRecognizer.Recognized;
+import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
+import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
+import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.lib.scanner.recognizer.TitleSongRecognizer;
+import com.github.johypark97.varchivemacro.lib.scanner.recognizer.TitleSongRecognizer.Recognized;
 import com.github.johypark97.varchivemacro.macro.core.TitleOcr;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.manager.TaskManager.TaskData;
