@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.BorderPane?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21">
+  <top>
+    <MenuBar>
+      <menus>
+        <Menu text="File">
+          <items>
+            <MenuItem text="Close"/>
+          </items>
+        </Menu>
+        <Menu text="Language">
+          <items>
+            <RadioMenuItem text="English"/>
+            <RadioMenuItem text="Korean (한국어)"/>
+          </items>
+        </Menu>
+        <Menu text="About">
+          <items>
+            <MenuItem text="Open Source License"/>
+            <MenuItem text="About"/>
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+  </top>
+  <center>
+    <TabPane>
+      <tabs>
+        <Tab closable="false" text="Scanner" fx:id="scannerTab"/>
+        <Tab closable="false" text="Macro" fx:id="macroTab"/>
+      </tabs>
+    </TabPane>
+  </center>
+</fx:root>

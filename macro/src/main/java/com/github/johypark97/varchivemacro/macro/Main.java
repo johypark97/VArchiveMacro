@@ -1,68 +1,80 @@
 package com.github.johypark97.varchivemacro.macro;
 
-import static com.github.johypark97.varchivemacro.lib.common.gui.util.SwingLookAndFeel.setSystemLookAndFeel;
-
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
-import com.github.johypark97.varchivemacro.macro.core.backend.Backend;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerResultListModels.ScannerResultListModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskListModels.ScannerTaskListModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ScannerTaskModel;
-import com.github.johypark97.varchivemacro.macro.gui.model.SongRecordModels.SongRecordModel;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.ExpectedPresenter;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.LicensePresenter;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.MacroPresenter;
-import com.github.johypark97.varchivemacro.macro.gui.presenter.ScannerTaskPresenter;
-import com.github.johypark97.varchivemacro.macro.gui.view.ExpectedView;
-import com.github.johypark97.varchivemacro.macro.gui.view.LicenseView;
-import com.github.johypark97.varchivemacro.macro.gui.view.MacroView;
-import com.github.johypark97.varchivemacro.macro.gui.view.ScannerTaskView;
-import com.github.johypark97.varchivemacro.macro.resource.Language;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultDatabaseModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultRecordModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.HomePresenterImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.HomeViewImpl;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Main {
-    private final Backend backend = new Backend();
-    private final MacroPresenter macroPresenter = new MacroPresenter(MacroView.class);
+public class Main extends Application {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    private Main() {
-        backend.addObserver(macroPresenter);
-        macroPresenter.setBackend(backend);
+    private final DatabaseModel databaseModel = new DefaultDatabaseModel();
+    private final RecordModel recordModel = new DefaultRecordModel();
 
-        ScannerTaskModel scannerTaskModel = new ScannerTaskModel(backend.getTaskDataProvider());
-        SongRecordModel songRecordModel = new SongRecordModel(backend.getSongRecordManager());
-
-        ScannerTaskListModel scannerTaskListModel = new ScannerTaskListModel();
-        backend.addTaskListObserver(scannerTaskListModel);
-        scannerTaskListModel.linkTaskListProvider(backend.getTaskListProvider());
-
-        ScannerResultListModel scannerResultListModel = new ScannerResultListModel();
-        backend.addResultListObserver(scannerResultListModel);
-        scannerResultListModel.linkResultListProvider(backend.getResultListProvider());
-
-        macroPresenter.setModels(songRecordModel, scannerTaskModel, scannerTaskListModel,
-                scannerResultListModel);
-
-        macroPresenter.setPresenters(new ExpectedPresenter(ExpectedView.class),
-                new LicensePresenter(LicenseView.class),
-                new ScannerTaskPresenter(ScannerTaskView.class));
-    }
+    private final HomePresenterImpl homePresenter = new HomePresenterImpl();
 
     public static void main(String[] args) {
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> Main.logUncaughtException(e));
+
+        System.setProperty("prism.lcdtext", "false");
+
         ImageConverter.disableDiskCache();
 
-        SwingUtilities.invokeLater(() -> {
-            setSystemLookAndFeel();
+        launch(args);
+    }
 
-            try {
-                Language.init();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+    private static void logUncaughtException(Throwable e) {
+        LOGGER.atError().log("Uncaught Exception", e);
+    }
 
-            Main main = new Main();
-            main.macroPresenter.start();
+    private static void showUncaughtExceptionAlert(Throwable e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        alert.setTitle("Uncaught Exception");
+        alert.setHeaderText("An exception has been thrown and uncaught.");
+        alert.setContentText(e.toString());
+
+        StringBuilder builder = new StringBuilder();
+        Throwable p = e;
+        do {
+            String stack = Arrays.stream(p.getStackTrace()).map(x -> "\tat " + x)
+                    .collect(Collectors.joining(System.lineSeparator()));
+
+            builder.append(p).append(System.lineSeparator());
+            builder.append(stack).append(System.lineSeparator());
+
+            p = p.getCause();
+        } while (p != null);
+
+        alert.getDialogPane().setExpandableContent(new TextArea(builder.toString()));
+        alert.getDialogPane().setStyle("-fx-font-family: Monospaced; -fx-font-size: 16px;");
+
+        alert.showAndWait();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Thread.currentThread().setUncaughtExceptionHandler((t, e) -> {
+            Main.logUncaughtException(e);
+            Main.showUncaughtExceptionAlert(e);
         });
+
+        homePresenter.linkModel(databaseModel, recordModel);
+
+        homePresenter.linkView(new HomeViewImpl());
+
+        Platform.runLater(homePresenter::startPresenter);
     }
 }
