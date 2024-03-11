@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
-import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
+import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import javafx.concurrent.Service;
 
 public class ModelHelper {

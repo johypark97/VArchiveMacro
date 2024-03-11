@@ -1,10 +1,10 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
-import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrTestService;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrTestService.Builder;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrTestTask;
+import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import java.nio.file.Path;
 import java.util.Objects;
 import javafx.application.Platform;

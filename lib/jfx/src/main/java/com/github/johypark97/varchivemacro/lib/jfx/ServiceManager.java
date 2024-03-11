@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.dbmanager.core;
+package com.github.johypark97.varchivemacro.lib.jfx;
 
 import java.util.HashMap;
 import java.util.Map;

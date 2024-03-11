@@ -17,5 +17,7 @@ module varchivemacro.dbmanager {
     requires com.google.gson;
     requires org.slf4j;
 
+    exports com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service to varchivemacro.lib.jfx;
+
     exports com.github.johypark97.varchivemacro.dbmanager;
 }

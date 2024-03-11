@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service;
 
-import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
+import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;

@@ -1,12 +1,12 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
-import com.github.johypark97.varchivemacro.dbmanager.core.ServiceManager;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrCacheCaptureService;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrCacheClassificationService;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrGroundTruthGenerationService;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrCacheCaptureTask;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrCacheClassificationTask;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrGroundTruthGenerationTask;
+import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import java.awt.AWTException;
 import java.nio.file.Path;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.dbmanager.core;
+package com.github.johypark97.varchivemacro.lib.common;
 
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 

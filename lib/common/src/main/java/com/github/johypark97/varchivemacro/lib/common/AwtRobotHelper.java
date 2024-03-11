@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.dbmanager.core;
+package com.github.johypark97.varchivemacro.lib.common;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
