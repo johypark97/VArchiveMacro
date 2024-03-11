@@ -1,9 +1,9 @@
 module varchivemacro.lib.jfx {
+    // javafx
     requires javafx.controls;
     requires javafx.fxml;
 
-    requires com.github.kwhat.jnativehook;
-
+    // exports
     exports com.github.johypark97.varchivemacro.lib.jfx.fxgui;
     exports com.github.johypark97.varchivemacro.lib.jfx.mvp;
 

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.common.gui.component;
+package com.github.johypark97.varchivemacro.lib.desktop.gui.component;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

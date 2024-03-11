@@ -21,7 +21,10 @@ repositories {
 }
 
 dependencies {
+    implementation("com.github.kwhat:jnativehook:2.2.2")
+    implementation("com.google.code.gson:gson:2.10")
     implementation("com.google.guava:guava:31.0.1-jre")
+    implementation("org.bytedeco:tesseract-platform:5.2.0-1.5.8")
 
     // -------- Logging --------
     implementation("org.slf4j:slf4j-api:2.0.6")

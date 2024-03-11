@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.view;
 
-import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
+import com.github.johypark97.varchivemacro.lib.desktop.gui.util.ComponentSize;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.model.ScannerTaskModels.ResponseData;

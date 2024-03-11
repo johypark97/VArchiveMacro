@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.common.gui.util;
+package com.github.johypark97.varchivemacro.lib.desktop.gui.util;
 
 import java.awt.Component;
 import java.awt.Dimension;

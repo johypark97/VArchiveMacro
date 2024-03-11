@@ -1,5 +1,7 @@
 module varchivemacro.dbmanager {
     requires varchivemacro.lib.common;
+    requires varchivemacro.lib.desktop;
+    requires varchivemacro.lib.hook;
     requires varchivemacro.lib.jfx;
     requires varchivemacro.lib.scanner;
 
@@ -17,6 +19,7 @@ module varchivemacro.dbmanager {
     requires com.google.gson;
     requires org.slf4j;
 
+    // exports
     exports com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service to varchivemacro.lib.jfx;
 
     exports com.github.johypark97.varchivemacro.dbmanager;

@@ -1,6 +1,6 @@
-package com.github.johypark97.varchivemacro.lib.common.gui.component;
+package com.github.johypark97.varchivemacro.lib.desktop.gui.component;
 
-import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
+import com.github.johypark97.varchivemacro.lib.desktop.gui.util.ComponentSize;
 import java.io.Serial;
 import java.util.LinkedHashMap;
 import java.util.Map;

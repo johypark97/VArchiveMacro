@@ -1,11 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.gui.view;
 
-import com.github.johypark97.varchivemacro.lib.common.gui.component.CheckboxGroup;
-import com.github.johypark97.varchivemacro.lib.common.gui.component.RadioButtonGroup;
-import com.github.johypark97.varchivemacro.lib.common.gui.component.SliderSet;
-import com.github.johypark97.varchivemacro.lib.common.gui.util.ComponentSize;
-import com.github.johypark97.varchivemacro.lib.common.gui.viewmodel.TableColumnLookup;
-import com.github.johypark97.varchivemacro.lib.common.gui.viewmodel.TableModelWithLookup;
+import com.github.johypark97.varchivemacro.lib.desktop.gui.component.CheckboxGroup;
+import com.github.johypark97.varchivemacro.lib.desktop.gui.component.RadioButtonGroup;
+import com.github.johypark97.varchivemacro.lib.desktop.gui.component.SliderSet;
+import com.github.johypark97.varchivemacro.lib.desktop.gui.util.ComponentSize;
+import com.github.johypark97.varchivemacro.lib.desktop.gui.viewmodel.TableColumnLookup;
+import com.github.johypark97.varchivemacro.lib.desktop.gui.viewmodel.TableModelWithLookup;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.core.clientmacro.AnalyzeKey;

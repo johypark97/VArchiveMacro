@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.StartData;
-import com.github.johypark97.varchivemacro.lib.common.AwtRobotHelper;
+import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;

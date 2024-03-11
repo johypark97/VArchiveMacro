@@ -1,12 +1,8 @@
 module varchivemacro.lib.common {
-    requires com.github.kwhat.jnativehook;
-    requires com.google.common;
+    // 3rd party
     requires com.google.gson;
 
-    exports com.github.johypark97.varchivemacro.lib.common.gui.component;
-    exports com.github.johypark97.varchivemacro.lib.common.gui.util;
-    exports com.github.johypark97.varchivemacro.lib.common.gui.viewmodel;
-
+    // exports
     exports com.github.johypark97.varchivemacro.lib.common.protocol;
     exports com.github.johypark97.varchivemacro.lib.common.resource;
     exports com.github.johypark97.varchivemacro.lib.common.service;

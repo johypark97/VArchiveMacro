@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.common.gui.viewmodel;
+package com.github.johypark97.varchivemacro.lib.desktop.gui.viewmodel;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;

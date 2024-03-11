@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.gui.presenter;
 
-import com.github.johypark97.varchivemacro.lib.common.gui.viewmodel.TableModelWithLookup;
+import com.github.johypark97.varchivemacro.lib.desktop.gui.viewmodel.TableModelWithLookup;
 import com.github.johypark97.varchivemacro.macro.core.Button;
 import com.github.johypark97.varchivemacro.macro.core.Pattern;
 import com.github.johypark97.varchivemacro.macro.gui.presenter.viewmodel.ScannerResultListViewModels;

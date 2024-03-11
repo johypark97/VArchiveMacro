@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.util.CacheHelper;
-import com.github.johypark97.varchivemacro.lib.common.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
+import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;

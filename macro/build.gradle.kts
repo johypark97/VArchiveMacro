@@ -17,6 +17,8 @@ plugins {
 
 dependencies {
     implementation(project(":lib:common"))
+    implementation(project(":lib:desktop"))
+    implementation(project(":lib:hook"))
     implementation(project(":lib:jfx"))
     implementation(project(":lib:scanner"))
 }

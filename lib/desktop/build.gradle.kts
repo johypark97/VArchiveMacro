@@ -1,12 +1,8 @@
-val buildBasename = "libscanner"
+val buildBasename = "libdesktop"
 val buildVersion = Version.makeVersionString()
 
 plugins {
     id("project.java-library-conventions")
-}
-
-dependencies {
-    implementation(project(":lib:common"))
 }
 
 tasks.jar {
