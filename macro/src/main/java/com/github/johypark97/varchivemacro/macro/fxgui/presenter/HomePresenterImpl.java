@@ -5,10 +5,13 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView.ViewerTreeData;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,6 +95,21 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         };
 
         getRecordModel().loadRemote(djName, onDone, onThrow);
+    }
+
+    @Override
+    public void scanner_viewer_onShowSongTree(TreeView<ViewerTreeData> treeView) {
+        TreeItem<ViewerTreeData> rootNode = new TreeItem<>();
+
+        getDatabaseModel().getDlcTapSongMap().forEach((tab, songList) -> {
+            TreeItem<ViewerTreeData> dlcNode = new TreeItem<>(new ViewerTreeData(tab));
+            rootNode.getChildren().add(dlcNode);
+
+            songList.forEach(
+                    song -> dlcNode.getChildren().add(new TreeItem<>(new ViewerTreeData(song))));
+        });
+
+        treeView.setRoot(rootNode);
     }
 
     @Override

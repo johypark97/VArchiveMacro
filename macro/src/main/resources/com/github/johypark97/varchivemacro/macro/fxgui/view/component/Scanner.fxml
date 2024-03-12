@@ -34,7 +34,7 @@
                 </HBox>
                 <ScrollPane VBox.vgrow="ALWAYS" fitToHeight="true" fitToWidth="true">
                   <content>
-                    <TreeView/>
+                    <TreeView fx:id="viewer_treeView"/>
                   </content>
                 </ScrollPane>
               </children>

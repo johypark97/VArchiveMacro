@@ -91,6 +91,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
             @Override
             public void showScanner() {
+                scanner_viewer_showSongTree();
+
                 getScanner().setVisible(true);
                 getScanner().requestFocus();
             }
@@ -100,6 +102,11 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     @Override
     public void scanner_setup_loadRemoteRecord(String djName) {
         getPresenter().scanner_setup_onLoadRemoteRecord(djName);
+    }
+
+    @Override
+    public void scanner_viewer_showSongTree() {
+        getPresenter().scanner_viewer_onShowSongTree(getScanner().viewer_treeView);
     }
 
     @Override
