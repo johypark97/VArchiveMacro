@@ -12,7 +12,7 @@ public interface Home {
 
         void scanner_setup_onLoadRemoteRecord(String djName);
 
-        void scanner_viewer_onShowSongTree(TreeView<ViewerTreeData> treeView);
+        void scanner_viewer_onShowSongTree(TreeView<ViewerTreeData> treeView, String filter);
     }
 
 
@@ -23,7 +23,7 @@ public interface Home {
 
         void scanner_setup_loadRemoteRecord(String djName);
 
-        void scanner_viewer_showSongTree();
+        void scanner_viewer_showSongTree(String filter);
 
         interface ScannerSetupView {
             void showForbiddenMark();

@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
@@ -8,8 +9,13 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView.ViewerTreeData;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import org.slf4j.Logger;
@@ -18,6 +24,9 @@ import org.slf4j.LoggerFactory;
 public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeView>
         implements HomePresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomePresenterImpl.class);
+
+    private final Function<String, String> VIEWER_TITLE_NORMALIZER =
+            x -> Normalizer.normalize(x.toLowerCase(Locale.ENGLISH), Form.NFKD);
 
     private WeakReference<DatabaseModel> databaseModelReference;
     private WeakReference<RecordModel> recordModelReference;
@@ -98,14 +107,26 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void scanner_viewer_onShowSongTree(TreeView<ViewerTreeData> treeView) {
-        TreeItem<ViewerTreeData> rootNode = new TreeItem<>();
+    public void scanner_viewer_onShowSongTree(TreeView<ViewerTreeData> treeView, String filter) {
+        String normalizedFilter;
+        if (filter == null || filter.isBlank()) {
+            normalizedFilter = null; // NOPMD
+        } else {
+            normalizedFilter = VIEWER_TITLE_NORMALIZER.apply(filter.trim());
+        }
 
+        TreeItem<ViewerTreeData> rootNode = new TreeItem<>();
         getDatabaseModel().getDlcTapSongMap().forEach((tab, songList) -> {
             TreeItem<ViewerTreeData> dlcNode = new TreeItem<>(new ViewerTreeData(tab));
+            dlcNode.setExpanded(normalizedFilter != null);
             rootNode.getChildren().add(dlcNode);
 
-            songList.forEach(
+            Stream<LocalDlcSong> stream = songList.stream();
+            if (normalizedFilter != null) {
+                stream = stream.filter(
+                        x -> VIEWER_TITLE_NORMALIZER.apply(x.title).contains(normalizedFilter));
+            }
+            stream.forEach(
                     song -> dlcNode.getChildren().add(new TreeItem<>(new ViewerTreeData(song))));
         });
 

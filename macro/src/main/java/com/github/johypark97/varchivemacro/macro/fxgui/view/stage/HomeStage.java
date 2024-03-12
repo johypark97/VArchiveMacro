@@ -21,12 +21,13 @@ public class HomeStage extends Stage {
     private static final int STAGE_WIDTH = 960;
 
     public final HomeComponent homeComponent = new HomeComponent();
-    public final ScannerComponent scannerComponent = new ScannerComponent();
+    public final ScannerComponent scannerComponent;
     public final ScannerDjNameInputComponent scannerDjNameInputComponent;
     public final ScannerSafeGlassComponent scannerSafeGlassComponent =
             new ScannerSafeGlassComponent();
 
     public HomeStage(HomeView view) {
+        scannerComponent = new ScannerComponent(view);
         scannerDjNameInputComponent = new ScannerDjNameInputComponent(view);
 
         homeComponent.scannerTab.setContent(

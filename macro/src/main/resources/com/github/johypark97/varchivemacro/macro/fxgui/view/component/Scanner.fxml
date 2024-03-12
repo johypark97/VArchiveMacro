@@ -28,8 +28,8 @@
                 <HBox alignment="CENTER_LEFT" spacing="5.0">
                   <children>
                     <Label text="Filter"/>
-                    <TextField HBox.hgrow="ALWAYS"/>
-                    <Button text="Reset"/>
+                    <TextField HBox.hgrow="ALWAYS" fx:id="viewer_filterTextField"/>
+                    <Button text="Reset" fx:id="viewer_filterResetButton"/>
                   </children>
                 </HBox>
                 <ScrollPane VBox.vgrow="ALWAYS" fitToHeight="true" fitToWidth="true">
