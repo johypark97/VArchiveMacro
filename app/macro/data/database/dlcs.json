@@ -99,20 +99,24 @@
     "name": "ESTIMATE",
     "priority": 24
   },
+  "FAL": {
+    "name": "FALCOM",
+    "priority": 25
+  },
   "GF": {
     "name": "GIRLS' FRONTLINE",
-    "priority": 25
+    "priority": 26
   },
   "MAP": {
     "name": "MAPLESTORY",
-    "priority": 26
+    "priority": 27
   },
   "NXN": {
     "name": "NEXON",
-    "priority": 27
+    "priority": 28
   },
   "CP": {
     "name": "CLEAR PASS",
-    "priority": 28
+    "priority": 29
   }
 }
