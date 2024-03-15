@@ -2378,7 +2378,7 @@
   {
     "id": 297,
     "title": "I want You ~반짝 반짝 Sunshine~",
-    "remote_title": "I want You ~반짝★반짝 Sunshine~",
+    "remote_title": null,
     "composer": "Studio LAY-BACK",
     "dlcCode": "R",
     "priority": 0
@@ -4690,7 +4690,7 @@
   {
     "id": 586,
     "title": "Can We Talk (Broken Dog Leg Mix)",
-    "remote_title": "Can We Talk(Broken Dog Leg Mix)",
+    "remote_title": null,
     "composer": "Forte Escape",
     "dlcCode": "R",
     "priority": 0
@@ -4853,6 +4853,94 @@
     "remote_title": null,
     "composer": "INFX / MIIM",
     "dlcCode": "VE5",
+    "priority": 0
+  },
+  {
+    "id": 607,
+    "title": "Ashita e no Kodou",
+    "remote_title": null,
+    "composer": "Falcom Sound Team jdk / Kanako Kotera",
+    "dlcCode": "FAL",
+    "priority": 0
+  },
+  {
+    "id": 608,
+    "title": "Blue Destination",
+    "remote_title": null,
+    "composer": "Falcom Sound Team jdk",
+    "dlcCode": "FAL",
+    "priority": 0
+  },
+  {
+    "id": 609,
+    "title": "GENESIS BEYOND THE BEGINNING",
+    "remote_title": null,
+    "composer": "Falcom Sound Team jdk",
+    "dlcCode": "FAL",
+    "priority": 0
+  },
+  {
+    "id": 610,
+    "title": "Inevitable Struggle",
+    "remote_title": null,
+    "composer": "Falcom Sound Team jdk",
+    "dlcCode": "FAL",
+    "priority": 0
+  },
+  {
+    "id": 611,
+    "title": "NORSE WIND",
+    "remote_title": null,
+    "composer": "Falcom Sound Team jdk",
+    "dlcCode": "FAL",
+    "priority": 0
+  },
+  {
+    "id": 612,
+    "title": "Silver Will",
+    "remote_title": null,
+    "composer": "Falcom Sound Team jdk",
+    "dlcCode": "FAL",
+    "priority": 0
+  },
+  {
+    "id": 613,
+    "title": "STEP AHEAD",
+    "remote_title": null,
+    "composer": "Falcom Sound Team jdk",
+    "dlcCode": "FAL",
+    "priority": 0
+  },
+  {
+    "id": 614,
+    "title": "SUNSHINE COASTLINE",
+    "remote_title": null,
+    "composer": "Falcom Sound Team jdk",
+    "dlcCode": "FAL",
+    "priority": 0
+  },
+  {
+    "id": 615,
+    "title": "TO MAKE THE END OF BATTLE",
+    "remote_title": null,
+    "composer": "Falcom Sound Team jdk",
+    "dlcCode": "FAL",
+    "priority": 0
+  },
+  {
+    "id": 616,
+    "title": "To the Future.",
+    "remote_title": null,
+    "composer": "Falcom Sound Team jdk",
+    "dlcCode": "FAL",
+    "priority": 0
+  },
+  {
+    "id": 617,
+    "title": "BlueWhite",
+    "remote_title": null,
+    "composer": "HAYAKO",
+    "dlcCode": "R",
     "priority": 0
   }
 ]

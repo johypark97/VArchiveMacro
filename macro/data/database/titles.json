@@ -59,6 +59,11 @@
       // glory MAX -나의 최대치로 너와 함께할게-
       "id": 594,
       "value": "glory MAX -나의 최대치로 너와 함께할"
+    },
+    {
+      // GENESIS BEYOND THE BEGINNING
+      "id": 609,
+      "value": "GENESIS BEYOND THE BEGINNIN"
     }
   ],
   "remap": [
@@ -178,6 +183,27 @@
       "to": "RightTime[ScreaMRecords]",
       "from": [
         "RightTimeIScreaMRecordsI"
+      ]
+    },
+    {
+      // id: 609
+      "to": "GENESISBEYONDTHEBEGINNIN",
+      "from": [
+        "GENESISBEYONDTHEBEGINNING"
+      ]
+    },
+    {
+      // id: 610
+      "to": "InevitabIeStruggIe",
+      "from": [
+        "InevitabIeStrugeIe"
+      ]
+    },
+    {
+      // id: 612
+      "to": "SiIverWiII",
+      "from": [
+        "SiIverWitII"
       ]
     }
   ]
