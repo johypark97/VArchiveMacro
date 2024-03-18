@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView.ViewerRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView.ViewerTreeData;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -131,6 +132,25 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         });
 
         treeView.setRoot(rootNode);
+    }
+
+    @Override
+    public ViewerRecordData scanner_viewer_onShowRecord(int id) {
+        ViewerRecordData data = new ViewerRecordData();
+
+        LocalDlcSong song = getDatabaseModel().getDlcSong(id);
+        data.composer = song.composer;
+        data.title = song.title;
+
+        getRecordModel().getRecordList(id).forEach(x -> {
+            int column = x.pattern.getWeight();
+            int row = x.button.getWeight();
+
+            data.maxCombo[row][column] = x.maxCombo;
+            data.rate[row][column] = x.rate;
+        });
+
+        return data;
     }
 
     @Override

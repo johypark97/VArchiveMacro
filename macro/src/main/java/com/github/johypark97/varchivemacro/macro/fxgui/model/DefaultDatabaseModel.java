@@ -31,4 +31,9 @@ public class DefaultDatabaseModel implements DatabaseModel {
     public Map<String, List<LocalDlcSong>> getDlcTapSongMap() {
         return dlcSongManager.getTabSongMap();
     }
+
+    @Override
+    public LocalDlcSong getDlcSong(int id) {
+        return dlcSongManager.getDlcSong(id);
+    }
 }

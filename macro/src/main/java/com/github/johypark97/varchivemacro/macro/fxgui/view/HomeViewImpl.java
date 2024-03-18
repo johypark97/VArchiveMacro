@@ -110,6 +110,27 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void scanner_viewer_showRecord(int id) {
+        ViewerRecordData data = getPresenter().scanner_viewer_onShowRecord(id);
+
+        getScanner().viewer_showInformation(data.title, data.composer);
+
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                getScanner().viewer_resetRecord(i, j);
+
+                float rate = data.rate[i][j];
+                if (rate == -1) {
+                    getScanner().viewer_shadowRecord(i, j);
+                } else {
+                    boolean maxCombo = data.maxCombo[i][j];
+                    getScanner().viewer_setRecord(i, j, rate, maxCombo);
+                }
+            }
+        }
+    }
+
+    @Override
     protected Stage newStage() {
         HomeStage stage = new HomeStage(this);
 

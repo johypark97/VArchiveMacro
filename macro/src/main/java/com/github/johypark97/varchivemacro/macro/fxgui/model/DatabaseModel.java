@@ -9,4 +9,6 @@ public interface DatabaseModel {
     void load() throws IOException;
 
     Map<String, List<LocalDlcSong>> getDlcTapSongMap();
+
+    LocalDlcSong getDlcSong(int id);
 }

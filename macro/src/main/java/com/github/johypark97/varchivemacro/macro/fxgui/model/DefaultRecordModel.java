@@ -2,10 +2,13 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model;
 
 import com.github.johypark97.varchivemacro.lib.scanner.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultRecordManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -71,5 +74,14 @@ public class DefaultRecordModel implements RecordModel {
 
             return false;
         }).thenAccept(x -> Platform.runLater(() -> onDone.accept(x)));
+    }
+
+    @Override
+    public List<LocalRecord> getRecordList(int id) {
+        List<LocalRecord> list = new ArrayList<>(16);
+
+        recordManager.getRecord(id).values().forEach(x -> list.addAll(x.values()));
+
+        return list;
     }
 }

@@ -41,10 +41,10 @@
             </VBox>
             <VBox spacing="10.0">
               <children>
-                <TextArea VBox.vgrow="ALWAYS" editable="false"/>
+                <TextArea VBox.vgrow="ALWAYS" editable="false" fx:id="viewer_textArea"/>
                 <TitledPane animated="false" collapsible="false" text="Record">
                   <content>
-                    <GridPane hgap="10.0" vgap="10.0">
+                    <GridPane hgap="10.0" vgap="10.0" fx:id="viewer_recordGrid">
                       <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" prefWidth="0.0"/>
                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" prefWidth="0.0"/>
@@ -61,30 +61,30 @@
                       </rowConstraints>
                       <children>
                         <Button text="⇆"/>
-                        <Label GridPane.columnIndex="1" text="Label"/>
-                        <Label GridPane.columnIndex="2" text="Label"/>
-                        <Label GridPane.columnIndex="3" text="Label"/>
-                        <Label GridPane.columnIndex="4" text="Label"/>
-                        <Label GridPane.rowIndex="1" text="Label"/>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" editable="false"/>
-                        <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" editable="false"/>
-                        <TextField GridPane.columnIndex="3" GridPane.rowIndex="1" editable="false"/>
-                        <TextField GridPane.columnIndex="4" GridPane.rowIndex="1" editable="false"/>
-                        <Label GridPane.rowIndex="2" text="Label"/>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" editable="false"/>
-                        <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" editable="false"/>
-                        <TextField GridPane.columnIndex="3" GridPane.rowIndex="2" editable="false"/>
-                        <TextField GridPane.columnIndex="4" GridPane.rowIndex="2" editable="false"/>
-                        <Label GridPane.rowIndex="3" text="Label"/>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" editable="false"/>
-                        <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" editable="false"/>
-                        <TextField GridPane.columnIndex="3" GridPane.rowIndex="3" editable="false"/>
-                        <TextField GridPane.columnIndex="4" GridPane.rowIndex="3" editable="false"/>
-                        <Label GridPane.rowIndex="4" text="Label"/>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" editable="false"/>
-                        <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" editable="false"/>
-                        <TextField GridPane.columnIndex="3" GridPane.rowIndex="4" editable="false"/>
-                        <TextField GridPane.columnIndex="4" GridPane.rowIndex="4" editable="false"/>
+                        <Label GridPane.columnIndex="1" text="NORMAL"/>
+                        <Label GridPane.columnIndex="2" text="HARD"/>
+                        <Label GridPane.columnIndex="3" text="MAXIMUM"/>
+                        <Label GridPane.columnIndex="4" text="SC"/>
+                        <Label GridPane.rowIndex="1" text="4B"/>
+                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="3" GridPane.rowIndex="1" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="4" GridPane.rowIndex="1" alignment="CENTER_RIGHT" editable="false"/>
+                        <Label GridPane.rowIndex="2" text="5B"/>
+                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="3" GridPane.rowIndex="2" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="4" GridPane.rowIndex="2" alignment="CENTER_RIGHT" editable="false"/>
+                        <Label GridPane.rowIndex="3" text="6B"/>
+                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="3" GridPane.rowIndex="3" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="4" GridPane.rowIndex="3" alignment="CENTER_RIGHT" editable="false"/>
+                        <Label GridPane.rowIndex="4" text="8B"/>
+                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="3" GridPane.rowIndex="4" alignment="CENTER_RIGHT" editable="false"/>
+                        <TextField GridPane.columnIndex="4" GridPane.rowIndex="4" alignment="CENTER_RIGHT" editable="false"/>
                       </children>
                     </GridPane>
                   </content>
