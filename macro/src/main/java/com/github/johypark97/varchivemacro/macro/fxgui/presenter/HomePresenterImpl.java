@@ -6,8 +6,8 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
-import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView.ViewerRecordData;
-import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView.ViewerTreeData;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.Normalizer;
@@ -46,62 +46,68 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void onViewShow() {
+    public boolean onViewShow_setup() {
         try {
             getDatabaseModel().load();
         } catch (IOException e) {
-            getView().getScannerSetupView().showForbiddenMark();
+            getView().getScannerFrontController().showForbiddenMark();
             getView().showError("Database loading error", e);
             LOGGER.atError().log("DatabaseModel loading exception", e);
-            return;
+            return false;
         } catch (Exception e) {
-            getView().getScannerSetupView().showForbiddenMark();
+            getView().getScannerFrontController().showForbiddenMark();
             getView().showError("Critical database loading error", e);
             LOGGER.atError().log("Critical DatabaseModel loading exception", e);
             throw e;
         }
 
+        return true;
+    }
+
+    @Override
+    public void onViewShow_loadRecord() {
         try {
             if (!getRecordModel().loadLocal()) {
-                getView().getScannerSetupView().showDjNameInput();
+                getView().getScannerFrontController().showDjNameInput();
                 return;
             }
         } catch (IOException e) {
-            getView().getScannerSetupView().showDjNameInput();
+            getView().getScannerFrontController().showDjNameInput();
             getView().showError("Local records loading error", e);
             LOGGER.atError().log("RecordModel loading exception", e);
             return;
         } catch (Exception e) {
-            getView().getScannerSetupView().showDjNameInput();
+            getView().getScannerFrontController().showDjNameInput();
             getView().showError("Critical local records loading error", e);
             LOGGER.atError().log("Critical RecordModel loading exception", e);
             throw e;
         }
 
-        getView().getScannerSetupView().showScanner();
+        getView().getScannerFrontController().showScanner();
     }
 
     @Override
-    public void scanner_setup_onLoadRemoteRecord(String djName) {
-        getView().getScannerSetupView().hideDjNameInputError();
+    public void scanner_front_onLoadRemoteRecord(String djName) {
+        getView().getScannerFrontController().hideDjNameInputError();
 
         if (djName.isBlank()) {
-            getView().getScannerSetupView().showDjNameInputError("DJ Name is blank.");
+            getView().getScannerFrontController().showDjNameInputError("DJ Name is blank.");
             return;
         }
 
-        getView().getScannerSetupView().showLoadingMark(djName);
+        getView().getScannerFrontController().showLoadingMark(djName);
 
         BiConsumer<String, Exception> onThrow = getView()::showError;
         Consumer<Boolean> onDone = x -> {
-            getView().getScannerSetupView().hideLoadingMark();
+            getView().getScannerFrontController().hideLoadingMark();
+
             if (Boolean.FALSE.equals(x)) {
-                getView().getScannerSetupView().showDjNameInput();
+                getView().getScannerFrontController().showDjNameInput();
                 return;
             }
 
-            getView().getScannerSetupView().hideDjNameInput();
-            getView().getScannerSetupView().showScanner();
+            getView().getScannerFrontController().hideDjNameInput();
+            getView().getScannerFrontController().showScanner();
         };
 
         getRecordModel().loadRemote(djName, onDone, onThrow);

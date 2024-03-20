@@ -3,6 +3,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ScannerFrontController;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjNameInputComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
@@ -40,68 +42,13 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
-    public ScannerSetupView getScannerSetupView() {
-        return new ScannerSetupView() {
-            @Override
-            public void showForbiddenMark() {
-                getScannerSafeGlass().showForbiddenMark();
-                getScannerSafeGlass().setText("Failed to load database. Not available.");
-                getScannerSafeGlass().setVisible(true);
-                getScannerSafeGlass().requestFocus();
-            }
-
-            @Override
-            public void showLoadingMark(String djName) {
-                String message =
-                        String.format("Loading records from the server.\nDJ Name: %s", djName);
-
-                getScannerDjNameInput().upEffect();
-                getScannerSafeGlass().showLoadingMark();
-                getScannerSafeGlass().setText(message);
-                getScannerSafeGlass().setVisible(true);
-                getScannerSafeGlass().requestFocus();
-            }
-
-            @Override
-            public void hideLoadingMark() {
-                getScannerSafeGlass().setVisible(false);
-                getScannerDjNameInput().downEffect();
-            }
-
-            @Override
-            public void showDjNameInput() {
-                getScannerDjNameInput().setVisible(true);
-                getScannerDjNameInput().requestFocus();
-            }
-
-            @Override
-            public void hideDjNameInput() {
-                getScannerDjNameInput().setVisible(false);
-            }
-
-            @Override
-            public void showDjNameInputError(String message) {
-                getScannerDjNameInput().showError(message);
-            }
-
-            @Override
-            public void hideDjNameInputError() {
-                getScannerDjNameInput().hideError();
-            }
-
-            @Override
-            public void showScanner() {
-                scanner_viewer_showSongTree(null);
-
-                getScanner().setVisible(true);
-                getScanner().requestFocus();
-            }
-        };
+    public ScannerFrontController getScannerFrontController() {
+        return new ScannerFrontControllerImpl();
     }
 
     @Override
-    public void scanner_setup_loadRemoteRecord(String djName) {
-        getPresenter().scanner_setup_onLoadRemoteRecord(djName);
+    public void scanner_front_loadRemoteRecord(String djName) {
+        getPresenter().scanner_front_onLoadRemoteRecord(djName);
     }
 
     @Override
@@ -139,8 +86,70 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         scannerDjNameInputComponentReference =
                 new WeakReference<>(stage.scannerDjNameInputComponent);
 
-        stage.setOnShown(event -> getPresenter().onViewShow());
+        stage.setOnShown(event -> {
+            if (!getPresenter().onViewShow_setup()) {
+                return;
+            }
+
+            getPresenter().onViewShow_loadRecord();
+        });
 
         return stage;
+    }
+
+    private class ScannerFrontControllerImpl implements ScannerFrontController {
+        @Override
+        public void showForbiddenMark() {
+            getScannerSafeGlass().showForbiddenMark();
+            getScannerSafeGlass().setText("Failed to load database. Not available.");
+            getScannerSafeGlass().setVisible(true);
+            getScannerSafeGlass().requestFocus();
+        }
+
+        @Override
+        public void showLoadingMark(String djName) {
+            String message = String.format("Loading records from the server.\nDJ Name: %s", djName);
+
+            getScannerDjNameInput().upEffect();
+            getScannerSafeGlass().showLoadingMark();
+            getScannerSafeGlass().setText(message);
+            getScannerSafeGlass().setVisible(true);
+            getScannerSafeGlass().requestFocus();
+        }
+
+        @Override
+        public void hideLoadingMark() {
+            getScannerSafeGlass().setVisible(false);
+            getScannerDjNameInput().downEffect();
+        }
+
+        @Override
+        public void showDjNameInput() {
+            getScannerDjNameInput().setVisible(true);
+            getScannerDjNameInput().requestFocus();
+        }
+
+        @Override
+        public void hideDjNameInput() {
+            getScannerDjNameInput().setVisible(false);
+        }
+
+        @Override
+        public void showDjNameInputError(String message) {
+            getScannerDjNameInput().showError(message);
+        }
+
+        @Override
+        public void hideDjNameInputError() {
+            getScannerDjNameInput().hideError();
+        }
+
+        @Override
+        public void showScanner() {
+            scanner_viewer_showSongTree(null);
+
+            getScanner().setVisible(true);
+            getScanner().requestFocus();
+        }
     }
 }

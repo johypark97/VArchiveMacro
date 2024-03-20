@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view.component;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
-import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView.ViewerTreeData;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Objects;

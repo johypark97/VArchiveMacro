@@ -48,7 +48,7 @@ public class ScannerDjNameInputComponent extends VBox {
             String djName = djNameTextField.getText().trim();
             djNameTextField.setText(djName);
 
-            getView().scanner_setup_loadRemoteRecord(djName);
+            getView().scanner_front_loadRemoteRecord(djName);
         });
     }
 
