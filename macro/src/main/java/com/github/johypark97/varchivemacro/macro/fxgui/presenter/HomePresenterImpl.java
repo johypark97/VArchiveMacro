@@ -61,6 +61,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             throw e;
         }
 
+        getView().scanner_scanner_setDlcList(getDatabaseModel().getDlcTabList());
+
         return true;
     }
 

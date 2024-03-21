@@ -11,4 +11,6 @@ public interface DatabaseModel {
     Map<String, List<LocalDlcSong>> getDlcTapSongMap();
 
     LocalDlcSong getDlcSong(int id);
+
+    List<String> getDlcTabList();
 }

@@ -10,6 +10,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjN
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.HomeStage;
 import java.lang.ref.WeakReference;
+import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
@@ -75,6 +76,11 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                 }
             }
         }
+    }
+
+    @Override
+    public void scanner_scanner_setDlcList(List<String> list) {
+        getScanner().scanner_setDlcList(list);
     }
 
     @Override

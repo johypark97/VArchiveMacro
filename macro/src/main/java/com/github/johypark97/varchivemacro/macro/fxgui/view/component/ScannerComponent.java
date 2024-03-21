@@ -5,15 +5,23 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
 import java.lang.ref.WeakReference;
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -38,6 +46,9 @@ public class ScannerComponent extends TabPane {
     @FXML
     public GridPane viewer_recordGrid;
 
+    @FXML
+    public ListView<ScannerDlcListData> scanner_dlcListView;
+
     private ViewerRecordController viewerRecordController;
 
     public ScannerComponent(HomeView view) {
@@ -52,6 +63,7 @@ public class ScannerComponent extends TabPane {
         setVisible(false);
 
         setupViewer();
+        setupScanner();
     }
 
     public void viewer_showInformation(String title, String composer) {
@@ -73,6 +85,14 @@ public class ScannerComponent extends TabPane {
 
     public void viewer_shadowRecord(int row, int column) {
         viewerRecordController.shadowCell(row, column);
+    }
+
+    public void scanner_setDlcList(List<String> list) {
+        ObservableList<ScannerDlcListData> observableList =
+                list.stream().map(ScannerDlcListData::new)
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+
+        scanner_dlcListView.setItems(observableList);
     }
 
     private HomeView getView() {
@@ -130,6 +150,10 @@ public class ScannerComponent extends TabPane {
 
                     getView().scanner_viewer_showRecord(data.song.id);
                 });
+    }
+
+    private void setupScanner() {
+        scanner_dlcListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
     }
 
     public static class ViewerRecordController {
@@ -207,6 +231,21 @@ public class ScannerComponent extends TabPane {
             }
 
             return (TextField) getGridPane().getChildren().get((row + 1) * 5 + column + 1);
+        }
+    }
+
+
+    public static class ScannerDlcListData {
+        private final BooleanProperty checked = new SimpleBooleanProperty();
+        private final String name;
+
+        public ScannerDlcListData(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
         }
     }
 }

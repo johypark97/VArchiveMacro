@@ -113,7 +113,7 @@
                   <content>
                     <ScrollPane fitToHeight="true" fitToWidth="true">
                       <content>
-                        <ListView/>
+                        <ListView fx:id="scanner_dlcListView"/>
                       </content>
                     </ScrollPane>
                   </content>

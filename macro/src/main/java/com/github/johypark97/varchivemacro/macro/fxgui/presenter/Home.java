@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import java.util.List;
 import javafx.scene.control.TreeView;
 
 public interface Home {
@@ -30,6 +31,7 @@ public interface Home {
 
         void scanner_viewer_showRecord(int id);
 
+        void scanner_scanner_setDlcList(List<String> list);
     }
 
 
