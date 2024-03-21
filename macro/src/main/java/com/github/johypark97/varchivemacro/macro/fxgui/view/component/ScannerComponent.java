@@ -49,6 +49,12 @@ public class ScannerComponent extends TabPane {
     @FXML
     public ListView<ScannerDlcListData> scanner_dlcListView;
 
+    @FXML
+    public Button scanner_selectAllDlcButton;
+
+    @FXML
+    public Button scanner_unselectAllDlcButton;
+
     private ViewerRecordController viewerRecordController;
 
     public ScannerComponent(HomeView view) {
@@ -154,6 +160,12 @@ public class ScannerComponent extends TabPane {
 
     private void setupScanner() {
         scanner_dlcListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
+
+        scanner_selectAllDlcButton.setOnAction(
+                event -> scanner_dlcListView.getItems().forEach(x -> x.checked.setValue(true)));
+
+        scanner_unselectAllDlcButton.setOnAction(
+                event -> scanner_dlcListView.getItems().forEach(x -> x.checked.setValue(false)));
     }
 
     public static class ViewerRecordController {

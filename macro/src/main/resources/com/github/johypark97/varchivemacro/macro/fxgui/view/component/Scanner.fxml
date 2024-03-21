@@ -120,8 +120,8 @@
                 </TitledPane>
                 <HBox spacing="10.0">
                   <children>
-                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="Select All"/>
-                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="Unselect All"/>
+                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="Select All" fx:id="scanner_selectAllDlcButton"/>
+                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="Unselect All" fx:id="scanner_unselectAllDlcButton"/>
                   </children>
                 </HBox>
                 <Separator/>
