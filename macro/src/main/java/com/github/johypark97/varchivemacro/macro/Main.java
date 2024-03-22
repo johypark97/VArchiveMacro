@@ -1,7 +1,9 @@
 package com.github.johypark97.varchivemacro.macro;
 
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultDatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultRecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
@@ -20,6 +22,7 @@ import org.slf4j.LoggerFactory;
 public class Main extends Application {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
+    private final ConfigModel configModel = new DefaultConfigModel();
     private final DatabaseModel databaseModel = new DefaultDatabaseModel();
     private final RecordModel recordModel = new DefaultRecordModel();
 
@@ -71,7 +74,7 @@ public class Main extends Application {
             Main.showUncaughtExceptionAlert(e);
         });
 
-        homePresenter.linkModel(databaseModel, recordModel);
+        homePresenter.linkModel(configModel, databaseModel, recordModel);
 
         homePresenter.linkView(new HomeViewImpl());
 

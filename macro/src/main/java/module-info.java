@@ -19,5 +19,7 @@ module varchivemacro.macro {
 
     // exports
     exports com.github.johypark97.varchivemacro.macro.gui.model.datastruct to com.google.gson;
+
+    exports com.github.johypark97.varchivemacro.macro.fxgui.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro;
 }

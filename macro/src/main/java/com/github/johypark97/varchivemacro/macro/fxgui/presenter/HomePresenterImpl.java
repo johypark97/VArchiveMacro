@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
@@ -13,6 +15,7 @@ import java.lang.ref.WeakReference;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.Locale;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -29,12 +32,19 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     private final Function<String, String> VIEWER_TITLE_NORMALIZER =
             x -> Normalizer.normalize(x.toLowerCase(Locale.ENGLISH), Form.NFKD);
 
+    private WeakReference<ConfigModel> configModelReference;
     private WeakReference<DatabaseModel> databaseModelReference;
     private WeakReference<RecordModel> recordModelReference;
 
-    public void linkModel(DatabaseModel databaseModel, RecordModel recordModel) {
+    public void linkModel(ConfigModel configModel, DatabaseModel databaseModel,
+            RecordModel recordModel) {
+        configModelReference = new WeakReference<>(configModel);
         databaseModelReference = new WeakReference<>(databaseModel);
         recordModelReference = new WeakReference<>(recordModel);
+    }
+
+    private ConfigModel getConfigModel() {
+        return configModelReference.get();
     }
 
     private DatabaseModel getDatabaseModel() {
@@ -62,6 +72,9 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         }
 
         getView().scanner_scanner_setDlcList(getDatabaseModel().getDlcTabList());
+
+        Set<String> selectedDlcSet = getConfigModel().getScannerConfig().selectedDlcSet;
+        getView().scanner_scanner_setSelectedDlcSet(selectedDlcSet);
 
         return true;
     }
@@ -164,5 +177,32 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     protected HomePresenter getInstance() {
         return this;
+    }
+
+    @Override
+    protected boolean initialize() {
+        try {
+            if (!getConfigModel().load()) {
+                getConfigModel().save();
+            }
+        } catch (IOException ignored) {
+        }
+
+        return true;
+    }
+
+    @Override
+    protected boolean terminate() {
+        ScannerConfig scannerConfig = new ScannerConfig();
+        scannerConfig.selectedDlcSet = getView().scanner_scanner_getSelectedDlcSet();
+
+        getConfigModel().setScannerConfig(scannerConfig);
+
+        try {
+            getConfigModel().save();
+        } catch (IOException ignored) {
+        }
+
+        return true;
     }
 }

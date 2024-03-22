@@ -7,6 +7,7 @@ import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -99,6 +100,15 @@ public class ScannerComponent extends TabPane {
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
         scanner_dlcListView.setItems(observableList);
+    }
+
+    public Set<String> scanner_getSelectedDlcSet() {
+        return scanner_dlcListView.getItems().stream().filter(x -> x.checked.get()).map(x -> x.name)
+                .collect(Collectors.toSet());
+    }
+
+    public void scanner_setSelectedDlcSet(Set<String> value) {
+        scanner_dlcListView.getItems().forEach(x -> x.checked.setValue(value.contains(x.name)));
     }
 
     private HomeView getView() {
