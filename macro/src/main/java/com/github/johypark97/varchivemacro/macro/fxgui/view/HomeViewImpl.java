@@ -104,7 +104,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                 new WeakReference<>(stage.scannerDjNameInputComponent);
 
         stage.setOnShown(event -> {
-            if (!getPresenter().onViewShow_setup()) {
+            if (!getPresenter().onViewShow_loadDatabase()) {
                 return;
             }
 

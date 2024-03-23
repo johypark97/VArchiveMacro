@@ -9,7 +9,7 @@ import javafx.scene.control.TreeView;
 
 public interface Home {
     interface HomePresenter extends MvpPresenter<HomeView> {
-        boolean onViewShow_setup();
+        boolean onViewShow_loadDatabase();
 
         void onViewShow_loadRecord();
 

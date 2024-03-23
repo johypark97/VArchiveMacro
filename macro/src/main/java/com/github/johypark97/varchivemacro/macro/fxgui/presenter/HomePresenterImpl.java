@@ -56,7 +56,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public boolean onViewShow_setup() {
+    public boolean onViewShow_loadDatabase() {
         try {
             getDatabaseModel().load();
         } catch (IOException e) {

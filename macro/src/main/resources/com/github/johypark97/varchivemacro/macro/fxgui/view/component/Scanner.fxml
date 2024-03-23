@@ -141,7 +141,7 @@
                 <TreeTableView VBox.vgrow="ALWAYS" showRoot="false"/>
                 <HBox spacing="10.0">
                   <children>
-                    <Button layoutX="10.0" layoutY="10.0" text="Show"/>
+                    <Button text="Show"/>
                     <Pane HBox.hgrow="ALWAYS"/>
                     <Button text="Resolve conflicts"/>
                     <Button text="Analyze"/>
