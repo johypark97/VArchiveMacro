@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -154,6 +155,78 @@
       </content>
     </Tab>
     <Tab closable="false" text="Result"/>
-    <Tab closable="false" text="Option"/>
+    <Tab closable="false" text="Option">
+      <content>
+        <ScrollPane fitToHeight="true" fitToWidth="true">
+          <content>
+            <VBox spacing="10.0">
+              <children>
+                <TitledPane animated="false" collapsible="false" text="Scanner Setting">
+                  <content>
+                    <VBox spacing="10.0">
+                      <children>
+                        <HBox alignment="CENTER" spacing="10.0">
+                          <children>
+                            <Label text="Cache Directory"/>
+                            <TextField HBox.hgrow="ALWAYS"/>
+                            <Button text="Select"/>
+                          </children>
+                        </HBox>
+                        <Separator/>
+                        <GridPane hgap="10.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints/>
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                          </rowConstraints>
+                          <children>
+                            <Label text="Capture Delay [ms]"/>
+                            <Slider GridPane.columnIndex="1" majorTickUnit="100.0" max="500.0" minorTickCount="1" showTickLabels="true" showTickMarks="true"/>
+                            <TextField GridPane.columnIndex="2" prefColumnCount="4"/>
+                            <Label GridPane.rowIndex="1" text="Key Input Duration [ms]"/>
+                            <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" majorTickUnit="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true"/>
+                            <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" prefColumnCount="4"/>
+                          </children>
+                        </GridPane>
+                      </children>
+                    </VBox>
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" collapsible="false" text="Uploader Setting">
+                  <content>
+                    <VBox spacing="10.0">
+                      <children>
+                        <HBox alignment="CENTER" spacing="10.0">
+                          <children>
+                            <Label text="Account File"/>
+                            <TextField HBox.hgrow="ALWAYS"/>
+                            <Button text="Select"/>
+                          </children>
+                        </HBox>
+                        <Separator/>
+                        <HBox alignment="CENTER" spacing="10.0">
+                          <children>
+                            <Label text="Record Upload Delay [ms]"/>
+                            <Slider HBox.hgrow="ALWAYS" majorTickUnit="50.0" max="200.0" minorTickCount="1" showTickLabels="true" showTickMarks="true"/>
+                            <TextField prefColumnCount="4"/>
+                          </children>
+                        </HBox>
+                      </children>
+                    </VBox>
+                  </content>
+                </TitledPane>
+              </children>
+              <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+              </padding>
+            </VBox>
+          </content>
+        </ScrollPane>
+      </content>
+    </Tab>
   </tabs>
 </fx:root>
