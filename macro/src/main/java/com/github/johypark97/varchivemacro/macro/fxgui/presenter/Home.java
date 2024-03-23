@@ -32,11 +32,11 @@ public interface Home {
 
         void scanner_viewer_showRecord(int id);
 
-        void scanner_scanner_setDlcList(List<String> list);
+        void scanner_scanner_setTabList(List<String> list);
 
-        Set<String> scanner_scanner_getSelectedDlcSet();
+        Set<String> scanner_scanner_getSelectedTabSet();
 
-        void scanner_scanner_setSelectedDlcSet(Set<String> value);
+        void scanner_scanner_setSelectedTabSet(Set<String> value);
     }
 
 

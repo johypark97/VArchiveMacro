@@ -80,18 +80,18 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
-    public void scanner_scanner_setDlcList(List<String> list) {
-        getScanner().scanner_setDlcList(list);
+    public void scanner_scanner_setTabList(List<String> list) {
+        getScanner().scanner_setTabList(list);
     }
 
     @Override
-    public Set<String> scanner_scanner_getSelectedDlcSet() {
-        return getScanner().scanner_getSelectedDlcSet();
+    public Set<String> scanner_scanner_getSelectedTabSet() {
+        return getScanner().scanner_getSelectedTabSet();
     }
 
     @Override
-    public void scanner_scanner_setSelectedDlcSet(Set<String> value) {
-        getScanner().scanner_setSelectedDlcSet(value);
+    public void scanner_scanner_setSelectedTabSet(Set<String> value) {
+        getScanner().scanner_setSelectedTabSet(value);
     }
 
     @Override

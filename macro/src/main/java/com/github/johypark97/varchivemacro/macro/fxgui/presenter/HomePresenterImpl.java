@@ -71,10 +71,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             throw e;
         }
 
-        getView().scanner_scanner_setDlcList(getDatabaseModel().getDlcTabList());
+        getView().scanner_scanner_setTabList(getDatabaseModel().getDlcTabList());
 
-        Set<String> selectedDlcSet = getConfigModel().getScannerConfig().selectedDlcSet;
-        getView().scanner_scanner_setSelectedDlcSet(selectedDlcSet);
+        Set<String> selectedTabSet = getConfigModel().getScannerConfig().selectedTabSet;
+        getView().scanner_scanner_setSelectedTabSet(selectedTabSet);
 
         return true;
     }
@@ -194,7 +194,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     protected boolean terminate() {
         ScannerConfig scannerConfig = new ScannerConfig();
-        scannerConfig.selectedDlcSet = getView().scanner_scanner_getSelectedDlcSet();
+        scannerConfig.selectedTabSet = getView().scanner_scanner_getSelectedTabSet();
 
         getConfigModel().setScannerConfig(scannerConfig);
 

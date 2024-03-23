@@ -15,6 +15,6 @@ public interface ConfigModel {
 
     class ScannerConfig {
         @Expose
-        public Set<String> selectedDlcSet = Set.of();
+        public Set<String> selectedTabSet = Set.of();
     }
 }

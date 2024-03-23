@@ -48,13 +48,13 @@ public class ScannerComponent extends TabPane {
     public GridPane viewer_recordGrid;
 
     @FXML
-    public ListView<ScannerDlcListData> scanner_dlcListView;
+    public ListView<ScannerTabListData> scanner_tabListView;
 
     @FXML
-    public Button scanner_selectAllDlcButton;
+    public Button scanner_selectAllTabButton;
 
     @FXML
-    public Button scanner_unselectAllDlcButton;
+    public Button scanner_unselectAllTabButton;
 
     private ViewerRecordController viewerRecordController;
 
@@ -94,21 +94,21 @@ public class ScannerComponent extends TabPane {
         viewerRecordController.shadowCell(row, column);
     }
 
-    public void scanner_setDlcList(List<String> list) {
-        ObservableList<ScannerDlcListData> observableList =
-                list.stream().map(ScannerDlcListData::new)
+    public void scanner_setTabList(List<String> list) {
+        ObservableList<ScannerTabListData> observableList =
+                list.stream().map(ScannerTabListData::new)
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
-        scanner_dlcListView.setItems(observableList);
+        scanner_tabListView.setItems(observableList);
     }
 
-    public Set<String> scanner_getSelectedDlcSet() {
-        return scanner_dlcListView.getItems().stream().filter(x -> x.checked.get()).map(x -> x.name)
+    public Set<String> scanner_getSelectedTabSet() {
+        return scanner_tabListView.getItems().stream().filter(x -> x.checked.get()).map(x -> x.name)
                 .collect(Collectors.toSet());
     }
 
-    public void scanner_setSelectedDlcSet(Set<String> value) {
-        scanner_dlcListView.getItems().forEach(x -> x.checked.setValue(value.contains(x.name)));
+    public void scanner_setSelectedTabSet(Set<String> value) {
+        scanner_tabListView.getItems().forEach(x -> x.checked.setValue(value.contains(x.name)));
     }
 
     private HomeView getView() {
@@ -169,13 +169,13 @@ public class ScannerComponent extends TabPane {
     }
 
     private void setupScanner() {
-        scanner_dlcListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
+        scanner_tabListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
 
-        scanner_selectAllDlcButton.setOnAction(
-                event -> scanner_dlcListView.getItems().forEach(x -> x.checked.setValue(true)));
+        scanner_selectAllTabButton.setOnAction(
+                event -> scanner_tabListView.getItems().forEach(x -> x.checked.setValue(true)));
 
-        scanner_unselectAllDlcButton.setOnAction(
-                event -> scanner_dlcListView.getItems().forEach(x -> x.checked.setValue(false)));
+        scanner_unselectAllTabButton.setOnAction(
+                event -> scanner_tabListView.getItems().forEach(x -> x.checked.setValue(false)));
     }
 
     public static class ViewerRecordController {
@@ -257,11 +257,11 @@ public class ScannerComponent extends TabPane {
     }
 
 
-    public static class ScannerDlcListData {
+    public static class ScannerTabListData {
         private final BooleanProperty checked = new SimpleBooleanProperty();
         private final String name;
 
-        public ScannerDlcListData(String name) {
+        public ScannerTabListData(String name) {
             this.name = name;
         }
 
