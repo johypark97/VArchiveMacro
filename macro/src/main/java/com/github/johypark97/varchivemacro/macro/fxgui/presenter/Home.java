@@ -1,14 +1,28 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
+import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeView;
+import javafx.stage.Window;
 
 public interface Home {
     interface HomePresenter extends MvpPresenter<HomeView> {
+        void onViewShow_setupCacheDirectory(TextField textField);
+
+        void onViewShow_setupCaptureDelayLinker(SliderTextFieldLinker linker);
+
+        void onViewShow_setupKeyInputDurationLinker(SliderTextFieldLinker linker);
+
+        void onViewShow_setupAccountFile(TextField textField);
+
+        void onViewShow_setupRecordUploadDelayLinker(SliderTextFieldLinker linker);
+
         boolean onViewShow_loadDatabase();
 
         void onViewShow_loadRecord();
@@ -18,6 +32,10 @@ public interface Home {
         void scanner_viewer_onShowSongTree(TreeView<ViewerTreeData> treeView, String filter);
 
         ViewerRecordData scanner_viewer_onShowRecord(int id);
+
+        Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow);
+
+        Path scanner_option_onOpenAccountFileSelector(Window ownerWindow);
     }
 
 
@@ -37,6 +55,20 @@ public interface Home {
         Set<String> scanner_scanner_getSelectedTabSet();
 
         void scanner_scanner_setSelectedTabSet(Set<String> value);
+
+        String scanner_option_getCacheDirectory();
+
+        int scanner_option_getCaptureDelay();
+
+        int scanner_option_getKeyInputDuration();
+
+        String scanner_option_getAccountFile();
+
+        int scanner_option_getRecordUploadDelay();
+
+        void scanner_option_openCacheDirectorySelector();
+
+        void scanner_option_openAccountFileSelector();
     }
 
 

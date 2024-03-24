@@ -10,6 +10,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjN
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.HomeStage;
 import java.lang.ref.WeakReference;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import javafx.scene.control.Alert;
@@ -95,6 +96,47 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public String scanner_option_getCacheDirectory() {
+        return getScanner().option_getCacheDirectory();
+    }
+
+    @Override
+    public int scanner_option_getCaptureDelay() {
+        return getScanner().option_getCaptureDelay();
+    }
+
+    @Override
+    public int scanner_option_getKeyInputDuration() {
+        return getScanner().option_getKeyInputDuration();
+    }
+
+    @Override
+    public String scanner_option_getAccountFile() {
+        return getScanner().option_getAccountFile();
+    }
+
+    @Override
+    public int scanner_option_getRecordUploadDelay() {
+        return getScanner().option_getRecordUploadDelay();
+    }
+
+    @Override
+    public void scanner_option_openCacheDirectorySelector() {
+        Path path = getPresenter().scanner_option_onOpenCacheDirectorySelector(getStage());
+        if (path != null) {
+            getScanner().option_setCacheDirectory(path.toString());
+        }
+    }
+
+    @Override
+    public void scanner_option_openAccountFileSelector() {
+        Path path = getPresenter().scanner_option_onOpenAccountFileSelector(getStage());
+        if (path != null) {
+            getScanner().option_setAccountFile(path.toString());
+        }
+    }
+
+    @Override
     protected Stage newStage() {
         HomeStage stage = new HomeStage(this);
 
@@ -104,6 +146,20 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                 new WeakReference<>(stage.scannerDjNameInputComponent);
 
         stage.setOnShown(event -> {
+            getPresenter().onViewShow_setupCacheDirectory(
+                    getScanner().option_cacheDirectoryTextField);
+
+            getPresenter().onViewShow_setupCaptureDelayLinker(
+                    getScanner().optionCaptureDelayLinker);
+
+            getPresenter().onViewShow_setupKeyInputDurationLinker(
+                    getScanner().optionKeyInputDurationLinker);
+
+            getPresenter().onViewShow_setupAccountFile(getScanner().option_accountFileTextField);
+
+            getPresenter().onViewShow_setupRecordUploadDelayLinker(
+                    getScanner().optionRecordUploadDelayLinker);
+
             if (!getPresenter().onViewShow_loadDatabase()) {
                 return;
             }

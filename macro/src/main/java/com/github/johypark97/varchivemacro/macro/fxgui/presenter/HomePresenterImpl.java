@@ -1,5 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
+import com.github.johypark97.varchivemacro.lib.common.PathHelper;
+import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
@@ -10,8 +12,11 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresen
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
+import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.Locale;
@@ -20,14 +25,20 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeView>
         implements HomePresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomePresenterImpl.class);
+
+    private static final Path INITIAL_DIRECTORY = Path.of("").toAbsolutePath();
 
     private final Function<String, String> VIEWER_TITLE_NORMALIZER =
             x -> Normalizer.normalize(x.toLowerCase(Locale.ENGLISH), Form.NFKD);
@@ -53,6 +64,40 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private RecordModel getRecordModel() {
         return recordModelReference.get();
+    }
+
+    @Override
+    public void onViewShow_setupCacheDirectory(TextField textField) {
+        textField.setText(getConfigModel().getScannerConfig().cacheDirectory.toString());
+    }
+
+    @Override
+    public void onViewShow_setupCaptureDelayLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(ScannerConfig.CAPTURE_DELAY_DEFAULT);
+        linker.setLimitMax(ScannerConfig.CAPTURE_DELAY_MAX);
+        linker.setLimitMin(ScannerConfig.CAPTURE_DELAY_MIN);
+        linker.setValue(getConfigModel().getScannerConfig().captureDelay);
+    }
+
+    @Override
+    public void onViewShow_setupKeyInputDurationLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(ScannerConfig.KEY_INPUT_DURATION_DEFAULT);
+        linker.setLimitMax(ScannerConfig.KEY_INPUT_DURATION_MAX);
+        linker.setLimitMin(ScannerConfig.KEY_INPUT_DURATION_MIN);
+        linker.setValue(getConfigModel().getScannerConfig().keyInputDuration);
+    }
+
+    @Override
+    public void onViewShow_setupAccountFile(TextField textField) {
+        textField.setText(getConfigModel().getScannerConfig().accountFile.toString());
+    }
+
+    @Override
+    public void onViewShow_setupRecordUploadDelayLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(ScannerConfig.RECORD_UPLOAD_DELAY_DEFAULT);
+        linker.setLimitMax(ScannerConfig.RECORD_UPLOAD_DELAY_MAX);
+        linker.setLimitMin(ScannerConfig.RECORD_UPLOAD_DELAY_MIN);
+        linker.setValue(getConfigModel().getScannerConfig().recordUploadDelay);
     }
 
     @Override
@@ -175,6 +220,37 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
+    public Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow) {
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setInitialDirectory(INITIAL_DIRECTORY.toFile());
+        chooser.setTitle("Select cache directory");
+
+        File file = chooser.showDialog(ownerWindow);
+        if (file == null) {
+            return null;
+        }
+
+        return new PathHelper(file.toPath()).toRelativeOfOrNot(INITIAL_DIRECTORY);
+    }
+
+    @Override
+    public Path scanner_option_onOpenAccountFileSelector(Window ownerWindow) {
+        FileChooser chooser = new FileChooser();
+        chooser.setInitialDirectory(INITIAL_DIRECTORY.toFile());
+        chooser.setTitle("Select account file");
+
+        chooser.getExtensionFilters()
+                .add(new FileChooser.ExtensionFilter("Account text file (*.txt)", "*.txt"));
+
+        File file = chooser.showOpenDialog(ownerWindow);
+        if (file == null) {
+            return null;
+        }
+
+        return new PathHelper(file.toPath()).toRelativeOfOrNot(INITIAL_DIRECTORY);
+    }
+
+    @Override
     protected HomePresenter getInstance() {
         return this;
     }
@@ -194,7 +270,23 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     protected boolean terminate() {
         ScannerConfig scannerConfig = new ScannerConfig();
+
         scannerConfig.selectedTabSet = getView().scanner_scanner_getSelectedTabSet();
+
+        try {
+            scannerConfig.cacheDirectory = Path.of(getView().scanner_option_getCacheDirectory());
+        } catch (InvalidPathException ignored) {
+        }
+
+        scannerConfig.captureDelay = getView().scanner_option_getCaptureDelay();
+        scannerConfig.keyInputDuration = getView().scanner_option_getKeyInputDuration();
+
+        try {
+            scannerConfig.accountFile = Path.of(getView().scanner_option_getAccountFile());
+        } catch (InvalidPathException ignored) {
+        }
+
+        scannerConfig.recordUploadDelay = getView().scanner_option_getRecordUploadDelay();
 
         getConfigModel().setScannerConfig(scannerConfig);
 

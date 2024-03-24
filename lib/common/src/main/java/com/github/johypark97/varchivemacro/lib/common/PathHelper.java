@@ -12,4 +12,16 @@ public class PathHelper {
     public boolean isSubPathOf(Path other) {
         return path.startsWith(other) && !path.equals(other);
     }
+
+    public Path toRelativeOfOrNot(Path other) {
+        if (path.equals(other)) {
+            return Path.of(".");
+        }
+
+        if (path.startsWith(other)) {
+            return other.relativize(path);
+        }
+
+        return path;
+    }
 }

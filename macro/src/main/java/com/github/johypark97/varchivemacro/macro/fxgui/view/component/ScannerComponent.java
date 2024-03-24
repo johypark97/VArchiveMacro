@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.view.component;
 
+import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
@@ -17,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -56,6 +58,40 @@ public class ScannerComponent extends TabPane {
     @FXML
     public Button scanner_unselectAllTabButton;
 
+    @FXML
+    public TextField option_cacheDirectoryTextField;
+
+    @FXML
+    public Button option_cacheDirectorySelectButton;
+
+    @FXML
+    public Slider option_captureDelaySlider;
+
+    @FXML
+    public TextField option_captureDelayTextField;
+
+    @FXML
+    public Slider option_keyInputDurationSlider;
+
+    @FXML
+    public TextField option_keyInputDurationTextField;
+
+    @FXML
+    public TextField option_accountFileTextField;
+
+    @FXML
+    public Button option_accountFileSelectButton;
+
+    @FXML
+    public Slider option_recordUploadDelaySlider;
+
+    @FXML
+    public TextField option_recordUploadDelayTextField;
+
+    public SliderTextFieldLinker optionCaptureDelayLinker;
+    public SliderTextFieldLinker optionKeyInputDurationLinker;
+    public SliderTextFieldLinker optionRecordUploadDelayLinker;
+
     private ViewerRecordController viewerRecordController;
 
     public ScannerComponent(HomeView view) {
@@ -71,6 +107,7 @@ public class ScannerComponent extends TabPane {
 
         setupViewer();
         setupScanner();
+        setupOption();
     }
 
     public void viewer_showInformation(String title, String composer) {
@@ -109,6 +146,34 @@ public class ScannerComponent extends TabPane {
 
     public void scanner_setSelectedTabSet(Set<String> value) {
         scanner_tabListView.getItems().forEach(x -> x.checked.setValue(value.contains(x.name)));
+    }
+
+    public String option_getCacheDirectory() {
+        return option_cacheDirectoryTextField.getText();
+    }
+
+    public void option_setCacheDirectory(String value) {
+        option_cacheDirectoryTextField.setText(value);
+    }
+
+    public int option_getCaptureDelay() {
+        return optionCaptureDelayLinker.getValue();
+    }
+
+    public int option_getKeyInputDuration() {
+        return optionKeyInputDurationLinker.getValue();
+    }
+
+    public String option_getAccountFile() {
+        return option_accountFileTextField.getText();
+    }
+
+    public void option_setAccountFile(String value) {
+        option_accountFileTextField.setText(value);
+    }
+
+    public int option_getRecordUploadDelay() {
+        return optionRecordUploadDelayLinker.getValue();
     }
 
     private HomeView getView() {
@@ -176,6 +241,23 @@ public class ScannerComponent extends TabPane {
 
         scanner_unselectAllTabButton.setOnAction(
                 event -> scanner_tabListView.getItems().forEach(x -> x.checked.setValue(false)));
+    }
+
+    private void setupOption() {
+        option_cacheDirectorySelectButton.setOnAction(
+                event -> getView().scanner_option_openCacheDirectorySelector());
+
+        optionCaptureDelayLinker =
+                new SliderTextFieldLinker(option_captureDelaySlider, option_captureDelayTextField);
+
+        optionKeyInputDurationLinker = new SliderTextFieldLinker(option_keyInputDurationSlider,
+                option_keyInputDurationTextField);
+
+        option_accountFileSelectButton.setOnAction(
+                event -> getView().scanner_option_openAccountFileSelector());
+
+        optionRecordUploadDelayLinker = new SliderTextFieldLinker(option_recordUploadDelaySlider,
+                option_recordUploadDelayTextField);
     }
 
     public static class ViewerRecordController {
