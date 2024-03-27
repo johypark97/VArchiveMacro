@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrTest
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.OcrTestService.Builder;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrTestTask;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
+import com.github.johypark97.varchivemacro.lib.jfx.ServiceManagerHelper;
 import java.nio.file.Path;
 import java.util.Objects;
 import javafx.application.Platform;
@@ -57,6 +58,6 @@ public class DefaultOcrTestModel implements OcrTestModel {
 
     @Override
     public boolean stopOcrTestService() {
-        return ModelHelper.stopService(OcrTestService.class);
+        return ServiceManagerHelper.stopService(OcrTestService.class);
     }
 }

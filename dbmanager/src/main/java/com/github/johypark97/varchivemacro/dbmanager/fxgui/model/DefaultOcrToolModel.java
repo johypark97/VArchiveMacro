@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.Oc
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrCacheClassificationTask;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrGroundTruthGenerationTask;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
+import com.github.johypark97.varchivemacro.lib.jfx.ServiceManagerHelper;
 import java.awt.AWTException;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -51,7 +52,7 @@ public class DefaultOcrToolModel implements OcrToolModel {
 
     @Override
     public boolean stopOcrCacheCaptureService() {
-        return ModelHelper.stopService(OcrCacheCaptureService.class);
+        return ServiceManagerHelper.stopService(OcrCacheCaptureService.class);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class DefaultOcrToolModel implements OcrToolModel {
 
     @Override
     public boolean stopOcrCacheClassificationService() {
-        return ModelHelper.stopService(OcrCacheClassificationService.class);
+        return ServiceManagerHelper.stopService(OcrCacheClassificationService.class);
     }
 
     @Override
@@ -117,6 +118,6 @@ public class DefaultOcrToolModel implements OcrToolModel {
 
     @Override
     public boolean stopOcrGroundTruthGenerationService() {
-        return ModelHelper.stopService(OcrGroundTruthGenerationService.class);
+        return ServiceManagerHelper.stopService(OcrGroundTruthGenerationService.class);
     }
 }
