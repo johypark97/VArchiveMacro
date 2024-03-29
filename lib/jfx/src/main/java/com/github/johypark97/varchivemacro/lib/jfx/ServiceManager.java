@@ -12,7 +12,7 @@ public class ServiceManager {
     }
 
     public static ServiceManager getInstance() {
-        return GlobalServiceSingleton.INSTANCE;
+        return Singleton.INSTANCE;
     }
 
     public boolean isRunningAny() {
@@ -62,7 +62,7 @@ public class ServiceManager {
         return service;
     }
 
-    private static class GlobalServiceSingleton {
+    private static class Singleton {
         private static final ServiceManager INSTANCE = new ServiceManager();
     }
 }

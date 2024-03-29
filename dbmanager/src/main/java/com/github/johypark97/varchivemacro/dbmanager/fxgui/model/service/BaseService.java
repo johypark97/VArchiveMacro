@@ -60,7 +60,7 @@ public abstract class BaseService<T extends Task<U>, U> extends Service<U> {
             }
 
             service.setOnCancelled(event -> onCancel.run());
-            service.setOnFailed(event -> onThrow.accept(service.getException()));
+            service.setOnFailed(event -> onThrow.accept(event.getSource().getException()));
             service.setOnSucceeded(event -> onDone.run());
         }
 

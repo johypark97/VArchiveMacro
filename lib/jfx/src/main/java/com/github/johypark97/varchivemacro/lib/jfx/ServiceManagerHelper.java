@@ -1,16 +1,10 @@
 package com.github.johypark97.varchivemacro.lib.jfx;
 
+import java.util.Objects;
 import javafx.concurrent.Service;
 
 public class ServiceManagerHelper {
     public static boolean stopService(Class<? extends Service<?>> cls) {
-        Service<?> service = ServiceManager.getInstance().get(cls);
-        if (service == null || !service.isRunning()) {
-            return false;
-        }
-
-        service.cancel();
-
-        return true;
+        return Objects.requireNonNull(ServiceManager.getInstance().get(cls)).cancel();
     }
 }

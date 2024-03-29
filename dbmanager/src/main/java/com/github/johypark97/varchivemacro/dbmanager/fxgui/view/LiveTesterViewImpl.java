@@ -67,14 +67,16 @@ public class LiveTesterViewImpl extends AbstractMvpView<LiveTesterPresenter, Liv
         stage.setOnShowing(event -> FxHookWrapper.addKeyListener(nativeKeyListener));
 
         stage.setOnShown(event -> {
-            double height = stage.getHeight();
-            double width = stage.getWidth();
+            Stage source = ((Stage) event.getSource());
 
-            stage.setHeight(height);
-            stage.setWidth(width);
+            double height = source.getHeight();
+            double width = source.getWidth();
 
-            stage.setMinHeight(height);
-            stage.setMinWidth(width);
+            source.setHeight(height);
+            source.setWidth(width);
+
+            source.setMinHeight(height);
+            source.setMinWidth(width);
         });
 
         stage.setOnHiding(event -> FxHookWrapper.removeKeyListener(nativeKeyListener));
