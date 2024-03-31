@@ -40,7 +40,7 @@ public interface Home {
 
 
     interface HomeView extends MvpView<HomePresenter> {
-        void showError(String message, Exception e);
+        void showError(String header, Throwable throwable);
 
         ScannerFrontController getScannerFrontController();
 

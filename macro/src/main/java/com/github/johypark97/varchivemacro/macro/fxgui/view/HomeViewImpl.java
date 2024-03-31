@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> implements HomeView {
@@ -34,12 +35,12 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
-    public void showError(String message, Exception e) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    public void showError(String header, Throwable throwable) {
+        Alert alert = new Alert(AlertType.ERROR);
         alert.initOwner(getStage());
 
-        alert.setHeaderText(message);
-        alert.setContentText(e.toString());
+        alert.setHeaderText(header);
+        alert.setContentText(throwable.toString());
 
         alert.showAndWait();
     }
