@@ -126,7 +126,26 @@
                   </children>
                 </HBox>
                 <Separator/>
-                <TitledPane animated="false" collapsible="false" text="Control"/>
+                <TitledPane animated="false" collapsible="false" text="Control">
+                  <content>
+                    <GridPane hgap="10.0" vgap="10.0">
+                      <columnConstraints>
+                        <ColumnConstraints halignment="CENTER"/>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                      </rowConstraints>
+                      <children>
+                        <Label text="Start"/>
+                        <TextField GridPane.columnIndex="1" alignment="CENTER" editable="false" text="Ctrl + Home"/>
+                        <Label GridPane.rowIndex="1" text="Stop"/>
+                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" editable="false" text="End"/>
+                      </children>
+                    </GridPane>
+                  </content>
+                </TitledPane>
               </children>
             </VBox>
           </right>

@@ -13,6 +13,8 @@ import javafx.stage.Window;
 
 public interface Home {
     interface HomePresenter extends MvpPresenter<HomeView> {
+        void onViewShow_setupService();
+
         void onViewShow_setupCacheDirectory(TextField textField);
 
         void onViewShow_setupCaptureDelayLinker(SliderTextFieldLinker linker);
@@ -33,6 +35,11 @@ public interface Home {
 
         ViewerRecordData scanner_viewer_onShowRecord(int id);
 
+        void scanner_scanner_onStart(Set<String> selectedTabSet, String cacheDirectory,
+                int captureDelay, int keyInputDuration);
+
+        void scanner_scanner_onStop();
+
         Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow);
 
         Path scanner_option_onOpenAccountFileSelector(Window ownerWindow);
@@ -41,6 +48,8 @@ public interface Home {
 
     interface HomeView extends MvpView<HomePresenter> {
         void showError(String header, Throwable throwable);
+
+        void showInformation(String header, String message);
 
         ScannerFrontController getScannerFrontController();
 
@@ -55,6 +64,10 @@ public interface Home {
         Set<String> scanner_scanner_getSelectedTabSet();
 
         void scanner_scanner_setSelectedTabSet(Set<String> value);
+
+        void scanner_scanner_start();
+
+        void scanner_scanner_stop();
 
         String scanner_option_getCacheDirectory();
 

@@ -8,6 +8,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
@@ -46,12 +47,14 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     private WeakReference<ConfigModel> configModelReference;
     private WeakReference<DatabaseModel> databaseModelReference;
     private WeakReference<RecordModel> recordModelReference;
+    private WeakReference<ScannerModel> scannerModelReference;
 
     public void linkModel(ConfigModel configModel, DatabaseModel databaseModel,
-            RecordModel recordModel) {
+            RecordModel recordModel, ScannerModel scannerModel) {
         configModelReference = new WeakReference<>(configModel);
         databaseModelReference = new WeakReference<>(databaseModel);
         recordModelReference = new WeakReference<>(recordModel);
+        scannerModelReference = new WeakReference<>(scannerModel);
     }
 
     private ConfigModel getConfigModel() {
@@ -64,6 +67,27 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private RecordModel getRecordModel() {
         return recordModelReference.get();
+    }
+
+    private ScannerModel getScannerModel() {
+        return scannerModelReference.get();
+    }
+
+    @Override
+    public void onViewShow_setupService() {
+        String header = "Collection Scanner";
+
+        Consumer<Throwable> onThrow = throwable -> {
+            String message = "Scanner service exception";
+
+            LOGGER.atError().log(message, throwable);
+            getView().showError(message, throwable);
+        };
+
+        Runnable onCancel = () -> getView().showInformation(header, "Scan canceled.");
+        Runnable onDone = () -> getView().showInformation(header, "Scan done.");
+
+        getScannerModel().setupService(onDone, onCancel, onThrow);
     }
 
     @Override
@@ -220,6 +244,27 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
+    public void scanner_scanner_onStart(Set<String> selectedTabSet, String cacheDirectory,
+            int captureDelay, int keyInputDuration) {
+        Path cacheDirectoryPath;
+        try {
+            cacheDirectoryPath = Path.of(cacheDirectory);
+        } catch (InvalidPathException e) {
+            getView().showError("Invalid cache directory.", e);
+            return;
+        }
+
+        getScannerModel().startCollectionScan(getDatabaseModel().getDlcTapSongMap(),
+                getDatabaseModel().getTitleTool(), selectedTabSet, cacheDirectoryPath, captureDelay,
+                keyInputDuration);
+    }
+
+    @Override
+    public void scanner_scanner_onStop() {
+        getScannerModel().stopCollectionScan();
+    }
+
+    @Override
     public Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setInitialDirectory(INITIAL_DIRECTORY.toFile());
@@ -230,7 +275,15 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             return null;
         }
 
-        return new PathHelper(file.toPath()).toRelativeOfOrNot(INITIAL_DIRECTORY);
+        Path path = file.toPath();
+        try {
+            getScannerModel().validateCacheDirectory(path);
+        } catch (IOException e) {
+            getView().showError("The selected cache directory is not suitable for use.", e);
+            return null;
+        }
+
+        return new PathHelper(path).toRelativeOfOrNot(INITIAL_DIRECTORY);
     }
 
     @Override

@@ -1,12 +1,15 @@
 package com.github.johypark97.varchivemacro.macro;
 
+import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultDatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultRecordModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.HomePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.HomeViewImpl;
 import java.util.Arrays;
@@ -25,6 +28,7 @@ public class Main extends Application {
     private final ConfigModel configModel = new DefaultConfigModel();
     private final DatabaseModel databaseModel = new DefaultDatabaseModel();
     private final RecordModel recordModel = new DefaultRecordModel();
+    private final ScannerModel scannerModel = new DefaultScannerModel();
 
     private final HomePresenterImpl homePresenter = new HomePresenterImpl();
 
@@ -68,16 +72,28 @@ public class Main extends Application {
     }
 
     @Override
+    public void init() throws Exception {
+        FxHookWrapper.disableLogging();
+        FxHookWrapper.setEventDispatcher();
+        FxHookWrapper.register();
+    }
+
+    @Override
     public void start(Stage primaryStage) throws Exception {
         Thread.currentThread().setUncaughtExceptionHandler((t, e) -> {
             Main.logUncaughtException(e);
             Main.showUncaughtExceptionAlert(e);
         });
 
-        homePresenter.linkModel(configModel, databaseModel, recordModel);
+        homePresenter.linkModel(configModel, databaseModel, recordModel, scannerModel);
 
         homePresenter.linkView(new HomeViewImpl());
 
         Platform.runLater(homePresenter::startPresenter);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        FxHookWrapper.unregister();
     }
 }

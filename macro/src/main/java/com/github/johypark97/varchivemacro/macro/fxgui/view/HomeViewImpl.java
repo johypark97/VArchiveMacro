@@ -1,5 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.view;
 
+import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
+import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
@@ -9,6 +11,8 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerCom
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjNameInputComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.HomeStage;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
 import java.util.List;
@@ -18,9 +22,43 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> implements HomeView {
+    private final NativeKeyListener nativeKeyListener;
+
     private WeakReference<ScannerComponent> scannerComponentReference;
     private WeakReference<ScannerSafeGlassComponent> scannerSafeGlassComponentReference;
     private WeakReference<ScannerDjNameInputComponent> scannerDjNameInputComponentReference;
+
+    public HomeViewImpl() {
+        nativeKeyListener = new NativeKeyListener() {
+            @Override
+            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
+                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
+
+                if (data.isOtherMod()) {
+                    return;
+                }
+
+                if (data.isPressed(NativeKeyEvent.VC_END)) {
+                    scanner_scanner_stop();
+                }
+            }
+
+            @Override
+            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
+                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
+
+                if (data.isOtherMod()) {
+                    return;
+                }
+
+                if (data.isCtrl() && !data.isAlt() && !data.isShift()) {
+                    if (data.isPressed(NativeKeyEvent.VC_HOME)) {
+                        scanner_scanner_start();
+                    }
+                }
+            }
+        };
+    }
 
     private ScannerComponent getScanner() {
         return scannerComponentReference.get();
@@ -41,6 +79,17 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
         alert.setHeaderText(header);
         alert.setContentText(throwable.toString());
+
+        alert.showAndWait();
+    }
+
+    @Override
+    public void showInformation(String header, String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.initOwner(getStage());
+
+        alert.setHeaderText(header);
+        alert.setContentText(message);
 
         alert.showAndWait();
     }
@@ -97,6 +146,22 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void scanner_scanner_start() {
+        Set<String> selectedTabSet = getScanner().scanner_getSelectedTabSet();
+        String cacheDirectory = getScanner().option_getCacheDirectory();
+        int captureDelay = getScanner().option_getCaptureDelay();
+        int keyInputDuration = getScanner().option_getKeyInputDuration();
+
+        getPresenter().scanner_scanner_onStart(selectedTabSet, cacheDirectory, captureDelay,
+                keyInputDuration);
+    }
+
+    @Override
+    public void scanner_scanner_stop() {
+        getPresenter().scanner_scanner_onStop();
+    }
+
+    @Override
     public String scanner_option_getCacheDirectory() {
         return getScanner().option_getCacheDirectory();
     }
@@ -147,6 +212,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                 new WeakReference<>(stage.scannerDjNameInputComponent);
 
         stage.setOnShown(event -> {
+            getPresenter().onViewShow_setupService();
+
             getPresenter().onViewShow_setupCacheDirectory(
                     getScanner().option_cacheDirectoryTextField);
 
@@ -167,6 +234,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
             getPresenter().onViewShow_loadRecord();
         });
+
+        stage.setOnHiding(event -> FxHookWrapper.removeKeyListener(nativeKeyListener));
 
         return stage;
     }
@@ -224,6 +293,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
             getScanner().setVisible(true);
             getScanner().requestFocus();
+
+            FxHookWrapper.addKeyListener(nativeKeyListener);
         }
     }
 }
