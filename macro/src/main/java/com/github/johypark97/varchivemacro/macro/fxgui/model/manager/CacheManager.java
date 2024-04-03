@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.model.manager;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
@@ -11,8 +12,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 
 public class CacheManager {
+    private static final String FORMAT = "png";
     private static final String MARKER_FILE_NAME = ".vamacro";
 
     private final Path cacheDirectoryPath;
@@ -80,5 +83,20 @@ public class CacheManager {
         for (Path path : list) {
             Files.delete(path);
         }
+    }
+
+    public void write(int id, BufferedImage image) throws IOException {
+        Path path = createPath(id);
+
+        Files.deleteIfExists(path);
+        ImageIO.write(image, FORMAT, path.toFile());
+    }
+
+    public BufferedImage read(int id) throws IOException {
+        return ImageIO.read(createPath(id).toFile());
+    }
+
+    private Path createPath(int id) {
+        return cacheDirectoryPath.resolve(String.format("%04d.%s", id, FORMAT));
     }
 }

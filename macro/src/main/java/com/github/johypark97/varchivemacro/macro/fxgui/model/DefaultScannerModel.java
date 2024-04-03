@@ -5,7 +5,9 @@ import com.github.johypark97.varchivemacro.lib.jfx.ServiceManagerHelper;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.ScannerService;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.DefaultCollectionScanTask;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public class DefaultScannerModel implements ScannerModel {
+    private final ScanDataManager scanDataManager = new ScanDataManager();
+
     @Override
     public void validateCacheDirectory(Path path) throws IOException {
         new CacheManager(path).validate();
@@ -42,7 +46,13 @@ public class DefaultScannerModel implements ScannerModel {
             return false;
         }
 
-        // TODO
+        service.setTaskConstructor(
+                () -> new DefaultCollectionScanTask(scanDataManager, dlcTapSongMap, titleTool,
+                        selectedTabSet, cacheDirectoryPath, captureDelay, keyInputDuration));
+
+        // service.setTaskConstructor(
+        //         () -> new FHDCollectionLoaderTask(scanDataManager, dlcTapSongMap, titleTool,
+        //                 selectedTabSet, cacheDirectoryPath));
 
         service.reset();
         service.start();
