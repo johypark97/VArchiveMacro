@@ -41,13 +41,13 @@ public class ScannerComponent extends TabPane {
     public Button viewer_filterResetButton;
 
     @FXML
-    public TreeView<ViewerTreeData> viewer_treeView;
+    public TreeView<ViewerTreeData> viewer_songTreeView;
 
     @FXML
-    public TextArea viewer_textArea;
+    public TextArea viewer_informationTextArea;
 
     @FXML
-    public GridPane viewer_recordGrid;
+    public GridPane viewer_recordGridPane;
 
     @FXML
     public ListView<ScannerTabListData> scanner_tabListView;
@@ -116,7 +116,7 @@ public class ScannerComponent extends TabPane {
         builder.append("Title: ").append(title).append(System.lineSeparator());
         builder.append("Composer: ").append(composer);
 
-        viewer_textArea.setText(builder.toString());
+        viewer_informationTextArea.setText(builder.toString());
     }
 
     public void viewer_resetRecord(int row, int column) {
@@ -192,14 +192,14 @@ public class ScannerComponent extends TabPane {
 
         setupViewer_treeView();
 
-        viewerRecordController = new ViewerRecordController(viewer_recordGrid);
+        viewerRecordController = new ViewerRecordController(viewer_recordGridPane);
         viewerRecordController.setupTransposeButton();
     }
 
     private void setupViewer_treeView() {
-        viewer_treeView.setShowRoot(false);
+        viewer_songTreeView.setShowRoot(false);
 
-        viewer_treeView.setCellFactory(param -> new TreeCell<>() {
+        viewer_songTreeView.setCellFactory(param -> new TreeCell<>() {
             @Override
             protected void updateItem(ViewerTreeData item, boolean empty) {
                 super.updateItem(item, empty);
@@ -218,7 +218,7 @@ public class ScannerComponent extends TabPane {
             }
         });
 
-        viewer_treeView.getSelectionModel().selectedItemProperty()
+        viewer_songTreeView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if (newValue == null) {
                         return;
