@@ -50,13 +50,13 @@ public class ScannerComponent extends TabPane {
     public GridPane viewer_recordGridPane;
 
     @FXML
-    public ListView<ScannerTabListData> scanner_tabListView;
+    public ListView<CaptureTabListData> capture_tabListView;
 
     @FXML
-    public Button scanner_selectAllTabButton;
+    public Button capture_selectAllTabButton;
 
     @FXML
-    public Button scanner_unselectAllTabButton;
+    public Button capture_unselectAllTabButton;
 
     @FXML
     public TextField option_cacheDirectoryTextField;
@@ -106,7 +106,7 @@ public class ScannerComponent extends TabPane {
         setVisible(false);
 
         setupViewer();
-        setupScanner();
+        setupCapture();
         setupOption();
     }
 
@@ -131,21 +131,21 @@ public class ScannerComponent extends TabPane {
         viewerRecordController.shadowCell(row, column);
     }
 
-    public void scanner_setTabList(List<String> list) {
-        ObservableList<ScannerTabListData> observableList =
-                list.stream().map(ScannerTabListData::new)
+    public void capture_setTabList(List<String> list) {
+        ObservableList<CaptureTabListData> observableList =
+                list.stream().map(CaptureTabListData::new)
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
-        scanner_tabListView.setItems(observableList);
+        capture_tabListView.setItems(observableList);
     }
 
-    public Set<String> scanner_getSelectedTabSet() {
-        return scanner_tabListView.getItems().stream().filter(x -> x.checked.get()).map(x -> x.name)
+    public Set<String> capture_getSelectedTabSet() {
+        return capture_tabListView.getItems().stream().filter(x -> x.checked.get()).map(x -> x.name)
                 .collect(Collectors.toSet());
     }
 
-    public void scanner_setSelectedTabSet(Set<String> value) {
-        scanner_tabListView.getItems().forEach(x -> x.checked.setValue(value.contains(x.name)));
+    public void capture_setSelectedTabSet(Set<String> value) {
+        capture_tabListView.getItems().forEach(x -> x.checked.setValue(value.contains(x.name)));
     }
 
     public String option_getCacheDirectory() {
@@ -233,14 +233,14 @@ public class ScannerComponent extends TabPane {
                 });
     }
 
-    private void setupScanner() {
-        scanner_tabListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
+    private void setupCapture() {
+        capture_tabListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
 
-        scanner_selectAllTabButton.setOnAction(
-                event -> scanner_tabListView.getItems().forEach(x -> x.checked.setValue(true)));
+        capture_selectAllTabButton.setOnAction(
+                event -> capture_tabListView.getItems().forEach(x -> x.checked.setValue(true)));
 
-        scanner_unselectAllTabButton.setOnAction(
-                event -> scanner_tabListView.getItems().forEach(x -> x.checked.setValue(false)));
+        capture_unselectAllTabButton.setOnAction(
+                event -> capture_tabListView.getItems().forEach(x -> x.checked.setValue(false)));
     }
 
     private void setupOption() {
@@ -339,11 +339,11 @@ public class ScannerComponent extends TabPane {
     }
 
 
-    public static class ScannerTabListData {
+    public static class CaptureTabListData {
         private final BooleanProperty checked = new SimpleBooleanProperty();
         private final String name;
 
-        public ScannerTabListData(String name) {
+        public CaptureTabListData(String name) {
             this.name = name;
         }
 

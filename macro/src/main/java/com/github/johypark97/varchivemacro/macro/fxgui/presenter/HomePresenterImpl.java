@@ -140,10 +140,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             throw e;
         }
 
-        getView().scanner_scanner_setTabList(getDatabaseModel().getDlcTabList());
+        getView().scanner_capture_setTabList(getDatabaseModel().getDlcTabList());
 
         Set<String> selectedTabSet = getConfigModel().getScannerConfig().selectedTabSet;
-        getView().scanner_scanner_setSelectedTabSet(selectedTabSet);
+        getView().scanner_capture_setSelectedTabSet(selectedTabSet);
 
         return true;
     }
@@ -244,7 +244,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void scanner_scanner_onStart(Set<String> selectedTabSet, String cacheDirectory,
+    public void scanner_capture_onStart(Set<String> selectedTabSet, String cacheDirectory,
             int captureDelay, int keyInputDuration) {
         Path cacheDirectoryPath;
         try {
@@ -260,7 +260,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void scanner_scanner_onStop() {
+    public void scanner_capture_onStop() {
         getScannerModel().stopCollectionScan();
     }
 
@@ -324,7 +324,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     protected boolean terminate() {
         ScannerConfig scannerConfig = new ScannerConfig();
 
-        scannerConfig.selectedTabSet = getView().scanner_scanner_getSelectedTabSet();
+        scannerConfig.selectedTabSet = getView().scanner_capture_getSelectedTabSet();
 
         try {
             scannerConfig.cacheDirectory = Path.of(getView().scanner_option_getCacheDirectory());

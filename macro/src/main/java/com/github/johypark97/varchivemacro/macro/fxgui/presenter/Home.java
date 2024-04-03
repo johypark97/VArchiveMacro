@@ -35,10 +35,10 @@ public interface Home {
 
         ViewerRecordData scanner_viewer_onShowRecord(int id);
 
-        void scanner_scanner_onStart(Set<String> selectedTabSet, String cacheDirectory,
+        void scanner_capture_onStart(Set<String> selectedTabSet, String cacheDirectory,
                 int captureDelay, int keyInputDuration);
 
-        void scanner_scanner_onStop();
+        void scanner_capture_onStop();
 
         Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow);
 
@@ -59,15 +59,15 @@ public interface Home {
 
         void scanner_viewer_showRecord(int id);
 
-        void scanner_scanner_setTabList(List<String> list);
+        void scanner_capture_setTabList(List<String> list);
 
-        Set<String> scanner_scanner_getSelectedTabSet();
+        Set<String> scanner_capture_getSelectedTabSet();
 
-        void scanner_scanner_setSelectedTabSet(Set<String> value);
+        void scanner_capture_setSelectedTabSet(Set<String> value);
 
-        void scanner_scanner_start();
+        void scanner_capture_start();
 
-        void scanner_scanner_stop();
+        void scanner_capture_stop();
 
         String scanner_option_getCacheDirectory();
 

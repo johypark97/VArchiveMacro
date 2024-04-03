@@ -39,7 +39,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                 }
 
                 if (data.isPressed(NativeKeyEvent.VC_END)) {
-                    scanner_scanner_stop();
+                    scanner_capture_stop();
                 }
             }
 
@@ -53,7 +53,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
                 if (data.isCtrl() && !data.isAlt() && !data.isShift()) {
                     if (data.isPressed(NativeKeyEvent.VC_HOME)) {
-                        scanner_scanner_start();
+                        scanner_capture_start();
                     }
                 }
             }
@@ -131,34 +131,34 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
-    public void scanner_scanner_setTabList(List<String> list) {
-        getScanner().scanner_setTabList(list);
+    public void scanner_capture_setTabList(List<String> list) {
+        getScanner().capture_setTabList(list);
     }
 
     @Override
-    public Set<String> scanner_scanner_getSelectedTabSet() {
-        return getScanner().scanner_getSelectedTabSet();
+    public Set<String> scanner_capture_getSelectedTabSet() {
+        return getScanner().capture_getSelectedTabSet();
     }
 
     @Override
-    public void scanner_scanner_setSelectedTabSet(Set<String> value) {
-        getScanner().scanner_setSelectedTabSet(value);
+    public void scanner_capture_setSelectedTabSet(Set<String> value) {
+        getScanner().capture_setSelectedTabSet(value);
     }
 
     @Override
-    public void scanner_scanner_start() {
-        Set<String> selectedTabSet = getScanner().scanner_getSelectedTabSet();
+    public void scanner_capture_start() {
+        Set<String> selectedTabSet = getScanner().capture_getSelectedTabSet();
         String cacheDirectory = getScanner().option_getCacheDirectory();
         int captureDelay = getScanner().option_getCaptureDelay();
         int keyInputDuration = getScanner().option_getKeyInputDuration();
 
-        getPresenter().scanner_scanner_onStart(selectedTabSet, cacheDirectory, captureDelay,
+        getPresenter().scanner_capture_onStart(selectedTabSet, cacheDirectory, captureDelay,
                 keyInputDuration);
     }
 
     @Override
-    public void scanner_scanner_stop() {
-        getPresenter().scanner_scanner_onStop();
+    public void scanner_capture_stop() {
+        getPresenter().scanner_capture_onStop();
     }
 
     @Override
