@@ -145,7 +145,7 @@ public class ScannerComponent extends TabPane {
     }
 
     public void capture_setSelectedTabSet(Set<String> value) {
-        capture_tabListView.getItems().forEach(x -> x.checked.setValue(value.contains(x.name)));
+        capture_tabListView.getItems().forEach(x -> x.checked.set(value.contains(x.name)));
     }
 
     public String option_getCacheDirectory() {
@@ -237,10 +237,10 @@ public class ScannerComponent extends TabPane {
         capture_tabListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
 
         capture_selectAllTabButton.setOnAction(
-                event -> capture_tabListView.getItems().forEach(x -> x.checked.setValue(true)));
+                event -> capture_tabListView.getItems().forEach(x -> x.checked.set(true)));
 
         capture_unselectAllTabButton.setOnAction(
-                event -> capture_tabListView.getItems().forEach(x -> x.checked.setValue(false)));
+                event -> capture_tabListView.getItems().forEach(x -> x.checked.set(false)));
     }
 
     private void setupOption() {

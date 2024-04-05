@@ -1,7 +1,5 @@
 package com.github.johypark97.varchivemacro.lib.jfx.fxgui;
 
-import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
@@ -11,7 +9,7 @@ public class SliderTextFieldLinker {
     public final TextField textField;
 
     private boolean blockSliderProperty = false;
-    private final ReadOnlyIntegerWrapper valueProperty = new ReadOnlyIntegerWrapper();
+    private int linkedValue;
 
     private Integer defaultValue;
     private Integer limitMax;
@@ -22,10 +20,6 @@ public class SliderTextFieldLinker {
         this.textField = textField;
 
         setHandler();
-    }
-
-    public ReadOnlyIntegerProperty valueReadOnlyProperty() {
-        return valueProperty.getReadOnlyProperty();
     }
 
     public void setDefaultValue(int value) {
@@ -53,7 +47,7 @@ public class SliderTextFieldLinker {
     }
 
     public int getValue() {
-        return valueProperty.intValue();
+        return linkedValue;
     }
 
     public void setValue(int value) {
@@ -93,17 +87,17 @@ public class SliderTextFieldLinker {
         int max = (limitMax != null) ? limitMax : (int) slider.getMax();
         int min = (limitMin != null) ? limitMin : (int) slider.getMin();
 
-        valueProperty.set(Math.min(Math.max(min, value), max));
+        linkedValue = Math.min(Math.max(min, value), max);
     }
 
     private void updateSliderValue() {
         blockSliderProperty = true;
-        slider.setValue(valueProperty.intValue());
+        slider.setValue(linkedValue);
         blockSliderProperty = false;
     }
 
     private void updateTextFieldText() {
-        textField.setText(Integer.toString(valueProperty.intValue()));
+        textField.setText(Integer.toString(linkedValue));
     }
 
     private void updateFromTextField() {
