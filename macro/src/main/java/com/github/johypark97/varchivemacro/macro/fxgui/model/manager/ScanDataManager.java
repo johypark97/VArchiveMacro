@@ -1,14 +1,36 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.model.manager;
 
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils.StringDiff;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.ReadOnlyListProperty;
+import javafx.beans.property.ReadOnlyListWrapper;
+import javafx.beans.property.ReadOnlyMapProperty;
+import javafx.beans.property.ReadOnlyMapWrapper;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 
 public class ScanDataManager {
-    private final List<CaptureData> captureDataList = new ArrayList<>();
-    private final List<SongData> songDataList = new ArrayList<>();
+    private final ReadOnlyListWrapper<CaptureData> captureDataList = new ReadOnlyListWrapper<>();
+    private final ReadOnlyListWrapper<SongData> songDataList = new ReadOnlyListWrapper<>();
+
+    public ScanDataManager() {
+        captureDataList.set(FXCollections.observableArrayList());
+        songDataList.set(FXCollections.observableArrayList());
+    }
+
+    public ReadOnlyListProperty<CaptureData> captureDataListProperty() {
+        return captureDataList.getReadOnlyProperty();
+    }
+
+    public ReadOnlyListProperty<SongData> songDataListProperty() {
+        return songDataList.getReadOnlyProperty();
+    }
 
     public void clear() {
         captureDataList.clear();
@@ -34,25 +56,41 @@ public class ScanDataManager {
     }
 
     public static class SongData {
-        private final List<CaptureData> childList = new ArrayList<>();
-        private final Map<CaptureData, LinkMetadata> linkMap = new HashMap<>();
+        private final ReadOnlyListWrapper<CaptureData> childList = new ReadOnlyListWrapper<>();
+        private final ReadOnlyMapWrapper<CaptureData, LinkMetadata> linkMap =
+                new ReadOnlyMapWrapper<>();
 
-        public final String normalizedTitle;
-        public final int id;
-        public final int songId;
+        private final ReadOnlyIntegerWrapper id = new ReadOnlyIntegerWrapper();
+        private final ReadOnlyIntegerWrapper songId = new ReadOnlyIntegerWrapper();
+        private final ReadOnlyStringWrapper normalizedTitle = new ReadOnlyStringWrapper();
 
         public SongData(int id, int songId, String normalizedTitle) {
-            this.id = id;
-            this.normalizedTitle = normalizedTitle;
-            this.songId = songId;
+            this.id.set(id);
+            this.normalizedTitle.set(normalizedTitle);
+            this.songId.set(songId);
+
+            childList.set(FXCollections.observableArrayList());
+            linkMap.set(FXCollections.observableHashMap());
         }
 
-        public List<CaptureData> getChildList() {
-            return List.copyOf(childList);
+        public ReadOnlyIntegerProperty idProperty() {
+            return id.getReadOnlyProperty();
         }
 
-        public Map<CaptureData, LinkMetadata> getLinkMap() {
-            return Map.copyOf(linkMap);
+        public ReadOnlyIntegerProperty songIdProperty() {
+            return songId.getReadOnlyProperty();
+        }
+
+        public ReadOnlyStringProperty normalizedTitleProperty() {
+            return normalizedTitle.getReadOnlyProperty();
+        }
+
+        public ReadOnlyListProperty<CaptureData> childListProperty() {
+            return childList.getReadOnlyProperty();
+        }
+
+        public ReadOnlyMapProperty<CaptureData, LinkMetadata> linkMapProperty() {
+            return linkMap.getReadOnlyProperty();
         }
 
         public void link(CaptureData child) {
@@ -76,30 +114,45 @@ public class ScanDataManager {
         }
 
         public StringDiff diff(CaptureData captureData) {
-            return new StringDiff(normalizedTitle, captureData.scannedTitle);
+            return new StringDiff(normalizedTitle.get(), captureData.scannedTitle.get());
         }
 
         @Override
         public String toString() {
-            return String.format("SongData{%d, %d '%s'}", id, songId, normalizedTitle);
+            return String.format("SongData{%d, %d '%s'}", id.get(), songId.get(),
+                    normalizedTitle.get());
         }
     }
 
 
     public static class CaptureData {
-        private final List<SongData> parentList = new ArrayList<>();
+        private final ReadOnlyListWrapper<SongData> parentList = new ReadOnlyListWrapper<>();
 
-        public final int id;
+        private final ReadOnlyIntegerWrapper id = new ReadOnlyIntegerWrapper();
 
-        public Exception exception;
-        public String scannedTitle;
+        public final SimpleObjectProperty<Exception> exception = new SimpleObjectProperty<>();
+        public final SimpleStringProperty scannedTitle = new SimpleStringProperty();
 
         public CaptureData(int id) {
-            this.id = id;
+            this.id.set(id);
+
+            parentList.set(FXCollections.observableArrayList());
         }
 
-        public List<SongData> getParentList() {
-            return List.copyOf(parentList);
+        public ReadOnlyIntegerProperty idProperty() {
+            return id.getReadOnlyProperty();
+        }
+
+        public SimpleStringProperty scannedTitleProperty() {
+            return scannedTitle;
+        }
+
+        public SimpleObjectProperty<Exception> exceptionProperty() {
+            return exception;
+        }
+
+        public ReadOnlyListProperty<SongData> parentListProperty() {
+            return parentList.getReadOnlyProperty();
         }
 
         private void onLink(SongData parent) {
@@ -112,25 +165,33 @@ public class ScanDataManager {
 
         @Override
         public String toString() {
-            return String.format("CaptureData{%d, '%s'}", id, scannedTitle);
+            return String.format("CaptureData{%d, '%s'}", id.get(), scannedTitle.get());
         }
     }
 
 
     public static class LinkMetadata {
-        public final double accuracy;
-        public final int distance;
+        private final ReadOnlyDoubleWrapper accuracy = new ReadOnlyDoubleWrapper();
+        private final ReadOnlyIntegerWrapper distance = new ReadOnlyIntegerWrapper();
 
         public LinkMetadata(SongData parent, CaptureData child) {
             StringDiff diff = parent.diff(child);
 
-            accuracy = diff.getSimilarity();
-            distance = diff.getDistance();
+            accuracy.set(diff.getSimilarity());
+            distance.set(diff.getDistance());
+        }
+
+        public ReadOnlyDoubleProperty accuracyProperty() {
+            return accuracy.getReadOnlyProperty();
+        }
+
+        public ReadOnlyIntegerProperty distanceProperty() {
+            return distance.getReadOnlyProperty();
         }
 
         @Override
         public String toString() {
-            return String.format("LinkMetadata{%d, %.2f%%}", distance, accuracy * 100);
+            return String.format("LinkMetadata{%d, %.2f%%}", distance.get(), accuracy.get() * 100);
         }
     }
 }

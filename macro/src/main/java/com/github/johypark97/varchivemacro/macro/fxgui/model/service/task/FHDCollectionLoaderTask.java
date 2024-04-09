@@ -43,7 +43,7 @@ public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
 
     @Override
     protected BufferedImage captureScreenshot(CaptureData data) throws Exception {
-        return cacheManager.read(data.id);
+        return cacheManager.read(data.idProperty().get());
     }
 
     @Override

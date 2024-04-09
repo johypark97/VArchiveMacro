@@ -155,7 +155,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
 
     private void findAndLinkSongAndCapture(Map<String, List<SongData>> lookup,
             CaptureData captureData) {
-        String captureDataTitle = captureData.scannedTitle;
+        String captureDataTitle = captureData.scannedTitle.get();
         LOGGER.atDebug().log("[findAndLinkSongAndCapture()] {}", captureData);
 
         // check if there is an exact match
@@ -164,7 +164,8 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
             if (list != null) {
                 list.forEach(x -> {
                     x.link(captureData);
-                    LOGGER.atDebug().log("[exact found] {}, linked: {}", x, x.getLinkMap());
+                    LOGGER.atDebug()
+                            .log("[exact found] {}, linked: {}", x, x.linkMapProperty().get());
                 });
 
                 return;
@@ -179,7 +180,8 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
             if (map.size() <= DUPLICATE_LIMIT) {
                 map.values().forEach(x -> x.forEach(y -> {
                     y.link(captureData);
-                    LOGGER.atDebug().log("[similar found] {}, linked: {}", y, y.getLinkMap());
+                    LOGGER.atDebug()
+                            .log("[similar found] {}, linked: {}", y, y.linkMapProperty().get());
                 }));
 
                 return;
@@ -241,7 +243,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
                     // scan the title from the image
                     String scannedTitle = readTitle(ocr, image);
                     scannedTitle = normalizeScannedTitle(scannedTitle);
-                    data.scannedTitle = scannedTitle;
+                    data.scannedTitle.set(scannedTitle);
 
                     // find and link the song
                     findAndLinkSongAndCapture(lookupNormalizedTitleSongDataList, data);

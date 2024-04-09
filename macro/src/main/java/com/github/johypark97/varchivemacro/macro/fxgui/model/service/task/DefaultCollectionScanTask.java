@@ -84,9 +84,9 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
 
         Runnable command = () -> {
             try {
-                cacheManager.write(data.id, image);
+                cacheManager.write(data.idProperty().get(), image);
             } catch (Exception e) {
-                data.exception = e;
+                data.exception.set(e);
             }
         };
 
