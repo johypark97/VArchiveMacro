@@ -14,7 +14,6 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -175,7 +174,7 @@
       <content>
         <VBox spacing="10.0">
           <children>
-            <TreeTableView VBox.vgrow="ALWAYS" showRoot="false" fx:id="song_songTreeTableView"/>
+            <TableView VBox.vgrow="ALWAYS" fx:id="song_songTableView"/>
             <HBox spacing="10.0">
               <children>
                 <Button text="Show" fx:id="song_showButton"/>
