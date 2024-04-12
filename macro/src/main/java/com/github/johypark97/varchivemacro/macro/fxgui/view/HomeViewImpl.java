@@ -3,6 +3,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view;
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ScannerFrontController;
@@ -17,6 +19,7 @@ import java.lang.ref.WeakReference;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
@@ -131,6 +134,11 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void scanner_capture_setCaptureDataList(ObservableList<CaptureData> list) {
+        getScanner().capture_setCaptureDataList(list);
+    }
+
+    @Override
     public void scanner_capture_setTabList(List<String> list) {
         getScanner().capture_setTabList(list);
     }
@@ -159,6 +167,11 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     @Override
     public void scanner_capture_stop() {
         getPresenter().scanner_capture_onStop();
+    }
+
+    @Override
+    public void scanner_song_setSongDataList(ObservableList<SongData> list) {
+        getScanner().song_setSongDataList(list);
     }
 
     @Override

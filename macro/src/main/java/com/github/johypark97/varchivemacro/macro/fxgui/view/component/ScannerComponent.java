@@ -2,11 +2,16 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view.component;
 
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
+import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.TitleComparator;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.LinkMetadata;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,14 +25,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class ScannerComponent extends TabPane {
     private static final String FXML_FILE_NAME = "Scanner.fxml";
@@ -50,6 +61,9 @@ public class ScannerComponent extends TabPane {
     public GridPane viewer_recordGridPane;
 
     @FXML
+    public TableView<CaptureData> capture_captureTableView;
+
+    @FXML
     public ListView<CaptureTabListData> capture_tabListView;
 
     @FXML
@@ -57,6 +71,9 @@ public class ScannerComponent extends TabPane {
 
     @FXML
     public Button capture_unselectAllTabButton;
+
+    @FXML
+    public TableView<SongData> song_songTableView;
 
     @FXML
     public TextField option_cacheDirectoryTextField;
@@ -107,6 +124,7 @@ public class ScannerComponent extends TabPane {
 
         setupViewer();
         setupCapture();
+        setupSong();
         setupOption();
     }
 
@@ -176,6 +194,14 @@ public class ScannerComponent extends TabPane {
         return optionRecordUploadDelayLinker.getValue();
     }
 
+    public void capture_setCaptureDataList(ObservableList<CaptureData> list) {
+        capture_captureTableView.setItems(list);
+    }
+
+    public void song_setSongDataList(ObservableList<SongData> list) {
+        song_songTableView.setItems(list);
+    }
+
     private HomeView getView() {
         return viewReference.get();
     }
@@ -234,6 +260,8 @@ public class ScannerComponent extends TabPane {
     }
 
     private void setupCapture() {
+        setupCapture_captureTableView();
+
         capture_tabListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
 
         capture_selectAllTabButton.setOnAction(
@@ -241,6 +269,110 @@ public class ScannerComponent extends TabPane {
 
         capture_unselectAllTabButton.setOnAction(
                 event -> capture_tabListView.getItems().forEach(x -> x.checked.set(false)));
+    }
+
+    private void setupCapture_captureTableView() {
+        TableColumn<CaptureData, Integer> id = new TableColumn<>("Capture Data Id");
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        id.setPrefWidth(100);
+
+        TableColumn<CaptureData, String> scannedTitle = new TableColumn<>("Scanned Title");
+        scannedTitle.setCellValueFactory(new PropertyValueFactory<>("scannedTitle"));
+        scannedTitle.setComparator(new TitleComparator());
+        scannedTitle.setPrefWidth(250);
+
+        TableColumn<CaptureData, List<SongData>> linkedSongs = new TableColumn<>("Linked Songs");
+        linkedSongs.setCellValueFactory(new PropertyValueFactory<>("parentList"));
+        linkedSongs.setPrefWidth(150);
+        linkedSongs.setCellFactory(param -> new TableCell<>() {
+            @Override
+            protected void updateItem(List<SongData> item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    return;
+                }
+
+                setText(item.stream().map(x -> {
+                    String normalizedTitle = x.normalizedTitleProperty().get();
+                    int id = x.idProperty().get();
+
+                    return String.format("(%d) %s", id, normalizedTitle);
+                }).collect(Collectors.joining(", ")));
+            }
+        });
+
+        TableColumn<CaptureData, Exception> error = new TableColumn<>("Error");
+        error.setCellValueFactory(new PropertyValueFactory<>("exception"));
+        error.setPrefWidth(100);
+        error.setCellFactory(param -> new TableCell<>() {
+            @Override
+            protected void updateItem(Exception item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setTooltip(null);
+                    return;
+                }
+
+                setText(item.getMessage());
+
+                Tooltip tooltip = new Tooltip(item.toString());
+                tooltip.setShowDelay(Duration.millis(200));
+                setTooltip(tooltip);
+            }
+        });
+
+        capture_captureTableView.getColumns().addAll(List.of(id, scannedTitle, linkedSongs, error));
+    }
+
+    private void setupSong() {
+        setupSong_songTableView();
+    }
+
+    private void setupSong_songTableView() {
+        TableColumn<SongData, Integer> id = new TableColumn<>("Song Data Id");
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        id.setPrefWidth(100);
+
+        TableColumn<SongData, Integer> songId = new TableColumn<>("Song Id");
+        songId.setCellValueFactory(new PropertyValueFactory<>("songId"));
+        songId.setPrefWidth(100);
+
+        TableColumn<SongData, String> normalizedTitle = new TableColumn<>("Normalized Title");
+        normalizedTitle.setCellValueFactory(new PropertyValueFactory<>("normalizedTitle"));
+        normalizedTitle.setPrefWidth(250);
+
+        TableColumn<SongData, Map<CaptureData, LinkMetadata>> linkedCaptures =
+                new TableColumn<>("Linked Captures");
+        linkedCaptures.setCellValueFactory(new PropertyValueFactory<>("linkMap"));
+        linkedCaptures.setPrefWidth(150);
+        linkedCaptures.setCellFactory(param -> new TableCell<>() {
+            @Override
+            protected void updateItem(Map<CaptureData, LinkMetadata> item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    return;
+                }
+
+                setText(item.entrySet().stream().map(x -> {
+                    String scannedTitle = x.getKey().scannedTitle.get();
+                    double accuracy = x.getValue().accuracyProperty().get();
+                    int distance = x.getValue().distanceProperty().get();
+                    int id = x.getKey().idProperty().get();
+
+                    return String.format("(%d) %s [%d, %.2f%%]", id, scannedTitle, distance,
+                            accuracy * 100);
+                }).collect(Collectors.joining(", ")));
+            }
+        });
+
+        song_songTableView.getColumns()
+                .addAll(List.of(id, songId, normalizedTitle, linkedCaptures));
     }
 
     private void setupOption() {

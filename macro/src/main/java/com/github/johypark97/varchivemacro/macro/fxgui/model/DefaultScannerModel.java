@@ -6,6 +6,8 @@ import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.L
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.ScannerService;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.DefaultCollectionScanTask;
 import java.io.IOException;
@@ -15,6 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import javafx.collections.ObservableList;
 
 public class DefaultScannerModel implements ScannerModel {
     private final ScanDataManager scanDataManager = new ScanDataManager();
@@ -25,7 +28,8 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void setupService(Runnable onDone, Runnable onCancel, Consumer<Throwable> onThrow) {
+    public void setupService(Runnable onStart, Runnable onDone, Runnable onCancel,
+            Consumer<Throwable> onThrow) {
         ScannerService service = ServiceManager.getInstance().create(ScannerService.class);
         if (service == null) {
             throw new IllegalStateException("ScannerService has already been created.");
@@ -33,6 +37,7 @@ public class DefaultScannerModel implements ScannerModel {
 
         service.setOnCancelled(event -> onCancel.run());
         service.setOnFailed(event -> onThrow.accept(event.getSource().getException()));
+        service.setOnScheduled(event -> onStart.run());
         service.setOnSucceeded(event -> onDone.run());
     }
 
@@ -63,5 +68,15 @@ public class DefaultScannerModel implements ScannerModel {
     @Override
     public boolean stopCollectionScan() {
         return ServiceManagerHelper.stopService(ScannerService.class);
+    }
+
+    @Override
+    public ObservableList<CaptureData> getObservableCaptureDataList() {
+        return scanDataManager.captureDataListProperty();
+    }
+
+    @Override
+    public ObservableList<SongData> getObservableSongDataList() {
+        return scanDataManager.songDataListProperty();
     }
 }

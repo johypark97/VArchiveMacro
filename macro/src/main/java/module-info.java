@@ -9,6 +9,7 @@ module varchivemacro.macro {
     requires javafx.controls;
     requires javafx.fxml;
 
+    opens com.github.johypark97.varchivemacro.macro.fxgui.model.manager to javafx.base;
     opens com.github.johypark97.varchivemacro.macro.fxgui.view.component to javafx.fxml;
 
     // 3rd party

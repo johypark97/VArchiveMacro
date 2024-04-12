@@ -26,6 +26,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import javafx.collections.FXCollections;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -84,10 +85,27 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             getView().showError(message, throwable);
         };
 
-        Runnable onCancel = () -> getView().showInformation(header, "Scan canceled.");
-        Runnable onDone = () -> getView().showInformation(header, "Scan done.");
+        Runnable onCancel = () -> {
+            getView().scanner_capture_setCaptureDataList(
+                    getScannerModel().getObservableCaptureDataList());
+            getView().scanner_song_setSongDataList(getScannerModel().getObservableSongDataList());
 
-        getScannerModel().setupService(onDone, onCancel, onThrow);
+            getView().showInformation(header, "Scan canceled.");
+        };
+        Runnable onDone = () -> {
+            getView().scanner_capture_setCaptureDataList(
+                    getScannerModel().getObservableCaptureDataList());
+            getView().scanner_song_setSongDataList(getScannerModel().getObservableSongDataList());
+
+            getView().showInformation(header, "Scan done.");
+        };
+
+        Runnable onStart = () -> {
+            getView().scanner_capture_setCaptureDataList(FXCollections.emptyObservableList());
+            getView().scanner_song_setSongDataList(FXCollections.emptyObservableList());
+        };
+
+        getScannerModel().setupService(onStart, onDone, onCancel, onThrow);
     }
 
     @Override
