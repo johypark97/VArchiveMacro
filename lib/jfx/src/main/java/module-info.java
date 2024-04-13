@@ -6,6 +6,5 @@ module varchivemacro.lib.jfx {
     // exports
     exports com.github.johypark97.varchivemacro.lib.jfx.fxgui;
     exports com.github.johypark97.varchivemacro.lib.jfx.mvp;
-
     exports com.github.johypark97.varchivemacro.lib.jfx;
 }

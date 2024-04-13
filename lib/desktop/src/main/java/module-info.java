@@ -8,6 +8,5 @@ module varchivemacro.lib.desktop {
     exports com.github.johypark97.varchivemacro.lib.desktop.gui.component;
     exports com.github.johypark97.varchivemacro.lib.desktop.gui.util;
     exports com.github.johypark97.varchivemacro.lib.desktop.gui.viewmodel;
-
     exports com.github.johypark97.varchivemacro.lib.desktop;
 }

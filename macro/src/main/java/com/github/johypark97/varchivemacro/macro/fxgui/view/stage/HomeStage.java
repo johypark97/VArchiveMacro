@@ -6,16 +6,12 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerCom
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjNameInputComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
 import java.net.URL;
-import java.util.Objects;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class HomeStage extends Stage {
     private static final String TITLE = "VArchive Macro";
-
-    private static final String GLOBAL_CSS_FILENAME = "global.css";
-    private static final String TABLE_COLOR_CSS_FILENAME = "table-color.css";
 
     private static final int STAGE_HEIGHT = 540;
     private static final int STAGE_WIDTH = 960;
@@ -34,11 +30,8 @@ public class HomeStage extends Stage {
                 new StackPane(scannerComponent, scannerDjNameInputComponent,
                         scannerSafeGlassComponent));
 
-        URL globalCss = HomeStage.class.getResource(GLOBAL_CSS_FILENAME);
-        Objects.requireNonNull(globalCss);
-
-        URL tableColorCss = HomeStage.class.getResource(TABLE_COLOR_CSS_FILENAME);
-        Objects.requireNonNull(tableColorCss);
+        URL globalCss = GlobalResource.getGlobalCss();
+        URL tableColorCss = GlobalResource.getTableColorCss();
 
         Scene scene = new Scene(homeComponent);
         scene.getStylesheets().add(globalCss.toExternalForm());

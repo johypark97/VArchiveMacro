@@ -14,14 +14,12 @@ module varchivemacro.lib.scanner {
     requires org.bytedeco.tesseract.windows.x86_64;
 
     // exports
+    exports com.github.johypark97.varchivemacro.lib.scanner.api;
+    exports com.github.johypark97.varchivemacro.lib.scanner.area;
     exports com.github.johypark97.varchivemacro.lib.scanner.database.comparator;
     exports com.github.johypark97.varchivemacro.lib.scanner.database.datastruct to com.google.gson;
     exports com.github.johypark97.varchivemacro.lib.scanner.database;
-
-    exports com.github.johypark97.varchivemacro.lib.scanner.api;
-    exports com.github.johypark97.varchivemacro.lib.scanner.area;
     exports com.github.johypark97.varchivemacro.lib.scanner.ocr;
     exports com.github.johypark97.varchivemacro.lib.scanner.recognizer;
-
     exports com.github.johypark97.varchivemacro.lib.scanner;
 }
