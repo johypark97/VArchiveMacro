@@ -9,10 +9,12 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.Scanner
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.CaptureViewer.CaptureViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -27,6 +29,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javafx.collections.FXCollections;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -50,12 +53,18 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     private WeakReference<RecordModel> recordModelReference;
     private WeakReference<ScannerModel> scannerModelReference;
 
+    private WeakReference<CaptureViewerPresenter> captureViewerPresenterReference;
+
     public void linkModel(ConfigModel configModel, DatabaseModel databaseModel,
             RecordModel recordModel, ScannerModel scannerModel) {
         configModelReference = new WeakReference<>(configModel);
         databaseModelReference = new WeakReference<>(databaseModel);
         recordModelReference = new WeakReference<>(recordModel);
         scannerModelReference = new WeakReference<>(scannerModel);
+    }
+
+    public void linkPresenter(CaptureViewerPresenter captureViewerPresenter) {
+        captureViewerPresenterReference = new WeakReference<>(captureViewerPresenter);
     }
 
     private ConfigModel getConfigModel() {
@@ -72,6 +81,19 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private ScannerModel getScannerModel() {
         return scannerModelReference.get();
+    }
+
+    private CaptureViewerPresenter getCaptureViewerPresenter() {
+        return captureViewerPresenterReference.get();
+    }
+
+    private Path convertStringToPath(String pathString) {
+        try {
+            return Path.of(pathString);
+        } catch (InvalidPathException e) {
+            getView().showError("Invalid cache directory.", e);
+            return null;
+        }
     }
 
     @Override
@@ -262,13 +284,37 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
+    public void scanner_capture_onOpenCaptureViewer(Window ownerWindow, String cacheDirectory,
+            int id) {
+        Path cacheDirectoryPath = convertStringToPath(cacheDirectory);
+        if (cacheDirectoryPath == null) {
+            return;
+        }
+
+        BufferedImage image;
+        try {
+            image = getScannerModel().getCaptureImage(cacheDirectoryPath, id);
+        } catch (IOException e) {
+            getView().showError("Cache image reading error", e);
+            return;
+        }
+
+        CaptureViewer.StartData startData = new CaptureViewer.StartData();
+        startData.image = SwingFXUtils.toFXImage(image, null);
+        startData.ownerWindow = ownerWindow;
+        getCaptureViewerPresenter().setStartData(startData);
+
+        if (getCaptureViewerPresenter().isStarted()
+                || getCaptureViewerPresenter().startPresenter()) {
+            getCaptureViewerPresenter().updateView();
+        }
+    }
+
+    @Override
     public void scanner_capture_onStart(Set<String> selectedTabSet, String cacheDirectory,
             int captureDelay, int keyInputDuration) {
-        Path cacheDirectoryPath;
-        try {
-            cacheDirectoryPath = Path.of(cacheDirectory);
-        } catch (InvalidPathException e) {
-            getView().showError("Invalid cache directory.", e);
+        Path cacheDirectoryPath = convertStringToPath(cacheDirectory);
+        if (cacheDirectoryPath == null) {
             return;
         }
 
@@ -340,6 +386,11 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     protected boolean terminate() {
+        if (getCaptureViewerPresenter().isStarted()
+                && !getCaptureViewerPresenter().stopPresenter()) {
+            return false;
+        }
+
         ScannerConfig scannerConfig = new ScannerConfig();
 
         scannerConfig.selectedTabSet = getView().scanner_capture_getSelectedTabSet();

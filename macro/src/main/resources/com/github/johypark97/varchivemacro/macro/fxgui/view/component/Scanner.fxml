@@ -113,7 +113,7 @@
                 <TableView VBox.vgrow="ALWAYS" fx:id="capture_captureTableView"/>
                 <HBox>
                   <children>
-                    <Button text="Show" fx:id="capture_showButton"/>
+                    <Button text="Show (Enter)" fx:id="capture_showButton"/>
                   </children>
                 </HBox>
               </children>

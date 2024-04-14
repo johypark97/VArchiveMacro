@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.L
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface ScannerModel {
     ObservableList<CaptureData> getObservableCaptureDataList();
 
     ObservableList<SongData> getObservableSongDataList();
+
+    BufferedImage getCaptureImage(Path cacheDirectoryPath, int id) throws IOException;
 }

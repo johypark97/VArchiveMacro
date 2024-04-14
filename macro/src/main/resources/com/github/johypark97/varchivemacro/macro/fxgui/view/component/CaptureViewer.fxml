@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21">
+  <bottom>
+    <Button maxWidth="1.7976931348623157E308" minHeight="64.0" text="Close (ESC)" fx:id="closeButton"/>
+  </bottom>
+</fx:root>

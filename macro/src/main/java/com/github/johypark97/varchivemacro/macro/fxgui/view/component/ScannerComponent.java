@@ -36,6 +36,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -62,6 +63,9 @@ public class ScannerComponent extends TabPane {
 
     @FXML
     public TableView<CaptureData> capture_captureTableView;
+
+    @FXML
+    public Button capture_showButton;
 
     @FXML
     public ListView<CaptureTabListData> capture_tabListView;
@@ -206,6 +210,14 @@ public class ScannerComponent extends TabPane {
         return viewReference.get();
     }
 
+    private void openCaptureViewer() {
+        CaptureData selected = capture_captureTableView.getSelectionModel().getSelectedItem();
+
+        if (selected != null) {
+            getView().scanner_capture_openCaptureViewer(selected.idProperty().get());
+        }
+    }
+
     private void setupViewer() {
         viewer_filterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             String value = newValue.trim();
@@ -262,6 +274,8 @@ public class ScannerComponent extends TabPane {
     private void setupCapture() {
         setupCapture_captureTableView();
 
+        capture_showButton.setOnAction(event -> openCaptureViewer());
+
         capture_tabListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
 
         capture_selectAllTabButton.setOnAction(
@@ -272,6 +286,12 @@ public class ScannerComponent extends TabPane {
     }
 
     private void setupCapture_captureTableView() {
+        capture_captureTableView.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                openCaptureViewer();
+            }
+        });
+
         TableColumn<CaptureData, Integer> id = new TableColumn<>("Capture Data Id");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         id.setPrefWidth(100);

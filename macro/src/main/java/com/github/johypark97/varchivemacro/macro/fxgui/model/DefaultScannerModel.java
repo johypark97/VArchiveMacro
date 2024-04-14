@@ -10,6 +10,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataMan
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.ScannerService;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.DefaultCollectionScanTask;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -78,5 +79,17 @@ public class DefaultScannerModel implements ScannerModel {
     @Override
     public ObservableList<SongData> getObservableSongDataList() {
         return scanDataManager.songDataListProperty();
+    }
+
+    @Override
+    public BufferedImage getCaptureImage(Path cacheDirectoryPath, int id) throws IOException {
+        CaptureData captureData = scanDataManager.captureDataListProperty().get(id);
+
+        try {
+            return new CacheManager(cacheDirectoryPath).read(id);
+        } catch (IOException e) {
+            captureData.exception.set(e);
+            throw e;
+        }
     }
 }

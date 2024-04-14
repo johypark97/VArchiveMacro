@@ -139,6 +139,12 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void scanner_capture_openCaptureViewer(int id) {
+        String cacheDirectory = getScanner().option_getCacheDirectory();
+        getPresenter().scanner_capture_onOpenCaptureViewer(getStage(), cacheDirectory, id);
+    }
+
+    @Override
     public void scanner_capture_setTabList(List<String> list) {
         getScanner().capture_setTabList(list);
     }

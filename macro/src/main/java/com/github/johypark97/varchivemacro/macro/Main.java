@@ -10,7 +10,9 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultRecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.CaptureViewerPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.HomePresenterImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.CaptureViewerViewImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.HomeViewImpl;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -30,6 +32,8 @@ public class Main extends Application {
     private final RecordModel recordModel = new DefaultRecordModel();
     private final ScannerModel scannerModel = new DefaultScannerModel();
 
+    private final CaptureViewerPresenterImpl captureViewerPresenter =
+            new CaptureViewerPresenterImpl();
     private final HomePresenterImpl homePresenter = new HomePresenterImpl();
 
     public static void main(String[] args) {
@@ -85,7 +89,10 @@ public class Main extends Application {
             Main.showUncaughtExceptionAlert(e);
         });
 
+        captureViewerPresenter.linkView(new CaptureViewerViewImpl());
+
         homePresenter.linkModel(configModel, databaseModel, recordModel, scannerModel);
+        homePresenter.linkPresenter(captureViewerPresenter);
 
         homePresenter.linkView(new HomeViewImpl());
 
