@@ -1,5 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.model.service.task;
 
+import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasOne;
+
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
@@ -153,6 +155,20 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
                 .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
+    private boolean linkSongAndCapture(SongData songData, CaptureData captureData) {
+        for (CaptureData child : songData.childListProperty()) {
+            if (hasOne(child.parentListProperty())) {
+                if (child.scannedTitle.get().equals(captureData.scannedTitle.get())) {
+                    return false;
+                }
+            }
+        }
+
+        songData.link(captureData);
+
+        return true;
+    }
+
     private void findAndLinkSongAndCapture(Map<String, List<SongData>> lookup,
             CaptureData captureData) {
         String captureDataTitle = captureData.scannedTitle.get();
@@ -163,9 +179,12 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
             List<SongData> list = findExactMatch(lookup, captureDataTitle);
             if (list != null) {
                 list.forEach(x -> {
-                    x.link(captureData);
-                    LOGGER.atDebug()
-                            .log("[exact found] {}, linked: {}", x, x.linkMapProperty().get());
+                    if (!linkSongAndCapture(x, captureData)) {
+                        LOGGER.atDebug().log("[exact found - link skipped] {}", x);
+                    } else {
+                        LOGGER.atDebug().log("[exact found - linked] {}, linked: {}", x,
+                                x.linkMapProperty().get());
+                    }
                 });
 
                 return;
@@ -179,9 +198,12 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
             // link if the count of similar matches is less than or equal to the duplicate limit
             if (map.size() <= DUPLICATE_LIMIT) {
                 map.values().forEach(x -> x.forEach(y -> {
-                    y.link(captureData);
-                    LOGGER.atDebug()
-                            .log("[similar found] {}, linked: {}", y, y.linkMapProperty().get());
+                    if (!linkSongAndCapture(y, captureData)) {
+                        LOGGER.atDebug().log("[similar found - link skipped] {}", y);
+                    } else {
+                        LOGGER.atDebug().log("[similar found - linked] {}, linked: {}", y,
+                                y.linkMapProperty().get());
+                    }
                 }));
 
                 return;
