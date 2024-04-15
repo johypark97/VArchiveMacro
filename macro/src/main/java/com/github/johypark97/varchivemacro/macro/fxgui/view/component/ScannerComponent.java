@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view.component;
 
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
+import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.TitleComparator;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.LinkMetadata;
@@ -10,6 +11,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
 import java.lang.ref.WeakReference;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -315,10 +317,10 @@ public class ScannerComponent extends TabPane {
                 }
 
                 setText(item.stream().map(x -> {
-                    String normalizedTitle = x.normalizedTitleProperty().get();
+                    String songTitle = x.songProperty().get().title;
                     int id = x.idProperty().get();
 
-                    return String.format("(%d) %s", id, normalizedTitle);
+                    return String.format("(%d) %s", id, songTitle);
                 }).collect(Collectors.joining(", ")));
             }
         });
@@ -357,18 +359,74 @@ public class ScannerComponent extends TabPane {
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         id.setPrefWidth(100);
 
-        TableColumn<SongData, Integer> songId = new TableColumn<>("Song Id");
-        songId.setCellValueFactory(new PropertyValueFactory<>("songId"));
-        songId.setPrefWidth(100);
+        TableColumn<SongData, ?> song = new TableColumn<>("Song");
+        {
+            TableColumn<SongData, LocalDlcSong> title = new TableColumn<>("Title");
+            title.setCellValueFactory(new PropertyValueFactory<>("song"));
+            title.setPrefWidth(200);
+            title.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(LocalDlcSong item, boolean empty) {
+                    super.updateItem(item, empty);
 
-        TableColumn<SongData, String> normalizedTitle = new TableColumn<>("Normalized Title");
-        normalizedTitle.setCellValueFactory(new PropertyValueFactory<>("normalizedTitle"));
-        normalizedTitle.setPrefWidth(250);
+                    if (empty || item == null) {
+                        setText(null);
+                        return;
+                    }
+
+                    setText(item.title);
+                }
+            });
+            title.setComparator(new Comparator<>() {
+                private final TitleComparator titleComparator = new TitleComparator();
+
+                @Override
+                public int compare(LocalDlcSong o1, LocalDlcSong o2) {
+                    return titleComparator.compare(o1.title, o2.title);
+                }
+            });
+
+            TableColumn<SongData, LocalDlcSong> composer = new TableColumn<>("Composer");
+            composer.setCellValueFactory(new PropertyValueFactory<>("song"));
+            composer.setPrefWidth(150);
+            composer.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(LocalDlcSong item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                        return;
+                    }
+
+                    setText(item.composer);
+                }
+            });
+
+            TableColumn<SongData, LocalDlcSong> dlc = new TableColumn<>("DLC");
+            dlc.setCellValueFactory(new PropertyValueFactory<>("song"));
+            dlc.setPrefWidth(150);
+            dlc.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(LocalDlcSong item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                        return;
+                    }
+
+                    setText(item.dlc);
+                }
+            });
+
+            song.getColumns().addAll(List.of(title, composer, dlc));
+        }
 
         TableColumn<SongData, Map<CaptureData, LinkMetadata>> linkedCaptures =
                 new TableColumn<>("Linked Captures");
         linkedCaptures.setCellValueFactory(new PropertyValueFactory<>("linkMap"));
-        linkedCaptures.setPrefWidth(150);
+        linkedCaptures.setPrefWidth(200);
         linkedCaptures.setCellFactory(param -> new TableCell<>() {
             @Override
             protected void updateItem(Map<CaptureData, LinkMetadata> item, boolean empty) {
@@ -391,8 +449,7 @@ public class ScannerComponent extends TabPane {
             }
         });
 
-        song_songTableView.getColumns()
-                .addAll(List.of(id, songId, normalizedTitle, linkedCaptures));
+        song_songTableView.getColumns().addAll(List.of(id, song, linkedCaptures));
     }
 
     private void setupOption() {

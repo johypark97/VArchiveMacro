@@ -113,7 +113,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
 
         dlcSongList.forEach(song -> {
             String normalizedTitle = normalizeSongTitle(song);
-            SongData data = getScanDataManager().createSongData(song.id, normalizedTitle);
+            SongData data = getScanDataManager().createSongData(song, normalizedTitle);
             map.computeIfAbsent(normalizedTitle, x -> new LinkedList<>()).add(data);
         });
 
