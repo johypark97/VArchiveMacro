@@ -13,6 +13,7 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.core.TitleOcr;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.LinkMetadata;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -165,6 +166,10 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
         }
 
         songData.link(captureData);
+
+        LinkMetadata linkMetadata = songData.linkMapProperty().get(captureData);
+        songData.selected.set(
+                hasOne(songData.childListProperty()) && linkMetadata.distanceProperty().get() == 0);
 
         return true;
     }
