@@ -36,6 +36,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
@@ -449,7 +450,12 @@ public class ScannerComponent extends TabPane {
             }
         });
 
-        song_songTableView.getColumns().addAll(List.of(id, song, linkedCaptures));
+        TableColumn<SongData, Boolean> select = new TableColumn<>("Select");
+        select.setCellFactory(CheckBoxTableCell.forTableColumn(select));
+        select.setCellValueFactory(new PropertyValueFactory<>("selected"));
+        select.setPrefWidth(100);
+
+        song_songTableView.getColumns().addAll(List.of(id, song, linkedCaptures, select));
     }
 
     private void setupOption() {

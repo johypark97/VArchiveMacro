@@ -14,6 +14,7 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -67,6 +68,8 @@ public class ScanDataManager {
         private final ReadOnlyObjectWrapper<LocalDlcSong> song = new ReadOnlyObjectWrapper<>();
         private final ReadOnlyStringWrapper normalizedTitle = new ReadOnlyStringWrapper();
 
+        public final SimpleBooleanProperty selected = new SimpleBooleanProperty();
+
         public SongData(int id, LocalDlcSong song, String normalizedTitle) {
             this.id.set(id);
             this.normalizedTitle.set(normalizedTitle);
@@ -94,6 +97,10 @@ public class ScanDataManager {
 
         public ReadOnlyMapProperty<CaptureData, LinkMetadata> linkMapProperty() {
             return linkMap.getReadOnlyProperty();
+        }
+
+        public SimpleBooleanProperty selectedProperty() {
+            return selected;
         }
 
         public void link(CaptureData child) {
