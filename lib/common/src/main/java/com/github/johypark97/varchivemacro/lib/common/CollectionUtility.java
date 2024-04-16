@@ -6,4 +6,8 @@ public class CollectionUtility {
     public static boolean hasOne(Collection<?> collection) {
         return collection.size() == 1;
     }
+
+    public static boolean hasMany(Collection<?> collection) {
+        return collection.size() > 1;
+    }
 }

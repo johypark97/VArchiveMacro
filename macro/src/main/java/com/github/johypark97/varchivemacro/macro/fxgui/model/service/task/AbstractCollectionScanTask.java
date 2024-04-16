@@ -168,8 +168,10 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
         songData.link(captureData);
 
         LinkMetadata linkMetadata = songData.linkMapProperty().get(captureData);
-        songData.selected.set(
-                hasOne(songData.childListProperty()) && linkMetadata.distanceProperty().get() == 0);
+        boolean linkExact =
+                hasOne(songData.childListProperty()) && linkMetadata.distanceProperty().get() == 0;
+        songData.linkExact.set(linkExact);
+        songData.selected.set(linkExact);
 
         return true;
     }

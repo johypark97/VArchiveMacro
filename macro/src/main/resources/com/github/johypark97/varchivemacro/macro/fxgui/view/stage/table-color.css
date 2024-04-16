@@ -33,6 +33,14 @@
     -fx-background-color: #80FF80;
 }
 
+.table-row-cell.table-row-color-red {
+    -fx-background-color: #FFC0C0;
+}
+
+.table-row-cell:selected.table-row-color-red {
+    -fx-background-color: #FF8080;
+}
+
 .table-row-cell.table-row-color-yellow {
     -fx-background-color: #FFFFC0;
 }

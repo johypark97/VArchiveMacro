@@ -68,6 +68,7 @@ public class ScanDataManager {
         private final ReadOnlyObjectWrapper<LocalDlcSong> song = new ReadOnlyObjectWrapper<>();
         private final ReadOnlyStringWrapper normalizedTitle = new ReadOnlyStringWrapper();
 
+        public final SimpleBooleanProperty linkExact = new SimpleBooleanProperty();
         public final SimpleBooleanProperty selected = new SimpleBooleanProperty();
 
         public SongData(int id, LocalDlcSong song, String normalizedTitle) {
@@ -97,6 +98,10 @@ public class ScanDataManager {
 
         public ReadOnlyMapProperty<CaptureData, LinkMetadata> linkMapProperty() {
             return linkMap.getReadOnlyProperty();
+        }
+
+        public SimpleBooleanProperty linkExactProperty() {
+            return linkExact;
         }
 
         public SimpleBooleanProperty selectedProperty() {

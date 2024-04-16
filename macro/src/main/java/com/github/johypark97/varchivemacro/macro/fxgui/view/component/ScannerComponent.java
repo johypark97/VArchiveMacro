@@ -1,5 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.view.component;
 
+import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasMany;
+import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasOne;
+
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
@@ -29,6 +32,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -349,6 +353,35 @@ public class ScannerComponent extends TabPane {
         });
 
         capture_captureTableView.getColumns().addAll(List.of(id, scannedTitle, linkedSongs, error));
+
+        capture_captureTableView.setRowFactory(param -> new TableRow<>() {
+            private static final String STYLE_CLASS_EXACT = "table-row-color-green";
+            private static final String STYLE_CLASS_WARNING = "table-row-color-red";
+            private static final String STYLE_CLASS_SIMILAR = "table-row-color-yellow";
+
+            @Override
+            protected void updateItem(CaptureData item, boolean empty) {
+                super.updateItem(item, empty);
+
+                getStyleClass().removeAll(STYLE_CLASS_EXACT, STYLE_CLASS_SIMILAR,
+                        STYLE_CLASS_WARNING);
+
+                if (empty || item == null) {
+                    return;
+                }
+
+                if (hasOne(item.parentListProperty())) {
+                    SongData songData = item.parentListProperty().get(0);
+                    LinkMetadata linkMetadata = songData.linkMapProperty().get(item);
+
+                    getStyleClass().add((linkMetadata.distanceProperty().get() == 0)
+                            ? STYLE_CLASS_EXACT
+                            : STYLE_CLASS_SIMILAR);
+                } else if (hasMany(item.parentListProperty())) {
+                    getStyleClass().add(STYLE_CLASS_WARNING);
+                }
+            }
+        });
     }
 
     private void setupSong() {
@@ -456,6 +489,34 @@ public class ScannerComponent extends TabPane {
         select.setPrefWidth(100);
 
         song_songTableView.getColumns().addAll(List.of(id, song, linkedCaptures, select));
+
+        song_songTableView.setRowFactory(param -> new TableRow<>() {
+            private static final String STYLE_CLASS_EXACT = "table-row-color-green";
+            private static final String STYLE_CLASS_INVALID = "table-row-color-red";
+            private static final String STYLE_CLASS_SIMILAR = "table-row-color-yellow";
+
+            @Override
+            protected void updateItem(SongData item, boolean empty) {
+                super.updateItem(item, empty);
+
+                getStyleClass().removeAll(STYLE_CLASS_EXACT, STYLE_CLASS_INVALID,
+                        STYLE_CLASS_SIMILAR);
+
+                if (empty || item == null) {
+                    return;
+                }
+
+                if (hasOne(item.childListProperty())) {
+                    if (item.linkExact.get()) {
+                        getStyleClass().add(STYLE_CLASS_EXACT);
+                    } else {
+                        getStyleClass().add(STYLE_CLASS_SIMILAR);
+                    }
+                } else if (hasMany(item.childListProperty())) {
+                    getStyleClass().add(STYLE_CLASS_INVALID);
+                }
+            }
+        });
     }
 
     private void setupOption() {
