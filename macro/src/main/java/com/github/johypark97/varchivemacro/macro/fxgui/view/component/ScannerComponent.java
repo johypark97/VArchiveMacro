@@ -233,7 +233,7 @@ public class ScannerComponent extends TabPane {
             }
         });
 
-        viewer_filterResetButton.setOnAction(event -> viewer_filterTextField.setText(""));
+        viewer_filterResetButton.setOnAction(event -> viewer_filterTextField.clear());
 
         setupViewer_treeView();
 
@@ -563,10 +563,10 @@ public class ScannerComponent extends TabPane {
         public void clearCell(int row, int column) {
             TextField textField = getTextField(row, column);
 
+            textField.clear();
             textField.setDisable(false);
             textField.setEffect(null);
             textField.setStyle("");
-            textField.setText("");
         }
 
         public void setCell(int row, int column, float rate, boolean maxCombo) {
