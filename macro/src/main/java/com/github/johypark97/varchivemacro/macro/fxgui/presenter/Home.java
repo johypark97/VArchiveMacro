@@ -45,6 +45,8 @@ public interface Home {
 
         void scanner_capture_onStop();
 
+        void scanner_song_onOpenLinkEditor(Window ownerWindow, String cacheDirectory, int id);
+
         Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow);
 
         Path scanner_option_onOpenAccountFileSelector(Window ownerWindow);
@@ -68,6 +70,8 @@ public interface Home {
 
         void scanner_capture_openCaptureViewer(int id);
 
+        void scanner_capture_refresh();
+
         void scanner_capture_setTabList(List<String> list);
 
         Set<String> scanner_capture_getSelectedTabSet();
@@ -79,6 +83,10 @@ public interface Home {
         void scanner_capture_stop();
 
         void scanner_song_setSongDataList(ObservableList<SongData> list);
+
+        void scanner_song_openLinkEditor(int id);
+
+        void scanner_song_refresh();
 
         String scanner_option_getCacheDirectory();
 

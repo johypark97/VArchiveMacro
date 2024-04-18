@@ -177,7 +177,7 @@
             <TableView VBox.vgrow="ALWAYS" editable="true" fx:id="song_songTableView"/>
             <HBox spacing="10.0">
               <children>
-                <Button text="Show" fx:id="song_showButton"/>
+                <Button text="Edit (Enter)" fx:id="song_editButton"/>
                 <Pane HBox.hgrow="ALWAYS"/>
                 <Button text="Analyze" fx:id="song_analyzeButton"/>
               </children>

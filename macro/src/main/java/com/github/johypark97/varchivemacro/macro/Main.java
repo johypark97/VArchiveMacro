@@ -12,8 +12,10 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.CaptureViewerPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.HomePresenterImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditorPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.CaptureViewerViewImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.HomeViewImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.LinkEditorViewImpl;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import javafx.application.Application;
@@ -35,6 +37,7 @@ public class Main extends Application {
     private final CaptureViewerPresenterImpl captureViewerPresenter =
             new CaptureViewerPresenterImpl();
     private final HomePresenterImpl homePresenter = new HomePresenterImpl();
+    private final LinkEditorPresenterImpl linkViewerPresenter = new LinkEditorPresenterImpl();
 
     public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> Main.logUncaughtException(e));
@@ -91,8 +94,11 @@ public class Main extends Application {
 
         captureViewerPresenter.linkView(new CaptureViewerViewImpl());
 
+        linkViewerPresenter.linkModel(scannerModel);
+        linkViewerPresenter.linkView(new LinkEditorViewImpl());
+
         homePresenter.linkModel(configModel, databaseModel, recordModel, scannerModel);
-        homePresenter.linkPresenter(captureViewerPresenter);
+        homePresenter.linkPresenter(captureViewerPresenter, linkViewerPresenter);
 
         homePresenter.linkView(new HomeViewImpl());
 

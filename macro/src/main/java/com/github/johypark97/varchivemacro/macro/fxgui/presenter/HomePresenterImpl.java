@@ -14,6 +14,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresen
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorPresenter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +55,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     private WeakReference<ScannerModel> scannerModelReference;
 
     private WeakReference<CaptureViewerPresenter> captureViewerPresenterReference;
+    private WeakReference<LinkEditorPresenter> linkEditorPresenterReference;
 
     public void linkModel(ConfigModel configModel, DatabaseModel databaseModel,
             RecordModel recordModel, ScannerModel scannerModel) {
@@ -63,8 +65,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         scannerModelReference = new WeakReference<>(scannerModel);
     }
 
-    public void linkPresenter(CaptureViewerPresenter captureViewerPresenter) {
+    public void linkPresenter(CaptureViewerPresenter captureViewerPresenter,
+            LinkEditorPresenter linkEditorPresenter) {
         captureViewerPresenterReference = new WeakReference<>(captureViewerPresenter);
+        linkEditorPresenterReference = new WeakReference<>(linkEditorPresenter);
     }
 
     private ConfigModel getConfigModel() {
@@ -85,6 +89,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private CaptureViewerPresenter getCaptureViewerPresenter() {
         return captureViewerPresenterReference.get();
+    }
+
+    private LinkEditorPresenter getLinkEditorPresenter() {
+        return linkEditorPresenterReference.get();
     }
 
     private Path convertStringToPath(String pathString) {
@@ -329,6 +337,26 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
+    public void scanner_song_onOpenLinkEditor(Window ownerWindow, String cacheDirectory, int id) {
+        Path cacheDirectoryPath = convertStringToPath(cacheDirectory);
+        if (cacheDirectoryPath == null) {
+            return;
+        }
+
+        LinkEditor.StartData startData = new LinkEditor.StartData();
+        startData.cacheDirectoryPath = cacheDirectoryPath;
+        startData.ownerWindow = ownerWindow;
+        startData.songDataId = id;
+        startData.onLinkUpdate = () -> {
+            getView().scanner_capture_refresh();
+            getView().scanner_song_refresh();
+        };
+
+        getLinkEditorPresenter().setStartData(startData);
+        getLinkEditorPresenter().startPresenter();
+    }
+
+    @Override
     public Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setInitialDirectory(INITIAL_DIRECTORY.toFile());
@@ -388,6 +416,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     protected boolean terminate() {
         if (getCaptureViewerPresenter().isStarted()
                 && !getCaptureViewerPresenter().stopPresenter()) {
+            return false;
+        }
+
+        if (getLinkEditorPresenter().isStarted() && !getLinkEditorPresenter().stopPresenter()) {
             return false;
         }
 

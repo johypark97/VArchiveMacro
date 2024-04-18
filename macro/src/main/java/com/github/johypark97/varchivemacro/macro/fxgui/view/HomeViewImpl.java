@@ -145,6 +145,11 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void scanner_capture_refresh() {
+        getScanner().capture_refresh();
+    }
+
+    @Override
     public void scanner_capture_setTabList(List<String> list) {
         getScanner().capture_setTabList(list);
     }
@@ -178,6 +183,17 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     @Override
     public void scanner_song_setSongDataList(ObservableList<SongData> list) {
         getScanner().song_setSongDataList(list);
+    }
+
+    @Override
+    public void scanner_song_openLinkEditor(int id) {
+        String cacheDirectory = getScanner().option_getCacheDirectory();
+        getPresenter().scanner_song_onOpenLinkEditor(getStage(), cacheDirectory, id);
+    }
+
+    @Override
+    public void scanner_song_refresh() {
+        getScanner().song_refresh();
     }
 
     @Override

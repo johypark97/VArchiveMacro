@@ -87,6 +87,9 @@ public class ScannerComponent extends TabPane {
     public TableView<SongData> song_songTableView;
 
     @FXML
+    public Button song_editButton;
+
+    @FXML
     public TextField option_cacheDirectoryTextField;
 
     @FXML
@@ -209,8 +212,16 @@ public class ScannerComponent extends TabPane {
         capture_captureTableView.setItems(list);
     }
 
+    public void capture_refresh() {
+        capture_captureTableView.refresh();
+    }
+
     public void song_setSongDataList(ObservableList<SongData> list) {
         song_songTableView.setItems(list);
+    }
+
+    public void song_refresh() {
+        song_songTableView.refresh();
     }
 
     private HomeView getView() {
@@ -222,6 +233,14 @@ public class ScannerComponent extends TabPane {
 
         if (selected != null) {
             getView().scanner_capture_openCaptureViewer(selected.idProperty().get());
+        }
+    }
+
+    private void openLinkEditor() {
+        SongData selected = song_songTableView.getSelectionModel().getSelectedItem();
+
+        if (selected != null) {
+            getView().scanner_song_openLinkEditor(selected.idProperty().get());
         }
     }
 
@@ -386,9 +405,17 @@ public class ScannerComponent extends TabPane {
 
     private void setupSong() {
         setupSong_songTableView();
+
+        song_editButton.setOnAction(event -> openLinkEditor());
     }
 
     private void setupSong_songTableView() {
+        song_songTableView.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                openLinkEditor();
+            }
+        });
+
         TableColumn<SongData, Integer> id = new TableColumn<>("Song Data Id");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         id.setPrefWidth(100);
