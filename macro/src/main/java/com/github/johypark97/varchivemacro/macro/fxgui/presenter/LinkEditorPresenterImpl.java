@@ -118,6 +118,9 @@ public class LinkEditorPresenterImpl
         childList.forEach(songData::unlink);
         songData.link(captureData);
 
+        songData.linkChanged.set(true);
+        songData.linkExact.set(false);
+
         startData.onLinkUpdate.run();
 
         return true;
@@ -135,6 +138,9 @@ public class LinkEditorPresenterImpl
 
         List<CaptureData> childList = List.copyOf(songData.childListProperty());
         childList.forEach(songData::unlink);
+
+        songData.linkChanged.set(false);
+        songData.linkExact.set(false);
 
         startData.onLinkUpdate.run();
 

@@ -518,6 +518,7 @@ public class ScannerComponent extends TabPane {
         song_songTableView.getColumns().addAll(List.of(id, song, linkedCaptures, select));
 
         song_songTableView.setRowFactory(param -> new TableRow<>() {
+            private static final String STYLE_CLASS_CHANGED = "table-row-color-blue";
             private static final String STYLE_CLASS_EXACT = "table-row-color-green";
             private static final String STYLE_CLASS_INVALID = "table-row-color-red";
             private static final String STYLE_CLASS_SIMILAR = "table-row-color-yellow";
@@ -526,15 +527,17 @@ public class ScannerComponent extends TabPane {
             protected void updateItem(SongData item, boolean empty) {
                 super.updateItem(item, empty);
 
-                getStyleClass().removeAll(STYLE_CLASS_EXACT, STYLE_CLASS_INVALID,
-                        STYLE_CLASS_SIMILAR);
+                getStyleClass().removeAll(STYLE_CLASS_CHANGED, STYLE_CLASS_EXACT,
+                        STYLE_CLASS_INVALID, STYLE_CLASS_SIMILAR);
 
                 if (empty || item == null) {
                     return;
                 }
 
                 if (hasOne(item.childListProperty())) {
-                    if (item.linkExact.get()) {
+                    if (item.linkChanged.get()) {
+                        getStyleClass().add(STYLE_CLASS_CHANGED);
+                    } else if (item.linkExact.get()) {
                         getStyleClass().add(STYLE_CLASS_EXACT);
                     } else {
                         getStyleClass().add(STYLE_CLASS_SIMILAR);
