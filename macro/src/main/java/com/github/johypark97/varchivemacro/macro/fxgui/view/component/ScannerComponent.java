@@ -75,6 +75,9 @@ public class ScannerComponent extends TabPane {
     public Button capture_showButton;
 
     @FXML
+    public Button capture_clearButton;
+
+    @FXML
     public ListView<CaptureTabListData> capture_tabListView;
 
     @FXML
@@ -301,6 +304,8 @@ public class ScannerComponent extends TabPane {
         setupCapture_captureTableView();
 
         capture_showButton.setOnAction(event -> openCaptureViewer());
+
+        capture_clearButton.setOnAction(event -> getView().scanner_capture_clearScanData());
 
         capture_tabListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
 

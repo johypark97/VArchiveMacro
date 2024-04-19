@@ -130,12 +130,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             getView().showInformation(header, "Scan done.");
         };
 
-        Runnable onStart = () -> {
-            getView().scanner_capture_setCaptureDataList(FXCollections.emptyObservableList());
-            getView().scanner_song_setSongDataList(FXCollections.emptyObservableList());
-        };
-
-        getScannerModel().setupService(onStart, onDone, onCancel, onThrow);
+        getScannerModel().setupService(onDone, onCancel, onThrow);
     }
 
     @Override
@@ -319,8 +314,20 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
+    public void scanner_capture_onClearScanData() {
+        getView().scanner_capture_setCaptureDataList(FXCollections.emptyObservableList());
+        getView().scanner_song_setSongDataList(FXCollections.emptyObservableList());
+
+        getScannerModel().clearScanData();
+    }
+
+    @Override
     public void scanner_capture_onStart(Set<String> selectedTabSet, String cacheDirectory,
             int captureDelay, int keyInputDuration) {
+        if (!getScannerModel().isScanDataEmpty()) {
+            return;
+        }
+
         Path cacheDirectoryPath = convertStringToPath(cacheDirectory);
         if (cacheDirectoryPath == null) {
             return;

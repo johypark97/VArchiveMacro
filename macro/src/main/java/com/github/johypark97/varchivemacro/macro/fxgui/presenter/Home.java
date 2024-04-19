@@ -40,6 +40,8 @@ public interface Home {
 
         void scanner_capture_onOpenCaptureViewer(Window ownerWindow, String cacheDirectory, int id);
 
+        void scanner_capture_onClearScanData();
+
         void scanner_capture_onStart(Set<String> selectedTabSet, String cacheDirectory,
                 int captureDelay, int keyInputDuration);
 
@@ -69,6 +71,8 @@ public interface Home {
         void scanner_capture_setCaptureDataList(ObservableList<CaptureData> list);
 
         void scanner_capture_openCaptureViewer(int id);
+
+        void scanner_capture_clearScanData();
 
         void scanner_capture_refresh();
 

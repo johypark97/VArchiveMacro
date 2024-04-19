@@ -29,8 +29,7 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void setupService(Runnable onStart, Runnable onDone, Runnable onCancel,
-            Consumer<Throwable> onThrow) {
+    public void setupService(Runnable onDone, Runnable onCancel, Consumer<Throwable> onThrow) {
         ScannerService service = ServiceManager.getInstance().create(ScannerService.class);
         if (service == null) {
             throw new IllegalStateException("ScannerService has already been created.");
@@ -38,7 +37,6 @@ public class DefaultScannerModel implements ScannerModel {
 
         service.setOnCancelled(event -> onCancel.run());
         service.setOnFailed(event -> onThrow.accept(event.getSource().getException()));
-        service.setOnScheduled(event -> onStart.run());
         service.setOnSucceeded(event -> onDone.run());
     }
 
@@ -69,6 +67,20 @@ public class DefaultScannerModel implements ScannerModel {
     @Override
     public boolean stopCollectionScan() {
         return ServiceManagerHelper.stopService(ScannerService.class);
+    }
+
+    @Override
+    public boolean isScanDataEmpty() {
+        return scanDataManager.isEmpty();
+    }
+
+    @Override
+    public void clearScanData() {
+        ScannerService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        if (!service.isRunning()) {
+            scanDataManager.clear();
+        }
     }
 
     @Override

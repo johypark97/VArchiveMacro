@@ -222,11 +222,13 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
 
     @Override
     protected Void callTask() throws Exception {
+        // throw an exception if there are previous capture data
+        if (!getScanDataManager().isEmpty()) {
+            throw new IllegalStateException("ScanDataManager is not clean");
+        }
+
         // check the cache directory
         checkCacheDirectory();
-
-        // clear all the previous scan data
-        getScanDataManager().clear();
 
         // create queue that filtered by selectedTabSet
         Queue<Entry<String, List<LocalDlcSong>>> captureQueue = createCaptureQueue(dlcTapSongMap);

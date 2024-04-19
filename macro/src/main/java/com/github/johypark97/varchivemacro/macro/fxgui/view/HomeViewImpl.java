@@ -145,6 +145,11 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void scanner_capture_clearScanData() {
+        getPresenter().scanner_capture_onClearScanData();
+    }
+
+    @Override
     public void scanner_capture_refresh() {
         getScanner().capture_refresh();
     }

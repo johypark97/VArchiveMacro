@@ -114,6 +114,8 @@
                 <HBox>
                   <children>
                     <Button text="Show (Enter)" fx:id="capture_showButton"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Button text="Clear" fx:id="capture_clearButton"/>
                   </children>
                 </HBox>
               </children>

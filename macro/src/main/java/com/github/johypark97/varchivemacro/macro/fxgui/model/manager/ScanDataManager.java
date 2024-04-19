@@ -36,6 +36,10 @@ public class ScanDataManager {
         return songDataList.getReadOnlyProperty();
     }
 
+    public boolean isEmpty() {
+        return captureDataList.isEmpty() && songDataList.isEmpty();
+    }
+
     public void clear() {
         captureDataList.clear();
         songDataList.clear();
