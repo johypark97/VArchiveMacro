@@ -181,6 +181,10 @@
               <children>
                 <Button text="Edit (Enter)" fx:id="song_editButton"/>
                 <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="Toggle All Exact" fx:id="song_toggleExactButton"/>
+                <Button text="Toggle All Edited" fx:id="song_toggleEditedButton"/>
+                <Button text="Unselect All" fx:id="song_unselectAllButton"/>
+                <Pane HBox.hgrow="ALWAYS"/>
                 <Button text="Analyze" fx:id="song_analyzeButton"/>
               </children>
             </HBox>

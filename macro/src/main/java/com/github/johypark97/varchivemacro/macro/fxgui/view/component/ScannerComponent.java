@@ -93,6 +93,15 @@ public class ScannerComponent extends TabPane {
     public Button song_editButton;
 
     @FXML
+    public Button song_toggleExactButton;
+
+    @FXML
+    public Button song_toggleEditedButton;
+
+    @FXML
+    public Button song_unselectAllButton;
+
+    @FXML
     public TextField option_cacheDirectoryTextField;
 
     @FXML
@@ -412,6 +421,35 @@ public class ScannerComponent extends TabPane {
         setupSong_songTableView();
 
         song_editButton.setOnAction(event -> openLinkEditor());
+
+        song_toggleExactButton.setOnAction(event -> {
+            List<SongData> list = song_songTableView.getItems().filtered(x -> x.linkExact.get());
+
+            for (SongData item : list) {
+                if (!item.selected.get()) {
+                    list.forEach(x -> x.selected.set(true));
+                    return;
+                }
+            }
+
+            list.forEach(x -> x.selected.set(false));
+        });
+
+        song_toggleEditedButton.setOnAction(event -> {
+            List<SongData> list = song_songTableView.getItems().filtered(x -> x.linkChanged.get());
+
+            for (SongData item : list) {
+                if (!item.selected.get()) {
+                    list.forEach(x -> x.selected.set(true));
+                    return;
+                }
+            }
+
+            list.forEach(x -> x.selected.set(false));
+        });
+
+        song_unselectAllButton.setOnAction(
+                event -> song_songTableView.getItems().forEach(x -> x.selected.set(false)));
     }
 
     private void setupSong_songTableView() {
