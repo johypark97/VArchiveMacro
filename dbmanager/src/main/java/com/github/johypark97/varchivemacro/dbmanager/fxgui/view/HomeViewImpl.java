@@ -5,7 +5,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePr
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component.HomeComponent;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.stage.HomeStage;
-import com.github.johypark97.varchivemacro.lib.hook.HookWrapper;
+import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
@@ -261,10 +261,10 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
             getPresenter().onViewShowing_ocrCacheCapturer_setupKeyInputDurationLinker(
                     getHomeComponent().ocrCacheCapturer_keyInputDurationLinker);
 
-            HookWrapper.addKeyListener(nativeKeyListener);
+            FxHookWrapper.addKeyListener(nativeKeyListener);
         });
 
-        stage.setOnHiding(event -> HookWrapper.removeKeyListener(nativeKeyListener));
+        stage.setOnHiding(event -> FxHookWrapper.removeKeyListener(nativeKeyListener));
 
         return stage;
     }
