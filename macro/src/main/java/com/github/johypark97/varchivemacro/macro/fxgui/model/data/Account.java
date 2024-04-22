@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.core.scanner;
+package com.github.johypark97.varchivemacro.macro.fxgui.model.data;
 
 import java.io.IOException;
 import java.nio.file.Files;

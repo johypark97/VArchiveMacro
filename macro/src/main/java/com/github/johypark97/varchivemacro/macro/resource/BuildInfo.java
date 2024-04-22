@@ -6,8 +6,6 @@ import java.net.URL;
 import java.util.Properties;
 
 public class BuildInfo {
-    private static final String EMPTY_STRING = "";
-
     public static final String date;
     public static final String version;
 
@@ -22,7 +20,7 @@ public class BuildInfo {
             }
         }
 
-        date = properties.getProperty("build.date", EMPTY_STRING);
-        version = properties.getProperty("build.version", EMPTY_STRING);
+        date = properties.getProperty("build.date", "");
+        version = properties.getProperty("build.version", "");
     }
 }

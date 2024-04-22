@@ -1,14 +1,14 @@
-package com.github.johypark97.varchivemacro.macro.core;
+package com.github.johypark97.varchivemacro.macro.fxgui.model.ocr;
 
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrInitializationError;
 import java.nio.file.Path;
 
-public class ScannerOcr extends DefaultOcrWrapper {
+public class TitleOcr extends DefaultOcrWrapper {
     private static final Path DATAPATH = Path.of("data/tessdata");
-    private static final String LANGUAGE = "eng";
+    private static final String LANGUAGE = "djmax";
 
-    public ScannerOcr() throws OcrInitializationError {
+    public TitleOcr() throws OcrInitializationError {
         super(DATAPATH, LANGUAGE);
     }
 }
