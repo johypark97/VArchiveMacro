@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view.component;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import javafx.fxml.FXML;
@@ -34,7 +35,7 @@ public class ScannerDjNameInputComponent extends VBox {
         viewReference = new WeakReference<>(view);
 
         URL url = ScannerDjNameInputComponent.class.getResource(FXML_FILE_NAME);
-        MvpFxml.loadRoot(this, url);
+        MvpFxml.loadRoot(this, url, Language.getInstance().getResourceBundle());
     }
 
     @FXML

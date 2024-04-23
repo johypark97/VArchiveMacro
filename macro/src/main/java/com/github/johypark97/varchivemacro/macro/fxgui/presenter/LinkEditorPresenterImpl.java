@@ -9,6 +9,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataMan
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.StartData;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.Normalizer;
@@ -57,7 +58,6 @@ public class LinkEditorPresenterImpl
         SongData songData = getScannerModel().getObservableSongDataList().get(startData.songDataId);
         LocalDlcSong song = songData.songProperty().get();
 
-        getView().setMessageText("Select a capture to link with the song.");
         getView().setSongText(String.format("[%s] %s - %s", song.dlc, song.title, song.composer));
     }
 
@@ -104,7 +104,7 @@ public class LinkEditorPresenterImpl
         CaptureData captureData =
                 getScannerModel().getObservableCaptureDataList().get(captureDataId);
 
-        String header = "Do you want to link the following capture data?";
+        String header = Language.getInstance().getString("linkEditor.dialog.link.header");
         String message = String.format("(%d) %s", captureData.idProperty().get(),
                 captureData.scannedTitle.get());
         if (!getView().showConfirmation(header, message)) {
@@ -128,7 +128,7 @@ public class LinkEditorPresenterImpl
 
     @Override
     public boolean onUnlinkCaptureData() {
-        String header = "Are you sure you want to unlink all capture data?";
+        String header = Language.getInstance().getString("linkEditor.dialog.unlink.header");
         if (!getView().showConfirmation(header, null)) {
             return false;
         }

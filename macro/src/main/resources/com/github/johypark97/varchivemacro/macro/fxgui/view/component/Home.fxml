@@ -6,26 +6,31 @@
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21">
   <top>
     <MenuBar>
       <menus>
-        <Menu text="File">
+        <Menu text="%home.menu.file">
           <items>
-            <MenuItem text="Close"/>
+            <MenuItem text="%home.menu.file.exit"/>
           </items>
         </Menu>
-        <Menu text="Language">
+        <Menu text="%home.menu.language">
           <items>
-            <RadioMenuItem text="English"/>
-            <RadioMenuItem text="Korean (한국어)"/>
+            <RadioMenuItem text="%home.menu.language.en" fx:id="langEnRadioMenuItem">
+              <toggleGroup>
+                <ToggleGroup fx:id="menuLanguage"/>
+              </toggleGroup>
+            </RadioMenuItem>
+            <RadioMenuItem text="%home.menu.language.ko" toggleGroup="$menuLanguage" fx:id="langKoRadioMenuItem"/>
           </items>
         </Menu>
-        <Menu text="About">
+        <Menu text="%home.menu.about">
           <items>
-            <MenuItem text="Open Source License"/>
-            <MenuItem text="About"/>
+            <MenuItem text="%home.menu.about.osl"/>
+            <MenuItem text="%home.menu.about.about"/>
           </items>
         </Menu>
       </menus>
@@ -34,8 +39,8 @@
   <center>
     <TabPane>
       <tabs>
-        <Tab closable="false" text="Scanner" fx:id="scannerTab"/>
-        <Tab closable="false" text="Macro" fx:id="macroTab"/>
+        <Tab closable="false" text="%home.tab.scanner" fx:id="scannerTab"/>
+        <Tab closable="false" text="%home.tab.macro" fx:id="macroTab"/>
       </tabs>
     </TabPane>
   </center>

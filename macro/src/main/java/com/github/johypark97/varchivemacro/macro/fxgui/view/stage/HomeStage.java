@@ -16,13 +16,14 @@ public class HomeStage extends Stage {
     private static final int STAGE_HEIGHT = 540;
     private static final int STAGE_WIDTH = 960;
 
-    public final HomeComponent homeComponent = new HomeComponent();
+    public final HomeComponent homeComponent;
     public final ScannerComponent scannerComponent;
     public final ScannerDjNameInputComponent scannerDjNameInputComponent;
     public final ScannerSafeGlassComponent scannerSafeGlassComponent =
             new ScannerSafeGlassComponent();
 
     public HomeStage(HomeView view) {
+        homeComponent = new HomeComponent(view);
         scannerComponent = new ScannerComponent(view);
         scannerDjNameInputComponent = new ScannerDjNameInputComponent(view);
 

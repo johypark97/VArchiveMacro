@@ -15,6 +15,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorPresenter;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -106,7 +107,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void onViewShow_setupService() {
-        String header = "Collection Scanner";
+        Language language = Language.getInstance();
+        String header = language.getString("scannerService.dialog.header");
 
         Consumer<Throwable> onThrow = throwable -> {
             String message = "Scanner service exception";
@@ -120,14 +122,15 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
                     getScannerModel().getObservableCaptureDataList());
             getView().scanner_song_setSongDataList(getScannerModel().getObservableSongDataList());
 
-            getView().showInformation(header, "Scan canceled.");
+            getView().showInformation(header,
+                    language.getString("scannerService.dialog.scanCanceled"));
         };
         Runnable onDone = () -> {
             getView().scanner_capture_setCaptureDataList(
                     getScannerModel().getObservableCaptureDataList());
             getView().scanner_song_setSongDataList(getScannerModel().getObservableSongDataList());
 
-            getView().showInformation(header, "Scan done.");
+            getView().showInformation(header, language.getString("scannerService.dialog.scanDone"));
         };
 
         getScannerModel().setupService(onDone, onCancel, onThrow);
@@ -214,11 +217,28 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
+    public void home_onChangeLanguage(Locale locale) {
+        try {
+            Language.saveLocale(locale);
+        } catch (IOException e) {
+            getView().showError("Language changing error", e);
+            LOGGER.atError().log("Language changing error", e);
+            return;
+        }
+
+        Language language = Language.getInstance();
+        String header = language.getString("home.dialog.languageChange.header");
+        String message = language.getString("home.dialog.languageChange.message");
+        getView().showInformation(header, message);
+    }
+
+    @Override
     public void scanner_front_onLoadRemoteRecord(String djName) {
         getView().getScannerFrontController().hideDjNameInputError();
 
         if (djName.isBlank()) {
-            getView().getScannerFrontController().showDjNameInputError("DJ Name is blank.");
+            String message = Language.getInstance().getString("scannerDjNameInput.blankError");
+            getView().getScannerFrontController().showDjNameInputError(message);
             return;
         }
 
@@ -365,9 +385,11 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow) {
+        Language language = Language.getInstance();
+
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setInitialDirectory(INITIAL_DIRECTORY.toFile());
-        chooser.setTitle("Select cache directory");
+        chooser.setTitle(language.getString("scanner.option.dialog.cacheDirectorySelectorTitle"));
 
         File file = chooser.showDialog(ownerWindow);
         if (file == null) {
@@ -378,7 +400,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         try {
             getScannerModel().validateCacheDirectory(path);
         } catch (IOException e) {
-            getView().showError("The selected cache directory is not suitable for use.", e);
+            String header = language.getString("scanner.option.dialog.invalidDirectory");
+            getView().showError(header, e);
             return null;
         }
 
@@ -389,7 +412,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     public Path scanner_option_onOpenAccountFileSelector(Window ownerWindow) {
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(INITIAL_DIRECTORY.toFile());
-        chooser.setTitle("Select account file");
+        chooser.setTitle(Language.getInstance()
+                .getString("scanner.option.dialog.cacheDirectorySelectorTitle"));
 
         chooser.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter("Account text file (*.txt)", "*.txt"));

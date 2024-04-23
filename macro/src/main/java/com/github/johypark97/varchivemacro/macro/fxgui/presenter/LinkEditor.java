@@ -35,8 +35,6 @@ public interface LinkEditor {
 
         boolean showConfirmation(String header, String content);
 
-        void setMessageText(String text);
-
         void setSongText(String text);
 
         void showCaptureDataList(String pattern, boolean findAll);

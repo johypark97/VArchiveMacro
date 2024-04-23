@@ -5,14 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
-
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21">
   <top>
     <FlowPane alignment="CENTER" hgap="50.0">
       <children>
-        <Label text="LMB" fx:id="helpLmbLabel"/>
-        <Label text="MMB" fx:id="helpMmbLabel"/>
-        <Label text="RMB" fx:id="helpRmbLabel"/>
+        <Label text="%captureViewer.help.lmb"/>
+        <Label text="%captureViewer.help.mmb"/>
+        <Label text="%captureViewer.help.rmb"/>
       </children>
       <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
@@ -20,6 +19,6 @@
     </FlowPane>
   </top>
   <bottom>
-    <Button maxWidth="1.7976931348623157E308" minHeight="64.0" text="Close (ESC)" fx:id="closeButton"/>
+    <Button maxWidth="1.7976931348623157E308" minHeight="64.0" text="%captureViewer.close" fx:id="closeButton"/>
   </bottom>
 </fx:root>

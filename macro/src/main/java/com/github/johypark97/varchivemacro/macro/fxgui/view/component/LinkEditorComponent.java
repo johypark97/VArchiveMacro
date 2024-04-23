@@ -4,13 +4,13 @@ import com.github.johypark97.varchivemacro.lib.jfx.component.ImageViewer;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorView;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
@@ -23,9 +23,6 @@ public class LinkEditorComponent extends BorderPane {
 
     private final ImageViewer imageViewer = new ImageViewer();
     private final WeakReference<LinkEditorView> viewReference;
-
-    @FXML
-    public Label messageLabel;
 
     @FXML
     public TextField songTextField;
@@ -58,7 +55,7 @@ public class LinkEditorComponent extends BorderPane {
         viewReference = new WeakReference<>(view);
 
         URL url = LinkEditorComponent.class.getResource(FXML_FILE_NAME);
-        MvpFxml.loadRoot(this, url);
+        MvpFxml.loadRoot(this, url, Language.getInstance().getResourceBundle());
     }
 
     @FXML
@@ -121,10 +118,6 @@ public class LinkEditorComponent extends BorderPane {
         // the divider position will reset when invoked at initialization, so it must be invoked
         // after the window is shown.
         centerSplitPane.setDividerPositions(value);
-    }
-
-    public void setMessageText(String text) {
-        messageLabel.setText(text);
     }
 
     public void setSongText(String text) {

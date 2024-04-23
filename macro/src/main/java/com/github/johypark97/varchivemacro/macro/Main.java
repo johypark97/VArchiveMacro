@@ -16,6 +16,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditorPrese
 import com.github.johypark97.varchivemacro.macro.fxgui.view.CaptureViewerViewImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.LinkEditorViewImpl;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import javafx.application.Application;
@@ -45,6 +46,8 @@ public class Main extends Application {
         System.setProperty("prism.lcdtext", "false");
 
         ImageConverter.disableDiskCache();
+
+        Language.getInstance().initialize();
 
         launch(args);
     }

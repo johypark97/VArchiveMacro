@@ -22,10 +22,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="TabPane" xmlns="http://javafx.com/javafx/21">
   <tabs>
-    <Tab closable="false" text="Viewer">
+    <Tab closable="false" text="%scanner.viewer">
       <content>
         <SplitPane dividerPositions="0.3">
           <items>
@@ -33,9 +32,9 @@
               <children>
                 <HBox alignment="CENTER_LEFT" spacing="5.0">
                   <children>
-                    <Label text="Filter"/>
+                    <Label text="%scanner.viewer.filter"/>
                     <TextField HBox.hgrow="ALWAYS" prefColumnCount="0" fx:id="viewer_filterTextField"/>
-                    <Button text="Reset" fx:id="viewer_filterResetButton"/>
+                    <Button text="%common.reset" fx:id="viewer_filterResetButton"/>
                   </children>
                 </HBox>
                 <ScrollPane VBox.vgrow="ALWAYS" fitToHeight="true" fitToWidth="true">
@@ -48,7 +47,7 @@
             <VBox spacing="10.0">
               <children>
                 <TextArea VBox.vgrow="ALWAYS" editable="false" fx:id="viewer_informationTextArea"/>
-                <TitledPane animated="false" collapsible="false" text="Record">
+                <TitledPane animated="false" collapsible="false" text="%scanner.viewer.record">
                   <content>
                     <GridPane hgap="10.0" vgap="10.0" fx:id="viewer_recordGridPane">
                       <columnConstraints>
@@ -104,7 +103,7 @@
         </SplitPane>
       </content>
     </Tab>
-    <Tab closable="false" text="Capture">
+    <Tab closable="false" text="%scanner.capture">
       <content>
         <BorderPane>
           <center>
@@ -113,9 +112,9 @@
                 <TableView VBox.vgrow="ALWAYS" fx:id="capture_captureTableView"/>
                 <HBox>
                   <children>
-                    <Button text="Show (Enter)" fx:id="capture_showButton"/>
+                    <Button text="%scanner.capture.show" fx:id="capture_showButton"/>
                     <Pane HBox.hgrow="ALWAYS"/>
-                    <Button text="Clear" fx:id="capture_clearButton"/>
+                    <Button text="%scanner.capture.clear" fx:id="capture_clearButton"/>
                   </children>
                 </HBox>
               </children>
@@ -127,7 +126,7 @@
           <right>
             <VBox spacing="10.0">
               <children>
-                <TitledPane VBox.vgrow="ALWAYS" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="Tab List">
+                <TitledPane VBox.vgrow="ALWAYS" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="%scanner.capture.tabList">
                   <content>
                     <ScrollPane fitToHeight="true" fitToWidth="true">
                       <content>
@@ -138,12 +137,12 @@
                 </TitledPane>
                 <HBox spacing="10.0">
                   <children>
-                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="Select All" fx:id="capture_selectAllTabButton"/>
-                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="Unselect All" fx:id="capture_unselectAllTabButton"/>
+                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%common.selectAll" fx:id="capture_selectAllTabButton"/>
+                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%common.unselectAll" fx:id="capture_unselectAllTabButton"/>
                   </children>
                 </HBox>
                 <Separator/>
-                <TitledPane animated="false" collapsible="false" text="Control">
+                <TitledPane animated="false" collapsible="false" text="%scanner.capture.control">
                   <content>
                     <GridPane hgap="10.0" vgap="10.0">
                       <columnConstraints>
@@ -155,9 +154,9 @@
                         <RowConstraints/>
                       </rowConstraints>
                       <children>
-                        <Label text="Start"/>
+                        <Label text="%scanner.capture.start"/>
                         <TextField GridPane.columnIndex="1" alignment="CENTER" editable="false" text="Ctrl + Home"/>
-                        <Label GridPane.rowIndex="1" text="Stop"/>
+                        <Label GridPane.rowIndex="1" text="%scanner.capture.stop"/>
                         <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" editable="false" text="End"/>
                       </children>
                     </GridPane>
@@ -172,20 +171,20 @@
         </BorderPane>
       </content>
     </Tab>
-    <Tab closable="false" text="Song">
+    <Tab closable="false" text="%scanner.song">
       <content>
         <VBox spacing="10.0">
           <children>
             <TableView VBox.vgrow="ALWAYS" editable="true" fx:id="song_songTableView"/>
             <HBox spacing="10.0">
               <children>
-                <Button text="Edit (Enter)" fx:id="song_editButton"/>
+                <Button text="%scanner.song.edit" fx:id="song_editButton"/>
                 <Pane HBox.hgrow="ALWAYS"/>
-                <Button text="Toggle All Exact" fx:id="song_toggleExactButton"/>
-                <Button text="Toggle All Edited" fx:id="song_toggleEditedButton"/>
-                <Button text="Unselect All" fx:id="song_unselectAllButton"/>
+                <Button text="%scanner.song.toggleAllExact" fx:id="song_toggleExactButton"/>
+                <Button text="%scanner.song.toggleAllEdited" fx:id="song_toggleEditedButton"/>
+                <Button text="%common.unselectAll" fx:id="song_unselectAllButton"/>
                 <Pane HBox.hgrow="ALWAYS"/>
-                <Button text="Analyze" fx:id="song_analyzeButton"/>
+                <Button text="%scanner.song.analyze" fx:id="song_analyzeButton"/>
               </children>
             </HBox>
           </children>
@@ -195,22 +194,22 @@
         </VBox>
       </content>
     </Tab>
-    <Tab closable="false" text="Result"/>
-    <Tab closable="false" text="Option">
+    <Tab closable="false" text="%scanner.result"/>
+    <Tab closable="false" text="%scanner.option">
       <content>
         <ScrollPane fitToHeight="true" fitToWidth="true">
           <content>
             <VBox spacing="10.0">
               <children>
-                <TitledPane animated="false" collapsible="false" text="Scanner Setting">
+                <TitledPane animated="false" collapsible="false" text="%scanner.option.scannerSetting">
                   <content>
                     <VBox spacing="10.0">
                       <children>
                         <HBox alignment="CENTER" spacing="10.0">
                           <children>
-                            <Label text="Cache Directory"/>
+                            <Label text="%scanner.option.cacheDirectory"/>
                             <TextField HBox.hgrow="ALWAYS" fx:id="option_cacheDirectoryTextField"/>
-                            <Button text="Select" fx:id="option_cacheDirectorySelectButton"/>
+                            <Button text="%common.select" fx:id="option_cacheDirectorySelectButton"/>
                           </children>
                         </HBox>
                         <Separator/>
@@ -225,10 +224,10 @@
                             <RowConstraints/>
                           </rowConstraints>
                           <children>
-                            <Label text="Capture Delay [ms]"/>
+                            <Label text="%scanner.option.captureDelay"/>
                             <Slider GridPane.columnIndex="1" majorTickUnit="100.0" max="500.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="option_captureDelaySlider"/>
                             <TextField GridPane.columnIndex="2" prefColumnCount="4" fx:id="option_captureDelayTextField"/>
-                            <Label GridPane.rowIndex="1" text="Key Input Duration [ms]"/>
+                            <Label GridPane.rowIndex="1" text="%scanner.option.keyInputDuration"/>
                             <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" majorTickUnit="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="option_keyInputDurationSlider"/>
                             <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" prefColumnCount="4" fx:id="option_keyInputDurationTextField"/>
                           </children>
@@ -237,21 +236,21 @@
                     </VBox>
                   </content>
                 </TitledPane>
-                <TitledPane animated="false" collapsible="false" text="Uploader Setting">
+                <TitledPane animated="false" collapsible="false" text="%scanner.option.uploaderSetting">
                   <content>
                     <VBox spacing="10.0">
                       <children>
                         <HBox alignment="CENTER" spacing="10.0">
                           <children>
-                            <Label text="Account File"/>
+                            <Label text="%scanner.option.accountFile"/>
                             <TextField HBox.hgrow="ALWAYS" fx:id="option_accountFileTextField"/>
-                            <Button text="Select" fx:id="option_accountFileSelectButton"/>
+                            <Button text="%common.select" fx:id="option_accountFileSelectButton"/>
                           </children>
                         </HBox>
                         <Separator/>
                         <HBox alignment="CENTER" spacing="10.0">
                           <children>
-                            <Label text="Record Upload Delay [ms]"/>
+                            <Label text="%scanner.option.recordUploadDelay"/>
                             <Slider HBox.hgrow="ALWAYS" majorTickUnit="50.0" max="200.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="option_recordUploadDelaySlider"/>
                             <TextField prefColumnCount="4" fx:id="option_recordUploadDelayTextField"/>
                           </children>

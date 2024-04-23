@@ -13,11 +13,13 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerCom
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjNameInputComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.HomeStage;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -95,6 +97,11 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         alert.setContentText(message);
 
         alert.showAndWait();
+    }
+
+    @Override
+    public void home_changeLanguage(Locale locale) {
+        getPresenter().home_onChangeLanguage(locale);
     }
 
     @Override
@@ -283,15 +290,18 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     private class ScannerFrontControllerImpl implements ScannerFrontController {
         @Override
         public void showForbiddenMark() {
+            String message = Language.getInstance().getString("scannerSafeGlass.forbiddenMark");
+
             getScannerSafeGlass().showForbiddenMark();
-            getScannerSafeGlass().setText("Failed to load database. Not available.");
+            getScannerSafeGlass().setText(message);
             getScannerSafeGlass().setVisible(true);
             getScannerSafeGlass().requestFocus();
         }
 
         @Override
         public void showLoadingMark(String djName) {
-            String message = String.format("Loading records from the server.\nDJ Name: %s", djName);
+            String message =
+                    Language.getInstance().getFormatString("scannerSafeGlass.loadingMark", djName);
 
             getScannerDjNameInput().upEffect();
             getScannerSafeGlass().showLoadingMark();

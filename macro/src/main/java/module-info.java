@@ -1,3 +1,6 @@
+import com.github.johypark97.varchivemacro.macro.spi.LanguageProvider;
+import com.github.johypark97.varchivemacro.macro.spi.LanguageProviderImpl;
+
 module varchivemacro.macro {
     requires varchivemacro.lib.common;
     requires varchivemacro.lib.desktop;
@@ -18,6 +21,10 @@ module varchivemacro.macro {
     requires com.google.common;
     requires com.google.gson;
     requires org.slf4j;
+
+    // xml language resource bundle provider
+    provides LanguageProvider with LanguageProviderImpl;
+    uses LanguageProvider;
 
     // exports
     exports com.github.johypark97.varchivemacro.macro.fxgui.model to com.google.gson;

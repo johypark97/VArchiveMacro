@@ -8,6 +8,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataMan
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
@@ -31,6 +32,8 @@ public interface Home {
         boolean onViewShow_loadDatabase();
 
         void onViewShow_loadRecord();
+
+        void home_onChangeLanguage(Locale locale);
 
         void scanner_front_onLoadRemoteRecord(String djName);
 
@@ -59,6 +62,8 @@ public interface Home {
         void showError(String header, Throwable throwable);
 
         void showInformation(String header, String message);
+
+        void home_changeLanguage(Locale locale);
 
         ScannerFrontController getScannerFrontController();
 

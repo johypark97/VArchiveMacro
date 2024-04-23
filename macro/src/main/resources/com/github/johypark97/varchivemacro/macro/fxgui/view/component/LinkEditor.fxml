@@ -12,15 +12,14 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21">
   <top>
     <VBox spacing="10.0">
       <children>
-        <Label text="Message" fx:id="messageLabel"/>
+        <Label text="%linkEditor.message" fx:id="messageLabel"/>
         <HBox alignment="CENTER_LEFT" spacing="10.0">
           <children>
-            <Label text="Song"/>
+            <Label text="%linkEditor.song"/>
             <TextField HBox.hgrow="ALWAYS" editable="false" focusTraversable="false" fx:id="songTextField"/>
           </children>
         </HBox>
@@ -37,10 +36,10 @@
           <children>
             <HBox alignment="CENTER" spacing="10.0">
               <children>
-                <Label text="Search"/>
+                <Label text="%linkEditor.search"/>
                 <TextField HBox.hgrow="ALWAYS" prefColumnCount="0" fx:id="searchTextField"/>
-                <Button text="Reset" fx:id="resetButton"/>
-                <CheckBox text="Find all" fx:id="findAllCheckBox"/>
+                <Button text="%common.reset" fx:id="resetButton"/>
+                <CheckBox text="%linkEditor.findAll" fx:id="findAllCheckBox"/>
               </children>
             </HBox>
             <ScrollPane VBox.vgrow="ALWAYS" fitToHeight="true" fitToWidth="true">
@@ -59,9 +58,9 @@
   <bottom>
     <ButtonBar buttonMinWidth="100.0">
       <buttons>
-        <Button text="Link" fx:id="linkButton"/>
-        <Button text="Unlink" fx:id="unlinkButton"/>
-        <Button text="Close" fx:id="closeButton"/>
+        <Button text="%linkEditor.link" fx:id="linkButton"/>
+        <Button text="%linkEditor.unlink" fx:id="unlinkButton"/>
+        <Button text="%linkEditor.close" fx:id="closeButton"/>
       </buttons>
       <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>

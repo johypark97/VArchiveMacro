@@ -56,11 +56,6 @@ public class LinkEditorViewImpl extends AbstractMvpView<LinkEditorPresenter, Lin
     }
 
     @Override
-    public void setMessageText(String text) {
-        getLinkEditorComponent().setMessageText(text);
-    }
-
-    @Override
     public void setSongText(String text) {
         getLinkEditorComponent().setSongText(text);
     }

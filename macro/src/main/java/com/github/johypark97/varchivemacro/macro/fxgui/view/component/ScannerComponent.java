@@ -12,6 +12,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataMan
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Comparator;
@@ -141,7 +142,7 @@ public class ScannerComponent extends TabPane {
         viewReference = new WeakReference<>(view);
 
         URL url = ScannerComponent.class.getResource(FXML_FILE_NAME);
-        MvpFxml.loadRoot(this, url);
+        MvpFxml.loadRoot(this, url, Language.getInstance().getResourceBundle());
     }
 
     @FXML
@@ -332,16 +333,21 @@ public class ScannerComponent extends TabPane {
             }
         });
 
-        TableColumn<CaptureData, Integer> id = new TableColumn<>("Capture Data Id");
+        Language language = Language.getInstance();
+
+        TableColumn<CaptureData, Integer> id =
+                new TableColumn<>(language.getString("scanner.capture.table.captureDataId"));
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         id.setPrefWidth(100);
 
-        TableColumn<CaptureData, String> scannedTitle = new TableColumn<>("Scanned Title");
+        TableColumn<CaptureData, String> scannedTitle =
+                new TableColumn<>(language.getString("scanner.capture.table.scannedTitle"));
         scannedTitle.setCellValueFactory(new PropertyValueFactory<>("scannedTitle"));
         scannedTitle.setComparator(new TitleComparator());
         scannedTitle.setPrefWidth(250);
 
-        TableColumn<CaptureData, List<SongData>> linkedSongs = new TableColumn<>("Linked Songs");
+        TableColumn<CaptureData, List<SongData>> linkedSongs =
+                new TableColumn<>(language.getString("scanner.capture.table.linkedSongs"));
         linkedSongs.setCellValueFactory(new PropertyValueFactory<>("parentList"));
         linkedSongs.setPrefWidth(150);
         linkedSongs.setCellFactory(param -> new TableCell<>() {
@@ -363,7 +369,8 @@ public class ScannerComponent extends TabPane {
             }
         });
 
-        TableColumn<CaptureData, Exception> error = new TableColumn<>("Error");
+        TableColumn<CaptureData, Exception> error =
+                new TableColumn<>(language.getString("scanner.capture.table.error"));
         error.setCellValueFactory(new PropertyValueFactory<>("exception"));
         error.setPrefWidth(100);
         error.setCellFactory(param -> new TableCell<>() {
@@ -459,13 +466,18 @@ public class ScannerComponent extends TabPane {
             }
         });
 
-        TableColumn<SongData, Integer> id = new TableColumn<>("Song Data Id");
+        Language language = Language.getInstance();
+
+        TableColumn<SongData, Integer> id =
+                new TableColumn<>(language.getString("scanner.song.table.songDataId"));
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         id.setPrefWidth(100);
 
-        TableColumn<SongData, ?> song = new TableColumn<>("Song");
+        TableColumn<SongData, ?> song =
+                new TableColumn<>(language.getString("scanner.song.table.song"));
         {
-            TableColumn<SongData, LocalDlcSong> title = new TableColumn<>("Title");
+            TableColumn<SongData, LocalDlcSong> title =
+                    new TableColumn<>(language.getString("scanner.song.table.title"));
             title.setCellValueFactory(new PropertyValueFactory<>("song"));
             title.setPrefWidth(200);
             title.setCellFactory(param -> new TableCell<>() {
@@ -490,7 +502,8 @@ public class ScannerComponent extends TabPane {
                 }
             });
 
-            TableColumn<SongData, LocalDlcSong> composer = new TableColumn<>("Composer");
+            TableColumn<SongData, LocalDlcSong> composer =
+                    new TableColumn<>(language.getString("scanner.song.table.composer"));
             composer.setCellValueFactory(new PropertyValueFactory<>("song"));
             composer.setPrefWidth(150);
             composer.setCellFactory(param -> new TableCell<>() {
@@ -528,7 +541,7 @@ public class ScannerComponent extends TabPane {
         }
 
         TableColumn<SongData, Map<CaptureData, LinkMetadata>> linkedCaptures =
-                new TableColumn<>("Linked Captures");
+                new TableColumn<>(language.getString("scanner.song.table.linkedCaptures"));
         linkedCaptures.setCellValueFactory(new PropertyValueFactory<>("linkMap"));
         linkedCaptures.setPrefWidth(200);
         linkedCaptures.setCellFactory(param -> new TableCell<>() {
@@ -553,7 +566,8 @@ public class ScannerComponent extends TabPane {
             }
         });
 
-        TableColumn<SongData, Boolean> select = new TableColumn<>("Select");
+        TableColumn<SongData, Boolean> select =
+                new TableColumn<>(language.getString("common.select"));
         select.setCellFactory(CheckBoxTableCell.forTableColumn(select));
         select.setCellValueFactory(new PropertyValueFactory<>("selected"));
         select.setPrefWidth(100);
