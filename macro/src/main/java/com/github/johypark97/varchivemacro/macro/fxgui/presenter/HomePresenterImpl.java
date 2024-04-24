@@ -132,8 +132,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
             getView().showInformation(header, language.getString("scannerService.dialog.scanDone"));
         };
+        Runnable onStart = () -> {
+            getView().scanner_capture_setCaptureDataList(FXCollections.emptyObservableList());
+            getView().scanner_song_setSongDataList(FXCollections.emptyObservableList());
+        };
 
-        getScannerModel().setupService(onDone, onCancel, onThrow);
+        getScannerModel().setupService(onStart, onDone, onCancel, onThrow);
     }
 
     @Override
@@ -335,9 +339,6 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void scanner_capture_onClearScanData() {
-        getView().scanner_capture_setCaptureDataList(FXCollections.emptyObservableList());
-        getView().scanner_song_setSongDataList(FXCollections.emptyObservableList());
-
         getScannerModel().clearScanData();
     }
 
