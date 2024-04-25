@@ -11,6 +11,10 @@
     "path": "javacpp-presets.txt",
     "url": "https://github.com/bytedeco/javacpp-presets"
   },
+  "JavaFX": {
+    "path": "javafx.txt",
+    "url": "https://github.com/openjdk/jfx"
+  },
   "JNativeHook": {
     "path": "jnativehook.txt",
     "url": "https://github.com/kwhat/jnativehook"
