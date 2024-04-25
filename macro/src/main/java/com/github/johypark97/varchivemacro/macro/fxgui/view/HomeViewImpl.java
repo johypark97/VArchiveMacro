@@ -13,6 +13,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerCom
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjNameInputComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.HomeStage;
+import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
@@ -22,8 +23,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> implements HomeView {
@@ -78,6 +82,11 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void requestStop() {
+        getPresenter().stopPresenter();
+    }
+
+    @Override
     public void showError(String header, Throwable throwable) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.initOwner(getStage());
@@ -107,6 +116,25 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     @Override
     public void home_openOpenSourceLicense() {
         getPresenter().home_onOpenOpenSourceLicense(getStage());
+    }
+
+    @Override
+    public void home_openAbout() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.initOwner(getStage());
+
+        alert.setHeaderText(null);
+
+        VBox box = new VBox();
+        box.setPadding(new Insets(20));
+        box.setSpacing(10);
+        {
+            box.getChildren().add(new Label("Version: " + BuildInfo.version));
+            box.getChildren().add(new Label("Build date: " + BuildInfo.date));
+        }
+        alert.getDialogPane().setContent(box);
+
+        alert.showAndWait();
     }
 
     @Override

@@ -14,7 +14,7 @@
       <menus>
         <Menu text="%home.menu.file">
           <items>
-            <MenuItem text="%home.menu.file.exit"/>
+            <MenuItem text="%home.menu.file.exit" fx:id="exitMenuItem"/>
           </items>
         </Menu>
         <Menu text="%home.menu.language">
@@ -30,7 +30,7 @@
         <Menu text="%home.menu.about">
           <items>
             <MenuItem text="%home.menu.about.osl" fx:id="openSourceLicenseMenuItem"/>
-            <MenuItem text="%home.menu.about.about"/>
+            <MenuItem text="%home.menu.about.about" fx:id="aboutMenuItem"/>
           </items>
         </Menu>
       </menus>

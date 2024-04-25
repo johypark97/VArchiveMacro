@@ -61,6 +61,8 @@ public interface Home {
 
 
     interface HomeView extends MvpView<HomePresenter> {
+        void requestStop();
+
         void showError(String header, Throwable throwable);
 
         void showInformation(String header, String message);
@@ -68,6 +70,8 @@ public interface Home {
         void home_changeLanguage(Locale locale);
 
         void home_openOpenSourceLicense();
+
+        void home_openAbout();
 
         ScannerFrontController getScannerFrontController();
 

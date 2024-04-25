@@ -18,6 +18,9 @@ public class HomeComponent extends BorderPane {
     private final WeakReference<HomeView> viewReference;
 
     @FXML
+    public MenuItem exitMenuItem;
+
+    @FXML
     public RadioMenuItem langEnRadioMenuItem;
 
     @FXML
@@ -25,6 +28,9 @@ public class HomeComponent extends BorderPane {
 
     @FXML
     public MenuItem openSourceLicenseMenuItem;
+
+    @FXML
+    public MenuItem aboutMenuItem;
 
     @FXML
     public Tab scannerTab;
@@ -46,10 +52,13 @@ public class HomeComponent extends BorderPane {
             langKoRadioMenuItem.setSelected(true);
         }
 
+        exitMenuItem.setOnAction(event -> getView().requestStop());
+
         langEnRadioMenuItem.setOnAction(event -> getView().home_changeLanguage(Locale.ENGLISH));
         langKoRadioMenuItem.setOnAction(event -> getView().home_changeLanguage(Locale.KOREAN));
 
         openSourceLicenseMenuItem.setOnAction(event -> getView().home_openOpenSourceLicense());
+        aboutMenuItem.setOnAction(event -> getView().home_openAbout());
     }
 
     private HomeView getView() {
