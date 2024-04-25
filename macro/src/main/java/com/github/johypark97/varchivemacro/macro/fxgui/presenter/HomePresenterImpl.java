@@ -15,6 +15,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorPresenter;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.OpenSourceLicense.OpenSourceLicensePresenter;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -57,6 +58,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private WeakReference<CaptureViewerPresenter> captureViewerPresenterReference;
     private WeakReference<LinkEditorPresenter> linkEditorPresenterReference;
+    private WeakReference<OpenSourceLicensePresenter> openSourceLicensePresenterReference;
 
     public void linkModel(ConfigModel configModel, DatabaseModel databaseModel,
             RecordModel recordModel, ScannerModel scannerModel) {
@@ -67,9 +69,11 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     public void linkPresenter(CaptureViewerPresenter captureViewerPresenter,
-            LinkEditorPresenter linkEditorPresenter) {
+            LinkEditorPresenter linkEditorPresenter,
+            OpenSourceLicensePresenter openSourceLicensePresenter) {
         captureViewerPresenterReference = new WeakReference<>(captureViewerPresenter);
         linkEditorPresenterReference = new WeakReference<>(linkEditorPresenter);
+        openSourceLicensePresenterReference = new WeakReference<>(openSourceLicensePresenter);
     }
 
     private ConfigModel getConfigModel() {
@@ -94,6 +98,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private LinkEditorPresenter getLinkEditorPresenter() {
         return linkEditorPresenterReference.get();
+    }
+
+    private OpenSourceLicensePresenter getOpenSourceLicensePresenter() {
+        return openSourceLicensePresenterReference.get();
     }
 
     private Path convertStringToPath(String pathString) {
@@ -234,6 +242,15 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         String header = language.getString("home.dialog.languageChange.header");
         String message = language.getString("home.dialog.languageChange.message");
         getView().showInformation(header, message);
+    }
+
+    @Override
+    public void home_onOpenOpenSourceLicense(Window ownerWindow) {
+        OpenSourceLicense.StartData startData = new OpenSourceLicense.StartData();
+        startData.ownerWindow = ownerWindow;
+
+        getOpenSourceLicensePresenter().setStartData(startData);
+        getOpenSourceLicensePresenter().startPresenter();
     }
 
     @Override

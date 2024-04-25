@@ -7,6 +7,7 @@ import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Locale;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
@@ -21,6 +22,9 @@ public class HomeComponent extends BorderPane {
 
     @FXML
     public RadioMenuItem langKoRadioMenuItem;
+
+    @FXML
+    public MenuItem openSourceLicenseMenuItem;
 
     @FXML
     public Tab scannerTab;
@@ -44,6 +48,8 @@ public class HomeComponent extends BorderPane {
 
         langEnRadioMenuItem.setOnAction(event -> getView().home_changeLanguage(Locale.ENGLISH));
         langKoRadioMenuItem.setOnAction(event -> getView().home_changeLanguage(Locale.KOREAN));
+
+        openSourceLicenseMenuItem.setOnAction(event -> getView().home_openOpenSourceLicense());
     }
 
     private HomeView getView() {

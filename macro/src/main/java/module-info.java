@@ -22,6 +22,8 @@ module varchivemacro.macro {
     requires com.google.gson;
     requires org.slf4j;
 
+    exports com.github.johypark97.varchivemacro.macro.fxgui.model.data to com.google.gson;
+
     // xml language resource bundle provider
     provides LanguageProvider with LanguageProviderImpl;
     uses LanguageProvider;

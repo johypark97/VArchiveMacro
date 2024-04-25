@@ -35,6 +35,8 @@ public interface Home {
 
         void home_onChangeLanguage(Locale locale);
 
+        void home_onOpenOpenSourceLicense(Window ownerWindow);
+
         void scanner_front_onLoadRemoteRecord(String djName);
 
         void scanner_viewer_onShowSongTree(TreeView<ViewerTreeData> treeView, String filter);
@@ -64,6 +66,8 @@ public interface Home {
         void showInformation(String header, String message);
 
         void home_changeLanguage(Locale locale);
+
+        void home_openOpenSourceLicense();
 
         ScannerFrontController getScannerFrontController();
 

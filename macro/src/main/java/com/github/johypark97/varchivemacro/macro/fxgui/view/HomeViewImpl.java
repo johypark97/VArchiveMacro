@@ -105,6 +105,11 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void home_openOpenSourceLicense() {
+        getPresenter().home_onOpenOpenSourceLicense(getStage());
+    }
+
+    @Override
     public ScannerFrontController getScannerFrontController() {
         return new ScannerFrontControllerImpl();
     }

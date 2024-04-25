@@ -6,16 +6,20 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultDatabaseModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultLicenseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultRecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.LicenseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.CaptureViewerPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.HomePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditorPresenterImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.OpenSourceLicensePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.CaptureViewerViewImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.LinkEditorViewImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.OpenSourceLicenseViewImpl;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -32,6 +36,7 @@ public class Main extends Application {
 
     private final ConfigModel configModel = new DefaultConfigModel();
     private final DatabaseModel databaseModel = new DefaultDatabaseModel();
+    private final LicenseModel licenseModel = new DefaultLicenseModel();
     private final RecordModel recordModel = new DefaultRecordModel();
     private final ScannerModel scannerModel = new DefaultScannerModel();
 
@@ -39,6 +44,8 @@ public class Main extends Application {
             new CaptureViewerPresenterImpl();
     private final HomePresenterImpl homePresenter = new HomePresenterImpl();
     private final LinkEditorPresenterImpl linkViewerPresenter = new LinkEditorPresenterImpl();
+    private final OpenSourceLicensePresenterImpl openSourceLicensePresenter =
+            new OpenSourceLicensePresenterImpl();
 
     public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> Main.logUncaughtException(e));
@@ -95,13 +102,17 @@ public class Main extends Application {
             Main.showUncaughtExceptionAlert(e);
         });
 
+        openSourceLicensePresenter.linkModel(licenseModel);
+        openSourceLicensePresenter.linkView(new OpenSourceLicenseViewImpl());
+
         captureViewerPresenter.linkView(new CaptureViewerViewImpl());
 
         linkViewerPresenter.linkModel(scannerModel);
         linkViewerPresenter.linkView(new LinkEditorViewImpl());
 
         homePresenter.linkModel(configModel, databaseModel, recordModel, scannerModel);
-        homePresenter.linkPresenter(captureViewerPresenter, linkViewerPresenter);
+        homePresenter.linkPresenter(captureViewerPresenter, linkViewerPresenter,
+                openSourceLicensePresenter);
 
         homePresenter.linkView(new HomeViewImpl());
 

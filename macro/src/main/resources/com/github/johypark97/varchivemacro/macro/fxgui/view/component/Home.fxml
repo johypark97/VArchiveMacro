@@ -29,7 +29,7 @@
         </Menu>
         <Menu text="%home.menu.about">
           <items>
-            <MenuItem text="%home.menu.about.osl"/>
+            <MenuItem text="%home.menu.about.osl" fx:id="openSourceLicenseMenuItem"/>
             <MenuItem text="%home.menu.about.about"/>
           </items>
         </Menu>
