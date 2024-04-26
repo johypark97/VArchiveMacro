@@ -1,11 +1,14 @@
 package com.github.johypark97.varchivemacro.macro.resource;
 
+import com.github.johypark97.varchivemacro.lib.common.service.XmlResourceBundleControl;
+import com.github.johypark97.varchivemacro.macro.spi.LanguageProviderImpl;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.ResourceBundle.Control;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -43,12 +46,10 @@ public class Language {
         }
 
         ResourceBundle resourceBundle;
-        try {
-            resourceBundle = ResourceBundle.getBundle(RESOURCE_PROVIDER, locale);
-            Locale.setDefault(resourceBundle.getLocale());
-        } catch (MissingResourceException e) {
-            Locale.setDefault(Locale.ENGLISH);
-            resourceBundle = ResourceBundle.getBundle(RESOURCE_PROVIDER);
+        if (Language.class.getModule().isNamed()) {
+            resourceBundle = loadUsingServiceProvider(locale);
+        } else {
+            resourceBundle = loadUsingControl(locale);
         }
 
         try {
@@ -82,6 +83,35 @@ public class Language {
 
     public String getFormatString(String key, Object... args) {
         return String.format(getString(key), args);
+    }
+
+    private ResourceBundle loadUsingServiceProvider(Locale locale) {
+        ResourceBundle resourceBundle;
+        try {
+            resourceBundle = ResourceBundle.getBundle(RESOURCE_PROVIDER, locale);
+            Locale.setDefault(resourceBundle.getLocale());
+        } catch (MissingResourceException e) {
+            Locale.setDefault(Locale.ENGLISH);
+            resourceBundle = ResourceBundle.getBundle(RESOURCE_PROVIDER);
+        }
+
+        return resourceBundle;
+    }
+
+    private ResourceBundle loadUsingControl(Locale locale) {
+        Control control = new XmlResourceBundleControl();
+        String baseName = LanguageProviderImpl.BASE_NAME;
+
+        ResourceBundle resourceBundle;
+        try {
+            resourceBundle = ResourceBundle.getBundle(baseName, locale, control);
+            Locale.setDefault(resourceBundle.getLocale());
+        } catch (MissingResourceException e) {
+            Locale.setDefault(Locale.ENGLISH);
+            resourceBundle = ResourceBundle.getBundle(baseName, control);
+        }
+
+        return resourceBundle;
     }
 
     private static class Singleton {

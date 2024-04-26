@@ -2,75 +2,28 @@ package com.github.johypark97.varchivemacro.lib.common.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.ResourceBundle.Control;
-import java.util.Set;
 import java.util.spi.ResourceBundleProvider;
 
 public abstract class AbstractXmlResourceBundleProvider implements ResourceBundleProvider {
-    protected static final String FORMAT_XML = "xml";
+    protected abstract String getBaseName(String baseName);
 
-    protected String toBundleName(String baseName, Locale locale) {
-        return getControl().toBundleName(baseName, locale);
-    }
+    protected abstract InputStream openResourceStream(String resourceName);
 
-    protected String toResourceName(String bundleName) {
-        return getControl().toResourceName(bundleName, FORMAT_XML);
-    }
+    @Override
+    public ResourceBundle getBundle(String baseName, Locale locale) {
+        XmlResourceBundleControl control = new XmlResourceBundleControl();
 
-    private Control getControl() {
-        return Control.getControl(Control.FORMAT_DEFAULT);
-    }
+        String baseName0 = getBaseName(baseName);
+        String bundleName = control.toBundleName(baseName0, locale);
+        String resourceName =
+                control.toResourceName(bundleName, XmlResourceBundleControl.FORMAT_XML);
 
-    public static class XmlResourceBundle extends ResourceBundle {
-        private final Map<String, Object> data = new HashMap<>();
-
-        public XmlResourceBundle(InputStream stream) throws IOException {
-            Properties properties = new Properties();
-            properties.loadFromXML(stream);
-            properties.forEach((key, value) -> data.put(key.toString(), value));
-        }
-
-        @Override
-        protected Object handleGetObject(String key) {
-            return data.get(key);
-        }
-
-        @Override
-        public Enumeration<String> getKeys() {
-            Set<String> set = new HashSet<>(data.keySet());
-
-            if (parent != null) {
-                parent.getKeys().asIterator().forEachRemaining(set::add);
-            }
-
-            return new KeyEnumeration(set);
-        }
-    }
-
-
-    public static class KeyEnumeration implements Enumeration<String> { // NOPMD
-        private final Iterator<String> iterator;
-
-        public KeyEnumeration(Set<String> set) {
-            iterator = set.iterator();
-        }
-
-        @Override
-        public boolean hasMoreElements() {
-            return iterator.hasNext();
-        }
-
-        @Override
-        public String nextElement() {
-            return iterator.next();
+        try (InputStream stream = openResourceStream(resourceName)) {
+            return stream == null ? null : new XmlResourceBundle(stream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
