@@ -430,8 +430,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     public Path scanner_option_onOpenAccountFileSelector(Window ownerWindow) {
         FileChooser chooser = new FileChooser();
         chooser.setInitialDirectory(INITIAL_DIRECTORY.toFile());
-        chooser.setTitle(Language.getInstance()
-                .getString("scanner.option.dialog.cacheDirectorySelectorTitle"));
+        chooser.setTitle(
+                Language.getInstance().getString("scanner.option.dialog.AccountFileSelectorTitle"));
 
         chooser.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter("Account text file (*.txt)", "*.txt"));
