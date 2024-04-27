@@ -37,11 +37,7 @@
                     <Button text="%common.reset" fx:id="viewer_filterResetButton"/>
                   </children>
                 </HBox>
-                <ScrollPane VBox.vgrow="ALWAYS" fitToHeight="true" fitToWidth="true">
-                  <content>
-                    <TreeView fx:id="viewer_songTreeView"/>
-                  </content>
-                </ScrollPane>
+                <TreeView VBox.vgrow="ALWAYS" fx:id="viewer_songTreeView"/>
               </children>
             </VBox>
             <VBox spacing="10.0">
@@ -128,11 +124,7 @@
               <children>
                 <TitledPane VBox.vgrow="ALWAYS" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="%scanner.capture.tabList">
                   <content>
-                    <ScrollPane fitToHeight="true" fitToWidth="true">
-                      <content>
-                        <ListView fx:id="capture_tabListView"/>
-                      </content>
-                    </ScrollPane>
+                    <ListView fx:id="capture_tabListView"/>
                   </content>
                 </TitledPane>
                 <HBox spacing="10.0">

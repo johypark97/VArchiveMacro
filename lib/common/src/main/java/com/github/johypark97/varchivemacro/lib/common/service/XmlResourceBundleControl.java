@@ -2,7 +2,6 @@ package com.github.johypark97.varchivemacro.lib.common.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
