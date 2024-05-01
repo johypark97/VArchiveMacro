@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="analysisDataViewer.close">Close (ESC)</entry>
+  <entry key="analysisDataViewer.record">Record</entry>
+  <entry key="analysisDataViewer.title">Title</entry>
   <entry key="captureViewer.close">Close (ESC)</entry>
   <entry key="captureViewer.help.lmb">Left Mouse Button: Move</entry>
   <entry key="captureViewer.help.mmb">Middle Mouse Button: Zoom in/out</entry>

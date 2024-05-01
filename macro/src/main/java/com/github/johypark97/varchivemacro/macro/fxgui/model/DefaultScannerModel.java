@@ -2,10 +2,15 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model;
 
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManagerHelper;
+import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
+import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
+import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
+import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.RecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
@@ -13,6 +18,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataMan
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.ScannerService;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.AnalysisTask;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.DefaultCollectionScanTask;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -173,5 +179,41 @@ public class DefaultScannerModel implements ScannerModel {
     @Override
     public ObservableList<AnalysisData> getObservableAnalysisDataList() {
         return analysisDataManager.analysisDataListProperty();
+    }
+
+    @Override
+    public AnalyzedRecordData getAnalyzedRecordData(Path cacheDirectoryPath, int id)
+            throws Exception {
+        AnalyzedRecordData data = new AnalyzedRecordData();
+
+        AnalysisData analysisData = analysisDataManager.analysisDataListProperty().get(id);
+        BufferedImage image = getCaptureImage(cacheDirectoryPath,
+                analysisData.captureData.get().idProperty().get());
+        Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
+        CollectionArea area = CollectionAreaFactory.create(resolution);
+
+        data.titleImage = area.getTitle(image);
+        data.titleText = analysisData.captureData.get().scannedTitle.get();
+
+        for (Button button : Button.values()) {
+            for (Pattern pattern : Pattern.values()) {
+                data.rateImage[button.getWeight()][pattern.getWeight()] =
+                        area.getRate(image, button, pattern);
+
+                data.maxComboImage[button.getWeight()][pattern.getWeight()] =
+                        area.getComboMark(image, button, pattern);
+
+                RecordData recordData = analysisData.recordDataTable.get(button, pattern);
+                if (recordData == null) {
+                    continue;
+                }
+
+                data.rateText[button.getWeight()][pattern.getWeight()] = recordData.rateText.get();
+
+                data.maxCombo[button.getWeight()][pattern.getWeight()] = recordData.maxCombo.get();
+            }
+        }
+
+        return data;
     }
 }

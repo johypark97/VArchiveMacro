@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="analysisDataViewer.close">닫기 (ESC)</entry>
+  <entry key="analysisDataViewer.record">기록</entry>
+  <entry key="analysisDataViewer.title">제목</entry>
   <entry key="captureViewer.close">닫기 (ESC)</entry>
   <entry key="captureViewer.help.lmb">왼쪽 마우스 버튼: 이동</entry>
   <entry key="captureViewer.help.mmb">가운데 마우스 버튼: 확대/축소</entry>

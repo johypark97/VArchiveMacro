@@ -253,6 +253,12 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void scanner_analysis_openAnalysisDataViewer(int id) {
+        String cacheDirectory = getScanner().option_getCacheDirectory();
+        getPresenter().scanner_analysis_onOpenAnalysisDataViewer(getStage(), cacheDirectory, id);
+    }
+
+    @Override
     public void scanner_analysis_startAnalysis() {
         String cacheDirectory = getScanner().option_getCacheDirectory();
         getPresenter().scanner_analysis_onStartAnalysis(cacheDirectory);

@@ -9,6 +9,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.Scanner
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.CaptureViewer.CaptureViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
@@ -56,6 +57,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     private WeakReference<RecordModel> recordModelReference;
     private WeakReference<ScannerModel> scannerModelReference;
 
+    private WeakReference<AnalysisDataViewerPresenter> analysisDataViewerPresenterReference;
     private WeakReference<CaptureViewerPresenter> captureViewerPresenterReference;
     private WeakReference<LinkEditorPresenter> linkEditorPresenterReference;
     private WeakReference<OpenSourceLicensePresenter> openSourceLicensePresenterReference;
@@ -68,9 +70,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         scannerModelReference = new WeakReference<>(scannerModel);
     }
 
-    public void linkPresenter(CaptureViewerPresenter captureViewerPresenter,
-            LinkEditorPresenter linkEditorPresenter,
+    public void linkPresenter(AnalysisDataViewerPresenter analysisDataViewerPresenter,
+            CaptureViewerPresenter captureViewerPresenter, LinkEditorPresenter linkEditorPresenter,
             OpenSourceLicensePresenter openSourceLicensePresenter) {
+        analysisDataViewerPresenterReference = new WeakReference<>(analysisDataViewerPresenter);
         captureViewerPresenterReference = new WeakReference<>(captureViewerPresenter);
         linkEditorPresenterReference = new WeakReference<>(linkEditorPresenter);
         openSourceLicensePresenterReference = new WeakReference<>(openSourceLicensePresenter);
@@ -90,6 +93,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private ScannerModel getScannerModel() {
         return scannerModelReference.get();
+    }
+
+    private AnalysisDataViewerPresenter getAnalysisDataViewerPresenter() {
+        return analysisDataViewerPresenterReference.get();
     }
 
     private CaptureViewerPresenter getCaptureViewerPresenter() {
@@ -408,6 +415,27 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     public void scanner_analysis_onClearAnalysisData() {
         getScannerModel().clearAnalysisData();
+    }
+
+    @Override
+    public void scanner_analysis_onOpenAnalysisDataViewer(Window ownerWindow, String cacheDirectory,
+            int id) {
+        Path cacheDirectoryPath = convertStringToPath(cacheDirectory);
+        if (cacheDirectoryPath == null) {
+            return;
+        }
+
+        AnalysisDataViewer.StartData startData = new AnalysisDataViewer.StartData();
+        startData.analysisDataId = id;
+        startData.cacheDirectoryPath = cacheDirectoryPath;
+        startData.ownerWindow = ownerWindow;
+        getAnalysisDataViewerPresenter().setStartData(startData);
+
+        if (!getAnalysisDataViewerPresenter().isStarted()) {
+            getAnalysisDataViewerPresenter().startPresenter();
+        } else {
+            getAnalysisDataViewerPresenter().updateView();
+        }
     }
 
     @Override

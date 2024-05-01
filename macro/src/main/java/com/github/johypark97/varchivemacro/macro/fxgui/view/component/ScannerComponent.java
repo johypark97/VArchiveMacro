@@ -106,6 +106,9 @@ public class ScannerComponent extends TabPane {
     public TableView<AnalysisData> analysis_analysisTableView;
 
     @FXML
+    public Button analysis_showButton;
+
+    @FXML
     public Button analysis_startButton;
 
     @FXML
@@ -271,6 +274,14 @@ public class ScannerComponent extends TabPane {
 
         if (selected != null) {
             getView().scanner_song_openLinkEditor(selected.idProperty().get());
+        }
+    }
+
+    private void openAnalysisDataViewer() {
+        AnalysisData selected = analysis_analysisTableView.getSelectionModel().getSelectedItem();
+
+        if (selected != null) {
+            getView().scanner_analysis_openAnalysisDataViewer(selected.idProperty().get());
         }
     }
 
@@ -626,6 +637,8 @@ public class ScannerComponent extends TabPane {
     private void setupAnalysis() {
         setupAnalysis_analysisTableView();
 
+        analysis_showButton.setOnAction(event -> openAnalysisDataViewer());
+
         analysis_startButton.setOnAction(event -> getView().scanner_analysis_startAnalysis());
 
         analysis_stopButton.setOnAction(event -> getView().scanner_analysis_stopAnalysis());
@@ -634,6 +647,12 @@ public class ScannerComponent extends TabPane {
     }
 
     private void setupAnalysis_analysisTableView() {
+        analysis_analysisTableView.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                openAnalysisDataViewer();
+            }
+        });
+
         Language language = Language.getInstance();
 
         TableColumn<AnalysisData, Integer> id =

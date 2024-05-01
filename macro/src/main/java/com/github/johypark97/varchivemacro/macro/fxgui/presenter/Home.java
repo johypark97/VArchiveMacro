@@ -59,6 +59,9 @@ public interface Home {
 
         void scanner_analysis_onClearAnalysisData();
 
+        void scanner_analysis_onOpenAnalysisDataViewer(Window ownerWindow, String cacheDirectory,
+                int id);
+
         void scanner_analysis_onStartAnalysis(String cacheDirectory);
 
         void scanner_analysis_onStopAnalysis();
@@ -117,6 +120,8 @@ public interface Home {
         void scanner_analysis_setAnalysisDataList(ObservableList<AnalysisData> list);
 
         void scanner_analysis_clearAnalysisData();
+
+        void scanner_analysis_openAnalysisDataViewer(int id);
 
         void scanner_analysis_startAnalysis();
 
