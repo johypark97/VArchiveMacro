@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class DefaultDatabaseModel implements DatabaseModel {
     private static final Path BASE_PATH = Path.of("data/database");
@@ -50,5 +51,10 @@ public class DefaultDatabaseModel implements DatabaseModel {
     @Override
     public TitleTool getTitleTool() {
         return titleTool;
+    }
+
+    @Override
+    public Set<Integer> getDuplicateTitleSet() {
+        return dlcSongManager.getDuplicateTitleSet();
     }
 }

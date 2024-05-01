@@ -115,7 +115,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         try {
             return Path.of(pathString);
         } catch (InvalidPathException e) {
-            getView().showError("Invalid cache directory.", e);
+            getView().showError("Invalid path.", e);
             return null;
         }
     }
@@ -134,6 +134,9 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     public void onViewShow_setupContent() {
         getView().scanner_analysis_setAnalysisDataList(
                 getScannerModel().getObservableAnalysisDataList());
+
+        getView().scanner_uploader_setNewRecordDataList(
+                getScannerModel().getObservableNewRecordDataList());
     }
 
     @Override
@@ -452,10 +455,16 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         Language language = Language.getInstance();
         String header = language.getString("scannerService.dialog.header");
 
-        Runnable onCancel = () -> getView().showInformation(header,
-                language.getString("scannerService.dialog.analysisCanceled"));
-        Runnable onDone = () -> getView().showInformation(header,
-                language.getString("scannerService.dialog.analysisDone"));
+        Runnable onCancel = () -> {
+            scanner_uploader_onRefresh();
+            getView().showInformation(header,
+                    language.getString("scannerService.dialog.analysisCanceled"));
+        };
+        Runnable onDone = () -> {
+            scanner_uploader_onRefresh();
+            getView().showInformation(header,
+                    language.getString("scannerService.dialog.analysisDone"));
+        };
 
         getScannerModel().starAnalysis(onDone, onCancel, cacheDirectoryPath);
     }
@@ -463,6 +472,45 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     public void scanner_analysis_onStopAnalysis() {
         getScannerModel().stopAnalysis();
+    }
+
+    @Override
+    public void scanner_uploader_onRefresh() {
+        if (getScannerModel().isAnalysisDataEmpty()) {
+            return;
+        }
+
+        getScannerModel().collectNewRecord(getRecordModel());
+    }
+
+    @Override
+    public void scanner_uploader_onStartUpload() {
+        if (getScannerModel().isNewRecordDataEmpty()) {
+            return;
+        }
+
+        Path accountPath = convertStringToPath(getView().scanner_option_getAccountFile());
+        if (accountPath == null) {
+            return;
+        }
+
+        int recordUploadDelay = getView().scanner_option_getRecordUploadDelay();
+
+        Language language = Language.getInstance();
+        String header = language.getString("scannerService.dialog.header");
+
+        Runnable onCancel = () -> getView().showInformation(header,
+                language.getString("scannerService.dialog.uploadCanceled"));
+        Runnable onDone = () -> getView().showInformation(header,
+                language.getString("scannerService.dialog.uploadDone"));
+
+        getScannerModel().startUpload(onDone, onCancel, getDatabaseModel(), getRecordModel(),
+                accountPath, recordUploadDelay);
+    }
+
+    @Override
+    public void scanner_uploader_onStopUpload() {
+        getScannerModel().stopUpload();
     }
 
     @Override

@@ -15,7 +15,7 @@ public interface RecordManager {
 
     Map<Button, Map<Pattern, LocalRecord>> getRecord(int id);
 
-    class LocalRecord {
+    class LocalRecord implements Cloneable {
         public final Button button;
         public final Pattern pattern;
         public final int id;
@@ -55,6 +55,15 @@ public interface RecordManager {
             rate = Math.max(rate, record.rate);
             maxCombo = maxCombo | record.maxCombo;
             return true;
+        }
+
+        @Override
+        public LocalRecord clone() {
+            try {
+                return (LocalRecord) super.clone();
+            } catch (CloneNotSupportedException e) {
+                throw new AssertionError(e);
+            }
         }
     }
 }

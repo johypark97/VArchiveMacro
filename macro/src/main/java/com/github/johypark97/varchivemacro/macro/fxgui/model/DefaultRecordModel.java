@@ -25,6 +25,11 @@ public class DefaultRecordModel implements RecordModel {
     private DefaultRecordManager recordManager;
 
     @Override
+    public void save() throws IOException {
+        recordManager.saveJson(RECORD_PATH);
+    }
+
+    @Override
     public boolean loadLocal() throws IOException {
         if (!Files.exists(RECORD_PATH)) {
             return false;
@@ -96,5 +101,15 @@ public class DefaultRecordModel implements RecordModel {
         recordManager.getRecord(id).values().forEach(x -> list.addAll(x.values()));
 
         return list;
+    }
+
+    @Override
+    public LocalRecord findSameRecord(LocalRecord record) {
+        return recordManager.findSameRecord(record);
+    }
+
+    @Override
+    public void updateRecord(LocalRecord record) {
+        recordManager.updateRecord(record);
     }
 }

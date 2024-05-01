@@ -84,6 +84,25 @@
   <entry key="scanner.song.table.title">Title</entry>
   <entry key="scanner.song.toggleAllEdited">Toggle All Edited</entry>
   <entry key="scanner.song.toggleAllExact">Toggle All Exact</entry>
+  <entry key="scanner.uploader">Uploader</entry>
+  <entry key="scanner.uploader.refresh">Refresh</entry>
+  <entry key="scanner.uploader.startUpload">Start Upload</entry>
+  <entry key="scanner.uploader.stopUpload">Stop Upload (End)</entry>
+  <entry key="scanner.uploader.table.button">Button</entry>
+  <entry key="scanner.uploader.table.composer">Composer</entry>
+  <entry key="scanner.uploader.table.newRecordDataId">Record ID</entry>
+  <entry key="scanner.uploader.table.pattern">Pattern</entry>
+  <entry key="scanner.uploader.table.record">Record</entry>
+  <entry key="scanner.uploader.table.record.new">New</entry>
+  <entry key="scanner.uploader.table.record.previous">Previous</entry>
+  <entry key="scanner.uploader.table.song">Song</entry>
+  <entry key="scanner.uploader.table.status">Status</entry>
+  <entry key="scanner.uploader.table.status.canceled">Canceled</entry>
+  <entry key="scanner.uploader.table.status.higherRecordExists">Higher Record Exists</entry>
+  <entry key="scanner.uploader.table.status.ready">Ready</entry>
+  <entry key="scanner.uploader.table.status.uploaded">Uploaded</entry>
+  <entry key="scanner.uploader.table.status.uploading">Uploading</entry>
+  <entry key="scanner.uploader.table.title">Title</entry>
   <entry key="scanner.viewer">Record Viewer</entry>
   <entry key="scanner.viewer.filter">Filter</entry>
   <entry key="scanner.viewer.record">Record</entry>
@@ -97,4 +116,6 @@
   <entry key="scannerService.dialog.header">Collection Scanner</entry>
   <entry key="scannerService.dialog.scanCanceled">Scan canceled</entry>
   <entry key="scannerService.dialog.scanDone">Scan done</entry>
+  <entry key="scannerService.dialog.uploadCanceled">Upload canceled</entry>
+  <entry key="scannerService.dialog.uploadDone">Upload done</entry>
 </properties>

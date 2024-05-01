@@ -205,6 +205,29 @@
         </VBox>
       </content>
     </Tab>
+    <Tab closable="false" text="%scanner.uploader">
+      <content>
+        <VBox spacing="10.0">
+          <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+          </padding>
+          <children>
+            <TableView VBox.vgrow="ALWAYS" editable="true" fx:id="uploader_recordTableView"/>
+            <HBox spacing="10.0">
+              <children>
+                <Button text="%scanner.uploader.refresh" fx:id="uploader_refreshButton"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="%common.selectAll" fx:id="uploader_selectAllButton"/>
+                <Button text="%common.unselectAll" fx:id="uploader_unselectAllButton"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="%scanner.uploader.startUpload" fx:id="uploader_startUploadButton"/>
+                <Button text="%scanner.uploader.stopUpload" fx:id="uploader_stopUploadButton"/>
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </content>
+    </Tab>
     <Tab closable="false" text="%scanner.option">
       <content>
         <ScrollPane fitToHeight="true" fitToWidth="true">

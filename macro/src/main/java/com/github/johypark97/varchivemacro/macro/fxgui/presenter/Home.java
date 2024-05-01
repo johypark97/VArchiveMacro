@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import java.nio.file.Path;
@@ -66,6 +67,12 @@ public interface Home {
 
         void scanner_analysis_onStopAnalysis();
 
+        void scanner_uploader_onRefresh();
+
+        void scanner_uploader_onStartUpload();
+
+        void scanner_uploader_onStopUpload();
+
         Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow);
 
         Path scanner_option_onOpenAccountFileSelector(Window ownerWindow);
@@ -126,6 +133,14 @@ public interface Home {
         void scanner_analysis_startAnalysis();
 
         void scanner_analysis_stopAnalysis();
+
+        void scanner_uploader_setNewRecordDataList(ObservableList<NewRecordData> list);
+
+        void scanner_uploader_refresh();
+
+        void scanner_uploader_startUpload();
+
+        void scanner_uploader_stopUpload();
 
         String scanner_option_getCacheDirectory();
 

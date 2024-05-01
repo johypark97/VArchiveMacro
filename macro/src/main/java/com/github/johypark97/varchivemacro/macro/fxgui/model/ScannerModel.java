@@ -3,6 +3,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import java.awt.image.BufferedImage;
@@ -30,6 +32,13 @@ public interface ScannerModel {
 
     void stopAnalysis();
 
+    void collectNewRecord(RecordModel recordModel);
+
+    void startUpload(Runnable onDone, Runnable onCancel, DatabaseModel databaseModel,
+            RecordModel recordModel, Path accountPath, int recordUploadDelay);
+
+    void stopUpload();
+
     boolean isScanDataEmpty();
 
     void clearScanData();
@@ -37,6 +46,8 @@ public interface ScannerModel {
     boolean isAnalysisDataEmpty();
 
     void clearAnalysisData();
+
+    boolean isNewRecordDataEmpty();
 
     ObservableList<CaptureData> getObservableCaptureDataList();
 
@@ -47,6 +58,8 @@ public interface ScannerModel {
     ObservableList<AnalysisData> getObservableAnalysisDataList();
 
     AnalyzedRecordData getAnalyzedRecordData(Path cacheDirectoryPath, int id) throws Exception;
+
+    ObservableList<NewRecordData> getObservableNewRecordDataList();
 
     class AnalyzedRecordData {
         public BufferedImage titleImage;

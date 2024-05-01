@@ -12,12 +12,16 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDat
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.RecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.ScannerService;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.AnalysisTask;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.CollectNewRecordTask;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.DefaultCollectionScanTask;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.UploadTask;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -32,6 +36,7 @@ import javafx.concurrent.Task;
 
 public class DefaultScannerModel implements ScannerModel {
     private final AnalysisDataManager analysisDataManager = new AnalysisDataManager();
+    private final NewRecordDataManager newRecordDataManager = new NewRecordDataManager();
     private final ScanDataManager scanDataManager = new ScanDataManager();
 
     @Override
@@ -120,6 +125,50 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
+    public void collectNewRecord(RecordModel recordModel) {
+        ScannerService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        if (service.isRunning()) {
+            return;
+        }
+
+        service.setTaskConstructor(() -> new CollectNewRecordTask(recordModel, analysisDataManager,
+                newRecordDataManager));
+
+        service.reset();
+        service.start();
+    }
+
+    @Override
+    public void startUpload(Runnable onDone, Runnable onCancel, DatabaseModel databaseModel,
+            RecordModel recordModel, Path accountPath, int recordUploadDelay) {
+        ScannerService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        if (service.isRunning()) {
+            return;
+        }
+
+        service.setTaskConstructor(() -> {
+            Task<Void> task =
+                    new UploadTask(databaseModel, recordModel, newRecordDataManager, accountPath,
+                            recordUploadDelay);
+
+            task.setOnCancelled(event -> onCancel.run());
+            task.setOnSucceeded(event -> onDone.run());
+
+            return task;
+        });
+
+        service.reset();
+        service.start();
+    }
+
+    @Override
+    public void stopUpload() {
+        ServiceManagerHelper.stopService(ScannerService.class);
+    }
+
+    @Override
     public boolean isScanDataEmpty() {
         return scanDataManager.isEmpty();
     }
@@ -133,6 +182,7 @@ public class DefaultScannerModel implements ScannerModel {
         }
 
         analysisDataManager.clear();
+        newRecordDataManager.clear();
         scanDataManager.clear();
     }
 
@@ -145,9 +195,17 @@ public class DefaultScannerModel implements ScannerModel {
     public void clearAnalysisData() {
         ScannerService service =
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
-        if (!service.isRunning()) {
-            analysisDataManager.clear();
+        if (service.isRunning()) {
+            return;
         }
+
+        analysisDataManager.clear();
+        newRecordDataManager.clear();
+    }
+
+    @Override
+    public boolean isNewRecordDataEmpty() {
+        return newRecordDataManager.isEmpty();
     }
 
     @Override
@@ -211,5 +269,10 @@ public class DefaultScannerModel implements ScannerModel {
         }
 
         return data;
+    }
+
+    @Override
+    public ObservableList<NewRecordData> getObservableNewRecordDataList() {
+        return newRecordDataManager.newRecordDataListProperty();
     }
 }

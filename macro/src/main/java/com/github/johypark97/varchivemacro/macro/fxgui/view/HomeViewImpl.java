@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
@@ -267,6 +268,26 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     @Override
     public void scanner_analysis_stopAnalysis() {
         getPresenter().scanner_analysis_onStopAnalysis();
+    }
+
+    @Override
+    public void scanner_uploader_setNewRecordDataList(ObservableList<NewRecordData> list) {
+        getScanner().setNewRecordDataList(list);
+    }
+
+    @Override
+    public void scanner_uploader_refresh() {
+        getPresenter().scanner_uploader_onRefresh();
+    }
+
+    @Override
+    public void scanner_uploader_startUpload() {
+        getPresenter().scanner_uploader_onStartUpload();
+    }
+
+    @Override
+    public void scanner_uploader_stopUpload() {
+        getPresenter().scanner_uploader_onStopUpload();
     }
 
     @Override

@@ -5,9 +5,13 @@ import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.h
 
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
+import com.github.johypark97.varchivemacro.lib.scanner.Enums;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
+import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.DlcLocalSongComparator;
 import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.TitleComparator;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.LinkMetadata;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
@@ -27,6 +31,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -118,6 +123,24 @@ public class ScannerComponent extends TabPane {
     public Button analysis_clearButton;
 
     @FXML
+    public TableView<NewRecordData> uploader_recordTableView;
+
+    @FXML
+    public Button uploader_refreshButton;
+
+    @FXML
+    public Button uploader_selectAllButton;
+
+    @FXML
+    public Button uploader_unselectAllButton;
+
+    @FXML
+    public Button uploader_startUploadButton;
+
+    @FXML
+    public Button uploader_stopUploadButton;
+
+    @FXML
     public TextField option_cacheDirectoryTextField;
 
     @FXML
@@ -168,6 +191,7 @@ public class ScannerComponent extends TabPane {
         setupCapture();
         setupSong();
         setupAnalysis();
+        setupUploader();
         setupOption();
     }
 
@@ -255,6 +279,10 @@ public class ScannerComponent extends TabPane {
 
     public void setAnalysisDataList(ObservableList<AnalysisData> list) {
         analysis_analysisTableView.setItems(list);
+    }
+
+    public void setNewRecordDataList(ObservableList<NewRecordData> list) {
+        uploader_recordTableView.setItems(list);
     }
 
     private HomeView getView() {
@@ -801,6 +829,172 @@ public class ScannerComponent extends TabPane {
         });
     }
 
+    private void setupUploader() {
+        setupUploader_recordTableView();
+
+        uploader_refreshButton.setOnAction(event -> getView().scanner_uploader_refresh());
+
+        uploader_selectAllButton.setOnAction(
+                event -> uploader_recordTableView.getItems().forEach(x -> x.selected.set(true)));
+
+        uploader_unselectAllButton.setOnAction(
+                event -> uploader_recordTableView.getItems().forEach(x -> x.selected.set(false)));
+
+        uploader_startUploadButton.setOnAction(event -> getView().scanner_uploader_startUpload());
+
+        uploader_stopUploadButton.setOnAction(event -> getView().scanner_uploader_stopUpload());
+    }
+
+    private void setupUploader_recordTableView() {
+        Language language = Language.getInstance();
+
+        TableColumn<NewRecordData, Integer> id =
+                new TableColumn<>(language.getString("scanner.uploader.table.newRecordDataId"));
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        id.setPrefWidth(100);
+
+        TableColumn<NewRecordData, ?> song =
+                new TableColumn<>(language.getString("scanner.uploader.table.song"));
+        {
+            String songPropertyName = "song";
+
+            TableColumn<NewRecordData, LocalDlcSong> title =
+                    new TableColumn<>(language.getString("scanner.uploader.table.title"));
+            title.setCellValueFactory(new PropertyValueFactory<>(songPropertyName));
+            title.setComparator(new DlcLocalSongComparator());
+            title.setPrefWidth(140);
+            title.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(LocalDlcSong item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                        return;
+                    }
+
+                    setText(item.title);
+                }
+            });
+
+            TableColumn<NewRecordData, LocalDlcSong> composer =
+                    new TableColumn<>(language.getString("scanner.uploader.table.composer"));
+            composer.setCellValueFactory(new PropertyValueFactory<>(songPropertyName));
+            composer.setPrefWidth(120);
+            composer.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(LocalDlcSong item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                        return;
+                    }
+
+                    setText(item.composer);
+                }
+            });
+
+            TableColumn<NewRecordData, LocalDlcSong> dlc = new TableColumn<>("DLC");
+            dlc.setCellValueFactory(new PropertyValueFactory<>(songPropertyName));
+            dlc.setPrefWidth(100);
+            dlc.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(LocalDlcSong item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                        return;
+                    }
+
+                    setText(item.dlc);
+                }
+            });
+
+            song.getColumns().addAll(List.of(title, composer, dlc));
+        }
+
+        TableColumn<NewRecordData, Enums.Button> button =
+                new TableColumn<>(language.getString("scanner.uploader.table.button"));
+        button.setCellValueFactory(new PropertyValueFactory<>("button"));
+        button.setPrefWidth(50);
+
+        TableColumn<NewRecordData, Enums.Pattern> pattern =
+                new TableColumn<>(language.getString("scanner.uploader.table.pattern"));
+        pattern.setCellValueFactory(new PropertyValueFactory<>("pattern"));
+        pattern.setPrefWidth(50);
+        pattern.setCellFactory(param -> new TableCell<>() {
+            @Override
+            protected void updateItem(Enums.Pattern item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    return;
+                }
+
+                setText(item.getShortName());
+            }
+        });
+
+        TableColumn<NewRecordData, ?> record =
+                new TableColumn<>(language.getString("scanner.uploader.table.record"));
+        {
+            TableColumn<NewRecordData, LocalRecord> previousRecord =
+                    new TableColumn<>(language.getString("scanner.uploader.table.record.previous"));
+            previousRecord.setCellFactory(param -> new RecordTableCell());
+            previousRecord.setCellValueFactory(new PropertyValueFactory<>("previousRecord"));
+            previousRecord.setComparator((o1, o2) -> Float.compare(o2.rate, o1.rate));
+            previousRecord.setPrefWidth(80);
+
+            TableColumn<NewRecordData, LocalRecord> newRecord =
+                    new TableColumn<>(language.getString("scanner.uploader.table.record.new"));
+            newRecord.setCellFactory(param -> new RecordTableCell());
+            newRecord.setCellValueFactory(new PropertyValueFactory<>("newRecord"));
+            newRecord.setComparator((o1, o2) -> Float.compare(o2.rate, o1.rate));
+            newRecord.setPrefWidth(80);
+
+            record.getColumns().addAll(List.of(previousRecord, newRecord));
+        }
+
+        TableColumn<NewRecordData, Boolean> select =
+                new TableColumn<>(language.getString("common.select"));
+        select.setCellFactory(CheckBoxTableCell.forTableColumn(select));
+        select.setCellValueFactory(new PropertyValueFactory<>("selected"));
+        select.setPrefWidth(50);
+
+        TableColumn<NewRecordData, NewRecordData.Status> status =
+                new TableColumn<>(language.getString("scanner.uploader.table.status"));
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        status.setPrefWidth(100);
+        status.setCellFactory(param -> new TableCell<>() {
+            @Override
+            protected void updateItem(NewRecordData.Status item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    return;
+                }
+
+                String key = switch (item) {
+                    case CANCELED -> "scanner.uploader.table.status.canceled";
+                    case HIGHER_RECORD_EXISTS -> "scanner.uploader.table.status.higherRecordExists";
+                    case NONE -> null;
+                    case READY -> "scanner.uploader.table.status.ready";
+                    case UPLOADED -> "scanner.uploader.table.status.uploaded";
+                    case UPLOADING -> "scanner.uploader.table.status.uploading";
+                };
+
+                setText(key == null ? "" : language.getString(key));
+            }
+        });
+
+        uploader_recordTableView.getColumns()
+                .addAll(List.of(id, song, button, pattern, record, select, status));
+    }
+
     private void setupOption() {
         option_cacheDirectorySelectButton.setOnAction(
                 event -> getView().scanner_option_openCacheDirectorySelector());
@@ -903,6 +1097,37 @@ public class ScannerComponent extends TabPane {
         @Override
         public String toString() {
             return name;
+        }
+    }
+
+
+    public static class RecordTableCell extends TableCell<NewRecordData, LocalRecord> {
+        private static final String STYLE_MAX_COMBO = "-fx-background-color: #C0FFC0;";
+        private static final String STYLE_PERFECT = "-fx-background-color: #FFC0C0;";
+
+        public RecordTableCell() {
+            setAlignment(Pos.CENTER_RIGHT);
+        }
+
+        @Override
+        protected void updateItem(LocalRecord item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if (empty || item == null) {
+                setStyle(null);
+                setText(null);
+                return;
+            }
+
+            setText(String.format("%.2f", item.rate));
+
+            if (item.rate == 100) { // NOPMD
+                setStyle(STYLE_PERFECT);
+            } else if (item.maxCombo) {
+                setStyle(STYLE_MAX_COMBO);
+            } else {
+                setStyle(null);
+            }
         }
     }
 }

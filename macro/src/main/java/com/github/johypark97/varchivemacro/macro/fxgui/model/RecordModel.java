@@ -7,9 +7,15 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public interface RecordModel {
+    void save() throws IOException;
+
     boolean loadLocal() throws IOException;
 
     void loadRemote(String djName, Consumer<Boolean> onDone, BiConsumer<String, Exception> onThrow);
 
     List<LocalRecord> getRecordList(int id);
+
+    LocalRecord findSameRecord(LocalRecord record);
+
+    void updateRecord(LocalRecord record);
 }
