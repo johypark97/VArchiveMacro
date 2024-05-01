@@ -175,8 +175,6 @@
                 <Button text="%scanner.song.toggleAllExact" fx:id="song_toggleExactButton"/>
                 <Button text="%scanner.song.toggleAllEdited" fx:id="song_toggleEditedButton"/>
                 <Button text="%common.unselectAll" fx:id="song_unselectAllButton"/>
-                <Pane HBox.hgrow="ALWAYS"/>
-                <Button text="%scanner.song.analyze" fx:id="song_analyzeButton"/>
               </children>
             </HBox>
           </children>
@@ -186,7 +184,27 @@
         </VBox>
       </content>
     </Tab>
-    <Tab closable="false" text="%scanner.result"/>
+    <Tab closable="false" text="%scanner.analysis">
+      <content>
+        <VBox spacing="10.0">
+          <children>
+            <TableView VBox.vgrow="ALWAYS" fx:id="analysis_analysisTableView"/>
+            <HBox spacing="10.0">
+              <children>
+                <Button text="%scanner.analysis.show" fx:id="analysis_showButton"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="%scanner.analysis.start" fx:id="analysis_startButton"/>
+                <Button text="%scanner.analysis.stop" fx:id="analysis_stopButton"/>
+                <Button text="%scanner.analysis.clear" fx:id="analysis_clearButton"/>
+              </children>
+            </HBox>
+          </children>
+          <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+          </padding>
+        </VBox>
+      </content>
+    </Tab>
     <Tab closable="false" text="%scanner.option">
       <content>
         <ScrollPane fitToHeight="true" fitToWidth="true">

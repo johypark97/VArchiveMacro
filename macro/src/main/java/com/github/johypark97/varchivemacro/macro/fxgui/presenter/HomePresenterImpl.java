@@ -124,6 +124,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
+    public void onViewShow_setupContent() {
+        getView().scanner_analysis_setAnalysisDataList(
+                getScannerModel().getObservableAnalysisDataList());
+    }
+
+    @Override
     public void onViewShow_setupCacheDirectory(TextField textField) {
         textField.setText(getConfigModel().getScannerConfig().cacheDirectory.toString());
     }
@@ -397,6 +403,38 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
         getLinkEditorPresenter().setStartData(startData);
         getLinkEditorPresenter().startPresenter();
+    }
+
+    @Override
+    public void scanner_analysis_onClearAnalysisData() {
+        getScannerModel().clearAnalysisData();
+    }
+
+    @Override
+    public void scanner_analysis_onStartAnalysis(String cacheDirectory) {
+        if (getScannerModel().isScanDataEmpty() || !getScannerModel().isAnalysisDataEmpty()) {
+            return;
+        }
+
+        Path cacheDirectoryPath = convertStringToPath(cacheDirectory);
+        if (cacheDirectoryPath == null) {
+            return;
+        }
+
+        Language language = Language.getInstance();
+        String header = language.getString("scannerService.dialog.header");
+
+        Runnable onCancel = () -> getView().showInformation(header,
+                language.getString("scannerService.dialog.analysisCanceled"));
+        Runnable onDone = () -> getView().showInformation(header,
+                language.getString("scannerService.dialog.analysisDone"));
+
+        getScannerModel().starAnalysis(onDone, onCancel, cacheDirectoryPath);
+    }
+
+    @Override
+    public void scanner_analysis_onStopAnalysis() {
+        getScannerModel().stopAnalysis();
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import java.nio.file.Path;
@@ -18,6 +19,8 @@ import javafx.stage.Window;
 public interface Home {
     interface HomePresenter extends MvpPresenter<HomeView> {
         void onViewShow_setupService();
+
+        void onViewShow_setupContent();
 
         void onViewShow_setupCacheDirectory(TextField textField);
 
@@ -53,6 +56,12 @@ public interface Home {
         void scanner_capture_onStop();
 
         void scanner_song_onOpenLinkEditor(Window ownerWindow, String cacheDirectory, int id);
+
+        void scanner_analysis_onClearAnalysisData();
+
+        void scanner_analysis_onStartAnalysis(String cacheDirectory);
+
+        void scanner_analysis_onStopAnalysis();
 
         Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow);
 
@@ -104,6 +113,14 @@ public interface Home {
         void scanner_song_openLinkEditor(int id);
 
         void scanner_song_refresh();
+
+        void scanner_analysis_setAnalysisDataList(ObservableList<AnalysisData> list);
+
+        void scanner_analysis_clearAnalysisData();
+
+        void scanner_analysis_startAnalysis();
+
+        void scanner_analysis_stopAnalysis();
 
         String scanner_option_getCacheDirectory();
 

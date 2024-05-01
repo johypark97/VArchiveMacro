@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view;
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
@@ -242,6 +243,27 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public void scanner_analysis_setAnalysisDataList(ObservableList<AnalysisData> list) {
+        getScanner().setAnalysisDataList(list);
+    }
+
+    @Override
+    public void scanner_analysis_clearAnalysisData() {
+        getPresenter().scanner_analysis_onClearAnalysisData();
+    }
+
+    @Override
+    public void scanner_analysis_startAnalysis() {
+        String cacheDirectory = getScanner().option_getCacheDirectory();
+        getPresenter().scanner_analysis_onStartAnalysis(cacheDirectory);
+    }
+
+    @Override
+    public void scanner_analysis_stopAnalysis() {
+        getPresenter().scanner_analysis_onStopAnalysis();
+    }
+
+    @Override
     public String scanner_option_getCacheDirectory() {
         return getScanner().option_getCacheDirectory();
     }
@@ -293,6 +315,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
         stage.setOnShown(event -> {
             getPresenter().onViewShow_setupService();
+
+            getPresenter().onViewShow_setupContent();
 
             getPresenter().onViewShow_setupCacheDirectory(
                     getScanner().option_cacheDirectoryTextField);

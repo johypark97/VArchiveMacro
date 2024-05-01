@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.TitleComparator;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.LinkMetadata;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
@@ -103,6 +104,18 @@ public class ScannerComponent extends TabPane {
     public Button song_unselectAllButton;
 
     @FXML
+    public TableView<AnalysisData> analysis_analysisTableView;
+
+    @FXML
+    public Button analysis_startButton;
+
+    @FXML
+    public Button analysis_stopButton;
+
+    @FXML
+    public Button analysis_clearButton;
+
+    @FXML
     public TextField option_cacheDirectoryTextField;
 
     @FXML
@@ -152,6 +165,7 @@ public class ScannerComponent extends TabPane {
         setupViewer();
         setupCapture();
         setupSong();
+        setupAnalysis();
         setupOption();
     }
 
@@ -235,6 +249,10 @@ public class ScannerComponent extends TabPane {
 
     public void song_refresh() {
         song_songTableView.refresh();
+    }
+
+    public void setAnalysisDataList(ObservableList<AnalysisData> list) {
+        analysis_analysisTableView.setItems(list);
     }
 
     private HomeView getView() {
@@ -600,6 +618,165 @@ public class ScannerComponent extends TabPane {
                         getStyleClass().add(STYLE_CLASS_SIMILAR);
                     }
                 } else if (hasMany(item.childListProperty())) {
+                    getStyleClass().add(STYLE_CLASS_INVALID);
+                }
+            }
+        });
+    }
+
+    private void setupAnalysis() {
+        setupAnalysis_analysisTableView();
+
+        analysis_startButton.setOnAction(event -> getView().scanner_analysis_startAnalysis());
+
+        analysis_stopButton.setOnAction(event -> getView().scanner_analysis_stopAnalysis());
+
+        analysis_clearButton.setOnAction(event -> getView().scanner_analysis_clearAnalysisData());
+    }
+
+    private void setupAnalysis_analysisTableView() {
+        Language language = Language.getInstance();
+
+        TableColumn<AnalysisData, Integer> id =
+                new TableColumn<>(language.getString("scanner.analysis.table.analysisDataId"));
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        id.setPrefWidth(100);
+
+        TableColumn<AnalysisData, ?> song =
+                new TableColumn<>(language.getString("scanner.analysis.table.song"));
+        {
+            String songDataPropertyName = "songData";
+
+            TableColumn<AnalysisData, SongData> title =
+                    new TableColumn<>(language.getString("scanner.analysis.table.title"));
+            title.setCellValueFactory(new PropertyValueFactory<>(songDataPropertyName));
+            title.setPrefWidth(200);
+            title.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(SongData item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                        return;
+                    }
+
+                    setText(item.songProperty().get().title);
+                }
+            });
+            title.setComparator(new Comparator<>() {
+                private final TitleComparator titleComparator = new TitleComparator();
+
+                @Override
+                public int compare(SongData o1, SongData o2) {
+                    return titleComparator.compare(o1.songProperty().get().title,
+                            o2.songProperty().get().title);
+                }
+            });
+
+            TableColumn<AnalysisData, SongData> composer =
+                    new TableColumn<>(language.getString("scanner.analysis.table.composer"));
+            composer.setCellValueFactory(new PropertyValueFactory<>(songDataPropertyName));
+            composer.setPrefWidth(150);
+            composer.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(SongData item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                        return;
+                    }
+
+                    setText(item.songProperty().get().composer);
+                }
+            });
+
+            TableColumn<AnalysisData, SongData> dlc = new TableColumn<>("DLC");
+            dlc.setCellValueFactory(new PropertyValueFactory<>(songDataPropertyName));
+            dlc.setPrefWidth(150);
+            dlc.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(SongData item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+                        setText(null);
+                        return;
+                    }
+
+                    setText(item.songProperty().get().dlc);
+                }
+            });
+
+            song.getColumns().addAll(List.of(title, composer, dlc));
+        }
+
+        TableColumn<AnalysisData, AnalysisData.Status> status =
+                new TableColumn<>(language.getString("scanner.analysis.table.status"));
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        status.setPrefWidth(100);
+        status.setCellFactory(param -> new TableCell<>() {
+            @Override
+            protected void updateItem(AnalysisData.Status item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    return;
+                }
+
+                String key = switch (item) {
+                    case ANALYZING -> "scanner.analysis.table.status.analyzing";
+                    case CANCELED -> "scanner.analysis.table.status.canceled";
+                    case DONE -> "scanner.analysis.table.status.done";
+                    case ERROR -> "scanner.analysis.table.status.error";
+                    case READY -> "scanner.analysis.table.status.ready";
+                };
+
+                setText(language.getString(key));
+            }
+        });
+
+        TableColumn<AnalysisData, Exception> error =
+                new TableColumn<>(language.getString("scanner.analysis.table.error"));
+        error.setCellValueFactory(new PropertyValueFactory<>("exception"));
+        error.setPrefWidth(100);
+        error.setCellFactory(param -> new TableCell<>() {
+            @Override
+            protected void updateItem(Exception item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setTooltip(null);
+                    return;
+                }
+
+                setText(item.getMessage());
+
+                Tooltip tooltip = new Tooltip(item.toString());
+                tooltip.setShowDelay(Duration.millis(200));
+                setTooltip(tooltip);
+            }
+        });
+
+        analysis_analysisTableView.getColumns().addAll(List.of(id, song, status, error));
+
+        analysis_analysisTableView.setRowFactory(param -> new TableRow<>() {
+            private static final String STYLE_CLASS_INVALID = "table-row-color-red";
+
+            @Override
+            protected void updateItem(AnalysisData item, boolean empty) {
+                super.updateItem(item, empty);
+
+                getStyleClass().removeAll(STYLE_CLASS_INVALID);
+
+                if (empty || item == null) {
+                    return;
+                }
+
+                if (item.exception.get() != null) {
                     getStyleClass().add(STYLE_CLASS_INVALID);
                 }
             }

@@ -96,7 +96,7 @@ public class CacheManager {
         return ImageIO.read(createPath(id).toFile());
     }
 
-    private Path createPath(int id) {
+    public Path createPath(int id) {
         return cacheDirectoryPath.resolve(String.format("%04d.%s", id, FORMAT));
     }
 }

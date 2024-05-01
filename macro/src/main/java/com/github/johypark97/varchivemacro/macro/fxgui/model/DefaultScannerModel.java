@@ -4,11 +4,14 @@ import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManagerHelper;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.ScannerService;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.AnalysisTask;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.DefaultCollectionScanTask;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -22,6 +25,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 public class DefaultScannerModel implements ScannerModel {
+    private final AnalysisDataManager analysisDataManager = new AnalysisDataManager();
     private final ScanDataManager scanDataManager = new ScanDataManager();
 
     @Override
@@ -85,6 +89,35 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
+    public boolean starAnalysis(Runnable onDone, Runnable onCancel, Path cacheDirectoryPath) {
+        ScannerService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        if (service.isRunning()) {
+            return false;
+        }
+
+        service.setTaskConstructor(() -> {
+            Task<Void> task =
+                    new AnalysisTask(scanDataManager, analysisDataManager, cacheDirectoryPath);
+
+            task.setOnCancelled(event -> onCancel.run());
+            task.setOnSucceeded(event -> onDone.run());
+
+            return task;
+        });
+
+        service.reset();
+        service.start();
+
+        return true;
+    }
+
+    @Override
+    public boolean stopAnalysis() {
+        return ServiceManagerHelper.stopService(ScannerService.class);
+    }
+
+    @Override
     public boolean isScanDataEmpty() {
         return scanDataManager.isEmpty();
     }
@@ -93,8 +126,25 @@ public class DefaultScannerModel implements ScannerModel {
     public void clearScanData() {
         ScannerService service =
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        if (service.isRunning()) {
+            return;
+        }
+
+        analysisDataManager.clear();
+        scanDataManager.clear();
+    }
+
+    @Override
+    public boolean isAnalysisDataEmpty() {
+        return analysisDataManager.isEmpty();
+    }
+
+    @Override
+    public void clearAnalysisData() {
+        ScannerService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
         if (!service.isRunning()) {
-            scanDataManager.clear();
+            analysisDataManager.clear();
         }
     }
 
@@ -118,5 +168,10 @@ public class DefaultScannerModel implements ScannerModel {
             captureData.exception.set(e);
             throw e;
         }
+    }
+
+    @Override
+    public ObservableList<AnalysisData> getObservableAnalysisDataList() {
+        return analysisDataManager.analysisDataListProperty();
     }
 }

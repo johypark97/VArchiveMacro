@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import java.awt.image.BufferedImage;
@@ -25,13 +26,24 @@ public interface ScannerModel {
 
     boolean stopCollectionScan();
 
+    boolean starAnalysis(Runnable onDone, Runnable onCancel, Path cacheDirectoryPath);
+
+    boolean stopAnalysis();
+
     boolean isScanDataEmpty();
 
     void clearScanData();
+
+    boolean isAnalysisDataEmpty();
+
+    void clearAnalysisData();
 
     ObservableList<CaptureData> getObservableCaptureDataList();
 
     ObservableList<SongData> getObservableSongDataList();
 
     BufferedImage getCaptureImage(Path cacheDirectoryPath, int id) throws IOException;
+
+    ObservableList<AnalysisData> getObservableAnalysisDataList();
+
 }
