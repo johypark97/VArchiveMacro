@@ -50,14 +50,14 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public boolean startCollectionScan(Runnable onStart, Runnable onDone, Runnable onCancel,
+    public void startCollectionScan(Runnable onStart, Runnable onDone, Runnable onCancel,
             Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
             Set<String> selectedTabSet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration) {
         ScannerService service =
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
         if (service.isRunning()) {
-            return false;
+            return;
         }
 
         service.setTaskConstructor(() -> {
@@ -85,21 +85,19 @@ public class DefaultScannerModel implements ScannerModel {
 
         service.reset();
         service.start();
-
-        return true;
     }
 
     @Override
-    public boolean stopCollectionScan() {
-        return ServiceManagerHelper.stopService(ScannerService.class);
+    public void stopCollectionScan() {
+        ServiceManagerHelper.stopService(ScannerService.class);
     }
 
     @Override
-    public boolean starAnalysis(Runnable onDone, Runnable onCancel, Path cacheDirectoryPath) {
+    public void starAnalysis(Runnable onDone, Runnable onCancel, Path cacheDirectoryPath) {
         ScannerService service =
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
         if (service.isRunning()) {
-            return false;
+            return;
         }
 
         service.setTaskConstructor(() -> {
@@ -114,13 +112,11 @@ public class DefaultScannerModel implements ScannerModel {
 
         service.reset();
         service.start();
-
-        return true;
     }
 
     @Override
-    public boolean stopAnalysis() {
-        return ServiceManagerHelper.stopService(ScannerService.class);
+    public void stopAnalysis() {
+        ServiceManagerHelper.stopService(ScannerService.class);
     }
 
     @Override

@@ -19,16 +19,16 @@ public interface ScannerModel {
 
     void setupService(Consumer<Throwable> onThrow);
 
-    boolean startCollectionScan(Runnable onStart, Runnable onDone, Runnable onCancel,
+    void startCollectionScan(Runnable onStart, Runnable onDone, Runnable onCancel,
             Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
             Set<String> selectedTabSet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration);
 
-    boolean stopCollectionScan();
+    void stopCollectionScan();
 
-    boolean starAnalysis(Runnable onDone, Runnable onCancel, Path cacheDirectoryPath);
+    void starAnalysis(Runnable onDone, Runnable onCancel, Path cacheDirectoryPath);
 
-    boolean stopAnalysis();
+    void stopAnalysis();
 
     boolean isScanDataEmpty();
 
