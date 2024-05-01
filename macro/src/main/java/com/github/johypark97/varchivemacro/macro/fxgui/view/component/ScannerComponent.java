@@ -27,7 +27,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -808,20 +807,15 @@ public class ScannerComponent extends TabPane {
         }
 
         public void setupTransposeButton() {
-            getTransposeButton().setOnAction(event -> {
-                int count = getGridPane().getChildren().size();
-                for (int i = 0; i < count; ++i) {
-                    Node node = getGridPane().getChildren().get(i);
+            getTransposeButton().setOnAction(event -> getGridPane().getChildren().forEach(x -> {
+                int column = Objects.requireNonNullElse(GridPane.getColumnIndex(x), 0);
+                int row = Objects.requireNonNullElse(GridPane.getRowIndex(x), 0);
 
-                    int column = Objects.requireNonNullElse(GridPane.getColumnIndex(node), 0);
-                    int row = Objects.requireNonNullElse(GridPane.getRowIndex(node), 0);
-
-                    if (row != count) {
-                        GridPane.setColumnIndex(node, row);
-                        GridPane.setRowIndex(node, column);
-                    }
+                if (row != column) {
+                    GridPane.setColumnIndex(x, row);
+                    GridPane.setRowIndex(x, column);
                 }
-            });
+            }));
         }
 
         public void clearCell(int row, int column) {
