@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 public class DefaultScannerModel implements ScannerModel {
     private final ScanDataManager scanDataManager = new ScanDataManager();
@@ -29,36 +30,48 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void setupService(Runnable onStart, Runnable onDone, Runnable onCancel,
-            Consumer<Throwable> onThrow) {
+    public void setupService(Consumer<Throwable> onThrow) {
         ScannerService service = ServiceManager.getInstance().create(ScannerService.class);
         if (service == null) {
             throw new IllegalStateException("ScannerService has already been created.");
         }
 
-        service.setOnCancelled(event -> onCancel.run());
         service.setOnFailed(event -> onThrow.accept(event.getSource().getException()));
-        service.setOnScheduled(event -> onStart.run());
-        service.setOnSucceeded(event -> onDone.run());
     }
 
     @Override
-    public boolean startCollectionScan(Map<String, List<LocalDlcSong>> dlcTapSongMap,
-            TitleTool titleTool, Set<String> selectedTabSet, Path cacheDirectoryPath,
-            int captureDelay, int keyInputDuration) {
+    public boolean startCollectionScan(Runnable onStart, Runnable onDone, Runnable onCancel,
+            Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
+            Set<String> selectedTabSet, Path cacheDirectoryPath, int captureDelay,
+            int keyInputDuration) {
         ScannerService service =
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
         if (service.isRunning()) {
             return false;
         }
 
-        service.setTaskConstructor(
-                () -> new DefaultCollectionScanTask(scanDataManager, dlcTapSongMap, titleTool,
-                        selectedTabSet, cacheDirectoryPath, captureDelay, keyInputDuration));
+        service.setTaskConstructor(() -> {
+            Task<Void> task =
+                    new DefaultCollectionScanTask(scanDataManager, dlcTapSongMap, titleTool,
+                            selectedTabSet, cacheDirectoryPath, captureDelay, keyInputDuration);
 
-        // service.setTaskConstructor(
-        //         () -> new FHDCollectionLoaderTask(scanDataManager, dlcTapSongMap, titleTool,
-        //                 selectedTabSet, cacheDirectoryPath));
+            task.setOnCancelled(event -> onCancel.run());
+            task.setOnScheduled(event -> onStart.run());
+            task.setOnSucceeded(event -> onDone.run());
+
+            return task;
+        });
+
+        // service.setTaskConstructor(() -> {
+        //     Task<Void> task = new FHDCollectionLoaderTask(scanDataManager, dlcTapSongMap, titleTool,
+        //             selectedTabSet, cacheDirectoryPath);
+        //
+        //     task.setOnCancelled(event -> onCancel.run());
+        //     task.setOnScheduled(event -> onStart.run());
+        //     task.setOnSucceeded(event -> onDone.run());
+        //
+        //     return task;
+        // });
 
         service.reset();
         service.start();

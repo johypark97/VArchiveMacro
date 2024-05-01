@@ -16,10 +16,10 @@ import javafx.collections.ObservableList;
 public interface ScannerModel {
     void validateCacheDirectory(Path path) throws IOException;
 
-    void setupService(Runnable onStart, Runnable onDone, Runnable onCancel,
-            Consumer<Throwable> onThrow);
+    void setupService(Consumer<Throwable> onThrow);
 
-    boolean startCollectionScan(Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
+    boolean startCollectionScan(Runnable onStart, Runnable onDone, Runnable onCancel,
+            Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
             Set<String> selectedTabSet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration);
 

@@ -115,37 +115,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void onViewShow_setupService() {
-        Language language = Language.getInstance();
-        String header = language.getString("scannerService.dialog.header");
-
-        Consumer<Throwable> onThrow = throwable -> {
+        getScannerModel().setupService(throwable -> {
             String message = "Scanner service exception";
 
             LOGGER.atError().log(message, throwable);
             getView().showError(message, throwable);
-        };
-
-        Runnable onCancel = () -> {
-            getView().scanner_capture_setCaptureDataList(
-                    getScannerModel().getObservableCaptureDataList());
-            getView().scanner_song_setSongDataList(getScannerModel().getObservableSongDataList());
-
-            getView().showInformation(header,
-                    language.getString("scannerService.dialog.scanCanceled"));
-        };
-        Runnable onDone = () -> {
-            getView().scanner_capture_setCaptureDataList(
-                    getScannerModel().getObservableCaptureDataList());
-            getView().scanner_song_setSongDataList(getScannerModel().getObservableSongDataList());
-
-            getView().showInformation(header, language.getString("scannerService.dialog.scanDone"));
-        };
-        Runnable onStart = () -> {
-            getView().scanner_capture_setCaptureDataList(FXCollections.emptyObservableList());
-            getView().scanner_song_setSongDataList(FXCollections.emptyObservableList());
-        };
-
-        getScannerModel().setupService(onStart, onDone, onCancel, onThrow);
+        });
     }
 
     @Override
@@ -371,9 +346,32 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             return;
         }
 
-        getScannerModel().startCollectionScan(getDatabaseModel().getDlcTapSongMap(),
-                getDatabaseModel().getTitleTool(), selectedTabSet, cacheDirectoryPath, captureDelay,
-                keyInputDuration);
+        Language language = Language.getInstance();
+        String header = language.getString("scannerService.dialog.header");
+
+        Runnable onCancel = () -> {
+            getView().scanner_capture_setCaptureDataList(
+                    getScannerModel().getObservableCaptureDataList());
+            getView().scanner_song_setSongDataList(getScannerModel().getObservableSongDataList());
+
+            getView().showInformation(header,
+                    language.getString("scannerService.dialog.scanCanceled"));
+        };
+        Runnable onDone = () -> {
+            getView().scanner_capture_setCaptureDataList(
+                    getScannerModel().getObservableCaptureDataList());
+            getView().scanner_song_setSongDataList(getScannerModel().getObservableSongDataList());
+
+            getView().showInformation(header, language.getString("scannerService.dialog.scanDone"));
+        };
+        Runnable onStart = () -> {
+            getView().scanner_capture_setCaptureDataList(FXCollections.emptyObservableList());
+            getView().scanner_song_setSongDataList(FXCollections.emptyObservableList());
+        };
+
+        getScannerModel().startCollectionScan(onStart, onDone, onCancel,
+                getDatabaseModel().getDlcTapSongMap(), getDatabaseModel().getTitleTool(),
+                selectedTabSet, cacheDirectoryPath, captureDelay, keyInputDuration);
     }
 
     @Override
