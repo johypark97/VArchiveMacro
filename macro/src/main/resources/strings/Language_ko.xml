@@ -50,7 +50,7 @@
   <entry key="scanner.analysis.clear">삭제</entry>
   <entry key="scanner.analysis.show">보기 (Enter)</entry>
   <entry key="scanner.analysis.start">분석 시작</entry>
-  <entry key="scanner.analysis.stop">분석 중지 (End)</entry>
+  <entry key="scanner.analysis.stop">분석 중지 (Backspace)</entry>
   <entry key="scanner.analysis.table.analysisDataId">분석 ID</entry>
   <entry key="scanner.analysis.table.composer">작곡가</entry>
   <entry key="scanner.analysis.table.error">에러</entry>
@@ -96,7 +96,7 @@
   <entry key="scanner.uploader">업로더</entry>
   <entry key="scanner.uploader.refresh">새로고침</entry>
   <entry key="scanner.uploader.startUpload">업로드 시작</entry>
-  <entry key="scanner.uploader.stopUpload">업로드 중지 (End)</entry>
+  <entry key="scanner.uploader.stopUpload">업로드 중지 (Backspace)</entry>
   <entry key="scanner.uploader.table.button">버튼</entry>
   <entry key="scanner.uploader.table.composer">작곡가</entry>
   <entry key="scanner.uploader.table.newRecordDataId">기록 ID</entry>

@@ -53,7 +53,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                     return;
                 }
 
-                if (data.isPressed(NativeKeyEvent.VC_END)) {
+                if (data.isPressed(NativeKeyEvent.VC_BACKSPACE)) {
                     scanner_capture_stop();
                 }
             }
@@ -67,7 +67,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                 }
 
                 if (data.isCtrl() && !data.isAlt() && !data.isShift()) {
-                    if (data.isPressed(NativeKeyEvent.VC_HOME)) {
+                    if (data.isPressed(NativeKeyEvent.VC_ENTER)) {
                         scanner_capture_start();
                     }
                 }

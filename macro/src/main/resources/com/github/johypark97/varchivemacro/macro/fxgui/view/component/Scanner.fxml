@@ -147,9 +147,9 @@
                       </rowConstraints>
                       <children>
                         <Label text="%scanner.capture.start"/>
-                        <TextField GridPane.columnIndex="1" alignment="CENTER" editable="false" text="Ctrl + Home"/>
+                        <TextField GridPane.columnIndex="1" alignment="CENTER" editable="false" text="Ctrl + Enter"/>
                         <Label GridPane.rowIndex="1" text="%scanner.capture.stop"/>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" editable="false" text="End"/>
+                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" editable="false" text="Backspace"/>
                       </children>
                     </GridPane>
                   </content>
