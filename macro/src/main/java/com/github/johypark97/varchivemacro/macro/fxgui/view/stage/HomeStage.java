@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.component.MacroCompo
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjNameInputComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
+import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import java.net.URL;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -45,7 +46,7 @@ public class HomeStage extends Stage {
         setScene(scene);
 
         getIcons().add(new Image(GlobalResource.getIcon().toString()));
-        setTitle(TITLE);
+        setTitle(String.format("%s v%s", TITLE, BuildInfo.version));
 
         setHeight(STAGE_HEIGHT);
         setWidth(STAGE_WIDTH);
