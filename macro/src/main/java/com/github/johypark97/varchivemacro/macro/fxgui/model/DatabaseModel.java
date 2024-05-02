@@ -16,8 +16,6 @@ public interface DatabaseModel {
 
     List<String> getDlcTabList();
 
-    List<LocalDlcSong> getDlcSongList();
-
     TitleTool getTitleTool();
 
     Set<Integer> getDuplicateTitleSet();

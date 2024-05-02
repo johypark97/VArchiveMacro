@@ -44,11 +44,6 @@ public class DefaultDatabaseModel implements DatabaseModel {
     }
 
     @Override
-    public List<LocalDlcSong> getDlcSongList() {
-        return dlcSongManager.getDlcSongList();
-    }
-
-    @Override
     public TitleTool getTitleTool() {
         return titleTool;
     }
