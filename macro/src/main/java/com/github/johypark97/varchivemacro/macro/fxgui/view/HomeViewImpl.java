@@ -30,15 +30,21 @@ import java.util.Locale;
 import java.util.Set;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> implements HomeView {
+    private static final String GITHUB_URL = "https://github.com/johypark97/VArchiveMacro";
+
     private final NativeKeyListener scannerNativeKeyListener;
     private final NativeKeyListener macroNativeKeyListener;
 
@@ -198,6 +204,19 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         {
             box.getChildren().add(new Label("Version: " + BuildInfo.version));
             box.getChildren().add(new Label("Build date: " + BuildInfo.date));
+
+            HBox sourceCodeBox = new HBox();
+            sourceCodeBox.setAlignment(Pos.CENTER_LEFT);
+            sourceCodeBox.setSpacing(10);
+            {
+                sourceCodeBox.getChildren().add(new Label("Source code: "));
+
+                TextField textField = new TextField(GITHUB_URL);
+                textField.setEditable(false);
+                HBox.setHgrow(textField, Priority.ALWAYS);
+                sourceCodeBox.getChildren().add(textField);
+            }
+            box.getChildren().add(sourceCodeBox);
         }
         alert.getDialogPane().setContent(box);
 
