@@ -22,8 +22,6 @@ public interface Home {
     interface HomePresenter extends MvpPresenter<HomeView> {
         void onViewShow_setupService();
 
-        void onViewShow_setupContent();
-
         void onViewShow_scanner_setupCacheDirectory(TextField textField);
 
         void onViewShow_scanner_setupCaptureDelayLinker(SliderTextFieldLinker linker);

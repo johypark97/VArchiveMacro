@@ -34,14 +34,17 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private static final int RATE_THRESHOLD = 224;
 
     private final CacheManager cacheManager;
+    private final Runnable onDataReady;
 
     private final WeakReference<AnalysisDataManager> analysisDataManagerReference;
     private final WeakReference<ScanDataManager> scanDataManagerReference;
 
     private CollectionArea area;
 
-    public AnalysisTask(ScanDataManager scanDataManager, AnalysisDataManager analysisDataManager,
-            Path cacheDirectoryPath) {
+    public AnalysisTask(Runnable onDataReady, ScanDataManager scanDataManager,
+            AnalysisDataManager analysisDataManager, Path cacheDirectoryPath) {
+        this.onDataReady = onDataReady;
+
         cacheManager = new CacheManager(cacheDirectoryPath);
 
         analysisDataManagerReference = new WeakReference<>(analysisDataManager);
@@ -150,6 +153,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
                     analysisData.captureData.set(captureData);
                     queue.add(analysisData);
                 });
+        onDataReady.run();
 
         try (OcrWrapper ocr = new ScannerOcr()) {
             while (queue.peek() != null) {

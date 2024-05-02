@@ -478,8 +478,6 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         stage.setOnShown(event -> {
             getPresenter().onViewShow_setupService();
 
-            getPresenter().onViewShow_setupContent();
-
             getPresenter().onViewShow_scanner_setupCacheDirectory(
                     getScanner().option_cacheDirectoryTextField);
 

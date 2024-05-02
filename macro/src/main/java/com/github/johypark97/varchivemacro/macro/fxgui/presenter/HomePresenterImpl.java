@@ -12,7 +12,6 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.CaptureViewer.CaptureViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
@@ -37,8 +36,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.VerticalDirection;
 import javafx.scene.control.TextField;
@@ -173,20 +170,6 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             LOGGER.atError().log(message, throwable);
             getView().showError(message, throwable);
         });
-    }
-
-    @Override
-    public void onViewShow_setupContent() {
-        ObservableList<AnalysisData> analysisDataList = FXCollections.observableArrayList();
-        getScannerModel().getObservableAnalysisDataMap()
-                .addListener((MapChangeListener<? super Integer, ? super AnalysisData>) change -> {
-                    if (change.wasAdded()) {
-                        analysisDataList.add(change.getValueAdded());
-                    } else if (change.wasRemoved()) {
-                        analysisDataList.remove(change.getValueRemoved());
-                    }
-                });
-        getView().scanner_analysis_setAnalysisDataList(analysisDataList);
     }
 
     @Override
@@ -488,8 +471,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void scanner_analysis_onClearAnalysisData() {
-        Runnable onClear = () -> getView().scanner_uploader_setNewRecordDataList(
-                FXCollections.emptyObservableList());
+        Runnable onClear = () -> {
+            getView().scanner_analysis_setAnalysisDataList(FXCollections.emptyObservableList());
+            getView().scanner_uploader_setNewRecordDataList(FXCollections.emptyObservableList());
+        };
 
         getScannerModel().clearAnalysisData(onClear);
     }
@@ -540,7 +525,11 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
                     language.getString("scannerService.dialog.analysisDone"));
         };
 
-        getScannerModel().starAnalysis(onDone, onCancel, cacheDirectoryPath);
+        Runnable onDataReady = () -> getView().scanner_analysis_setAnalysisDataList(
+                FXCollections.observableArrayList(
+                        getScannerModel().getObservableAnalysisDataMap().values()));
+
+        getScannerModel().starAnalysis(onDataReady, onDone, onCancel, cacheDirectoryPath);
     }
 
     @Override
