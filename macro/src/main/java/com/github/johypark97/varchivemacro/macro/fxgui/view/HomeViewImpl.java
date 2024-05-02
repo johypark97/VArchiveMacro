@@ -30,6 +30,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -148,6 +149,24 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         alert.setContentText(message);
 
         alert.showAndWait();
+    }
+
+    @Override
+    public boolean showConfirmation(String header, String content) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.initOwner(getStage());
+
+        if (header != null) {
+            alert.setHeaderText(header);
+        }
+
+        if (content != null) {
+            alert.setContentText(content);
+        }
+
+        alert.showAndWait();
+
+        return ButtonType.OK.equals(alert.getResult());
     }
 
     @Override
@@ -321,8 +340,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
-    public void scanner_uploader_startUpload() {
-        getPresenter().scanner_uploader_onStartUpload();
+    public void scanner_uploader_startUpload(long count) {
+        getPresenter().scanner_uploader_onStartUpload(count);
     }
 
     @Override

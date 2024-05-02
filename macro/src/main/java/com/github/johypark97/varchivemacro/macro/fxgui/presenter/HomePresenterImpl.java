@@ -538,9 +538,20 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void scanner_uploader_onStartUpload() {
+    public void scanner_uploader_onStartUpload(long count) {
         if (getScannerModel().isNewRecordDataEmpty()) {
             return;
+        }
+
+        Language language = Language.getInstance();
+
+        {
+            String header = language.getString("scanner.uploader.dialog.header");
+            String content = language.getFormatString("scanner.uploader.dialog.content", count);
+
+            if (!getView().showConfirmation(header, content)) {
+                return;
+            }
         }
 
         Path accountPath = convertStringToPath(getView().scanner_option_getAccountFile());
@@ -550,13 +561,16 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
         int recordUploadDelay = getView().scanner_option_getRecordUploadDelay();
 
-        Language language = Language.getInstance();
-        String header = language.getString("scannerService.dialog.header");
+        Runnable onCancel;
+        Runnable onDone;
+        {
+            String header = language.getString("scannerService.dialog.header");
 
-        Runnable onCancel = () -> getView().showInformation(header,
-                language.getString("scannerService.dialog.uploadCanceled"));
-        Runnable onDone = () -> getView().showInformation(header,
-                language.getString("scannerService.dialog.uploadDone"));
+            onCancel = () -> getView().showInformation(header,
+                    language.getString("scannerService.dialog.uploadCanceled"));
+            onDone = () -> getView().showInformation(header,
+                    language.getString("scannerService.dialog.uploadDone"));
+        }
 
         getScannerModel().startUpload(onDone, onCancel, getDatabaseModel(), getRecordModel(),
                 accountPath, recordUploadDelay);

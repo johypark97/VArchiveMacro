@@ -840,7 +840,12 @@ public class ScannerComponent extends TabPane {
         uploader_unselectAllButton.setOnAction(
                 event -> uploader_recordTableView.getItems().forEach(x -> x.selected.set(false)));
 
-        uploader_startUploadButton.setOnAction(event -> getView().scanner_uploader_startUpload());
+        uploader_startUploadButton.setOnAction(event -> {
+            long count = uploader_recordTableView.getItems().stream().filter(x -> x.selected.get())
+                    .count();
+
+            getView().scanner_uploader_startUpload(count);
+        });
 
         uploader_stopUploadButton.setOnAction(event -> getView().scanner_uploader_stopUpload());
     }

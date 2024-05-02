@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeView;
 import javafx.stage.Window;
@@ -80,7 +82,7 @@ public interface Home {
 
         void scanner_uploader_onRefresh();
 
-        void scanner_uploader_onStartUpload();
+        void scanner_uploader_onStartUpload(long count);
 
         void scanner_uploader_onStopUpload();
 
@@ -102,6 +104,8 @@ public interface Home {
         void showError(String header, Throwable throwable);
 
         void showInformation(String header, String message);
+
+        boolean showConfirmation(String header, String content);
 
         void home_changeLanguage(Locale locale);
 
@@ -155,7 +159,7 @@ public interface Home {
 
         void scanner_uploader_refresh();
 
-        void scanner_uploader_startUpload();
+        void scanner_uploader_startUpload(long count);
 
         void scanner_uploader_stopUpload();
 

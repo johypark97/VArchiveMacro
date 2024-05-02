@@ -94,6 +94,8 @@
   <entry key="scanner.song.toggleAllEdited">Toggle All Edited</entry>
   <entry key="scanner.song.toggleAllExact">Toggle All Exact</entry>
   <entry key="scanner.uploader">Uploader</entry>
+  <entry key="scanner.uploader.dialog.content">%d records selected.</entry>
+  <entry key="scanner.uploader.dialog.header">Would you like to upload the selected records?</entry>
   <entry key="scanner.uploader.refresh">Refresh</entry>
   <entry key="scanner.uploader.startUpload">Start Upload</entry>
   <entry key="scanner.uploader.stopUpload">Stop Upload (Backspace)</entry>

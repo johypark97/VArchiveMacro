@@ -94,6 +94,8 @@
   <entry key="scanner.song.toggleAllEdited">수정함 모두 토글</entry>
   <entry key="scanner.song.toggleAllExact">정확함 모두 토글</entry>
   <entry key="scanner.uploader">업로더</entry>
+  <entry key="scanner.uploader.dialog.content">%d개 기록 선택됨.</entry>
+  <entry key="scanner.uploader.dialog.header">선택한 기록들을 업로드하시겠습니까?</entry>
   <entry key="scanner.uploader.refresh">새로고침</entry>
   <entry key="scanner.uploader.startUpload">업로드 시작</entry>
   <entry key="scanner.uploader.stopUpload">업로드 중지 (Backspace)</entry>
