@@ -8,6 +8,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjN
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
 import java.net.URL;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -43,6 +44,7 @@ public class HomeStage extends Stage {
         scene.getStylesheets().add(tableColorCss.toExternalForm());
         setScene(scene);
 
+        getIcons().add(new Image(GlobalResource.getIcon().toString()));
         setTitle(TITLE);
 
         setHeight(STAGE_HEIGHT);

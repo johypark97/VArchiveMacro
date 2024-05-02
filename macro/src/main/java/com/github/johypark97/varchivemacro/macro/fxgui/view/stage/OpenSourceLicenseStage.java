@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.OpenSourceLicen
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.OpenSourceLicenseComponent;
 import java.net.URL;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class OpenSourceLicenseStage extends Stage {
@@ -25,6 +26,7 @@ public class OpenSourceLicenseStage extends Stage {
         scene.getStylesheets().add(tableColorCss.toExternalForm());
         setScene(scene);
 
+        getIcons().add(new Image(GlobalResource.getIcon().toString()));
         setTitle(TITLE);
 
         setHeight(STAGE_HEIGHT);

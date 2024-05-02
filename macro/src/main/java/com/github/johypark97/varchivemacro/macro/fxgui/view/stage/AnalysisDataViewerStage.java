@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view.stage;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.AnalysisDataViewerComponent;
 import java.net.URL;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class AnalysisDataViewerStage extends Stage {
@@ -23,6 +24,7 @@ public class AnalysisDataViewerStage extends Stage {
         scene.getStylesheets().add(tableColorCss.toExternalForm());
         setScene(scene);
 
+        getIcons().add(new Image(GlobalResource.getIcon().toString()));
         setTitle(TITLE);
 
         setMinHeight(STAGE_MIN_HEIGHT);

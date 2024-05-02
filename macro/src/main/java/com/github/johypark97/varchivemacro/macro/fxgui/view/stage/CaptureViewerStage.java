@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view.stage;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.CaptureViewerComponent;
 import java.net.URL;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class CaptureViewerStage extends Stage {
@@ -25,6 +26,7 @@ public class CaptureViewerStage extends Stage {
         scene.getStylesheets().add(tableColorCss.toExternalForm());
         setScene(scene);
 
+        getIcons().add(new Image(GlobalResource.getIcon().toString()));
         setTitle(TITLE);
 
         setHeight(STAGE_HEIGHT);
