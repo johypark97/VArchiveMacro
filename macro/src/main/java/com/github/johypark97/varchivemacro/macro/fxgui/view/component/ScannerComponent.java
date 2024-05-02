@@ -44,6 +44,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -185,14 +186,16 @@ public class ScannerComponent extends TabPane {
 
     @FXML
     public void initialize() {
-        setVisible(false);
-
         setupViewer();
         setupCapture();
         setupSong();
         setupAnalysis();
         setupUploader();
         setupOption();
+    }
+
+    public void viewer_setSongTreeViewRoot(TreeItem<ViewerTreeData> root) {
+        viewer_songTreeView.setRoot(root);
     }
 
     public void viewer_showInformation(String title, String composer) {
@@ -317,7 +320,7 @@ public class ScannerComponent extends TabPane {
         viewer_filterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             String value = newValue.trim();
             if (!value.equals(oldValue.trim())) {
-                getView().scanner_viewer_showSongTree(newValue.trim());
+                getView().scanner_viewer_updateSongTreeViewFilter(newValue.trim());
             }
         });
 

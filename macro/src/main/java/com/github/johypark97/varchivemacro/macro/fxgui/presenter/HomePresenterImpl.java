@@ -40,7 +40,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.VerticalDirection;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -119,6 +118,32 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private OpenSourceLicensePresenter getOpenSourceLicensePresenter() {
         return openSourceLicensePresenterReference.get();
+    }
+
+    private void scanner_viewer_setSongTreeViewRoot(String filter) {
+        String normalizedFilter;
+        if (filter == null || filter.isBlank()) {
+            normalizedFilter = null; // NOPMD
+        } else {
+            normalizedFilter = VIEWER_TITLE_NORMALIZER.apply(filter.trim());
+        }
+
+        TreeItem<ViewerTreeData> rootNode = new TreeItem<>();
+        getDatabaseModel().getDlcTapSongMap().forEach((tab, songList) -> {
+            TreeItem<ViewerTreeData> dlcNode = new TreeItem<>(new ViewerTreeData(tab));
+            dlcNode.setExpanded(normalizedFilter != null);
+            rootNode.getChildren().add(dlcNode);
+
+            Stream<LocalDlcSong> stream = songList.stream();
+            if (normalizedFilter != null) {
+                stream = stream.filter(
+                        x -> VIEWER_TITLE_NORMALIZER.apply(x.title).contains(normalizedFilter));
+            }
+            stream.forEach(
+                    song -> dlcNode.getChildren().add(new TreeItem<>(new ViewerTreeData(song))));
+        });
+
+        getView().scanner_viewer_setSongTreeViewRoot(rootNode);
     }
 
     private Path convertStringToPath(String pathString) {
@@ -243,6 +268,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             throw e;
         }
 
+        scanner_viewer_setSongTreeViewRoot(null);
+
         getView().scanner_capture_setTabList(getDatabaseModel().getDlcTabList());
 
         Set<String> selectedTabSet = getConfigModel().getScannerConfig().selectedTabSet;
@@ -319,7 +346,6 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
                 return;
             }
 
-            getView().getScannerFrontController().hideDjNameInput();
             getView().getScannerFrontController().showScanner();
         };
 
@@ -327,30 +353,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void scanner_viewer_onShowSongTree(TreeView<ViewerTreeData> treeView, String filter) {
-        String normalizedFilter;
-        if (filter == null || filter.isBlank()) {
-            normalizedFilter = null; // NOPMD
-        } else {
-            normalizedFilter = VIEWER_TITLE_NORMALIZER.apply(filter.trim());
-        }
-
-        TreeItem<ViewerTreeData> rootNode = new TreeItem<>();
-        getDatabaseModel().getDlcTapSongMap().forEach((tab, songList) -> {
-            TreeItem<ViewerTreeData> dlcNode = new TreeItem<>(new ViewerTreeData(tab));
-            dlcNode.setExpanded(normalizedFilter != null);
-            rootNode.getChildren().add(dlcNode);
-
-            Stream<LocalDlcSong> stream = songList.stream();
-            if (normalizedFilter != null) {
-                stream = stream.filter(
-                        x -> VIEWER_TITLE_NORMALIZER.apply(x.title).contains(normalizedFilter));
-            }
-            stream.forEach(
-                    song -> dlcNode.getChildren().add(new TreeItem<>(new ViewerTreeData(song))));
-        });
-
-        treeView.setRoot(rootNode);
+    public void scanner_viewer_onUpdateSongTreeViewFilter(String filter) {
+        scanner_viewer_setSongTreeViewRoot(filter);
     }
 
     @Override

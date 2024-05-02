@@ -32,8 +32,7 @@ public class HomeStage extends Stage {
         scannerDjNameInputComponent = new ScannerDjNameInputComponent(view);
 
         homeComponent.scannerTab.setContent(
-                new StackPane(scannerComponent, scannerDjNameInputComponent,
-                        scannerSafeGlassComponent));
+                new StackPane(scannerDjNameInputComponent, scannerSafeGlassComponent));
 
         homeComponent.macroTab.setContent(macroComponent);
 
@@ -53,5 +52,9 @@ public class HomeStage extends Stage {
 
         setMinHeight(STAGE_HEIGHT);
         setMinWidth(STAGE_WIDTH);
+    }
+
+    public void replaceScannerTabContent() {
+        homeComponent.scannerTab.setContent(scannerComponent);
     }
 }

@@ -12,6 +12,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresen
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ScannerFrontController;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.MacroComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjNameInputComponent;
@@ -33,6 +34,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -213,8 +215,13 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
-    public void scanner_viewer_showSongTree(String filter) {
-        getPresenter().scanner_viewer_onShowSongTree(getScanner().viewer_songTreeView, filter);
+    public void scanner_viewer_setSongTreeViewRoot(TreeItem<ViewerTreeData> root) {
+        getScanner().viewer_setSongTreeViewRoot(root);
+    }
+
+    @Override
+    public void scanner_viewer_updateSongTreeViewFilter(String filter) {
+        getPresenter().scanner_viewer_onUpdateSongTreeViewFilter(filter);
     }
 
     @Override
@@ -550,9 +557,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
         @Override
         public void showScanner() {
-            scanner_viewer_showSongTree(null);
-
-            getScanner().setVisible(true);
+            ((HomeStage) getStage()).replaceScannerTabContent();
             getScanner().requestFocus();
 
             FxHookWrapper.addKeyListener(scannerNativeKeyListener);

@@ -14,10 +14,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.TreeItem;
 import javafx.stage.Window;
 
 public interface Home {
@@ -56,7 +54,7 @@ public interface Home {
 
         void scanner_front_onLoadRemoteRecord(String djName);
 
-        void scanner_viewer_onShowSongTree(TreeView<ViewerTreeData> treeView, String filter);
+        void scanner_viewer_onUpdateSongTreeViewFilter(String filter);
 
         ViewerRecordData scanner_viewer_onShowRecord(int id);
 
@@ -117,7 +115,9 @@ public interface Home {
 
         void scanner_front_loadRemoteRecord(String djName);
 
-        void scanner_viewer_showSongTree(String filter);
+        void scanner_viewer_setSongTreeViewRoot(TreeItem<ViewerTreeData> root);
+
+        void scanner_viewer_updateSongTreeViewFilter(String filter);
 
         void scanner_viewer_showRecord(int id);
 
