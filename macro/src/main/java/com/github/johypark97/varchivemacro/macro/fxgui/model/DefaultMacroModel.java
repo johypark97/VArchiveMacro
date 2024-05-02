@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManagerHelper;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.MacroService;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.service.ScannerService;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.MacroTask;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -22,11 +23,12 @@ public class DefaultMacroModel implements MacroModel {
     @Override
     public void startMacro(AnalysisKey analysisKey, int count, int captureDelay,
             int captureDuration, int keyInputDuration, VerticalDirection direction) {
-        MacroService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(MacroService.class));
-        if (service.isRunning()) {
+        if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
+
+        ScannerService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(
                 () -> new MacroTask(analysisKey, count, captureDelay, captureDuration,

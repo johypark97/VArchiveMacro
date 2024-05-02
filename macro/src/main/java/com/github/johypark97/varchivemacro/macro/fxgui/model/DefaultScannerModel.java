@@ -59,11 +59,12 @@ public class DefaultScannerModel implements ScannerModel {
             Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
             Set<String> selectedTabSet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration) {
-        ScannerService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
-        if (service.isRunning()) {
+        if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
+
+        ScannerService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(() -> {
             Task<Void> task =
@@ -99,11 +100,12 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void starAnalysis(Runnable onDone, Runnable onCancel, Path cacheDirectoryPath) {
-        ScannerService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
-        if (service.isRunning()) {
+        if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
+
+        ScannerService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(() -> {
             Task<Void> task =
@@ -126,11 +128,12 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void collectNewRecord(RecordModel recordModel) {
-        ScannerService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
-        if (service.isRunning()) {
+        if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
+
+        ScannerService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(() -> new CollectNewRecordTask(recordModel, analysisDataManager,
                 newRecordDataManager));
@@ -142,11 +145,12 @@ public class DefaultScannerModel implements ScannerModel {
     @Override
     public void startUpload(Runnable onDone, Runnable onCancel, DatabaseModel databaseModel,
             RecordModel recordModel, Path accountPath, int recordUploadDelay) {
-        ScannerService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
-        if (service.isRunning()) {
+        if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
+
+        ScannerService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(() -> {
             Task<Void> task =
