@@ -31,7 +31,7 @@ public interface ScannerModel {
 
     void stopAnalysis();
 
-    void collectNewRecord(RecordModel recordModel);
+    void collectNewRecord(Runnable onDone, RecordModel recordModel);
 
     void startUpload(Runnable onDone, Runnable onCancel, DatabaseModel databaseModel,
             RecordModel recordModel, Path accountPath, int recordUploadDelay);
@@ -44,7 +44,7 @@ public interface ScannerModel {
 
     boolean isAnalysisDataEmpty();
 
-    void clearAnalysisData();
+    void clearAnalysisData(Runnable onClear);
 
     boolean isNewRecordDataEmpty();
 

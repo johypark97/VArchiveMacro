@@ -13,7 +13,6 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.Analysis
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.CaptureViewer.CaptureViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
@@ -188,17 +187,6 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
                     }
                 });
         getView().scanner_analysis_setAnalysisDataList(analysisDataList);
-
-        ObservableList<NewRecordData> newRecordDataList = FXCollections.observableArrayList();
-        getScannerModel().getObservableNewRecordDataMap()
-                .addListener((MapChangeListener<? super Integer, ? super NewRecordData>) change -> {
-                    if (change.wasAdded()) {
-                        newRecordDataList.add(change.getValueAdded());
-                    } else if (change.wasRemoved()) {
-                        newRecordDataList.remove(change.getValueRemoved());
-                    }
-                });
-        getView().scanner_uploader_setNewRecordDataList(newRecordDataList);
     }
 
     @Override
@@ -428,6 +416,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         Runnable onClear = () -> {
             getView().scanner_capture_setCaptureDataList(FXCollections.emptyObservableList());
             getView().scanner_song_setSongDataList(FXCollections.emptyObservableList());
+
+            scanner_analysis_onClearAnalysisData();
         };
 
         getScannerModel().clearScanData(onClear);
@@ -498,7 +488,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void scanner_analysis_onClearAnalysisData() {
-        getScannerModel().clearAnalysisData();
+        Runnable onClear = () -> getView().scanner_uploader_setNewRecordDataList(
+                FXCollections.emptyObservableList());
+
+        getScannerModel().clearAnalysisData(onClear);
     }
 
     @Override
@@ -561,7 +554,11 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             return;
         }
 
-        getScannerModel().collectNewRecord(getRecordModel());
+        Runnable onDone = () -> getView().scanner_uploader_setNewRecordDataList(
+                FXCollections.observableArrayList(
+                        getScannerModel().getObservableNewRecordDataMap().values()));
+
+        getScannerModel().collectNewRecord(onDone, getRecordModel());
     }
 
     @Override

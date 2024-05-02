@@ -125,7 +125,7 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void collectNewRecord(RecordModel recordModel) {
+    public void collectNewRecord(Runnable onDone, RecordModel recordModel) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -133,8 +133,14 @@ public class DefaultScannerModel implements ScannerModel {
         ScannerService service =
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
-        service.setTaskConstructor(() -> new CollectNewRecordTask(recordModel, analysisDataManager,
-                newRecordDataManager));
+        service.setTaskConstructor(() -> {
+            Task<Void> task = new CollectNewRecordTask(recordModel, analysisDataManager,
+                    newRecordDataManager);
+
+            task.setOnSucceeded(event -> onDone.run());
+
+            return task;
+        });
 
         service.reset();
         service.start();
@@ -183,8 +189,6 @@ public class DefaultScannerModel implements ScannerModel {
             return;
         }
 
-        analysisDataManager.clear();
-        newRecordDataManager.clear();
         scanDataManager.clear();
 
         onClear.run();
@@ -196,7 +200,7 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void clearAnalysisData() {
+    public void clearAnalysisData(Runnable onClear) {
         ScannerService service =
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
         if (service.isRunning()) {
@@ -205,6 +209,8 @@ public class DefaultScannerModel implements ScannerModel {
 
         analysisDataManager.clear();
         newRecordDataManager.clear();
+
+        onClear.run();
     }
 
     @Override
