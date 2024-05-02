@@ -245,6 +245,8 @@ public class DefaultScannerModel implements ScannerModel {
         AnalyzedRecordData data = new AnalyzedRecordData();
 
         AnalysisData analysisData = analysisDataManager.analysisDataMapProperty().get(id);
+        data.song = analysisData.songDataProperty().get().songProperty().get();
+
         BufferedImage image = getCaptureImage(cacheDirectoryPath,
                 analysisData.captureData.get().idProperty().get());
         Dimension resolution = new Dimension(image.getWidth(), image.getHeight());

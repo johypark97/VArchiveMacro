@@ -48,6 +48,8 @@ public class AnalysisDataViewerPresenterImpl
             return;
         }
 
+        getView().setSongData(
+                String.format("[%s] %s - %s", data.song.dlc, data.song.title, data.song.composer));
         getView().setTitleData(SwingFXUtils.toFXImage(data.titleImage, null), data.titleText);
 
         for (int i = 0; i < 4; ++i) {

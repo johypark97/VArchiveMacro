@@ -19,6 +19,8 @@ public interface AnalysisDataViewer {
     interface AnalysisDataViewerView extends MvpView<AnalysisDataViewerPresenter> {
         void showError(String header, Throwable throwable);
 
+        void setSongData(String text);
+
         void setTitleData(Image image, String text);
 
         void setRecordBoxData(int row, int column, RecordBoxData data);

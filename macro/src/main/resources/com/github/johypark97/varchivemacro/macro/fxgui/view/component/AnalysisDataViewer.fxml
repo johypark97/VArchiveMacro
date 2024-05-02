@@ -11,6 +11,11 @@
 <?import javafx.scene.layout.VBox?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox" xmlns="http://javafx.com/javafx/21">
   <children>
+    <TitledPane animated="false" collapsible="false" text="%analysisDataViewer.song">
+      <content>
+        <TextField editable="false" fx:id="songTextField"/>
+      </content>
+    </TitledPane>
     <TitledPane animated="false" collapsible="false" text="%analysisDataViewer.title">
       <content>
         <VBox>

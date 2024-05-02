@@ -30,6 +30,9 @@ public class AnalysisDataViewerComponent extends VBox {
     private static final AtomicBoolean transposeRecord = new AtomicBoolean();
 
     @FXML
+    public TextField songTextField;
+
+    @FXML
     public ImageView titleImageView;
 
     @FXML
@@ -70,6 +73,10 @@ public class AnalysisDataViewerComponent extends VBox {
         if (transposeRecord.get()) {
             transposeRecordGridPane();
         }
+    }
+
+    public void setSongText(String text) {
+        songTextField.setText(text);
     }
 
     public void setTitleImage(Image image) {

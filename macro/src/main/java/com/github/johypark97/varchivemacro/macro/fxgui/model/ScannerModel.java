@@ -64,6 +64,7 @@ public interface ScannerModel {
         public BufferedImage titleImage;
         public BufferedImage[][] maxComboImage = new BufferedImage[4][4];
         public BufferedImage[][] rateImage = new BufferedImage[4][4];
+        public LocalDlcSong song;
         public String titleText;
         public String[][] rateText = new String[4][4];
         public boolean[][] maxCombo = new boolean[4][4];

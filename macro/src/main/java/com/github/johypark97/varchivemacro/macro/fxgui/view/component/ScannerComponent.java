@@ -717,7 +717,7 @@ public class ScannerComponent extends TabPane {
             TableColumn<AnalysisData, SongData> title =
                     new TableColumn<>(language.getString("scanner.analysis.table.title"));
             title.setCellValueFactory(new PropertyValueFactory<>(songDataPropertyName));
-            title.setPrefWidth(200);
+            title.setPrefWidth(150);
             title.setCellFactory(param -> new TableCell<>() {
                 @Override
                 protected void updateItem(SongData item, boolean empty) {
@@ -744,7 +744,7 @@ public class ScannerComponent extends TabPane {
             TableColumn<AnalysisData, SongData> composer =
                     new TableColumn<>(language.getString("scanner.analysis.table.composer"));
             composer.setCellValueFactory(new PropertyValueFactory<>(songDataPropertyName));
-            composer.setPrefWidth(150);
+            composer.setPrefWidth(140);
             composer.setCellFactory(param -> new TableCell<>() {
                 @Override
                 protected void updateItem(SongData item, boolean empty) {
@@ -761,7 +761,7 @@ public class ScannerComponent extends TabPane {
 
             TableColumn<AnalysisData, SongData> dlc = new TableColumn<>("DLC");
             dlc.setCellValueFactory(new PropertyValueFactory<>(songDataPropertyName));
-            dlc.setPrefWidth(150);
+            dlc.setPrefWidth(130);
             dlc.setCellFactory(param -> new TableCell<>() {
                 @Override
                 protected void updateItem(SongData item, boolean empty) {
@@ -778,6 +778,27 @@ public class ScannerComponent extends TabPane {
 
             song.getColumns().addAll(List.of(title, composer, dlc));
         }
+
+        TableColumn<AnalysisData, CaptureData> capture =
+                new TableColumn<>(language.getString("scanner.analysis.table.capture"));
+        capture.setCellValueFactory(new PropertyValueFactory<>("captureData"));
+        capture.setPrefWidth(150);
+        capture.setCellFactory(param -> new TableCell<>() {
+            @Override
+            protected void updateItem(CaptureData item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    return;
+                }
+
+                String scannedTitle = item.scannedTitle.get();
+                int id = item.idProperty().get();
+
+                setText(String.format("(%d) %s", id, scannedTitle));
+            }
+        });
 
         TableColumn<AnalysisData, AnalysisData.Status> status =
                 new TableColumn<>(language.getString("scanner.analysis.table.status"));
@@ -828,7 +849,7 @@ public class ScannerComponent extends TabPane {
             }
         });
 
-        analysis_analysisTableView.getColumns().addAll(List.of(id, song, status, error));
+        analysis_analysisTableView.getColumns().addAll(List.of(id, song, capture, status, error));
 
         analysis_analysisTableView.setRowFactory(param -> new TableRow<>() {
             private static final String STYLE_CLASS_INVALID = "table-row-color-red";

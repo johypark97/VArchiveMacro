@@ -3,6 +3,7 @@
 <properties>
   <entry key="analysisDataViewer.close">Close (ESC)</entry>
   <entry key="analysisDataViewer.record">Record</entry>
+  <entry key="analysisDataViewer.song">Analyzed Song</entry>
   <entry key="analysisDataViewer.title">Title</entry>
   <entry key="captureViewer.close">Close (ESC)</entry>
   <entry key="captureViewer.help.lmb">Left Mouse Button: Move</entry>
@@ -52,6 +53,7 @@
   <entry key="scanner.analysis.start">Start Analysis</entry>
   <entry key="scanner.analysis.stop">Stop Analysis (Backspace)</entry>
   <entry key="scanner.analysis.table.analysisDataId">Analysis ID</entry>
+  <entry key="scanner.analysis.table.capture">Linked Capture</entry>
   <entry key="scanner.analysis.table.composer">Composer</entry>
   <entry key="scanner.analysis.table.error">Error</entry>
   <entry key="scanner.analysis.table.song">Analyzed Song</entry>

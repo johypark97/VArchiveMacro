@@ -35,6 +35,11 @@ public class AnalysisDataViewerViewImpl
     }
 
     @Override
+    public void setSongData(String text) {
+        getAnalysisDataViewerComponent().setSongText(text);
+    }
+
+    @Override
     public void setTitleData(Image image, String text) {
         getAnalysisDataViewerComponent().setTitleImage(image);
         getAnalysisDataViewerComponent().setTitleText(text);

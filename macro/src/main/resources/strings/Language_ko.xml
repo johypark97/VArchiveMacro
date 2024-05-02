@@ -3,6 +3,7 @@
 <properties>
   <entry key="analysisDataViewer.close">닫기 (ESC)</entry>
   <entry key="analysisDataViewer.record">기록</entry>
+  <entry key="analysisDataViewer.song">분석한 곡</entry>
   <entry key="analysisDataViewer.title">제목</entry>
   <entry key="captureViewer.close">닫기 (ESC)</entry>
   <entry key="captureViewer.help.lmb">왼쪽 마우스 버튼: 이동</entry>
@@ -52,6 +53,7 @@
   <entry key="scanner.analysis.start">분석 시작</entry>
   <entry key="scanner.analysis.stop">분석 중지 (Backspace)</entry>
   <entry key="scanner.analysis.table.analysisDataId">분석 ID</entry>
+  <entry key="scanner.analysis.table.capture">연결된 캡처</entry>
   <entry key="scanner.analysis.table.composer">작곡가</entry>
   <entry key="scanner.analysis.table.error">에러</entry>
   <entry key="scanner.analysis.table.song">분석한 곡</entry>
