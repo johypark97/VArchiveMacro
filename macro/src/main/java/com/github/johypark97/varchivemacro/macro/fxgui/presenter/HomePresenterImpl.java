@@ -12,6 +12,8 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.CaptureViewer.CaptureViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
@@ -36,6 +38,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.VerticalDirection;
 import javafx.scene.control.TextField;
@@ -174,11 +178,27 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void onViewShow_setupContent() {
-        getView().scanner_analysis_setAnalysisDataList(
-                getScannerModel().getObservableAnalysisDataList());
+        ObservableList<AnalysisData> analysisDataList = FXCollections.observableArrayList();
+        getScannerModel().getObservableAnalysisDataMap()
+                .addListener((MapChangeListener<? super Integer, ? super AnalysisData>) change -> {
+                    if (change.wasAdded()) {
+                        analysisDataList.add(change.getValueAdded());
+                    } else if (change.wasRemoved()) {
+                        analysisDataList.remove(change.getValueRemoved());
+                    }
+                });
+        getView().scanner_analysis_setAnalysisDataList(analysisDataList);
 
-        getView().scanner_uploader_setNewRecordDataList(
-                getScannerModel().getObservableNewRecordDataList());
+        ObservableList<NewRecordData> newRecordDataList = FXCollections.observableArrayList();
+        getScannerModel().getObservableNewRecordDataMap()
+                .addListener((MapChangeListener<? super Integer, ? super NewRecordData>) change -> {
+                    if (change.wasAdded()) {
+                        newRecordDataList.add(change.getValueAdded());
+                    } else if (change.wasRemoved()) {
+                        newRecordDataList.remove(change.getValueRemoved());
+                    }
+                });
+        getView().scanner_uploader_setNewRecordDataList(newRecordDataList);
     }
 
     @Override
@@ -405,7 +425,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void scanner_capture_onClearScanData() {
-        getScannerModel().clearScanData();
+        Runnable onClear = () -> {
+            getView().scanner_capture_setCaptureDataList(FXCollections.emptyObservableList());
+            getView().scanner_song_setSongDataList(FXCollections.emptyObservableList());
+        };
+
+        getScannerModel().clearScanData(onClear);
     }
 
     @Override
@@ -424,26 +449,24 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         String header = language.getString("scannerService.dialog.header");
 
         Runnable onCancel = () -> {
-            getView().scanner_capture_setCaptureDataList(
-                    getScannerModel().getObservableCaptureDataList());
-            getView().scanner_song_setSongDataList(getScannerModel().getObservableSongDataList());
+            getView().scanner_capture_setCaptureDataList(FXCollections.observableArrayList(
+                    getScannerModel().getObservableCaptureDataMap().values()));
+            getView().scanner_song_setSongDataList(FXCollections.observableArrayList(
+                    getScannerModel().getObservableSongDataMap().values()));
 
             getView().showInformation(header,
                     language.getString("scannerService.dialog.scanCanceled"));
         };
         Runnable onDone = () -> {
-            getView().scanner_capture_setCaptureDataList(
-                    getScannerModel().getObservableCaptureDataList());
-            getView().scanner_song_setSongDataList(getScannerModel().getObservableSongDataList());
+            getView().scanner_capture_setCaptureDataList(FXCollections.observableArrayList(
+                    getScannerModel().getObservableCaptureDataMap().values()));
+            getView().scanner_song_setSongDataList(FXCollections.observableArrayList(
+                    getScannerModel().getObservableSongDataMap().values()));
 
             getView().showInformation(header, language.getString("scannerService.dialog.scanDone"));
         };
-        Runnable onStart = () -> {
-            getView().scanner_capture_setCaptureDataList(FXCollections.emptyObservableList());
-            getView().scanner_song_setSongDataList(FXCollections.emptyObservableList());
-        };
 
-        getScannerModel().startCollectionScan(onStart, onDone, onCancel,
+        getScannerModel().startCollectionScan(onDone, onCancel,
                 getDatabaseModel().getDlcTapSongMap(), getDatabaseModel().getTitleTool(),
                 selectedTabSet, cacheDirectoryPath, captureDelay, keyInputDuration);
     }

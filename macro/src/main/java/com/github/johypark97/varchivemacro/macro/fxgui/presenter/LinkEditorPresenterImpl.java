@@ -55,7 +55,7 @@ public class LinkEditorPresenterImpl
 
     @Override
     public void onViewShown() {
-        SongData songData = getScannerModel().getObservableSongDataList().get(startData.songDataId);
+        SongData songData = getScannerModel().getObservableSongDataMap().get(startData.songDataId);
         LocalDlcSong song = songData.songProperty().get();
 
         getView().setSongText(String.format("[%s] %s - %s", song.dlc, song.title, song.composer));
@@ -64,8 +64,8 @@ public class LinkEditorPresenterImpl
     @Override
     public ObservableList<CaptureData> onShowCaptureDataList(String pattern, boolean findAll) {
         ObservableList<CaptureData> list = FXCollections.observableArrayList(findAll
-                ? getScannerModel().getObservableCaptureDataList()
-                : getScannerModel().getObservableSongDataList().get(startData.songDataId)
+                ? getScannerModel().getObservableCaptureDataMap().values()
+                : getScannerModel().getObservableSongDataMap().get(startData.songDataId)
                         .childListProperty());
 
         filteredCaptureDataList = new FilteredList<>(list);
@@ -102,7 +102,7 @@ public class LinkEditorPresenterImpl
     @Override
     public boolean onLinkCaptureData(int captureDataId) {
         CaptureData captureData =
-                getScannerModel().getObservableCaptureDataList().get(captureDataId);
+                getScannerModel().getObservableCaptureDataMap().get(captureDataId);
 
         String header = Language.getInstance().getString("linkEditor.dialog.link.header");
         String message = String.format("(%d) %s", captureData.idProperty().get(),
@@ -111,7 +111,7 @@ public class LinkEditorPresenterImpl
             return false;
         }
 
-        SongData songData = getScannerModel().getObservableSongDataList().get(startData.songDataId);
+        SongData songData = getScannerModel().getObservableSongDataMap().get(startData.songDataId);
         songData.selected.set(true);
 
         List<CaptureData> childList = List.copyOf(songData.childListProperty());
@@ -133,7 +133,7 @@ public class LinkEditorPresenterImpl
             return false;
         }
 
-        SongData songData = getScannerModel().getObservableSongDataList().get(startData.songDataId);
+        SongData songData = getScannerModel().getObservableSongDataMap().get(startData.songDataId);
         songData.selected.set(false);
 
         List<CaptureData> childList = List.copyOf(songData.childListProperty());

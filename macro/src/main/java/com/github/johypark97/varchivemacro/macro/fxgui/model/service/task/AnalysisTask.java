@@ -126,7 +126,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         }
 
         Queue<AnalysisData> queue = new LinkedList<>();
-        getScanDataManager().songDataListProperty().stream().filter(x -> x.selected.get())
+        getScanDataManager().songDataMapProperty().values().stream().filter(x -> x.selected.get())
                 .forEach(x -> {
                     AnalysisData analysisData = getAnalysisDataManager().createAnalysisData(x);
 

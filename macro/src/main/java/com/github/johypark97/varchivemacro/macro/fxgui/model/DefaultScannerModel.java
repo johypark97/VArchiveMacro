@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
-import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 
 public class DefaultScannerModel implements ScannerModel {
@@ -55,7 +55,7 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void startCollectionScan(Runnable onStart, Runnable onDone, Runnable onCancel,
+    public void startCollectionScan(Runnable onDone, Runnable onCancel,
             Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
             Set<String> selectedTabSet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration) {
@@ -72,7 +72,6 @@ public class DefaultScannerModel implements ScannerModel {
                             selectedTabSet, cacheDirectoryPath, captureDelay, keyInputDuration);
 
             task.setOnCancelled(event -> onCancel.run());
-            task.setOnScheduled(event -> onStart.run());
             task.setOnSucceeded(event -> onDone.run());
 
             return task;
@@ -83,7 +82,6 @@ public class DefaultScannerModel implements ScannerModel {
         //             selectedTabSet, cacheDirectoryPath);
         //
         //     task.setOnCancelled(event -> onCancel.run());
-        //     task.setOnScheduled(event -> onStart.run());
         //     task.setOnSucceeded(event -> onDone.run());
         //
         //     return task;
@@ -178,7 +176,7 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void clearScanData() {
+    public void clearScanData(Runnable onClear) {
         ScannerService service =
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
         if (service.isRunning()) {
@@ -188,6 +186,8 @@ public class DefaultScannerModel implements ScannerModel {
         analysisDataManager.clear();
         newRecordDataManager.clear();
         scanDataManager.clear();
+
+        onClear.run();
     }
 
     @Override
@@ -213,18 +213,18 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public ObservableList<CaptureData> getObservableCaptureDataList() {
-        return scanDataManager.captureDataListProperty();
+    public ObservableMap<Integer, CaptureData> getObservableCaptureDataMap() {
+        return scanDataManager.captureDataMapProperty();
     }
 
     @Override
-    public ObservableList<SongData> getObservableSongDataList() {
-        return scanDataManager.songDataListProperty();
+    public ObservableMap<Integer, SongData> getObservableSongDataMap() {
+        return scanDataManager.songDataMapProperty();
     }
 
     @Override
     public BufferedImage getCaptureImage(Path cacheDirectoryPath, int id) throws IOException {
-        CaptureData captureData = scanDataManager.captureDataListProperty().get(id);
+        CaptureData captureData = scanDataManager.captureDataMapProperty().get(id);
 
         try {
             return new CacheManager(cacheDirectoryPath).read(id);
@@ -235,8 +235,8 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public ObservableList<AnalysisData> getObservableAnalysisDataList() {
-        return analysisDataManager.analysisDataListProperty();
+    public ObservableMap<Integer, AnalysisData> getObservableAnalysisDataMap() {
+        return analysisDataManager.analysisDataMapProperty();
     }
 
     @Override
@@ -244,7 +244,7 @@ public class DefaultScannerModel implements ScannerModel {
             throws Exception {
         AnalyzedRecordData data = new AnalyzedRecordData();
 
-        AnalysisData analysisData = analysisDataManager.analysisDataListProperty().get(id);
+        AnalysisData analysisData = analysisDataManager.analysisDataMapProperty().get(id);
         BufferedImage image = getCaptureImage(cacheDirectoryPath,
                 analysisData.captureData.get().idProperty().get());
         Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
@@ -276,7 +276,7 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public ObservableList<NewRecordData> getObservableNewRecordDataList() {
-        return newRecordDataManager.newRecordDataListProperty();
+    public ObservableMap<Integer, NewRecordData> getObservableNewRecordDataMap() {
+        return newRecordDataManager.newRecordDataMapProperty();
     }
 }

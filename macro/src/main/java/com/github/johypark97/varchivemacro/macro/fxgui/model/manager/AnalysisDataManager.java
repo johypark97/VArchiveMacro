@@ -8,8 +8,8 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.ReadOnlyListProperty;
-import javafx.beans.property.ReadOnlyListWrapper;
+import javafx.beans.property.ReadOnlyMapProperty;
+import javafx.beans.property.ReadOnlyMapWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,29 +18,30 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 
 public class AnalysisDataManager {
-    private final ReadOnlyListWrapper<AnalysisData> analysisDataList = new ReadOnlyListWrapper<>();
+    private final ReadOnlyMapWrapper<Integer, AnalysisData> analysisDataMap =
+            new ReadOnlyMapWrapper<>();
 
     public AnalysisDataManager() {
-        analysisDataList.set(FXCollections.observableArrayList());
+        analysisDataMap.set(FXCollections.observableHashMap());
     }
 
-    public ReadOnlyListProperty<AnalysisData> analysisDataListProperty() {
-        return analysisDataList.getReadOnlyProperty();
+    public ReadOnlyMapProperty<Integer, AnalysisData> analysisDataMapProperty() {
+        return analysisDataMap.getReadOnlyProperty();
     }
 
     public boolean isEmpty() {
-        return analysisDataList.isEmpty();
+        return analysisDataMap.isEmpty();
     }
 
     public void clear() {
-        analysisDataList.clear();
+        analysisDataMap.clear();
     }
 
     public AnalysisData createAnalysisData(SongData songData) {
-        int id = analysisDataList.size();
+        int id = analysisDataMap.size();
 
         AnalysisData data = new AnalysisData(id, songData);
-        analysisDataList.add(data);
+        analysisDataMap.put(id, data);
 
         return data;
     }

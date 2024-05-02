@@ -60,7 +60,7 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
 
         getNewRecordDataManager().clear();
 
-        for (AnalysisData data : getAnalysisDataManager().analysisDataListProperty()) {
+        for (AnalysisData data : getAnalysisDataManager().analysisDataMapProperty().values()) {
             LocalDlcSong song = data.songDataProperty().get().songProperty().get();
 
             for (Cell<Button, Pattern, RecordData> cell : data.recordDataTable.cellSet()) {

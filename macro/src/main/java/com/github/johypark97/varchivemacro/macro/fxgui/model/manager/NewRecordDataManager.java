@@ -6,8 +6,8 @@ import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.L
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.ReadOnlyListProperty;
-import javafx.beans.property.ReadOnlyListWrapper;
+import javafx.beans.property.ReadOnlyMapProperty;
+import javafx.beans.property.ReadOnlyMapWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,31 +15,31 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 
 public class NewRecordDataManager {
-    private final ReadOnlyListWrapper<NewRecordData> newRecordDataList =
-            new ReadOnlyListWrapper<>();
+    private final ReadOnlyMapWrapper<Integer, NewRecordData> newRecordDataMap =
+            new ReadOnlyMapWrapper<>();
 
     public NewRecordDataManager() {
-        newRecordDataList.set(FXCollections.observableArrayList());
+        newRecordDataMap.set(FXCollections.observableHashMap());
     }
 
-    public ReadOnlyListProperty<NewRecordData> newRecordDataListProperty() {
-        return newRecordDataList.getReadOnlyProperty();
+    public ReadOnlyMapProperty<Integer, NewRecordData> newRecordDataMapProperty() {
+        return newRecordDataMap.getReadOnlyProperty();
     }
 
     public boolean isEmpty() {
-        return newRecordDataList.isEmpty();
+        return newRecordDataMap.isEmpty();
     }
 
     public void clear() {
-        newRecordDataList.clear();
+        newRecordDataMap.clear();
     }
 
     public NewRecordData createNewRecordData(LocalDlcSong song, LocalRecord previousRecord,
             LocalRecord newRecord) {
-        int id = newRecordDataList.size();
+        int id = newRecordDataMap.size();
 
         NewRecordData data = new NewRecordData(id, song, previousRecord, newRecord);
-        newRecordDataList.add(data);
+        newRecordDataMap.put(id, data);
 
         return data;
     }

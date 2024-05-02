@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
@@ -14,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 public interface ScannerModel {
     void validateCacheDirectory(Path path) throws IOException;
 
     void setupService(Consumer<Throwable> onThrow);
 
-    void startCollectionScan(Runnable onStart, Runnable onDone, Runnable onCancel,
+    void startCollectionScan(Runnable onDone, Runnable onCancel,
             Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
             Set<String> selectedTabSet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration);
@@ -41,7 +40,7 @@ public interface ScannerModel {
 
     boolean isScanDataEmpty();
 
-    void clearScanData();
+    void clearScanData(Runnable onClear);
 
     boolean isAnalysisDataEmpty();
 
@@ -49,17 +48,17 @@ public interface ScannerModel {
 
     boolean isNewRecordDataEmpty();
 
-    ObservableList<CaptureData> getObservableCaptureDataList();
+    ObservableMap<Integer, CaptureData> getObservableCaptureDataMap();
 
-    ObservableList<SongData> getObservableSongDataList();
+    ObservableMap<Integer, SongData> getObservableSongDataMap();
 
     BufferedImage getCaptureImage(Path cacheDirectoryPath, int id) throws IOException;
 
-    ObservableList<AnalysisData> getObservableAnalysisDataList();
+    ObservableMap<Integer, AnalysisData> getObservableAnalysisDataMap();
 
     AnalyzedRecordData getAnalyzedRecordData(Path cacheDirectoryPath, int id) throws Exception;
 
-    ObservableList<NewRecordData> getObservableNewRecordDataList();
+    ObservableMap<Integer, NewRecordData> getObservableNewRecordDataMap();
 
     class AnalyzedRecordData {
         public BufferedImage titleImage;

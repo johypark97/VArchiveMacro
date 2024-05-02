@@ -20,45 +20,46 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 
 public class ScanDataManager {
-    private final ReadOnlyListWrapper<CaptureData> captureDataList = new ReadOnlyListWrapper<>();
-    private final ReadOnlyListWrapper<SongData> songDataList = new ReadOnlyListWrapper<>();
+    private final ReadOnlyMapWrapper<Integer, CaptureData> captureDataMap =
+            new ReadOnlyMapWrapper<>();
+    private final ReadOnlyMapWrapper<Integer, SongData> songDataMap = new ReadOnlyMapWrapper<>();
 
     public ScanDataManager() {
-        captureDataList.set(FXCollections.observableArrayList());
-        songDataList.set(FXCollections.observableArrayList());
+        captureDataMap.set(FXCollections.observableHashMap());
+        songDataMap.set(FXCollections.observableHashMap());
     }
 
-    public ReadOnlyListProperty<CaptureData> captureDataListProperty() {
-        return captureDataList.getReadOnlyProperty();
+    public ReadOnlyMapProperty<Integer, CaptureData> captureDataMapProperty() {
+        return captureDataMap.getReadOnlyProperty();
     }
 
-    public ReadOnlyListProperty<SongData> songDataListProperty() {
-        return songDataList.getReadOnlyProperty();
+    public ReadOnlyMapProperty<Integer, SongData> songDataMapProperty() {
+        return songDataMap.getReadOnlyProperty();
     }
 
     public boolean isEmpty() {
-        return captureDataList.isEmpty() && songDataList.isEmpty();
+        return captureDataMap.isEmpty() && songDataMap.isEmpty();
     }
 
     public void clear() {
-        captureDataList.clear();
-        songDataList.clear();
+        captureDataMap.clear();
+        songDataMap.clear();
     }
 
     public SongData createSongData(LocalDlcSong song, String normalizedTitle) {
-        int id = songDataList.size();
+        int id = songDataMap.size();
 
         SongData data = new SongData(id, song, normalizedTitle);
-        songDataList.add(data);
+        songDataMap.put(id, data);
 
         return data;
     }
 
     public CaptureData createCaptureData() {
-        int id = captureDataList.size();
+        int id = captureDataMap.size();
 
         CaptureData data = new CaptureData(id);
-        captureDataList.add(data);
+        captureDataMap.put(id, data);
 
         return data;
     }
