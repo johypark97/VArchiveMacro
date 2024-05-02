@@ -145,7 +145,7 @@ tasks.register<Launch4jLibraryTask>("createExe_localJre") {
 
     outfile = "$appName local v$buildVersion.exe"
 
-    bundledJrePath = "jre17"
+    bundledJrePath = "jre17fx"
 }
 
 tasks.register<Zip>("release") {
