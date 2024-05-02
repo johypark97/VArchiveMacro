@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view.stage;
 
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.HomeComponent;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.component.MacroComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjNameInputComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
@@ -17,6 +18,7 @@ public class HomeStage extends Stage {
     private static final int STAGE_WIDTH = 960;
 
     public final HomeComponent homeComponent;
+    public final MacroComponent macroComponent = new MacroComponent();
     public final ScannerComponent scannerComponent;
     public final ScannerDjNameInputComponent scannerDjNameInputComponent;
     public final ScannerSafeGlassComponent scannerSafeGlassComponent =
@@ -30,6 +32,8 @@ public class HomeStage extends Stage {
         homeComponent.scannerTab.setContent(
                 new StackPane(scannerComponent, scannerDjNameInputComponent,
                         scannerSafeGlassComponent));
+
+        homeComponent.macroTab.setContent(macroComponent);
 
         URL globalCss = GlobalResource.getGlobalCss();
         URL tableColorCss = GlobalResource.getTableColorCss();

@@ -33,6 +33,15 @@
   <entry key="linkEditor.search">검색</entry>
   <entry key="linkEditor.song">곡</entry>
   <entry key="linkEditor.unlink">연결 해제</entry>
+  <entry key="macro.analysisKey">분석 키</entry>
+  <entry key="macro.captureDelay">캡처 딜레이 [ms]</entry>
+  <entry key="macro.captureDuration">캡처 지속시간 [ms]</entry>
+  <entry key="macro.control">컨트롤</entry>
+  <entry key="macro.count">횟수</entry>
+  <entry key="macro.keyInputDuration">키 입력 지속시간 [ms]</entry>
+  <entry key="macro.startToDown">아래로 매크로 시작</entry>
+  <entry key="macro.startToUp">위로 매크로 시작</entry>
+  <entry key="macro.stop">매크로 중지</entry>
   <entry key="recordModel.apiException">서버 기록 불러오기 실패</entry>
   <entry key="recordModel.fileIOException">파일 입출력 에러</entry>
   <entry key="recordModel.generalSecurityException">보안 연결 구성 실패</entry>

@@ -5,8 +5,11 @@ import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
@@ -34,6 +37,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.VerticalDirection;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -56,6 +60,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     private WeakReference<DatabaseModel> databaseModelReference;
     private WeakReference<RecordModel> recordModelReference;
     private WeakReference<ScannerModel> scannerModelReference;
+    private WeakReference<MacroModel> macroModelReference;
 
     private WeakReference<AnalysisDataViewerPresenter> analysisDataViewerPresenterReference;
     private WeakReference<CaptureViewerPresenter> captureViewerPresenterReference;
@@ -63,11 +68,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     private WeakReference<OpenSourceLicensePresenter> openSourceLicensePresenterReference;
 
     public void linkModel(ConfigModel configModel, DatabaseModel databaseModel,
-            RecordModel recordModel, ScannerModel scannerModel) {
+            RecordModel recordModel, ScannerModel scannerModel, MacroModel macroModel) {
         configModelReference = new WeakReference<>(configModel);
         databaseModelReference = new WeakReference<>(databaseModel);
         recordModelReference = new WeakReference<>(recordModel);
         scannerModelReference = new WeakReference<>(scannerModel);
+        macroModelReference = new WeakReference<>(macroModel);
     }
 
     public void linkPresenter(AnalysisDataViewerPresenter analysisDataViewerPresenter,
@@ -93,6 +99,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private ScannerModel getScannerModel() {
         return scannerModelReference.get();
+    }
+
+    private MacroModel getMacroModel() {
+        return macroModelReference.get();
     }
 
     private AnalysisDataViewerPresenter getAnalysisDataViewerPresenter() {
@@ -128,6 +138,13 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             LOGGER.atError().log(message, throwable);
             getView().showError(message, throwable);
         });
+
+        getMacroModel().setupService(throwable -> {
+            String message = "Macro service exception";
+
+            LOGGER.atError().log(message, throwable);
+            getView().showError(message, throwable);
+        });
     }
 
     @Override
@@ -140,12 +157,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void onViewShow_setupCacheDirectory(TextField textField) {
+    public void onViewShow_scanner_setupCacheDirectory(TextField textField) {
         textField.setText(getConfigModel().getScannerConfig().cacheDirectory.toString());
     }
 
     @Override
-    public void onViewShow_setupCaptureDelayLinker(SliderTextFieldLinker linker) {
+    public void onViewShow_scanner_setupCaptureDelayLinker(SliderTextFieldLinker linker) {
         linker.setDefaultValue(ScannerConfig.CAPTURE_DELAY_DEFAULT);
         linker.setLimitMax(ScannerConfig.CAPTURE_DELAY_MAX);
         linker.setLimitMin(ScannerConfig.CAPTURE_DELAY_MIN);
@@ -153,7 +170,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void onViewShow_setupKeyInputDurationLinker(SliderTextFieldLinker linker) {
+    public void onViewShow_scanner_setupKeyInputDurationLinker(SliderTextFieldLinker linker) {
         linker.setDefaultValue(ScannerConfig.KEY_INPUT_DURATION_DEFAULT);
         linker.setLimitMax(ScannerConfig.KEY_INPUT_DURATION_MAX);
         linker.setLimitMin(ScannerConfig.KEY_INPUT_DURATION_MIN);
@@ -161,16 +178,53 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void onViewShow_setupAccountFile(TextField textField) {
+    public void onViewShow_scanner_setupAccountFile(TextField textField) {
         textField.setText(getConfigModel().getScannerConfig().accountFile.toString());
     }
 
     @Override
-    public void onViewShow_setupRecordUploadDelayLinker(SliderTextFieldLinker linker) {
+    public void onViewShow_scanner_setupRecordUploadDelayLinker(SliderTextFieldLinker linker) {
         linker.setDefaultValue(ScannerConfig.RECORD_UPLOAD_DELAY_DEFAULT);
         linker.setLimitMax(ScannerConfig.RECORD_UPLOAD_DELAY_MAX);
         linker.setLimitMin(ScannerConfig.RECORD_UPLOAD_DELAY_MIN);
         linker.setValue(getConfigModel().getScannerConfig().recordUploadDelay);
+    }
+
+    @Override
+    public void onViewShow_macro_setupAnalysisKey() {
+        getView().macro_setAnalysisKey(getConfigModel().getMacroConfig().analysisKey);
+    }
+
+    @Override
+    public void onViewShow_macro_setupCountLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(MacroConfig.COUNT_DEFAULT);
+        linker.setLimitMax(MacroConfig.COUNT_MAX);
+        linker.setLimitMin(MacroConfig.COUNT_MIN);
+        linker.setValue(getConfigModel().getMacroConfig().count);
+    }
+
+    @Override
+    public void onViewShow_macro_setupCaptureDelayLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(MacroConfig.CAPTURE_DELAY_DEFAULT);
+        linker.setLimitMax(MacroConfig.CAPTURE_DELAY_MAX);
+        linker.setLimitMin(MacroConfig.CAPTURE_DELAY_MIN);
+        linker.setValue(getConfigModel().getMacroConfig().captureDelay);
+    }
+
+    @Override
+    public void onViewShow_macro_setupCaptureDurationLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(MacroConfig.CAPTURE_DURATION_DEFAULT);
+        linker.setLimitMax(MacroConfig.CAPTURE_DURATION_MAX);
+        linker.setLimitMin(MacroConfig.CAPTURE_DURATION_MIN);
+        linker.setValue(getConfigModel().getMacroConfig().captureDuration);
+    }
+
+    @Override
+    public void onViewShow_macro_setupKeyInputDurationLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(MacroConfig.KEY_INPUT_DURATION_DEFAULT);
+        linker.setLimitMax(MacroConfig.KEY_INPUT_DURATION_MAX);
+        linker.setLimitMin(MacroConfig.KEY_INPUT_DURATION_MIN);
+        linker.setValue(getConfigModel().getMacroConfig().keyInputDuration);
     }
 
     @Override
@@ -557,6 +611,35 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
+    public void macro_onStart_up() {
+        AnalysisKey analysisKey = getView().macro_getAnalysisKey();
+        int count = getView().macro_getCount();
+        int captureDelay = getView().macro_getCaptureDelay();
+        int captureDuration = getView().macro_getCaptureDuration();
+        int keyInputDuration = getView().macro_getKeyInputDuration();
+
+        getMacroModel().startMacro(analysisKey, count, captureDelay, captureDuration,
+                keyInputDuration, VerticalDirection.UP);
+    }
+
+    @Override
+    public void macro_onStart_down() {
+        AnalysisKey analysisKey = getView().macro_getAnalysisKey();
+        int count = getView().macro_getCount();
+        int captureDelay = getView().macro_getCaptureDelay();
+        int captureDuration = getView().macro_getCaptureDuration();
+        int keyInputDuration = getView().macro_getKeyInputDuration();
+
+        getMacroModel().startMacro(analysisKey, count, captureDelay, captureDuration,
+                keyInputDuration, VerticalDirection.DOWN);
+    }
+
+    @Override
+    public void macro_onStop() {
+        getMacroModel().stopMacro();
+    }
+
+    @Override
     protected HomePresenter getInstance() {
         return this;
     }
@@ -585,25 +668,36 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         }
 
         ScannerConfig scannerConfig = new ScannerConfig();
+        {
+            scannerConfig.selectedTabSet = getView().scanner_capture_getSelectedTabSet();
 
-        scannerConfig.selectedTabSet = getView().scanner_capture_getSelectedTabSet();
+            try {
+                scannerConfig.cacheDirectory =
+                        Path.of(getView().scanner_option_getCacheDirectory());
+            } catch (InvalidPathException ignored) {
+            }
 
-        try {
-            scannerConfig.cacheDirectory = Path.of(getView().scanner_option_getCacheDirectory());
-        } catch (InvalidPathException ignored) {
+            scannerConfig.captureDelay = getView().scanner_option_getCaptureDelay();
+            scannerConfig.keyInputDuration = getView().scanner_option_getKeyInputDuration();
+
+            try {
+                scannerConfig.accountFile = Path.of(getView().scanner_option_getAccountFile());
+            } catch (InvalidPathException ignored) {
+            }
+
+            scannerConfig.recordUploadDelay = getView().scanner_option_getRecordUploadDelay();
         }
-
-        scannerConfig.captureDelay = getView().scanner_option_getCaptureDelay();
-        scannerConfig.keyInputDuration = getView().scanner_option_getKeyInputDuration();
-
-        try {
-            scannerConfig.accountFile = Path.of(getView().scanner_option_getAccountFile());
-        } catch (InvalidPathException ignored) {
-        }
-
-        scannerConfig.recordUploadDelay = getView().scanner_option_getRecordUploadDelay();
-
         getConfigModel().setScannerConfig(scannerConfig);
+
+        MacroConfig macroConfig = new MacroConfig();
+        {
+            macroConfig.analysisKey = getView().macro_getAnalysisKey();
+            macroConfig.count = getView().macro_getCount();
+            macroConfig.captureDelay = getView().macro_getCaptureDelay();
+            macroConfig.captureDuration = getView().macro_getCaptureDuration();
+            macroConfig.keyInputDuration = getView().macro_getKeyInputDuration();
+        }
+        getConfigModel().setMacroConfig(macroConfig);
 
         try {
             getConfigModel().save();

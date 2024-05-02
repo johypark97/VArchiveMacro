@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view;
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
@@ -11,6 +12,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresen
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ScannerFrontController;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.component.MacroComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjNameInputComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
@@ -33,14 +35,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> implements HomeView {
-    private final NativeKeyListener nativeKeyListener;
+    private final NativeKeyListener scannerNativeKeyListener;
+    private final NativeKeyListener macroNativeKeyListener;
 
     private WeakReference<ScannerComponent> scannerComponentReference;
     private WeakReference<ScannerSafeGlassComponent> scannerSafeGlassComponentReference;
     private WeakReference<ScannerDjNameInputComponent> scannerDjNameInputComponentReference;
+    private WeakReference<MacroComponent> macroComponentReference;
 
     public HomeViewImpl() {
-        nativeKeyListener = new NativeKeyListener() {
+        scannerNativeKeyListener = new NativeKeyListener() {
             @Override
             public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
                 NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
@@ -69,6 +73,38 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                 }
             }
         };
+
+        macroNativeKeyListener = new NativeKeyListener() {
+            @Override
+            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
+                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
+
+                if (data.isOtherMod()) {
+                    return;
+                }
+
+                if (data.isPressed(NativeKeyEvent.VC_BACKSPACE)) {
+                    macro_stop();
+                }
+            }
+
+            @Override
+            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
+                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
+
+                if (data.isOtherMod()) {
+                    return;
+                }
+
+                if (!data.isCtrl() && data.isAlt() && !data.isShift()) {
+                    if (data.isPressed(NativeKeyEvent.VC_OPEN_BRACKET)) {
+                        macro_start_up();
+                    } else if (data.isPressed(NativeKeyEvent.VC_CLOSE_BRACKET)) {
+                        macro_start_down();
+                    }
+                }
+            }
+        };
     }
 
     private ScannerComponent getScanner() {
@@ -81,6 +117,10 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     private ScannerDjNameInputComponent getScannerDjNameInput() {
         return scannerDjNameInputComponentReference.get();
+    }
+
+    private MacroComponent getMacro() {
+        return macroComponentReference.get();
     }
 
     @Override
@@ -332,6 +372,51 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
+    public AnalysisKey macro_getAnalysisKey() {
+        return getMacro().getAnalysisKey();
+    }
+
+    @Override
+    public void macro_setAnalysisKey(AnalysisKey key) {
+        getMacro().setAnalysisKey(key);
+    }
+
+    @Override
+    public int macro_getCount() {
+        return getMacro().countLinker.getValue();
+    }
+
+    @Override
+    public int macro_getCaptureDelay() {
+        return getMacro().captureDelayLinker.getValue();
+    }
+
+    @Override
+    public int macro_getCaptureDuration() {
+        return getMacro().captureDurationLinker.getValue();
+    }
+
+    @Override
+    public int macro_getKeyInputDuration() {
+        return getMacro().keyInputDurationLinker.getValue();
+    }
+
+    @Override
+    public void macro_start_up() {
+        getPresenter().macro_onStart_up();
+    }
+
+    @Override
+    public void macro_start_down() {
+        getPresenter().macro_onStart_down();
+    }
+
+    @Override
+    public void macro_stop() {
+        getPresenter().macro_onStop();
+    }
+
+    @Override
     protected Stage newStage() {
         HomeStage stage = new HomeStage(this);
 
@@ -339,34 +424,53 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         scannerSafeGlassComponentReference = new WeakReference<>(stage.scannerSafeGlassComponent);
         scannerDjNameInputComponentReference =
                 new WeakReference<>(stage.scannerDjNameInputComponent);
+        macroComponentReference = new WeakReference<>(stage.macroComponent);
 
         stage.setOnShown(event -> {
             getPresenter().onViewShow_setupService();
 
             getPresenter().onViewShow_setupContent();
 
-            getPresenter().onViewShow_setupCacheDirectory(
+            getPresenter().onViewShow_scanner_setupCacheDirectory(
                     getScanner().option_cacheDirectoryTextField);
 
-            getPresenter().onViewShow_setupCaptureDelayLinker(
+            getPresenter().onViewShow_scanner_setupCaptureDelayLinker(
                     getScanner().optionCaptureDelayLinker);
 
-            getPresenter().onViewShow_setupKeyInputDurationLinker(
+            getPresenter().onViewShow_scanner_setupKeyInputDurationLinker(
                     getScanner().optionKeyInputDurationLinker);
 
-            getPresenter().onViewShow_setupAccountFile(getScanner().option_accountFileTextField);
+            getPresenter().onViewShow_scanner_setupAccountFile(
+                    getScanner().option_accountFileTextField);
 
-            getPresenter().onViewShow_setupRecordUploadDelayLinker(
+            getPresenter().onViewShow_scanner_setupRecordUploadDelayLinker(
                     getScanner().optionRecordUploadDelayLinker);
+
+            getPresenter().onViewShow_macro_setupAnalysisKey();
+
+            getPresenter().onViewShow_macro_setupCountLinker(getMacro().countLinker);
+
+            getPresenter().onViewShow_macro_setupCaptureDelayLinker(getMacro().captureDelayLinker);
+
+            getPresenter().onViewShow_macro_setupCaptureDurationLinker(
+                    getMacro().captureDurationLinker);
+
+            getPresenter().onViewShow_macro_setupKeyInputDurationLinker(
+                    getMacro().keyInputDurationLinker);
 
             if (!getPresenter().onViewShow_loadDatabase()) {
                 return;
             }
 
             getPresenter().onViewShow_loadRecord();
+
+            FxHookWrapper.addKeyListener(macroNativeKeyListener);
         });
 
-        stage.setOnHiding(event -> FxHookWrapper.removeKeyListener(nativeKeyListener));
+        stage.setOnHiding(event -> {
+            FxHookWrapper.removeKeyListener(scannerNativeKeyListener);
+            FxHookWrapper.removeKeyListener(macroNativeKeyListener);
+        });
 
         return stage;
     }
@@ -428,7 +532,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
             getScanner().setVisible(true);
             getScanner().requestFocus();
 
-            FxHookWrapper.addKeyListener(nativeKeyListener);
+            FxHookWrapper.addKeyListener(scannerNativeKeyListener);
         }
     }
 }

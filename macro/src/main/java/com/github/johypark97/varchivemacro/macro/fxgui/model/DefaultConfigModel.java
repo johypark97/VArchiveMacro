@@ -61,12 +61,25 @@ public class DefaultConfigModel implements ConfigModel {
     }
 
     @Override
+    public MacroConfig getMacroConfig() {
+        return data.macroConfig;
+    }
+
+    @Override
     public void setScannerConfig(ScannerConfig value) {
         data.scannerConfig = value;
+    }
+
+    @Override
+    public void setMacroConfig(MacroConfig value) {
+        data.macroConfig = value;
     }
 
     public static class ConfigData {
         @Expose
         public ScannerConfig scannerConfig = new ScannerConfig();
+
+        @Expose
+        public MacroConfig macroConfig = new MacroConfig();
     }
 }

@@ -7,9 +7,11 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultDatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultLicenseModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultMacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultRecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.LicenseModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewerPresenterImpl;
@@ -41,6 +43,7 @@ public class Main extends Application {
     private final LicenseModel licenseModel = new DefaultLicenseModel();
     private final RecordModel recordModel = new DefaultRecordModel();
     private final ScannerModel scannerModel = new DefaultScannerModel();
+    private final MacroModel macroModel = new DefaultMacroModel();
 
     private final AnalysisDataViewerPresenterImpl analysisDataViewerPresenter =
             new AnalysisDataViewerPresenterImpl();
@@ -117,7 +120,7 @@ public class Main extends Application {
         analysisDataViewerPresenter.linkModel(scannerModel);
         analysisDataViewerPresenter.linkView(new AnalysisDataViewerViewImpl());
 
-        homePresenter.linkModel(configModel, databaseModel, recordModel, scannerModel);
+        homePresenter.linkModel(configModel, databaseModel, recordModel, scannerModel, macroModel);
         homePresenter.linkPresenter(analysisDataViewerPresenter, captureViewerPresenter,
                 linkViewerPresenter, openSourceLicensePresenter);
 

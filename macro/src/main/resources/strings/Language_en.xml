@@ -33,6 +33,15 @@
   <entry key="linkEditor.search">Search</entry>
   <entry key="linkEditor.song">Song</entry>
   <entry key="linkEditor.unlink">Unlink</entry>
+  <entry key="macro.analysisKey">Analysis Key</entry>
+  <entry key="macro.captureDelay">Capture Delay [ms]</entry>
+  <entry key="macro.captureDuration">Capture Duration [ms]</entry>
+  <entry key="macro.control">Control</entry>
+  <entry key="macro.count">Count</entry>
+  <entry key="macro.keyInputDuration">Key Input Duration [ms]</entry>
+  <entry key="macro.startToDown">Start Macro to Down</entry>
+  <entry key="macro.startToUp">Start Macro to Up</entry>
+  <entry key="macro.stop">Stop Macro</entry>
   <entry key="recordModel.apiException">Failed to load records from the server</entry>
   <entry key="recordModel.fileIOException">File IO Error</entry>
   <entry key="recordModel.generalSecurityException">Failed to establish a secure connection</entry>

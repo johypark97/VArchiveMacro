@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21">
+  <center>
+    <ScrollPane fitToWidth="true">
+      <content>
+        <GridPane hgap="10.0" vgap="10.0">
+          <columnConstraints>
+            <ColumnConstraints halignment="RIGHT"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+            <ColumnConstraints/>
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints/>
+            <RowConstraints minHeight="20.0"/>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+          </rowConstraints>
+          <children>
+            <Label text="%macro.analysisKey"/>
+            <FlowPane GridPane.columnIndex="1" GridPane.columnSpan="2" alignment="CENTER_LEFT" hgap="20.0" prefWrapLength="0.0" vgap="20.0">
+              <children>
+                <RadioButton text="Alt + F11" fx:id="analysisKeyRadioButton_f11">
+                  <toggleGroup>
+                    <ToggleGroup fx:id="analysisKey"/>
+                  </toggleGroup>
+                </RadioButton>
+                <RadioButton text="Alt + F12" toggleGroup="$analysisKey" fx:id="analysisKeyRadioButton_f12"/>
+                <RadioButton text="Alt + Home" toggleGroup="$analysisKey" fx:id="analysisKeyRadioButton_home"/>
+                <RadioButton text="Alt + Insert" toggleGroup="$analysisKey" fx:id="analysisKeyRadioButton_insert"/>
+              </children>
+            </FlowPane>
+            <Separator GridPane.columnSpan="3" GridPane.rowIndex="1"/>
+            <Label GridPane.rowIndex="2" text="%macro.count"/>
+            <Slider GridPane.columnIndex="1" GridPane.rowIndex="2" majorTickUnit="200.0" max="1000.0" showTickLabels="true" showTickMarks="true" fx:id="countSlider"/>
+            <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" prefColumnCount="4" fx:id="countTextField"/>
+            <Label GridPane.rowIndex="3" text="%macro.captureDelay"/>
+            <Slider GridPane.columnIndex="1" GridPane.rowIndex="3" majorTickUnit="100.0" max="1000.0" min="200.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="captureDelaySlider"/>
+            <TextField GridPane.columnIndex="2" GridPane.rowIndex="3" prefColumnCount="4" fx:id="captureDelayTextField"/>
+            <Label GridPane.rowIndex="4" text="%macro.captureDuration"/>
+            <Slider GridPane.columnIndex="1" GridPane.rowIndex="4" majorTickUnit="50.0" max="200.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" fx:id="captureDurationSlider"/>
+            <TextField GridPane.columnIndex="2" GridPane.rowIndex="4" prefColumnCount="4" fx:id="captureDurationTextField"/>
+            <Label GridPane.rowIndex="5" text="%macro.keyInputDuration"/>
+            <Slider GridPane.columnIndex="1" GridPane.rowIndex="5" majorTickUnit="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="keyInputDurationSlider"/>
+            <TextField GridPane.columnIndex="2" GridPane.rowIndex="5" prefColumnCount="4" fx:id="keyInputDurationTextField"/>
+          </children>
+          <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+          </padding>
+        </GridPane>
+      </content>
+    </ScrollPane>
+  </center>
+  <bottom>
+    <TitledPane text="%macro.control">
+      <content>
+        <GridPane hgap="10.0" maxWidth="500.0" vgap="10.0">
+          <columnConstraints>
+            <ColumnConstraints halignment="CENTER"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints/>
+            <RowConstraints/>
+            <RowConstraints/>
+          </rowConstraints>
+          <children>
+            <Label text="%macro.startToUp"/>
+            <TextField GridPane.columnIndex="1" alignment="CENTER" editable="false" text="Alt + ["/>
+            <Label GridPane.rowIndex="1" text="%macro.startToDown"/>
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" editable="false" text="Alt + ]"/>
+            <Label GridPane.rowIndex="2" text="%macro.stop"/>
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" alignment="CENTER" editable="false" text="Backspace"/>
+          </children>
+        </GridPane>
+      </content>
+    </TitledPane>
+  </bottom>
+</fx:root>

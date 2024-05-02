@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
@@ -23,15 +24,25 @@ public interface Home {
 
         void onViewShow_setupContent();
 
-        void onViewShow_setupCacheDirectory(TextField textField);
+        void onViewShow_scanner_setupCacheDirectory(TextField textField);
 
-        void onViewShow_setupCaptureDelayLinker(SliderTextFieldLinker linker);
+        void onViewShow_scanner_setupCaptureDelayLinker(SliderTextFieldLinker linker);
 
-        void onViewShow_setupKeyInputDurationLinker(SliderTextFieldLinker linker);
+        void onViewShow_scanner_setupKeyInputDurationLinker(SliderTextFieldLinker linker);
 
-        void onViewShow_setupAccountFile(TextField textField);
+        void onViewShow_scanner_setupAccountFile(TextField textField);
 
-        void onViewShow_setupRecordUploadDelayLinker(SliderTextFieldLinker linker);
+        void onViewShow_scanner_setupRecordUploadDelayLinker(SliderTextFieldLinker linker);
+
+        void onViewShow_macro_setupAnalysisKey();
+
+        void onViewShow_macro_setupCountLinker(SliderTextFieldLinker linker);
+
+        void onViewShow_macro_setupCaptureDelayLinker(SliderTextFieldLinker linker);
+
+        void onViewShow_macro_setupCaptureDurationLinker(SliderTextFieldLinker linker);
+
+        void onViewShow_macro_setupKeyInputDurationLinker(SliderTextFieldLinker linker);
 
         boolean onViewShow_loadDatabase();
 
@@ -76,6 +87,12 @@ public interface Home {
         Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow);
 
         Path scanner_option_onOpenAccountFileSelector(Window ownerWindow);
+
+        void macro_onStart_up();
+
+        void macro_onStart_down();
+
+        void macro_onStop();
     }
 
 
@@ -155,6 +172,24 @@ public interface Home {
         void scanner_option_openCacheDirectorySelector();
 
         void scanner_option_openAccountFileSelector();
+
+        AnalysisKey macro_getAnalysisKey();
+
+        void macro_setAnalysisKey(AnalysisKey key);
+
+        int macro_getCount();
+
+        int macro_getCaptureDelay();
+
+        int macro_getCaptureDuration();
+
+        int macro_getKeyInputDuration();
+
+        void macro_start_up();
+
+        void macro_start_down();
+
+        void macro_stop();
     }
 
 

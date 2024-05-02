@@ -35,6 +35,9 @@ public class HomeComponent extends BorderPane {
     @FXML
     public Tab scannerTab;
 
+    @FXML
+    public Tab macroTab;
+
     public HomeComponent(HomeView view) {
         viewReference = new WeakReference<>(view);
 
