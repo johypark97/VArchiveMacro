@@ -134,7 +134,7 @@
                   </children>
                 </HBox>
                 <Separator/>
-                <TitledPane animated="false" collapsible="false" text="%scanner.capture.control">
+                <TitledPane text="%scanner.capture.control">
                   <content>
                     <GridPane hgap="10.0" vgap="10.0">
                       <columnConstraints>
