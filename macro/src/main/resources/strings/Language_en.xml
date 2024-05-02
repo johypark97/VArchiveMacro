@@ -93,6 +93,7 @@
   <entry key="scanner.song.table.title">Title</entry>
   <entry key="scanner.song.toggleAllEdited">Toggle All Edited</entry>
   <entry key="scanner.song.toggleAllExact">Toggle All Exact</entry>
+  <entry key="scanner.song.toggleAllSimilar">Toggle All Similar</entry>
   <entry key="scanner.uploader">Uploader</entry>
   <entry key="scanner.uploader.dialog.content">%d records selected.</entry>
   <entry key="scanner.uploader.dialog.header">Would you like to upload the selected records?</entry>

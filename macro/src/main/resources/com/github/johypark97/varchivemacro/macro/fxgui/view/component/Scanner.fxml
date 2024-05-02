@@ -173,6 +173,7 @@
                 <Button text="%scanner.song.edit" fx:id="song_editButton"/>
                 <Pane HBox.hgrow="ALWAYS"/>
                 <Button text="%scanner.song.toggleAllExact" fx:id="song_toggleExactButton"/>
+                <Button text="%scanner.song.toggleAllSimilar" fx:id="song_toggleSimilarButton"/>
                 <Button text="%scanner.song.toggleAllEdited" fx:id="song_toggleEditedButton"/>
                 <Button text="%common.unselectAll" fx:id="song_unselectAllButton"/>
               </children>

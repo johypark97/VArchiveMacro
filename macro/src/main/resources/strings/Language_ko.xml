@@ -93,6 +93,7 @@
   <entry key="scanner.song.table.title">제목</entry>
   <entry key="scanner.song.toggleAllEdited">수정함 모두 토글</entry>
   <entry key="scanner.song.toggleAllExact">정확함 모두 토글</entry>
+  <entry key="scanner.song.toggleAllSimilar">유사함 모두 토글</entry>
   <entry key="scanner.uploader">업로더</entry>
   <entry key="scanner.uploader.dialog.content">%d개 기록 선택됨.</entry>
   <entry key="scanner.uploader.dialog.header">선택한 기록들을 업로드하시겠습니까?</entry>
