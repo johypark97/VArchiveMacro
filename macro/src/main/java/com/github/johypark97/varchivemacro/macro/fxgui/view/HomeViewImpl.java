@@ -21,6 +21,7 @@ import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import java.awt.Toolkit;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
 import java.util.List;
@@ -137,6 +138,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         alert.setHeaderText(header);
         alert.setContentText(throwable.toString());
 
+        Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
     }
 
@@ -148,6 +150,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         alert.setHeaderText(header);
         alert.setContentText(message);
 
+        Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
     }
 
@@ -164,6 +167,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
             alert.setContentText(content);
         }
 
+        Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
 
         return ButtonType.OK.equals(alert.getResult());

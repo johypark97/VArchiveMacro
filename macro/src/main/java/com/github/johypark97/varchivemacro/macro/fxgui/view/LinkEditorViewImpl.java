@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.Link
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorView;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.LinkEditorComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.LinkEditorStage;
+import java.awt.Toolkit;
 import java.lang.ref.WeakReference;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -34,6 +35,7 @@ public class LinkEditorViewImpl extends AbstractMvpView<LinkEditorPresenter, Lin
         alert.setHeaderText(header);
         alert.setContentText(exception.toString());
 
+        Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
     }
 
@@ -50,6 +52,7 @@ public class LinkEditorViewImpl extends AbstractMvpView<LinkEditorPresenter, Lin
             alert.setContentText(content);
         }
 
+        Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
 
         return ButtonType.OK.equals(alert.getResult());

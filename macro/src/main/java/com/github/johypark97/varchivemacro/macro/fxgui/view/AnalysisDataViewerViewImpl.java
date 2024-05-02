@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataVie
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.RecordBoxData;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.AnalysisDataViewerComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.AnalysisDataViewerStage;
+import java.awt.Toolkit;
 import java.lang.ref.WeakReference;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -29,6 +30,7 @@ public class AnalysisDataViewerViewImpl
         alert.setHeaderText(header);
         alert.setContentText(throwable.toString());
 
+        Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
     }
 
