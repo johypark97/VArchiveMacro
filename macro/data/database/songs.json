@@ -4942,5 +4942,21 @@
     "composer": "HAYAKO",
     "dlcCode": "R",
     "priority": 0
+  },
+  {
+    "id": 618,
+    "title": "Re:BIRTH",
+    "remote_title": null,
+    "composer": "kanone",
+    "dlcCode": "CP",
+    "priority": 0
+  },
+  {
+    "id": 619,
+    "title": "Kamui",
+    "remote_title": null,
+    "composer": "TJ.hangneil",
+    "dlcCode": "R",
+    "priority": 0
   }
 ]
