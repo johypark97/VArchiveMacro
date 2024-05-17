@@ -41,6 +41,6 @@ public class CacheHelper {
     }
 
     private static String makeFileName(int id, String format) {
-        return String.format("%04d.%s", id, format);
+        return String.format("db_%04d.%s", id, format);
     }
 }

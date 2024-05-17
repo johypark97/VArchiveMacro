@@ -2,16 +2,27 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.util.CacheHelper;
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
+import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
+import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.lib.scanner.area.TrainingArea;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import javafx.concurrent.Task;
+import javax.imageio.ImageIO;
 
 public class OcrCacheClassificationTask extends Task<Void> {
     private static final Path ABSOLUTE_PATH = Path.of("").toAbsolutePath();
+    private static final String CACHE_OVERLAY_FILENAME = "cache_overlay";
+    private static final String CACHE_OVERLAY_FORMAT = "png";
     private static final String ENG_DIRECTORY_NAME = "eng";
     private static final String EXCEEDED_DIRECTORY_NAME = "exceeded";
     private static final String KOR_DIRECTORY_NAME = "kor";
@@ -66,6 +77,9 @@ public class OcrCacheClassificationTask extends Task<Void> {
 
         updateProgress(0, 1);
 
+        BufferedImage overlayImage = null;
+        TrainingArea area = null;
+
         int count = dlcSongList.size();
         for (int i = 0; i < count; ++i) {
             if (Thread.currentThread().isInterrupted()) {
@@ -100,14 +114,52 @@ public class OcrCacheClassificationTask extends Task<Void> {
 
             Path imageInputPath = CacheHelper.createImagePath(inputPath, song);
             if (Files.exists(imageInputPath)) {
-                Path imageOutputPath = baseDir.resolve(imageInputPath.getFileName());
-                Files.copy(imageInputPath, imageOutputPath);
+                BufferedImage image = ImageIO.read(imageInputPath.toFile());
 
+                // create a title image
+                if (area == null) {
+                    Dimension imageSize = new Dimension(image.getWidth(), image.getHeight());
+                    area = new TrainingArea(CollectionAreaFactory.create(imageSize));
+                }
+
+                BufferedImage titleImage = area.getTrainingTitle(image);
+                Path imageOutputPath = baseDir.resolve(imageInputPath.getFileName());
+                ImageIO.write(titleImage, CacheHelper.IMAGE_FORMAT, imageOutputPath.toFile());
+
+                // create a gt file
                 Path gtOutputPath = CacheHelper.createGtPath(baseDir, song);
                 Files.writeString(gtOutputPath, title);
+
+                // update the overlay image
+                if (overlayImage == null) {
+                    Dimension titleSize = area.getTrainingTitle().getSize();
+                    overlayImage = new BufferedImage(titleSize.width, titleSize.height,
+                            BufferedImage.TYPE_INT_RGB);
+                }
+
+                try (PixWrapper pix = new PixWrapper(ImageConverter.imageToPngBytes(titleImage))) {
+                    PixPreprocessor.thresholdWhite(pix);
+                    BufferedImage preprocessed = ImageConverter.pngBytesToImage(pix.getPngBytes());
+
+                    for (int x = 0; x < preprocessed.getWidth(); ++x) {
+                        for (int y = 0; y < preprocessed.getHeight(); ++y) {
+                            Color c = new Color(preprocessed.getRGB(x, y));
+
+                            if (Color.WHITE.equals(c)) {
+                                overlayImage.setRGB(x, y, Color.WHITE.getRGB());
+                            }
+                        }
+                    }
+                }
             }
 
             updateProgress(i + 1, count);
+        }
+
+        if (overlayImage != null) {
+            Path overlayPath =
+                    outputPath.resolve(CACHE_OVERLAY_FILENAME + '.' + CACHE_OVERLAY_FORMAT);
+            ImageIO.write(overlayImage, CACHE_OVERLAY_FORMAT, overlayPath.toFile());
         }
 
         return null;
