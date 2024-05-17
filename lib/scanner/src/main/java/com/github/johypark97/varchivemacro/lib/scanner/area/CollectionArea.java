@@ -6,18 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public interface CollectionArea {
-    int TITLE_MARGIN = 10;
-
-    static BufferedImage cropTitleMargin(BufferedImage image) {
-        Rectangle r = new Rectangle(image.getWidth(), image.getHeight());
-        r.grow(-TITLE_MARGIN, -TITLE_MARGIN);
-
-        return image.getSubimage(r.x, r.y, r.width, r.height);
-    }
-
     Rectangle getTitle();
-
-    Rectangle getTitle_training();
 
     Rectangle getCell(Section section, Button button, Pattern pattern);
 
@@ -26,8 +15,6 @@ public interface CollectionArea {
     Rectangle getComboMark(Button button, Pattern pattern);
 
     BufferedImage getTitle(BufferedImage image);
-
-    BufferedImage getTitle_training(BufferedImage image);
 
     BufferedImage getRate(BufferedImage image, Button button, Pattern pattern);
 

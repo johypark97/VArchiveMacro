@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.lib.scanner.area.TrainingArea;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
@@ -85,16 +86,16 @@ public class OcrCacheCaptureTask extends Task<Void> {
             throw new RuntimeException("outputPath is not a subdirectory of the program root.");
         }
 
-        CollectionArea area;
         BufferedImage overlayImage;
+        TrainingArea area;
 
         {
             BufferedImage image = captureScreenshot();
 
             Dimension screenSize = new Dimension(image.getWidth(), image.getHeight());
-            area = CollectionAreaFactory.create(screenSize);
+            area = new TrainingArea(CollectionAreaFactory.create(screenSize));
 
-            Dimension titleSize = area.getTitle_training().getSize();
+            Dimension titleSize = area.getTrainingTitle().getSize();
             overlayImage = new BufferedImage(titleSize.width, titleSize.height,
                     BufferedImage.TYPE_INT_RGB);
         }
@@ -113,7 +114,7 @@ public class OcrCacheCaptureTask extends Task<Void> {
             }
 
             BufferedImage screenshot = captureScreenshot();
-            BufferedImage titleImage = area.getTitle_training(screenshot);
+            BufferedImage titleImage = area.getTrainingTitle(screenshot);
 
             try (PixWrapper pix = new PixWrapper(ImageConverter.imageToPngBytes(titleImage))) {
                 PixPreprocessor.thresholdWhite(pix);

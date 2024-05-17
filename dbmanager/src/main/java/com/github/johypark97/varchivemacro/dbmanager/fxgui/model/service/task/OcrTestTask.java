@@ -4,7 +4,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestDat
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData.Status;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.util.CacheHelper;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
-import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
+import com.github.johypark97.varchivemacro.lib.scanner.area.TrainingArea;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.DefaultOcrWrapper;
@@ -71,7 +71,7 @@ public class OcrTestTask extends Task<Void> {
 
                 Path imagePath = CacheHelper.createImagePath(cachePath, song);
                 BufferedImage image = ImageIO.read(imagePath.toFile());
-                image = CollectionArea.cropTitleMargin(image);
+                image = TrainingArea.cropTrainingMargin(image);
 
                 String scannedTitle;
                 try (PixWrapper pix = new PixWrapper(ImageConverter.imageToPngBytes(image))) {

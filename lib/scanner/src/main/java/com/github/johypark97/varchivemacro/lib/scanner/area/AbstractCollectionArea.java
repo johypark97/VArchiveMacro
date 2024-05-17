@@ -11,21 +11,8 @@ abstract class AbstractCollectionArea implements CollectionArea {
     }
 
     @Override
-    public Rectangle getTitle_training() {
-        Rectangle r = getTitle();
-        r.grow(TITLE_MARGIN, TITLE_MARGIN);
-
-        return r;
-    }
-
-    @Override
     public BufferedImage getTitle(BufferedImage image) {
         return crop(image, getTitle());
-    }
-
-    @Override
-    public BufferedImage getTitle_training(BufferedImage image) {
-        return crop(image, getTitle_training());
     }
 
     @Override
