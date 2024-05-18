@@ -7,16 +7,16 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 class CollectionAreaFHD extends AbstractCollectionArea {
-    private static final Rectangle TITLE = new Rectangle(613, 286, 799, 50);
+    private static final Rectangle TITLE = new Rectangle(613, 284, 795, 46);
 
     private static final Dimension NEXT_BUTTON = new Dimension(124, 0);
-    private static final Dimension NEXT_PATTERN = new Dimension(0, 30);
-    private static final Dimension NEXT_SECTION = new Dimension(0, 148);
-    private static final Point ANCHOR = new Point(929, 368);
+    private static final Dimension NEXT_PATTERN = new Dimension(0, 24);
+    private static final Dimension NEXT_SECTION = new Dimension(0, 120);
+    private static final Point ANCHOR = new Point(929, 356);
 
-    private static final Rectangle CELL = new Rectangle(0, 0, 120, 28);
-    private static final Rectangle CELL_COMBO_MARK = new Rectangle(87, 0, 31, 28);
-    private static final Rectangle CELL_RATE = new Rectangle(33, 0, 53, 28);
+    private static final Rectangle CELL = new Rectangle(0, 0, 120, 22);
+    private static final Rectangle CELL_COMBO_MARK = new Rectangle(88, 0, 28, 22);
+    private static final Rectangle CELL_RATE = new Rectangle(35, 0, 52, 22);
 
     public static final Dimension RESOLUTION = new Dimension(1920, 1080);
 
