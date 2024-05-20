@@ -113,7 +113,7 @@ public class DefaultOcrToolModel implements OcrToolModel {
         service.reset();
         service.start();
 
-        return false;
+        return true;
     }
 
     @Override
