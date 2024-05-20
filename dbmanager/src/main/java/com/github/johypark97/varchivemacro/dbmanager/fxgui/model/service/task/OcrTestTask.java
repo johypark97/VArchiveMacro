@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData.FoundData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData.Status;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.util.CacheHelper;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
@@ -14,6 +15,7 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.recognizer.TitleSongRecognizer;
 import com.github.johypark97.varchivemacro.lib.scanner.recognizer.TitleSongRecognizer.Recognized;
+import com.github.johypark97.varchivemacro.lib.scanner.recognizer.TitleSongRecognizer.Recognized.StatusAccuracy;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -90,27 +92,33 @@ public class OcrTestTask extends Task<Void> {
                 OcrTestData data = new OcrTestData(song);
 
                 Recognized<LocalDlcSong> recognized = recognizer.recognize(scannedTitle);
-                data.setMatchFoundKey(recognized.foundKey());
-                data.setMatchScannedTitle(recognized.normalizedInput());
+                data.setFoundDataList(recognized.foundList.stream().map(FoundData::new).toList());
+                data.setFoundKeyList(recognized.foundKeySet().stream().toList());
+                data.setScannedTitle(recognized.normalizedInput);
 
-                switch (recognized.status()) {
-                    case DUPLICATED_SONG -> {
-                        data.setRecognizedSong(recognized.song());
-                        data.setTestPass(true);
-                        data.setTestStatus(Status.DUPLICATED);
-                    }
-                    case FOUND -> {
-                        data.setRecognizedSong(recognized.song());
-                        data.setTestAccuracy(recognized.similarity());
-                        data.setTestDistance(recognized.distance());
-
-                        if (recognized.song().equals(song)) {
+                switch (recognized.statusFound) {
+                    case FOUND_DUPLICATE_SONGS -> {
+                        if (!data.targetSong.title.equals(
+                                recognized.foundList.get(0).song().title)) {
+                            data.setTestStatus(Status.WRONG);
+                        } else {
                             data.setTestPass(true);
                             data.setTestStatus(
-                                    (recognized.distance() == 0) ? Status.EXACT : Status.SIMILAR);
-                        } else {
-                            data.setTestPass(false);
+                                    StatusAccuracy.FOUND_EXACT.equals(recognized.statusAccuracy)
+                                            ? Status.DUPLICATED_EXACT
+                                            : Status.DUPLICATED_SIMILAR);
+                        }
+                    }
+                    case FOUND_MANY_SONGS -> data.setTestStatus(Status.WRONG);
+                    case FOUND_ONE_SONG -> {
+                        if (!data.targetSong.equals(recognized.foundList.get(0).song())) {
                             data.setTestStatus(Status.WRONG);
+                        } else {
+                            data.setTestPass(true);
+                            data.setTestStatus(
+                                    StatusAccuracy.FOUND_EXACT.equals(recognized.statusAccuracy)
+                                            ? Status.EXACT
+                                            : Status.SIMILAR);
                         }
                     }
                     case NOT_FOUND -> {

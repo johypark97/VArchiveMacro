@@ -2,24 +2,23 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.lib.scanner.recognizer.TitleSongRecognizer.Recognized.Found;
+import java.util.List;
 
 public class OcrTestData {
-    private final LocalDlcSong targetSong;
+    public final LocalDlcSong targetSong;
+    public final String targetNormalizedTitle;
 
-    private LocalDlcSong recognizedSong;
-
+    public List<FoundData> foundDataList;
+    public List<String> foundKeyList;
     public Status testStatus = Status.NOT_FOUND;
-    public String matchFoundKey = "";
-    public String matchScannedTitle = "";
+    public String scannedTitle = "";
     public boolean testPass;
-    public double testAccuracy;
-    public final String matchNormalizedTitle;
-    public int testDistance;
 
     public OcrTestData(LocalDlcSong targetSong) {
         this.targetSong = targetSong;
 
-        matchNormalizedTitle = TitleTool.normalizeTitle_recognition(targetSong.title);
+        targetNormalizedTitle = TitleTool.normalizeTitle_recognition(targetSong.title);
     }
 
     public int getTargetId() {
@@ -34,56 +33,32 @@ public class OcrTestData {
         return targetSong.composer;
     }
 
-    public String getMatchNormalizedTitle() {
-        return matchNormalizedTitle;
+    public String getTargetNormalizedTitle() {
+        return targetNormalizedTitle;
     }
 
-    public String getMatchScannedTitle() {
-        return matchScannedTitle;
+    public String getScannedTitle() {
+        return scannedTitle;
     }
 
-    public void setMatchScannedTitle(String value) {
-        matchScannedTitle = value;
+    public void setScannedTitle(String value) {
+        scannedTitle = value;
     }
 
-    public String getMatchFoundKey() {
-        return matchFoundKey;
+    public List<String> getFoundKeyList() {
+        return foundKeyList;
     }
 
-    public void setMatchFoundKey(String value) {
-        matchFoundKey = value;
+    public void setFoundKeyList(List<String> value) {
+        foundKeyList = value;
     }
 
-    public void setRecognizedSong(LocalDlcSong value) {
-        recognizedSong = value;
+    public List<FoundData> getFoundDataList() {
+        return foundDataList;
     }
 
-    public int getRecognizedId() {
-        return (recognizedSong != null) ? recognizedSong.id : -1;
-    }
-
-    public String getRecognizedTitle() {
-        return (recognizedSong != null) ? recognizedSong.title : "";
-    }
-
-    public String getRecognizedComposer() {
-        return (recognizedSong != null) ? recognizedSong.composer : "";
-    }
-
-    public int getTestDistance() {
-        return testDistance;
-    }
-
-    public void setTestDistance(int value) {
-        testDistance = value;
-    }
-
-    public double getTestAccuracy() {
-        return testAccuracy;
-    }
-
-    public void setTestAccuracy(double value) {
-        testAccuracy = value;
+    public void setFoundDataList(List<FoundData> value) {
+        foundDataList = value;
     }
 
     public Status getTestStatus() {
@@ -103,6 +78,24 @@ public class OcrTestData {
     }
 
     public enum Status {
-        DUPLICATED, EXACT, NOT_FOUND, SIMILAR, WRONG
+        DUPLICATED_EXACT,
+        DUPLICATED_SIMILAR,
+        EXACT,
+        NOT_FOUND,
+        SIMILAR,
+        WRONG
+    }
+
+
+    public static class FoundData {
+        public final LocalDlcSong song;
+        public final double accuracy;
+        public final int distance;
+
+        public FoundData(Found<LocalDlcSong> found) {
+            accuracy = found.similarity();
+            distance = found.distance();
+            song = found.song();
+        }
     }
 }

@@ -25,12 +25,28 @@
 // -------- Additional color --------
 // ==================================
 
+.table-row-cell.table-row-color-blue {
+    -fx-background-color: #C0C0FF;
+}
+
+.table-row-cell:selected.table-row-color-blue {
+    -fx-background-color: #8080FF;
+}
+
 .table-row-cell.table-row-color-green {
     -fx-background-color: #C0FFC0;
 }
 
 .table-row-cell:selected.table-row-color-green {
     -fx-background-color: #80FF80;
+}
+
+.table-row-cell.table-row-color-red {
+    -fx-background-color: #FFC0C0;
+}
+
+.table-row-cell:selected.table-row-color-red {
+    -fx-background-color: #FF8080;
 }
 
 .table-row-cell.table-row-color-yellow {

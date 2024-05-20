@@ -1,19 +1,28 @@
 package com.github.johypark97.varchivemacro.lib.scanner.recognizer;
 
+import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasMany;
+import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasOne;
+
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils.StringDiff;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongManager.LocalSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
-import java.util.ArrayList;
+import com.github.johypark97.varchivemacro.lib.scanner.recognizer.TitleSongRecognizer.Recognized.Found;
+import com.github.johypark97.varchivemacro.lib.scanner.recognizer.TitleSongRecognizer.Recognized.StatusAccuracy;
+import com.github.johypark97.varchivemacro.lib.scanner.recognizer.TitleSongRecognizer.Recognized.StatusFound;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Function;
 
 public class TitleSongRecognizer<T extends LocalSong> {
+    // normalized title - song lookup
+    private final Map<String, List<T>> lookupSong = new HashMap<>();
+
     private final Function<String, String> titleNormalizer;
-    private final Map<String, T> songMap = new HashMap<>();
     private final TitleTool titleTool;
 
     public TitleSongRecognizer(TitleTool titleTool) {
@@ -26,75 +35,134 @@ public class TitleSongRecognizer<T extends LocalSong> {
     }
 
     public void setSongList(List<T> songList) {
-        Map<String, List<T>> map = new HashMap<>();
-        songList.forEach((song) -> {
-            String title =
-                    titleTool.hasClippedTitle(song) ? titleTool.getClippedTitle(song) : song.title;
-            title = titleNormalizer.apply(title);
+        lookupSong.clear();
 
-            List<T> list = map.computeIfAbsent(title, (x) -> new LinkedList<>());
-            list.add(song);
-        });
+        for (T song : songList) {
+            String normalizedTitle = titleTool.getClippedTitle(song);
+            normalizedTitle = titleNormalizer.apply(normalizedTitle);
 
-        songMap.clear();
-        for (Entry<String, List<T>> entry : map.entrySet()) {
-            List<T> list = entry.getValue();
-            T value = (hasOneElement(list)) ? list.get(0) : null;
-            songMap.put(entry.getKey(), value);
+            lookupSong.computeIfAbsent(normalizedTitle, x -> new LinkedList<>()).add(song);
         }
     }
 
-    public Recognized<T> recognize(String value) {
-        String normalizedValue = titleNormalizer.apply(value);
-        String remappedValue = titleTool.remapScannedTitle(normalizedValue);
+    public Recognized<T> recognize(String title) {
+        String normalizedTitle = titleNormalizer.apply(title);
+        String remappedTitle = titleTool.remapScannedTitle(normalizedTitle);
 
-        if (songMap.containsKey(remappedValue)) {
-            T song = songMap.get(remappedValue);
+        List<Found<T>> list;
 
-            return new Recognized<>(
-                    (song != null) ? RecognizedStatus.FOUND : RecognizedStatus.DUPLICATED_SONG,
-                    song, remappedValue, remappedValue, 0, 1);
+        // check if there are exact matches
+        list = findExactMatch(remappedTitle);
+        if (!list.isEmpty()) {
+            return new Recognized<>(remappedTitle, list, StatusAccuracy.FOUND_EXACT,
+                    hasOne(list) ? StatusFound.FOUND_ONE_SONG : StatusFound.FOUND_DUPLICATE_SONGS);
         }
 
-        List<Entry<String, StringDiff>> candidateList = new ArrayList<>();
+        // check if there are similar matches
+        list = findSimilarMatch(remappedTitle);
+        if (hasOne(list)) {
+            return new Recognized<>(remappedTitle, list, StatusAccuracy.FOUND_SIMILAR,
+                    StatusFound.FOUND_ONE_SONG);
+        } else if (hasMany(list)) {
+            Set<String> set = new HashSet<>();
+            for (Found<T> found : list) {
+                set.add(found.key);
+            }
+
+            return new Recognized<>(remappedTitle, list, StatusAccuracy.FOUND_SIMILAR,
+                    hasOne(set) ? StatusFound.FOUND_DUPLICATE_SONGS : StatusFound.FOUND_MANY_SONGS);
+        }
+
+        return new Recognized<>(remappedTitle, List.of(), StatusAccuracy.NOT_FOUND,
+                StatusFound.NOT_FOUND);
+    }
+
+    private List<Found<T>> findExactMatch(String title) {
+        if (!lookupSong.containsKey(title)) {
+            return List.of();
+        }
+
+        List<Found<T>> list = new LinkedList<>();
+        for (T song : lookupSong.get(title)) {
+            list.add(new Found<>(title, song, 0, 1));
+        }
+
+        return list;
+    }
+
+    private List<Found<T>> findSimilarMatch(String title) {
+        Map<String, StringDiff> map = new HashMap<>();
 
         double maximumSimilarity = -1;
-        for (String key : songMap.keySet()) {
-            StringDiff diff = new StringDiff(remappedValue, key);
+        for (String key : lookupSong.keySet()) {
+            StringDiff diff = new StringDiff(title, key);
+
             if (diff.getSimilarity() >= maximumSimilarity) {
                 if (diff.getSimilarity() > maximumSimilarity) {
                     maximumSimilarity = diff.getSimilarity();
-                    candidateList.clear();
+                    map.clear();
                 }
-                candidateList.add(Map.entry(key, diff));
+                map.put(key, diff);
             }
         }
 
-        if (hasOneElement(candidateList)) {
-            Entry<String, StringDiff> entry = candidateList.get(0);
-
+        List<Found<T>> list = new LinkedList<>();
+        for (Entry<String, StringDiff> entry : map.entrySet()) {
             String key = entry.getKey();
             StringDiff diff = entry.getValue();
 
-            T song = songMap.get(key);
-            return new Recognized<>(
-                    (song != null) ? RecognizedStatus.FOUND : RecognizedStatus.DUPLICATED_SONG,
-                    song, remappedValue, key, diff.getDistance(), (float) diff.getSimilarity());
+            for (T song : lookupSong.get(key)) {
+                list.add(new Found<>(key, song, diff.getDistance(), diff.getSimilarity()));
+            }
         }
 
-        return new Recognized<>(RecognizedStatus.NOT_FOUND, null, remappedValue, "", 0, 0);
-    }
-
-    private boolean hasOneElement(List<?> list) {
-        return list.size() == 1;
-    }
-
-    public enum RecognizedStatus {
-        DUPLICATED_SONG, FOUND, NOT_FOUND
+        return list;
     }
 
 
-    public record Recognized<T>(RecognizedStatus status, T song, String normalizedInput,
-                                String foundKey, int distance, float similarity) {
+    public static class Recognized<T extends LocalSong> {
+        public final List<Found<T>> foundList;
+
+        public final StatusAccuracy statusAccuracy;
+        public final StatusFound statusFound;
+
+        public final String normalizedInput;
+
+        public Recognized(String normalizedInput, List<Found<T>> foundList,
+                StatusAccuracy statusAccuracy, StatusFound statusFound) {
+            this.foundList = foundList;
+            this.normalizedInput = normalizedInput;
+            this.statusAccuracy = statusAccuracy;
+            this.statusFound = statusFound;
+        }
+
+        public Set<String> foundKeySet() {
+            Set<String> set = new HashSet<>();
+
+            for (Found<T> found : foundList) {
+                set.add(found.key);
+            }
+
+            return set;
+        }
+
+        public enum StatusAccuracy {
+            FOUND_EXACT,
+            FOUND_SIMILAR,
+            NOT_FOUND
+        }
+
+
+        public enum StatusFound {
+            FOUND_DUPLICATE_SONGS,
+            FOUND_MANY_SONGS,
+            FOUND_ONE_SONG,
+            NOT_FOUND,
+        }
+
+
+        public record Found<T extends LocalSong>(String key, T song, int distance,
+                                                 double similarity) {
+        }
     }
 }

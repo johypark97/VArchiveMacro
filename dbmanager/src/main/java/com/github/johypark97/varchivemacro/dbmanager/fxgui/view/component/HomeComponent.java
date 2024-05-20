@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData.FoundData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
@@ -10,6 +11,7 @@ import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.Title
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -263,64 +265,49 @@ public class HomeComponent extends TabPane {
             target.getColumns().setAll(List.of(id, title, composer));
         }
 
-        TableColumn<OcrTestData, String> match = new TableColumn<>("Match");
+        TableColumn<OcrTestData, String> find = new TableColumn<>("Find");
         {
             TableColumn<OcrTestData, String> normalizedTitle =
                     new TableColumn<>("Normalized Title");
-            TableColumn<OcrTestData, String> scannedTitle = new TableColumn<>("Scanned Title");
-            TableColumn<OcrTestData, String> foundKey = new TableColumn<>("Found Key");
-
-            normalizedTitle.setCellValueFactory(new PropertyValueFactory<>("matchNormalizedTitle"));
-            scannedTitle.setCellValueFactory(new PropertyValueFactory<>("matchScannedTitle"));
-            foundKey.setCellValueFactory(new PropertyValueFactory<>("matchFoundKey"));
-
+            normalizedTitle.setCellValueFactory(
+                    new PropertyValueFactory<>("targetNormalizedTitle"));
             normalizedTitle.setComparator(new TitleComparator());
+
+            TableColumn<OcrTestData, String> scannedTitle = new TableColumn<>("Scanned Title");
+            scannedTitle.setCellValueFactory(new PropertyValueFactory<>("scannedTitle"));
             scannedTitle.setComparator(new TitleComparator());
-            foundKey.setComparator(new TitleComparator());
 
-            match.getColumns().setAll(List.of(normalizedTitle, scannedTitle, foundKey));
+            TableColumn<OcrTestData, List<String>> foundKeyList = new TableColumn<>("Found Keys");
+            foundKeyList.setCellValueFactory(new PropertyValueFactory<>("foundKeyList"));
+
+            find.getColumns().setAll(List.of(normalizedTitle, scannedTitle, foundKeyList));
         }
 
-        TableColumn<OcrTestData, String> recognized = new TableColumn<>("Recognized");
-        {
-            TableColumn<OcrTestData, Integer> id = new TableColumn<>("Id");
-            TableColumn<OcrTestData, String> title = new TableColumn<>("Title");
-            TableColumn<OcrTestData, String> composer = new TableColumn<>("Composer");
+        TableColumn<OcrTestData, List<FoundData>> recognized = new TableColumn<>("Recognized");
+        recognized.setCellValueFactory(new PropertyValueFactory<>("foundDataList"));
+        recognized.setCellFactory(param -> new TableCell<>() {
+            @Override
+            protected void updateItem(List<FoundData> item, boolean empty) {
+                super.updateItem(item, empty);
 
-            id.setCellValueFactory(new PropertyValueFactory<>("recognizedId"));
-            title.setCellValueFactory(new PropertyValueFactory<>("recognizedTitle"));
-            composer.setCellValueFactory(new PropertyValueFactory<>("recognizedComposer"));
+                if (empty || item == null) {
+                    setText(null);
+                    return;
+                }
 
-            title.setComparator(new TitleComparator());
-
-            recognized.getColumns().setAll(List.of(id, title, composer));
-        }
+                setText(item.stream().map(x -> String.format("[%d, %.2f%%] %s - %s", x.distance,
+                                x.accuracy * 100, x.song.title, x.song.composer))
+                        .collect(Collectors.joining(", ")));
+            }
+        });
 
         TableColumn<OcrTestData, String> test = new TableColumn<>("Test");
         {
-            TableColumn<OcrTestData, Integer> distance = new TableColumn<>("Distance");
-            TableColumn<OcrTestData, Double> accuracy = new TableColumn<>("Accuracy");
             TableColumn<OcrTestData, String> status = new TableColumn<>("Status");
             TableColumn<OcrTestData, Boolean> pass = new TableColumn<>("Pass");
 
-            distance.setCellValueFactory(new PropertyValueFactory<>("testDistance"));
-            accuracy.setCellValueFactory(new PropertyValueFactory<>("testAccuracy"));
             status.setCellValueFactory(new PropertyValueFactory<>("testStatus"));
             pass.setCellValueFactory(new PropertyValueFactory<>("testPass"));
-
-            accuracy.setCellFactory(param -> new TableCell<>() {
-                @Override
-                protected void updateItem(Double item, boolean empty) {
-                    super.updateItem(item, empty);
-
-                    if (empty || item == null) {
-                        setText(null);
-                        return;
-                    }
-
-                    setText(String.format("%.2f%%", item * 100));
-                }
-            });
 
             pass.setCellFactory(param -> new TableCell<>() {
                 @Override
@@ -342,28 +329,33 @@ public class HomeComponent extends TabPane {
                 }
             });
 
-            test.getColumns().setAll(List.of(distance, accuracy, status, pass));
+            test.getColumns().setAll(List.of(status, pass));
         }
 
-        ocrTester_tableView.getColumns().setAll(List.of(target, match, recognized, test));
+        ocrTester_tableView.getColumns().setAll(List.of(target, find, recognized, test));
 
         ocrTester_tableView.setRowFactory(param -> new TableRow<>() {
             private static final String STYLE_CLASS_EXACT = "table-row-color-green";
             private static final String STYLE_CLASS_SIMILAR = "table-row-color-yellow";
+            private static final String STYLE_CLASS_WRONG = "table-row-color-red";
 
             @Override
             protected void updateItem(OcrTestData item, boolean empty) {
                 super.updateItem(item, empty);
 
-                getStyleClass().removeAll(STYLE_CLASS_EXACT, STYLE_CLASS_SIMILAR);
+                getStyleClass().removeAll(STYLE_CLASS_EXACT, STYLE_CLASS_SIMILAR,
+                        STYLE_CLASS_WRONG);
 
                 if (empty || item == null) {
                     return;
                 }
 
-                if (item.isTestPass()) {
-                    getStyleClass().add(
-                            (item.testDistance == 0) ? STYLE_CLASS_EXACT : STYLE_CLASS_SIMILAR);
+                switch (item.testStatus) {
+                    case EXACT, DUPLICATED_EXACT -> getStyleClass().add(STYLE_CLASS_EXACT);
+                    case SIMILAR, DUPLICATED_SIMILAR -> getStyleClass().add(STYLE_CLASS_SIMILAR);
+                    case WRONG -> getStyleClass().add(STYLE_CLASS_WRONG);
+                    default -> {
+                    }
                 }
             }
         });

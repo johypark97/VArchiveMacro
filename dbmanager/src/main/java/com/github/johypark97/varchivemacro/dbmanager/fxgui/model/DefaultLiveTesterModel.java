@@ -22,6 +22,7 @@ import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.embed.swing.SwingFXUtils;
 
 public class DefaultLiveTesterModel implements LiveTesterModel {
@@ -69,15 +70,12 @@ public class DefaultLiveTesterModel implements LiveTesterModel {
         data.text = title;
 
         Recognized<LocalDlcSong> recognized = recognizer.recognize(title);
-        data.recognized = switch (recognized.status()) {
-            case DUPLICATED_SONG -> "duplicated";
-            case FOUND -> {
-                LocalDlcSong song = recognized.song();
-                yield String.format("%s - %s (accuracy: %f, distance: %d)", song.title,
-                        song.composer, recognized.similarity(), recognized.distance());
-            }
-            case NOT_FOUND -> "not found";
-        };
+        data.recognized = recognized.foundList.isEmpty()
+                ? "not found"
+                : recognized.foundList.stream()
+                        .map(x -> String.format("%s - %s [%d, %.2f]", x.song().title,
+                                x.song().composer, x.distance(), x.similarity()))
+                        .collect(Collectors.joining(", "));
 
         return data;
     }
