@@ -1,71 +1,77 @@
 package com.github.johypark97.varchivemacro.lib.scanner.area;
 
-import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
-import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
+import com.google.common.math.IntMath;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
 class CollectionAreaFHD extends AbstractCollectionArea {
+    public static final Dimension RESOLUTION_MINIMUM = new Dimension(1920, 1080);
+    public static final Point RESOLUTION_RATIO = new Point(16, 9);
+
     private static final Rectangle TITLE = new Rectangle(612, 284, 800, 46);
 
+    private static final Point SECTION_ANCHOR = new Point(929, 356);
+    private static final Dimension NEXT_SECTION = new Dimension(0, 120);
     private static final Dimension NEXT_BUTTON = new Dimension(124, 0);
     private static final Dimension NEXT_PATTERN = new Dimension(0, 24);
-    private static final Dimension NEXT_SECTION = new Dimension(0, 120);
-    private static final Point ANCHOR = new Point(929, 356);
 
     private static final Rectangle CELL = new Rectangle(0, 0, 120, 22);
-    private static final Rectangle CELL_COMBO_MARK = new Rectangle(88, 0, 28, 22);
     private static final Rectangle CELL_RATE = new Rectangle(35, 0, 53, 22);
+    private static final Rectangle CELL_COMBO_MARK = new Rectangle(88, 0, 28, 22);
 
-    public static final Dimension RESOLUTION = new Dimension(1920, 1080);
+    private final int scaleFactorA;
+    private final int scaleFactorB;
 
-    private Point getAnchor(Section section, Button button, Pattern pattern) {
-        int x = ANCHOR.x;
-        // x += NEXT_SECTION.width * section.getWeight();
-        x += NEXT_BUTTON.width * button.getWeight();
-        // x += NEXT_PATTERN.width * pattern.getWeight();
+    public CollectionAreaFHD(Dimension resolution) {
+        int gcd = IntMath.gcd(RESOLUTION_MINIMUM.width, resolution.width);
 
-        int y = ANCHOR.y;
-        y += NEXT_SECTION.height * section.getWeight();
-        // y += NEXT_BUTTON.height * button.getWeight();
-        y += NEXT_PATTERN.height * pattern.getWeight();
-
-        return new Point(x, y);
+        scaleFactorA = RESOLUTION_MINIMUM.width / gcd;
+        scaleFactorB = resolution.width / gcd;
     }
 
     @Override
-    public Rectangle getTitle() {
-        return (Rectangle) TITLE.clone();
+    protected Rectangle titleRectangle() {
+        return TITLE;
     }
 
     @Override
-    public Rectangle getCell(Section section, Button button, Pattern pattern) {
-        Point p = getAnchor(section, button, pattern);
-
-        Rectangle r = (Rectangle) CELL.clone();
-        r.translate(p.x, p.y);
-
-        return r;
+    protected Point sectionAnchor() {
+        return SECTION_ANCHOR;
     }
 
     @Override
-    public Rectangle getRate(Button button, Pattern pattern) {
-        Point p = getAnchor(Section.RATE, button, pattern);
-
-        Rectangle r = (Rectangle) CELL_RATE.clone();
-        r.translate(p.x, p.y);
-
-        return r;
+    protected Dimension nextSection() {
+        return NEXT_SECTION;
     }
 
     @Override
-    public Rectangle getComboMark(Button button, Pattern pattern) {
-        Point p = getAnchor(Section.COMBO, button, pattern);
+    protected Dimension nextButton() {
+        return NEXT_BUTTON;
+    }
 
-        Rectangle r = (Rectangle) CELL_COMBO_MARK.clone();
-        r.translate(p.x, p.y);
+    @Override
+    protected Dimension nextPattern() {
+        return NEXT_PATTERN;
+    }
 
-        return r;
+    @Override
+    protected Rectangle cellRectangle() {
+        return CELL;
+    }
+
+    @Override
+    protected Rectangle cellRateRectangle() {
+        return CELL_RATE;
+    }
+
+    @Override
+    protected Rectangle cellComboMarkRectangle() {
+        return CELL_COMBO_MARK;
+    }
+
+    @Override
+    protected int scaleByResolution(int value) {
+        return (int) Math.round((double) value * scaleFactorB / scaleFactorA);
     }
 }
