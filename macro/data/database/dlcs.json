@@ -3,120 +3,124 @@
     "name": "RESPECT",
     "priority": 0
   },
+  "RV": {
+    "name": "RESPECT V",
+    "priority": 1
+  },
   "P1": {
     "name": "Portable",
-    "priority": 1
+    "priority": 2
   },
   "P2": {
     "name": "Portable 2",
-    "priority": 2
+    "priority": 3
   },
   "P3": {
     "name": "Portable 3",
-    "priority": 3
+    "priority": 4
   },
   "TR": {
     "name": "TRILOGY",
-    "priority": 4
+    "priority": 5
   },
   "CE": {
     "name": "Clazziquai Edition",
-    "priority": 5
+    "priority": 6
   },
   "BS": {
     "name": "BLACK SQUARE",
-    "priority": 6
+    "priority": 7
   },
   "VE": {
     "name": "V Extension",
-    "priority": 7
+    "priority": 8
   },
   "VE2": {
     "name": "V EXTENSION II",
-    "priority": 8
+    "priority": 9
   },
   "VE3": {
     "name": "V EXTENSION III",
-    "priority": 9
+    "priority": 10
   },
   "VE4": {
     "name": "V EXTENSION IV",
-    "priority": 10
+    "priority": 11
   },
   "VE5": {
     "name": "V EXTENSION V",
-    "priority": 11
+    "priority": 12
   },
   "ES": {
     "name": "Emotional Sense",
-    "priority": 12
+    "priority": 13
   },
   "T1": {
     "name": "TECHNIKA",
-    "priority": 13
+    "priority": 14
   },
   "T2": {
     "name": "TECHNIKA 2",
-    "priority": 14
+    "priority": 15
   },
   "T3": {
     "name": "TECHNIKA 3",
-    "priority": 15
+    "priority": 16
   },
   "TQ": {
     "name": "TECHNIKA TUNE & Q",
-    "priority": 16
+    "priority": 17
   },
   "CHU": {
     "name": "CHUNITHM",
-    "priority": 17
+    "priority": 18
   },
   "CY": {
     "name": "Cytus",
-    "priority": 18
+    "priority": 19
   },
   "DM": {
     "name": "Deemo",
-    "priority": 19
+    "priority": 20
   },
   "EZ2": {
     "name": "EZ2ON",
-    "priority": 20
+    "priority": 21
   },
   "GC": {
     "name": "GROOVE COASTER",
-    "priority": 21
+    "priority": 22
   },
   "MD": {
     "name": "Muse Dash",
-    "priority": 22
+    "priority": 23
   },
   "GG": {
     "name": "GUILTY GEAR",
-    "priority": 23
+    "priority": 24
   },
   "ESTI": {
     "name": "ESTIMATE",
-    "priority": 24
+    "priority": 25
   },
   "FAL": {
     "name": "FALCOM",
-    "priority": 25
+    "priority": 26
   },
   "GF": {
     "name": "GIRLS' FRONTLINE",
-    "priority": 26
+    "priority": 27
   },
   "MAP": {
     "name": "MAPLESTORY",
-    "priority": 27
+    "priority": 28
   },
   "NXN": {
     "name": "NEXON",
-    "priority": 28
+    "priority": 29
   },
   "CP": {
-    "name": "CLEAR PASS",
-    "priority": 29
+    "name": "CLEAR PASS+",
+    "priority": 30
   }
 }

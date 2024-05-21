@@ -5,101 +5,107 @@
     ],
     "priority": 0
   },
+  "RESPECT V": {
+    "dlcCode": [
+      "RV"
+    ],
+    "priority": 1
+  },
   "PORTABLE 1": {
     "dlcCode": [
       "P1"
     ],
-    "priority": 1
+    "priority": 2
   },
   "PORTABLE 2": {
     "dlcCode": [
       "P2"
     ],
-    "priority": 2
+    "priority": 3
   },
   "PORTABLE 3": {
     "dlcCode": [
       "P3"
     ],
-    "priority": 3
+    "priority": 4
   },
   "TRILOGY": {
     "dlcCode": [
       "TR"
     ],
-    "priority": 4
+    "priority": 5
   },
   "CLAZZIQUAI": {
     "dlcCode": [
       "CE"
     ],
-    "priority": 5
+    "priority": 6
   },
   "BLACK SQUARE": {
     "dlcCode": [
       "BS"
     ],
-    "priority": 6
+    "priority": 7
   },
   "V EXTENSION": {
     "dlcCode": [
       "VE"
     ],
-    "priority": 7
+    "priority": 8
   },
   "V EXTENSION 2": {
     "dlcCode": [
       "VE2"
     ],
-    "priority": 8
+    "priority": 9
   },
   "V EXTENSION 3": {
     "dlcCode": [
       "VE3"
     ],
-    "priority": 9
+    "priority": 10
   },
   "V EXTENSION 4": {
     "dlcCode": [
       "VE4"
     ],
-    "priority": 10
+    "priority": 11
   },
   "V EXTENSION 5": {
     "dlcCode": [
       "VE5"
     ],
-    "priority": 11
+    "priority": 12
   },
   "EMOTIONAL S.": {
     "dlcCode": [
       "ES"
     ],
-    "priority": 12
+    "priority": 13
   },
   "TECHNIKA 1": {
     "dlcCode": [
       "T1"
     ],
-    "priority": 13
+    "priority": 14
   },
   "TECHNIKA 2": {
     "dlcCode": [
       "T2"
     ],
-    "priority": 14
+    "priority": 15
   },
   "TECHNIKA 3": {
     "dlcCode": [
       "T3"
     ],
-    "priority": 15
+    "priority": 16
   },
   "TECHNIKA TUNE Q": {
     "dlcCode": [
       "TQ"
     ],
-    "priority": 16
+    "priority": 17
   },
   "MUSIC GAME": {
     "dlcCode": [
@@ -110,7 +116,7 @@
       "GC",
       "MD"
     ],
-    "priority": 17
+    "priority": 18
   },
   "VARIETY": {
     "dlcCode": [
@@ -121,12 +127,12 @@
       "MAP",
       "NXN"
     ],
-    "priority": 18
+    "priority": 19
   },
   "CLEARPASS+": {
     "dlcCode": [
       "CP"
     ],
-    "priority": 19
+    "priority": 20
   }
 }
