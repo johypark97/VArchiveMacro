@@ -25,10 +25,12 @@ import javax.imageio.ImageIO;
 
 public class OcrGroundTruthGenerationTask extends Task<Void> {
     private static final Path ABSOLUTE_PATH = Path.of("").toAbsolutePath();
-    private static final String GT_OUTPUT_DIRECTORY_NAME = "gt";
-    private static final String NUMBERS_FILENAME = "foo.numbers";
-    private static final String PUNC_FILENAME = "foo.punc";
-    private static final String WORDLIST_FILENAME = "foo.wordlist";
+
+    private static final String MODEL_NAME = "djmax";
+    private static final String GT_OUTPUT_DIRECTORY_NAME = MODEL_NAME + "-ground-truth";
+    private static final String NUMBERS_FILENAME = MODEL_NAME + ".numbers";
+    private static final String PUNC_FILENAME = MODEL_NAME + ".punc";
+    private static final String WORDLIST_FILENAME = MODEL_NAME + ".wordlist";
 
     private final CharMatcher letterMatcher;
     private final CharMatcher numberMatcher;
@@ -107,9 +109,11 @@ public class OcrGroundTruthGenerationTask extends Task<Void> {
         }
 
         Path gtOutputDir = outputPath.resolve(GT_OUTPUT_DIRECTORY_NAME);
+        Path modelOutputDir = outputPath.resolve(MODEL_NAME);
 
         CacheHelper.clearAndReadyDirectory(outputPath);
         Files.createDirectories(gtOutputDir);
+        Files.createDirectories(modelOutputDir);
 
         List<Path> imageInputPathList;
         try (Stream<Path> stream = Files.walk(inputPath)) {
@@ -206,9 +210,9 @@ public class OcrGroundTruthGenerationTask extends Task<Void> {
                 wordSet.addAll(splitter.apply(wordString));
             }
 
-            Path numbersPath = outputPath.resolve(NUMBERS_FILENAME);
-            Path puncPath = outputPath.resolve(PUNC_FILENAME);
-            Path wordlistPath = outputPath.resolve(WORDLIST_FILENAME);
+            Path numbersPath = modelOutputDir.resolve(NUMBERS_FILENAME);
+            Path puncPath = modelOutputDir.resolve(PUNC_FILENAME);
+            Path wordlistPath = modelOutputDir.resolve(WORDLIST_FILENAME);
 
             Files.writeString(numbersPath, joiner.apply(numberSet));
             Files.writeString(puncPath, joiner.apply(puncSet));
