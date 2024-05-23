@@ -159,30 +159,28 @@ public class OcrGroundTruthGenerationTask extends Task<Void> {
             BufferedImage image = ImageIO.read(imageInputPath.toFile());
             byte[] imageBytes = ImageConverter.imageToPngBytes(image);
 
-            for (int j = 0; j < 3; ++j) {
-                for (int k = 0; k < 5; ++k) {
-                    for (int l = 0; l < 5; ++l) {
-                        float sx = 1 + 0.05f * k;
-                        float sy = 1 + 0.05f * l;
-                        String outputFileName =
-                                String.format("%s_%d_%.2f_%.2f.", baseOutputFileName, j, sx, sy);
+            int stretchCondition = 5;
+            for (int j = 1; j < 4; ++j) {
+                for (int k = 0; k <= stretchCondition * 2; ++k) {
+                    float sx = 1 - (k <= stretchCondition ? 0.1f * k : 0);
+                    float sy = 1 - (k > stretchCondition ? 0.1f * (k - stretchCondition) : 0);
+                    String outputFileName =
+                            String.format("%s_%d_%.2f_%.2f.", baseOutputFileName, j, sx, sy);
 
-                        BufferedImage preprocessedImage;
-                        try (PixWrapper pix = new PixWrapper(imageBytes)) {
-                            PixPreprocessor.preprocessTitle(pix, j, sx, sy);
-                            preprocessedImage = ImageConverter.pngBytesToImage(pix.getPngBytes());
-                        }
-                        preprocessedImage = trimImage(preprocessedImage);
-
-                        Path imageOutputPath =
-                                gtOutputDir.resolve(outputFileName + CacheHelper.IMAGE_FORMAT);
-                        ImageIO.write(preprocessedImage, CacheHelper.IMAGE_FORMAT,
-                                imageOutputPath.toFile());
-
-                        Path gtOutputPath =
-                                gtOutputDir.resolve(outputFileName + CacheHelper.GT_FORMAT);
-                        Files.copy(gtInputPath, gtOutputPath);
+                    BufferedImage preprocessedImage;
+                    try (PixWrapper pix = new PixWrapper(imageBytes)) {
+                        PixPreprocessor.preprocessTitle(pix, j, sx, sy);
+                        preprocessedImage = ImageConverter.pngBytesToImage(pix.getPngBytes());
                     }
+                    preprocessedImage = trimImage(preprocessedImage);
+
+                    Path imageOutputPath =
+                            gtOutputDir.resolve(outputFileName + CacheHelper.IMAGE_FORMAT);
+                    ImageIO.write(preprocessedImage, CacheHelper.IMAGE_FORMAT,
+                            imageOutputPath.toFile());
+
+                    Path gtOutputPath = gtOutputDir.resolve(outputFileName + CacheHelper.GT_FORMAT);
+                    Files.copy(gtInputPath, gtOutputPath);
                 }
             }
 

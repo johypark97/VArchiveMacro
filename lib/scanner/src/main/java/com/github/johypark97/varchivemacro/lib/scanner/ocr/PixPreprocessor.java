@@ -8,11 +8,11 @@ public class PixPreprocessor {
 
     public static void thresholdWhite(PixWrapper pix) throws PixError {
         pix.convertRGBToLuminance();
-        pix.thresholdToBinary(255);
+        pix.thresholdToBinary(192);
     }
 
     public static void preprocessTitle(PixWrapper pix) throws PixError {
-        preprocessTitle(pix, 1, 1, 1);
+        preprocessTitle(pix, 2, 1, 1);
     }
 
     public static void preprocessTitle(PixWrapper pix, int dilation, float sx, float sy)
