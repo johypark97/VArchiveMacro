@@ -15,6 +15,11 @@ public final class CollectionAreaFactory {
             return new CollectionAreaFHD(resolution);
         }
 
+        if (CollectionAreaWFHD.RESOLUTION_RATIO.equals(ratio) && checkMinimumResolution(
+                CollectionAreaWFHD.RESOLUTION_MINIMUM, resolution)) {
+            return new CollectionAreaWFHD(resolution);
+        }
+
         throw new NotSupportedResolutionException(resolution);
     }
 
