@@ -61,7 +61,7 @@ public class AnalysisDataViewerComponent extends VBox {
             for (int j = 0; j < 4; ++j) {
                 RecordBox box = new RecordBox();
                 recordBoxList.add(box);
-                recordGridPane.add(box, i + 1, j + 1);
+                recordGridPane.add(box, j + 1, i + 1);
             }
         }
 
