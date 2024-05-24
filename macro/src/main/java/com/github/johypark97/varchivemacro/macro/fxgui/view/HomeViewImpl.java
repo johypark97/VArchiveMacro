@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
+import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
@@ -32,7 +33,6 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -140,23 +140,17 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     public void showError(String header, Throwable throwable) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.initOwner(getStage());
-
-        alert.setHeaderText(header);
-        alert.setContentText(throwable.toString());
+        Alert alert = AlertBuilder.error().setOwner(getStage()).setHeaderText(header)
+                .setContentText(throwable.toString()).setThrowable(throwable).alert;
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
     }
 
     @Override
-    public void showInformation(String header, String message) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.initOwner(getStage());
-
-        alert.setHeaderText(header);
-        alert.setContentText(message);
+    public void showInformation(String header, String content) {
+        Alert alert = AlertBuilder.information().setOwner(getStage()).setHeaderText(header)
+                .setContentText(content).alert;
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
@@ -164,16 +158,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     public boolean showConfirmation(String header, String content) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.initOwner(getStage());
-
-        if (header != null) {
-            alert.setHeaderText(header);
-        }
-
-        if (content != null) {
-            alert.setContentText(content);
-        }
+        Alert alert = AlertBuilder.confirmation().setOwner(getStage()).setHeaderText(header)
+                .setContentText(content).alert;
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
@@ -193,11 +179,6 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     public void home_openAbout() {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.initOwner(getStage());
-
-        alert.setHeaderText(null);
-
         VBox box = new VBox();
         box.setPadding(new Insets(20));
         box.setSpacing(10);
@@ -218,6 +199,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
             }
             box.getChildren().add(sourceCodeBox);
         }
+
+        Alert alert = AlertBuilder.information().setOwner(getStage()).alert;
         alert.getDialogPane().setContent(box);
 
         alert.showAndWait();

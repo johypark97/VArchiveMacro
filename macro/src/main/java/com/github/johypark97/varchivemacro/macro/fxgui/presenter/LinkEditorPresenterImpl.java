@@ -103,9 +103,9 @@ public class LinkEditorPresenterImpl
         CaptureData captureData = getScannerModel().getCaptureData(captureDataId);
 
         String header = Language.getInstance().getString("linkEditor.dialog.link.header");
-        String message = String.format("(%d) %s", captureData.idProperty().get(),
+        String content = String.format("(%d) %s", captureData.idProperty().get(),
                 captureData.scannedTitle.get());
-        if (!getView().showConfirmation(header, message)) {
+        if (!getView().showConfirmation(header, content)) {
             return false;
         }
 

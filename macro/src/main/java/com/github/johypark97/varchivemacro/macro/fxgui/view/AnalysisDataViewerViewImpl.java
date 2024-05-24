@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.view;
 
+import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
@@ -24,11 +25,8 @@ public class AnalysisDataViewerViewImpl
 
     @Override
     public void showError(String header, Throwable throwable) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.initOwner(getStage());
-
-        alert.setHeaderText(header);
-        alert.setContentText(throwable.toString());
+        Alert alert = AlertBuilder.error().setOwner(getStage()).setHeaderText(header)
+                .setContentText(throwable.toString()).setThrowable(throwable).alert;
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();

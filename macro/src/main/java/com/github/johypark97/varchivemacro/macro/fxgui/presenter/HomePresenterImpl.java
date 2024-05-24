@@ -158,17 +158,17 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     @Override
     public void onViewShow_setupService() {
         getScannerModel().setupService(throwable -> {
-            String message = "Scanner service exception";
+            String header = "Scanner service exception";
 
-            LOGGER.atError().log(message, throwable);
-            getView().showError(message, throwable);
+            LOGGER.atError().log(header, throwable);
+            getView().showError(header, throwable);
         });
 
         getMacroModel().setupService(throwable -> {
-            String message = "Macro service exception";
+            String header = "Macro service exception";
 
-            LOGGER.atError().log(message, throwable);
-            getView().showError(message, throwable);
+            LOGGER.atError().log(header, throwable);
+            getView().showError(header, throwable);
         });
     }
 
@@ -303,8 +303,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
         Language language = Language.getInstance();
         String header = language.getString("home.dialog.languageChange.header");
-        String message = language.getString("home.dialog.languageChange.message");
-        getView().showInformation(header, message);
+        String content = language.getString("home.dialog.languageChange.content");
+        getView().showInformation(header, content);
     }
 
     @Override

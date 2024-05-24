@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.dbmanager;
 
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.Dialogs;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DefaultDatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DefaultLiveTesterModel;
@@ -14,6 +13,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTesterP
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.LiveTesterViewImpl;
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
+import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -55,7 +55,7 @@ public class Main extends Application {
             databaseModel.load(file.toPath());
         } catch (IOException | RuntimeException e) {
             LOGGER.atError().log("DatabaseModel exception", e);
-            Dialogs.showException(e);
+            AlertBuilder.error().setThrowable(e).alert.showAndWait();
             return false;
         }
 

@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.view;
 
+import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorView;
@@ -8,7 +9,6 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.LinkEditorStag
 import java.awt.Toolkit;
 import java.lang.ref.WeakReference;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
@@ -28,12 +28,9 @@ public class LinkEditorViewImpl extends AbstractMvpView<LinkEditorPresenter, Lin
     }
 
     @Override
-    public void showError(String header, Exception exception) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.initOwner(getStage());
-
-        alert.setHeaderText(header);
-        alert.setContentText(exception.toString());
+    public void showError(String header, Throwable throwable) {
+        Alert alert = AlertBuilder.error().setOwner(getStage()).setHeaderText(header)
+                .setContentText(throwable.toString()).setThrowable(throwable).alert;
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
@@ -41,16 +38,8 @@ public class LinkEditorViewImpl extends AbstractMvpView<LinkEditorPresenter, Lin
 
     @Override
     public boolean showConfirmation(String header, String content) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.initOwner(getStage());
-
-        if (header != null) {
-            alert.setHeaderText(header);
-        }
-
-        if (content != null) {
-            alert.setContentText(content);
-        }
+        Alert alert = AlertBuilder.confirmation().setOwner(getStage()).setHeaderText(header)
+                .setContentText(content).alert;
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();

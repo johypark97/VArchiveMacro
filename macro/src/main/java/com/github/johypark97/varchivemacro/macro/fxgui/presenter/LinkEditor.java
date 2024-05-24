@@ -31,7 +31,7 @@ public interface LinkEditor {
     interface LinkEditorView extends MvpView<LinkEditorPresenter> {
         void requestStop();
 
-        void showError(String header, Exception exception);
+        void showError(String header, Throwable throwable);
 
         boolean showConfirmation(String header, String content);
 

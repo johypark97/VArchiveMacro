@@ -13,8 +13,8 @@
   <entry key="common.select">선택</entry>
   <entry key="common.selectAll">전체 선택</entry>
   <entry key="common.unselectAll">전체 선택해제</entry>
+  <entry key="home.dialog.languageChange.content">변경한 언어는 프로그램 재시작 후 적용됩니다.</entry>
   <entry key="home.dialog.languageChange.header">언어 변경됨</entry>
-  <entry key="home.dialog.languageChange.message">변경한 언어는 프로그램 재시작 후 적용됩니다.</entry>
   <entry key="home.menu.about">정보</entry>
   <entry key="home.menu.about.about">정보</entry>
   <entry key="home.menu.about.osl">오픈 소스 라이선스</entry>

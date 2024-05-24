@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
+import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
@@ -26,12 +27,9 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.LinkEditorViewImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.OpenSourceLicenseViewImpl;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.Toolkit;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,26 +70,9 @@ public class Main extends Application {
     }
 
     private static void showUncaughtExceptionAlert(Throwable e) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-
-        alert.setTitle("Uncaught Exception");
-        alert.setHeaderText("An exception has been thrown and uncaught.");
-        alert.setContentText(e.toString());
-
-        StringBuilder builder = new StringBuilder();
-        Throwable p = e;
-        do {
-            String stack = Arrays.stream(p.getStackTrace()).map(x -> "\tat " + x)
-                    .collect(Collectors.joining(System.lineSeparator()));
-
-            builder.append(p).append(System.lineSeparator());
-            builder.append(stack).append(System.lineSeparator());
-
-            p = p.getCause();
-        } while (p != null);
-
-        alert.getDialogPane().setExpandableContent(new TextArea(builder.toString()));
-        alert.getDialogPane().setStyle("-fx-font-family: Monospaced; -fx-font-size: 16px;");
+        Alert alert = AlertBuilder.error().setTitle("Uncaught Exception")
+                .setHeaderText("An exception has been thrown and uncaught.")
+                .setContentText(e.toString()).setThrowable(e).alert;
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();

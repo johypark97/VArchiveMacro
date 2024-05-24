@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter;
 
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.Dialogs;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrTestModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrToolModel;
@@ -11,6 +10,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.Oc
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterPresenter;
+import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
@@ -76,15 +76,15 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private void defaultOnThrow(Throwable throwable) {
         LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, throwable);
-        Dialogs.showException(throwable);
+        AlertBuilder.error().setThrowable(throwable).alert.showAndWait();
     }
 
     private void defaultOnTaskRunning() {
-        Dialogs.showWarning("The task is running.");
+        AlertBuilder.warning().setContentText("The task is running.").alert.showAndWait();
     }
 
     private void defaultOnTaskNotRunning() {
-        Dialogs.showWarning("The task is not running.");
+        AlertBuilder.warning().setContentText("The task is not running.").alert.showAndWait();
     }
 
     private Path openDirectorySelector(String title, Window ownerWindow) {
@@ -111,24 +111,24 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         getOcrTestModel().setupOcrTestService()
                 .setDlcSongList(getDatabaseModel().getDlcSongList())
                 .setTitleTool(getDatabaseModel().getTitleTool())
-                .setOnDone(() -> Dialogs.showInformation("OcrTest done."))
-                .setOnCancel(() -> Dialogs.showInformation("OcrTest canceled."))
+                .setOnDone(() -> AlertBuilder.information().setContentText("OcrTest done.").alert.showAndWait())
+                .setOnCancel(() -> AlertBuilder.information().setContentText("OcrTest canceled.").alert.showAndWait())
                 .setOnThrow(this::defaultOnThrow)
                 .setOnUpdateProgress(getView()::ocrTester_updateProgressIndicator)
                 .build();
 
         getOcrToolModel().setupOcrCacheCaptureService()
                 .setDlcSongList(getDatabaseModel().getDlcSongList())
-                .setOnCancel(() -> Dialogs.showInformation("OcrCapture canceled."))
-                .setOnDone(() -> Dialogs.showInformation("OcrCapture done."))
+                .setOnCancel(() -> AlertBuilder.information().setContentText("OcrCapture canceled.").alert.showAndWait())
+                .setOnDone(() -> AlertBuilder.information().setContentText("OcrCapture done.").alert.showAndWait())
                 .setOnThrow(this::defaultOnThrow)
                 .build();
 
         getOcrToolModel().setupOcrCacheClassificationService()
                 .setDlcSongList(getDatabaseModel().getDlcSongList())
                 .setTitleTool(getDatabaseModel().getTitleTool())
-                .setOnCancel(() -> Dialogs.showInformation("OcrCacheClassification canceled."))
-                .setOnDone(() -> Dialogs.showInformation("OcrCacheClassification done."))
+                .setOnCancel(() -> AlertBuilder.information().setContentText("OcrCacheClassification canceled.").alert.showAndWait())
+                .setOnDone(() -> AlertBuilder.information().setContentText("OcrCacheClassification done.").alert.showAndWait())
                 .setOnThrow(this::defaultOnThrow)
                 .setOnUpdateProgress(getView()::ocrCacheClassifier_updateProgressIndicator)
                 .build();
@@ -136,8 +136,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         getOcrToolModel().setupOcrGroundTruthGenerationService()
                 .setDlcSongList(getDatabaseModel().getDlcSongList())
                 .setTitleTool(getDatabaseModel().getTitleTool())
-                .setOnCancel(() -> Dialogs.showInformation("OcrGroundTruthGeneration canceled."))
-                .setOnDone(() -> Dialogs.showInformation("OcrGroundTruthGeneration done."))
+                .setOnCancel(() -> AlertBuilder.information().setContentText("OcrGroundTruthGeneration canceled.").alert.showAndWait())
+                .setOnDone(() -> AlertBuilder.information().setContentText("OcrGroundTruthGeneration done.").alert.showAndWait())
                 .setOnThrow(this::defaultOnThrow)
                 .setOnUpdateProgress(getView()::ocrGroundTruthGenerator_updateProgressIndicator)
                 .build();
@@ -155,7 +155,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         }
 
         if (ServiceManager.getInstance().isRunningAny()) {
-            Dialogs.showWarning("Some tasks are still running.", "Unable to exit.");
+            AlertBuilder.warning().setHeaderText("Unable to exit.")
+                    .setContentText("Some tasks are still running.").alert.showAndWait();
             return false;
         }
 

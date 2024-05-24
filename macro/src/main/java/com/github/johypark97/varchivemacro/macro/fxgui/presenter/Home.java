@@ -99,7 +99,7 @@ public interface Home {
 
         void showError(String header, Throwable throwable);
 
-        void showInformation(String header, String message);
+        void showInformation(String header, String content);
 
         boolean showConfirmation(String header, String content);
 

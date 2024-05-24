@@ -1,11 +1,11 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter;
 
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.Dialogs;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.LiveTesterModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterPresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.LiveTesterView;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.StartData;
+import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
@@ -51,7 +51,8 @@ public class LiveTesterPresenterImpl
         Objects.requireNonNull(startData.tessdataPath);
 
         if (startData.tessdataLanguage.isBlank()) {
-            Dialogs.showWarning("tessdataLanguage is blank. may not work properly.");
+            AlertBuilder.warning().setContentText(
+                    "tessdataLanguage is blank. may not work properly.").alert.showAndWait();
         }
 
         List<LocalDlcSong> dlcSongList = getDatabaseModel().getDlcSongList();
@@ -60,7 +61,7 @@ public class LiveTesterPresenterImpl
         try {
             getLiveTesterModel().initialize(dlcSongList, titleTool, startData);
         } catch (AWTException | NotSupportedResolutionException | OcrInitializationError e) {
-            Dialogs.showException(e);
+            AlertBuilder.error().setThrowable(e).alert.showAndWait();
             return false;
         }
 
@@ -94,7 +95,7 @@ public class LiveTesterPresenterImpl
             viewData.recognized = modelData.recognized;
             viewData.text = modelData.text;
         } catch (IOException | PixError e) {
-            Dialogs.showException(e);
+            AlertBuilder.error().setThrowable(e).alert.showAndWait();
             return null;
         }
 
