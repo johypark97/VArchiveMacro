@@ -33,142 +33,53 @@
   ],
   "remap": [
     {
+      // id: 41
+      "to": "U.A.D",
+      "from": [
+        "U.AD"
+      ]
+    },
+    {
       // id: 211
-      "to": "sOmUCHiNLUV~MeIodicTwisted",
+      "to": "sOmUCHiNLUV~MeIodicTwistedMix",
       "from": [
-        "sOmUCHiNLUV~MeIodicTwistedA",
-        "sOmUCHiNLUV~MeIodicTwistedN"
-      ]
-    },
-    {
-      // id: 230
-      "to": "YourOwnMiracIe~DiscoHouseMix",
-      "from": [
-        "YourOwnMiracIe~DiscoHouseMix-",
-        "YourOwnMiracIe~DiscoHouseMix~-"
-      ]
-    },
-    {
-      // id: 291
-      "to": "LesParfumsdeL'Amour",
-      "from": [
-        "LesParfumsdeL'AmourI"
-      ]
-    },
-    {
-      // id: 405
-      "to": "SuperSonic~Mr.FunkyDirtyPIanetR",
-      "from": [
-        "SuperSonic~Mr.FunkyDirtyPIanetRe"
-      ]
-    },
-    {
-      // id: 420
-      "to": "공성전~PierreBIanche,YonceRemix",
-      "from": [
-        "공성전~PierreBIanche,YonceRemix~"
+        "sOmUCHiNLUV~MeIodicTwistedMix~"
       ]
     },
     {
       // id: 428
       "to": "최종무곡",
       "from": [
-        "치고모고최종무곡",
-        "치국모고최종무곡"
+        "최종무곡부바"
       ]
     },
     {
-      // id: 429
-      "to": "카트라이더Mashup~CosmographRe",
+      // id: 431
+      "to": "카트라이더,크레이지아케이드,버블파이터",
       "from": [
-        "카트라이더Mashup~CosmographRer",
-        "카트라이더Mashup~CosmographRetr"
-      ]
-    },
-    {
-      // id: 490
-      "to": "KaI_wrnw",
-      "from": [
-        "KaILwrnw"
-      ]
-    },
-    {
-      // id: 299
-      "to": "유령",
-      "from": [
-        "유려t우"
-      ]
-    },
-    {
-      // id: 527
-      "to": "느낌",
-      "from": [
-        "느낌혈",
-        "낌혈"
+        "카트라이더크레이지아케이드,버블파이터"
       ]
     },
     {
       // id: 577
-      "to": "MoonIightShadow~PauIBazookaRe",
+      "to": "MoonIightShadow~PauIBazookaRemix",
       "from": [
-        "MoonIightShadow~PauIBazookaRer"
-      ]
-    },
-    {
-      // id: 582
-      "to": "TheLakeofObIivion~jam-jamRemix",
-      "from": [
-        "TheLakeofObIivion~jam-jamRemix~"
+        "MoonIightShadow~PauIBazookaRemix-"
       ]
     },
     {
       // id: 583
-      "to": "TheTuneoftheAzureLight~Parang",
+      "to": "TheTuneoftheAzureLight~ParangRe",
       "from": [
-        "TheTuneoftheAzureLight~Parangr",
-        "TheTuneoftheAzureLight~ParangF"
+        "TheTuneoftheAzureLight~ParangRenI",
+        "TheTuneoftheAzureLight~ParangRetiI"
       ]
     },
     {
-      // id: 588
-      "to": "3:33",
+      // id: 594
+      "to": "gIoryMAX-나의최대치로너와함께할게-",
       "from": [
-        "3:333"
-      ]
-    },
-    {
-      // id: 600
-      "to": "Pitter-patter",
-      "from": [
-        "Pitter-patterI"
-      ]
-    },
-    {
-      // id: 603
-      "to": "RightTime[ScreaMRecords]",
-      "from": [
-        "RightTimeIScreaMRecordsI"
-      ]
-    },
-    {
-      // id: 609
-      "to": "GENESISBEYONDTHEBEGINNIN",
-      "from": [
-        "GENESISBEYONDTHEBEGINNING"
-      ]
-    },
-    {
-      // id: 610
-      "to": "InevitabIeStruggIe",
-      "from": [
-        "InevitabIeStrugeIe"
-      ]
-    },
-    {
-      // id: 612
-      "to": "SiIverWiII",
-      "from": [
-        "SiIverWitII"
+        "gIoryMAX-나의최대치로너와함께할게"
       ]
     }
   ]
