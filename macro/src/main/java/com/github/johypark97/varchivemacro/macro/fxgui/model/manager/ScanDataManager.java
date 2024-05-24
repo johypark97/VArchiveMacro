@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model.manager;
 
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils.StringDiff;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyIntegerProperty;
@@ -20,46 +22,48 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 
 public class ScanDataManager {
-    private final ReadOnlyMapWrapper<Integer, CaptureData> captureDataMap =
-            new ReadOnlyMapWrapper<>();
-    private final ReadOnlyMapWrapper<Integer, SongData> songDataMap = new ReadOnlyMapWrapper<>();
+    private final List<CaptureData> captureDataList = new ArrayList<>();
+    private final List<SongData> songDataList = new ArrayList<>();
 
-    public ScanDataManager() {
-        captureDataMap.set(FXCollections.observableHashMap());
-        songDataMap.set(FXCollections.observableHashMap());
+    public List<CaptureData> copyCaptureDataList() {
+        return List.copyOf(captureDataList);
     }
 
-    public ReadOnlyMapProperty<Integer, CaptureData> captureDataMapProperty() {
-        return captureDataMap.getReadOnlyProperty();
-    }
-
-    public ReadOnlyMapProperty<Integer, SongData> songDataMapProperty() {
-        return songDataMap.getReadOnlyProperty();
+    public List<SongData> copySongDataList() {
+        return List.copyOf(songDataList);
     }
 
     public boolean isEmpty() {
-        return captureDataMap.isEmpty() && songDataMap.isEmpty();
+        return captureDataList.isEmpty() && songDataList.isEmpty();
     }
 
     public void clear() {
-        captureDataMap.clear();
-        songDataMap.clear();
+        captureDataList.clear();
+        songDataList.clear();
+    }
+
+    public SongData getSongData(int index) {
+        return songDataList.get(index);
     }
 
     public SongData createSongData(LocalDlcSong song, String normalizedTitle) {
-        int id = songDataMap.size();
+        int id = songDataList.size();
 
         SongData data = new SongData(id, song, normalizedTitle);
-        songDataMap.put(id, data);
+        songDataList.add(data);
 
         return data;
     }
 
+    public CaptureData getCaptureData(int index) {
+        return captureDataList.get(index);
+    }
+
     public CaptureData createCaptureData() {
-        int id = captureDataMap.size();
+        int id = captureDataList.size();
 
         CaptureData data = new CaptureData(id);
-        captureDataMap.put(id, data);
+        captureDataList.add(data);
 
         return data;
     }

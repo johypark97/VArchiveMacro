@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import javafx.collections.ObservableMap;
 
 public interface ScannerModel {
     void validateCacheDirectory(Path path) throws IOException;
@@ -49,17 +48,21 @@ public interface ScannerModel {
 
     boolean isNewRecordDataEmpty();
 
-    ObservableMap<Integer, CaptureData> getObservableCaptureDataMap();
+    CaptureData getCaptureData(int id);
 
-    ObservableMap<Integer, SongData> getObservableSongDataMap();
+    List<CaptureData> copyCaptureDataList();
+
+    SongData getSongData(int id);
+
+    List<SongData> copySongDataList();
 
     BufferedImage getCaptureImage(Path cacheDirectoryPath, int id) throws IOException;
 
-    ObservableMap<Integer, AnalysisData> getObservableAnalysisDataMap();
+    List<AnalysisData> copyAnalysisDataList();
 
     AnalyzedRecordData getAnalyzedRecordData(Path cacheDirectoryPath, int id) throws Exception;
 
-    ObservableMap<Integer, NewRecordData> getObservableNewRecordDataMap();
+    List<NewRecordData> copyNewRecordDataList();
 
     class AnalyzedRecordData {
         public BufferedImage titleImage;

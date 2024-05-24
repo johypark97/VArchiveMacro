@@ -4,42 +4,36 @@ import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.ReadOnlyMapProperty;
-import javafx.beans.property.ReadOnlyMapWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 
 public class NewRecordDataManager {
-    private final ReadOnlyMapWrapper<Integer, NewRecordData> newRecordDataMap =
-            new ReadOnlyMapWrapper<>();
+    private final List<NewRecordData> newRecordDataList = new ArrayList<>();
 
-    public NewRecordDataManager() {
-        newRecordDataMap.set(FXCollections.observableHashMap());
-    }
-
-    public ReadOnlyMapProperty<Integer, NewRecordData> newRecordDataMapProperty() {
-        return newRecordDataMap.getReadOnlyProperty();
+    public List<NewRecordData> copyNewRecordDataList() {
+        return List.copyOf(newRecordDataList);
     }
 
     public boolean isEmpty() {
-        return newRecordDataMap.isEmpty();
+        return newRecordDataList.isEmpty();
     }
 
     public void clear() {
-        newRecordDataMap.clear();
+        newRecordDataList.clear();
     }
 
     public NewRecordData createNewRecordData(LocalDlcSong song, LocalRecord previousRecord,
             LocalRecord newRecord) {
-        int id = newRecordDataMap.size();
+        int id = newRecordDataList.size();
 
         NewRecordData data = new NewRecordData(id, song, previousRecord, newRecord);
-        newRecordDataMap.put(id, data);
+        newRecordDataList.add(data);
 
         return data;
     }
@@ -95,7 +89,12 @@ public class NewRecordDataManager {
         }
 
         public enum Status {
-            CANCELED, HIGHER_RECORD_EXISTS, NONE, READY, UPLOADED, UPLOADING
+            CANCELED,
+            HIGHER_RECORD_EXISTS,
+            NONE,
+            READY,
+            UPLOADED,
+            UPLOADING
         }
     }
 }

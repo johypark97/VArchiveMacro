@@ -6,42 +6,40 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataMan
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.ReadOnlyMapProperty;
-import javafx.beans.property.ReadOnlyMapWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 
 public class AnalysisDataManager {
-    private final ReadOnlyMapWrapper<Integer, AnalysisData> analysisDataMap =
-            new ReadOnlyMapWrapper<>();
+    private final List<AnalysisData> analysisDataList = new ArrayList<>();
 
-    public AnalysisDataManager() {
-        analysisDataMap.set(FXCollections.observableHashMap());
-    }
-
-    public ReadOnlyMapProperty<Integer, AnalysisData> analysisDataMapProperty() {
-        return analysisDataMap.getReadOnlyProperty();
+    public List<AnalysisData> copyAnalysisDataList() {
+        return List.copyOf(analysisDataList);
     }
 
     public boolean isEmpty() {
-        return analysisDataMap.isEmpty();
+        return analysisDataList.isEmpty();
     }
 
     public void clear() {
-        analysisDataMap.clear();
+        analysisDataList.clear();
+    }
+
+    public AnalysisData getAnalysisData(int index) {
+        return analysisDataList.get(index);
     }
 
     public AnalysisData createAnalysisData(SongData songData) {
-        int id = analysisDataMap.size();
+        int id = analysisDataList.size();
 
         AnalysisData data = new AnalysisData(id, songData);
-        analysisDataMap.put(id, data);
+        analysisDataList.add(data);
 
         return data;
     }
@@ -87,7 +85,11 @@ public class AnalysisDataManager {
         }
 
         public enum Status {
-            ANALYZING, CANCELED, DONE, ERROR, READY
+            ANALYZING,
+            CANCELED,
+            DONE,
+            ERROR,
+            READY
         }
     }
 

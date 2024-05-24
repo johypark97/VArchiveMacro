@@ -422,19 +422,19 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         String header = language.getString("scannerService.dialog.header");
 
         Runnable onCancel = () -> {
-            getView().scanner_capture_setCaptureDataList(FXCollections.observableArrayList(
-                    getScannerModel().getObservableCaptureDataMap().values()));
-            getView().scanner_song_setSongDataList(FXCollections.observableArrayList(
-                    getScannerModel().getObservableSongDataMap().values()));
+            getView().scanner_capture_setCaptureDataList(
+                    FXCollections.observableArrayList(getScannerModel().copyCaptureDataList()));
+            getView().scanner_song_setSongDataList(
+                    FXCollections.observableArrayList(getScannerModel().copySongDataList()));
 
             getView().showInformation(header,
                     language.getString("scannerService.dialog.scanCanceled"));
         };
         Runnable onDone = () -> {
-            getView().scanner_capture_setCaptureDataList(FXCollections.observableArrayList(
-                    getScannerModel().getObservableCaptureDataMap().values()));
-            getView().scanner_song_setSongDataList(FXCollections.observableArrayList(
-                    getScannerModel().getObservableSongDataMap().values()));
+            getView().scanner_capture_setCaptureDataList(
+                    FXCollections.observableArrayList(getScannerModel().copyCaptureDataList()));
+            getView().scanner_song_setSongDataList(
+                    FXCollections.observableArrayList(getScannerModel().copySongDataList()));
 
             getView().showInformation(header, language.getString("scannerService.dialog.scanDone"));
         };
@@ -526,8 +526,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         };
 
         Runnable onDataReady = () -> getView().scanner_analysis_setAnalysisDataList(
-                FXCollections.observableArrayList(
-                        getScannerModel().getObservableAnalysisDataMap().values()));
+                FXCollections.observableArrayList(getScannerModel().copyAnalysisDataList()));
 
         getScannerModel().starAnalysis(onDataReady, onDone, onCancel, cacheDirectoryPath);
     }
@@ -544,8 +543,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         }
 
         Runnable onDone = () -> getView().scanner_uploader_setNewRecordDataList(
-                FXCollections.observableArrayList(
-                        getScannerModel().getObservableNewRecordDataMap().values()));
+                FXCollections.observableArrayList(getScannerModel().copyNewRecordDataList()));
 
         getScannerModel().collectNewRecord(onDone, getRecordModel());
     }

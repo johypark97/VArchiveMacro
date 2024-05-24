@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
-import javafx.collections.ObservableMap;
 import javafx.concurrent.Task;
 
 public class DefaultScannerModel implements ScannerModel {
@@ -220,18 +219,28 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public ObservableMap<Integer, CaptureData> getObservableCaptureDataMap() {
-        return scanDataManager.captureDataMapProperty();
+    public CaptureData getCaptureData(int id) {
+        return scanDataManager.getCaptureData(id);
     }
 
     @Override
-    public ObservableMap<Integer, SongData> getObservableSongDataMap() {
-        return scanDataManager.songDataMapProperty();
+    public List<CaptureData> copyCaptureDataList() {
+        return scanDataManager.copyCaptureDataList();
+    }
+
+    @Override
+    public SongData getSongData(int id) {
+        return scanDataManager.getSongData(id);
+    }
+
+    @Override
+    public List<SongData> copySongDataList() {
+        return scanDataManager.copySongDataList();
     }
 
     @Override
     public BufferedImage getCaptureImage(Path cacheDirectoryPath, int id) throws IOException {
-        CaptureData captureData = scanDataManager.captureDataMapProperty().get(id);
+        CaptureData captureData = scanDataManager.getCaptureData(id);
 
         try {
             return new CacheManager(cacheDirectoryPath).read(id);
@@ -242,8 +251,8 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public ObservableMap<Integer, AnalysisData> getObservableAnalysisDataMap() {
-        return analysisDataManager.analysisDataMapProperty();
+    public List<AnalysisData> copyAnalysisDataList() {
+        return analysisDataManager.copyAnalysisDataList();
     }
 
     @Override
@@ -251,7 +260,7 @@ public class DefaultScannerModel implements ScannerModel {
             throws Exception {
         AnalyzedRecordData data = new AnalyzedRecordData();
 
-        AnalysisData analysisData = analysisDataManager.analysisDataMapProperty().get(id);
+        AnalysisData analysisData = analysisDataManager.getAnalysisData(id);
         data.song = analysisData.songDataProperty().get().songProperty().get();
 
         BufferedImage image = getCaptureImage(cacheDirectoryPath,
@@ -285,7 +294,7 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public ObservableMap<Integer, NewRecordData> getObservableNewRecordDataMap() {
-        return newRecordDataManager.newRecordDataMapProperty();
+    public List<NewRecordData> copyNewRecordDataList() {
+        return newRecordDataManager.copyNewRecordDataList();
     }
 }

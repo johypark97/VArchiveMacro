@@ -59,7 +59,7 @@ public class UploadTask extends InterruptibleTask<Void> {
     private Queue<NewRecordData> createUploadQueue() {
         EnumSet<Status> statusSet = EnumSet.of(Status.HIGHER_RECORD_EXISTS, Status.UPLOADED);
 
-        return getNewRecordDataManager().newRecordDataMapProperty().values().stream()
+        return getNewRecordDataManager().copyNewRecordDataList().stream()
                 .filter(x -> x.selected.get() && !statusSet.contains(x.status.get()))
                 .collect(Collectors.toCollection(LinkedList::new));
     }
