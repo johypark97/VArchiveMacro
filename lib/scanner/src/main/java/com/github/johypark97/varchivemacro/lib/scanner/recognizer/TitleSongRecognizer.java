@@ -49,28 +49,34 @@ public class TitleSongRecognizer<T extends LocalSong> {
         String normalizedTitle = titleNormalizer.apply(title);
         String remappedTitle = titleTool.remapScannedTitle(normalizedTitle);
 
-        List<Found<T>> list;
+        if (!title.isBlank()) {
+            List<Found<T>> list;
 
-        // check if there are exact matches
-        list = findExactMatch(remappedTitle);
-        if (!list.isEmpty()) {
-            return new Recognized<>(remappedTitle, list, StatusAccuracy.FOUND_EXACT,
-                    hasOne(list) ? StatusFound.FOUND_ONE_SONG : StatusFound.FOUND_DUPLICATE_SONGS);
-        }
-
-        // check if there are similar matches
-        list = findSimilarMatch(remappedTitle);
-        if (hasOne(list)) {
-            return new Recognized<>(remappedTitle, list, StatusAccuracy.FOUND_SIMILAR,
-                    StatusFound.FOUND_ONE_SONG);
-        } else if (hasMany(list)) {
-            Set<String> set = new HashSet<>();
-            for (Found<T> found : list) {
-                set.add(found.key);
+            // check if there are exact matches
+            list = findExactMatch(remappedTitle);
+            if (!list.isEmpty()) {
+                return new Recognized<>(remappedTitle, list, StatusAccuracy.FOUND_EXACT,
+                        hasOne(list)
+                                ? StatusFound.FOUND_ONE_SONG
+                                : StatusFound.FOUND_DUPLICATE_SONGS);
             }
 
-            return new Recognized<>(remappedTitle, list, StatusAccuracy.FOUND_SIMILAR,
-                    hasOne(set) ? StatusFound.FOUND_DUPLICATE_SONGS : StatusFound.FOUND_MANY_SONGS);
+            // check if there are similar matches
+            list = findSimilarMatch(remappedTitle);
+            if (hasOne(list)) {
+                return new Recognized<>(remappedTitle, list, StatusAccuracy.FOUND_SIMILAR,
+                        StatusFound.FOUND_ONE_SONG);
+            } else if (hasMany(list)) {
+                Set<String> set = new HashSet<>();
+                for (Found<T> found : list) {
+                    set.add(found.key);
+                }
+
+                return new Recognized<>(remappedTitle, list, StatusAccuracy.FOUND_SIMILAR,
+                        hasOne(set)
+                                ? StatusFound.FOUND_DUPLICATE_SONGS
+                                : StatusFound.FOUND_MANY_SONGS);
+            }
         }
 
         return new Recognized<>(remappedTitle, List.of(), StatusAccuracy.NOT_FOUND,
