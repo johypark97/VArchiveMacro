@@ -1,4 +1,5 @@
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 val appName = "DB Manager"
 val buildBasename = "dbmanager"
@@ -27,8 +28,8 @@ application {
 tasks.register<WriteProperties>("processResources_buildProperties") {
     description = "Create a properties file containing build information."
 
-    outputFile = File(sourceSets.main.get().output.resourcesDir, "build.properties")
-    property("build.date", ZonedDateTime.now().withNano(0))
+    destinationFile = File(sourceSets.main.get().output.resourcesDir, "build.properties")
+    property("build.date", ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
     property("build.version", buildVersion)
 }
 

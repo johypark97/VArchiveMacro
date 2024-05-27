@@ -1,6 +1,7 @@
 import edu.sc.seis.launch4j.tasks.DefaultLaunch4jTask
 import edu.sc.seis.launch4j.tasks.Launch4jLibraryTask
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 val appName = "VArchive Macro"
 val buildBasename = "macro"
@@ -11,8 +12,8 @@ var isDev = true
 plugins {
     id("project.java-application-conventions")
 
-    // id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("edu.sc.seis.launch4j") version "2.5.4"
+    // id("com.github.johnrengelman.shadow") version "8.1.1"
+    alias(libs.plugins.launch4j)
 }
 
 dependencies {
@@ -53,8 +54,8 @@ application {
 tasks.register<WriteProperties>("processResources_buildProperties") {
     description = "Create a properties file containing build information."
 
-    outputFile = File(sourceSets.main.get().output.resourcesDir, "build.properties")
-    property("build.date", ZonedDateTime.now().withNano(0))
+    destinationFile = File(sourceSets.main.get().output.resourcesDir, "build.properties")
+    property("build.date", ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
     property("build.version", buildVersion)
 }
 
@@ -63,7 +64,7 @@ tasks.register<Copy>("processResources_resourcesDev") {
 
     if (isDev) {
         from("src/main/resources-dev")
-        into("$buildDir/resources/main")
+        into("${layout.buildDirectory.get()}/resources/main")
     }
 }
 
@@ -87,7 +88,7 @@ tasks.register<Copy>("copyDataDirToLaunch4j") {
 
     val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
     from("data")
-    into("$buildDir/${launch4jTask.outputDir}/data")
+    into("${layout.buildDirectory.get()}/${launch4jTask.outputDir}/data")
 }
 
 tasks.register<Copy>("copyLicenseAndReadmeToLaunch4j") {
@@ -96,7 +97,7 @@ tasks.register<Copy>("copyLicenseAndReadmeToLaunch4j") {
     val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
     from("${rootProject.projectDir}/LICENSE")
     from("${rootProject.projectDir}/README.md")
-    into("$buildDir/${launch4jTask.outputDir}")
+    into("${layout.buildDirectory.get()}/${launch4jTask.outputDir}")
 }
 
 tasks.register<Copy>("copyDocDirToLaunch4j") {
@@ -104,7 +105,7 @@ tasks.register<Copy>("copyDocDirToLaunch4j") {
 
     val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
     from("${rootProject.projectDir}/doc")
-    into("$buildDir/${launch4jTask.outputDir}/doc")
+    into("${layout.buildDirectory.get()}/${launch4jTask.outputDir}/doc")
 }
 
 tasks.withType<DefaultLaunch4jTask> {
@@ -159,6 +160,6 @@ tasks.register<Zip>("release") {
     isDev = false
 
     val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
-    from("$buildDir/${launch4jTask.outputDir}")
+    from("${layout.buildDirectory.get()}/${launch4jTask.outputDir}")
     into("$appName v$buildVersion")
 }

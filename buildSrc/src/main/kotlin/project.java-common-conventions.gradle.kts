@@ -1,6 +1,8 @@
 import com.github.spotbugs.snom.SpotBugsTask
+import org.gradle.accessors.dm.LibrariesForLibs
 
 val javacppPlatform by extra("windows-x86_64")
+val libs = the<LibrariesForLibs>()
 
 plugins {
     java
@@ -21,42 +23,39 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.kwhat:jnativehook:2.2.2")
-    implementation("com.google.code.gson:gson:2.10")
-    implementation("com.google.guava:guava:31.0.1-jre")
-    implementation("org.bytedeco:tesseract-platform:5.2.0-1.5.8")
+    implementation(libs.guava)
+    implementation(libs.jnativehook)
+    implementation(libs.gson)
+    implementation(libs.tesseract.platform)
 
     // -------- Logging --------
-    implementation("org.slf4j:slf4j-api:2.0.6")
-
-    // implementation("org.slf4j:slf4j-simple:2.0.6")
-    implementation("ch.qos.logback:logback-classic:1.4.5")
+    implementation(libs.slf4j.api)
+    implementation(libs.logback.classic)
 
     // -------- Test libraries --------
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("org.mockito:mockito-core:4.11.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.11.0")
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mockito.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 
     // -------- Spotbugs --------
     // implementation("com.github.spotbugs:spotbugs-annotations:${spotbugs.toolVersion.get()}")
     spotbugs("com.github.spotbugs:spotbugs:${spotbugs.toolVersion.get()}")
-    spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.12.0")
+    spotbugsPlugins(libs.findsecbugs.plugin)
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
 javafx {
-    version = "21"
+    version = "22"
 }
 
 pmd {
     isIgnoreFailures = false
-    toolVersion = "6.52.0"
+    toolVersion = "6.55.0"
 
     ruleSetFiles = files("$rootDir/buildSrc/config/pmd/rules.xml")
     ruleSets = emptyList()
@@ -65,7 +64,7 @@ pmd {
 spotbugs {
     excludeFilter.set(file("$rootDir/buildSrc/config/spotbugs/exclude.xml"))
     ignoreFailures.set(false)
-    toolVersion.set("4.7.3")
+    toolVersion.set("4.8.5")
 }
 
 tasks.named<Test>("test") {
