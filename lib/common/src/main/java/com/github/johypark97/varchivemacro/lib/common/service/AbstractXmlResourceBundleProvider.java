@@ -21,7 +21,14 @@ public abstract class AbstractXmlResourceBundleProvider implements ResourceBundl
                 control.toResourceName(bundleName, XmlResourceBundleControl.FORMAT_XML);
 
         try (InputStream stream = openResourceStream(resourceName)) {
-            return stream == null ? null : new XmlResourceBundle(stream);
+            if (stream == null) {
+                return null;
+            }
+
+            XmlResourceBundle xmlResourceBundle = new XmlResourceBundle();
+            xmlResourceBundle.loadFromXML(stream);
+
+            return xmlResourceBundle;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

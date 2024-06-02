@@ -26,7 +26,14 @@ public class XmlResourceBundleControl extends ResourceBundle.Control {
         String resourceName = toResourceName(bundleName, FORMAT_XML);
 
         try (InputStream stream = loader.getResourceAsStream(resourceName)) {
-            return stream == null ? null : new XmlResourceBundle(stream);
+            if (stream == null) {
+                return null;
+            }
+
+            XmlResourceBundle xmlResourceBundle = new XmlResourceBundle();
+            xmlResourceBundle.loadFromXML(stream);
+
+            return xmlResourceBundle;
         }
     }
 }
