@@ -28,7 +28,7 @@ public interface RecordUploader {
     }
 
 
-    class RequestJson {
+    final class RequestJson {
         @Expose
         @SerializedName("name")
         public String title;

@@ -21,11 +21,17 @@ public class DefaultSongManager implements SongManager {
 
     private final Map<Integer, LocalSong> lookupId;
 
-    public DefaultSongManager(Path songPath) throws IOException {
-        List<SongData> songDataList = SongData.loadJson(songPath);
-
+    protected DefaultSongManager(List<SongData> songDataList) {
         songList = songDataList.stream().map(SongData::toLocalSong).toList();
         lookupId = newLookupId(songList);
+    }
+
+    public static DefaultSongManager load(Path songPath) throws IOException {
+        return new DefaultSongManager(loadSongDataList(songPath));
+    }
+
+    protected static List<SongData> loadSongDataList(Path songPath) throws IOException {
+        return SongData.loadJson(songPath);
     }
 
     private static Map<Integer, LocalSong> newLookupId(List<LocalSong> songList) {

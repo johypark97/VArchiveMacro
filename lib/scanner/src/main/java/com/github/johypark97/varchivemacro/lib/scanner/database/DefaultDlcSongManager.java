@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.lib.scanner.database;
 import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.DlcLocalSongComparator;
 import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.LocalSongComparator;
 import com.github.johypark97.varchivemacro.lib.scanner.database.datastruct.DlcData;
+import com.github.johypark97.varchivemacro.lib.scanner.database.datastruct.SongData;
 import com.github.johypark97.varchivemacro.lib.scanner.database.datastruct.TabData;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -24,11 +25,12 @@ public class DefaultDlcSongManager extends DefaultSongManager implements DlcSong
     private final Map<String, DlcData> dlcMap; // dlc code - dlc data
     private final Map<String, TabData> tabMap; // tab name - tab data
 
-    public DefaultDlcSongManager(Path songPath, Path dlcPath, Path tabPath) throws IOException {
-        super(songPath);
+    protected DefaultDlcSongManager(List<SongData> songDataList, Map<String, DlcData> dlcMap,
+            Map<String, TabData> tabMap) {
+        super(songDataList);
 
-        dlcMap = DlcData.loadJson(dlcPath);
-        tabMap = TabData.loadJson(tabPath);
+        this.dlcMap = dlcMap;
+        this.tabMap = tabMap;
 
         Map<String, String> codeTabMap = new HashMap<>(); // dlc code - tab name
         tabMap.forEach((tabName, tab) -> tab.dlcCode.forEach(
@@ -45,6 +47,20 @@ public class DefaultDlcSongManager extends DefaultSongManager implements DlcSong
         }).toList();
 
         lookupId = newLookupId(dlcSongList);
+    }
+
+    public static DefaultDlcSongManager load(Path songPath, Path dlcPath, Path tabPath)
+            throws IOException {
+        return new DefaultDlcSongManager(loadSongDataList(songPath), loadDlcMap(dlcPath),
+                loadTabMap(tabPath));
+    }
+
+    protected static Map<String, DlcData> loadDlcMap(Path dlcPath) throws IOException {
+        return DlcData.loadJson(dlcPath);
+    }
+
+    protected static Map<String, TabData> loadTabMap(Path tabPath) throws IOException {
+        return TabData.loadJson(tabPath);
     }
 
     private static Map<Integer, LocalDlcSong> newLookupId(List<LocalDlcSong> songList) {

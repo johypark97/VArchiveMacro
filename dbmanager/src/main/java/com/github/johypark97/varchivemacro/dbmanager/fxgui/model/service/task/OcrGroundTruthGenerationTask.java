@@ -168,7 +168,7 @@ public class OcrGroundTruthGenerationTask extends Task<Void> {
                             String.format("%s_%d_%.2f_%.2f.", baseOutputFileName, j, sx, sy);
 
                     BufferedImage preprocessedImage;
-                    try (PixWrapper pix = new PixWrapper(imageBytes)) {
+                    try (PixWrapper pix = PixWrapper.load(imageBytes)) {
                         PixPreprocessor.preprocessTitle(pix, j, sx, sy);
                         preprocessedImage = ImageConverter.pngBytesToImage(pix.getPngBytes());
                     }

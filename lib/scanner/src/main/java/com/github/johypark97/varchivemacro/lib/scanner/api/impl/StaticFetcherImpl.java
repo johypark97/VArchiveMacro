@@ -9,11 +9,12 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
 
-public class StaticFetcherImpl implements StaticFetcher {
+public final class StaticFetcherImpl implements StaticFetcher {
     private static final String SONGS_URL = ImplBase.BASE_URL + "/db/songs.json";
 
     private final HttpClient httpClient;
-    public List<RemoteSong> remoteSongs;
+
+    private List<RemoteSong> remoteSongs;
 
     public StaticFetcherImpl(HttpClient httpClient) {
         if (httpClient == null) {
@@ -25,7 +26,7 @@ public class StaticFetcherImpl implements StaticFetcher {
 
     @Override
     public List<RemoteSong> getSongs() {
-        return remoteSongs;
+        return List.copyOf(remoteSongs);
     }
 
     @Override

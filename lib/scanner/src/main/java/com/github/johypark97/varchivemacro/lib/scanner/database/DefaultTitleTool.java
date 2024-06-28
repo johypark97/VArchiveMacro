@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DefaultTitleTool implements TitleTool {
+public final class DefaultTitleTool implements TitleTool {
     private final Map<Integer, String> clippedTitleMap = new HashMap<>();
     private final Map<String, String> scannedTitleRemap = new HashMap<>();
 

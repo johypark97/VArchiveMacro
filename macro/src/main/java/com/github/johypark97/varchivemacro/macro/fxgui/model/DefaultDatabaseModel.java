@@ -24,7 +24,7 @@ public class DefaultDatabaseModel implements DatabaseModel {
 
     @Override
     public void load() throws IOException {
-        dlcSongManager = new DefaultDlcSongManager(SONG_PATH, DLC_PATH, TAB_PATH);
+        dlcSongManager = DefaultDlcSongManager.load(SONG_PATH, DLC_PATH, TAB_PATH);
         titleTool = new DefaultTitleTool(TITLE_PATH);
     }
 

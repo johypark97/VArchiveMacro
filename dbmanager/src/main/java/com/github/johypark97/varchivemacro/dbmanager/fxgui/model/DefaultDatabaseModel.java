@@ -37,7 +37,7 @@ public class DefaultDatabaseModel implements DatabaseModel {
         Path tabPath = path.resolve(TAB_FILENAME);
         Path titlePath = path.resolve(TITLE_FILENAME);
 
-        dlcSongManager = new DefaultDlcSongManager(songPath, dlcPath, tabPath);
+        dlcSongManager = DefaultDlcSongManager.load(songPath, dlcPath, tabPath);
         titleTool = new DefaultTitleTool(titlePath);
     }
 

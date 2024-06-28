@@ -35,7 +35,7 @@ public class DefaultRecordModel implements RecordModel {
             return false;
         }
 
-        recordManager = new DefaultRecordManager(RECORD_PATH);
+        recordManager = DefaultRecordManager.loadLocal(RECORD_PATH);
 
         return true;
     }
@@ -47,7 +47,7 @@ public class DefaultRecordModel implements RecordModel {
             Language language = Language.getInstance();
 
             try {
-                recordManager = new DefaultRecordManager(djName);
+                recordManager = DefaultRecordManager.loadRemote(djName);
             } catch (ApiException e) {
                 LOGGER.atError().log("ApiException", e);
                 Platform.runLater(() -> {

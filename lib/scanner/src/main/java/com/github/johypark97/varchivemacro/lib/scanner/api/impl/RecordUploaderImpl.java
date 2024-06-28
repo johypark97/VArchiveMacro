@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.UUID;
 
-public class RecordUploaderImpl implements RecordUploader {
+public final class RecordUploaderImpl implements RecordUploader {
     private static final String URL_FORMAT = ImplBase.BASE_URL + "/client/open/%d/score";
 
     private final HttpClient httpClient;

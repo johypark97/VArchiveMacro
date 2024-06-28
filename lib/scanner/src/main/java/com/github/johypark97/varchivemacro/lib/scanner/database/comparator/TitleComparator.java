@@ -82,7 +82,7 @@ public class TitleComparator implements Comparator<String>, Serializable {
     }
 
 
-    private static class Pointer {
+    private static final class Pointer {
         private final String s;
         private final int l;
         private int i = 0;

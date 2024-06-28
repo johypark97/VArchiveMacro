@@ -65,7 +65,7 @@ public class OcrTestTask extends Task<Void> {
         TitleSongRecognizer<LocalDlcSong> recognizer = new TitleSongRecognizer<>(titleTool);
         recognizer.setSongList(dlcSongList);
 
-        try (OcrWrapper ocr = new DefaultOcrWrapper(tessdataPath, tessdataLanguage)) {
+        try (OcrWrapper ocr = DefaultOcrWrapper.load(tessdataPath, tessdataLanguage)) {
             int count = dlcSongList.size();
             for (int i = 0; i < count; ++i) {
                 if (Thread.currentThread().isInterrupted()) {
@@ -84,7 +84,7 @@ public class OcrTestTask extends Task<Void> {
                 image = TrainingArea.cropTrainingMargin(image);
 
                 String scannedTitle;
-                try (PixWrapper pix = new PixWrapper(ImageConverter.imageToPngBytes(image))) {
+                try (PixWrapper pix = PixWrapper.load(ImageConverter.imageToPngBytes(image))) {
                     PixPreprocessor.preprocessTitle(pix);
                     scannedTitle = ocr.run(pix.pixInstance);
                 }

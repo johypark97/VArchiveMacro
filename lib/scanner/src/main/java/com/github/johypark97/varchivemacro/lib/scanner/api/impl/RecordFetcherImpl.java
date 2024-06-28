@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
 
-public class RecordFetcherImpl implements RecordFetcher {
+public final class RecordFetcherImpl implements RecordFetcher {
     private static final String URL_FORMAT = ImplBase.BASE_URL + "/api/archive/%s/board/%s/%s";
 
     private final HttpClient httpClient;
