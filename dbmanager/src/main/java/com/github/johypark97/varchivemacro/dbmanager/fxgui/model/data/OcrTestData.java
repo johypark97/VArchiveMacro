@@ -9,11 +9,11 @@ public class OcrTestData {
     public final LocalDlcSong targetSong;
     public final String targetNormalizedTitle;
 
-    public List<FoundData> foundDataList;
-    public List<String> foundKeyList;
-    public Status testStatus = Status.NOT_FOUND;
-    public String scannedTitle = "";
-    public boolean testPass;
+    private List<FoundData> foundDataList;
+    private List<String> foundKeyList;
+    private Status testStatus = Status.NOT_FOUND;
+    private String scannedTitle = "";
+    private boolean testPass;
 
     public OcrTestData(LocalDlcSong targetSong) {
         this.targetSong = targetSong;
@@ -46,19 +46,19 @@ public class OcrTestData {
     }
 
     public List<String> getFoundKeyList() {
-        return foundKeyList;
+        return List.copyOf(foundKeyList);
     }
 
     public void setFoundKeyList(List<String> value) {
-        foundKeyList = value;
+        foundKeyList = List.copyOf(value);
     }
 
     public List<FoundData> getFoundDataList() {
-        return foundDataList;
+        return List.copyOf(foundDataList);
     }
 
     public void setFoundDataList(List<FoundData> value) {
-        foundDataList = value;
+        foundDataList = List.copyOf(value);
     }
 
     public Status getTestStatus() {

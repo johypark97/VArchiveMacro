@@ -172,9 +172,9 @@ public class HomeComponent extends TabPane {
     @FXML
     public Button liveTester_closeButton;
 
-    public SliderTextFieldLinker ocrCacheCapturer_captureDelayLinker;
-    public SliderTextFieldLinker ocrCacheCapturer_keyInputDelayLinker;
-    public SliderTextFieldLinker ocrCacheCapturer_keyInputDurationLinker;
+    private SliderTextFieldLinker ocrCacheCapturer_captureDelayLinker;
+    private SliderTextFieldLinker ocrCacheCapturer_keyInputDelayLinker;
+    private SliderTextFieldLinker ocrCacheCapturer_keyInputDurationLinker;
 
     public HomeComponent(HomeView view) {
         viewReference = new WeakReference<>(view);
@@ -192,6 +192,30 @@ public class HomeComponent extends TabPane {
         setupOcrClassifier();
         setupOcrGroundTruthGenerator();
         setupLiveTester();
+    }
+
+    public SliderTextFieldLinker.Initializer ocrCacheCapturer_captureDelayLinkerInitializer() {
+        return ocrCacheCapturer_captureDelayLinker.getInitializer();
+    }
+
+    public SliderTextFieldLinker.Initializer ocrCacheCapturer_keyInputDelayLinkerInitializer() {
+        return ocrCacheCapturer_keyInputDelayLinker.getInitializer();
+    }
+
+    public SliderTextFieldLinker.Initializer ocrCacheCapturer_keyInputDurationLinkerInitializer() {
+        return ocrCacheCapturer_keyInputDurationLinker.getInitializer();
+    }
+
+    public int ocrCacheCapturer_getCaptureDelay() {
+        return ocrCacheCapturer_captureDelayLinker.getValue();
+    }
+
+    public int ocrCacheCapturer_getKeyInputDelay() {
+        return ocrCacheCapturer_keyInputDelayLinker.getValue();
+    }
+
+    public int ocrCacheCapturer_getKeyInputDuration() {
+        return ocrCacheCapturer_keyInputDurationLinker.getValue();
     }
 
     private HomeView getView() {
@@ -350,7 +374,7 @@ public class HomeComponent extends TabPane {
                     return;
                 }
 
-                switch (item.testStatus) {
+                switch (item.getTestStatus()) {
                     case EXACT, DUPLICATED_EXACT -> getStyleClass().add(STYLE_CLASS_EXACT);
                     case SIMILAR, DUPLICATED_SIMILAR -> getStyleClass().add(STYLE_CLASS_SIMILAR);
                     case WRONG -> getStyleClass().add(STYLE_CLASS_WRONG);

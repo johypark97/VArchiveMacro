@@ -45,7 +45,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private WeakReference<LiveTesterPresenter> liveTesterPresenterReference;
 
-    private FilteredList<SongData> filteredDlcSongList;
+    private FilteredList<SongData> filteredDlcSongDataList;
 
     public void linkModel(DatabaseModel databaseModel, OcrTestModel ocrTestModel,
             OcrToolModel ocrToolModel) {
@@ -165,9 +165,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void onViewShowing_viewer_linkTableView(TableView<SongData> tableView) {
-        filteredDlcSongList = new FilteredList<>(getDatabaseModel().getObservableDlcSongList());
+        filteredDlcSongDataList = new FilteredList<>(
+                FXCollections.observableArrayList(getDatabaseModel().getSongDataList()));
 
-        SortedList<SongData> list = new SortedList<>(filteredDlcSongList);
+        SortedList<SongData> list = new SortedList<>(filteredDlcSongDataList);
         list.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(list);
     }
@@ -187,34 +188,32 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void onViewShowing_ocrCacheCapturer_setupCaptureDelayLinker(
-            SliderTextFieldLinker linker) {
-        linker.setDefaultValue(OcrCacheCaptureTask.CAPTURE_DELAY_DEFAULT);
-        linker.setLimitMax(OcrCacheCaptureTask.CAPTURE_DELAY_MAX);
-        linker.setLimitMin(OcrCacheCaptureTask.CAPTURE_DELAY_MIN);
-        linker.setValue(OcrCacheCaptureTask.CAPTURE_DELAY_DEFAULT);
+            SliderTextFieldLinker.Initializer initializer) {
+        initializer.apply(OcrCacheCaptureTask.CAPTURE_DELAY_DEFAULT,
+                OcrCacheCaptureTask.CAPTURE_DELAY_MAX, OcrCacheCaptureTask.CAPTURE_DELAY_MIN,
+                OcrCacheCaptureTask.CAPTURE_DELAY_DEFAULT);
     }
 
     @Override
     public void onViewShowing_ocrCacheCapturer_setupKeyInputDelayLinker(
-            SliderTextFieldLinker linker) {
-        linker.setDefaultValue(OcrCacheCaptureTask.KEY_INPUT_DELAY_DEFAULT);
-        linker.setLimitMax(OcrCacheCaptureTask.KEY_INPUT_DELAY_MAX);
-        linker.setLimitMin(OcrCacheCaptureTask.KEY_INPUT_DELAY_MIN);
-        linker.setValue(OcrCacheCaptureTask.KEY_INPUT_DELAY_DEFAULT);
+            SliderTextFieldLinker.Initializer initializer) {
+        initializer.apply(OcrCacheCaptureTask.KEY_INPUT_DELAY_DEFAULT,
+                OcrCacheCaptureTask.KEY_INPUT_DELAY_MAX, OcrCacheCaptureTask.KEY_INPUT_DELAY_MIN,
+                OcrCacheCaptureTask.KEY_INPUT_DELAY_DEFAULT);
     }
 
     @Override
     public void onViewShowing_ocrCacheCapturer_setupKeyInputDurationLinker(
-            SliderTextFieldLinker linker) {
-        linker.setDefaultValue(OcrCacheCaptureTask.KEY_INPUT_DURATION_DEFAULT);
-        linker.setLimitMax(OcrCacheCaptureTask.KEY_INPUT_DURATION_MAX);
-        linker.setLimitMin(OcrCacheCaptureTask.KEY_INPUT_DURATION_MIN);
-        linker.setValue(OcrCacheCaptureTask.KEY_INPUT_DURATION_DEFAULT);
+            SliderTextFieldLinker.Initializer initializer) {
+        initializer.apply(OcrCacheCaptureTask.KEY_INPUT_DURATION_DEFAULT,
+                OcrCacheCaptureTask.KEY_INPUT_DURATION_MAX,
+                OcrCacheCaptureTask.KEY_INPUT_DURATION_MIN,
+                OcrCacheCaptureTask.KEY_INPUT_DURATION_DEFAULT);
     }
 
     @Override
     public void viewer_onUpdateTableFilter(String regex, SongDataProperty property) {
-        if (filteredDlcSongList == null) {
+        if (filteredDlcSongDataList == null) {
             return;
         }
 
@@ -228,7 +227,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             case PRIORITY -> x -> String.valueOf(x.getPriority());
         };
 
-        filteredDlcSongList.setPredicate(x -> pattern.matcher(valueGetter.apply(x)).find());
+        filteredDlcSongDataList.setPredicate(x -> pattern.matcher(valueGetter.apply(x)).find());
     }
 
     @Override

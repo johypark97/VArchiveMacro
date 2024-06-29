@@ -40,8 +40,8 @@ public class OcrGroundTruthGenerationTask extends Task<Void> {
     public List<LocalDlcSong> dlcSongList;
     public TitleTool titleTool;
 
-    public Path inputPath;
-    public Path outputPath;
+    private Path inputPath;
+    private Path outputPath;
 
     public OcrGroundTruthGenerationTask() {
         letterMatcher = CharMatcher.forPredicate((x) -> {
@@ -54,6 +54,14 @@ public class OcrGroundTruthGenerationTask extends Task<Void> {
 
         joiner = (x) -> String.join("\n", x);
         splitter = (x) -> List.of(x.split("\\s+"));
+    }
+
+    public void setInputPath(Path value) {
+        inputPath = value;
+    }
+
+    public void setOutputPath(Path value) {
+        outputPath = value;
     }
 
     private BufferedImage trimImage(BufferedImage image) {

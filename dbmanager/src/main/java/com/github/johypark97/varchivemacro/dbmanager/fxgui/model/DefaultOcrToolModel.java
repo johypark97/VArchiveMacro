@@ -39,7 +39,7 @@ public class DefaultOcrToolModel implements OcrToolModel {
             task.captureDelay = captureDelay;
             task.keyInputDelay = keyInputDelay;
             task.keyInputDuration = keyInputDuration;
-            task.outputPath = outputPath;
+            task.setOutputPath(outputPath);
 
             return task;
         });
@@ -71,8 +71,8 @@ public class DefaultOcrToolModel implements OcrToolModel {
         service.setTaskConstructor(() -> {
             OcrCacheClassificationTask task = new OcrCacheClassificationTask();
 
-            task.inputPath = inputPath;
-            task.outputPath = outputPath;
+            task.setInputPath(inputPath);
+            task.setOutputPath(outputPath);
 
             return task;
         });
@@ -104,8 +104,8 @@ public class DefaultOcrToolModel implements OcrToolModel {
         service.setTaskConstructor(() -> {
             OcrGroundTruthGenerationTask task = new OcrGroundTruthGenerationTask();
 
-            task.inputPath = inputPath;
-            task.outputPath = outputPath;
+            task.setInputPath(inputPath);
+            task.setOutputPath(outputPath);
 
             return task;
         });

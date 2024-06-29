@@ -14,10 +14,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class DefaultDatabaseModel implements DatabaseModel {
     private static final String DLC_FILENAME = "dlcs.json";
@@ -26,9 +23,8 @@ public class DefaultDatabaseModel implements DatabaseModel {
     private static final String TITLE_FILENAME = "titles.json";
 
     private DlcSongManager dlcSongManager;
+    private List<SongData> songDataList;
     private TitleTool titleTool;
-
-    public ObservableList<SongData> observableDlcSongList;
 
     @Override
     public void load(Path path) throws IOException {
@@ -42,14 +38,13 @@ public class DefaultDatabaseModel implements DatabaseModel {
     }
 
     @Override
-    public ObservableList<SongData> getObservableDlcSongList() {
-        if (observableDlcSongList == null) {
-            observableDlcSongList = dlcSongManager.getDlcSongList().stream()
-                    .map(x -> new SongData(x, dlcSongManager.getDlcCodeNameMap()))
-                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    public List<SongData> getSongDataList() {
+        if (songDataList == null) {
+            songDataList = dlcSongManager.getDlcSongList().stream()
+                    .map(x -> new SongData(x, dlcSongManager.getDlcCodeNameMap())).toList();
         }
 
-        return observableDlcSongList;
+        return List.copyOf(songDataList);
     }
 
     @Override
