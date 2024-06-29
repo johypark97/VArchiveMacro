@@ -51,76 +51,80 @@
     "name": "V EXTENSION V",
     "priority": 12
   },
+  "VL": {
+    "name": "V LIBERTY",
+    "priority": 13
+  },
   "ES": {
     "name": "Emotional Sense",
-    "priority": 13
+    "priority": 14
   },
   "T1": {
     "name": "TECHNIKA",
-    "priority": 14
+    "priority": 15
   },
   "T2": {
     "name": "TECHNIKA 2",
-    "priority": 15
+    "priority": 16
   },
   "T3": {
     "name": "TECHNIKA 3",
-    "priority": 16
+    "priority": 17
   },
   "TQ": {
     "name": "TECHNIKA TUNE & Q",
-    "priority": 17
+    "priority": 18
   },
   "CHU": {
     "name": "CHUNITHM",
-    "priority": 18
+    "priority": 19
   },
   "CY": {
     "name": "Cytus",
-    "priority": 19
+    "priority": 20
   },
   "DM": {
     "name": "Deemo",
-    "priority": 20
+    "priority": 21
   },
   "EZ2": {
     "name": "EZ2ON",
-    "priority": 21
+    "priority": 22
   },
   "GC": {
     "name": "GROOVE COASTER",
-    "priority": 22
+    "priority": 23
   },
   "MD": {
     "name": "Muse Dash",
-    "priority": 23
+    "priority": 24
   },
   "GG": {
     "name": "GUILTY GEAR",
-    "priority": 24
+    "priority": 25
   },
   "ESTI": {
     "name": "ESTIMATE",
-    "priority": 25
+    "priority": 26
   },
   "FAL": {
     "name": "FALCOM",
-    "priority": 26
+    "priority": 27
   },
   "GF": {
     "name": "GIRLS' FRONTLINE",
-    "priority": 27
+    "priority": 28
   },
   "MAP": {
     "name": "MAPLESTORY",
-    "priority": 28
+    "priority": 29
   },
   "NXN": {
     "name": "NEXON",
-    "priority": 29
+    "priority": 30
   },
   "CP": {
     "name": "CLEAR PASS+",
-    "priority": 30
+    "priority": 31
   }
 }

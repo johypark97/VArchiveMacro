@@ -4958,5 +4958,165 @@
     "composer": "TJ.hangneil",
     "dlcCode": "RV",
     "priority": 0
+  },
+  {
+    "id": 620,
+    "title": "덫",
+    "remote_title": null,
+    "composer": "LeeZu",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 621,
+    "title": "따라와",
+    "remote_title": null,
+    "composer": "ND Lee",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 622,
+    "title": "때론, 냉정도 필요해",
+    "remote_title": null,
+    "composer": "Mycin.T",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 623,
+    "title": "성장통 [ScreaM Records]",
+    "remote_title": null,
+    "composer": "IMLAY",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 624,
+    "title": "평행고백 ~Pan Remix~",
+    "remote_title": null,
+    "composer": "BEXTER",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 625,
+    "title": "Away",
+    "remote_title": null,
+    "composer": "Sobrem",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 626,
+    "title": "Basement",
+    "remote_title": null,
+    "composer": "Pierre Blanche",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 627,
+    "title": "Bestie",
+    "remote_title": null,
+    "composer": "SOPHI",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 628,
+    "title": "Break Out",
+    "remote_title": null,
+    "composer": "Night Tempo",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 629,
+    "title": "Broken Sphere",
+    "remote_title": null,
+    "composer": "VoidRover",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 630,
+    "title": "Cotton Candy Soda",
+    "remote_title": null,
+    "composer": "Parang",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 631,
+    "title": "Diomedes",
+    "remote_title": null,
+    "composer": "XeoN",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 632,
+    "title": "Final Hour (Game Ver.)",
+    "remote_title": null,
+    "composer": "Pure 100%",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 633,
+    "title": "Final Round",
+    "remote_title": null,
+    "composer": "INFX & MIIM",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 634,
+    "title": "Licrom",
+    "remote_title": null,
+    "composer": "onoken",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 635,
+    "title": "O'men",
+    "remote_title": null,
+    "composer": "Pan",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 636,
+    "title": "Petunia",
+    "remote_title": null,
+    "composer": "Kanallia",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 637,
+    "title": "Rhythm In My Head",
+    "remote_title": null,
+    "composer": "KATOMORI",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 638,
+    "title": "Song For You",
+    "remote_title": null,
+    "composer": "NieN",
+    "dlcCode": "VL",
+    "priority": 0
+  },
+  {
+    "id": 639,
+    "title": "Synchronize",
+    "remote_title": null,
+    "composer": "causeluve",
+    "dlcCode": "VL",
+    "priority": 0
   }
 ]
