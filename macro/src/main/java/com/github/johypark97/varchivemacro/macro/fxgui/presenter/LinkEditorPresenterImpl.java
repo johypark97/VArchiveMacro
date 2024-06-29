@@ -2,7 +2,6 @@ package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
-import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
@@ -12,28 +11,17 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.Star
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.text.Normalizer;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.function.Function;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
 public class LinkEditorPresenterImpl
         extends AbstractMvpPresenter<LinkEditorPresenter, LinkEditorView>
         implements LinkEditorPresenter {
-    private static final Function<String, String> NORMALIZER = x -> Normalizer.normalize(
-            TitleTool.normalizeTitle_recognition(x).toLowerCase(Locale.ENGLISH),
-            Normalizer.Form.NFKD);
-
     private WeakReference<ScannerModel> scannerModelReference;
 
-    public FilteredList<CaptureData> filteredCaptureDataList;
-    public StartData startData;
+    private StartData startData;
 
     public void linkModel(ScannerModel scannerModel) {
         scannerModelReference = new WeakReference<>(scannerModel);
@@ -62,28 +50,10 @@ public class LinkEditorPresenterImpl
     }
 
     @Override
-    public ObservableList<CaptureData> onShowCaptureDataList(String pattern, boolean findAll) {
-        ObservableList<CaptureData> list = findAll
-                ? FXCollections.observableArrayList(getScannerModel().copyCaptureDataList())
+    public List<CaptureData> onShowCaptureDataList(boolean findAll) {
+        return findAll
+                ? getScannerModel().copyCaptureDataList()
                 : getScannerModel().getSongData(startData.songDataId).childListProperty();
-
-        filteredCaptureDataList = new FilteredList<>(list);
-
-        onUpdateSearch(pattern);
-
-        return filteredCaptureDataList;
-    }
-
-    @Override
-    public void onUpdateSearch(String pattern) {
-        if (pattern == null) {
-            return;
-        }
-
-        String normalizedPattern = NORMALIZER.apply(pattern.trim());
-
-        filteredCaptureDataList.setPredicate(
-                x -> NORMALIZER.apply(x.scannedTitle.get()).contains(normalizedPattern));
     }
 
     @Override
@@ -162,7 +132,7 @@ public class LinkEditorPresenterImpl
 
     @Override
     protected boolean terminate() {
-        filteredCaptureDataList = null; // NOPMD
+        getView().onStop();
 
         return true;
     }

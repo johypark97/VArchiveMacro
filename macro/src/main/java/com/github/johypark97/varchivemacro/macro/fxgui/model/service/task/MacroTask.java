@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import java.util.concurrent.TimeUnit;
 import javafx.geometry.VerticalDirection;
 
-public class MacroTask extends InterruptibleTask<Void> {
+public final class MacroTask extends InterruptibleTask<Void> {
     private final AnalysisKey analysisKey;
     private final Robot robot;
     private final VerticalDirection direction;

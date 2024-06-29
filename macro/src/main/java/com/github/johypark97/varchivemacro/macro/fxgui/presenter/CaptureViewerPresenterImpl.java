@@ -9,7 +9,7 @@ import java.util.Objects;
 public class CaptureViewerPresenterImpl
         extends AbstractMvpPresenter<CaptureViewerPresenter, CaptureViewerView>
         implements CaptureViewerPresenter {
-    public StartData startData;
+    private StartData startData;
 
     @Override
     public StartData getStartData() {

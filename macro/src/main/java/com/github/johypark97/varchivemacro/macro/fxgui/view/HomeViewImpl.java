@@ -465,16 +465,16 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                     getScanner().option_cacheDirectoryTextField);
 
             getPresenter().onViewShow_scanner_setupCaptureDelayLinker(
-                    getScanner().optionCaptureDelayLinker);
+                    getScanner().optionCaptureDelayLinkerInitializer());
 
             getPresenter().onViewShow_scanner_setupKeyInputDurationLinker(
-                    getScanner().optionKeyInputDurationLinker);
+                    getScanner().optionKeyInputDurationLinkerInitializer());
 
             getPresenter().onViewShow_scanner_setupAccountFile(
                     getScanner().option_accountFileTextField);
 
             getPresenter().onViewShow_scanner_setupRecordUploadDelayLinker(
-                    getScanner().optionRecordUploadDelayLinker);
+                    getScanner().optionRecordUploadDelayLinkerInitializer());
 
             getPresenter().onViewShow_macro_setupAnalysisKey();
 

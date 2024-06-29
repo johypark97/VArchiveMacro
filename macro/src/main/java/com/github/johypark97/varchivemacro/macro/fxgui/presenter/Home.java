@@ -24,13 +24,16 @@ public interface Home {
 
         void onViewShow_scanner_setupCacheDirectory(TextField textField);
 
-        void onViewShow_scanner_setupCaptureDelayLinker(SliderTextFieldLinker linker);
+        void onViewShow_scanner_setupCaptureDelayLinker(
+                SliderTextFieldLinker.Initializer initializer);
 
-        void onViewShow_scanner_setupKeyInputDurationLinker(SliderTextFieldLinker linker);
+        void onViewShow_scanner_setupKeyInputDurationLinker(
+                SliderTextFieldLinker.Initializer initializer);
 
         void onViewShow_scanner_setupAccountFile(TextField textField);
 
-        void onViewShow_scanner_setupRecordUploadDelayLinker(SliderTextFieldLinker linker);
+        void onViewShow_scanner_setupRecordUploadDelayLinker(
+                SliderTextFieldLinker.Initializer initializer);
 
         void onViewShow_macro_setupAnalysisKey();
 

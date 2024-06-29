@@ -174,9 +174,9 @@ public class ScannerComponent extends TabPane {
     @FXML
     public TextField option_recordUploadDelayTextField;
 
-    public SliderTextFieldLinker optionCaptureDelayLinker;
-    public SliderTextFieldLinker optionKeyInputDurationLinker;
-    public SliderTextFieldLinker optionRecordUploadDelayLinker;
+    private SliderTextFieldLinker optionCaptureDelayLinker;
+    private SliderTextFieldLinker optionKeyInputDurationLinker;
+    private SliderTextFieldLinker optionRecordUploadDelayLinker;
 
     private ViewerRecordController viewerRecordController;
 
@@ -289,6 +289,18 @@ public class ScannerComponent extends TabPane {
 
     public void setNewRecordDataList(ObservableList<NewRecordData> list) {
         uploader_recordTableView.setItems(list);
+    }
+
+    public SliderTextFieldLinker.Initializer optionCaptureDelayLinkerInitializer() {
+        return optionCaptureDelayLinker.getInitializer();
+    }
+
+    public SliderTextFieldLinker.Initializer optionKeyInputDurationLinkerInitializer() {
+        return optionKeyInputDurationLinker.getInitializer();
+    }
+
+    public SliderTextFieldLinker.Initializer optionRecordUploadDelayLinkerInitializer() {
+        return optionRecordUploadDelayLinker.getInitializer();
     }
 
     private HomeView getView() {
