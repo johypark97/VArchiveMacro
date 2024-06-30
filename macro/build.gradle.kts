@@ -86,26 +86,23 @@ tasks.jar {
 tasks.register<Copy>("copyDataDirToLaunch4j") {
     description = "Copy '\$projectDir/data' directory to launch4j outputDir."
 
-    val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
     from("data")
-    into("${layout.buildDirectory.get()}/${launch4jTask.outputDir}/data")
+    into("${layout.buildDirectory.get()}/${launch4j.outputDir.get()}/data")
 }
 
 tasks.register<Copy>("copyLicenseAndReadmeToLaunch4j") {
     description = "Copy the LICENSE and README files to launch4j outputDir."
 
-    val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
     from("${rootProject.projectDir}/LICENSE")
     from("${rootProject.projectDir}/README.md")
-    into("${layout.buildDirectory.get()}/${launch4jTask.outputDir}")
+    into("${layout.buildDirectory.get()}/${launch4j.outputDir.get()}")
 }
 
 tasks.register<Copy>("copyDocDirToLaunch4j") {
     description = "Copy '\${rootProject.projectDir}/doc' directory to launch4j outputDir."
 
-    val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
     from("${rootProject.projectDir}/doc")
-    into("${layout.buildDirectory.get()}/${launch4jTask.outputDir}/doc")
+    into("${layout.buildDirectory.get()}/${launch4j.outputDir.get()}/doc")
 }
 
 tasks.withType<DefaultLaunch4jTask> {
@@ -159,7 +156,6 @@ tasks.register<Zip>("release") {
 
     isDev = false
 
-    val launch4jTask = tasks.named<DefaultLaunch4jTask>("createExe").get()
-    from("${layout.buildDirectory.get()}/${launch4jTask.outputDir}")
+    from("${layout.buildDirectory.get()}/${launch4j.outputDir.get()}")
     into("$appName v$buildVersion")
 }
