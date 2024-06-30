@@ -33,53 +33,26 @@
   ],
   "remap": [
     {
-      // id: 41
-      "to": "U.A.D",
-      "from": [
-        "U.AD"
-      ]
-    },
-    {
       // id: 211
       "to": "sOmUCHiNLUV~MeIodicTwistedMix",
       "from": [
-        "sOmUCHiNLUV~MeIodicTwistedMix~"
+        "sOmUCHiNLUV~MaeIodicTwistedMix",
+        "sOmUCHiNLUV~MaeIodicTwistedMix~"
       ]
     },
     {
       // id: 428
       "to": "최종무곡",
       "from": [
-        "최종무곡부바"
-      ]
-    },
-    {
-      // id: 431
-      "to": "카트라이더,크레이지아케이드,버블파이터",
-      "from": [
-        "카트라이더크레이지아케이드,버블파이터"
-      ]
-    },
-    {
-      // id: 577
-      "to": "MoonIightShadow~PauIBazookaRemix",
-      "from": [
-        "MoonIightShadow~PauIBazookaRemix-"
+        "최종무곡부작"
       ]
     },
     {
       // id: 583
       "to": "TheTuneoftheAzureLight~ParangRe",
       "from": [
-        "TheTuneoftheAzureLight~ParangRenI",
-        "TheTuneoftheAzureLight~ParangRetiI"
-      ]
-    },
-    {
-      // id: 594
-      "to": "gIoryMAX-나의최대치로너와함께할게-",
-      "from": [
-        "gIoryMAX-나의최대치로너와함께할게"
+        "TheTuneoftheAzureLight~ParangRen",
+        "TheTuneoftheAzureLight~ParangReiI"
       ]
     }
   ]
