@@ -1,5 +1,5 @@
 object Version {
-    private const val ROOT_PROJECT = "2.0.0"
+    private const val ROOT_PROJECT = "2.1.0"
     private const val ROOT_PROJECT_SUFFIX = ""
 
     fun makeVersionString(version: String = ""): String {
