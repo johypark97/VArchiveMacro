@@ -1,8 +1,7 @@
-val buildBasename = "libscanner"
 val buildVersion = Version.makeVersionString()
 
 plugins {
-    id("project.java-library-conventions")
+    id("buildlogic.java-library-conventions")
 }
 
 dependencies {
@@ -14,6 +13,6 @@ tasks.jar {
         attributes["Implementation-Version"] = buildVersion
     }
 
-    archiveBaseName.set(buildBasename)
-    archiveVersion.set(buildVersion)
+    archiveBaseName = "libscanner"
+    archiveVersion = buildVersion
 }

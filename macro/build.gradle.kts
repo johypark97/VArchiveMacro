@@ -4,13 +4,12 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 val appName = "VArchive Macro"
-val buildBasename = "macro"
 val buildVersion = Version.makeVersionString()
 
 var isDev = true
 
 plugins {
-    id("project.java-application-conventions")
+    id("buildlogic.java-application-conventions")
 
     // id("com.github.johnrengelman.shadow") version "8.1.1"
     alias(libs.plugins.launch4j)
@@ -25,8 +24,8 @@ dependencies {
 }
 
 application {
-    mainClass.set("com.github.johypark97.varchivemacro.macro.Main")
-    mainModule.set("varchivemacro.macro")
+    mainClass = "com.github.johypark97.varchivemacro.macro.Main"
+    mainModule = "varchivemacro.macro"
 
     applicationName = appName
     executableDir = ""
@@ -69,8 +68,8 @@ tasks.register<Copy>("processResources_resourcesDev") {
 }
 
 tasks.processResources {
-    dependsOn(tasks.named("processResources_buildProperties"))
-    dependsOn(tasks.named("processResources_resourcesDev"))
+    dependsOn("processResources_buildProperties")
+    dependsOn("processResources_resourcesDev")
 }
 
 tasks.jar {
@@ -79,8 +78,8 @@ tasks.jar {
         attributes["Main-Class"] = application.mainClass.get()
     }
 
-    archiveBaseName.set(buildBasename)
-    archiveVersion.set(buildVersion)
+    archiveBaseName = "macro"
+    archiveVersion = buildVersion
 }
 
 tasks.register<Copy>("copyDataDirToLaunch4j") {
@@ -106,9 +105,9 @@ tasks.register<Copy>("copyDocDirToLaunch4j") {
 }
 
 tasks.withType<DefaultLaunch4jTask> {
-    dependsOn(tasks.named("copyDataDirToLaunch4j"))
-    dependsOn(tasks.named("copyDocDirToLaunch4j"))
-    dependsOn(tasks.named("copyLicenseAndReadmeToLaunch4j"))
+    dependsOn("copyDataDirToLaunch4j")
+    dependsOn("copyDocDirToLaunch4j")
+    dependsOn("copyLicenseAndReadmeToLaunch4j")
 
     outfile = "$appName v$buildVersion.exe"
 
@@ -151,8 +150,8 @@ tasks.register<Zip>("release") {
     description = "Create an archive file to release."
     group = "distribution"
 
-    archiveBaseName.set(appName)
-    archiveVersion.set(buildVersion)
+    archiveBaseName = appName
+    archiveVersion = buildVersion
 
     isDev = false
 

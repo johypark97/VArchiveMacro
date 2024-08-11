@@ -1,12 +1,10 @@
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
-val appName = "DB Manager"
-val buildBasename = "dbmanager"
 val buildVersion = Version.makeVersionString()
 
 plugins {
-    id("project.java-application-conventions")
+    id("buildlogic.java-application-conventions")
 }
 
 dependencies {
@@ -18,10 +16,10 @@ dependencies {
 }
 
 application {
-    mainClass.set("com.github.johypark97.varchivemacro.dbmanager.Main")
-    mainModule.set("varchivemacro.dbmanager")
+    mainClass = "com.github.johypark97.varchivemacro.dbmanager.Main"
+    mainModule = "varchivemacro.dbmanager"
 
-    applicationName = appName
+    applicationName = "DB Manager"
     executableDir = ""
 }
 
@@ -34,7 +32,7 @@ tasks.register<WriteProperties>("processResources_buildProperties") {
 }
 
 tasks.processResources {
-    dependsOn(tasks.named("processResources_buildProperties"))
+    dependsOn("processResources_buildProperties")
 }
 
 tasks.jar {
@@ -43,6 +41,6 @@ tasks.jar {
         attributes["Main-Class"] = application.mainClass.get()
     }
 
-    archiveBaseName.set(buildBasename)
-    archiveVersion.set(buildVersion)
+    archiveBaseName = "dbmanager"
+    archiveVersion = buildVersion
 }

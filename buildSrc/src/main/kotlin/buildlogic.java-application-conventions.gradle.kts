@@ -1,5 +1,5 @@
 plugins {
-    id("project.java-common-conventions")
+    id("buildlogic.java-common-conventions")
 
     application
 }
