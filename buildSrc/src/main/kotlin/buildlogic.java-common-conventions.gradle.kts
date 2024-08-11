@@ -43,12 +43,12 @@ java {
 }
 
 javafx {
-    version = "21.0.3"
+    version = "21.0.4"
 }
 
 pmd {
     isIgnoreFailures = false
-    toolVersion = "6.55.0"
+    toolVersion = "7.4.0"
 
     ruleSetFiles = files("$rootDir/buildSrc/config/pmd/rules.xml")
     ruleSets = emptyList()

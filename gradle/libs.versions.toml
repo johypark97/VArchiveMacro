@@ -4,14 +4,14 @@
 [versions]
 gradle-javacpp = "1.5.10"
 gson = "2.11.0"
-guava = "33.2.0-jre"
+guava = "33.2.1-jre"
 javafx-plugin = "0.1.0"
 jnativehook = "2.2.2"
-junit-jupiter = "5.10.2"
-launch4j = "3.0.5"
+junit-jupiter = "5.10.3"
+launch4j = "3.0.6"
 logback-classic = "1.5.6"
 mockito-junit-jupiter = "5.12.0"
-slf4j-api = "2.0.13"
+slf4j-api = "2.0.16"
 tesseract-platform = "5.3.4-1.5.10"
 
 [libraries]
