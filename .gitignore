@@ -6,6 +6,3 @@ build
 
 # Ignore IntelliJ IDEA files
 .idea
-
-# Ignore VSCode binary output directory
-bin
