@@ -14,7 +14,4 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.bytedeco/gradle-javacpp
     implementation(libs.gradle.javacpp)
-
-    // https://plugins.gradle.org/plugin/com.github.spotbugs
-    implementation(libs.spotbugs.gradle.plugin)
 }
