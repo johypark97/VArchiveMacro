@@ -51,23 +51,27 @@ public abstract class AbstractMvpPresenter<P extends MvpPresenter<V>, V extends 
     }
 
     @Override
-    public synchronized final boolean startPresenter() {
-        if (isStarted() || !initialize()) {
-            return false;
-        }
+    public final boolean startPresenter() {
+        synchronized (this) {
+            if (isStarted() || !initialize()) {
+                return false;
+            }
 
-        view.onStartPresenter();
+            view.onStartPresenter();
+        }
 
         return true;
     }
 
     @Override
-    public synchronized final boolean stopPresenter() {
-        if (!isStarted() || !terminate()) {
-            return false;
-        }
+    public final boolean stopPresenter() {
+        synchronized (this) {
+            if (!isStarted() || !terminate()) {
+                return false;
+            }
 
-        view.onStopPresenter();
+            view.onStopPresenter();
+        }
 
         return true;
     }

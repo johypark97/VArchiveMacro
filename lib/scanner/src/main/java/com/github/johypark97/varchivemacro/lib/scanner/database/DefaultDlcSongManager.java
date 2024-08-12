@@ -36,7 +36,7 @@ public class DefaultDlcSongManager extends DefaultSongManager implements DlcSong
         tabMap.forEach((tabName, tab) -> tab.dlcCode.forEach(
                 (dlcCode) -> codeTabMap.put(dlcCode, tabName)));
 
-        dlcSongList = getSongList().stream().map((x) -> {
+        dlcSongList = super.getSongList().stream().map((x) -> {
             DlcData dlc = dlcMap.get(x.dlcCode);
 
             String dlcName = (dlc != null) ? dlc.name() : "";

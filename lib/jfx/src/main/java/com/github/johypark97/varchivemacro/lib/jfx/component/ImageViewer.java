@@ -19,7 +19,7 @@ public class ImageViewer extends Pane {
     private double viewportZoom;
 
     public ImageViewer() {
-        getChildren().add(imageView);
+        super.getChildren().add(imageView);
 
         imageView.fitHeightProperty().bind(heightProperty());
         imageView.fitWidthProperty().bind(widthProperty());
@@ -124,8 +124,8 @@ public class ImageViewer extends Pane {
     }
 
     public static class PointDelta {
-        private double referenceX = 0;
-        private double referenceY = 0;
+        private double referenceX;
+        private double referenceY;
 
         public double deltaX;
         public double deltaY;

@@ -30,10 +30,13 @@ public class DefaultOcrWrapper implements OcrWrapper {
     }
 
     @Override
-    public synchronized String run(PIX pix) {
-        tessBaseAPI.SetImage(pix);
-        try (BytePointer outText = tessBaseAPI.GetUTF8Text()) {
-            return outText.getString();
+    public String run(PIX pix) {
+        synchronized (this) {
+            tessBaseAPI.SetImage(pix);
+
+            try (BytePointer outText = tessBaseAPI.GetUTF8Text()) {
+                return outText.getString();
+            }
         }
     }
 

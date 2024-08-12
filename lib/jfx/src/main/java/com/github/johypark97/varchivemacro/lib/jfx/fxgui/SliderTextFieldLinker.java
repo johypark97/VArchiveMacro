@@ -8,7 +8,7 @@ public class SliderTextFieldLinker {
     public final Slider slider;
     public final TextField textField;
 
-    private boolean blockSliderProperty = false;
+    private boolean blockSliderProperty;
     private int linkedValue;
 
     private Integer defaultValue;
@@ -100,7 +100,7 @@ public class SliderTextFieldLinker {
     }
 
     private void updateSliderValue() {
-        blockSliderProperty = true;
+        blockSliderProperty = true; // NOPMD
         slider.setValue(linkedValue);
         blockSliderProperty = false;
     }

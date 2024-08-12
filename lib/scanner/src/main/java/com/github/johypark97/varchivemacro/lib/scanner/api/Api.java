@@ -26,9 +26,11 @@ public final class Api {
         return HttpClient.newBuilder().sslContext(sslContext).version(Version.HTTP_2).build();
     }
 
-    public static synchronized HttpClient getHttpClient() throws GeneralSecurityException {
-        if (httpClient == null) {
-            httpClient = newHttpClient();
+    public static HttpClient getHttpClient() throws GeneralSecurityException {
+        synchronized (Api.class) {
+            if (httpClient == null) {
+                httpClient = newHttpClient();
+            }
         }
 
         return httpClient;

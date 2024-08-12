@@ -65,8 +65,8 @@ public class AlertBuilder {
             String stack = Arrays.stream(pThrowable.getStackTrace()).map(x -> STACK_PREFIX + x)
                     .collect(Collectors.joining(System.lineSeparator()));
 
-            builder.append(pThrowable).append(System.lineSeparator());
-            builder.append(stack).append(System.lineSeparator());
+            builder.append(pThrowable).append(System.lineSeparator()).append(stack)
+                    .append(System.lineSeparator());
 
             pThrowable = pThrowable.getCause();
         } while (pThrowable != null);
