@@ -62,11 +62,11 @@ public class RemoteValidator implements Supplier<String> {
             }
         }
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(128);
 
         if (!conflictList.isEmpty()) {
-            builder.append("-------- conflict --------\n");
-            builder.append(gson.toJson(conflictList)).append('\n');
+            builder.append("-------- conflict --------\n").append(gson.toJson(conflictList))
+                    .append('\n');
         }
 
         if (!unclassifiedList.isEmpty()) {
@@ -74,8 +74,8 @@ public class RemoteValidator implements Supplier<String> {
                 builder.append('\n');
             }
 
-            builder.append("-------- unclassified --------\n");
-            builder.append(gson.toJson(unclassifiedList)).append('\n');
+            builder.append("-------- unclassified --------\n").append(gson.toJson(unclassifiedList))
+                    .append('\n');
         }
 
         if (builder.isEmpty()) {

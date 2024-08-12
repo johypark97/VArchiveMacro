@@ -28,25 +28,20 @@ public class DatabaseValidator implements Supplier<String> {
 
         builder.append("dlcCode (songs.json - dlcs.json)\n");
         if (codeSetFromDlcsJson.equals(codeSetFromSongsJson)) {
-            builder.append("- ok\n");
+            builder.append("- ok\n\n");
         } else {
-            builder.append("- failed\n");
-            builder.append("songs.json: ")
+            builder.append("- failed\nsongs.json: ")
                     .append(Sets.difference(codeSetFromSongsJson, codeSetFromDlcsJson))
-                    .append('\n');
-            builder.append("dlcs.json: ")
+                    .append("\ndlcs.json: ")
                     .append(Sets.difference(codeSetFromDlcsJson, codeSetFromSongsJson))
-                    .append('\n');
+                    .append("\n\n");
         }
-        builder.append('\n');
     }
 
     private void print_dlcCodeList(StringBuilder builder) {
         List<String> list = dlcSongManager.getDlcCodeList();
 
-        builder.append("dlcCode list in priority order\n");
-        builder.append(gson.toJson(list)).append('\n');
-        builder.append('\n');
+        builder.append("dlcCode list in priority order\n").append(gson.toJson(list)).append("\n\n");
     }
 
     private void validate_dlcCode_tabs_dlcs(StringBuilder builder) {
@@ -57,47 +52,39 @@ public class DatabaseValidator implements Supplier<String> {
 
         builder.append("dlcCode (tabs.json - dlcs.json)\n");
         if (codeSetFromDlcsJson.equals(codeSetFromTabsJson)) {
-            builder.append("- ok\n");
+            builder.append("- ok\n\n");
         } else {
-            builder.append("- failed\n");
-            builder.append("tabs.json: ")
-                    .append(Sets.difference(codeSetFromTabsJson, codeSetFromDlcsJson)).append('\n');
-            builder.append("dlcs.json: ")
-                    .append(Sets.difference(codeSetFromDlcsJson, codeSetFromTabsJson)).append('\n');
+            builder.append("- failed\ntabs.json: ")
+                    .append(Sets.difference(codeSetFromTabsJson, codeSetFromDlcsJson))
+                    .append("\ndlcs.json: ")
+                    .append(Sets.difference(codeSetFromDlcsJson, codeSetFromTabsJson))
+                    .append("\n\n");
         }
-        builder.append('\n');
     }
 
     private void print_dlcTabList(StringBuilder builder) {
         List<String> list = dlcSongManager.getDlcTabList();
 
-        builder.append("dlcTab list in priority order\n");
-        builder.append(gson.toJson(list)).append('\n');
-        builder.append('\n');
+        builder.append("dlcTab list in priority order\n").append(gson.toJson(list)).append("\n\n");
     }
 
     private void print_dlcCodeNameMap(StringBuilder builder) {
         Map<String, String> dlcCodeNameMap = dlcSongManager.getDlcCodeNameMap();
 
-        builder.append("dlcCode - dlcName\n");
-        builder.append(gson.toJson(dlcCodeNameMap)).append('\n');
-        builder.append('\n');
+        builder.append("dlcCode - dlcName\n").append(gson.toJson(dlcCodeNameMap)).append("\n\n");
     }
 
     private void print_dlcTabCodeMap(StringBuilder builder) {
         Map<String, Set<String>> dlcTabCodeMap = dlcSongManager.getDlcTabCodeMap();
 
-        builder.append("dlcTab - dlcCode\n");
-        builder.append(gson.toJson(dlcTabCodeMap)).append('\n');
-        builder.append('\n');
+        builder.append("dlcTab - dlcCode\n").append(gson.toJson(dlcTabCodeMap)).append("\n\n");
     }
 
     @Override
     public String get() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(128);
 
-        builder.append("-------- validation --------\n");
-        builder.append('\n');
+        builder.append("-------- validation --------\n\n");
 
         validate_dlcCode_songs_dlcs(builder);
         print_dlcCodeList(builder);
@@ -105,8 +92,7 @@ public class DatabaseValidator implements Supplier<String> {
         validate_dlcCode_tabs_dlcs(builder);
         print_dlcTabList(builder);
 
-        builder.append("-------- key relation map --------\n");
-        builder.append('\n');
+        builder.append("-------- key relation map --------\n\n");
 
         print_dlcCodeNameMap(builder);
         print_dlcTabCodeMap(builder);
