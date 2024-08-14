@@ -4,7 +4,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import java.nio.file.Path;
-import java.util.List;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.stage.Window;
 
@@ -16,7 +16,9 @@ public interface LinkEditor {
 
         void onViewShown();
 
-        List<CaptureData> onShowCaptureDataList(boolean findAll);
+        ObservableList<CaptureData> onShowCaptureDataList(String pattern, boolean findAll);
+
+        void onUpdateSearch(String pattern);
 
         Image onShowCaptureImage(int captureDataId);
 
@@ -27,8 +29,6 @@ public interface LinkEditor {
 
 
     interface LinkEditorView extends MvpView<LinkEditorPresenter> {
-        void onStop();
-
         void requestStop();
 
         void showError(String header, Throwable throwable);

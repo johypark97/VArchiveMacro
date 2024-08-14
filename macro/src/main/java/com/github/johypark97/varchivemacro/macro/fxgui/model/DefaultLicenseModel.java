@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public final class DefaultLicenseModel implements LicenseModel {
+public class DefaultLicenseModel implements LicenseModel {
     private static final String BASE_PATH = "/licenses/";
     private static final String JSON_PATH = BASE_PATH + "licenses.json";
 

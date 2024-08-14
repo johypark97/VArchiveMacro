@@ -178,18 +178,19 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void onViewShow_scanner_setupCaptureDelayLinker(
-            SliderTextFieldLinker.Initializer initializer) {
-        initializer.apply(ScannerConfig.CAPTURE_DELAY_DEFAULT, ScannerConfig.CAPTURE_DELAY_MAX,
-                ScannerConfig.CAPTURE_DELAY_MIN, getConfigModel().getScannerConfig().captureDelay);
+    public void onViewShow_scanner_setupCaptureDelayLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(ScannerConfig.CAPTURE_DELAY_DEFAULT);
+        linker.setLimitMax(ScannerConfig.CAPTURE_DELAY_MAX);
+        linker.setLimitMin(ScannerConfig.CAPTURE_DELAY_MIN);
+        linker.setValue(getConfigModel().getScannerConfig().captureDelay);
     }
 
     @Override
-    public void onViewShow_scanner_setupKeyInputDurationLinker(
-            SliderTextFieldLinker.Initializer initializer) {
-        initializer.apply(ScannerConfig.KEY_INPUT_DURATION_DEFAULT,
-                ScannerConfig.KEY_INPUT_DURATION_MAX, ScannerConfig.KEY_INPUT_DURATION_MIN,
-                getConfigModel().getScannerConfig().keyInputDuration);
+    public void onViewShow_scanner_setupKeyInputDurationLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(ScannerConfig.KEY_INPUT_DURATION_DEFAULT);
+        linker.setLimitMax(ScannerConfig.KEY_INPUT_DURATION_MAX);
+        linker.setLimitMin(ScannerConfig.KEY_INPUT_DURATION_MIN);
+        linker.setValue(getConfigModel().getScannerConfig().keyInputDuration);
     }
 
     @Override
@@ -198,11 +199,11 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void onViewShow_scanner_setupRecordUploadDelayLinker(
-            SliderTextFieldLinker.Initializer initializer) {
-        initializer.apply(ScannerConfig.RECORD_UPLOAD_DELAY_DEFAULT,
-                ScannerConfig.RECORD_UPLOAD_DELAY_MAX, ScannerConfig.RECORD_UPLOAD_DELAY_MIN,
-                getConfigModel().getScannerConfig().recordUploadDelay);
+    public void onViewShow_scanner_setupRecordUploadDelayLinker(SliderTextFieldLinker linker) {
+        linker.setDefaultValue(ScannerConfig.RECORD_UPLOAD_DELAY_DEFAULT);
+        linker.setLimitMax(ScannerConfig.RECORD_UPLOAD_DELAY_MAX);
+        linker.setLimitMin(ScannerConfig.RECORD_UPLOAD_DELAY_MIN);
+        linker.setValue(getConfigModel().getScannerConfig().recordUploadDelay);
     }
 
     @Override

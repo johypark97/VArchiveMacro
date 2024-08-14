@@ -15,7 +15,7 @@ public class OpenSourceLicensePresenterImpl
         implements OpenSourceLicensePresenter {
     private WeakReference<LicenseModel> licenseModelReference;
 
-    private StartData startData;
+    public StartData startData;
 
     public void linkModel(LicenseModel licenseModel) {
         licenseModelReference = new WeakReference<>(licenseModel);

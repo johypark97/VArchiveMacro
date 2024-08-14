@@ -25,7 +25,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public final class DefaultCollectionScanTask extends AbstractCollectionScanTask {
+public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
     private static final int REJECTED_SLEEP_TIME = 1000;
 
     private final CacheManager cacheManager;

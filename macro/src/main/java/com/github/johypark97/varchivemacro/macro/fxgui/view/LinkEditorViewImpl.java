@@ -2,19 +2,12 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
-import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorView;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.LinkEditorComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.LinkEditorStage;
 import java.awt.Toolkit;
 import java.lang.ref.WeakReference;
-import java.text.Normalizer;
-import java.util.Locale;
-import java.util.function.Function;
-import javafx.collections.FXCollections;
-import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
@@ -23,32 +16,10 @@ import javafx.stage.Stage;
 
 public class LinkEditorViewImpl extends AbstractMvpView<LinkEditorPresenter, LinkEditorView>
         implements LinkEditorView {
-    private static final Function<String, String> NORMALIZER = x -> Normalizer.normalize(
-            TitleTool.normalizeTitle_recognition(x).toLowerCase(Locale.ENGLISH),
-            Normalizer.Form.NFKD);
-
     private WeakReference<LinkEditorComponent> linkEditorComponentReference;
-
-    private FilteredList<ScanDataManager.CaptureData> filteredCaptureDataList;
 
     private LinkEditorComponent getLinkEditorComponent() {
         return linkEditorComponentReference.get();
-    }
-
-    private void onUpdateSearch(String pattern) {
-        if (pattern == null) {
-            return;
-        }
-
-        String normalizedPattern = NORMALIZER.apply(pattern.trim());
-
-        filteredCaptureDataList.setPredicate(
-                x -> NORMALIZER.apply(x.scannedTitle.get()).contains(normalizedPattern));
-    }
-
-    @Override
-    public void onStop() {
-        filteredCaptureDataList = null; // NOPMD
     }
 
     @Override
@@ -83,17 +54,13 @@ public class LinkEditorViewImpl extends AbstractMvpView<LinkEditorPresenter, Lin
 
     @Override
     public void showCaptureDataList(String pattern, boolean findAll) {
-        filteredCaptureDataList = new FilteredList<>(
-                FXCollections.observableArrayList(getPresenter().onShowCaptureDataList(findAll)));
-
-        onUpdateSearch(pattern);
-
-        getLinkEditorComponent().setCaptureDataList(filteredCaptureDataList);
+        getLinkEditorComponent().setCaptureDataList(
+                getPresenter().onShowCaptureDataList(pattern, findAll));
     }
 
     @Override
     public void updateSearch(String pattern) {
-        onUpdateSearch(pattern);
+        getPresenter().onUpdateSearch(pattern);
     }
 
     @Override

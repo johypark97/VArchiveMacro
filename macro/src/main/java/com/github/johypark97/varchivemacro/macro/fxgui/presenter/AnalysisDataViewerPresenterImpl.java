@@ -17,7 +17,7 @@ public class AnalysisDataViewerPresenterImpl
         implements AnalysisDataViewerPresenter {
     private WeakReference<ScannerModel> scannerModelReference;
 
-    private StartData startData;
+    public StartData startData;
 
     public void linkModel(ScannerModel scannerModel) {
         scannerModelReference = new WeakReference<>(scannerModel);
