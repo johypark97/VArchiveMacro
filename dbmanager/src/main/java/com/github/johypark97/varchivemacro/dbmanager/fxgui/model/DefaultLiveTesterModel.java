@@ -34,7 +34,7 @@ public class DefaultLiveTesterModel implements LiveTesterModel {
     @Override
     public void initialize(List<LocalDlcSong> dlcSongList, TitleTool titleTool, StartData data)
             throws AWTException, NotSupportedResolutionException, OcrInitializationError {
-        ocr = DefaultOcrWrapper.load(data.tessdataPath, data.tessdataLanguage);
+        ocr = new DefaultOcrWrapper(data.tessdataPath, data.tessdataLanguage);
         robot = new Robot();
 
         BufferedImage image = AwtRobotHelper.captureScreenshot(robot);
@@ -63,7 +63,7 @@ public class DefaultLiveTesterModel implements LiveTesterModel {
         data.image = SwingFXUtils.toFXImage(titleImage, null);
 
         String title;
-        try (PixWrapper pix = PixWrapper.load(ImageConverter.imageToPngBytes(titleImage))) {
+        try (PixWrapper pix = new PixWrapper(ImageConverter.imageToPngBytes(titleImage))) {
             PixPreprocessor.preprocessTitle(pix);
             title = ocr.run(pix.pixInstance).trim();
         }

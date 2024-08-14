@@ -137,7 +137,7 @@ public class OcrCacheClassificationTask extends Task<Void> {
                             BufferedImage.TYPE_INT_RGB);
                 }
 
-                try (PixWrapper pix = PixWrapper.load(ImageConverter.imageToPngBytes(titleImage))) {
+                try (PixWrapper pix = new PixWrapper(ImageConverter.imageToPngBytes(titleImage))) {
                     PixPreprocessor.thresholdWhite(pix);
                     BufferedImage preprocessed = ImageConverter.pngBytesToImage(pix.getPngBytes());
 

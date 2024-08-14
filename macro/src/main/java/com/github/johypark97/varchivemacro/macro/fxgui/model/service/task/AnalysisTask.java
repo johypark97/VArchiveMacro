@@ -72,7 +72,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
                 area = CollectionAreaFactory.create(resolution);
             }
 
-            try (PixWrapper pix = PixWrapper.load(
+            try (PixWrapper pix = new PixWrapper(
                     cacheManager.createPath(captureData.idProperty().get()))) {
                 // preprocessing
                 PixPreprocessor.preprocessCell(pix);
@@ -155,7 +155,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
                 });
         onDataReady.run();
 
-        try (OcrWrapper ocr = ScannerOcr.load()) {
+        try (OcrWrapper ocr = new ScannerOcr()) {
             while (queue.peek() != null) {
                 if (Thread.currentThread().isInterrupted()) {
                     throw new InterruptedException();

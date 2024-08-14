@@ -124,7 +124,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
     private String readTitle(OcrWrapper ocr, BufferedImage image) throws IOException, PixError {
         byte[] titleImageBytes = ImageConverter.imageToPngBytes(cropTitle(image));
 
-        try (PixWrapper pix = PixWrapper.load(titleImageBytes)) {
+        try (PixWrapper pix = new PixWrapper(titleImageBytes)) {
             PixPreprocessor.preprocessTitle(pix);
 
             return ocr.run(pix.pixInstance);
@@ -234,7 +234,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
         Queue<Entry<String, List<LocalDlcSong>>> captureQueue = createCaptureQueue(dlcTapSongMap);
 
         // run main task
-        try (OcrWrapper ocr = TitleOcr.load()) {
+        try (OcrWrapper ocr = new TitleOcr()) {
             while (true) {
                 Entry<String, List<LocalDlcSong>> tabEntry = captureQueue.poll();
                 if (tabEntry == null) {

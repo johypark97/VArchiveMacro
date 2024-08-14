@@ -15,7 +15,7 @@ public interface RecordManager {
 
     Map<Button, Map<Pattern, LocalRecord>> getRecord(int id);
 
-    final class LocalRecord implements Cloneable {
+    class LocalRecord implements Cloneable {
         public final Button button;
         public final Pattern pattern;
         public final int id;

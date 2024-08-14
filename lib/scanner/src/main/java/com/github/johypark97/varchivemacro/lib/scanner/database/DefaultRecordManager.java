@@ -29,22 +29,20 @@ public class DefaultRecordManager implements RecordManager {
 
     private final RecordMap recordMap;
 
-    protected DefaultRecordManager(RecordMap recordMap) {
-        this.recordMap = recordMap;
+    public DefaultRecordManager() {
+        recordMap = new RecordMap();
     }
 
-    public static DefaultRecordManager loadLocal(Path path) throws IOException {
-        RecordMap recordMap = new RecordMap();
+    public DefaultRecordManager(Path path) throws IOException {
+        recordMap = new RecordMap();
 
         List<RecordData> recordDataList = RecordData.loadJson(path);
         recordDataList.stream().map(RecordData::toLocalRecord).forEach(recordMap::add);
-
-        return new DefaultRecordManager(recordMap);
     }
 
-    public static DefaultRecordManager loadRemote(String djName)
+    public DefaultRecordManager(String djName)
             throws GeneralSecurityException, IOException, InterruptedException, ApiException {
-        RecordMap recordMap = new RecordMap();
+        recordMap = new RecordMap();
 
         RecordFetcher fetcher = Api.newRecordFetcher(djName);
         for (Button button : Button.values()) {
@@ -64,8 +62,6 @@ public class DefaultRecordManager implements RecordManager {
                 }
             }
         }
-
-        return new DefaultRecordManager(recordMap);
     }
 
     public void saveJson(Path path) throws IOException {

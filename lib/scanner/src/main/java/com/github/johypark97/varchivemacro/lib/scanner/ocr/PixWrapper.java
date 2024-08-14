@@ -22,26 +22,22 @@ public class PixWrapper implements AutoCloseable {
         this.pixInstance = pixInstance;
     }
 
-    public static PixWrapper load(Path path) throws IOException {
+    public PixWrapper(Path path) throws IOException {
         if (!Files.exists(path)) {
             throw new IOException(path + " (File not found)");
         }
 
-        PIX pixInstance = leptonica.pixRead(path.toString());
+        pixInstance = leptonica.pixRead(path.toString());
         if (pixInstance == null) {
             throw new IOException(path + " (Failed to read file)");
         }
-
-        return new PixWrapper(pixInstance);
     }
 
-    public static PixWrapper load(byte[] pngBytes) throws PixError {
-        PIX pixInstance = leptonica.pixReadMemPng(pngBytes, pngBytes.length);
+    public PixWrapper(byte[] pngBytes) throws PixError {
+        pixInstance = leptonica.pixReadMemPng(pngBytes, pngBytes.length);
         if (pixInstance == null) {
             throw new PixError("Error: pixReadMemPng()");
         }
-
-        return new PixWrapper(pixInstance);
     }
 
     // -------------------------

@@ -8,20 +8,12 @@ import org.bytedeco.tesseract.TessBaseAPI;
 public class DefaultOcrWrapper implements OcrWrapper {
     private final TessBaseAPI tessBaseAPI;
 
-    protected DefaultOcrWrapper(TessBaseAPI tessBaseAPI) {
-        this.tessBaseAPI = tessBaseAPI;
-    }
-
-    public static DefaultOcrWrapper load(Path dataDir, String language)
-            throws OcrInitializationError {
-        TessBaseAPI tessBaseAPI = new TessBaseAPI();
+    public DefaultOcrWrapper(Path dataDir, String language) throws OcrInitializationError {
+        tessBaseAPI = new TessBaseAPI();
 
         if (tessBaseAPI.Init(dataDir.toString(), language) != 0) {
-            tessBaseAPI.End();
             throw new OcrInitializationError("OCR initialization failed.");
         }
-
-        return new DefaultOcrWrapper(tessBaseAPI);
     }
 
     @Override
