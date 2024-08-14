@@ -34,30 +34,32 @@ public class Language {
         Files.writeString(CONFIG_PATH, locale.toLanguageTag());
     }
 
-    public synchronized void initialize() {
-        if (resourceBundleReference.get() != null) {
-            throw new IllegalStateException("Language is already initialized.");
-        }
+    public void initialize() {
+        synchronized (this) {
+            if (resourceBundleReference.get() != null) {
+                throw new IllegalStateException("Language is already initialized.");
+            }
 
-        Locale locale = Locale.getDefault();
-        try {
-            locale = loadLocale(CONFIG_PATH);
-        } catch (IOException ignored) {
-        }
+            Locale locale = Locale.getDefault();
+            try {
+                locale = loadLocale(CONFIG_PATH);
+            } catch (IOException ignored) {
+            }
 
-        ResourceBundle resourceBundle;
-        if (Language.class.getModule().isNamed()) {
-            resourceBundle = loadUsingServiceProvider(locale);
-        } else {
-            resourceBundle = loadUsingControl(locale);
-        }
+            ResourceBundle resourceBundle;
+            if (Language.class.getModule().isNamed()) {
+                resourceBundle = loadUsingServiceProvider(locale);
+            } else {
+                resourceBundle = loadUsingControl(locale);
+            }
 
-        try {
-            saveLocale(resourceBundle.getLocale());
-        } catch (IOException ignored) {
-        }
+            try {
+                saveLocale(resourceBundle.getLocale());
+            } catch (IOException ignored) {
+            }
 
-        resourceBundleReference.set(resourceBundle);
+            resourceBundleReference.set(resourceBundle);
+        }
     }
 
     public ResourceBundle getResourceBundle() {

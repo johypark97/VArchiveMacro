@@ -59,12 +59,14 @@ public class AnalysisDataViewerPresenterImpl
                 BufferedImage bufferedImage;
 
                 bufferedImage = data.rateImage[i][j];
-                recordBoxData.rateImage =
-                        bufferedImage == null ? null : SwingFXUtils.toFXImage(bufferedImage, null);
+                if (bufferedImage != null) {
+                    recordBoxData.rateImage = SwingFXUtils.toFXImage(bufferedImage, null);
+                }
 
                 bufferedImage = data.maxComboImage[i][j];
-                recordBoxData.maxComboImage =
-                        bufferedImage == null ? null : SwingFXUtils.toFXImage(bufferedImage, null);
+                if (bufferedImage != null) {
+                    recordBoxData.maxComboImage = SwingFXUtils.toFXImage(bufferedImage, null);
+                }
 
                 recordBoxData.rateText = data.rateText[i][j];
 

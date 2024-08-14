@@ -138,10 +138,10 @@ public class AnalysisDataViewerComponent extends VBox {
             getColumnConstraints().add(columnConstraints);
             getColumnConstraints().add(columnConstraints);
 
-            add(wrapWithBox(rateImageView), 0, 0);
-            add(wrapWithBox(maxComboImageView), 1, 0);
-            add(rateTextField, 0, 1);
-            add(maxComboCheckBox, 1, 1);
+            super.add(wrapWithBox(rateImageView), 0, 0);
+            super.add(wrapWithBox(maxComboImageView), 1, 0);
+            super.add(rateTextField, 0, 1);
+            super.add(maxComboCheckBox, 1, 1);
 
             rateTextField.setAlignment(Pos.CENTER);
             rateTextField.setEditable(false);

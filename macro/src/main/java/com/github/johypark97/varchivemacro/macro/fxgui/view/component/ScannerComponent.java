@@ -202,10 +202,9 @@ public class ScannerComponent extends TabPane {
     }
 
     public void viewer_showInformation(String title, String composer) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(32);
 
-        builder.append("Title: ").append(title).append(System.lineSeparator());
-        builder.append("Composer: ").append(composer);
+        builder.append("Title: ").append(title).append("\nComposer: ").append(composer);
 
         viewer_informationTextArea.setText(builder.toString());
     }
