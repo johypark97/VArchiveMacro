@@ -7,11 +7,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
+import javafx.collections.ObservableList;
 
 public interface DatabaseModel {
     void load(Path path) throws IOException;
 
-    List<SongData> getSongDataList();
+    ObservableList<SongData> getObservableDlcSongList();
 
     void validateDatabase(Consumer<String> onDone);
 

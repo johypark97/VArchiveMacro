@@ -124,9 +124,10 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     public void ocrCacheCapturer_start() {
-        int captureDelay = getHomeComponent().ocrCacheCapturer_getCaptureDelay();
-        int keyInputDelay = getHomeComponent().ocrCacheCapturer_getKeyInputDelay();
-        int keyInputDuration = getHomeComponent().ocrCacheCapturer_getKeyInputDuration();
+        int captureDelay = getHomeComponent().ocrCacheCapturer_captureDelayLinker.getValue();
+        int keyInputDelay = getHomeComponent().ocrCacheCapturer_keyInputDelayLinker.getValue();
+        int keyInputDuration =
+                getHomeComponent().ocrCacheCapturer_keyInputDurationLinker.getValue();
         String outputDirectory =
                 getHomeComponent().ocrCacheCapturer_outputDirectoryTextField.getText();
 
@@ -254,11 +255,11 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                     getHomeComponent().ocrTester_tableView);
 
             getPresenter().onViewShowing_ocrCacheCapturer_setupCaptureDelayLinker(
-                    getHomeComponent().ocrCacheCapturer_captureDelayLinkerInitializer());
+                    getHomeComponent().ocrCacheCapturer_captureDelayLinker);
             getPresenter().onViewShowing_ocrCacheCapturer_setupKeyInputDelayLinker(
-                    getHomeComponent().ocrCacheCapturer_keyInputDelayLinkerInitializer());
+                    getHomeComponent().ocrCacheCapturer_keyInputDelayLinker);
             getPresenter().onViewShowing_ocrCacheCapturer_setupKeyInputDurationLinker(
-                    getHomeComponent().ocrCacheCapturer_keyInputDurationLinkerInitializer());
+                    getHomeComponent().ocrCacheCapturer_keyInputDurationLinker);
 
             FxHookWrapper.addKeyListener(nativeKeyListener);
         });

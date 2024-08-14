@@ -13,10 +13,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class DefaultOcrTestModel implements OcrTestModel {
-    public final ObservableList<OcrTestData> ocrTestDataList = FXCollections.observableArrayList();
+    public ObservableList<OcrTestData> ocrTestDataList;
 
     @Override
     public ObservableList<OcrTestData> getOcrTestDataList() {
+        if (ocrTestDataList == null) {
+            ocrTestDataList = FXCollections.observableArrayList();
+        }
+
         return ocrTestDataList;
     }
 
@@ -40,8 +44,8 @@ public class DefaultOcrTestModel implements OcrTestModel {
             task.tessdataLanguage = tessdataLanguage;
             task.tessdataPath = tessdataPath;
 
-            task.onAddData = x -> Platform.runLater(() -> ocrTestDataList.add(x));
-            task.onClearData = () -> Platform.runLater(ocrTestDataList::clear);
+            task.onAddData = x -> Platform.runLater(() -> getOcrTestDataList().add(x));
+            task.onClearData = () -> Platform.runLater(() -> getOcrTestDataList().clear());
 
             return task;
         });

@@ -28,19 +28,11 @@ public class OcrCacheClassificationTask extends Task<Void> {
     private static final String KOR_DIRECTORY_NAME = "kor";
     private static final String MIXED_DIRECTORY_NAME = "mixed";
 
-    private Path inputPath;
-    private Path outputPath;
-
     public List<LocalDlcSong> dlcSongList;
     public TitleTool titleTool;
 
-    public void setInputPath(Path value) {
-        inputPath = value;
-    }
-
-    public void setOutputPath(Path value) {
-        outputPath = value;
-    }
+    public Path inputPath;
+    public Path outputPath;
 
     @Override
     protected Void call() throws Exception {

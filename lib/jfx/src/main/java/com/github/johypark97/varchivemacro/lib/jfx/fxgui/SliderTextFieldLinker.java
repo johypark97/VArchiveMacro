@@ -57,15 +57,6 @@ public class SliderTextFieldLinker {
         updateTextFieldText();
     }
 
-    public Initializer getInitializer() {
-        return (defaultValue, limitMax, limitMin, value) -> {
-            setDefaultValue(defaultValue);
-            setLimitMax(limitMax);
-            setLimitMin(limitMin);
-            setValue(value);
-        };
-    }
-
     private void setHandler() {
         // onMouseClicked
         slider.setOnMouseReleased(event -> {
@@ -121,10 +112,5 @@ public class SliderTextFieldLinker {
 
         updateSliderValue();
         updateTextFieldText();
-    }
-
-    @FunctionalInterface
-    public interface Initializer {
-        void apply(int defaultValue, int limitMax, int limitMin, int value);
     }
 }

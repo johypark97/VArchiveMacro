@@ -19,14 +19,12 @@ public interface Home {
 
         void onViewShowing_ocrTester_linkTableView(TableView<OcrTestData> tableView);
 
-        void onViewShowing_ocrCacheCapturer_setupCaptureDelayLinker(
-                SliderTextFieldLinker.Initializer initializer);
+        void onViewShowing_ocrCacheCapturer_setupCaptureDelayLinker(SliderTextFieldLinker linker);
 
-        void onViewShowing_ocrCacheCapturer_setupKeyInputDelayLinker(
-                SliderTextFieldLinker.Initializer initializer);
+        void onViewShowing_ocrCacheCapturer_setupKeyInputDelayLinker(SliderTextFieldLinker linker);
 
         void onViewShowing_ocrCacheCapturer_setupKeyInputDurationLinker(
-                SliderTextFieldLinker.Initializer initializer);
+                SliderTextFieldLinker linker);
 
         void viewer_onUpdateTableFilter(String regex, SongDataProperty property);
 

@@ -31,18 +31,13 @@ public class OcrCacheCaptureTask extends Task<Void> {
 
     private final Robot robot = new Robot();
 
-    private Path outputPath;
-
     public List<LocalDlcSong> dlcSongList;
+    public Path outputPath;
     public int captureDelay;
     public int keyInputDelay;
     public int keyInputDuration;
 
     public OcrCacheCaptureTask() throws AWTException {
-    }
-
-    public void setOutputPath(Path value) {
-        outputPath = value;
     }
 
     private void checkRange(int value, int min, int max, String message) {
