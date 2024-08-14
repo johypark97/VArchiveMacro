@@ -14,7 +14,7 @@ import java.util.Set;
 public class XmlResourceBundle extends ResourceBundle {
     private final Map<String, Object> data = new HashMap<>();
 
-    public void loadFromXML(InputStream stream) throws IOException {
+    public XmlResourceBundle(InputStream stream) throws IOException {
         Properties properties = new Properties();
         properties.loadFromXML(stream);
         properties.forEach((key, value) -> data.put(key.toString(), value));
