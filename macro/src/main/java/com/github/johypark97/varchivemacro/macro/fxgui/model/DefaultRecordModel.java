@@ -49,21 +49,21 @@ public class DefaultRecordModel implements RecordModel {
             try {
                 recordManager = new DefaultRecordManager(djName);
             } catch (ApiException e) {
-                LOGGER.atError().log("ApiException", e);
+                LOGGER.atError().setCause(e).log("ApiException");
                 Platform.runLater(() -> {
                     String message = language.getString("recordModel.apiException");
                     onThrow.accept(message, e);
                 });
                 return false;
             } catch (GeneralSecurityException e) {
-                LOGGER.atError().log("GeneralSecurityException", e);
+                LOGGER.atError().setCause(e).log("GeneralSecurityException");
                 Platform.runLater(() -> {
                     String message = language.getString("recordModel.generalSecurityException");
                     onThrow.accept(message, e);
                 });
                 return false;
             } catch (IOException e) {
-                LOGGER.atError().log("Network IOException", e);
+                LOGGER.atError().setCause(e).log("Network IOException");
                 Platform.runLater(() -> {
                     String message = language.getString("recordModel.networkIOException");
                     onThrow.accept(message, e);
@@ -76,7 +76,7 @@ public class DefaultRecordModel implements RecordModel {
             try {
                 recordManager.saveJson(RECORD_PATH);
             } catch (IOException e) {
-                LOGGER.atError().log("File IOException", e);
+                LOGGER.atError().setCause(e).log("File IOException");
                 Platform.runLater(() -> {
                     String message = language.getString("recordModel.fileIOException");
                     onThrow.accept(message, e);

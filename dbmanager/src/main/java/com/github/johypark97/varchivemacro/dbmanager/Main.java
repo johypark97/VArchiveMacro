@@ -54,7 +54,7 @@ public class Main extends Application {
         try {
             databaseModel.load(file.toPath());
         } catch (IOException | RuntimeException e) {
-            LOGGER.atError().log("DatabaseModel exception", e);
+            LOGGER.atError().setCause(e).log("DatabaseModel exception");
             AlertBuilder.error().setThrowable(e).alert.showAndWait();
             return false;
         }

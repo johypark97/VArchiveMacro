@@ -160,14 +160,14 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         getScannerModel().setupService(throwable -> {
             String header = "Scanner service exception";
 
-            LOGGER.atError().log(header, throwable);
+            LOGGER.atError().setCause(throwable).log(header);
             getView().showError(header, throwable);
         });
 
         getMacroModel().setupService(throwable -> {
             String header = "Macro service exception";
 
-            LOGGER.atError().log(header, throwable);
+            LOGGER.atError().setCause(throwable).log(header);
             getView().showError(header, throwable);
         });
     }
@@ -250,12 +250,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         } catch (IOException e) {
             getView().getScannerFrontController().showForbiddenMark();
             getView().showError("Database loading error", e);
-            LOGGER.atError().log("DatabaseModel loading exception", e);
+            LOGGER.atError().setCause(e).log("DatabaseModel loading exception");
             return false;
         } catch (Exception e) {
             getView().getScannerFrontController().showForbiddenMark();
             getView().showError("Critical database loading error", e);
-            LOGGER.atError().log("Critical DatabaseModel loading exception", e);
+            LOGGER.atError().setCause(e).log("Critical DatabaseModel loading exception");
             throw e;
         }
 
@@ -279,12 +279,12 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         } catch (IOException e) {
             getView().getScannerFrontController().showDjNameInput();
             getView().showError("Local records loading error", e);
-            LOGGER.atError().log("RecordModel loading exception", e);
+            LOGGER.atError().setCause(e).log("RecordModel loading exception");
             return;
         } catch (Exception e) {
             getView().getScannerFrontController().showDjNameInput();
             getView().showError("Critical local records loading error", e);
-            LOGGER.atError().log("Critical RecordModel loading exception", e);
+            LOGGER.atError().setCause(e).log("Critical RecordModel loading exception");
             throw e;
         }
 
@@ -297,7 +297,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
             Language.saveLocale(locale);
         } catch (IOException e) {
             getView().showError("Language changing error", e);
-            LOGGER.atError().log("Language changing error", e);
+            LOGGER.atError().setCause(e).log("Language changing error");
             return;
         }
 

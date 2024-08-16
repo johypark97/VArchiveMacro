@@ -75,7 +75,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     private void defaultOnThrow(Throwable throwable) {
-        LOGGER.atError().log(EXCEPTION_LOG_MESSAGE, throwable);
+        LOGGER.atError().setCause(throwable).log(EXCEPTION_LOG_MESSAGE);
         AlertBuilder.error().setThrowable(throwable).alert.showAndWait();
     }
 

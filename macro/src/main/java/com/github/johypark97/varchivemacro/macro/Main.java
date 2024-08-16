@@ -66,7 +66,7 @@ public class Main extends Application {
     }
 
     private static void logUncaughtException(Throwable e) {
-        LOGGER.atError().log("Uncaught Exception", e);
+        LOGGER.atError().setCause(e).log("Uncaught Exception");
     }
 
     private static void showUncaughtExceptionAlert(Throwable e) {
