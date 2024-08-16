@@ -28,7 +28,7 @@ dependencies {
 
     // -------- Logging --------
     implementation(libs.slf4j.api)
-    implementation(libs.logback.classic)
+    implementation(libs.log4j.slf4j2.impl)
 
     // -------- Test libraries --------
     testImplementation(libs.junit.jupiter)

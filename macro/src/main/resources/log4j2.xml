@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <Properties>
+    <Property name="logDirectoryPath">log</Property>
+    <Property name="logFilePath_debug">${logDirectoryPath}/debug.log</Property>
+    <Property name="logFilePath_error">${logDirectoryPath}/error.log</Property>
+    <Property name="logFilePath_info">${logDirectoryPath}/info.log</Property>
+    <Property name="logFilePattern_debug">${logDirectoryPath}/debug-%i.log</Property>
+    <Property name="logFilePattern_error">${logDirectoryPath}/error-%i.log</Property>
+    <Property name="logFilePattern_info">${logDirectoryPath}/info-%i.log</Property>
+    <Property name="logFileSize">16MB</Property>
+    <Property name="pattern">[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5p] [%t] %c - %m%n</Property>
+  </Properties>
+  <Appenders>
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout pattern="${pattern}"/>
+      <LevelRangeFilter maxLevel="DEBUG" minLevel="WARN"/>
+    </Console>
+    <Console name="STDERR" target="SYSTEM_ERR">
+      <PatternLayout pattern="${pattern}"/>
+      <LevelRangeFilter maxLevel="ERROR"/>
+    </Console>
+    <RollingFile createOnDemand="true" fileName="${logFilePath_error}" filePattern="${logFilePattern_error}" name="file_error">
+      <PatternLayout pattern="${pattern}"/>
+      <LevelRangeFilter maxLevel="ERROR"/>
+      <SizeBasedTriggeringPolicy size="${logFileSize}"/>
+      <DefaultRolloverStrategy fileIndex="min"/>
+    </RollingFile>
+    <RollingFile createOnDemand="true" fileName="${logFilePath_info}" filePattern="${logFilePattern_info}" name="file_info">
+      <PatternLayout pattern="${pattern}"/>
+      <LevelRangeFilter maxLevel="INFO" minLevel="WARN"/>
+      <SizeBasedTriggeringPolicy size="${logFileSize}"/>
+      <DefaultRolloverStrategy fileIndex="min"/>
+    </RollingFile>
+    <RollingFile createOnDemand="true" fileName="${logFilePath_debug}" filePattern="${logFilePattern_debug}" name="file_debug">
+      <PatternLayout pattern="${pattern}"/>
+      <LevelRangeFilter minLevel="DEBUG"/>
+      <SizeBasedTriggeringPolicy size="${logFileSize}"/>
+      <DefaultRolloverStrategy fileIndex="min"/>
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+    <Root level="${sys:log.level:-INFO}">
+      <AppenderRef ref="STDOUT"/>
+      <AppenderRef ref="STDERR"/>
+      <AppenderRef ref="file_error"/>
+      <AppenderRef ref="file_info"/>
+      <AppenderRef ref="file_debug"/>
+    </Root>
+  </Loggers>
+</Configuration>

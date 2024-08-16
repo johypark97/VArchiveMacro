@@ -27,9 +27,9 @@
     "path": "leptonica.txt",
     "url": "https://github.com/danbloomberg/leptonica"
   },
-  "Logback": {
-    "path": "logback.txt",
-    "url": "https://logback.qos.ch/"
+  "Log4j": {
+    "path": "log4j.txt",
+    "url": "https://logging.apache.org/log4j/2.x/"
   },
   "SLF4J": {
     "path": "slf4j.txt",
