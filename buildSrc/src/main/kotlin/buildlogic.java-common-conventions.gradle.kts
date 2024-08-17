@@ -21,9 +21,10 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.gson)
     implementation(libs.guava)
     implementation(libs.jnativehook)
-    implementation(libs.gson)
+    implementation(libs.sqlite.jdbc)
     implementation(libs.tesseract.platform)
 
     // -------- Logging --------

@@ -35,6 +35,10 @@
     "path": "slf4j.txt",
     "url": "https://www.slf4j.org/"
   },
+  "SQLite JDBC": {
+    "path": "sqlite-jdbc.txt",
+    "url": "https://github.com/xerial/sqlite-jdbc"
+  },
   "tessdata": {
     "path": "tessdata.txt",
     "url": "https://github.com/tesseract-ocr/tessdata_best"

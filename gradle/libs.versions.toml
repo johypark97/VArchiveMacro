@@ -12,6 +12,7 @@ launch4j = "3.0.6"
 log4j2 = "2.23.1"
 mockito-junit-jupiter = "5.12.0"
 slf4j-api = "2.0.16"
+sqlite-jdbc = "3.46.0.1"
 tesseract-platform = "5.3.4-1.5.10"
 
 [libraries]
@@ -25,6 +26,7 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j2" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito-junit-jupiter" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
 tesseract-platform = { module = "org.bytedeco:tesseract-platform", version.ref = "tesseract-platform" }
 
 [plugins]
