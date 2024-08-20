@@ -5,8 +5,9 @@ module varchivemacro.lib.scanner {
     requires varchivemacro.lib.common;
 
     // 3rd party
-    requires com.google.gson;
     requires com.google.common;
+    requires com.google.gson;
+    requires org.xerial.sqlitejdbc;
 
     // tesseract-platform
     requires org.bytedeco.javacpp.windows.x86_64;
