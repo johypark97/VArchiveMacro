@@ -1,7 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.model.service.task;
 
-import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasMany;
-
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
@@ -137,7 +135,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
                         analysisData.setException(
                                 new IllegalArgumentException("There are no linked captures."));
                         return;
-                    } else if (hasMany(x.childListProperty())) {
+                    } else if (x.childListProperty().size() > 1) {
                         analysisData.setException(
                                 new IllegalArgumentException("Too many linked captures."));
                         return;

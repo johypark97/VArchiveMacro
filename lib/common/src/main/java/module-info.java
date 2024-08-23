@@ -3,7 +3,6 @@ module varchivemacro.lib.common {
     requires com.google.gson;
 
     // exports
-    exports com.github.johypark97.varchivemacro.lib.common.protocol;
     exports com.github.johypark97.varchivemacro.lib.common.resource;
     exports com.github.johypark97.varchivemacro.lib.common.service;
     exports com.github.johypark97.varchivemacro.lib.common;

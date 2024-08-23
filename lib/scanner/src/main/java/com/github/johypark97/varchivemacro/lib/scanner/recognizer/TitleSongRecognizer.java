@@ -1,8 +1,5 @@
 package com.github.johypark97.varchivemacro.lib.scanner.recognizer;
 
-import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasMany;
-import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasOne;
-
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils.StringDiff;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
@@ -14,7 +11,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -55,25 +51,27 @@ public class TitleSongRecognizer {
             // check if there are exact matches
             list = findExactMatch(remappedTitle);
             if (!list.isEmpty()) {
-                return new Recognized(remappedTitle, list, StatusAccuracy.FOUND_EXACT, hasOne(list)
-                        ? StatusFound.FOUND_ONE_SONG
-                        : StatusFound.FOUND_DUPLICATE_SONGS);
+                return new Recognized(remappedTitle, list, StatusAccuracy.FOUND_EXACT,
+                        list.size() == 1
+                                ? StatusFound.FOUND_ONE_SONG
+                                : StatusFound.FOUND_DUPLICATE_SONGS);
             }
 
             // check if there are similar matches
             list = findSimilarMatch(remappedTitle);
-            if (hasOne(list)) {
+            if (list.size() == 1) {
                 return new Recognized(remappedTitle, list, StatusAccuracy.FOUND_SIMILAR,
                         StatusFound.FOUND_ONE_SONG);
-            } else if (hasMany(list)) {
+            } else if (list.size() > 1) {
                 Set<String> set = new HashSet<>();
                 for (Found found : list) {
                     set.add(found.key);
                 }
 
-                return new Recognized(remappedTitle, list, StatusAccuracy.FOUND_SIMILAR, hasOne(set)
-                        ? StatusFound.FOUND_DUPLICATE_SONGS
-                        : StatusFound.FOUND_MANY_SONGS);
+                return new Recognized(remappedTitle, list, StatusAccuracy.FOUND_SIMILAR,
+                        set.size() == 1
+                                ? StatusFound.FOUND_DUPLICATE_SONGS
+                                : StatusFound.FOUND_MANY_SONGS);
             }
         }
 
@@ -111,14 +109,11 @@ public class TitleSongRecognizer {
         }
 
         List<Found> list = new LinkedList<>();
-        for (Entry<String, StringDiff> entry : map.entrySet()) {
-            String key = entry.getKey();
-            StringDiff diff = entry.getValue();
-
+        map.forEach((key, diff) -> {
             for (Song song : lookupSong.get(key)) {
                 list.add(new Found(key, song, diff.getDistance(), diff.getSimilarity()));
             }
-        }
+        });
 
         return list;
     }

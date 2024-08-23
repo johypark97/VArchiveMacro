@@ -1,8 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.view.component;
 
-import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasMany;
-import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasOne;
-
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums;
@@ -473,14 +470,14 @@ public class ScannerComponent extends TabPane {
                     return;
                 }
 
-                if (hasOne(item.parentListProperty())) {
+                if (item.parentListProperty().size() == 1) {
                     SongData songData = item.parentListProperty().get(0);
                     LinkMetadata linkMetadata = songData.linkMapProperty().get(item);
 
                     getStyleClass().add((linkMetadata.distanceProperty().get() == 0)
                             ? STYLE_CLASS_EXACT
                             : STYLE_CLASS_SIMILAR);
-                } else if (hasMany(item.parentListProperty())) {
+                } else if (item.parentListProperty().size() > 1) {
                     getStyleClass().add(STYLE_CLASS_WARNING);
                 }
             }
@@ -507,8 +504,8 @@ public class ScannerComponent extends TabPane {
 
         song_toggleSimilarButton.setOnAction(event -> {
             List<SongData> list = song_songTableView.getItems().filtered(
-                    x -> !x.linkExact.get() && !x.linkChanged.get() && hasOne(
-                            x.childListProperty()));
+                    x -> !x.linkExact.get() && !x.linkChanged.get()
+                            && x.childListProperty().size() == 1);
 
             for (SongData item : list) {
                 if (!item.selected.get()) {
@@ -663,7 +660,7 @@ public class ScannerComponent extends TabPane {
                     return;
                 }
 
-                if (hasOne(item.childListProperty())) {
+                if (item.childListProperty().size() == 1) {
                     if (item.linkChanged.get()) {
                         getStyleClass().add(STYLE_CLASS_CHANGED);
                     } else if (item.linkExact.get()) {
@@ -671,7 +668,7 @@ public class ScannerComponent extends TabPane {
                     } else {
                         getStyleClass().add(STYLE_CLASS_SIMILAR);
                     }
-                } else if (hasMany(item.childListProperty())) {
+                } else if (item.childListProperty().size() > 1) {
                     getStyleClass().add(STYLE_CLASS_INVALID);
                 }
             }

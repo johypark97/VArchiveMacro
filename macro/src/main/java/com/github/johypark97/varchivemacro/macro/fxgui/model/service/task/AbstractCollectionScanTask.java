@@ -1,7 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.model.service.task;
 
-import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.hasOne;
-
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
@@ -144,7 +142,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
 
     private boolean linkSongAndCapture(SongData songData, CaptureData captureData) {
         for (CaptureData child : songData.childListProperty()) {
-            if (hasOne(child.parentListProperty())) {
+            if (child.parentListProperty().size() == 1) {
                 if (child.scannedTitle.get().equals(captureData.scannedTitle.get())) {
                     return false;
                 }
@@ -154,8 +152,8 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
         songData.link(captureData);
 
         LinkMetadata linkMetadata = songData.linkMapProperty().get(captureData);
-        boolean linkExact =
-                hasOne(songData.childListProperty()) && linkMetadata.distanceProperty().get() == 0;
+        boolean linkExact = songData.childListProperty().size() == 1
+                && linkMetadata.distanceProperty().get() == 0;
         songData.linkExact.set(linkExact);
         songData.selected.set(linkExact);
 

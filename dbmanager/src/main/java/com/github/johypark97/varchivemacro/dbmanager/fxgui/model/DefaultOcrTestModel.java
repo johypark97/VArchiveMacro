@@ -45,7 +45,7 @@ public class DefaultOcrTestModel implements OcrTestModel {
             task.tessdataPath = tessdataPath;
 
             task.onAddData = x -> Platform.runLater(() -> getOcrTestDataList().add(x));
-            task.onClearData = () -> Platform.runLater(() -> getOcrTestDataList().clear());
+            task.onClearData = () -> Platform.runLater(getOcrTestDataList()::clear);
 
             return task;
         });
