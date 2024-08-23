@@ -6,7 +6,7 @@ import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
@@ -55,8 +55,8 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void startCollectionScan(Runnable onDone, Runnable onCancel,
-            Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
-            Set<String> selectedTabSet, Path cacheDirectoryPath, int captureDelay,
+            Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
+            Set<String> selectedCategorySet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
@@ -67,8 +67,9 @@ public class DefaultScannerModel implements ScannerModel {
 
         service.setTaskConstructor(() -> {
             Task<Void> task =
-                    new DefaultCollectionScanTask(scanDataManager, dlcTapSongMap, titleTool,
-                            selectedTabSet, cacheDirectoryPath, captureDelay, keyInputDuration);
+                    new DefaultCollectionScanTask(scanDataManager, categoryNameSongListMap,
+                            titleTool, selectedCategorySet, cacheDirectoryPath, captureDelay,
+                            keyInputDuration);
 
             task.setOnCancelled(event -> onCancel.run());
             task.setOnSucceeded(event -> onDone.run());
@@ -77,8 +78,9 @@ public class DefaultScannerModel implements ScannerModel {
         });
 
         // service.setTaskConstructor(() -> {
-        //     Task<Void> task = new FHDCollectionLoaderTask(scanDataManager, dlcTapSongMap, titleTool,
-        //             selectedTabSet, cacheDirectoryPath);
+        //     Task<Void> task =
+        //             new FHDCollectionLoaderTask(scanDataManager, categoryNameSongListMap, titleTool,
+        //                     selectedCategorySet, cacheDirectoryPath);
         //
         //     task.setOnCancelled(event -> onCancel.run());
         //     task.setOnSucceeded(event -> onDone.run());

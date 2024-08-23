@@ -20,6 +20,7 @@ module varchivemacro.macro {
     requires com.github.kwhat.jnativehook;
     requires com.google.common;
     requires com.google.gson;
+    requires java.sql;
     requires org.slf4j;
 
     exports com.github.johypark97.varchivemacro.macro.fxgui.model.data to com.google.gson;

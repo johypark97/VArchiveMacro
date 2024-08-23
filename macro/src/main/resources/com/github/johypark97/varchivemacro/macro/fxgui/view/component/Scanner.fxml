@@ -122,15 +122,15 @@
           <right>
             <VBox spacing="10.0">
               <children>
-                <TitledPane VBox.vgrow="ALWAYS" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="%scanner.capture.tabList">
+                <TitledPane VBox.vgrow="ALWAYS" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="%scanner.capture.categoryList">
                   <content>
-                    <ListView fx:id="capture_tabListView"/>
+                    <ListView fx:id="capture_categoryListView"/>
                   </content>
                 </TitledPane>
                 <HBox spacing="10.0">
                   <children>
-                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%common.selectAll" fx:id="capture_selectAllTabButton"/>
-                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%common.unselectAll" fx:id="capture_unselectAllTabButton"/>
+                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%common.selectAll" fx:id="capture_selectAllCategoryButton"/>
+                    <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%common.unselectAll" fx:id="capture_unselectAllCategoryButton"/>
                   </children>
                 </HBox>
                 <Separator/>

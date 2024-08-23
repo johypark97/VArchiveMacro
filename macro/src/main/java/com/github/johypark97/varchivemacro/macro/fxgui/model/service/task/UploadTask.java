@@ -3,8 +3,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model.service.task;
 import com.github.johypark97.varchivemacro.lib.scanner.api.Api;
 import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader;
 import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader.RequestJson;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.data.Account;
@@ -64,16 +64,12 @@ public class UploadTask extends InterruptibleTask<Void> {
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    private RequestJson recordToRequest(LocalDlcSong song, LocalRecord record) {
-        String title = song.remoteTitle;
-        if (title == null) {
-            title = song.title;
-        }
-
+    private RequestJson recordToRequest(Song song, LocalRecord record) {
         RequestJson requestJson =
-                new RequestJson(title, record.button, record.pattern, record.rate, record.maxCombo);
-        if (getDatabaseModel().getDuplicateTitleSet().contains(song.id)) {
-            requestJson.composer = song.composer;
+                new RequestJson(song.title(), record.button, record.pattern, record.rate,
+                        record.maxCombo);
+        if (getDatabaseModel().duplicateTitleSongIdSet().contains(song.id())) {
+            requestJson.composer = song.composer();
         }
 
         return requestJson;
@@ -102,7 +98,7 @@ public class UploadTask extends InterruptibleTask<Void> {
                 NewRecordData data = queue.poll();
                 data.status.set(Status.UPLOADING);
 
-                LocalDlcSong song = data.songProperty().get();
+                Song song = data.songProperty().get();
                 LocalRecord newRecord = data.newRecordProperty().get();
 
                 RequestJson requestJson = recordToRequest(song, newRecord);

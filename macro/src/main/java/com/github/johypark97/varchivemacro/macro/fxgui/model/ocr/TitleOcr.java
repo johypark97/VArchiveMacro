@@ -5,7 +5,7 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrInitializationErro
 import java.nio.file.Path;
 
 public class TitleOcr extends DefaultOcrWrapper {
-    private static final Path DATAPATH = Path.of("data/tessdata");
+    private static final Path DATAPATH = Path.of("data");
     private static final String LANGUAGE = "djmax";
 
     public TitleOcr() throws OcrInitializationError {

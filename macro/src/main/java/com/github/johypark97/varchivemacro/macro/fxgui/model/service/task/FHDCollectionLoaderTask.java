@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model.service.task;
 
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
@@ -21,15 +21,15 @@ public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
     private CollectionArea collectionArea;
 
     public FHDCollectionLoaderTask(ScanDataManager scanDataManager,
-            Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
-            Set<String> selectedTabSet, Path cacheDirectoryPath) {
-        super(scanDataManager, dlcTapSongMap, titleTool, selectedTabSet);
+            Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
+            Set<String> selectedCategorySet, Path cacheDirectoryPath) {
+        super(scanDataManager, categoryNameSongListMap, titleTool, selectedCategorySet);
 
         cacheManager = new CacheManager(cacheDirectoryPath);
     }
 
     @Override
-    protected void moveToNextTab() {
+    protected void moveToNextCategory() {
     }
 
     @Override

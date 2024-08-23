@@ -4,7 +4,7 @@ import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.h
 
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
@@ -20,56 +20,43 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
-import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCollectionScanTask.class);
 
-    private static final String TAB_NAME_CLEAR_PASS_PLUS = "CLEARPASS+";
+    private static final String CATEGORY_CLEAR_PASS_PLUS = "CLEARPASS+";
     private static final int DUPLICATE_LIMIT = 2;
 
-    private final Map<String, List<LocalDlcSong>> dlcTapSongMap;
-    private final Set<String> selectedTabSet;
+    private final Map<String, List<Song>> categoryNameSongListMap;
+    private final Set<String> selectedCategorySet;
     private final TitleTool titleTool;
 
     private final WeakReference<ScanDataManager> scanDataManagerReference;
 
     public AbstractCollectionScanTask(ScanDataManager scanDataManager,
-            Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
-            Set<String> selectedTabSet) {
-        this.dlcTapSongMap = deepCopyDlcTapSongMap(dlcTapSongMap);
-        this.selectedTabSet = Set.copyOf(selectedTabSet);
+            Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
+            Set<String> selectedCategorySet) {
+        this.categoryNameSongListMap = categoryNameSongListMap;
+        this.selectedCategorySet = selectedCategorySet;
         this.titleTool = titleTool;
 
         scanDataManagerReference = new WeakReference<>(scanDataManager);
-    }
-
-    private static Map<String, List<LocalDlcSong>> deepCopyDlcTapSongMap(
-            Map<String, List<LocalDlcSong>> map) {
-        BinaryOperator<List<LocalDlcSong>> mergeFunction =
-                (o1, o2) -> Stream.of(o1, o2).flatMap(List::stream).toList();
-
-        return map.entrySet().stream().collect(
-                Collectors.toMap(Entry::getKey, Entry::getValue, mergeFunction,
-                        LinkedHashMap::new));
     }
 
     private static String normalizeTitle(String value) {
         return TitleTool.normalizeTitle_recognition(value);
     }
 
-    protected abstract void moveToNextTab() throws InterruptedException;
+    protected abstract void moveToNextCategory() throws InterruptedException;
 
     protected abstract void moveToNextSong() throws InterruptedException;
 
@@ -83,36 +70,35 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
         return scanDataManagerReference.get();
     }
 
-    private String normalizeSongTitle(LocalDlcSong song) {
-        return normalizeTitle(titleTool.getClippedTitleOrDefault(song.id, song.title));
+    private String normalizeSongTitle(Song song) {
+        return normalizeTitle(titleTool.getClippedTitleOrDefault(song.id(), song.title()));
     }
 
     private String normalizeScannedTitle(String value) {
         return titleTool.remapScannedTitle(normalizeTitle(value));
     }
 
-    private Queue<Entry<String, List<LocalDlcSong>>> createCaptureQueue(
-            Map<String, List<LocalDlcSong>> tabNameDlcSongListMap) {
-        Queue<Entry<String, List<LocalDlcSong>>> queue = new LinkedList<>();
+    private Queue<Entry<String, List<Song>>> createCaptureQueue(
+            Map<String, List<Song>> categoryNameSongListMap) {
+        Queue<Entry<String, List<Song>>> queue = new LinkedList<>();
 
-        for (Entry<String, List<LocalDlcSong>> entry : tabNameDlcSongListMap.entrySet()) {
-            String tab = entry.getKey();
-
-            // add an empty map before the ClearPass+ tab to skip the favorite tab
-            if (TAB_NAME_CLEAR_PASS_PLUS.equals(tab)) {
-                queue.add(Map.entry(TAB_NAME_CLEAR_PASS_PLUS, List.of()));
+        categoryNameSongListMap.forEach((categoryName, songList) -> {
+            // add an empty map before the ClearPass+ category to skip the favorite category
+            if (CATEGORY_CLEAR_PASS_PLUS.equals(categoryName)) {
+                queue.add(Map.entry(CATEGORY_CLEAR_PASS_PLUS, List.of()));
             }
 
-            queue.add(Map.entry(tab, selectedTabSet.contains(tab) ? entry.getValue() : List.of()));
-        }
+            queue.add(Map.entry(categoryName,
+                    selectedCategorySet.contains(categoryName) ? songList : List.of()));
+        });
 
         return queue;
     }
 
-    private Map<String, List<SongData>> prepareSongData(List<LocalDlcSong> dlcSongList) {
+    private Map<String, List<SongData>> prepareSongData(List<Song> songList) {
         Map<String, List<SongData>> map = new HashMap<>();
 
-        dlcSongList.forEach(song -> {
+        songList.forEach(song -> {
             String normalizedTitle = normalizeSongTitle(song);
             SongData data = getScanDataManager().createSongData(song, normalizedTitle);
             map.computeIfAbsent(normalizedTitle, x -> new LinkedList<>()).add(data);
@@ -230,18 +216,18 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
         // check the cache directory
         checkCacheDirectory();
 
-        // create queue that filtered by selectedTabSet
-        Queue<Entry<String, List<LocalDlcSong>>> captureQueue = createCaptureQueue(dlcTapSongMap);
+        // create queue that filtered by selectedCategorySet
+        Queue<Entry<String, List<Song>>> captureQueue = createCaptureQueue(categoryNameSongListMap);
 
         // run main task
         try (OcrWrapper ocr = new TitleOcr()) {
             while (true) {
-                Entry<String, List<LocalDlcSong>> tabEntry = captureQueue.poll();
+                Entry<String, List<Song>> tabEntry = captureQueue.poll();
                 if (tabEntry == null) {
                     break;
                 }
 
-                moveToNextTab();
+                moveToNextCategory();
 
                 if (tabEntry.getValue().isEmpty()) {
                     continue;
@@ -301,7 +287,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
         try {
             int count = captureQueue.size() + 1;
             for (int i = 0; i < count; ++i) {
-                moveToNextTab();
+                moveToNextCategory();
             }
         } catch (InterruptedException ignored) {
         }

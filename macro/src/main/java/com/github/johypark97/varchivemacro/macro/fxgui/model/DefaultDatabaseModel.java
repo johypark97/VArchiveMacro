@@ -1,46 +1,33 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.model;
 
-import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultDlcSongManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.CachedReadOnlySongDatabase;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultTitleTool;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Category;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DefaultDatabaseModel implements DatabaseModel {
-    private static final Path BASE_PATH = Path.of("data/database");
+    private static final Path BASE_PATH = Path.of("data");
 
-    private static final Path DLC_PATH = BASE_PATH.resolve("dlcs.json");
-    private static final Path SONG_PATH = BASE_PATH.resolve("songs.json");
-    private static final Path TAB_PATH = BASE_PATH.resolve("tabs.json");
+    private static final Path SONG_DATABASE_PATH = BASE_PATH.resolve("song.db");
     private static final Path TITLE_PATH = BASE_PATH.resolve("titles.json");
 
-    private DlcSongManager dlcSongManager;
+    private SongDatabase songDatabase;
     private TitleTool titleTool;
 
     @Override
-    public void load() throws IOException {
-        dlcSongManager = new DefaultDlcSongManager(SONG_PATH, DLC_PATH, TAB_PATH);
+    public void load() throws IOException, SQLException {
+        songDatabase = new CachedReadOnlySongDatabase(SONG_DATABASE_PATH);
         titleTool = new DefaultTitleTool(TITLE_PATH);
-    }
-
-    @Override
-    public Map<String, List<LocalDlcSong>> getDlcTapSongMap() {
-        return dlcSongManager.getTabSongMap();
-    }
-
-    @Override
-    public LocalDlcSong getDlcSong(int id) {
-        return dlcSongManager.getDlcSong(id);
-    }
-
-    @Override
-    public List<String> getDlcTabList() {
-        return dlcSongManager.getDlcTabList();
     }
 
     @Override
@@ -49,7 +36,25 @@ public class DefaultDatabaseModel implements DatabaseModel {
     }
 
     @Override
-    public Set<Integer> getDuplicateTitleSet() {
-        return dlcSongManager.getDuplicateTitleSet();
+    public Song getSong(int id) {
+        return songDatabase.getSong(id);
+    }
+
+    @Override
+    public List<String> categoryNameList() {
+        return songDatabase.categoryList().stream().map(Category::name).toList();
+    }
+
+    @Override
+    public Map<String, List<Song>> categoryNameSongListMap() {
+        return songDatabase.categorySongListMap().entrySet().stream().collect(
+                Collectors.toMap(x -> x.getKey().name(), Map.Entry::getValue, (o, o2) -> null,
+                        LinkedHashMap::new));
+    }
+
+    @Override
+    public Set<Integer> duplicateTitleSongIdSet() {
+        return songDatabase.songList().stream().filter(x -> x.priority() > 0).map(Song::id)
+                .collect(Collectors.toSet());
     }
 }

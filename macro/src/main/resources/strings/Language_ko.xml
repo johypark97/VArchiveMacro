@@ -56,6 +56,7 @@
   <entry key="scanner.analysis.table.capture">연결된 캡처</entry>
   <entry key="scanner.analysis.table.composer">작곡가</entry>
   <entry key="scanner.analysis.table.error">에러</entry>
+  <entry key="scanner.analysis.table.pack">곡 팩</entry>
   <entry key="scanner.analysis.table.song">분석한 곡</entry>
   <entry key="scanner.analysis.table.status">상태</entry>
   <entry key="scanner.analysis.table.status.analyzing">분석 중</entry>
@@ -65,12 +66,12 @@
   <entry key="scanner.analysis.table.status.ready">준비 중</entry>
   <entry key="scanner.analysis.table.title">제목</entry>
   <entry key="scanner.capture">캡처</entry>
+  <entry key="scanner.capture.categoryList">카테고리 리스트</entry>
   <entry key="scanner.capture.clear">삭제</entry>
   <entry key="scanner.capture.control">컨트롤</entry>
   <entry key="scanner.capture.show">보기 (Enter)</entry>
   <entry key="scanner.capture.start">시작</entry>
   <entry key="scanner.capture.stop">중지</entry>
-  <entry key="scanner.capture.tabList">탭 리스트</entry>
   <entry key="scanner.capture.table.captureDataId">캡처 ID</entry>
   <entry key="scanner.capture.table.error">에러</entry>
   <entry key="scanner.capture.table.linkedSongs">연결된 곡</entry>
@@ -90,6 +91,7 @@
   <entry key="scanner.song.edit">수정 (Enter)</entry>
   <entry key="scanner.song.table.composer">작곡가</entry>
   <entry key="scanner.song.table.linkedCaptures">연결된 캡처</entry>
+  <entry key="scanner.song.table.pack">곡 팩</entry>
   <entry key="scanner.song.table.song">곡</entry>
   <entry key="scanner.song.table.songDataId">곡 ID</entry>
   <entry key="scanner.song.table.title">제목</entry>
@@ -105,6 +107,7 @@
   <entry key="scanner.uploader.table.button">버튼</entry>
   <entry key="scanner.uploader.table.composer">작곡가</entry>
   <entry key="scanner.uploader.table.newRecordDataId">기록 ID</entry>
+  <entry key="scanner.uploader.table.pack">곡 팩</entry>
   <entry key="scanner.uploader.table.pattern">패턴</entry>
   <entry key="scanner.uploader.table.record">기록</entry>
   <entry key="scanner.uploader.table.record.new">후</entry>

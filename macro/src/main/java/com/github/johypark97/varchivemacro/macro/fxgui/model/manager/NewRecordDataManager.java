@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model.manager;
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.ReadOnlyIntegerProperty;
@@ -28,7 +28,7 @@ public class NewRecordDataManager {
         newRecordDataList.clear();
     }
 
-    public NewRecordData createNewRecordData(LocalDlcSong song, LocalRecord previousRecord,
+    public NewRecordData createNewRecordData(Song song, LocalRecord previousRecord,
             LocalRecord newRecord) {
         int id = newRecordDataList.size();
 
@@ -40,7 +40,7 @@ public class NewRecordDataManager {
 
     public static class NewRecordData {
         private final ReadOnlyIntegerWrapper id = new ReadOnlyIntegerWrapper();
-        private final ReadOnlyObjectWrapper<LocalDlcSong> song = new ReadOnlyObjectWrapper<>();
+        private final ReadOnlyObjectWrapper<Song> song = new ReadOnlyObjectWrapper<>();
         private final ReadOnlyObjectWrapper<LocalRecord> newRecord = new ReadOnlyObjectWrapper<>();
         private final ReadOnlyObjectWrapper<LocalRecord> previousRecord =
                 new ReadOnlyObjectWrapper<>();
@@ -48,8 +48,7 @@ public class NewRecordDataManager {
         public final SimpleBooleanProperty selected = new SimpleBooleanProperty();
         public final SimpleObjectProperty<Status> status = new SimpleObjectProperty<>(Status.NONE);
 
-        public NewRecordData(int id, LocalDlcSong song, LocalRecord previousRecord,
-                LocalRecord newRecord) {
+        public NewRecordData(int id, Song song, LocalRecord previousRecord, LocalRecord newRecord) {
             this.id.set(id);
             this.newRecord.set(newRecord);
             this.previousRecord.set(previousRecord.clone());
@@ -60,7 +59,7 @@ public class NewRecordDataManager {
             return id.getReadOnlyProperty();
         }
 
-        public ReadOnlyObjectProperty<LocalDlcSong> songProperty() {
+        public ReadOnlyObjectProperty<Song> songProperty() {
             return song.getReadOnlyProperty();
         }
 

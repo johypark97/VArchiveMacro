@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
@@ -56,9 +56,10 @@ public class LinkEditorPresenterImpl
     @Override
     public void onViewShown() {
         SongData songData = getScannerModel().getSongData(startData.songDataId);
-        LocalDlcSong song = songData.songProperty().get();
+        Song song = songData.songProperty().get();
 
-        getView().setSongText(String.format("[%s] %s - %s", song.dlc, song.title, song.composer));
+        getView().setSongText(
+                String.format("[%s] %s - %s", song.pack(), song.title(), song.composer()));
     }
 
     @Override

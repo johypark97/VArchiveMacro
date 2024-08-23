@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model.service.task;
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
@@ -61,7 +61,7 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
         getNewRecordDataManager().clear();
 
         for (AnalysisData data : getAnalysisDataManager().copyAnalysisDataList()) {
-            LocalDlcSong song = data.songDataProperty().get().songProperty().get();
+            Song song = data.songDataProperty().get().songProperty().get();
 
             for (Cell<Button, Pattern, RecordData> cell : data.recordDataTable.cellSet()) {
                 float rate = parseRateText(cell.getValue().rateText.get());
@@ -74,7 +74,7 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
                 Pattern pattern = cell.getColumnKey();
                 boolean maxCombo = cell.getValue().maxCombo.get();
 
-                LocalRecord newRecord = new LocalRecord(song.id, button, pattern, rate, maxCombo);
+                LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
                 LocalRecord previousRecord = getRecordModel().findSameRecord(newRecord);
 
                 if (previousRecord != null && previousRecord.isUpdated(newRecord)) {

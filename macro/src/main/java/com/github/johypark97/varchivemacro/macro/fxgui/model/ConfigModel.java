@@ -36,7 +36,7 @@ public interface ConfigModel {
         public static final int RECORD_UPLOAD_DELAY_MIN = 0;
 
         @Expose
-        public Set<String> selectedTabSet = Set.of();
+        public Set<String> selectedCategorySet = Set.of();
 
         @Expose
         public Path cacheDirectory = CACHE_DIRECTORY_DEFAULT;

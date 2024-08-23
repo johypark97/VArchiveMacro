@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.ScannerConfig;
@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.Locale;
@@ -129,18 +130,19 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         }
 
         TreeItem<ViewerTreeData> rootNode = new TreeItem<>();
-        getDatabaseModel().getDlcTapSongMap().forEach((tab, songList) -> {
-            TreeItem<ViewerTreeData> dlcNode = new TreeItem<>(new ViewerTreeData(tab));
-            dlcNode.setExpanded(normalizedFilter != null);
-            rootNode.getChildren().add(dlcNode);
+        getDatabaseModel().categoryNameSongListMap().forEach((categoryName, songList) -> {
+            TreeItem<ViewerTreeData> categoryNode =
+                    new TreeItem<>(new ViewerTreeData(categoryName));
+            categoryNode.setExpanded(normalizedFilter != null);
+            rootNode.getChildren().add(categoryNode);
 
-            Stream<LocalDlcSong> stream = songList.stream();
+            Stream<Song> stream = songList.stream();
             if (normalizedFilter != null) {
                 stream = stream.filter(
-                        x -> VIEWER_TITLE_NORMALIZER.apply(x.title).contains(normalizedFilter));
+                        x -> VIEWER_TITLE_NORMALIZER.apply(x.title()).contains(normalizedFilter));
             }
-            stream.forEach(
-                    song -> dlcNode.getChildren().add(new TreeItem<>(new ViewerTreeData(song))));
+            stream.forEach(song -> categoryNode.getChildren()
+                    .add(new TreeItem<>(new ViewerTreeData(song))));
         });
 
         getView().scanner_viewer_setSongTreeViewRoot(rootNode);
@@ -247,7 +249,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     public boolean onViewShow_loadDatabase() {
         try {
             getDatabaseModel().load();
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             getView().getScannerFrontController().showForbiddenMark();
             getView().showError("Database loading error", e);
             LOGGER.atError().setCause(e).log("DatabaseModel loading exception");
@@ -261,10 +263,10 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
         scanner_viewer_setSongTreeViewRoot(null);
 
-        getView().scanner_capture_setTabList(getDatabaseModel().getDlcTabList());
+        getView().scanner_capture_setTabList(getDatabaseModel().categoryNameList());
 
-        Set<String> selectedTabSet = getConfigModel().getScannerConfig().selectedTabSet;
-        getView().scanner_capture_setSelectedTabSet(selectedTabSet);
+        Set<String> selectedCategorySet = getConfigModel().getScannerConfig().selectedCategorySet;
+        getView().scanner_capture_setSelectedCategorySet(selectedCategorySet);
 
         return true;
     }
@@ -352,9 +354,9 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     public ViewerRecordData scanner_viewer_onShowRecord(int id) {
         ViewerRecordData data = new ViewerRecordData();
 
-        LocalDlcSong song = getDatabaseModel().getDlcSong(id);
-        data.composer = song.composer;
-        data.title = song.title;
+        Song song = getDatabaseModel().getSong(id);
+        data.composer = song.composer();
+        data.title = song.title();
 
         getRecordModel().getRecordList(id).forEach(x -> {
             int column = x.pattern.getWeight();
@@ -407,7 +409,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void scanner_capture_onStart(Set<String> selectedTabSet, String cacheDirectory,
+    public void scanner_capture_onStart(Set<String> selectedCategorySet, String cacheDirectory,
             int captureDelay, int keyInputDuration) {
         if (!getScannerModel().isScanDataEmpty()) {
             return;
@@ -440,8 +442,8 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
         };
 
         getScannerModel().startCollectionScan(onDone, onCancel,
-                getDatabaseModel().getDlcTapSongMap(), getDatabaseModel().getTitleTool(),
-                selectedTabSet, cacheDirectoryPath, captureDelay, keyInputDuration);
+                getDatabaseModel().categoryNameSongListMap(), getDatabaseModel().getTitleTool(),
+                selectedCategorySet, cacheDirectoryPath, captureDelay, keyInputDuration);
     }
 
     @Override
@@ -694,7 +696,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
         ScannerConfig scannerConfig = new ScannerConfig();
         {
-            scannerConfig.selectedTabSet = getView().scanner_capture_getSelectedTabSet();
+            scannerConfig.selectedCategorySet = getView().scanner_capture_getSelectedCategorySet();
 
             try {
                 scannerConfig.cacheDirectory =

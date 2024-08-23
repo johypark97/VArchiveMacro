@@ -56,6 +56,7 @@
   <entry key="scanner.analysis.table.capture">Linked Capture</entry>
   <entry key="scanner.analysis.table.composer">Composer</entry>
   <entry key="scanner.analysis.table.error">Error</entry>
+  <entry key="scanner.analysis.table.pack">Song Pack</entry>
   <entry key="scanner.analysis.table.song">Analyzed Song</entry>
   <entry key="scanner.analysis.table.status">Status</entry>
   <entry key="scanner.analysis.table.status.analyzing">Analyzing</entry>
@@ -65,12 +66,12 @@
   <entry key="scanner.analysis.table.status.ready">Ready</entry>
   <entry key="scanner.analysis.table.title">Title</entry>
   <entry key="scanner.capture">Capture</entry>
+  <entry key="scanner.capture.categoryList">Category List</entry>
   <entry key="scanner.capture.clear">Clear</entry>
   <entry key="scanner.capture.control">Control</entry>
   <entry key="scanner.capture.show">Show (Enter)</entry>
   <entry key="scanner.capture.start">Start</entry>
   <entry key="scanner.capture.stop">Stop</entry>
-  <entry key="scanner.capture.tabList">Tab List</entry>
   <entry key="scanner.capture.table.captureDataId">Capture ID</entry>
   <entry key="scanner.capture.table.error">Error</entry>
   <entry key="scanner.capture.table.linkedSongs">Linked Songs</entry>
@@ -90,6 +91,7 @@
   <entry key="scanner.song.edit">Edit (Enter)</entry>
   <entry key="scanner.song.table.composer">Composer</entry>
   <entry key="scanner.song.table.linkedCaptures">Linked Captures</entry>
+  <entry key="scanner.song.table.pack">Song Pack</entry>
   <entry key="scanner.song.table.song">Song</entry>
   <entry key="scanner.song.table.songDataId">Song ID</entry>
   <entry key="scanner.song.table.title">Title</entry>
@@ -105,6 +107,7 @@
   <entry key="scanner.uploader.table.button">Button</entry>
   <entry key="scanner.uploader.table.composer">Composer</entry>
   <entry key="scanner.uploader.table.newRecordDataId">Record ID</entry>
+  <entry key="scanner.uploader.table.pack">Song Pack</entry>
   <entry key="scanner.uploader.table.pattern">Pattern</entry>
   <entry key="scanner.uploader.table.record">Record</entry>
   <entry key="scanner.uploader.table.record.new">New</entry>

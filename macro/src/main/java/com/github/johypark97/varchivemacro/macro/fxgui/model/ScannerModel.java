@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.model;
 
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
@@ -20,8 +20,8 @@ public interface ScannerModel {
     void setupService(Consumer<Throwable> onThrow);
 
     void startCollectionScan(Runnable onDone, Runnable onCancel,
-            Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
-            Set<String> selectedTabSet, Path cacheDirectoryPath, int captureDelay,
+            Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
+            Set<String> selectedCategorySet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration);
 
     void stopCollectionScan();
@@ -68,7 +68,7 @@ public interface ScannerModel {
         public BufferedImage titleImage;
         public BufferedImage[][] maxComboImage = new BufferedImage[4][4];
         public BufferedImage[][] rateImage = new BufferedImage[4][4];
-        public LocalDlcSong song;
+        public Song song;
         public String titleText;
         public String[][] rateText = new String[4][4];
         public boolean[][] maxCombo = new boolean[4][4];

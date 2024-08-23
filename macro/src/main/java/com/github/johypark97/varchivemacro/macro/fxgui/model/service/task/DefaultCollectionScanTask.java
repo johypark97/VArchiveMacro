@@ -4,7 +4,7 @@ import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
@@ -37,10 +37,10 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
     private ImageCachingService imageCachingService;
 
     public DefaultCollectionScanTask(ScanDataManager scanDataManager,
-            Map<String, List<LocalDlcSong>> dlcTapSongMap, TitleTool titleTool,
-            Set<String> selectedTabSet, Path cacheDirectoryPath, int captureDelay,
+            Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
+            Set<String> selectedCategorySet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration) {
-        super(scanDataManager, dlcTapSongMap, titleTool, selectedTabSet);
+        super(scanDataManager, categoryNameSongListMap, titleTool, selectedCategorySet);
 
         try {
             robot = new Robot();
@@ -62,7 +62,7 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
     }
 
     @Override
-    protected void moveToNextTab() throws InterruptedException {
+    protected void moveToNextCategory() throws InterruptedException {
         AwtRobotHelper.tabKey(robot, keyInputDuration, KeyEvent.VK_SPACE);
     }
 

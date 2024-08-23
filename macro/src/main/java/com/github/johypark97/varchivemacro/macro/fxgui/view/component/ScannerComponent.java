@@ -6,9 +6,10 @@ import static com.github.johypark97.varchivemacro.lib.common.CollectionUtility.h
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
-import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.DlcLocalSongComparator;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
+import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.SongPackComparator;
+import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.SongTitleComparator;
 import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.TitleComparator;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
@@ -85,13 +86,13 @@ public class ScannerComponent extends TabPane {
     public Button capture_clearButton;
 
     @FXML
-    public ListView<CaptureTabListData> capture_tabListView;
+    public ListView<CaptureTabListData> capture_categoryListView;
 
     @FXML
-    public Button capture_selectAllTabButton;
+    public Button capture_selectAllCategoryButton;
 
     @FXML
-    public Button capture_unselectAllTabButton;
+    public Button capture_unselectAllCategoryButton;
 
     @FXML
     public TableView<SongData> song_songTableView;
@@ -226,16 +227,16 @@ public class ScannerComponent extends TabPane {
                 list.stream().map(CaptureTabListData::new)
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
-        capture_tabListView.setItems(observableList);
+        capture_categoryListView.setItems(observableList);
     }
 
-    public Set<String> capture_getSelectedTabSet() {
-        return capture_tabListView.getItems().stream().filter(x -> x.checked.get()).map(x -> x.name)
-                .collect(Collectors.toSet());
+    public Set<String> capture_getSelectedCategorySet() {
+        return capture_categoryListView.getItems().stream().filter(x -> x.checked.get())
+                .map(x -> x.name).collect(Collectors.toSet());
     }
 
-    public void capture_setSelectedTabSet(Set<String> value) {
-        capture_tabListView.getItems().forEach(x -> x.checked.set(value.contains(x.name)));
+    public void capture_setSelectedCategorySet(Set<String> value) {
+        capture_categoryListView.getItems().forEach(x -> x.checked.set(value.contains(x.name)));
     }
 
     public String option_getCacheDirectory() {
@@ -352,7 +353,7 @@ public class ScannerComponent extends TabPane {
                     return;
                 }
 
-                setText(String.format("%s ...... %s", item.song.title, item.song.composer));
+                setText(String.format("%s ...... %s", item.song.title(), item.song.composer()));
             }
         });
 
@@ -367,7 +368,7 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    getView().scanner_viewer_showRecord(data.song.id);
+                    getView().scanner_viewer_showRecord(data.song.id());
                 });
     }
 
@@ -378,13 +379,14 @@ public class ScannerComponent extends TabPane {
 
         capture_clearButton.setOnAction(event -> getView().scanner_capture_clearScanData());
 
-        capture_tabListView.setCellFactory(CheckBoxListCell.forListView(param -> param.checked));
+        capture_categoryListView.setCellFactory(
+                CheckBoxListCell.forListView(param -> param.checked));
 
-        capture_selectAllTabButton.setOnAction(
-                event -> capture_tabListView.getItems().forEach(x -> x.checked.set(true)));
+        capture_selectAllCategoryButton.setOnAction(
+                event -> capture_categoryListView.getItems().forEach(x -> x.checked.set(true)));
 
-        capture_unselectAllTabButton.setOnAction(
-                event -> capture_tabListView.getItems().forEach(x -> x.checked.set(false)));
+        capture_unselectAllCategoryButton.setOnAction(
+                event -> capture_categoryListView.getItems().forEach(x -> x.checked.set(false)));
     }
 
     private void setupCapture_captureTableView() {
@@ -422,7 +424,7 @@ public class ScannerComponent extends TabPane {
                 }
 
                 setText(item.stream().map(x -> {
-                    String songTitle = x.songProperty().get().title;
+                    String songTitle = x.songProperty().get().title();
                     int id = x.idProperty().get();
 
                     return String.format("(%d) %s", id, songTitle);
@@ -552,13 +554,13 @@ public class ScannerComponent extends TabPane {
         TableColumn<SongData, ?> song =
                 new TableColumn<>(language.getString("scanner.song.table.song"));
         {
-            TableColumn<SongData, LocalDlcSong> title =
+            TableColumn<SongData, Song> title =
                     new TableColumn<>(language.getString("scanner.song.table.title"));
             title.setCellValueFactory(new PropertyValueFactory<>("song"));
             title.setPrefWidth(200);
             title.setCellFactory(param -> new TableCell<>() {
                 @Override
-                protected void updateItem(LocalDlcSong item, boolean empty) {
+                protected void updateItem(Song item, boolean empty) {
                     super.updateItem(item, empty);
 
                     if (empty || item == null) {
@@ -566,25 +568,18 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    setText(item.title);
+                    setText(item.title());
                 }
             });
-            title.setComparator(new Comparator<>() {
-                private final TitleComparator titleComparator = new TitleComparator();
+            title.setComparator(new SongTitleComparator());
 
-                @Override
-                public int compare(LocalDlcSong o1, LocalDlcSong o2) {
-                    return titleComparator.compare(o1.title, o2.title);
-                }
-            });
-
-            TableColumn<SongData, LocalDlcSong> composer =
+            TableColumn<SongData, Song> composer =
                     new TableColumn<>(language.getString("scanner.song.table.composer"));
             composer.setCellValueFactory(new PropertyValueFactory<>("song"));
             composer.setPrefWidth(150);
             composer.setCellFactory(param -> new TableCell<>() {
                 @Override
-                protected void updateItem(LocalDlcSong item, boolean empty) {
+                protected void updateItem(Song item, boolean empty) {
                     super.updateItem(item, empty);
 
                     if (empty || item == null) {
@@ -592,16 +587,17 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    setText(item.composer);
+                    setText(item.composer());
                 }
             });
 
-            TableColumn<SongData, LocalDlcSong> dlc = new TableColumn<>("DLC");
-            dlc.setCellValueFactory(new PropertyValueFactory<>("song"));
-            dlc.setPrefWidth(150);
-            dlc.setCellFactory(param -> new TableCell<>() {
+            TableColumn<SongData, Song> pack =
+                    new TableColumn<>(language.getString("scanner.song.table.pack"));
+            pack.setCellValueFactory(new PropertyValueFactory<>("song"));
+            pack.setPrefWidth(150);
+            pack.setCellFactory(param -> new TableCell<>() {
                 @Override
-                protected void updateItem(LocalDlcSong item, boolean empty) {
+                protected void updateItem(Song item, boolean empty) {
                     super.updateItem(item, empty);
 
                     if (empty || item == null) {
@@ -609,11 +605,11 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    setText(item.dlc);
+                    setText(item.pack().name());
                 }
             });
 
-            song.getColumns().addAll(List.of(title, composer, dlc));
+            song.getColumns().addAll(List.of(title, composer, pack));
         }
 
         TableColumn<SongData, Map<CaptureData, LinkMetadata>> linkedCaptures =
@@ -727,16 +723,16 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    setText(item.songProperty().get().title);
+                    setText(item.songProperty().get().title());
                 }
             });
             title.setComparator(new Comparator<>() {
-                private final TitleComparator titleComparator = new TitleComparator();
+                private final SongTitleComparator songTitleComparator = new SongTitleComparator();
 
                 @Override
                 public int compare(SongData o1, SongData o2) {
-                    return titleComparator.compare(o1.songProperty().get().title,
-                            o2.songProperty().get().title);
+                    return songTitleComparator.compare(o1.songProperty().get(),
+                            o2.songProperty().get());
                 }
             });
 
@@ -754,14 +750,15 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    setText(item.songProperty().get().composer);
+                    setText(item.songProperty().get().composer());
                 }
             });
 
-            TableColumn<AnalysisData, SongData> dlc = new TableColumn<>("DLC");
-            dlc.setCellValueFactory(new PropertyValueFactory<>(songDataPropertyName));
-            dlc.setPrefWidth(130);
-            dlc.setCellFactory(param -> new TableCell<>() {
+            TableColumn<AnalysisData, SongData> pack =
+                    new TableColumn<>(language.getString("scanner.analysis.table.pack"));
+            pack.setCellValueFactory(new PropertyValueFactory<>(songDataPropertyName));
+            pack.setPrefWidth(130);
+            pack.setCellFactory(param -> new TableCell<>() {
                 @Override
                 protected void updateItem(SongData item, boolean empty) {
                     super.updateItem(item, empty);
@@ -771,11 +768,11 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    setText(item.songProperty().get().dlc);
+                    setText(item.songProperty().get().pack().name());
                 }
             });
 
-            song.getColumns().addAll(List.of(title, composer, dlc));
+            song.getColumns().addAll(List.of(title, composer, pack));
         }
 
         TableColumn<AnalysisData, CaptureData> capture =
@@ -904,14 +901,14 @@ public class ScannerComponent extends TabPane {
         {
             String songPropertyName = "song";
 
-            TableColumn<NewRecordData, LocalDlcSong> title =
+            TableColumn<NewRecordData, Song> title =
                     new TableColumn<>(language.getString("scanner.uploader.table.title"));
             title.setCellValueFactory(new PropertyValueFactory<>(songPropertyName));
-            title.setComparator(new DlcLocalSongComparator());
+            title.setComparator(new SongPackComparator());
             title.setPrefWidth(140);
             title.setCellFactory(param -> new TableCell<>() {
                 @Override
-                protected void updateItem(LocalDlcSong item, boolean empty) {
+                protected void updateItem(Song item, boolean empty) {
                     super.updateItem(item, empty);
 
                     if (empty || item == null) {
@@ -919,17 +916,17 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    setText(item.title);
+                    setText(item.title());
                 }
             });
 
-            TableColumn<NewRecordData, LocalDlcSong> composer =
+            TableColumn<NewRecordData, Song> composer =
                     new TableColumn<>(language.getString("scanner.uploader.table.composer"));
             composer.setCellValueFactory(new PropertyValueFactory<>(songPropertyName));
             composer.setPrefWidth(120);
             composer.setCellFactory(param -> new TableCell<>() {
                 @Override
-                protected void updateItem(LocalDlcSong item, boolean empty) {
+                protected void updateItem(Song item, boolean empty) {
                     super.updateItem(item, empty);
 
                     if (empty || item == null) {
@@ -937,16 +934,17 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    setText(item.composer);
+                    setText(item.composer());
                 }
             });
 
-            TableColumn<NewRecordData, LocalDlcSong> dlc = new TableColumn<>("DLC");
-            dlc.setCellValueFactory(new PropertyValueFactory<>(songPropertyName));
-            dlc.setPrefWidth(100);
-            dlc.setCellFactory(param -> new TableCell<>() {
+            TableColumn<NewRecordData, Song> pack =
+                    new TableColumn<>(language.getString("scanner.uploader.table.pack"));
+            pack.setCellValueFactory(new PropertyValueFactory<>(songPropertyName));
+            pack.setPrefWidth(100);
+            pack.setCellFactory(param -> new TableCell<>() {
                 @Override
-                protected void updateItem(LocalDlcSong item, boolean empty) {
+                protected void updateItem(Song item, boolean empty) {
                     super.updateItem(item, empty);
 
                     if (empty || item == null) {
@@ -954,11 +952,11 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    setText(item.dlc);
+                    setText(item.pack().name());
                 }
             });
 
-            song.getColumns().addAll(List.of(title, composer, dlc));
+            song.getColumns().addAll(List.of(title, composer, pack));
         }
 
         TableColumn<NewRecordData, Enums.Button> button =

@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
@@ -60,7 +60,7 @@ public interface Home {
 
         void scanner_capture_onClearScanData();
 
-        void scanner_capture_onStart(Set<String> selectedTabSet, String cacheDirectory,
+        void scanner_capture_onStart(Set<String> selectedCategorySet, String cacheDirectory,
                 int captureDelay, int keyInputDuration);
 
         void scanner_capture_onStop();
@@ -129,9 +129,9 @@ public interface Home {
 
         void scanner_capture_setTabList(List<String> list);
 
-        Set<String> scanner_capture_getSelectedTabSet();
+        Set<String> scanner_capture_getSelectedCategorySet();
 
-        void scanner_capture_setSelectedTabSet(Set<String> value);
+        void scanner_capture_setSelectedCategorySet(Set<String> value);
 
         void scanner_capture_start();
 
@@ -215,7 +215,7 @@ public interface Home {
 
 
     class ViewerTreeData {
-        public final LocalDlcSong song;
+        public final Song song;
         public final String name;
 
         public ViewerTreeData(String name) {
@@ -224,7 +224,7 @@ public interface Home {
             song = null;
         }
 
-        public ViewerTreeData(LocalDlcSong song) {
+        public ViewerTreeData(Song song) {
             this.song = song;
 
             name = null;

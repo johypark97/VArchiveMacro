@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.model.manager;
 
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils.StringDiff;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -46,7 +46,7 @@ public class ScanDataManager {
         return songDataList.get(index);
     }
 
-    public SongData createSongData(LocalDlcSong song, String normalizedTitle) {
+    public SongData createSongData(Song song, String normalizedTitle) {
         int id = songDataList.size();
 
         SongData data = new SongData(id, song, normalizedTitle);
@@ -74,14 +74,14 @@ public class ScanDataManager {
                 new ReadOnlyMapWrapper<>();
 
         private final ReadOnlyIntegerWrapper id = new ReadOnlyIntegerWrapper();
-        private final ReadOnlyObjectWrapper<LocalDlcSong> song = new ReadOnlyObjectWrapper<>();
+        private final ReadOnlyObjectWrapper<Song> song = new ReadOnlyObjectWrapper<>();
         private final ReadOnlyStringWrapper normalizedTitle = new ReadOnlyStringWrapper();
 
         public final SimpleBooleanProperty linkChanged = new SimpleBooleanProperty();
         public final SimpleBooleanProperty linkExact = new SimpleBooleanProperty();
         public final SimpleBooleanProperty selected = new SimpleBooleanProperty();
 
-        public SongData(int id, LocalDlcSong song, String normalizedTitle) {
+        public SongData(int id, Song song, String normalizedTitle) {
             this.id.set(id);
             this.normalizedTitle.set(normalizedTitle);
             this.song.set(song);
@@ -94,7 +94,7 @@ public class ScanDataManager {
             return id.getReadOnlyProperty();
         }
 
-        public ReadOnlyObjectProperty<LocalDlcSong> songProperty() {
+        public ReadOnlyObjectProperty<Song> songProperty() {
             return song.getReadOnlyProperty();
         }
 
@@ -148,7 +148,7 @@ public class ScanDataManager {
 
         @Override
         public String toString() {
-            return String.format("SongData{%d, %d '%s'}", id.get(), song.get().id,
+            return String.format("SongData{%d, %d '%s'}", id.get(), song.get().id(),
                     normalizedTitle.get());
         }
     }

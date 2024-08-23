@@ -274,23 +274,23 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
-    public Set<String> scanner_capture_getSelectedTabSet() {
-        return getScanner().capture_getSelectedTabSet();
+    public Set<String> scanner_capture_getSelectedCategorySet() {
+        return getScanner().capture_getSelectedCategorySet();
     }
 
     @Override
-    public void scanner_capture_setSelectedTabSet(Set<String> value) {
-        getScanner().capture_setSelectedTabSet(value);
+    public void scanner_capture_setSelectedCategorySet(Set<String> value) {
+        getScanner().capture_setSelectedCategorySet(value);
     }
 
     @Override
     public void scanner_capture_start() {
-        Set<String> selectedTabSet = getScanner().capture_getSelectedTabSet();
+        Set<String> selectedCategorySet = getScanner().capture_getSelectedCategorySet();
         String cacheDirectory = getScanner().option_getCacheDirectory();
         int captureDelay = getScanner().option_getCaptureDelay();
         int keyInputDuration = getScanner().option_getKeyInputDuration();
 
-        getPresenter().scanner_capture_onStart(selectedTabSet, cacheDirectory, captureDelay,
+        getPresenter().scanner_capture_onStart(selectedCategorySet, cacheDirectory, captureDelay,
                 keyInputDuration);
     }
 
