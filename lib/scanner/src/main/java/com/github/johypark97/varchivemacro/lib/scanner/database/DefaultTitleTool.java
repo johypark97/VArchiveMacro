@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.lib.scanner.database;
 
-import com.github.johypark97.varchivemacro.lib.scanner.database.SongManager.LocalSong;
 import com.github.johypark97.varchivemacro.lib.scanner.database.datastruct.TitleData;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -19,13 +18,13 @@ public class DefaultTitleTool implements TitleTool {
     }
 
     @Override
-    public boolean hasClippedTitle(LocalSong song) {
-        return clippedTitleMap.containsKey(song.id);
+    public boolean hasClippedTitle(int id) {
+        return clippedTitleMap.containsKey(id);
     }
 
     @Override
-    public String getClippedTitle(LocalSong song) {
-        return clippedTitleMap.getOrDefault(song.id, song.title);
+    public String getClippedTitleOrDefault(int id, String defaultValue) {
+        return clippedTitleMap.getOrDefault(id, defaultValue);
     }
 
     @Override

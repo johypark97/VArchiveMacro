@@ -84,7 +84,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
     }
 
     private String normalizeSongTitle(LocalDlcSong song) {
-        return normalizeTitle(titleTool.getClippedTitle(song));
+        return normalizeTitle(titleTool.getClippedTitleOrDefault(song.id, song.title));
     }
 
     private String normalizeScannedTitle(String value) {

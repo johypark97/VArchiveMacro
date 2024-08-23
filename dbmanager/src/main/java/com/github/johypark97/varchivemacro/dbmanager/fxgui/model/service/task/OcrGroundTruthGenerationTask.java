@@ -194,7 +194,7 @@ public class OcrGroundTruthGenerationTask extends Task<Void> {
             Set<String> wordSet = new HashSet<>();
 
             for (LocalDlcSong song : dlcSongList) {
-                String title = titleTool.getClippedTitle(song);
+                String title = titleTool.getClippedTitleOrDefault(song.id, song.title);
                 title = TitleTool.normalizeTitle_training(title);
 
                 String numberString = numberMatcher.negate().replaceFrom(title, ' ');
