@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.view;
 
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongWrapper.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component.HomeComponent;
@@ -64,11 +64,6 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     @Override
     public void checker_setResultText(String value) {
         getHomeComponent().checker_textArea.setText(value);
-    }
-
-    @Override
-    public void checker_validateDatabase() {
-        getPresenter().checker_onValidateDatabase();
     }
 
     @Override

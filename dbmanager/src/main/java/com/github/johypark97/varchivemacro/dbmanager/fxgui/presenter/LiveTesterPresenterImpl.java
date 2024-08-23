@@ -8,7 +8,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.LiveTester.
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
@@ -55,11 +55,11 @@ public class LiveTesterPresenterImpl
                     "tessdataLanguage is blank. may not work properly.").alert.showAndWait();
         }
 
-        List<LocalDlcSong> dlcSongList = getDatabaseModel().getDlcSongList();
+        List<Song> songList = getDatabaseModel().getSongList();
         TitleTool titleTool = getDatabaseModel().getTitleTool();
 
         try {
-            getLiveTesterModel().initialize(dlcSongList, titleTool, startData);
+            getLiveTesterModel().initialize(songList, titleTool, startData);
         } catch (AWTException | NotSupportedResolutionException | OcrInitializationError e) {
             AlertBuilder.error().setThrowable(e).alert.showAndWait();
             return false;

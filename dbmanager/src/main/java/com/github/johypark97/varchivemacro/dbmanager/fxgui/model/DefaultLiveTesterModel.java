@@ -6,7 +6,7 @@ import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrInitializationError;
@@ -29,10 +29,10 @@ public class DefaultLiveTesterModel implements LiveTesterModel {
     private CollectionArea area;
     private OcrWrapper ocr;
     private Robot robot;
-    private TitleSongRecognizer<LocalDlcSong> recognizer;
+    private TitleSongRecognizer recognizer;
 
     @Override
-    public void initialize(List<LocalDlcSong> dlcSongList, TitleTool titleTool, StartData data)
+    public void initialize(List<Song> songList, TitleTool titleTool, StartData data)
             throws AWTException, NotSupportedResolutionException, OcrInitializationError {
         ocr = new DefaultOcrWrapper(data.tessdataPath, data.tessdataLanguage);
         robot = new Robot();
@@ -40,8 +40,8 @@ public class DefaultLiveTesterModel implements LiveTesterModel {
         BufferedImage image = AwtRobotHelper.captureScreenshot(robot);
         area = CollectionAreaFactory.create(new Dimension(image.getWidth(), image.getHeight()));
 
-        recognizer = new TitleSongRecognizer<>(titleTool);
-        recognizer.setSongList(dlcSongList);
+        recognizer = new TitleSongRecognizer(titleTool);
+        recognizer.setSongList(songList);
     }
 
     @Override
@@ -69,12 +69,12 @@ public class DefaultLiveTesterModel implements LiveTesterModel {
         }
         data.text = title;
 
-        Recognized<LocalDlcSong> recognized = recognizer.recognize(title);
-        data.recognized = recognized.foundList.isEmpty()
+        Recognized recognized = recognizer.recognize(title);
+        data.recognized = recognized.foundList().isEmpty()
                 ? "not found"
-                : recognized.foundList.stream()
-                        .map(x -> String.format("%s - %s [%d, %.2f]", x.song().title,
-                                x.song().composer, x.distance(), x.similarity()))
+                : recognized.foundList().stream()
+                        .map(x -> String.format("%s - %s [%d, %.2f]", x.song().title(),
+                                x.song().composer(), x.distance(), x.similarity()))
                         .collect(Collectors.joining(", "));
 
         return data;

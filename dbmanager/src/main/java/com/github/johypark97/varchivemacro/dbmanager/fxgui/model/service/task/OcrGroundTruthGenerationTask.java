@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.util.CacheHelper;
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
@@ -37,7 +37,7 @@ public class OcrGroundTruthGenerationTask extends Task<Void> {
     private final Function<Set<String>, String> joiner;
     private final Function<String, List<String>> splitter;
 
-    public List<LocalDlcSong> dlcSongList;
+    public List<Song> songList;
     public TitleTool titleTool;
 
     public Path inputPath;
@@ -80,7 +80,7 @@ public class OcrGroundTruthGenerationTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        Objects.requireNonNull(dlcSongList);
+        Objects.requireNonNull(songList);
         Objects.requireNonNull(titleTool);
 
         Objects.requireNonNull(inputPath);
@@ -193,8 +193,8 @@ public class OcrGroundTruthGenerationTask extends Task<Void> {
             Set<String> puncSet = new HashSet<>();
             Set<String> wordSet = new HashSet<>();
 
-            for (LocalDlcSong song : dlcSongList) {
-                String title = titleTool.getClippedTitleOrDefault(song.id, song.title);
+            for (Song song : songList) {
+                String title = titleTool.getClippedTitleOrDefault(song.id(), song.title());
                 title = TitleTool.normalizeTitle_training(title);
 
                 String numberString = numberMatcher.negate().replaceFrom(title, ' ');

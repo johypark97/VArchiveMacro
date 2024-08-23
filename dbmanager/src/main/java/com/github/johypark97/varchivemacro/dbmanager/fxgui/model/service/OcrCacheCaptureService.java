@@ -2,43 +2,43 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrCacheCaptureTask;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import java.util.List;
 import java.util.Objects;
 
 public class OcrCacheCaptureService extends BaseService<OcrCacheCaptureTask, Void> {
-    private List<LocalDlcSong> dlcSongList;
+    private List<Song> songList;
 
     @Override
     protected OcrCacheCaptureTask newTask() {
         OcrCacheCaptureTask task = super.newTask();
 
-        task.dlcSongList = dlcSongList;
+        task.songList = songList;
 
         return task;
     }
 
     public static class Builder extends BaseService.Builder<Builder, OcrCacheCaptureService> {
-        private List<LocalDlcSong> dlcSongList;
+        private List<Song> songList;
 
         public Builder() {
             super(OcrCacheCaptureService.class);
         }
 
-        public Builder setDlcSongList(List<LocalDlcSong> value) {
-            dlcSongList = List.copyOf(value);
+        public Builder setSongList(List<Song> value) {
+            songList = List.copyOf(value);
             return this;
         }
 
         @Override
         public void build() {
-            Objects.requireNonNull(dlcSongList);
+            Objects.requireNonNull(songList);
 
             super.build();
             OcrCacheCaptureService service =
                     ServiceManager.getInstance().get(OcrCacheCaptureService.class);
 
-            service.dlcSongList = dlcSongList;
+            service.songList = songList;
         }
 
         @Override

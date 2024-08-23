@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData.FoundData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongWrapper;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongWrapper.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
@@ -44,13 +44,10 @@ public class HomeComponent extends TabPane {
     public Button viewer_filterResetButton;
 
     @FXML
-    public TableView<SongData> viewer_tableView;
+    public TableView<SongWrapper> viewer_tableView;
 
     @FXML
     public TextArea checker_textArea;
-
-    @FXML
-    public Button checker_validateButton;
 
     @FXML
     public Button checker_compareWithRemoteButton;
@@ -209,31 +206,40 @@ public class HomeComponent extends TabPane {
     }
 
     private void setupViewerTab_tableView() {
-        TableColumn<SongData, Integer> id = new TableColumn<>("Id");
-        TableColumn<SongData, String> title = new TableColumn<>("Title");
-        TableColumn<SongData, String> remoteTitle = new TableColumn<>("Remote Title");
-        TableColumn<SongData, String> composer = new TableColumn<>("Composer");
-        TableColumn<SongData, String> dlc = new TableColumn<>("Dlc");
-        TableColumn<SongData, Integer> priority = new TableColumn<>("Priority");
+        TableColumn<SongWrapper, Integer> id = new TableColumn<>("Id");
+        TableColumn<SongWrapper, String> title = new TableColumn<>("Title");
+        TableColumn<SongWrapper, String> composer = new TableColumn<>("Composer");
+        TableColumn<SongWrapper, String> pack = new TableColumn<>("Pack");
+        TableColumn<SongWrapper, String> category = new TableColumn<>("Category");
+        TableColumn<SongWrapper, String> priority = new TableColumn<>("Priority");
 
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
-        remoteTitle.setCellValueFactory(new PropertyValueFactory<>("remoteTitle"));
         composer.setCellValueFactory(new PropertyValueFactory<>("composer"));
-        dlc.setCellValueFactory(new PropertyValueFactory<>("dlc"));
-        priority.setCellValueFactory(new PropertyValueFactory<>("priority"));
+        pack.setCellValueFactory(new PropertyValueFactory<>("pack"));
+        category.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+        {
+            TableColumn<SongWrapper, Integer> categoryPriority = new TableColumn<>("Category");
+            TableColumn<SongWrapper, Integer> packPriority = new TableColumn<>("Pack");
+            TableColumn<SongWrapper, Integer> titlePriority = new TableColumn<>("Title");
+
+            categoryPriority.setCellValueFactory(new PropertyValueFactory<>("categoryPriority"));
+            packPriority.setCellValueFactory(new PropertyValueFactory<>("packPriority"));
+            titlePriority.setCellValueFactory(new PropertyValueFactory<>("titlePriority"));
+
+            priority.getColumns().setAll(List.of(categoryPriority, packPriority, titlePriority));
+        }
 
         title.setComparator(new TitleComparator());
-        remoteTitle.setComparator(new TitleComparator());
 
         viewer_tableView.getColumns()
-                .setAll(List.of(id, title, remoteTitle, composer, dlc, priority));
+                .setAll(List.of(id, title, composer, pack, category, priority));
 
-        viewer_tableView.getSortOrder().setAll(List.of(title, priority));
+        viewer_tableView.getSortOrder().setAll(List.of(title));
     }
 
     private void setupCheckerTab() {
-        checker_validateButton.setOnAction(event -> getView().checker_validateDatabase());
         checker_compareWithRemoteButton.setOnAction(
                 event -> getView().checker_compareDatabaseWithRemote());
     }
@@ -296,7 +302,7 @@ public class HomeComponent extends TabPane {
                 }
 
                 setText(item.stream().map(x -> String.format("[%d, %.2f%%] %s - %s", x.distance,
-                                x.accuracy * 100, x.song.title, x.song.composer))
+                                x.accuracy * 100, x.song.title(), x.song.composer()))
                         .collect(Collectors.joining(", ")));
             }
         });

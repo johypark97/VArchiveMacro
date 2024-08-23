@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.util.CacheHelper;
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -31,7 +31,7 @@ public class OcrCacheCaptureTask extends Task<Void> {
 
     private final Robot robot = new Robot();
 
-    public List<LocalDlcSong> dlcSongList;
+    public List<Song> songList;
     public Path outputPath;
     public int captureDelay;
     public int keyInputDelay;
@@ -58,8 +58,8 @@ public class OcrCacheCaptureTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        Objects.requireNonNull(dlcSongList);
         Objects.requireNonNull(outputPath);
+        Objects.requireNonNull(songList);
 
         checkRange(captureDelay, CAPTURE_DELAY_MIN, CAPTURE_DELAY_MAX, "captureDelay");
         checkRange(keyInputDelay, KEY_INPUT_DELAY_MIN, KEY_INPUT_DELAY_MAX, "keyInputDelay");
@@ -76,7 +76,7 @@ public class OcrCacheCaptureTask extends Task<Void> {
 
         CacheHelper.clearAndReadyDirectory(outputPath);
 
-        final int count = dlcSongList.size();
+        final int count = songList.size();
         for (int i = 0; i < count; ++i) {
             if (i != 0) {
                 tabKey(KeyEvent.VK_DOWN);
@@ -84,8 +84,8 @@ public class OcrCacheCaptureTask extends Task<Void> {
 
             BufferedImage screenshot = captureScreenshot();
 
-            LocalDlcSong song = dlcSongList.get(i);
-            Path path = CacheHelper.createImagePath(outputPath, song);
+            Song song = songList.get(i);
+            Path path = CacheHelper.createImagePath(outputPath, song.id());
             ImageIO.write(screenshot, CacheHelper.IMAGE_FORMAT, path.toFile());
         }
 

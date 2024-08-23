@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter;
 
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongWrapper;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongWrapper.SongDataProperty;
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public interface Home {
     interface HomePresenter extends MvpPresenter<HomeView> {
-        void onViewShowing_viewer_linkTableView(TableView<SongData> tableView);
+        void onViewShowing_viewer_linkTableView(TableView<SongWrapper> tableView);
 
         void onViewShowing_viewer_setFilterColumn(ComboBox<SongDataProperty> comboBox);
 
@@ -27,8 +27,6 @@ public interface Home {
                 SliderTextFieldLinker linker);
 
         void viewer_onUpdateTableFilter(String regex, SongDataProperty property);
-
-        void checker_onValidateDatabase();
 
         void checker_onCompareDatabaseWithRemote();
 
@@ -76,8 +74,6 @@ public interface Home {
         void viewer_updateTableFilter();
 
         void checker_setResultText(String value);
-
-        void checker_validateDatabase();
 
         void checker_compareDatabaseWithRemote();
 

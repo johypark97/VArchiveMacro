@@ -50,7 +50,6 @@
             <TextArea VBox.vgrow="ALWAYS" fx:id="checker_textArea"/>
             <ButtonBar>
               <buttons>
-                <Button text="Validate" fx:id="checker_validateButton"/>
                 <Button text="Compare with remote" fx:id="checker_compareWithRemoteButton"/>
               </buttons>
             </ButtonBar>

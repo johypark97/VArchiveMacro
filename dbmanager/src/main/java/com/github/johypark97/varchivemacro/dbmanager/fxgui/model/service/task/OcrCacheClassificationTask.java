@@ -5,7 +5,7 @@ import com.github.johypark97.varchivemacro.lib.common.PathHelper;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.area.TrainingArea;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
@@ -28,7 +28,7 @@ public class OcrCacheClassificationTask extends Task<Void> {
     private static final String KOR_DIRECTORY_NAME = "kor";
     private static final String MIXED_DIRECTORY_NAME = "mixed";
 
-    public List<LocalDlcSong> dlcSongList;
+    public List<Song> songList;
     public TitleTool titleTool;
 
     public Path inputPath;
@@ -36,7 +36,7 @@ public class OcrCacheClassificationTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
-        Objects.requireNonNull(dlcSongList);
+        Objects.requireNonNull(songList);
         Objects.requireNonNull(titleTool);
 
         Objects.requireNonNull(inputPath);
@@ -80,15 +80,15 @@ public class OcrCacheClassificationTask extends Task<Void> {
         BufferedImage overlayImage = null;
         TrainingArea area = null;
 
-        int count = dlcSongList.size();
+        int count = songList.size();
         for (int i = 0; i < count; ++i) {
             if (Thread.currentThread().isInterrupted()) {
                 break;
             }
 
-            LocalDlcSong song = dlcSongList.get(i);
+            Song song = songList.get(i);
 
-            String title = titleTool.getClippedTitleOrDefault(song.id, song.title);
+            String title = titleTool.getClippedTitleOrDefault(song.id(), song.title());
             title = TitleTool.normalizeTitle_training(title);
 
             boolean containEng = false;
@@ -102,7 +102,7 @@ public class OcrCacheClassificationTask extends Task<Void> {
             }
 
             Path baseDir;
-            if (titleTool.hasClippedTitle(song.id)) {
+            if (titleTool.hasClippedTitle(song.id())) {
                 baseDir = exceededOutputDir;
             } else if (containEng && !containKor) {
                 baseDir = engOutputDir;
@@ -112,7 +112,7 @@ public class OcrCacheClassificationTask extends Task<Void> {
                 baseDir = mixedOutputDir;
             }
 
-            Path imageInputPath = CacheHelper.createImagePath(inputPath, song);
+            Path imageInputPath = CacheHelper.createImagePath(inputPath, song.id());
             if (Files.exists(imageInputPath)) {
                 BufferedImage image = ImageIO.read(imageInputPath.toFile());
 
@@ -127,7 +127,7 @@ public class OcrCacheClassificationTask extends Task<Void> {
                 ImageIO.write(titleImage, CacheHelper.IMAGE_FORMAT, imageOutputPath.toFile());
 
                 // create a gt file
-                Path gtOutputPath = CacheHelper.createGtPath(baseDir, song);
+                Path gtOutputPath = CacheHelper.createGtPath(baseDir, song.id());
                 Files.writeString(gtOutputPath, title);
 
                 // update the overlay image

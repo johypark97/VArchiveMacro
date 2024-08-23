@@ -17,6 +17,7 @@ module varchivemacro.dbmanager {
     requires com.github.kwhat.jnativehook;
     requires com.google.common;
     requires com.google.gson;
+    requires java.sql;
     requires org.slf4j;
 
     // exports

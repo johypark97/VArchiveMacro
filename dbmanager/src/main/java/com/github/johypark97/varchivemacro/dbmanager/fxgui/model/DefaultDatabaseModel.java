@@ -1,15 +1,15 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model;
 
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.task.DatabaseValidator;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongWrapper;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.task.RemoteValidator;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultDlcSongManager;
+import com.github.johypark97.varchivemacro.lib.scanner.database.CachedReadOnlySongDatabase;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultTitleTool;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -20,47 +20,36 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class DefaultDatabaseModel implements DatabaseModel {
-    private static final String DLC_FILENAME = "dlcs.json";
-    private static final String SONG_FILENAME = "songs.json";
-    private static final String TAB_FILENAME = "tabs.json";
-    private static final String TITLE_FILENAME = "titles.json";
+    private static final String SONG_DATABASE_FILE_NAME = "song.db";
+    private static final String TITLE_FILE_NAME = "titles.json";
 
-    private DlcSongManager dlcSongManager;
+    private SongDatabase songDatabase;
     private TitleTool titleTool;
 
-    public ObservableList<SongData> observableDlcSongList;
+    public ObservableList<SongWrapper> observableSongWrapperList;
 
     @Override
-    public void load(Path path) throws IOException {
-        Path dlcPath = path.resolve(DLC_FILENAME);
-        Path songPath = path.resolve(SONG_FILENAME);
-        Path tabPath = path.resolve(TAB_FILENAME);
-        Path titlePath = path.resolve(TITLE_FILENAME);
+    public void load(Path path) throws IOException, SQLException {
+        Path songDatabasePath = path.resolve(SONG_DATABASE_FILE_NAME);
+        Path titlePath = path.resolve(TITLE_FILE_NAME);
 
-        dlcSongManager = new DefaultDlcSongManager(songPath, dlcPath, tabPath);
+        songDatabase = new CachedReadOnlySongDatabase(songDatabasePath);
         titleTool = new DefaultTitleTool(titlePath);
     }
 
     @Override
-    public ObservableList<SongData> getObservableDlcSongList() {
-        if (observableDlcSongList == null) {
-            observableDlcSongList = dlcSongManager.getDlcSongList().stream()
-                    .map(x -> new SongData(x, dlcSongManager.getDlcCodeNameMap()))
+    public ObservableList<SongWrapper> getObservableSongWrapperList() {
+        if (observableSongWrapperList == null) {
+            observableSongWrapperList = songDatabase.songList().stream().map(SongWrapper::new)
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
         }
 
-        return observableDlcSongList;
-    }
-
-    @Override
-    public void validateDatabase(Consumer<String> onDone) {
-        CompletableFuture.supplyAsync(new DatabaseValidator(dlcSongManager))
-                .thenAccept(x -> Platform.runLater(() -> onDone.accept(x)));
+        return observableSongWrapperList;
     }
 
     @Override
     public void compareDatabaseWithRemote(Consumer<String> onDone, Consumer<Throwable> onThrow) {
-        CompletableFuture.supplyAsync(new RemoteValidator(dlcSongManager))
+        CompletableFuture.supplyAsync(new RemoteValidator(songDatabase))
                 .orTimeout(4, TimeUnit.SECONDS).exceptionally(x -> {
                     Platform.runLater(() -> onThrow.accept(x));
                     return "Error";
@@ -68,8 +57,8 @@ public class DefaultDatabaseModel implements DatabaseModel {
     }
 
     @Override
-    public List<LocalDlcSong> getDlcSongList() {
-        return dlcSongManager.getDlcSongList();
+    public List<Song> getSongList() {
+        return songDatabase.songList();
     }
 
     @Override

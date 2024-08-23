@@ -5,8 +5,8 @@ import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGson
 import com.github.johypark97.varchivemacro.lib.scanner.api.Api;
 import com.github.johypark97.varchivemacro.lib.scanner.api.StaticFetcher;
 import com.github.johypark97.varchivemacro.lib.scanner.api.StaticFetcher.RemoteSong;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -20,24 +20,14 @@ public class RemoteValidator implements Supplier<String> {
     private final List<RemoteSong> conflictList = new LinkedList<>();
     private final List<RemoteSong> unclassifiedList = new LinkedList<>();
 
-    public final DlcSongManager dlcSongManager;
+    public final SongDatabase songDatabase;
 
-    public RemoteValidator(DlcSongManager dlcSongManager) {
-        this.dlcSongManager = dlcSongManager;
+    public RemoteValidator(SongDatabase songDatabase) {
+        this.songDatabase = songDatabase;
     }
 
-    private boolean compareSongData(LocalDlcSong localSong, RemoteSong remoteSong) {
-        if (localSong.title.equals(remoteSong.title)) {
-            if (localSong.remoteTitle != null) {
-                return false;
-            }
-        } else {
-            if (localSong.remoteTitle == null || !localSong.remoteTitle.equals(remoteSong.title)) {
-                return false;
-            }
-        }
-
-        return localSong.dlcCode.equals(remoteSong.dlcCode);
+    private boolean compareSongData(Song song, RemoteSong remoteSong) {
+        return song.title().equals(remoteSong.title);
     }
 
     @Override
@@ -54,10 +44,10 @@ public class RemoteValidator implements Supplier<String> {
         }
 
         for (RemoteSong remoteSong : remoteSongList) {
-            LocalDlcSong localSong = dlcSongManager.getDlcSong(remoteSong.id);
-            if (localSong == null) {
+            Song song = songDatabase.getSong(remoteSong.id);
+            if (song == null) {
                 unclassifiedList.add(remoteSong);
-            } else if (!compareSongData(localSong, remoteSong)) {
+            } else if (!compareSongData(song, remoteSong)) {
                 conflictList.add(remoteSong);
             }
         }

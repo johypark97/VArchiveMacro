@@ -4,8 +4,8 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrTestModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.OcrToolModel;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.OcrTestData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData;
-import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongData.SongDataProperty;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongWrapper;
+import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data.SongWrapper.SongDataProperty;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.service.task.OcrCacheCaptureTask;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.dbmanager.fxgui.presenter.Home.HomeView;
@@ -45,7 +45,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     private WeakReference<LiveTesterPresenter> liveTesterPresenterReference;
 
-    private FilteredList<SongData> filteredDlcSongList;
+    private FilteredList<SongWrapper> filteredSongWrapperList;
 
     public void linkModel(DatabaseModel databaseModel, OcrTestModel ocrTestModel,
             OcrToolModel ocrToolModel) {
@@ -109,7 +109,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     protected boolean initialize() {
         // @formatter:off
         getOcrTestModel().setupOcrTestService()
-                .setDlcSongList(getDatabaseModel().getDlcSongList())
+                .setSongList(getDatabaseModel().getSongList())
                 .setTitleTool(getDatabaseModel().getTitleTool())
                 .setOnDone(() -> AlertBuilder.information().setContentText("OcrTest done.").alert.showAndWait())
                 .setOnCancel(() -> AlertBuilder.information().setContentText("OcrTest canceled.").alert.showAndWait())
@@ -118,14 +118,14 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
                 .build();
 
         getOcrToolModel().setupOcrCacheCaptureService()
-                .setDlcSongList(getDatabaseModel().getDlcSongList())
+                .setSongList(getDatabaseModel().getSongList())
                 .setOnCancel(() -> AlertBuilder.information().setContentText("OcrCapture canceled.").alert.showAndWait())
                 .setOnDone(() -> AlertBuilder.information().setContentText("OcrCapture done.").alert.showAndWait())
                 .setOnThrow(this::defaultOnThrow)
                 .build();
 
         getOcrToolModel().setupOcrCacheClassificationService()
-                .setDlcSongList(getDatabaseModel().getDlcSongList())
+                .setSongList(getDatabaseModel().getSongList())
                 .setTitleTool(getDatabaseModel().getTitleTool())
                 .setOnCancel(() -> AlertBuilder.information().setContentText("OcrCacheClassification canceled.").alert.showAndWait())
                 .setOnDone(() -> AlertBuilder.information().setContentText("OcrCacheClassification done.").alert.showAndWait())
@@ -134,7 +134,7 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
                 .build();
 
         getOcrToolModel().setupOcrGroundTruthGenerationService()
-                .setDlcSongList(getDatabaseModel().getDlcSongList())
+                .setSongList(getDatabaseModel().getSongList())
                 .setTitleTool(getDatabaseModel().getTitleTool())
                 .setOnCancel(() -> AlertBuilder.information().setContentText("OcrGroundTruthGeneration canceled.").alert.showAndWait())
                 .setOnDone(() -> AlertBuilder.information().setContentText("OcrGroundTruthGeneration done.").alert.showAndWait())
@@ -164,10 +164,11 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
     }
 
     @Override
-    public void onViewShowing_viewer_linkTableView(TableView<SongData> tableView) {
-        filteredDlcSongList = new FilteredList<>(getDatabaseModel().getObservableDlcSongList());
+    public void onViewShowing_viewer_linkTableView(TableView<SongWrapper> tableView) {
+        filteredSongWrapperList =
+                new FilteredList<>(getDatabaseModel().getObservableSongWrapperList());
 
-        SortedList<SongData> list = new SortedList<>(filteredDlcSongList);
+        SortedList<SongWrapper> list = new SortedList<>(filteredSongWrapperList);
         list.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(list);
     }
@@ -214,26 +215,23 @@ public class HomePresenterImpl extends AbstractMvpPresenter<HomePresenter, HomeV
 
     @Override
     public void viewer_onUpdateTableFilter(String regex, SongDataProperty property) {
-        if (filteredDlcSongList == null) {
+        if (filteredSongWrapperList == null) {
             return;
         }
 
         Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Function<SongData, String> valueGetter = switch (property) {
+        Function<SongWrapper, String> valueGetter = switch (property) {
             case ID -> x -> String.valueOf(x.getId());
-            case TITLE -> SongData::getTitle;
-            case REMOTE_TITLE -> SongData::getRemoteTitle;
-            case COMPOSER -> SongData::getComposer;
-            case DLC -> SongData::getDlc;
-            case PRIORITY -> x -> String.valueOf(x.getPriority());
+            case TITLE -> SongWrapper::getTitle;
+            case COMPOSER -> SongWrapper::getComposer;
+            case PACK -> SongWrapper::getPack;
+            case CATEGORY -> SongWrapper::getCategory;
+            case PRIORITY_CATEGORY -> x -> String.valueOf(x.getCategoryPriority());
+            case PRIORITY_PACK -> x -> String.valueOf(x.getPackPriority());
+            case PRIORITY_TITLE -> x -> String.valueOf(x.getTitlePriority());
         };
 
-        filteredDlcSongList.setPredicate(x -> pattern.matcher(valueGetter.apply(x)).find());
-    }
-
-    @Override
-    public void checker_onValidateDatabase() {
-        getDatabaseModel().validateDatabase(getView()::checker_setResultText);
+        filteredSongWrapperList.setPredicate(x -> pattern.matcher(valueGetter.apply(x)).find());
     }
 
     @Override

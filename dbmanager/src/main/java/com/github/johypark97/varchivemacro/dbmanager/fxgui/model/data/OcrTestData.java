@@ -1,12 +1,12 @@
 package com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data;
 
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.scanner.recognizer.TitleSongRecognizer.Recognized.Found;
 import java.util.List;
 
 public class OcrTestData {
-    public final LocalDlcSong targetSong;
+    public final Song targetSong;
     public final String targetNormalizedTitle;
 
     public List<FoundData> foundDataList;
@@ -15,22 +15,22 @@ public class OcrTestData {
     public String scannedTitle = "";
     public boolean testPass;
 
-    public OcrTestData(LocalDlcSong targetSong) {
+    public OcrTestData(Song targetSong) {
         this.targetSong = targetSong;
 
-        targetNormalizedTitle = TitleTool.normalizeTitle_recognition(targetSong.title);
+        targetNormalizedTitle = TitleTool.normalizeTitle_recognition(targetSong.title());
     }
 
     public int getTargetId() {
-        return targetSong.id;
+        return targetSong.id();
     }
 
     public String getTargetTitle() {
-        return targetSong.title;
+        return targetSong.title();
     }
 
     public String getTargetComposer() {
-        return targetSong.composer;
+        return targetSong.composer();
     }
 
     public String getTargetNormalizedTitle() {
@@ -88,11 +88,11 @@ public class OcrTestData {
 
 
     public static class FoundData {
-        public final LocalDlcSong song;
+        public final Song song;
         public final double accuracy;
         public final int distance;
 
-        public FoundData(Found<LocalDlcSong> found) {
+        public FoundData(Found found) {
             accuracy = found.similarity();
             distance = found.distance();
             song = found.song();

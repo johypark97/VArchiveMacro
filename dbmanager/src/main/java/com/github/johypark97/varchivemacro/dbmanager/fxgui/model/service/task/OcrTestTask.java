@@ -7,7 +7,7 @@ import com.github.johypark97.varchivemacro.dbmanager.fxgui.model.util.CacheHelpe
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.area.TrainingArea;
-import com.github.johypark97.varchivemacro.lib.scanner.database.DlcSongManager.LocalDlcSong;
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
@@ -28,7 +28,7 @@ import javafx.concurrent.Task;
 import javax.imageio.ImageIO;
 
 public class OcrTestTask extends Task<Void> {
-    public List<LocalDlcSong> dlcSongList;
+    public List<Song> songList;
     public Path cachePath;
     public Path tessdataPath;
     public String tessdataLanguage;
@@ -40,7 +40,7 @@ public class OcrTestTask extends Task<Void> {
     @Override
     protected Void call() throws Exception {
         Objects.requireNonNull(cachePath);
-        Objects.requireNonNull(dlcSongList);
+        Objects.requireNonNull(songList);
         Objects.requireNonNull(tessdataLanguage);
         Objects.requireNonNull(tessdataPath);
         Objects.requireNonNull(titleTool);
@@ -62,19 +62,19 @@ public class OcrTestTask extends Task<Void> {
         updateProgress(0, 1);
 
         TrainingArea area = null;
-        TitleSongRecognizer<LocalDlcSong> recognizer = new TitleSongRecognizer<>(titleTool);
-        recognizer.setSongList(dlcSongList);
+        TitleSongRecognizer recognizer = new TitleSongRecognizer(titleTool);
+        recognizer.setSongList(songList);
 
         try (OcrWrapper ocr = new DefaultOcrWrapper(tessdataPath, tessdataLanguage)) {
-            int count = dlcSongList.size();
+            int count = songList.size();
             for (int i = 0; i < count; ++i) {
                 if (Thread.currentThread().isInterrupted()) {
                     throw new InterruptedException();
                 }
 
-                LocalDlcSong song = dlcSongList.get(i);
+                Song song = songList.get(i);
 
-                Path imagePath = CacheHelper.createImagePath(cachePath, song);
+                Path imagePath = CacheHelper.createImagePath(cachePath, song.id());
                 BufferedImage image = ImageIO.read(imagePath.toFile());
                 if (area == null) {
                     Dimension imageSize = new Dimension(image.getWidth(), image.getHeight());
@@ -91,32 +91,32 @@ public class OcrTestTask extends Task<Void> {
 
                 OcrTestData data = new OcrTestData(song);
 
-                Recognized<LocalDlcSong> recognized = recognizer.recognize(scannedTitle);
-                data.setFoundDataList(recognized.foundList.stream().map(FoundData::new).toList());
+                Recognized recognized = recognizer.recognize(scannedTitle);
+                data.setFoundDataList(recognized.foundList().stream().map(FoundData::new).toList());
                 data.setFoundKeyList(recognized.foundKeySet().stream().toList());
-                data.setScannedTitle(recognized.normalizedInput);
+                data.setScannedTitle(recognized.normalizedInput());
 
-                switch (recognized.statusFound) {
+                switch (recognized.statusFound()) {
                     case FOUND_DUPLICATE_SONGS -> {
-                        if (!data.targetSong.title.equals(
-                                recognized.foundList.get(0).song().title)) {
+                        if (!data.targetSong.title()
+                                .equals(recognized.foundList().get(0).song().title())) {
                             data.setTestStatus(Status.WRONG);
                         } else {
                             data.setTestPass(true);
                             data.setTestStatus(
-                                    StatusAccuracy.FOUND_EXACT.equals(recognized.statusAccuracy)
+                                    StatusAccuracy.FOUND_EXACT.equals(recognized.statusAccuracy())
                                             ? Status.DUPLICATED_EXACT
                                             : Status.DUPLICATED_SIMILAR);
                         }
                     }
                     case FOUND_MANY_SONGS -> data.setTestStatus(Status.WRONG);
                     case FOUND_ONE_SONG -> {
-                        if (!data.targetSong.equals(recognized.foundList.get(0).song())) {
+                        if (!data.targetSong.equals(recognized.foundList().get(0).song())) {
                             data.setTestStatus(Status.WRONG);
                         } else {
                             data.setTestPass(true);
                             data.setTestStatus(
-                                    StatusAccuracy.FOUND_EXACT.equals(recognized.statusAccuracy)
+                                    StatusAccuracy.FOUND_EXACT.equals(recognized.statusAccuracy())
                                             ? Status.EXACT
                                             : Status.SIMILAR);
                         }

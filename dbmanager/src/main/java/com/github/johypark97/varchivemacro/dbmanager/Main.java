@@ -17,6 +17,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.DirectoryChooser;
@@ -53,7 +54,7 @@ public class Main extends Application {
 
         try {
             databaseModel.load(file.toPath());
-        } catch (IOException | RuntimeException e) {
+        } catch (SQLException | IOException | RuntimeException e) {
             LOGGER.atError().setCause(e).log("DatabaseModel exception");
             AlertBuilder.error().setThrowable(e).alert.showAndWait();
             return false;
