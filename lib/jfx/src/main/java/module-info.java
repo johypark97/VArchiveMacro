@@ -1,4 +1,6 @@
 module varchivemacro.lib.jfx {
+    requires varchivemacro.lib.common;
+
     // javafx
     requires javafx.controls;
     requires javafx.fxml;
