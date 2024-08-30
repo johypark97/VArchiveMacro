@@ -77,7 +77,10 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
                 LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
                 LocalRecord previousRecord = getRecordModel().findSameRecord(newRecord);
 
-                if (previousRecord != null && previousRecord.isUpdated(newRecord)) {
+                if (previousRecord == null) {
+                    LocalRecord nullRecord = LocalRecord.nullRecord(song.id(), button, pattern);
+                    getNewRecordDataManager().createNewRecordData(song, nullRecord, newRecord);
+                } else if (previousRecord.isUpdated(newRecord)) {
                     getNewRecordDataManager().createNewRecordData(song, previousRecord, newRecord);
                 }
             }

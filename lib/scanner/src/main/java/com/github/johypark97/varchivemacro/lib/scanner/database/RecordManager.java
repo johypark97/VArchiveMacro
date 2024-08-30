@@ -35,6 +35,10 @@ public interface RecordManager {
             this.rate = rate;
         }
 
+        public static LocalRecord nullRecord(int id, Button button, Pattern pattern) {
+            return new LocalRecord(id, button, pattern, 0, false);
+        }
+
         public boolean isUpdated(LocalRecord record) {
             if (id != record.id || button != record.button || pattern != record.pattern) {
                 String format = "%d. %sB %s";
