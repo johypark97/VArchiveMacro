@@ -86,16 +86,20 @@ public class UploadTask extends InterruptibleTask<Void> {
 
         Queue<NewRecordData> queue = createUploadQueue();
 
-        boolean first = true;
+        boolean isFirst = true;
         try {
-            while (queue.peek() != null) {
-                if (first) {
-                    first = false;
+            while (true) {
+                if (isFirst) {
+                    isFirst = false;
                 } else {
                     TimeUnit.MILLISECONDS.sleep(recordUploadDelay);
                 }
 
                 NewRecordData data = queue.poll();
+                if (data == null) {
+                    break;
+                }
+
                 data.status.set(Status.UPLOADING);
 
                 Song song = data.songProperty().get();
@@ -108,8 +112,12 @@ public class UploadTask extends InterruptibleTask<Void> {
                 data.status.set(api.getResult() ? Status.UPLOADED : Status.HIGHER_RECORD_EXISTS);
             }
         } catch (InterruptedException e) {
-            while (queue.peek() != null) {
+            while (true) {
                 NewRecordData data = queue.poll();
+                if (data == null) {
+                    break;
+                }
+
                 data.status.set(Status.CANCELED);
             }
         } finally {
