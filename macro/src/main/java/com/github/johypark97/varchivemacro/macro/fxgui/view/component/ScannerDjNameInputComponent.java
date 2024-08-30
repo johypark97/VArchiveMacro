@@ -1,9 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.view.component;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
-import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
-import java.lang.ref.WeakReference;
 import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,7 +16,7 @@ import javafx.util.Duration;
 public class ScannerDjNameInputComponent extends VBox {
     private static final String FXML_FILE_NAME = "ScannerDjNameInput.fxml";
 
-    private final WeakReference<HomeView> viewReference;
+    private final HomeViewImpl view;
 
     @FXML
     public Label djNameErrorLabel;
@@ -31,8 +30,8 @@ public class ScannerDjNameInputComponent extends VBox {
     @FXML
     public Button loadButton;
 
-    public ScannerDjNameInputComponent(HomeView view) {
-        viewReference = new WeakReference<>(view);
+    public ScannerDjNameInputComponent(HomeViewImpl view) {
+        this.view = view;
 
         URL url = ScannerDjNameInputComponent.class.getResource(FXML_FILE_NAME);
         MvpFxml.loadRoot(this, url, Language.getInstance().getResourceBundle());
@@ -49,7 +48,7 @@ public class ScannerDjNameInputComponent extends VBox {
             String djName = djNameTextField.getText().trim();
             djNameTextField.setText(djName);
 
-            getView().scanner_front_loadRemoteRecord(djName);
+            view.presenter.scanner_front_loadRemoteRecord(djName);
         });
     }
 
@@ -70,9 +69,5 @@ public class ScannerDjNameInputComponent extends VBox {
     public void downEffect() {
         setEffect(null);
         setOpacity(1);
-    }
-
-    private HomeView getView() {
-        return viewReference.get();
     }
 }

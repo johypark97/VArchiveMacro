@@ -1,107 +1,27 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
-import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
-import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
-import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
+import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpPresenter;
+import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpView;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
+import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
-import javafx.stage.Window;
+import javafx.scene.image.WritableImage;
 
 public interface Home {
-    interface HomePresenter extends MvpPresenter<HomeView> {
-        void onViewShow_setupService();
+    interface HomePresenter extends MvpPresenter<HomeView, HomePresenter> {
+        void onStartView();
 
-        void onViewShow_scanner_setupCacheDirectory(TextField textField);
-
-        void onViewShow_scanner_setupCaptureDelayLinker(SliderTextFieldLinker linker);
-
-        void onViewShow_scanner_setupKeyInputDurationLinker(SliderTextFieldLinker linker);
-
-        void onViewShow_scanner_setupAccountFile(TextField textField);
-
-        void onViewShow_scanner_setupRecordUploadDelayLinker(SliderTextFieldLinker linker);
-
-        void onViewShow_macro_setupAnalysisKey();
-
-        void onViewShow_macro_setupCountLinker(SliderTextFieldLinker linker);
-
-        void onViewShow_macro_setupCaptureDelayLinker(SliderTextFieldLinker linker);
-
-        void onViewShow_macro_setupCaptureDurationLinker(SliderTextFieldLinker linker);
-
-        void onViewShow_macro_setupKeyInputDurationLinker(SliderTextFieldLinker linker);
-
-        boolean onViewShow_loadDatabase();
-
-        void onViewShow_loadRecord();
-
-        void home_onChangeLanguage(Locale locale);
-
-        void home_onOpenOpenSourceLicense(Window ownerWindow);
-
-        void scanner_front_onLoadRemoteRecord(String djName);
-
-        void scanner_viewer_onUpdateSongTreeViewFilter(String filter);
-
-        ViewerRecordData scanner_viewer_onShowRecord(int id);
-
-        void scanner_capture_onOpenCaptureViewer(Window ownerWindow, String cacheDirectory, int id);
-
-        void scanner_capture_onClearScanData();
-
-        void scanner_capture_onStart(Set<String> selectedCategorySet, String cacheDirectory,
-                int captureDelay, int keyInputDuration);
-
-        void scanner_capture_onStop();
-
-        void scanner_song_onOpenLinkEditor(Window ownerWindow, String cacheDirectory, int id);
-
-        void scanner_analysis_onClearAnalysisData();
-
-        void scanner_analysis_onOpenAnalysisDataViewer(Window ownerWindow, String cacheDirectory,
-                int id);
-
-        void scanner_analysis_onStartAnalysis(String cacheDirectory);
-
-        void scanner_analysis_onStopAnalysis();
-
-        void scanner_uploader_onRefresh();
-
-        void scanner_uploader_onStartUpload(long count);
-
-        void scanner_uploader_onStopUpload();
-
-        Path scanner_option_onOpenCacheDirectorySelector(Window ownerWindow);
-
-        Path scanner_option_onOpenAccountFileSelector(Window ownerWindow);
-
-        void macro_onStart_up();
-
-        void macro_onStart_down();
-
-        void macro_onStop();
-    }
-
-
-    interface HomeView extends MvpView<HomePresenter> {
-        void requestStop();
-
-        void showError(String header, Throwable throwable);
-
-        void showInformation(String header, String content);
-
-        boolean showConfirmation(String header, String content);
+        void onStopView();
 
         void home_changeLanguage(Locale locale);
 
@@ -109,41 +29,21 @@ public interface Home {
 
         void home_openAbout();
 
-        ScannerFrontController getScannerFrontController();
-
         void scanner_front_loadRemoteRecord(String djName);
-
-        void scanner_viewer_setSongTreeViewRoot(TreeItem<ViewerTreeData> root);
 
         void scanner_viewer_updateSongTreeViewFilter(String filter);
 
         void scanner_viewer_showRecord(int id);
 
-        void scanner_capture_setCaptureDataList(ObservableList<CaptureData> list);
-
         void scanner_capture_openCaptureViewer(int id);
 
         void scanner_capture_clearScanData();
-
-        void scanner_capture_refresh();
-
-        void scanner_capture_setTabList(List<String> list);
-
-        Set<String> scanner_capture_getSelectedCategorySet();
-
-        void scanner_capture_setSelectedCategorySet(Set<String> value);
 
         void scanner_capture_start();
 
         void scanner_capture_stop();
 
-        void scanner_song_setSongDataList(ObservableList<SongData> list);
-
         void scanner_song_openLinkEditor(int id);
-
-        void scanner_song_refresh();
-
-        void scanner_analysis_setAnalysisDataList(ObservableList<AnalysisData> list);
 
         void scanner_analysis_clearAnalysisData();
 
@@ -153,45 +53,116 @@ public interface Home {
 
         void scanner_analysis_stopAnalysis();
 
-        void scanner_uploader_setNewRecordDataList(ObservableList<NewRecordData> list);
-
         void scanner_uploader_refresh();
 
         void scanner_uploader_startUpload(long count);
 
         void scanner_uploader_stopUpload();
 
-        String scanner_option_getCacheDirectory();
-
-        int scanner_option_getCaptureDelay();
-
-        int scanner_option_getKeyInputDuration();
-
-        String scanner_option_getAccountFile();
-
-        int scanner_option_getRecordUploadDelay();
-
         void scanner_option_openCacheDirectorySelector();
 
         void scanner_option_openAccountFileSelector();
-
-        AnalysisKey macro_getAnalysisKey();
-
-        void macro_setAnalysisKey(AnalysisKey key);
-
-        int macro_getCount();
-
-        int macro_getCaptureDelay();
-
-        int macro_getCaptureDuration();
-
-        int macro_getKeyInputDuration();
 
         void macro_start_up();
 
         void macro_start_down();
 
         void macro_stop();
+    }
+
+
+    interface HomeView extends MvpView<HomeView, HomePresenter> {
+        void showError(String header, Throwable throwable);
+
+        void showInformation(String header, String content);
+
+        boolean showConfirmation(String header, String content);
+
+        void home_openOpenSourceLicense();
+
+        void home_openAbout();
+
+        ScannerFrontController getScannerFrontController();
+
+        void scanner_viewer_setSongTreeViewRoot(TreeItem<ViewerTreeData> root);
+
+        void scanner_viewer_setSongInformationText(String value);
+
+        void scanner_viewer_setRecordData(ViewerRecordData data);
+
+        void scanner_capture_setCaptureDataList(ObservableList<CaptureData> list);
+
+        void scanner_capture_openCaptureViewer(WritableImage image);
+
+        void scanner_capture_refresh();
+
+        void scanner_capture_setTabList(List<String> list);
+
+        Set<String> scanner_capture_getSelectedCategorySet();
+
+        void scanner_capture_setSelectedCategorySet(Set<String> value);
+
+        void scanner_song_setSongDataList(ObservableList<SongData> list);
+
+        void scanner_song_openLinkEditor(Path cacheDirectoryPath, int songDataId,
+                Runnable onUpdateLink);
+
+        void scanner_song_refresh();
+
+        void scanner_analysis_setAnalysisDataList(ObservableList<AnalysisData> list);
+
+        void scanner_analysis_openAnalysisDataViewer(Path cacheDirectoryPath, int analysisDataId);
+
+        void scanner_uploader_setNewRecordDataList(ObservableList<NewRecordData> list);
+
+        String scanner_option_getCacheDirectory();
+
+        void scanner_option_setCacheDirectory(String value);
+
+        void scanner_option_setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin,
+                int value);
+
+        int scanner_option_getCaptureDelay();
+
+        void scanner_option_setupKeyInputDurationSlider(int defaultValue, int limitMax,
+                int limitMin, int value);
+
+        int scanner_option_getKeyInputDuration();
+
+        String scanner_option_getAccountFile();
+
+        void scanner_option_setAccountFile(String value);
+
+        void scanner_option_setupRecordUploadDelaySlider(int defaultValue, int limitMax,
+                int limitMin, int value);
+
+        int scanner_option_getRecordUploadDelay();
+
+        File scanner_option_openCacheDirectorySelector(Path initialDirectory);
+
+        File scanner_option_openAccountFileSelector(Path initialDirectory);
+
+        AnalysisKey macro_getAnalysisKey();
+
+        void macro_setAnalysisKey(AnalysisKey key);
+
+        void macro_setupCountSlider(int defaultValue, int limitMax, int limitMin, int value);
+
+        int macro_getCount();
+
+        void macro_setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin, int value);
+
+        int macro_getCaptureDelay();
+
+        void macro_setupCaptureDurationSlider(int defaultValue, int limitMax, int limitMin,
+                int value);
+
+        int macro_getCaptureDuration();
+
+        void macro_setupKeyInputDurationSlider(int defaultValue, int limitMax, int limitMin,
+                int value);
+
+        int macro_getKeyInputDuration();
     }
 
 
@@ -235,9 +206,6 @@ public interface Home {
     class ViewerRecordData {
         public final boolean[][] maxCombo = new boolean[4][4];
         public final float[][] rate = new float[4][4];
-
-        public String composer;
-        public String title;
 
         public ViewerRecordData() {
             for (int i = 0; i < 4; ++i) {

@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.view;
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
-import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
+import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
@@ -24,36 +24,85 @@ import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.awt.Toolkit;
-import java.lang.ref.WeakReference;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
-public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> implements HomeView {
+public class HomeViewImpl extends BorderPane implements HomeView {
+    private static final String FXML_FILE_NAME = "Home.fxml";
     private static final String GITHUB_URL = "https://github.com/johypark97/VArchiveMacro";
 
     private final NativeKeyListener scannerNativeKeyListener;
     private final NativeKeyListener macroNativeKeyListener;
 
-    private WeakReference<ScannerComponent> scannerComponentReference;
-    private WeakReference<ScannerSafeGlassComponent> scannerSafeGlassComponentReference;
-    private WeakReference<ScannerDjNameInputComponent> scannerDjNameInputComponentReference;
-    private WeakReference<MacroComponent> macroComponentReference;
+    private final MacroComponent macroComponent = new MacroComponent();
+    private final ScannerComponent scannerComponent = new ScannerComponent(this);
+    private final ScannerDjNameInputComponent scannerDjNameInputComponent =
+            new ScannerDjNameInputComponent(this);
+    private final ScannerSafeGlassComponent scannerSafeGlassComponent =
+            new ScannerSafeGlassComponent();
 
-    public HomeViewImpl() {
+    private final HomeStage stage;
+
+    @MvpPresenter
+    public HomePresenter presenter;
+
+    @FXML
+    public MenuItem exitMenuItem;
+
+    @FXML
+    public RadioMenuItem langEnRadioMenuItem;
+
+    @FXML
+    public RadioMenuItem langKoRadioMenuItem;
+
+    @FXML
+    public MenuItem openSourceLicenseMenuItem;
+
+    @FXML
+    public MenuItem aboutMenuItem;
+
+    @FXML
+    public Tab scannerTab;
+
+    @FXML
+    public Tab macroTab;
+
+    public HomeViewImpl(HomeStage stage) {
+        this.stage = stage;
+
+        try {
+            URL url = HomeViewImpl.class.getResource(FXML_FILE_NAME);
+            Mvp.loadFxml(this, url,
+                    x -> x.setResources(Language.getInstance().getResourceBundle()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         scannerNativeKeyListener = new NativeKeyListener() {
             @Override
             public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
@@ -64,7 +113,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                 }
 
                 if (data.isPressed(NativeKeyEvent.VC_BACKSPACE)) {
-                    scanner_capture_stop();
+                    presenter.scanner_capture_stop();
                 }
             }
 
@@ -78,7 +127,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
                 if (data.isCtrl() && !data.isAlt() && !data.isShift()) {
                     if (data.isPressed(NativeKeyEvent.VC_ENTER)) {
-                        scanner_capture_start();
+                        presenter.scanner_capture_start();
                     }
                 }
             }
@@ -94,7 +143,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
                 }
 
                 if (data.isPressed(NativeKeyEvent.VC_BACKSPACE)) {
-                    macro_stop();
+                    presenter.macro_stop();
                 }
             }
 
@@ -108,39 +157,53 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
                 if (!data.isCtrl() && data.isAlt() && !data.isShift()) {
                     if (data.isPressed(NativeKeyEvent.VC_OPEN_BRACKET)) {
-                        macro_start_up();
+                        presenter.macro_start_up();
                     } else if (data.isPressed(NativeKeyEvent.VC_CLOSE_BRACKET)) {
-                        macro_start_down();
+                        presenter.macro_start_down();
                     }
                 }
             }
         };
     }
 
-    private ScannerComponent getScanner() {
-        return scannerComponentReference.get();
+    @FXML
+    public void initialize() {
+        scannerTab.setContent(
+                new StackPane(scannerDjNameInputComponent, scannerSafeGlassComponent));
+        macroTab.setContent(macroComponent);
+
+        Locale locale = Language.getInstance().getLocale();
+        if (Locale.ENGLISH.equals(locale)) {
+            langEnRadioMenuItem.setSelected(true);
+        } else if (Locale.KOREAN.equals(locale)) {
+            langKoRadioMenuItem.setSelected(true);
+        }
+
+        exitMenuItem.setOnAction(event -> stage.stopStage());
+
+        langEnRadioMenuItem.setOnAction(event -> presenter.home_changeLanguage(Locale.ENGLISH));
+        langKoRadioMenuItem.setOnAction(event -> presenter.home_changeLanguage(Locale.KOREAN));
+
+        openSourceLicenseMenuItem.setOnAction(event -> presenter.home_openOpenSourceLicense());
+        aboutMenuItem.setOnAction(event -> presenter.home_openAbout());
     }
 
-    private ScannerSafeGlassComponent getScannerSafeGlass() {
-        return scannerSafeGlassComponentReference.get();
+    public void startView() {
+        presenter.onStartView();
+
+        FxHookWrapper.addKeyListener(macroNativeKeyListener);
     }
 
-    private ScannerDjNameInputComponent getScannerDjNameInput() {
-        return scannerDjNameInputComponentReference.get();
-    }
+    public void stopView() {
+        FxHookWrapper.removeKeyListener(scannerNativeKeyListener);
+        FxHookWrapper.removeKeyListener(macroNativeKeyListener);
 
-    private MacroComponent getMacro() {
-        return macroComponentReference.get();
-    }
-
-    @Override
-    public void requestStop() {
-        getPresenter().stopPresenter();
+        presenter.onStopView();
     }
 
     @Override
     public void showError(String header, Throwable throwable) {
-        Alert alert = AlertBuilder.error().setOwner(getStage()).setHeaderText(header)
+        Alert alert = AlertBuilder.error().setOwner(stage).setHeaderText(header)
                 .setContentText(throwable.toString()).setThrowable(throwable).alert;
 
         Toolkit.getDefaultToolkit().beep();
@@ -149,7 +212,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     public void showInformation(String header, String content) {
-        Alert alert = AlertBuilder.information().setOwner(getStage()).setHeaderText(header)
+        Alert alert = AlertBuilder.information().setOwner(stage).setHeaderText(header)
                 .setContentText(content).alert;
 
         Toolkit.getDefaultToolkit().beep();
@@ -158,7 +221,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
 
     @Override
     public boolean showConfirmation(String header, String content) {
-        Alert alert = AlertBuilder.confirmation().setOwner(getStage()).setHeaderText(header)
+        Alert alert = AlertBuilder.confirmation().setOwner(stage).setHeaderText(header)
                 .setContentText(content).alert;
 
         Toolkit.getDefaultToolkit().beep();
@@ -168,13 +231,8 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
-    public void home_changeLanguage(Locale locale) {
-        getPresenter().home_onChangeLanguage(locale);
-    }
-
-    @Override
     public void home_openOpenSourceLicense() {
-        getPresenter().home_onOpenOpenSourceLicense(getStage());
+        stage.showOpenSourceLicense();
     }
 
     @Override
@@ -200,7 +258,7 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
             box.getChildren().add(sourceCodeBox);
         }
 
-        Alert alert = AlertBuilder.information().setOwner(getStage()).alert;
+        Alert alert = AlertBuilder.information().setOwner(stage).alert;
         alert.getDialogPane().setContent(box);
 
         alert.showAndWait();
@@ -212,297 +270,211 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
     }
 
     @Override
-    public void scanner_front_loadRemoteRecord(String djName) {
-        getPresenter().scanner_front_onLoadRemoteRecord(djName);
-    }
-
-    @Override
     public void scanner_viewer_setSongTreeViewRoot(TreeItem<ViewerTreeData> root) {
-        getScanner().viewer_setSongTreeViewRoot(root);
+        scannerComponent.viewer_setSongTreeViewRoot(root);
     }
 
     @Override
-    public void scanner_viewer_updateSongTreeViewFilter(String filter) {
-        getPresenter().scanner_viewer_onUpdateSongTreeViewFilter(filter);
+    public void scanner_viewer_setSongInformationText(String value) {
+        scannerComponent.viewer_setSongInformationText(value);
     }
 
     @Override
-    public void scanner_viewer_showRecord(int id) {
-        ViewerRecordData data = getPresenter().scanner_viewer_onShowRecord(id);
-
-        getScanner().viewer_showInformation(data.title, data.composer);
-
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                getScanner().viewer_resetRecord(i, j);
-
-                float rate = data.rate[i][j];
-                if (rate == -1) {
-                    getScanner().viewer_shadowRecord(i, j);
-                } else {
-                    boolean maxCombo = data.maxCombo[i][j];
-                    getScanner().viewer_setRecord(i, j, rate, maxCombo);
-                }
-            }
-        }
+    public void scanner_viewer_setRecordData(ViewerRecordData data) {
+        scannerComponent.viewer_setRecordData(data);
     }
 
     @Override
     public void scanner_capture_setCaptureDataList(ObservableList<CaptureData> list) {
-        getScanner().capture_setCaptureDataList(list);
+        scannerComponent.capture_setCaptureDataList(list);
     }
 
     @Override
-    public void scanner_capture_openCaptureViewer(int id) {
-        String cacheDirectory = getScanner().option_getCacheDirectory();
-        getPresenter().scanner_capture_onOpenCaptureViewer(getStage(), cacheDirectory, id);
-    }
-
-    @Override
-    public void scanner_capture_clearScanData() {
-        getPresenter().scanner_capture_onClearScanData();
+    public void scanner_capture_openCaptureViewer(WritableImage image) {
+        stage.showCaptureViewer(image);
     }
 
     @Override
     public void scanner_capture_refresh() {
-        getScanner().capture_refresh();
+        scannerComponent.capture_refresh();
     }
 
     @Override
     public void scanner_capture_setTabList(List<String> list) {
-        getScanner().capture_setTabList(list);
+        scannerComponent.capture_setTabList(list);
     }
 
     @Override
     public Set<String> scanner_capture_getSelectedCategorySet() {
-        return getScanner().capture_getSelectedCategorySet();
+        return scannerComponent.capture_getSelectedCategorySet();
     }
 
     @Override
     public void scanner_capture_setSelectedCategorySet(Set<String> value) {
-        getScanner().capture_setSelectedCategorySet(value);
-    }
-
-    @Override
-    public void scanner_capture_start() {
-        Set<String> selectedCategorySet = getScanner().capture_getSelectedCategorySet();
-        String cacheDirectory = getScanner().option_getCacheDirectory();
-        int captureDelay = getScanner().option_getCaptureDelay();
-        int keyInputDuration = getScanner().option_getKeyInputDuration();
-
-        getPresenter().scanner_capture_onStart(selectedCategorySet, cacheDirectory, captureDelay,
-                keyInputDuration);
-    }
-
-    @Override
-    public void scanner_capture_stop() {
-        getPresenter().scanner_capture_onStop();
+        scannerComponent.capture_setSelectedCategorySet(value);
     }
 
     @Override
     public void scanner_song_setSongDataList(ObservableList<SongData> list) {
-        getScanner().song_setSongDataList(list);
+        scannerComponent.song_setSongDataList(list);
     }
 
     @Override
-    public void scanner_song_openLinkEditor(int id) {
-        String cacheDirectory = getScanner().option_getCacheDirectory();
-        getPresenter().scanner_song_onOpenLinkEditor(getStage(), cacheDirectory, id);
+    public void scanner_song_openLinkEditor(Path cacheDirectoryPath, int songDataId,
+            Runnable onUpdateLink) {
+        stage.showLinkEditor(cacheDirectoryPath, songDataId, onUpdateLink);
     }
 
     @Override
     public void scanner_song_refresh() {
-        getScanner().song_refresh();
+        scannerComponent.song_refresh();
     }
 
     @Override
     public void scanner_analysis_setAnalysisDataList(ObservableList<AnalysisData> list) {
-        getScanner().setAnalysisDataList(list);
+        scannerComponent.analysis_setAnalysisDataList(list);
     }
 
     @Override
-    public void scanner_analysis_clearAnalysisData() {
-        getPresenter().scanner_analysis_onClearAnalysisData();
-    }
-
-    @Override
-    public void scanner_analysis_openAnalysisDataViewer(int id) {
-        String cacheDirectory = getScanner().option_getCacheDirectory();
-        getPresenter().scanner_analysis_onOpenAnalysisDataViewer(getStage(), cacheDirectory, id);
-    }
-
-    @Override
-    public void scanner_analysis_startAnalysis() {
-        String cacheDirectory = getScanner().option_getCacheDirectory();
-        getPresenter().scanner_analysis_onStartAnalysis(cacheDirectory);
-    }
-
-    @Override
-    public void scanner_analysis_stopAnalysis() {
-        getPresenter().scanner_analysis_onStopAnalysis();
+    public void scanner_analysis_openAnalysisDataViewer(Path cacheDirectoryPath,
+            int analysisDataId) {
+        stage.showAnalysisDataViewer(cacheDirectoryPath, analysisDataId);
     }
 
     @Override
     public void scanner_uploader_setNewRecordDataList(ObservableList<NewRecordData> list) {
-        getScanner().setNewRecordDataList(list);
-    }
-
-    @Override
-    public void scanner_uploader_refresh() {
-        getPresenter().scanner_uploader_onRefresh();
-    }
-
-    @Override
-    public void scanner_uploader_startUpload(long count) {
-        getPresenter().scanner_uploader_onStartUpload(count);
-    }
-
-    @Override
-    public void scanner_uploader_stopUpload() {
-        getPresenter().scanner_uploader_onStopUpload();
+        scannerComponent.uploader_setNewRecordDataList(list);
     }
 
     @Override
     public String scanner_option_getCacheDirectory() {
-        return getScanner().option_getCacheDirectory();
+        return scannerComponent.option_getCacheDirectory();
+    }
+
+    @Override
+    public void scanner_option_setCacheDirectory(String value) {
+        scannerComponent.option_setCacheDirectory(value);
+    }
+
+    @Override
+    public void scanner_option_setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        scannerComponent.option_setupCaptureDelaySlider(defaultValue, limitMax, limitMin, value);
     }
 
     @Override
     public int scanner_option_getCaptureDelay() {
-        return getScanner().option_getCaptureDelay();
+        return scannerComponent.option_getCaptureDelay();
+    }
+
+    @Override
+    public void scanner_option_setupKeyInputDurationSlider(int defaultValue, int limitMax,
+            int limitMin, int value) {
+        scannerComponent.option_setupKeyInputDurationSlider(defaultValue, limitMax, limitMin,
+                value);
     }
 
     @Override
     public int scanner_option_getKeyInputDuration() {
-        return getScanner().option_getKeyInputDuration();
+        return scannerComponent.option_getKeyInputDuration();
     }
 
     @Override
     public String scanner_option_getAccountFile() {
-        return getScanner().option_getAccountFile();
+        return scannerComponent.option_getAccountFile();
+    }
+
+    @Override
+    public void scanner_option_setAccountFile(String value) {
+        scannerComponent.option_setAccountFile(value);
+    }
+
+    @Override
+    public void scanner_option_setupRecordUploadDelaySlider(int defaultValue, int limitMax,
+            int limitMin, int value) {
+        scannerComponent.option_setupRecordUploadDelaySlider(defaultValue, limitMax, limitMin,
+                value);
     }
 
     @Override
     public int scanner_option_getRecordUploadDelay() {
-        return getScanner().option_getRecordUploadDelay();
+        return scannerComponent.option_getRecordUploadDelay();
     }
 
     @Override
-    public void scanner_option_openCacheDirectorySelector() {
-        Path path = getPresenter().scanner_option_onOpenCacheDirectorySelector(getStage());
-        if (path != null) {
-            getScanner().option_setCacheDirectory(path.toString());
-        }
+    public File scanner_option_openCacheDirectorySelector(Path initialDirectory) {
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setInitialDirectory(initialDirectory.toFile());
+        chooser.setTitle(Language.getInstance()
+                .getString("scanner.option.dialog.cacheDirectorySelectorTitle"));
+
+        return chooser.showDialog(stage);
     }
 
     @Override
-    public void scanner_option_openAccountFileSelector() {
-        Path path = getPresenter().scanner_option_onOpenAccountFileSelector(getStage());
-        if (path != null) {
-            getScanner().option_setAccountFile(path.toString());
-        }
+    public File scanner_option_openAccountFileSelector(Path initialDirectory) {
+        FileChooser chooser = new FileChooser();
+        chooser.setInitialDirectory(initialDirectory.toFile());
+        chooser.setTitle(
+                Language.getInstance().getString("scanner.option.dialog.AccountFileSelectorTitle"));
+
+        chooser.getExtensionFilters()
+                .add(new FileChooser.ExtensionFilter("Account text file (*.txt)", "*.txt"));
+
+        return chooser.showOpenDialog(stage);
     }
 
     @Override
     public AnalysisKey macro_getAnalysisKey() {
-        return getMacro().getAnalysisKey();
+        return macroComponent.getAnalysisKey();
     }
 
     @Override
     public void macro_setAnalysisKey(AnalysisKey key) {
-        getMacro().setAnalysisKey(key);
+        macroComponent.setAnalysisKey(key);
+    }
+
+    @Override
+    public void macro_setupCountSlider(int defaultValue, int limitMax, int limitMin, int value) {
+        macroComponent.setupCountSlider(defaultValue, limitMax, limitMin, value);
     }
 
     @Override
     public int macro_getCount() {
-        return getMacro().countLinker.getValue();
+        return macroComponent.getCount();
+    }
+
+    @Override
+    public void macro_setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        macroComponent.setupCaptureDelaySlider(defaultValue, limitMax, limitMin, value);
     }
 
     @Override
     public int macro_getCaptureDelay() {
-        return getMacro().captureDelayLinker.getValue();
+        return macroComponent.getCaptureDelay();
+    }
+
+    @Override
+    public void macro_setupCaptureDurationSlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        macroComponent.setupCaptureDurationSlider(defaultValue, limitMax, limitMin, value);
     }
 
     @Override
     public int macro_getCaptureDuration() {
-        return getMacro().captureDurationLinker.getValue();
+        return macroComponent.getCaptureDuration();
+    }
+
+    @Override
+    public void macro_setupKeyInputDurationSlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        macroComponent.setupKeyInputDurationLinkerSlider(defaultValue, limitMax, limitMin, value);
     }
 
     @Override
     public int macro_getKeyInputDuration() {
-        return getMacro().keyInputDurationLinker.getValue();
-    }
-
-    @Override
-    public void macro_start_up() {
-        getPresenter().macro_onStart_up();
-    }
-
-    @Override
-    public void macro_start_down() {
-        getPresenter().macro_onStart_down();
-    }
-
-    @Override
-    public void macro_stop() {
-        getPresenter().macro_onStop();
-    }
-
-    @Override
-    protected Stage newStage() {
-        HomeStage stage = new HomeStage(this);
-
-        scannerComponentReference = new WeakReference<>(stage.scannerComponent);
-        scannerSafeGlassComponentReference = new WeakReference<>(stage.scannerSafeGlassComponent);
-        scannerDjNameInputComponentReference =
-                new WeakReference<>(stage.scannerDjNameInputComponent);
-        macroComponentReference = new WeakReference<>(stage.macroComponent);
-
-        stage.setOnShown(event -> {
-            getPresenter().onViewShow_setupService();
-
-            getPresenter().onViewShow_scanner_setupCacheDirectory(
-                    getScanner().option_cacheDirectoryTextField);
-
-            getPresenter().onViewShow_scanner_setupCaptureDelayLinker(
-                    getScanner().optionCaptureDelayLinker);
-
-            getPresenter().onViewShow_scanner_setupKeyInputDurationLinker(
-                    getScanner().optionKeyInputDurationLinker);
-
-            getPresenter().onViewShow_scanner_setupAccountFile(
-                    getScanner().option_accountFileTextField);
-
-            getPresenter().onViewShow_scanner_setupRecordUploadDelayLinker(
-                    getScanner().optionRecordUploadDelayLinker);
-
-            getPresenter().onViewShow_macro_setupAnalysisKey();
-
-            getPresenter().onViewShow_macro_setupCountLinker(getMacro().countLinker);
-
-            getPresenter().onViewShow_macro_setupCaptureDelayLinker(getMacro().captureDelayLinker);
-
-            getPresenter().onViewShow_macro_setupCaptureDurationLinker(
-                    getMacro().captureDurationLinker);
-
-            getPresenter().onViewShow_macro_setupKeyInputDurationLinker(
-                    getMacro().keyInputDurationLinker);
-
-            if (!getPresenter().onViewShow_loadDatabase()) {
-                return;
-            }
-
-            getPresenter().onViewShow_loadRecord();
-
-            FxHookWrapper.addKeyListener(macroNativeKeyListener);
-        });
-
-        stage.setOnHiding(event -> {
-            FxHookWrapper.removeKeyListener(scannerNativeKeyListener);
-            FxHookWrapper.removeKeyListener(macroNativeKeyListener);
-        });
-
-        return stage;
+        return macroComponent.getKeyInputDuration();
     }
 
     private class ScannerFrontControllerImpl implements ScannerFrontController {
@@ -510,10 +482,10 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
         public void showForbiddenMark() {
             String message = Language.getInstance().getString("scannerSafeGlass.forbiddenMark");
 
-            getScannerSafeGlass().showForbiddenMark();
-            getScannerSafeGlass().setText(message);
-            getScannerSafeGlass().setVisible(true);
-            getScannerSafeGlass().requestFocus();
+            scannerSafeGlassComponent.showForbiddenMark();
+            scannerSafeGlassComponent.setText(message);
+            scannerSafeGlassComponent.setVisible(true);
+            scannerSafeGlassComponent.requestFocus();
         }
 
         @Override
@@ -521,44 +493,45 @@ public class HomeViewImpl extends AbstractMvpView<HomePresenter, HomeView> imple
             String message =
                     Language.getInstance().getFormatString("scannerSafeGlass.loadingMark", djName);
 
-            getScannerDjNameInput().upEffect();
-            getScannerSafeGlass().showLoadingMark();
-            getScannerSafeGlass().setText(message);
-            getScannerSafeGlass().setVisible(true);
-            getScannerSafeGlass().requestFocus();
+            scannerDjNameInputComponent.upEffect();
+            scannerSafeGlassComponent.showLoadingMark();
+            scannerSafeGlassComponent.setText(message);
+            scannerSafeGlassComponent.setVisible(true);
+            scannerSafeGlassComponent.requestFocus();
         }
 
         @Override
         public void hideLoadingMark() {
-            getScannerSafeGlass().setVisible(false);
-            getScannerDjNameInput().downEffect();
+            scannerSafeGlassComponent.setVisible(false);
+            scannerDjNameInputComponent.downEffect();
         }
 
         @Override
         public void showDjNameInput() {
-            getScannerDjNameInput().setVisible(true);
-            getScannerDjNameInput().requestFocus();
+            scannerDjNameInputComponent.setVisible(true);
+            scannerDjNameInputComponent.requestFocus();
         }
 
         @Override
         public void hideDjNameInput() {
-            getScannerDjNameInput().setVisible(false);
+            scannerDjNameInputComponent.setVisible(false);
         }
 
         @Override
         public void showDjNameInputError(String message) {
-            getScannerDjNameInput().showError(message);
+            scannerDjNameInputComponent.showError(message);
         }
 
         @Override
         public void hideDjNameInputError() {
-            getScannerDjNameInput().hideError();
+            scannerDjNameInputComponent.hideError();
         }
 
         @Override
         public void showScanner() {
-            ((HomeStage) getStage()).replaceScannerTabContent();
-            getScanner().requestFocus();
+            scannerTab.setContent(scannerComponent);
+
+            scannerComponent.requestFocus();
 
             FxHookWrapper.addKeyListener(scannerNativeKeyListener);
         }

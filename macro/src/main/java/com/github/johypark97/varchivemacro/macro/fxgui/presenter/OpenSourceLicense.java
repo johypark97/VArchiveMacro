@@ -1,34 +1,24 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
-import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
-import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
+import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpPresenter;
+import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpView;
 import javafx.collections.ObservableList;
-import javafx.stage.Window;
 
 public interface OpenSourceLicense {
-    interface OpenSourceLicensePresenter extends MvpPresenter<OpenSourceLicenseView> {
-        StartData getStartData();
+    interface OpenSourceLicensePresenter
+            extends MvpPresenter<OpenSourceLicenseView, OpenSourceLicensePresenter> {
+        void onStartView();
 
-        void setStartData(StartData value);
-
-        void onViewShown();
-
-        String onShowLicenseText(String library);
-
-        String onShowLibraryUrl(String library);
+        void showLicense(String library);
     }
 
 
-    interface OpenSourceLicenseView extends MvpView<OpenSourceLicensePresenter> {
+    interface OpenSourceLicenseView
+            extends MvpView<OpenSourceLicenseView, OpenSourceLicensePresenter> {
         void setLibraryList(ObservableList<String> list);
 
-        void showLicenseText(String library);
+        void setLicenseText(String text);
 
-        void showLibraryUrl(String library);
-    }
-
-
-    class StartData {
-        public Window ownerWindow;
+        void setLicenseUrl(String url);
     }
 }

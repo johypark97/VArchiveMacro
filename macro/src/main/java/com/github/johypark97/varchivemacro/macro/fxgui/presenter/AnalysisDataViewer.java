@@ -1,36 +1,28 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
-import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpPresenter;
-import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpView;
+import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpPresenter;
+import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpView;
 import java.nio.file.Path;
 import javafx.scene.image.Image;
-import javafx.stage.Window;
 
 public interface AnalysisDataViewer {
-    interface AnalysisDataViewerPresenter extends MvpPresenter<AnalysisDataViewerView> {
-        StartData getStartData();
-
-        void setStartData(StartData value);
-
-        void updateView();
+    interface AnalysisDataViewerPresenter
+            extends MvpPresenter<AnalysisDataViewerView, AnalysisDataViewerPresenter> {
+        void showAnalysisData(Path cacheDirectoryPath, int analysisDataId);
     }
 
 
-    interface AnalysisDataViewerView extends MvpView<AnalysisDataViewerPresenter> {
+    interface AnalysisDataViewerView
+            extends MvpView<AnalysisDataViewerView, AnalysisDataViewerPresenter> {
         void showError(String header, Throwable throwable);
 
-        void setSongData(String text);
+        void setSongText(String text);
 
-        void setTitleData(Image image, String text);
+        void setTitleImage(Image image);
+
+        void setTitleText(String text);
 
         void setRecordBoxData(int row, int column, RecordBoxData data);
-    }
-
-
-    class StartData {
-        public Path cacheDirectoryPath;
-        public Window ownerWindow;
-        public int analysisDataId;
     }
 
 

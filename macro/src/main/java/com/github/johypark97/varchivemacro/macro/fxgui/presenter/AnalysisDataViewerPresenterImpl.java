@@ -1,23 +1,20 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
-import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel.AnalyzedRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.RecordBoxData;
-import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.StartData;
 import java.awt.image.BufferedImage;
 import java.lang.ref.WeakReference;
-import java.util.Objects;
+import java.nio.file.Path;
 import javafx.embed.swing.SwingFXUtils;
 
-public class AnalysisDataViewerPresenterImpl
-        extends AbstractMvpPresenter<AnalysisDataViewerPresenter, AnalysisDataViewerView>
-        implements AnalysisDataViewerPresenter {
+public class AnalysisDataViewerPresenterImpl implements AnalysisDataViewerPresenter {
     private WeakReference<ScannerModel> scannerModelReference;
 
-    public StartData startData;
+    @MvpView
+    public AnalysisDataViewerView view;
 
     public void linkModel(ScannerModel scannerModel) {
         scannerModelReference = new WeakReference<>(scannerModel);
@@ -28,29 +25,19 @@ public class AnalysisDataViewerPresenterImpl
     }
 
     @Override
-    public StartData getStartData() {
-        return startData;
-    }
-
-    @Override
-    public void setStartData(StartData value) {
-        startData = value;
-    }
-
-    @Override
-    public void updateView() {
+    public void showAnalysisData(Path cacheDirectoryPath, int analysisDataId) {
         AnalyzedRecordData data;
         try {
-            data = getScannerModel().getAnalyzedRecordData(startData.cacheDirectoryPath,
-                    startData.analysisDataId);
+            data = getScannerModel().getAnalyzedRecordData(cacheDirectoryPath, analysisDataId);
         } catch (Exception e) {
-            getView().showError("Analyzed record data loading error", e);
+            view.showError("Analyzed record data loading error", e);
             return;
         }
 
-        getView().setSongData(String.format("[%s] %s - %s", data.song.pack(), data.song.title(),
+        view.setSongText(String.format("[%s] %s - %s", data.song.pack().name(), data.song.title(),
                 data.song.composer()));
-        getView().setTitleData(SwingFXUtils.toFXImage(data.titleImage, null), data.titleText);
+        view.setTitleImage(SwingFXUtils.toFXImage(data.titleImage, null));
+        view.setTitleText(data.titleText);
 
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
@@ -72,22 +59,8 @@ public class AnalysisDataViewerPresenterImpl
 
                 recordBoxData.maxCombo = data.maxCombo[i][j];
 
-                getView().setRecordBoxData(i, j, recordBoxData);
+                view.setRecordBoxData(i, j, recordBoxData);
             }
         }
-    }
-
-    @Override
-    protected AnalysisDataViewerPresenter getInstance() {
-        return this;
-    }
-
-    @Override
-    protected boolean initialize() {
-        Objects.requireNonNull(startData);
-        Objects.requireNonNull(startData.cacheDirectoryPath);
-        Objects.requireNonNull(startData.ownerWindow);
-
-        return true;
     }
 }

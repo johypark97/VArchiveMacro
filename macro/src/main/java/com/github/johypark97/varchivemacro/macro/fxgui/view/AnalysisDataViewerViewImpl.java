@@ -1,31 +1,128 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
-import com.github.johypark97.varchivemacro.lib.jfx.mvp.AbstractMvpView;
+import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.RecordBoxData;
-import com.github.johypark97.varchivemacro.macro.fxgui.view.component.AnalysisDataViewerComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.AnalysisDataViewerStage;
+import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.Toolkit;
-import java.lang.ref.WeakReference;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 
-public class AnalysisDataViewerViewImpl
-        extends AbstractMvpView<AnalysisDataViewerPresenter, AnalysisDataViewerView>
-        implements AnalysisDataViewerView {
-    private WeakReference<AnalysisDataViewerComponent> analysisDataViewerComponentReference;
+public class AnalysisDataViewerViewImpl extends VBox implements AnalysisDataViewerView {
+    private static final String FXML_FILE_NAME = "AnalysisDataViewer.fxml";
 
-    private AnalysisDataViewerComponent getAnalysisDataViewerComponent() {
-        return analysisDataViewerComponentReference.get();
+    private static final AtomicBoolean transposeRecord = new AtomicBoolean();
+
+    private final List<RecordBox> recordBoxList = new ArrayList<>(16);
+
+    private final AnalysisDataViewerStage stage;
+
+    @MvpPresenter
+    public AnalysisDataViewerPresenter presenter;
+
+    @FXML
+    public TextField songTextField;
+
+    @FXML
+    public ImageView titleImageView;
+
+    @FXML
+    public TextField titleTextField;
+
+    @FXML
+    public GridPane recordGridPane;
+
+    @FXML
+    public Button closeButton;
+
+    public AnalysisDataViewerViewImpl(AnalysisDataViewerStage stage) {
+        this.stage = stage;
+
+        try {
+            URL url = AnalysisDataViewerViewImpl.class.getResource(FXML_FILE_NAME);
+            Mvp.loadFxml(this, url,
+                    x -> x.setResources(Language.getInstance().getResourceBundle()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void initialize() {
+        closeButton.setOnAction(event -> stage.stopStage());
+
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                RecordBox box = new RecordBox();
+                recordBoxList.add(box);
+                recordGridPane.add(box, j + 1, i + 1);
+            }
+        }
+
+        getTransposeButton().setOnAction(event -> {
+            transposeRecordGridPane();
+            toggleTransposeRecord();
+        });
+
+        if (transposeRecord.get()) {
+            transposeRecordGridPane();
+        }
+    }
+
+    public void showAnalysisData(Path cacheDirectoryPath, int analysisDataId) {
+        presenter.showAnalysisData(cacheDirectoryPath, analysisDataId);
+    }
+
+    private void transposeRecordGridPane() {
+        recordGridPane.getChildren().forEach(x -> {
+            int column = Objects.requireNonNullElse(GridPane.getColumnIndex(x), 0);
+            int row = Objects.requireNonNullElse(GridPane.getRowIndex(x), 0);
+
+            if (row != column) {
+                GridPane.setColumnIndex(x, row);
+                GridPane.setRowIndex(x, column);
+            }
+        });
+    }
+
+    private Button getTransposeButton() {
+        return (Button) recordGridPane.getChildren().get(0);
+    }
+
+    private void toggleTransposeRecord() {
+        boolean x;
+        do {
+            x = transposeRecord.get();
+        } while (!transposeRecord.compareAndSet(x, !x));
     }
 
     @Override
     public void showError(String header, Throwable throwable) {
-        Alert alert = AlertBuilder.error().setOwner(getStage()).setHeaderText(header)
+        Alert alert = AlertBuilder.error().setOwner(stage).setHeaderText(header)
                 .setContentText(throwable.toString()).setThrowable(throwable).alert;
 
         Toolkit.getDefaultToolkit().beep();
@@ -33,46 +130,69 @@ public class AnalysisDataViewerViewImpl
     }
 
     @Override
-    public void setSongData(String text) {
-        getAnalysisDataViewerComponent().setSongText(text);
+    public void setSongText(String text) {
+        songTextField.setText(text);
     }
 
     @Override
-    public void setTitleData(Image image, String text) {
-        getAnalysisDataViewerComponent().setTitleImage(image);
-        getAnalysisDataViewerComponent().setTitleText(text);
+    public void setTitleImage(Image image) {
+        titleImageView.setImage(image);
+    }
+
+    @Override
+    public void setTitleText(String text) {
+        titleTextField.setText(text);
     }
 
     @Override
     public void setRecordBoxData(int row, int column, RecordBoxData data) {
-        getAnalysisDataViewerComponent().setRecordBoxData(row, column, data);
+        RecordBox recordBox = recordBoxList.get(row * 4 + column);
+
+        recordBox.maxComboCheckBox.setSelected(data.maxCombo);
+        recordBox.maxComboImageView.setImage(data.maxComboImage);
+        recordBox.rateImageView.setImage(data.rateImage);
+        recordBox.rateTextField.setText(data.rateText);
     }
 
-    @Override
-    protected Stage newStage() {
-        AnalysisDataViewerStage stage = new AnalysisDataViewerStage();
+    public static class RecordBox extends GridPane {
+        private final CheckBox maxComboCheckBox = new CheckBox();
+        private final ImageView maxComboImageView = new ImageView();
+        private final ImageView rateImageView = new ImageView();
+        private final TextField rateTextField = new TextField();
 
-        analysisDataViewerComponentReference =
-                new WeakReference<>(stage.analysisDataViewerComponent);
+        public RecordBox() {
+            RowConstraints rowConstraints = new RowConstraints();
+            rowConstraints.setValignment(VPos.CENTER);
+            rowConstraints.setVgrow(Priority.ALWAYS);
+            getRowConstraints().add(rowConstraints);
+            getRowConstraints().add(rowConstraints);
 
-        stage.initOwner(getPresenter().getStartData().ownerWindow);
+            ColumnConstraints columnConstraints = new ColumnConstraints();
+            columnConstraints.setHalignment(HPos.CENTER);
+            columnConstraints.setHgrow(Priority.ALWAYS);
+            getColumnConstraints().add(columnConstraints);
+            getColumnConstraints().add(columnConstraints);
 
-        stage.setOnShowing(event -> {
-            Stage source = (Stage) event.getSource();
+            super.add(wrapWithBox(rateImageView), 0, 0);
+            super.add(wrapWithBox(maxComboImageView), 1, 0);
+            super.add(rateTextField, 0, 1);
+            super.add(maxComboCheckBox, 1, 1);
 
-            getAnalysisDataViewerComponent().setCloseButtonAction(
-                    () -> getPresenter().stopPresenter());
+            rateTextField.setAlignment(Pos.CENTER);
+            rateTextField.setEditable(false);
+            rateTextField.setPrefColumnCount(0);
 
-            source.getScene().setOnKeyReleased(x -> {
-                if (x.getCode() == KeyCode.ESCAPE) {
-                    getPresenter().stopPresenter();
-                }
-            });
+            maxComboCheckBox.setDisable(true);
+            maxComboCheckBox.setOpacity(1);
+        }
 
-            getPresenter().updateView();
-            getStage().sizeToScene();
-        });
+        private Node wrapWithBox(Node node) {
+            VBox box = new VBox(node);
 
-        return stage;
+            box.setAlignment(Pos.CENTER);
+            box.setStyle("-fx-background-color: black;");
+
+            return box;
+        }
     }
 }

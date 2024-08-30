@@ -13,8 +13,9 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDa
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.LinkMetadata;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
-import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.lang.ref.WeakReference;
 import java.net.URL;
@@ -56,7 +57,7 @@ import javafx.util.Duration;
 public class ScannerComponent extends TabPane {
     private static final String FXML_FILE_NAME = "Scanner.fxml";
 
-    private final WeakReference<HomeView> viewReference;
+    private final HomeViewImpl view;
 
     @FXML
     public TextField viewer_filterTextField;
@@ -178,8 +179,8 @@ public class ScannerComponent extends TabPane {
 
     private ViewerRecordController viewerRecordController;
 
-    public ScannerComponent(HomeView view) {
-        viewReference = new WeakReference<>(view);
+    public ScannerComponent(HomeViewImpl view) {
+        this.view = view;
 
         URL url = ScannerComponent.class.getResource(FXML_FILE_NAME);
         MvpFxml.loadRoot(this, url, Language.getInstance().getResourceBundle());
@@ -199,24 +200,32 @@ public class ScannerComponent extends TabPane {
         viewer_songTreeView.setRoot(root);
     }
 
-    public void viewer_showInformation(String title, String composer) {
-        StringBuilder builder = new StringBuilder(32);
-
-        builder.append("Title: ").append(title).append("\nComposer: ").append(composer);
-
-        viewer_informationTextArea.setText(builder.toString());
+    public void viewer_setSongInformationText(String value) {
+        viewer_informationTextArea.setText(value);
     }
 
-    public void viewer_resetRecord(int row, int column) {
-        viewerRecordController.clearCell(row, column);
+    public void viewer_setRecordData(ViewerRecordData data) {
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                viewerRecordController.clearCell(i, j);
+
+                float rate = data.rate[i][j];
+                if (rate == -1) {
+                    viewerRecordController.shadowCell(i, j);
+                } else {
+                    boolean maxCombo = data.maxCombo[i][j];
+                    viewerRecordController.setCell(i, j, rate, maxCombo);
+                }
+            }
+        }
     }
 
-    public void viewer_setRecord(int row, int column, float rate, boolean maxCombo) {
-        viewerRecordController.setCell(row, column, rate, maxCombo);
+    public void capture_setCaptureDataList(ObservableList<CaptureData> list) {
+        capture_captureTableView.setItems(list);
     }
 
-    public void viewer_shadowRecord(int row, int column) {
-        viewerRecordController.shadowCell(row, column);
+    public void capture_refresh() {
+        capture_captureTableView.refresh();
     }
 
     public void capture_setTabList(List<String> list) {
@@ -236,6 +245,22 @@ public class ScannerComponent extends TabPane {
         capture_categoryListView.getItems().forEach(x -> x.checked.set(value.contains(x.name)));
     }
 
+    public void song_setSongDataList(ObservableList<SongData> list) {
+        song_songTableView.setItems(list);
+    }
+
+    public void song_refresh() {
+        song_songTableView.refresh();
+    }
+
+    public void analysis_setAnalysisDataList(ObservableList<AnalysisData> list) {
+        analysis_analysisTableView.setItems(list);
+    }
+
+    public void uploader_setNewRecordDataList(ObservableList<NewRecordData> list) {
+        uploader_recordTableView.setItems(list);
+    }
+
     public String option_getCacheDirectory() {
         return option_cacheDirectoryTextField.getText();
     }
@@ -244,8 +269,24 @@ public class ScannerComponent extends TabPane {
         option_cacheDirectoryTextField.setText(value);
     }
 
+    public void option_setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        optionCaptureDelayLinker.setDefaultValue(defaultValue);
+        optionCaptureDelayLinker.setLimitMax(limitMax);
+        optionCaptureDelayLinker.setLimitMin(limitMin);
+        optionCaptureDelayLinker.setValue(value);
+    }
+
     public int option_getCaptureDelay() {
         return optionCaptureDelayLinker.getValue();
+    }
+
+    public void option_setupKeyInputDurationSlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        optionKeyInputDurationLinker.setDefaultValue(defaultValue);
+        optionKeyInputDurationLinker.setLimitMax(limitMax);
+        optionKeyInputDurationLinker.setLimitMin(limitMin);
+        optionKeyInputDurationLinker.setValue(value);
     }
 
     public int option_getKeyInputDuration() {
@@ -260,43 +301,23 @@ public class ScannerComponent extends TabPane {
         option_accountFileTextField.setText(value);
     }
 
+    public void option_setupRecordUploadDelaySlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        optionRecordUploadDelayLinker.setDefaultValue(defaultValue);
+        optionRecordUploadDelayLinker.setLimitMax(limitMax);
+        optionRecordUploadDelayLinker.setLimitMin(limitMin);
+        optionRecordUploadDelayLinker.setValue(value);
+    }
+
     public int option_getRecordUploadDelay() {
         return optionRecordUploadDelayLinker.getValue();
-    }
-
-    public void capture_setCaptureDataList(ObservableList<CaptureData> list) {
-        capture_captureTableView.setItems(list);
-    }
-
-    public void capture_refresh() {
-        capture_captureTableView.refresh();
-    }
-
-    public void song_setSongDataList(ObservableList<SongData> list) {
-        song_songTableView.setItems(list);
-    }
-
-    public void song_refresh() {
-        song_songTableView.refresh();
-    }
-
-    public void setAnalysisDataList(ObservableList<AnalysisData> list) {
-        analysis_analysisTableView.setItems(list);
-    }
-
-    public void setNewRecordDataList(ObservableList<NewRecordData> list) {
-        uploader_recordTableView.setItems(list);
-    }
-
-    private HomeView getView() {
-        return viewReference.get();
     }
 
     private void openCaptureViewer() {
         CaptureData selected = capture_captureTableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
-            getView().scanner_capture_openCaptureViewer(selected.idProperty().get());
+            view.presenter.scanner_capture_openCaptureViewer(selected.idProperty().get());
         }
     }
 
@@ -304,7 +325,7 @@ public class ScannerComponent extends TabPane {
         SongData selected = song_songTableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
-            getView().scanner_song_openLinkEditor(selected.idProperty().get());
+            view.presenter.scanner_song_openLinkEditor(selected.idProperty().get());
         }
     }
 
@@ -312,7 +333,7 @@ public class ScannerComponent extends TabPane {
         AnalysisData selected = analysis_analysisTableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
-            getView().scanner_analysis_openAnalysisDataViewer(selected.idProperty().get());
+            view.presenter.scanner_analysis_openAnalysisDataViewer(selected.idProperty().get());
         }
     }
 
@@ -320,7 +341,7 @@ public class ScannerComponent extends TabPane {
         viewer_filterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             String value = newValue.trim();
             if (!value.equals(oldValue.trim())) {
-                getView().scanner_viewer_updateSongTreeViewFilter(newValue.trim());
+                view.presenter.scanner_viewer_updateSongTreeViewFilter(newValue.trim());
             }
         });
 
@@ -365,7 +386,7 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    getView().scanner_viewer_showRecord(data.song.id());
+                    view.presenter.scanner_viewer_showRecord(data.song.id());
                 });
     }
 
@@ -374,7 +395,7 @@ public class ScannerComponent extends TabPane {
 
         capture_showButton.setOnAction(event -> openCaptureViewer());
 
-        capture_clearButton.setOnAction(event -> getView().scanner_capture_clearScanData());
+        capture_clearButton.setOnAction(event -> view.presenter.scanner_capture_clearScanData());
 
         capture_categoryListView.setCellFactory(
                 CheckBoxListCell.forListView(param -> param.checked));
@@ -680,11 +701,12 @@ public class ScannerComponent extends TabPane {
 
         analysis_showButton.setOnAction(event -> openAnalysisDataViewer());
 
-        analysis_startButton.setOnAction(event -> getView().scanner_analysis_startAnalysis());
+        analysis_startButton.setOnAction(event -> view.presenter.scanner_analysis_startAnalysis());
 
-        analysis_stopButton.setOnAction(event -> getView().scanner_analysis_stopAnalysis());
+        analysis_stopButton.setOnAction(event -> view.presenter.scanner_analysis_stopAnalysis());
 
-        analysis_clearButton.setOnAction(event -> getView().scanner_analysis_clearAnalysisData());
+        analysis_clearButton.setOnAction(
+                event -> view.presenter.scanner_analysis_clearAnalysisData());
     }
 
     private void setupAnalysis_analysisTableView() {
@@ -867,7 +889,7 @@ public class ScannerComponent extends TabPane {
     private void setupUploader() {
         setupUploader_recordTableView();
 
-        uploader_refreshButton.setOnAction(event -> getView().scanner_uploader_refresh());
+        uploader_refreshButton.setOnAction(event -> view.presenter.scanner_uploader_refresh());
 
         uploader_selectAllButton.setOnAction(
                 event -> uploader_recordTableView.getItems().forEach(x -> x.selected.set(true)));
@@ -879,10 +901,11 @@ public class ScannerComponent extends TabPane {
             long count = uploader_recordTableView.getItems().stream().filter(x -> x.selected.get())
                     .count();
 
-            getView().scanner_uploader_startUpload(count);
+            view.presenter.scanner_uploader_startUpload(count);
         });
 
-        uploader_stopUploadButton.setOnAction(event -> getView().scanner_uploader_stopUpload());
+        uploader_stopUploadButton.setOnAction(
+                event -> view.presenter.scanner_uploader_stopUpload());
     }
 
     private void setupUploader_recordTableView() {
@@ -1038,7 +1061,7 @@ public class ScannerComponent extends TabPane {
 
     private void setupOption() {
         option_cacheDirectorySelectButton.setOnAction(
-                event -> getView().scanner_option_openCacheDirectorySelector());
+                event -> view.presenter.scanner_option_openCacheDirectorySelector());
 
         optionCaptureDelayLinker =
                 new SliderTextFieldLinker(option_captureDelaySlider, option_captureDelayTextField);
@@ -1047,7 +1070,7 @@ public class ScannerComponent extends TabPane {
                 option_keyInputDurationTextField);
 
         option_accountFileSelectButton.setOnAction(
-                event -> getView().scanner_option_openAccountFileSelector());
+                event -> view.presenter.scanner_option_openAccountFileSelector());
 
         optionRecordUploadDelayLinker = new SliderTextFieldLinker(option_recordUploadDelaySlider,
                 option_recordUploadDelayTextField);

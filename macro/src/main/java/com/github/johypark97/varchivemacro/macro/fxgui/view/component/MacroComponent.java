@@ -98,4 +98,50 @@ public class MacroComponent extends BorderPane {
 
         button.setSelected(true);
     }
+
+    public void setupCountSlider(int defaultValue, int limitMax, int limitMin, int value) {
+        countLinker.setDefaultValue(defaultValue);
+        countLinker.setLimitMax(limitMax);
+        countLinker.setLimitMin(limitMin);
+        countLinker.setValue(value);
+    }
+
+    public int getCount() {
+        return countLinker.getValue();
+    }
+
+    public void setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin, int value) {
+        captureDelayLinker.setDefaultValue(defaultValue);
+        captureDelayLinker.setLimitMax(limitMax);
+        captureDelayLinker.setLimitMin(limitMin);
+        captureDelayLinker.setValue(value);
+    }
+
+    public int getCaptureDelay() {
+        return captureDelayLinker.getValue();
+    }
+
+    public void setupCaptureDurationSlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        captureDurationLinker.setDefaultValue(defaultValue);
+        captureDurationLinker.setLimitMax(limitMax);
+        captureDurationLinker.setLimitMin(limitMin);
+        captureDurationLinker.setValue(value);
+    }
+
+    public int getCaptureDuration() {
+        return captureDurationLinker.getValue();
+    }
+
+    public void setupKeyInputDurationLinkerSlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        keyInputDurationLinker.setDefaultValue(defaultValue);
+        keyInputDurationLinker.setLimitMax(limitMax);
+        keyInputDurationLinker.setLimitMin(limitMin);
+        keyInputDurationLinker.setValue(value);
+    }
+
+    public int getKeyInputDuration() {
+        return keyInputDurationLinker.getValue();
+    }
 }

@@ -8,12 +8,16 @@ module varchivemacro.macro {
     requires varchivemacro.lib.jfx;
     requires varchivemacro.lib.scanner;
 
+    exports com.github.johypark97.varchivemacro.macro.fxgui.presenter to varchivemacro.lib.jfx;
+    exports com.github.johypark97.varchivemacro.macro.fxgui.view to varchivemacro.lib.jfx;
+
     // javafx
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.swing;
 
     opens com.github.johypark97.varchivemacro.macro.fxgui.model.manager to javafx.base;
+    opens com.github.johypark97.varchivemacro.macro.fxgui.view to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.fxgui.view.component to javafx.fxml;
 
     // 3rd party
