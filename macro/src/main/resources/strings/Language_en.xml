@@ -51,7 +51,7 @@
   <entry key="scanner.analysis.clear">Clear</entry>
   <entry key="scanner.analysis.show">Show (Enter)</entry>
   <entry key="scanner.analysis.start">Start Analysis</entry>
-  <entry key="scanner.analysis.stop">Stop Analysis (Backspace)</entry>
+  <entry key="scanner.analysis.stop">Stop Analysis</entry>
   <entry key="scanner.analysis.table.analysisDataId">Analysis ID</entry>
   <entry key="scanner.analysis.table.capture">Linked Capture</entry>
   <entry key="scanner.analysis.table.composer">Composer</entry>
@@ -103,7 +103,7 @@
   <entry key="scanner.uploader.dialog.header">Would you like to upload the selected records?</entry>
   <entry key="scanner.uploader.refresh">Refresh</entry>
   <entry key="scanner.uploader.startUpload">Start Upload</entry>
-  <entry key="scanner.uploader.stopUpload">Stop Upload (Backspace)</entry>
+  <entry key="scanner.uploader.stopUpload">Stop Upload</entry>
   <entry key="scanner.uploader.table.button">Button</entry>
   <entry key="scanner.uploader.table.composer">Composer</entry>
   <entry key="scanner.uploader.table.newRecordDataId">Record ID</entry>

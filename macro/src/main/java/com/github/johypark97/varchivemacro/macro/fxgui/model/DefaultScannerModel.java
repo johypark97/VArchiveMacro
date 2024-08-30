@@ -17,6 +17,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDa
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.service.CollectionScanService;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.ScannerService;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.AnalysisTask;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.service.task.CollectNewRecordTask;
@@ -32,6 +33,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 
 public class DefaultScannerModel implements ScannerModel {
     private final AnalysisDataManager analysisDataManager = new AnalysisDataManager();
@@ -45,12 +48,21 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void setupService(Consumer<Throwable> onThrow) {
-        ScannerService service = ServiceManager.getInstance().create(ScannerService.class);
-        if (service == null) {
+        EventHandler<WorkerStateEvent> onFailedEventHandler =
+                event -> onThrow.accept(event.getSource().getException());
+
+        CollectionScanService collectionScanService =
+                ServiceManager.getInstance().create(CollectionScanService.class);
+        if (collectionScanService == null) {
+            throw new IllegalStateException("CollectionScanService has already been created.");
+        }
+        collectionScanService.setOnFailed(onFailedEventHandler);
+
+        ScannerService scannerService = ServiceManager.getInstance().create(ScannerService.class);
+        if (scannerService == null) {
             throw new IllegalStateException("ScannerService has already been created.");
         }
-
-        service.setOnFailed(event -> onThrow.accept(event.getSource().getException()));
+        scannerService.setOnFailed(onFailedEventHandler);
     }
 
     @Override
@@ -62,8 +74,8 @@ public class DefaultScannerModel implements ScannerModel {
             return;
         }
 
-        ScannerService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        CollectionScanService service = Objects.requireNonNull(
+                ServiceManager.getInstance().get(CollectionScanService.class));
 
         service.setTaskConstructor(() -> {
             Task<Void> task =
@@ -94,7 +106,7 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void stopCollectionScan() {
-        ServiceManagerHelper.stopService(ScannerService.class);
+        ServiceManagerHelper.stopService(CollectionScanService.class);
     }
 
     @Override
