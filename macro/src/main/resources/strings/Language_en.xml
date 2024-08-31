@@ -86,7 +86,7 @@
   <entry key="scanner.option.keyInputDuration">Key Input Duration [ms]</entry>
   <entry key="scanner.option.recordUploadDelay">Record Upload Delay [ms]</entry>
   <entry key="scanner.option.scannerSetting">Collection Scanner Settings</entry>
-  <entry key="scanner.option.uploaderSetting">Uploader Setting</entry>
+  <entry key="scanner.option.uploaderSetting">Uploader Settings</entry>
   <entry key="scanner.song">Song</entry>
   <entry key="scanner.song.edit">Edit (Enter)</entry>
   <entry key="scanner.song.table.composer">Composer</entry>
