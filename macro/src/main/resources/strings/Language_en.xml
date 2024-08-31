@@ -78,6 +78,8 @@
   <entry key="scanner.capture.table.scannedTitle">Scanned Title</entry>
   <entry key="scanner.option">Option</entry>
   <entry key="scanner.option.accountFile">Account File</entry>
+  <entry key="scanner.option.analysisSetting">Analysis Settings</entry>
+  <entry key="scanner.option.analysisThreadCount">Analysis Thread Counts</entry>
   <entry key="scanner.option.cacheDirectory">Cache Directory</entry>
   <entry key="scanner.option.captureDelay">Capture Delay [ms]</entry>
   <entry key="scanner.option.dialog.AccountFileSelectorTitle">Select account file</entry>

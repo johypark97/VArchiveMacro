@@ -78,6 +78,8 @@
   <entry key="scanner.capture.table.scannedTitle">스캔한 제목</entry>
   <entry key="scanner.option">옵션</entry>
   <entry key="scanner.option.accountFile">계정 파일</entry>
+  <entry key="scanner.option.analysisSetting">분석 설정</entry>
+  <entry key="scanner.option.analysisThreadCount">분석 스레드 개수</entry>
   <entry key="scanner.option.cacheDirectory">캐시 디렉토리</entry>
   <entry key="scanner.option.captureDelay">캡처 딜레이 [ms]</entry>
   <entry key="scanner.option.dialog.AccountFileSelectorTitle">계정 파일 선택</entry>

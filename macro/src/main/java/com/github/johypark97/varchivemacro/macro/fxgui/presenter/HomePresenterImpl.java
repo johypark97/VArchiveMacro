@@ -153,6 +153,11 @@ public class HomePresenterImpl implements HomePresenter {
                 ScannerConfig.KEY_INPUT_DURATION_MAX, ScannerConfig.KEY_INPUT_DURATION_MIN,
                 getConfigModel().getScannerConfig().keyInputDuration);
 
+        view.scanner_option_setupAnalysisThreadCountSlider(
+                ScannerConfig.ANALYSIS_THREAD_COUNT_DEFAULT,
+                ScannerConfig.ANALYSIS_THREAD_COUNT_MAX,
+                getConfigModel().getScannerConfig().analysisThreadCount);
+
         view.scanner_option_setAccountFile(
                 getConfigModel().getScannerConfig().accountFile.toString());
 
@@ -230,6 +235,8 @@ public class HomePresenterImpl implements HomePresenter {
 
             scannerConfig.captureDelay = view.scanner_option_getCaptureDelay();
             scannerConfig.keyInputDuration = view.scanner_option_getKeyInputDuration();
+
+            scannerConfig.analysisThreadCount = view.scanner_option_getupAnalysisThreadCount();
 
             try {
                 scannerConfig.accountFile = Path.of(view.scanner_option_getAccountFile());
@@ -475,8 +482,10 @@ public class HomePresenterImpl implements HomePresenter {
             view.scanner_analysis_setProgressLabelText(String.format("%.2f%%", value * 100));
         };
 
+        int analysisThreadCount = view.scanner_option_getupAnalysisThreadCount();
+
         getScannerModel().starAnalysis(onUpdateProgress, onDataReady, onDone, onCancel,
-                cacheDirectoryPath);
+                cacheDirectoryPath, analysisThreadCount);
     }
 
     @Override

@@ -111,7 +111,7 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void starAnalysis(Consumer<Double> onUpdateProgress, Runnable onDataReady,
-            Runnable onDone, Runnable onCancel, Path cacheDirectoryPath) {
+            Runnable onDone, Runnable onCancel, Path cacheDirectoryPath, int analysisThreadCount) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -121,7 +121,7 @@ public class DefaultScannerModel implements ScannerModel {
 
         service.setTaskConstructor(() -> {
             Task<Void> task = new AnalysisTask(onDataReady, scanDataManager, analysisDataManager,
-                    cacheDirectoryPath);
+                    cacheDirectoryPath, analysisThreadCount);
 
             task.setOnCancelled(event -> onCancel.run());
             task.setOnSucceeded(event -> onDone.run());

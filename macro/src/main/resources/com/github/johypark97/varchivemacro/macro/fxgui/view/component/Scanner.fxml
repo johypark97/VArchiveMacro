@@ -273,6 +273,21 @@
                     </VBox>
                   </content>
                 </TitledPane>
+                <TitledPane animated="false" collapsible="false" text="%scanner.option.analysisSetting">
+                  <content>
+                    <VBox spacing="10.0">
+                      <children>
+                        <HBox alignment="CENTER" spacing="10.0">
+                          <children>
+                            <Label text="%scanner.option.analysisThreadCount"/>
+                            <Slider HBox.hgrow="ALWAYS" fx:id="option_analysisThreadCountSlider"/>
+                            <TextField prefColumnCount="4" fx:id="option_analysisThreadCountTextField"/>
+                          </children>
+                        </HBox>
+                      </children>
+                    </VBox>
+                  </content>
+                </TitledPane>
                 <TitledPane animated="false" collapsible="false" text="%scanner.option.uploaderSetting">
                   <content>
                     <VBox spacing="10.0">

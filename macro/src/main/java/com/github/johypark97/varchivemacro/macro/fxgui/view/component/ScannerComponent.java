@@ -55,6 +55,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 public class ScannerComponent extends TabPane {
     private static final String FXML_FILE_NAME = "Scanner.fxml";
@@ -170,6 +171,12 @@ public class ScannerComponent extends TabPane {
     public TextField option_keyInputDurationTextField;
 
     @FXML
+    public Slider option_analysisThreadCountSlider;
+
+    @FXML
+    public TextField option_analysisThreadCountTextField;
+
+    @FXML
     public TextField option_accountFileTextField;
 
     @FXML
@@ -183,6 +190,7 @@ public class ScannerComponent extends TabPane {
 
     public SliderTextFieldLinker optionCaptureDelayLinker;
     public SliderTextFieldLinker optionKeyInputDurationLinker;
+    public SliderTextFieldLinker optionAnalysisThreadCountLinker;
     public SliderTextFieldLinker optionRecordUploadDelayLinker;
 
     private ViewerRecordController viewerRecordController;
@@ -307,6 +315,19 @@ public class ScannerComponent extends TabPane {
 
     public int option_getKeyInputDuration() {
         return optionKeyInputDurationLinker.getValue();
+    }
+
+    public void option_setupAnalysisThreadCountSlider(int defaultValue, int max, int value) {
+        new CountSliderSetter(max, 2).attachTo(option_analysisThreadCountSlider);
+
+        optionAnalysisThreadCountLinker.setDefaultValue(defaultValue);
+        optionAnalysisThreadCountLinker.setLimitMax(max);
+        optionAnalysisThreadCountLinker.setLimitMin(1);
+        optionAnalysisThreadCountLinker.setValue(value);
+    }
+
+    public int option_getAnalysisThreadCount() {
+        return optionAnalysisThreadCountLinker.getValue();
     }
 
     public String option_getAccountFile() {
@@ -1085,6 +1106,10 @@ public class ScannerComponent extends TabPane {
         optionKeyInputDurationLinker = new SliderTextFieldLinker(option_keyInputDurationSlider,
                 option_keyInputDurationTextField);
 
+        optionAnalysisThreadCountLinker =
+                new SliderTextFieldLinker(option_analysisThreadCountSlider,
+                        option_analysisThreadCountTextField);
+
         option_accountFileSelectButton.setOnAction(
                 event -> view.presenter.scanner_option_openAccountFileSelector());
 
@@ -1208,6 +1233,48 @@ public class ScannerComponent extends TabPane {
             } else {
                 setStyle(null);
             }
+        }
+    }
+
+
+    public static class CountSliderSetter extends StringConverter<Double> {
+        private final int max;
+        private final int scale;
+
+        public CountSliderSetter(int max, int scale) {
+            this.max = max;
+            this.scale = scale;
+        }
+
+        public void attachTo(Slider slider) {
+            slider.setBlockIncrement(1);
+            slider.setLabelFormatter(this);
+            slider.setMajorTickUnit(1);
+            slider.setMax(max);
+            slider.setMin(1);
+            slider.setMinorTickCount(0);
+            slider.setShowTickLabels(true);
+            slider.setShowTickMarks(true);
+        }
+
+        private boolean shouldPrint(double value) {
+            if (max >> scale == 0) {
+                return true;
+            } else if (value == 1 || value == max) {
+                return true;
+            }
+
+            return value % (max >> scale) == 0;
+        }
+
+        @Override
+        public String toString(Double object) {
+            return shouldPrint(object.byteValue()) ? String.valueOf(object.intValue()) : "";
+        }
+
+        @Override
+        public Double fromString(String string) {
+            return 0.0;
         }
     }
 }

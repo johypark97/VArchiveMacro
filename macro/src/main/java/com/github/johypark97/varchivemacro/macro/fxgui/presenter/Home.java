@@ -133,6 +133,10 @@ public interface Home {
 
         int scanner_option_getKeyInputDuration();
 
+        void scanner_option_setupAnalysisThreadCountSlider(int defaultValue, int max, int value);
+
+        int scanner_option_getupAnalysisThreadCount();
+
         String scanner_option_getAccountFile();
 
         void scanner_option_setAccountFile(String value);

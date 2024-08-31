@@ -34,8 +34,6 @@ import org.slf4j.LoggerFactory;
 public class AnalysisTask extends InterruptibleTask<Void> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisTask.class);
 
-    private static final int CORE_COUNT = Runtime.getRuntime().availableProcessors();
-
     private static final float COMBO_MARK_RATIO = 0.01f;
     private static final float RATE_RATIO = 0.01f;
     private static final int COMBO_MARK_FACTOR = 8;
@@ -45,6 +43,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
     private final CacheManager cacheManager;
     private final Runnable onDataReady;
+    private final int analysisThreadCount;
 
     private final WeakReference<AnalysisDataManager> analysisDataManagerReference;
     private final WeakReference<ScanDataManager> scanDataManagerReference;
@@ -53,7 +52,9 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private int totalTaskCount;
 
     public AnalysisTask(Runnable onDataReady, ScanDataManager scanDataManager,
-            AnalysisDataManager analysisDataManager, Path cacheDirectoryPath) {
+            AnalysisDataManager analysisDataManager, Path cacheDirectoryPath,
+            int analysisThreadCount) {
+        this.analysisThreadCount = analysisThreadCount;
         this.onDataReady = onDataReady;
 
         cacheManager = new CacheManager(cacheDirectoryPath);
@@ -176,7 +177,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         Map<Future<?>, AnalysisData> futureAnalysisDataMap;
 
         try (OcrWrapper ocr = new ScannerOcr()) {
-            ExecutorService executorService = Executors.newFixedThreadPool(CORE_COUNT);
+            ExecutorService executorService = Executors.newFixedThreadPool(analysisThreadCount);
             futureAnalysisDataMap =
                     dataList.stream().collect(Collectors.toMap(x -> executorService.submit(() -> {
                         analyze(ocr, area, x);

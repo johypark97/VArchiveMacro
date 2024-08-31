@@ -390,6 +390,17 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     }
 
     @Override
+    public void scanner_option_setupAnalysisThreadCountSlider(int defaultValue, int max,
+            int value) {
+        scannerComponent.option_setupAnalysisThreadCountSlider(defaultValue, max, value);
+    }
+
+    @Override
+    public int scanner_option_getupAnalysisThreadCount() {
+        return scannerComponent.option_getAnalysisThreadCount();
+    }
+
+    @Override
     public String scanner_option_getAccountFile() {
         return scannerComponent.option_getAccountFile();
     }
