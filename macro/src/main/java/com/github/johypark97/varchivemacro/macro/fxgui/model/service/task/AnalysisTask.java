@@ -21,9 +21,21 @@ import java.awt.image.BufferedImage;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AnalysisTask extends InterruptibleTask<Void> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisTask.class);
+
+    private static final int CORE_COUNT = Runtime.getRuntime().availableProcessors();
+
     private static final float COMBO_MARK_RATIO = 0.01f;
     private static final float RATE_RATIO = 0.01f;
     private static final int COMBO_MARK_FACTOR = 8;
@@ -36,8 +48,6 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
     private final WeakReference<AnalysisDataManager> analysisDataManagerReference;
     private final WeakReference<ScanDataManager> scanDataManagerReference;
-
-    private CollectionArea area;
 
     public AnalysisTask(Runnable onDataReady, ScanDataManager scanDataManager,
             AnalysisDataManager analysisDataManager, Path cacheDirectoryPath) {
@@ -57,59 +67,48 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         return scanDataManagerReference.get();
     }
 
-    private void analyze(OcrWrapper ocr, AnalysisData analysisData) {
+    private void analyze(OcrWrapper ocr, CollectionArea area, AnalysisData analysisData) {
         analysisData.status.set(Status.ANALYZING);
 
         CaptureData captureData = analysisData.captureData.get();
 
-        try {
-            if (area == null) {
-                BufferedImage image = cacheManager.read(captureData.idProperty().get());
+        try (PixWrapper pix = new PixWrapper(
+                cacheManager.createPath(captureData.idProperty().get()))) {
+            // preprocessing
+            PixPreprocessor.preprocessCell(pix);
 
-                Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
-                area = CollectionAreaFactory.create(resolution);
-            }
+            // analyze
+            for (Button button : Button.values()) {
+                for (Pattern pattern : Pattern.values()) {
+                    RecordData recordData = new RecordData();
 
-            try (PixWrapper pix = new PixWrapper(
-                    cacheManager.createPath(captureData.idProperty().get()))) {
-                // preprocessing
-                PixPreprocessor.preprocessCell(pix);
-
-                // analyze
-                for (Button button : Button.values()) {
-                    for (Pattern pattern : Pattern.values()) {
-                        RecordData recordData = new RecordData();
-
-                        try (PixWrapper recordPix = pix.crop(area.getRate(button, pattern))) {
-                            // test whether the image contains enough black pixels using the
-                            // histogram. if true, run ocr.
-                            float r = recordPix.getGrayRatio(RATE_FACTOR, RATE_THRESHOLD);
-                            if (r < RATE_RATIO) {
-                                continue;
-                            }
-
-                            String text = ocr.run(recordPix.pixInstance);
-                            text = CharMatcher.whitespace().removeFrom(text);
-
-                            recordData.rateText.set(text);
+                    try (PixWrapper recordPix = pix.crop(area.getRate(button, pattern))) {
+                        // test whether the image contains enough black pixels using the
+                        // histogram. if true, run ocr.
+                        float r = recordPix.getGrayRatio(RATE_FACTOR, RATE_THRESHOLD);
+                        if (r < RATE_RATIO) {
+                            continue;
                         }
 
-                        try (PixWrapper comboMarkPix = pix.crop(
-                                area.getComboMark(button, pattern))) {
-                            float r = comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR,
-                                    COMBO_MARK_THRESHOLD);
-                            recordData.maxCombo.set(r >= COMBO_MARK_RATIO);
-                        }
+                        String text = ocr.run(recordPix.pixInstance);
+                        text = CharMatcher.whitespace().removeFrom(text);
 
-                        analysisData.recordDataTable.put(button, pattern, recordData);
+                        recordData.rateText.set(text);
                     }
+
+                    try (PixWrapper comboMarkPix = pix.crop(area.getComboMark(button, pattern))) {
+                        float r =
+                                comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR, COMBO_MARK_THRESHOLD);
+                        recordData.maxCombo.set(r >= COMBO_MARK_RATIO);
+                    }
+
+                    analysisData.recordDataTable.put(button, pattern, recordData);
                 }
             }
 
             analysisData.status.set(Status.DONE);
-        } catch (RuntimeException e) {
-            throw e;
         } catch (Exception e) {
+            LOGGER.atError().setCause(e).log();
             analysisData.setException(e);
         }
     }
@@ -126,7 +125,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
             throw new IllegalStateException("AnalysisDataManager is not clean");
         }
 
-        Queue<AnalysisData> queue = new LinkedList<>();
+        List<AnalysisData> dataList = new LinkedList<>();
         getScanDataManager().copySongDataList().stream().filter(x -> x.selected.get())
                 .forEach(x -> {
                     AnalysisData analysisData = getAnalysisDataManager().createAnalysisData(x);
@@ -149,22 +148,46 @@ public class AnalysisTask extends InterruptibleTask<Void> {
                     }
 
                     analysisData.captureData.set(captureData);
-                    queue.add(analysisData);
+                    dataList.add(analysisData);
                 });
         onDataReady.run();
 
-        try (OcrWrapper ocr = new ScannerOcr()) {
-            while (queue.peek() != null) {
-                if (Thread.currentThread().isInterrupted()) {
-                    throw new InterruptedException();
-                }
+        CollectionArea area;
+        {
+            AnalysisData captureData = dataList.get(0);
+            BufferedImage image = cacheManager.read(captureData.idProperty().get());
 
-                AnalysisData analysisData = queue.poll();
-                analyze(ocr, analysisData);
-            }
-        } catch (InterruptedException e) {
-            queue.forEach(x -> x.status.set(Status.CANCELED));
+            Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
+            area = CollectionAreaFactory.create(resolution);
         }
+
+        Map<Future<?>, AnalysisData> futureAnalysisDataMap;
+
+        try (OcrWrapper ocr = new ScannerOcr()) {
+            ExecutorService executorService = Executors.newFixedThreadPool(CORE_COUNT);
+            futureAnalysisDataMap = dataList.stream().collect(
+                    Collectors.toMap(x -> executorService.submit(() -> analyze(ocr, area, x)),
+                            x -> x));
+            executorService.shutdown();
+
+            while (true) {
+                try {
+                    if (!executorService.awaitTermination(1, TimeUnit.DAYS)) {
+                        throw new AssertionError("Unexpected timeout");
+                    }
+
+                    break;
+                } catch (InterruptedException e) {
+                    executorService.shutdownNow();
+                }
+            }
+        }
+
+        futureAnalysisDataMap.forEach((future, analysisData) -> {
+            if (!future.isDone()) {
+                analysisData.status.set(Status.CANCELED);
+            }
+        });
 
         return null;
     }
