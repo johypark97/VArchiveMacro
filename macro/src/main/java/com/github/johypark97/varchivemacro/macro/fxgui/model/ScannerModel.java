@@ -26,8 +26,8 @@ public interface ScannerModel {
 
     void stopCollectionScan();
 
-    void starAnalysis(Runnable onDataReady, Runnable onDone, Runnable onCancel,
-            Path cacheDirectoryPath);
+    void starAnalysis(Consumer<Double> onUpdateProgress, Runnable onDataReady, Runnable onDone,
+            Runnable onCancel, Path cacheDirectoryPath);
 
     void stopAnalysis();
 

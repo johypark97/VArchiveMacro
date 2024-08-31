@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
@@ -190,9 +191,11 @@
         <VBox spacing="10.0">
           <children>
             <TableView VBox.vgrow="ALWAYS" fx:id="analysis_analysisTableView"/>
-            <HBox spacing="10.0">
+            <HBox alignment="CENTER" spacing="10.0">
               <children>
                 <Button text="%scanner.analysis.show" fx:id="analysis_showButton"/>
+                <ProgressBar progress="0.0" fx:id="analysis_progressBar"/>
+                <Label fx:id="analysis_progressLabel"/>
                 <Pane HBox.hgrow="ALWAYS"/>
                 <Button text="%scanner.analysis.start" fx:id="analysis_startButton"/>
                 <Button text="%scanner.analysis.stop" fx:id="analysis_stopButton"/>

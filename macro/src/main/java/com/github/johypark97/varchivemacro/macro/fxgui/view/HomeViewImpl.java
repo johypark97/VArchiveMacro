@@ -342,6 +342,16 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     }
 
     @Override
+    public void scanner_analysis_setProgressBarValue(double value) {
+        scannerComponent.setAnalysis_progressBarValue(value);
+    }
+
+    @Override
+    public void scanner_analysis_setProgressLabelText(String value) {
+        scannerComponent.setAnalysis_progressLabelText(value);
+    }
+
+    @Override
     public void scanner_uploader_setNewRecordDataList(ObservableList<NewRecordData> list) {
         scannerComponent.uploader_setNewRecordDataList(list);
     }

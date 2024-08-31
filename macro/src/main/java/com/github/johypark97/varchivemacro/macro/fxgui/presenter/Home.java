@@ -113,6 +113,10 @@ public interface Home {
 
         void scanner_analysis_openAnalysisDataViewer(Path cacheDirectoryPath, int analysisDataId);
 
+        void scanner_analysis_setProgressBarValue(double value);
+
+        void scanner_analysis_setProgressLabelText(String value);
+
         void scanner_uploader_setNewRecordDataList(ObservableList<NewRecordData> list);
 
         String scanner_option_getCacheDirectory();

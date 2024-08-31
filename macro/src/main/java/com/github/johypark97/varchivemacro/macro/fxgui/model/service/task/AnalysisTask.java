@@ -49,6 +49,9 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private final WeakReference<AnalysisDataManager> analysisDataManagerReference;
     private final WeakReference<ScanDataManager> scanDataManagerReference;
 
+    private int completedTaskCount;
+    private int totalTaskCount;
+
     public AnalysisTask(Runnable onDataReady, ScanDataManager scanDataManager,
             AnalysisDataManager analysisDataManager, Path cacheDirectoryPath) {
         this.onDataReady = onDataReady;
@@ -113,6 +116,12 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         }
     }
 
+    private void increaseProgress() {
+        synchronized (this) {
+            updateProgress(++completedTaskCount, totalTaskCount);
+        }
+    }
+
     @Override
     protected Void callTask() throws Exception {
         // throw an exception if there is no scan data
@@ -124,6 +133,8 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         if (!getAnalysisDataManager().isEmpty()) {
             throw new IllegalStateException("AnalysisDataManager is not clean");
         }
+
+        updateProgress(0, 1);
 
         List<AnalysisData> dataList = new LinkedList<>();
         getScanDataManager().copySongDataList().stream().filter(x -> x.selected.get())
@@ -150,6 +161,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
                     analysisData.captureData.set(captureData);
                     dataList.add(analysisData);
                 });
+        totalTaskCount = dataList.size();
         onDataReady.run();
 
         CollectionArea area;
@@ -165,9 +177,11 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
         try (OcrWrapper ocr = new ScannerOcr()) {
             ExecutorService executorService = Executors.newFixedThreadPool(CORE_COUNT);
-            futureAnalysisDataMap = dataList.stream().collect(
-                    Collectors.toMap(x -> executorService.submit(() -> analyze(ocr, area, x)),
-                            x -> x));
+            futureAnalysisDataMap =
+                    dataList.stream().collect(Collectors.toMap(x -> executorService.submit(() -> {
+                        analyze(ocr, area, x);
+                        increaseProgress();
+                    }), x -> x));
             executorService.shutdown();
 
             while (true) {

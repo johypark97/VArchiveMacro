@@ -110,8 +110,8 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void starAnalysis(Runnable onDataReady, Runnable onDone, Runnable onCancel,
-            Path cacheDirectoryPath) {
+    public void starAnalysis(Consumer<Double> onUpdateProgress, Runnable onDataReady,
+            Runnable onDone, Runnable onCancel, Path cacheDirectoryPath) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -125,6 +125,10 @@ public class DefaultScannerModel implements ScannerModel {
 
             task.setOnCancelled(event -> onCancel.run());
             task.setOnSucceeded(event -> onDone.run());
+
+            task.progressProperty().addListener(
+                    (observable, oldValue, newValue) -> onUpdateProgress.accept(
+                            newValue.doubleValue()));
 
             return task;
         });

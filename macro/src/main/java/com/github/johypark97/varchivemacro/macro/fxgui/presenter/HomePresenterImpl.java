@@ -426,6 +426,8 @@ public class HomePresenterImpl implements HomePresenter {
         Runnable onClear = () -> {
             view.scanner_analysis_setAnalysisDataList(FXCollections.emptyObservableList());
             view.scanner_uploader_setNewRecordDataList(FXCollections.emptyObservableList());
+            view.scanner_analysis_setProgressBarValue(0);
+            view.scanner_analysis_setProgressLabelText(null);
         };
 
         getScannerModel().clearAnalysisData(onClear);
@@ -468,7 +470,13 @@ public class HomePresenterImpl implements HomePresenter {
         Runnable onDataReady = () -> view.scanner_analysis_setAnalysisDataList(
                 FXCollections.observableArrayList(getScannerModel().copyAnalysisDataList()));
 
-        getScannerModel().starAnalysis(onDataReady, onDone, onCancel, cacheDirectoryPath);
+        Consumer<Double> onUpdateProgress = value -> {
+            view.scanner_analysis_setProgressBarValue(value);
+            view.scanner_analysis_setProgressLabelText(String.format("%.2f%%", value * 100));
+        };
+
+        getScannerModel().starAnalysis(onUpdateProgress, onDataReady, onDone, onCancel,
+                cacheDirectoryPath);
     }
 
     @Override

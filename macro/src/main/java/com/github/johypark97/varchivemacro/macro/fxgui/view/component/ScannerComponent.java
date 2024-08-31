@@ -32,7 +32,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
@@ -115,6 +117,12 @@ public class ScannerComponent extends TabPane {
 
     @FXML
     public Button analysis_showButton;
+
+    @FXML
+    public ProgressBar analysis_progressBar;
+
+    @FXML
+    public Label analysis_progressLabel;
 
     @FXML
     public Button analysis_startButton;
@@ -255,6 +263,14 @@ public class ScannerComponent extends TabPane {
 
     public void analysis_setAnalysisDataList(ObservableList<AnalysisData> list) {
         analysis_analysisTableView.setItems(list);
+    }
+
+    public void setAnalysis_progressBarValue(double value) {
+        analysis_progressBar.setProgress(value);
+    }
+
+    public void setAnalysis_progressLabelText(String value) {
+        analysis_progressLabel.setText(value);
     }
 
     public void uploader_setNewRecordDataList(ObservableList<NewRecordData> list) {
