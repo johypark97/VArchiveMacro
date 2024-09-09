@@ -4,7 +4,7 @@ module varchivemacro.lib.scanner {
 
     requires varchivemacro.lib.common;
 
-    // 3rd party
+    // libraries
     requires com.google.common;
     requires com.google.gson;
     requires org.xerial.sqlitejdbc;

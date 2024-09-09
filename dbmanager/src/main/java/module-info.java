@@ -1,4 +1,6 @@
 module varchivemacro.dbmanager {
+    requires java.sql;
+
     requires varchivemacro.lib.common;
     requires varchivemacro.lib.desktop;
     requires varchivemacro.lib.hook;
@@ -13,11 +15,10 @@ module varchivemacro.dbmanager {
     opens com.github.johypark97.varchivemacro.dbmanager.fxgui.model.data to javafx.base;
     opens com.github.johypark97.varchivemacro.dbmanager.fxgui.view.component to javafx.fxml;
 
-    // 3rd party
+    // libraries
     requires com.github.kwhat.jnativehook;
     requires com.google.common;
     requires com.google.gson;
-    requires java.sql;
     requires org.slf4j;
 
     // exports

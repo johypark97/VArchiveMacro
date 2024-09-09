@@ -2,6 +2,8 @@ import com.github.johypark97.varchivemacro.macro.spi.LanguageProvider;
 import com.github.johypark97.varchivemacro.macro.spi.LanguageProviderImpl;
 
 module varchivemacro.macro {
+    requires java.sql;
+
     requires varchivemacro.lib.common;
     requires varchivemacro.lib.desktop;
     requires varchivemacro.lib.hook;
@@ -20,11 +22,10 @@ module varchivemacro.macro {
     opens com.github.johypark97.varchivemacro.macro.fxgui.view to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.fxgui.view.component to javafx.fxml;
 
-    // 3rd party
+    // libraries
     requires com.github.kwhat.jnativehook;
     requires com.google.common;
     requires com.google.gson;
-    requires java.sql;
     requires org.slf4j;
 
     exports com.github.johypark97.varchivemacro.macro.fxgui.model.data to com.google.gson;

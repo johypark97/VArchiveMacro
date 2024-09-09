@@ -1,5 +1,5 @@
 module varchivemacro.lib.common {
-    // 3rd party
+    // libraries
     requires com.google.gson;
 
     // exports

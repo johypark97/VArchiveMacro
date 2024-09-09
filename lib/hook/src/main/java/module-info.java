@@ -2,7 +2,7 @@ module varchivemacro.lib.hook {
     // javafx
     requires javafx.graphics;
 
-    // 3rd party
+    // libraries
     requires com.github.kwhat.jnativehook;
 
     // exports
