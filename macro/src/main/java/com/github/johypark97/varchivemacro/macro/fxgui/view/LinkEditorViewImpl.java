@@ -6,14 +6,14 @@ import com.github.johypark97.varchivemacro.lib.jfx.component.ImageViewer;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorView;
-import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.LinkEditorStage;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.GlobalResource;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -24,13 +24,15 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class LinkEditorViewImpl extends BorderPane implements LinkEditorView {
     private static final String FXML_FILE_NAME = "LinkEditor.fxml";
 
     private final ImageViewer imageViewer = new ImageViewer();
 
-    private final LinkEditorStage stage;
+    private final Stage stage;
 
     @MvpPresenter
     public LinkEditorPresenter presenter;
@@ -62,16 +64,32 @@ public class LinkEditorViewImpl extends BorderPane implements LinkEditorView {
     @FXML
     public Button closeButton;
 
-    public LinkEditorViewImpl(LinkEditorStage stage) {
+    public LinkEditorViewImpl(Stage stage) {
         this.stage = stage;
 
+        URL fxmlUrl = LinkEditorViewImpl.class.getResource(FXML_FILE_NAME);
+        URL globalCss = GlobalResource.getGlobalCss();
+        URL tableColorCss = GlobalResource.getTableColorCss();
+
         try {
-            URL url = LinkEditorViewImpl.class.getResource(FXML_FILE_NAME);
-            Mvp.loadFxml(this, url,
+            Mvp.loadFxml(this, fxmlUrl,
                     x -> x.setResources(Language.getInstance().getResourceBundle()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        Scene scene = new Scene(this);
+        scene.getStylesheets().add(globalCss.toExternalForm());
+        scene.getStylesheets().add(tableColorCss.toExternalForm());
+        stage.setScene(scene);
+
+        stage.setOnShown(event -> {
+            // The divider position will reset when invoked at initialization, so it must be invoked
+            // after the window is shown.
+            centerSplitPane.setDividerPositions(0.3);
+            presenter.onStartView();
+        });
+        Mvp.hookWindowCloseRequest(stage, event -> presenter.onStopView());
     }
 
     @FXML
@@ -126,24 +144,17 @@ public class LinkEditorViewImpl extends BorderPane implements LinkEditorView {
             }
         });
 
-        closeButton.setOnAction(event -> requestStopStage());
-    }
-
-    public void startView(Path cacheDirectoryPath, int songDataId, Runnable onUpdateLink) {
-        presenter.onStartView(cacheDirectoryPath, songDataId, onUpdateLink);
-    }
-
-    /**
-     * The divider position will reset when invoked at initialization, so it must be invoked after
-     * the window is shown.
-     */
-    public void setSplitPaneDividerPositions(double value) {
-        centerSplitPane.setDividerPositions(value);
+        closeButton.setOnAction(event -> presenter.onStopView());
     }
 
     @Override
-    public void requestStopStage() {
-        stage.stopStage();
+    public Window getWindow() {
+        return stage;
+    }
+
+    @Override
+    public void startView() {
+        stage.show();
     }
 
     @Override

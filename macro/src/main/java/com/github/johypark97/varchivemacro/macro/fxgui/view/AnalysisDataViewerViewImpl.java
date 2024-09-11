@@ -5,7 +5,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.RecordBoxData;
-import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.AnalysisDataViewerStage;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.GlobalResource;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -20,17 +20,21 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class AnalysisDataViewerViewImpl extends VBox implements AnalysisDataViewerView {
     private static final String FXML_FILE_NAME = "AnalysisDataViewer.fxml";
@@ -39,7 +43,7 @@ public class AnalysisDataViewerViewImpl extends VBox implements AnalysisDataView
 
     private final List<RecordBox> recordBoxList = new ArrayList<>(16);
 
-    private final AnalysisDataViewerStage stage;
+    private final Stage stage;
 
     @MvpPresenter
     public AnalysisDataViewerPresenter presenter;
@@ -59,21 +63,39 @@ public class AnalysisDataViewerViewImpl extends VBox implements AnalysisDataView
     @FXML
     public Button closeButton;
 
-    public AnalysisDataViewerViewImpl(AnalysisDataViewerStage stage) {
+    public AnalysisDataViewerViewImpl(Stage stage) {
         this.stage = stage;
 
+        URL fxmlUrl = AnalysisDataViewerViewImpl.class.getResource(FXML_FILE_NAME);
+        URL globalCss = GlobalResource.getGlobalCss();
+        URL tableColorCss = GlobalResource.getTableColorCss();
+
         try {
-            URL url = AnalysisDataViewerViewImpl.class.getResource(FXML_FILE_NAME);
-            Mvp.loadFxml(this, url,
+            Mvp.loadFxml(this, fxmlUrl,
                     x -> x.setResources(Language.getInstance().getResourceBundle()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        Scene scene = new Scene(this);
+        scene.getStylesheets().add(globalCss.toExternalForm());
+        scene.getStylesheets().add(tableColorCss.toExternalForm());
+        stage.setScene(scene);
+
+        stage.setOnShowing(event -> stage.sizeToScene());
+        stage.setOnShown(event -> presenter.onStartView());
+        Mvp.hookWindowCloseRequest(stage, event -> presenter.onStopView());
+
+        scene.setOnKeyReleased(x -> {
+            if (x.getCode() == KeyCode.ESCAPE) {
+                presenter.onStopView();
+            }
+        });
     }
 
     @FXML
     public void initialize() {
-        closeButton.setOnAction(event -> stage.stopStage());
+        closeButton.setOnAction(event -> presenter.onStopView());
 
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
@@ -118,6 +140,18 @@ public class AnalysisDataViewerViewImpl extends VBox implements AnalysisDataView
         do {
             x = transposeRecord.get();
         } while (!transposeRecord.compareAndSet(x, !x));
+    }
+
+    @Override
+    public Window getWindow() {
+        return stage;
+    }
+
+    @Override
+    public void startView(Path cacheDirectoryPath, int analysisDataId) {
+        presenter.showAnalysisData(cacheDirectoryPath, analysisDataId);
+
+        stage.show();
     }
 
     @Override

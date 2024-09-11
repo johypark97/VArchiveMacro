@@ -1,24 +1,41 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
+import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
+import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
+import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultLicenseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.CaptureViewer.CaptureViewerView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.ViewerTreeData;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorView;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.OpenSourceLicense.OpenSourceLicenseView;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.AnalysisDataViewerViewImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.CaptureViewerViewImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.LinkEditorViewImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.OpenSourceLicenseViewImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.AnalysisDataViewerStage;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.CaptureViewerStage;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.LinkEditorStage;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.OpenSourceLicenseStage;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.sql.SQLException;
@@ -34,6 +51,8 @@ import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.VerticalDirection;
 import javafx.scene.control.TreeItem;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,42 +64,90 @@ public class HomePresenterImpl implements HomePresenter {
     private final Function<String, String> VIEWER_TITLE_NORMALIZER =
             x -> Normalizer.normalize(x.toLowerCase(Locale.ENGLISH), Form.NFKD);
 
-    private WeakReference<ConfigModel> configModelReference;
-    private WeakReference<DatabaseModel> databaseModelReference;
-    private WeakReference<RecordModel> recordModelReference;
-    private WeakReference<ScannerModel> scannerModelReference;
-    private WeakReference<MacroModel> macroModelReference;
+    private final NativeKeyListener scannerNativeKeyListener;
+    private final NativeKeyListener macroNativeKeyListener;
+
+    private final ConfigModel configModel;
+    private final DatabaseModel databaseModel;
+    private final MacroModel macroModel;
+    private final RecordModel recordModel;
+    private final ScannerModel scannerModel;
+
+    private AnalysisDataViewerView analysisDataViewerView;
+    private CaptureViewerView captureViewerView;
 
     @MvpView
     public HomeView view;
 
-    public void linkModel(ConfigModel configModel, DatabaseModel databaseModel,
+    public HomePresenterImpl(ConfigModel configModel, DatabaseModel databaseModel,
             RecordModel recordModel, ScannerModel scannerModel, MacroModel macroModel) {
-        configModelReference = new WeakReference<>(configModel);
-        databaseModelReference = new WeakReference<>(databaseModel);
-        recordModelReference = new WeakReference<>(recordModel);
-        scannerModelReference = new WeakReference<>(scannerModel);
-        macroModelReference = new WeakReference<>(macroModel);
-    }
+        this.configModel = configModel;
+        this.databaseModel = databaseModel;
+        this.macroModel = macroModel;
+        this.recordModel = recordModel;
+        this.scannerModel = scannerModel;
 
-    private ConfigModel getConfigModel() {
-        return configModelReference.get();
-    }
+        scannerNativeKeyListener = new NativeKeyListener() {
+            @Override
+            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
+                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
 
-    private DatabaseModel getDatabaseModel() {
-        return databaseModelReference.get();
-    }
+                if (data.isOtherMod()) {
+                    return;
+                }
 
-    private RecordModel getRecordModel() {
-        return recordModelReference.get();
-    }
+                if (data.isPressed(NativeKeyEvent.VC_BACKSPACE)) {
+                    scanner_capture_stop();
+                }
+            }
 
-    private ScannerModel getScannerModel() {
-        return scannerModelReference.get();
-    }
+            @Override
+            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
+                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
 
-    private MacroModel getMacroModel() {
-        return macroModelReference.get();
+                if (data.isOtherMod()) {
+                    return;
+                }
+
+                if (data.isCtrl() && !data.isAlt() && !data.isShift()) {
+                    if (data.isPressed(NativeKeyEvent.VC_ENTER)) {
+                        scanner_capture_start();
+                    }
+                }
+            }
+        };
+
+        macroNativeKeyListener = new NativeKeyListener() {
+            @Override
+            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
+                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
+
+                if (data.isOtherMod()) {
+                    return;
+                }
+
+                if (data.isPressed(NativeKeyEvent.VC_BACKSPACE)) {
+                    macro_stop();
+                }
+            }
+
+            @Override
+            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
+                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
+
+                if (data.isOtherMod()) {
+                    return;
+                }
+
+                if (!data.isCtrl() && data.isAlt() && !data.isShift()) {
+                    if (data.isPressed(NativeKeyEvent.VC_OPEN_BRACKET)) {
+                        macro_start_up();
+                    } else if (data.isPressed(NativeKeyEvent.VC_CLOSE_BRACKET)) {
+                        macro_start_down();
+                    }
+                }
+            }
+        };
     }
 
     private void scanner_viewer_setSongTreeViewRoot(String filter) {
@@ -92,7 +159,7 @@ public class HomePresenterImpl implements HomePresenter {
         }
 
         TreeItem<ViewerTreeData> rootNode = new TreeItem<>();
-        getDatabaseModel().categoryNameSongListMap().forEach((categoryName, songList) -> {
+        databaseModel.categoryNameSongListMap().forEach((categoryName, songList) -> {
             TreeItem<ViewerTreeData> categoryNode =
                     new TreeItem<>(new ViewerTreeData(categoryName));
             categoryNode.setExpanded(normalizedFilter != null);
@@ -122,20 +189,20 @@ public class HomePresenterImpl implements HomePresenter {
     @Override
     public void onStartView() {
         try {
-            if (!getConfigModel().load()) {
-                getConfigModel().save();
+            if (!configModel.load()) {
+                configModel.save();
             }
         } catch (IOException ignored) {
         }
 
-        getScannerModel().setupService(throwable -> {
+        scannerModel.setupService(throwable -> {
             String header = "Scanner service exception";
 
             LOGGER.atError().setCause(throwable).log(header);
             view.showError(header, throwable);
         });
 
-        getMacroModel().setupService(throwable -> {
+        macroModel.setupService(throwable -> {
             String header = "Macro service exception";
 
             LOGGER.atError().setCause(throwable).log(header);
@@ -143,47 +210,48 @@ public class HomePresenterImpl implements HomePresenter {
         });
 
         view.scanner_option_setCacheDirectory(
-                getConfigModel().getScannerConfig().cacheDirectory.toString());
+                configModel.getScannerConfig().cacheDirectory.toString());
 
         view.scanner_option_setupCaptureDelaySlider(ScannerConfig.CAPTURE_DELAY_DEFAULT,
                 ScannerConfig.CAPTURE_DELAY_MAX, ScannerConfig.CAPTURE_DELAY_MIN,
-                getConfigModel().getScannerConfig().captureDelay);
+                configModel.getScannerConfig().captureDelay);
 
         view.scanner_option_setupKeyInputDurationSlider(ScannerConfig.KEY_INPUT_DURATION_DEFAULT,
                 ScannerConfig.KEY_INPUT_DURATION_MAX, ScannerConfig.KEY_INPUT_DURATION_MIN,
-                getConfigModel().getScannerConfig().keyInputDuration);
+                configModel.getScannerConfig().keyInputDuration);
 
         view.scanner_option_setupAnalysisThreadCountSlider(
                 ScannerConfig.ANALYSIS_THREAD_COUNT_DEFAULT,
                 ScannerConfig.ANALYSIS_THREAD_COUNT_MAX,
-                getConfigModel().getScannerConfig().analysisThreadCount);
+                configModel.getScannerConfig().analysisThreadCount);
 
-        view.scanner_option_setAccountFile(
-                getConfigModel().getScannerConfig().accountFile.toString());
+        view.scanner_option_setAccountFile(configModel.getScannerConfig().accountFile.toString());
 
         view.scanner_option_setupRecordUploadDelaySlider(ScannerConfig.RECORD_UPLOAD_DELAY_DEFAULT,
                 ScannerConfig.RECORD_UPLOAD_DELAY_MAX, ScannerConfig.RECORD_UPLOAD_DELAY_MIN,
-                getConfigModel().getScannerConfig().recordUploadDelay);
+                configModel.getScannerConfig().recordUploadDelay);
 
-        view.macro_setAnalysisKey(getConfigModel().getMacroConfig().analysisKey);
+        view.macro_setAnalysisKey(configModel.getMacroConfig().analysisKey);
 
         view.macro_setupCountSlider(MacroConfig.COUNT_DEFAULT, MacroConfig.COUNT_MAX,
-                MacroConfig.COUNT_MIN, getConfigModel().getMacroConfig().count);
+                MacroConfig.COUNT_MIN, configModel.getMacroConfig().count);
 
         view.macro_setupCaptureDelaySlider(MacroConfig.CAPTURE_DELAY_DEFAULT,
                 MacroConfig.CAPTURE_DELAY_MAX, MacroConfig.CAPTURE_DELAY_MIN,
-                getConfigModel().getMacroConfig().captureDelay);
+                configModel.getMacroConfig().captureDelay);
 
         view.macro_setupCaptureDurationSlider(MacroConfig.CAPTURE_DURATION_DEFAULT,
                 MacroConfig.CAPTURE_DURATION_MAX, MacroConfig.CAPTURE_DURATION_MIN,
-                getConfigModel().getMacroConfig().captureDuration);
+                configModel.getMacroConfig().captureDuration);
 
         view.macro_setupKeyInputDurationSlider(MacroConfig.KEY_INPUT_DURATION_DEFAULT,
                 MacroConfig.KEY_INPUT_DURATION_MAX, MacroConfig.KEY_INPUT_DURATION_MIN,
-                getConfigModel().getMacroConfig().keyInputDuration);
+                configModel.getMacroConfig().keyInputDuration);
+
+        FxHookWrapper.addKeyListener(macroNativeKeyListener);
 
         try {
-            getDatabaseModel().load();
+            databaseModel.load();
         } catch (SQLException | IOException e) {
             view.getScannerFrontController().showForbiddenMark();
             view.showError("Database loading error", e);
@@ -198,12 +266,12 @@ public class HomePresenterImpl implements HomePresenter {
 
         scanner_viewer_setSongTreeViewRoot(null);
 
-        view.scanner_capture_setTabList(getDatabaseModel().categoryNameList());
+        view.scanner_capture_setTabList(databaseModel.categoryNameList());
         view.scanner_capture_setSelectedCategorySet(
-                getConfigModel().getScannerConfig().selectedCategorySet);
+                configModel.getScannerConfig().selectedCategorySet);
 
         try {
-            if (!getRecordModel().loadLocal()) {
+            if (!recordModel.loadLocal()) {
                 view.getScannerFrontController().showDjNameInput();
                 return;
             }
@@ -220,10 +288,14 @@ public class HomePresenterImpl implements HomePresenter {
         }
 
         view.getScannerFrontController().showScanner();
+        FxHookWrapper.addKeyListener(scannerNativeKeyListener);
     }
 
     @Override
     public void onStopView() {
+        FxHookWrapper.removeKeyListener(scannerNativeKeyListener);
+        FxHookWrapper.removeKeyListener(macroNativeKeyListener);
+
         ScannerConfig scannerConfig = new ScannerConfig();
         {
             scannerConfig.selectedCategorySet = view.scanner_capture_getSelectedCategorySet();
@@ -245,7 +317,7 @@ public class HomePresenterImpl implements HomePresenter {
 
             scannerConfig.recordUploadDelay = view.scanner_option_getRecordUploadDelay();
         }
-        getConfigModel().setScannerConfig(scannerConfig);
+        configModel.setScannerConfig(scannerConfig);
 
         MacroConfig macroConfig = new MacroConfig();
         {
@@ -255,12 +327,14 @@ public class HomePresenterImpl implements HomePresenter {
             macroConfig.captureDuration = view.macro_getCaptureDuration();
             macroConfig.keyInputDuration = view.macro_getKeyInputDuration();
         }
-        getConfigModel().setMacroConfig(macroConfig);
+        configModel.setMacroConfig(macroConfig);
 
         try {
-            getConfigModel().save();
+            configModel.save();
         } catch (IOException ignored) {
         }
+
+        view.getWindow().hide();
     }
 
     @Override
@@ -281,7 +355,15 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void home_openOpenSourceLicense() {
-        view.home_openOpenSourceLicense();
+        Stage stage = OpenSourceLicenseStage.create();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(view.getWindow());
+
+        OpenSourceLicenseView openSourceLicenseView = new OpenSourceLicenseViewImpl(stage);
+        Mvp.linkViewAndPresenter(openSourceLicenseView,
+                new OpenSourceLicensePresenterImpl(new DefaultLicenseModel()));
+
+        openSourceLicenseView.startView();
     }
 
     @Override
@@ -311,9 +393,10 @@ public class HomePresenterImpl implements HomePresenter {
             }
 
             view.getScannerFrontController().showScanner();
+            FxHookWrapper.addKeyListener(scannerNativeKeyListener);
         };
 
-        getRecordModel().loadRemote(djName, onDone, onThrow);
+        recordModel.loadRemote(djName, onDone, onThrow);
     }
 
     @Override
@@ -323,14 +406,14 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void scanner_viewer_showRecord(int id) {
-        Song song = getDatabaseModel().getSong(id);
+        Song song = databaseModel.getSong(id);
         StringBuilder builder = new StringBuilder(32);
         builder.append("Title: ").append(song.title()).append("\nComposer: ")
                 .append(song.composer());
         view.scanner_viewer_setSongInformationText(builder.toString());
 
         ViewerRecordData data = new ViewerRecordData();
-        getRecordModel().getRecordList(id).forEach(x -> {
+        recordModel.getRecordList(id).forEach(x -> {
             int column = x.pattern.getWeight();
             int row = x.button.getWeight();
 
@@ -349,13 +432,23 @@ public class HomePresenterImpl implements HomePresenter {
 
         BufferedImage image;
         try {
-            image = getScannerModel().getCaptureImage(cacheDirectoryPath, id);
+            image = scannerModel.getCaptureImage(cacheDirectoryPath, id);
         } catch (IOException e) {
             view.showError("Cache image reading error", e);
             return;
         }
 
-        view.scanner_capture_openCaptureViewer(SwingFXUtils.toFXImage(image, null));
+        if (captureViewerView == null) {
+            Stage stage = CaptureViewerStage.create();
+            stage.initOwner(view.getWindow());
+
+            captureViewerView = new CaptureViewerViewImpl(stage);
+            Mvp.linkViewAndPresenter(captureViewerView, new CaptureViewerPresenterImpl(() -> {
+                captureViewerView = null; // NOPMD
+            }));
+        }
+
+        captureViewerView.startView(SwingFXUtils.toFXImage(image, null));
     }
 
     @Override
@@ -367,12 +460,12 @@ public class HomePresenterImpl implements HomePresenter {
             scanner_analysis_clearAnalysisData();
         };
 
-        getScannerModel().clearScanData(onClear);
+        scannerModel.clearScanData(onClear);
     }
 
     @Override
     public void scanner_capture_start() {
-        if (!getScannerModel().isScanDataEmpty()) {
+        if (!scannerModel.isScanDataEmpty()) {
             return;
         }
 
@@ -386,17 +479,17 @@ public class HomePresenterImpl implements HomePresenter {
 
         Runnable onCancel = () -> {
             view.scanner_capture_setCaptureDataList(
-                    FXCollections.observableArrayList(getScannerModel().copyCaptureDataList()));
+                    FXCollections.observableArrayList(scannerModel.copyCaptureDataList()));
             view.scanner_song_setSongDataList(
-                    FXCollections.observableArrayList(getScannerModel().copySongDataList()));
+                    FXCollections.observableArrayList(scannerModel.copySongDataList()));
 
             view.showInformation(header, language.getString("scannerService.dialog.scanCanceled"));
         };
         Runnable onDone = () -> {
             view.scanner_capture_setCaptureDataList(
-                    FXCollections.observableArrayList(getScannerModel().copyCaptureDataList()));
+                    FXCollections.observableArrayList(scannerModel.copyCaptureDataList()));
             view.scanner_song_setSongDataList(
-                    FXCollections.observableArrayList(getScannerModel().copySongDataList()));
+                    FXCollections.observableArrayList(scannerModel.copySongDataList()));
 
             view.showInformation(header, language.getString("scannerService.dialog.scanDone"));
         };
@@ -405,14 +498,14 @@ public class HomePresenterImpl implements HomePresenter {
         int captureDelay = view.scanner_option_getCaptureDelay();
         int keyInputDuration = view.scanner_option_getKeyInputDuration();
 
-        getScannerModel().startCollectionScan(onDone, onCancel,
-                getDatabaseModel().categoryNameSongListMap(), getDatabaseModel().getTitleTool(),
-                selectedCategorySet, cacheDirectoryPath, captureDelay, keyInputDuration);
+        scannerModel.startCollectionScan(onDone, onCancel, databaseModel.categoryNameSongListMap(),
+                databaseModel.getTitleTool(), selectedCategorySet, cacheDirectoryPath, captureDelay,
+                keyInputDuration);
     }
 
     @Override
     public void scanner_capture_stop() {
-        getScannerModel().stopCollectionScan();
+        scannerModel.stopCollectionScan();
     }
 
     @Override
@@ -422,10 +515,18 @@ public class HomePresenterImpl implements HomePresenter {
             return;
         }
 
-        view.scanner_song_openLinkEditor(cacheDirectoryPath, id, () -> {
-            view.scanner_capture_refresh();
-            view.scanner_song_refresh();
-        });
+        Stage stage = LinkEditorStage.create();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(view.getWindow());
+
+        LinkEditorView linkEditorView = new LinkEditorViewImpl(stage);
+        Mvp.linkViewAndPresenter(linkEditorView,
+                new LinkEditorPresenterImpl(scannerModel, cacheDirectoryPath, id, () -> {
+                    view.scanner_capture_refresh();
+                    view.scanner_song_refresh();
+                }));
+
+        linkEditorView.startView();
     }
 
     @Override
@@ -437,7 +538,7 @@ public class HomePresenterImpl implements HomePresenter {
             view.scanner_analysis_setProgressLabelText(null);
         };
 
-        getScannerModel().clearAnalysisData(onClear);
+        scannerModel.clearAnalysisData(onClear);
     }
 
     @Override
@@ -447,12 +548,23 @@ public class HomePresenterImpl implements HomePresenter {
             return;
         }
 
-        view.scanner_analysis_openAnalysisDataViewer(cacheDirectoryPath, id);
+        if (analysisDataViewerView == null) {
+            Stage stage = AnalysisDataViewerStage.create();
+            stage.initOwner(view.getWindow());
+
+            analysisDataViewerView = new AnalysisDataViewerViewImpl(stage);
+            Mvp.linkViewAndPresenter(analysisDataViewerView,
+                    new AnalysisDataViewerPresenterImpl(scannerModel, () -> {
+                        analysisDataViewerView = null; // NOPMD
+                    }));
+        }
+
+        analysisDataViewerView.startView(cacheDirectoryPath, id);
     }
 
     @Override
     public void scanner_analysis_startAnalysis() {
-        if (getScannerModel().isScanDataEmpty() || !getScannerModel().isAnalysisDataEmpty()) {
+        if (scannerModel.isScanDataEmpty() || !scannerModel.isAnalysisDataEmpty()) {
             return;
         }
 
@@ -475,7 +587,7 @@ public class HomePresenterImpl implements HomePresenter {
         };
 
         Runnable onDataReady = () -> view.scanner_analysis_setAnalysisDataList(
-                FXCollections.observableArrayList(getScannerModel().copyAnalysisDataList()));
+                FXCollections.observableArrayList(scannerModel.copyAnalysisDataList()));
 
         Consumer<Double> onUpdateProgress = value -> {
             view.scanner_analysis_setProgressBarValue(value);
@@ -484,30 +596,30 @@ public class HomePresenterImpl implements HomePresenter {
 
         int analysisThreadCount = view.scanner_option_getupAnalysisThreadCount();
 
-        getScannerModel().starAnalysis(onUpdateProgress, onDataReady, onDone, onCancel,
+        scannerModel.starAnalysis(onUpdateProgress, onDataReady, onDone, onCancel,
                 cacheDirectoryPath, analysisThreadCount);
     }
 
     @Override
     public void scanner_analysis_stopAnalysis() {
-        getScannerModel().stopAnalysis();
+        scannerModel.stopAnalysis();
     }
 
     @Override
     public void scanner_uploader_refresh() {
-        if (getScannerModel().isAnalysisDataEmpty()) {
+        if (scannerModel.isAnalysisDataEmpty()) {
             return;
         }
 
         Runnable onDone = () -> view.scanner_uploader_setNewRecordDataList(
-                FXCollections.observableArrayList(getScannerModel().copyNewRecordDataList()));
+                FXCollections.observableArrayList(scannerModel.copyNewRecordDataList()));
 
-        getScannerModel().collectNewRecord(onDone, getRecordModel());
+        scannerModel.collectNewRecord(onDone, recordModel);
     }
 
     @Override
     public void scanner_uploader_startUpload(long count) {
-        if (getScannerModel().isNewRecordDataEmpty()) {
+        if (scannerModel.isNewRecordDataEmpty()) {
             return;
         }
 
@@ -540,13 +652,13 @@ public class HomePresenterImpl implements HomePresenter {
                     language.getString("scannerService.dialog.uploadDone"));
         }
 
-        getScannerModel().startUpload(onDone, onCancel, getDatabaseModel(), getRecordModel(),
-                accountPath, recordUploadDelay);
+        scannerModel.startUpload(onDone, onCancel, databaseModel, recordModel, accountPath,
+                recordUploadDelay);
     }
 
     @Override
     public void scanner_uploader_stopUpload() {
-        getScannerModel().stopUpload();
+        scannerModel.stopUpload();
     }
 
     @Override
@@ -558,7 +670,7 @@ public class HomePresenterImpl implements HomePresenter {
 
         Path path = file.toPath();
         try {
-            getScannerModel().validateCacheDirectory(path);
+            scannerModel.validateCacheDirectory(path);
         } catch (IOException e) {
             String header =
                     Language.getInstance().getString("scanner.option.dialog.invalidDirectory");
@@ -594,8 +706,8 @@ public class HomePresenterImpl implements HomePresenter {
         int captureDuration = view.macro_getCaptureDuration();
         int keyInputDuration = view.macro_getKeyInputDuration();
 
-        getMacroModel().startMacro(analysisKey, count, captureDelay, captureDuration,
-                keyInputDuration, VerticalDirection.UP);
+        macroModel.startMacro(analysisKey, count, captureDelay, captureDuration, keyInputDuration,
+                VerticalDirection.UP);
     }
 
     @Override
@@ -606,12 +718,12 @@ public class HomePresenterImpl implements HomePresenter {
         int captureDuration = view.macro_getCaptureDuration();
         int keyInputDuration = view.macro_getKeyInputDuration();
 
-        getMacroModel().startMacro(analysisKey, count, captureDelay, captureDuration,
-                keyInputDuration, VerticalDirection.DOWN);
+        macroModel.startMacro(analysisKey, count, captureDelay, captureDuration, keyInputDuration,
+                VerticalDirection.DOWN);
     }
 
     @Override
     public void macro_stop() {
-        getMacroModel().stopMacro();
+        macroModel.stopMacro();
     }
 }

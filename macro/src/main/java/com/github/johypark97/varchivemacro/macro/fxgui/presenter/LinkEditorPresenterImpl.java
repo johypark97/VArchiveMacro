@@ -9,7 +9,6 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.Link
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.LinkEditor.LinkEditorView;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.List;
@@ -25,36 +24,36 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
             TitleTool.normalizeTitle_recognition(x).toLowerCase(Locale.ENGLISH),
             Normalizer.Form.NFKD);
 
-    private WeakReference<ScannerModel> scannerModelReference;
+    private final Path cacheDirectoryPath;
+    private final Runnable onUpdateLink;
+    private final ScannerModel scannerModel;
+    private final int songDataId;
 
     private FilteredList<CaptureData> filteredCaptureDataList;
-
-    private Path cacheDirectoryPath;
-    private Runnable onUpdateLink;
-    private int songDataId;
 
     @MvpView
     public LinkEditorView view;
 
-    public void linkModel(ScannerModel scannerModel) {
-        scannerModelReference = new WeakReference<>(scannerModel);
-    }
-
-    private ScannerModel getScannerModel() {
-        return scannerModelReference.get();
+    public LinkEditorPresenterImpl(ScannerModel scannerModel, Path cacheDirectoryPath,
+            int songDataId, Runnable onUpdateLink) {
+        this.cacheDirectoryPath = cacheDirectoryPath;
+        this.onUpdateLink = onUpdateLink;
+        this.scannerModel = scannerModel;
+        this.songDataId = songDataId;
     }
 
     @Override
-    public void onStartView(Path cacheDirectoryPath, int songDataId, Runnable onUpdateLink) {
-        this.cacheDirectoryPath = cacheDirectoryPath;
-        this.onUpdateLink = onUpdateLink;
-        this.songDataId = songDataId;
-
-        Song song = getScannerModel().getSongData(songDataId).songProperty().get();
+    public void onStartView() {
+        Song song = scannerModel.getSongData(songDataId).songProperty().get();
         view.setSongText(
                 String.format("[%s] %s - %s", song.pack().name(), song.title(), song.composer()));
 
         showCaptureDataList(null, false);
+    }
+
+    @Override
+    public void onStopView() {
+        view.getWindow().hide();
     }
 
     @Override
@@ -72,8 +71,8 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
     @Override
     public void showCaptureDataList(String pattern, boolean findAll) {
         ObservableList<CaptureData> list = findAll
-                ? FXCollections.observableArrayList(getScannerModel().copyCaptureDataList())
-                : getScannerModel().getSongData(songDataId).childListProperty();
+                ? FXCollections.observableArrayList(scannerModel.copyCaptureDataList())
+                : scannerModel.getSongData(songDataId).childListProperty();
 
         filteredCaptureDataList = new FilteredList<>(list);
 
@@ -86,7 +85,7 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
     public void showCaptureImage(int captureDataId) {
         try {
             view.setCaptureImage(SwingFXUtils.toFXImage(
-                    getScannerModel().getCaptureImage(cacheDirectoryPath, captureDataId), null));
+                    scannerModel.getCaptureImage(cacheDirectoryPath, captureDataId), null));
         } catch (IOException e) {
             view.showError("Cache image loading error", e);
         }
@@ -94,7 +93,7 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     @Override
     public void linkCaptureData(int captureDataId) {
-        CaptureData captureData = getScannerModel().getCaptureData(captureDataId);
+        CaptureData captureData = scannerModel.getCaptureData(captureDataId);
 
         String header = Language.getInstance().getString("linkEditor.dialog.link.header");
         String content = String.format("(%d) %s", captureData.idProperty().get(),
@@ -103,7 +102,7 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
             return;
         }
 
-        SongData songData = getScannerModel().getSongData(songDataId);
+        SongData songData = scannerModel.getSongData(songDataId);
         songData.selected.set(true);
 
         List<CaptureData> childList = List.copyOf(songData.childListProperty());
@@ -115,7 +114,7 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
         onUpdateLink.run();
 
-        view.requestStopStage();
+        onStopView();
     }
 
     @Override
@@ -125,7 +124,7 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
             return;
         }
 
-        SongData songData = getScannerModel().getSongData(songDataId);
+        SongData songData = scannerModel.getSongData(songDataId);
         songData.selected.set(false);
 
         List<CaptureData> childList = List.copyOf(songData.childListProperty());
@@ -136,6 +135,6 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
         onUpdateLink.run();
 
-        view.requestStopStage();
+        onStopView();
     }
 }

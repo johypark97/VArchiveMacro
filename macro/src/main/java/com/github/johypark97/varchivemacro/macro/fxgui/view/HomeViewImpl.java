@@ -1,7 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.view;
 
-import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
-import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
@@ -18,11 +16,9 @@ import com.github.johypark97.varchivemacro.macro.fxgui.view.component.MacroCompo
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerDjNameInputComponent;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.component.ScannerSafeGlassComponent;
-import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.HomeStage;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.GlobalResource;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +31,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -43,7 +40,6 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -51,13 +47,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class HomeViewImpl extends BorderPane implements HomeView {
     private static final String FXML_FILE_NAME = "Home.fxml";
     private static final String GITHUB_URL = "https://github.com/johypark97/VArchiveMacro";
-
-    private final NativeKeyListener scannerNativeKeyListener;
-    private final NativeKeyListener macroNativeKeyListener;
 
     private final MacroComponent macroComponent = new MacroComponent();
     private final ScannerComponent scannerComponent = new ScannerComponent(this);
@@ -66,7 +61,7 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     private final ScannerSafeGlassComponent scannerSafeGlassComponent =
             new ScannerSafeGlassComponent();
 
-    private final HomeStage stage;
+    private final Stage stage;
 
     @MvpPresenter
     public HomePresenter presenter;
@@ -92,78 +87,27 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     @FXML
     public Tab macroTab;
 
-    public HomeViewImpl(HomeStage stage) {
+    public HomeViewImpl(Stage stage) {
         this.stage = stage;
 
+        URL fxmlUrl = HomeViewImpl.class.getResource(FXML_FILE_NAME);
+        URL globalCss = GlobalResource.getGlobalCss();
+        URL tableColorCss = GlobalResource.getTableColorCss();
+
         try {
-            URL url = HomeViewImpl.class.getResource(FXML_FILE_NAME);
-            Mvp.loadFxml(this, url,
+            Mvp.loadFxml(this, fxmlUrl,
                     x -> x.setResources(Language.getInstance().getResourceBundle()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        scannerNativeKeyListener = new NativeKeyListener() {
-            @Override
-            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
+        Scene scene = new Scene(this);
+        scene.getStylesheets().add(globalCss.toExternalForm());
+        scene.getStylesheets().add(tableColorCss.toExternalForm());
+        stage.setScene(scene);
 
-                if (data.isOtherMod()) {
-                    return;
-                }
-
-                if (data.isPressed(NativeKeyEvent.VC_BACKSPACE)) {
-                    presenter.scanner_capture_stop();
-                }
-            }
-
-            @Override
-            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
-                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
-
-                if (data.isOtherMod()) {
-                    return;
-                }
-
-                if (data.isCtrl() && !data.isAlt() && !data.isShift()) {
-                    if (data.isPressed(NativeKeyEvent.VC_ENTER)) {
-                        presenter.scanner_capture_start();
-                    }
-                }
-            }
-        };
-
-        macroNativeKeyListener = new NativeKeyListener() {
-            @Override
-            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
-
-                if (data.isOtherMod()) {
-                    return;
-                }
-
-                if (data.isPressed(NativeKeyEvent.VC_BACKSPACE)) {
-                    presenter.macro_stop();
-                }
-            }
-
-            @Override
-            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
-                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
-
-                if (data.isOtherMod()) {
-                    return;
-                }
-
-                if (!data.isCtrl() && data.isAlt() && !data.isShift()) {
-                    if (data.isPressed(NativeKeyEvent.VC_OPEN_BRACKET)) {
-                        presenter.macro_start_up();
-                    } else if (data.isPressed(NativeKeyEvent.VC_CLOSE_BRACKET)) {
-                        presenter.macro_start_down();
-                    }
-                }
-            }
-        };
+        stage.setOnShown(event -> presenter.onStartView());
+        Mvp.hookWindowCloseRequest(stage, event -> presenter.onStopView());
     }
 
     @FXML
@@ -179,7 +123,7 @@ public class HomeViewImpl extends BorderPane implements HomeView {
             langKoRadioMenuItem.setSelected(true);
         }
 
-        exitMenuItem.setOnAction(event -> stage.stopStage());
+        exitMenuItem.setOnAction(event -> presenter.onStopView());
 
         langEnRadioMenuItem.setOnAction(event -> presenter.home_changeLanguage(Locale.ENGLISH));
         langKoRadioMenuItem.setOnAction(event -> presenter.home_changeLanguage(Locale.KOREAN));
@@ -188,17 +132,14 @@ public class HomeViewImpl extends BorderPane implements HomeView {
         aboutMenuItem.setOnAction(event -> presenter.home_openAbout());
     }
 
-    public void startView() {
-        presenter.onStartView();
-
-        FxHookWrapper.addKeyListener(macroNativeKeyListener);
+    @Override
+    public Window getWindow() {
+        return stage;
     }
 
-    public void stopView() {
-        FxHookWrapper.removeKeyListener(scannerNativeKeyListener);
-        FxHookWrapper.removeKeyListener(macroNativeKeyListener);
-
-        presenter.onStopView();
+    @Override
+    public void startView() {
+        stage.show();
     }
 
     @Override
@@ -228,11 +169,6 @@ public class HomeViewImpl extends BorderPane implements HomeView {
         alert.showAndWait();
 
         return ButtonType.OK.equals(alert.getResult());
-    }
-
-    @Override
-    public void home_openOpenSourceLicense() {
-        stage.showOpenSourceLicense();
     }
 
     @Override
@@ -290,11 +226,6 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     }
 
     @Override
-    public void scanner_capture_openCaptureViewer(WritableImage image) {
-        stage.showCaptureViewer(image);
-    }
-
-    @Override
     public void scanner_capture_refresh() {
         scannerComponent.capture_refresh();
     }
@@ -320,12 +251,6 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     }
 
     @Override
-    public void scanner_song_openLinkEditor(Path cacheDirectoryPath, int songDataId,
-            Runnable onUpdateLink) {
-        stage.showLinkEditor(cacheDirectoryPath, songDataId, onUpdateLink);
-    }
-
-    @Override
     public void scanner_song_refresh() {
         scannerComponent.song_refresh();
     }
@@ -333,12 +258,6 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     @Override
     public void scanner_analysis_setAnalysisDataList(ObservableList<AnalysisData> list) {
         scannerComponent.analysis_setAnalysisDataList(list);
-    }
-
-    @Override
-    public void scanner_analysis_openAnalysisDataViewer(Path cacheDirectoryPath,
-            int analysisDataId) {
-        stage.showAnalysisDataViewer(cacheDirectoryPath, analysisDataId);
     }
 
     @Override
@@ -553,8 +472,6 @@ public class HomeViewImpl extends BorderPane implements HomeView {
             scannerTab.setContent(scannerComponent);
 
             scannerComponent.requestFocus();
-
-            FxHookWrapper.addKeyListener(scannerNativeKeyListener);
         }
     }
 }

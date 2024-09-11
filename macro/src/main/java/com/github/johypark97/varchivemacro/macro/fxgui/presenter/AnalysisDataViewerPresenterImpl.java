@@ -6,29 +6,37 @@ import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataVie
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.fxgui.presenter.AnalysisDataViewer.RecordBoxData;
 import java.awt.image.BufferedImage;
-import java.lang.ref.WeakReference;
 import java.nio.file.Path;
 import javafx.embed.swing.SwingFXUtils;
 
 public class AnalysisDataViewerPresenterImpl implements AnalysisDataViewerPresenter {
-    private WeakReference<ScannerModel> scannerModelReference;
+    private final Runnable onStop;
+    private final ScannerModel scannerModel;
 
     @MvpView
     public AnalysisDataViewerView view;
 
-    public void linkModel(ScannerModel scannerModel) {
-        scannerModelReference = new WeakReference<>(scannerModel);
+    public AnalysisDataViewerPresenterImpl(ScannerModel scannerModel, Runnable onStop) {
+        this.onStop = onStop;
+        this.scannerModel = scannerModel;
     }
 
-    private ScannerModel getScannerModel() {
-        return scannerModelReference.get();
+    @Override
+    public void onStartView() {
+    }
+
+    @Override
+    public void onStopView() {
+        view.getWindow().hide();
+
+        onStop.run();
     }
 
     @Override
     public void showAnalysisData(Path cacheDirectoryPath, int analysisDataId) {
         AnalyzedRecordData data;
         try {
-            data = getScannerModel().getAnalyzedRecordData(cacheDirectoryPath, analysisDataId);
+            data = scannerModel.getAnalyzedRecordData(cacheDirectoryPath, analysisDataId);
         } catch (Exception e) {
             view.showError("Analyzed record data loading error", e);
             return;

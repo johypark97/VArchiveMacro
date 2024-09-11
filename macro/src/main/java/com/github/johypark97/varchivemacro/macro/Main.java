@@ -2,7 +2,16 @@ package com.github.johypark97.varchivemacro.macro;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
+import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultConfigModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultDatabaseModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultMacroModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultRecordModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
+import com.github.johypark97.varchivemacro.macro.fxgui.presenter.HomePresenterImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.HomeStage;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.Toolkit;
@@ -15,8 +24,6 @@ import org.slf4j.LoggerFactory;
 
 public class Main extends Application {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-
-    private final HomeStage homeStage = new HomeStage();
 
     public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> Main.logUncaughtException(e));
@@ -57,7 +64,15 @@ public class Main extends Application {
             Main.showUncaughtExceptionAlert(e);
         });
 
-        Platform.runLater(homeStage::show);
+        HomeStage.setupStage(primaryStage);
+
+        HomeView homeView = new HomeViewImpl(primaryStage);
+        Mvp.linkViewAndPresenter(homeView,
+                new HomePresenterImpl(new DefaultConfigModel(), new DefaultDatabaseModel(),
+                        new DefaultRecordModel(), new DefaultScannerModel(),
+                        new DefaultMacroModel()));
+
+        Platform.runLater(homeView::startView);
     }
 
     @Override

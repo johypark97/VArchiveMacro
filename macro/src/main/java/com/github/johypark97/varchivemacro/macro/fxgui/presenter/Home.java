@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.presenter;
 
-import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpPresenter;
-import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpView;
+import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonPresenter;
+import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonView;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
@@ -15,14 +15,9 @@ import java.util.Locale;
 import java.util.Set;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
-import javafx.scene.image.WritableImage;
 
 public interface Home {
-    interface HomePresenter extends MvpPresenter<HomeView, HomePresenter> {
-        void onStartView();
-
-        void onStopView();
-
+    interface HomePresenter extends CommonPresenter<HomeView, HomePresenter> {
         void home_changeLanguage(Locale locale);
 
         void home_openOpenSourceLicense();
@@ -71,14 +66,14 @@ public interface Home {
     }
 
 
-    interface HomeView extends MvpView<HomeView, HomePresenter> {
+    interface HomeView extends CommonView<HomeView, HomePresenter> {
+        void startView();
+
         void showError(String header, Throwable throwable);
 
         void showInformation(String header, String content);
 
         boolean showConfirmation(String header, String content);
-
-        void home_openOpenSourceLicense();
 
         void home_openAbout();
 
@@ -92,8 +87,6 @@ public interface Home {
 
         void scanner_capture_setCaptureDataList(ObservableList<CaptureData> list);
 
-        void scanner_capture_openCaptureViewer(WritableImage image);
-
         void scanner_capture_refresh();
 
         void scanner_capture_setTabList(List<String> list);
@@ -104,14 +97,9 @@ public interface Home {
 
         void scanner_song_setSongDataList(ObservableList<SongData> list);
 
-        void scanner_song_openLinkEditor(Path cacheDirectoryPath, int songDataId,
-                Runnable onUpdateLink);
-
         void scanner_song_refresh();
 
         void scanner_analysis_setAnalysisDataList(ObservableList<AnalysisData> list);
-
-        void scanner_analysis_openAnalysisDataViewer(Path cacheDirectoryPath, int analysisDataId);
 
         void scanner_analysis_setProgressBarValue(double value);
 
