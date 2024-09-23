@@ -9,10 +9,10 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultDatabaseMode
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultMacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultRecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.presenter.Home.HomeView;
-import com.github.johypark97.varchivemacro.macro.fxgui.presenter.HomePresenterImpl;
-import com.github.johypark97.varchivemacro.macro.fxgui.view.HomeViewImpl;
-import com.github.johypark97.varchivemacro.macro.fxgui.view.stage.HomeStage;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomePresenterImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomeStage;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.Toolkit;
 import javafx.application.Application;
