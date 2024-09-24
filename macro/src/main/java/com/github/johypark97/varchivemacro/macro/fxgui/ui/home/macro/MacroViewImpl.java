@@ -1,8 +1,10 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
+package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro;
 
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.Macro.MacroPresenter;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.Macro.MacroView;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.net.URL;
 import javafx.fxml.FXML;
@@ -11,8 +13,11 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 
-public class MacroComponent extends BorderPane {
-    private static final String FXML_PATH = "/fxml/home/Macro.fxml";
+public class MacroViewImpl extends BorderPane implements MacroView {
+    private static final String FXML_PATH = "/fxml/home/macro/Macro.fxml";
+
+    @MvpPresenter
+    public MacroPresenter presenter;
 
     @FXML
     public RadioButton analysisKeyRadioButton_f11;
@@ -55,8 +60,8 @@ public class MacroComponent extends BorderPane {
     public SliderTextFieldLinker captureDurationLinker;
     public SliderTextFieldLinker keyInputDurationLinker;
 
-    public MacroComponent() {
-        URL url = MacroComponent.class.getResource(FXML_PATH);
+    public MacroViewImpl() {
+        URL url = MacroViewImpl.class.getResource(FXML_PATH);
         MvpFxml.loadRoot(this, url, Language.getInstance().getResourceBundle());
     }
 
@@ -73,6 +78,17 @@ public class MacroComponent extends BorderPane {
                 new SliderTextFieldLinker(keyInputDurationSlider, keyInputDurationTextField);
     }
 
+    @Override
+    public void startView() {
+        presenter.onStartView();
+    }
+
+    @Override
+    public void stopView() {
+        presenter.onStopView();
+    }
+
+    @Override
     public AnalysisKey getAnalysisKey() {
         if (analysisKeyRadioButton_f11.isSelected()) {
             return AnalysisKey.F11;
@@ -88,6 +104,7 @@ public class MacroComponent extends BorderPane {
         return AnalysisKey.F11;
     }
 
+    @Override
     public void setAnalysisKey(AnalysisKey key) {
         RadioButton button = switch (key) {
             case F11 -> analysisKeyRadioButton_f11;
@@ -99,6 +116,7 @@ public class MacroComponent extends BorderPane {
         button.setSelected(true);
     }
 
+    @Override
     public void setupCountSlider(int defaultValue, int limitMax, int limitMin, int value) {
         countLinker.setDefaultValue(defaultValue);
         countLinker.setLimitMax(limitMax);
@@ -106,10 +124,12 @@ public class MacroComponent extends BorderPane {
         countLinker.setValue(value);
     }
 
+    @Override
     public int getCount() {
         return countLinker.getValue();
     }
 
+    @Override
     public void setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin, int value) {
         captureDelayLinker.setDefaultValue(defaultValue);
         captureDelayLinker.setLimitMax(limitMax);
@@ -117,10 +137,12 @@ public class MacroComponent extends BorderPane {
         captureDelayLinker.setValue(value);
     }
 
+    @Override
     public int getCaptureDelay() {
         return captureDelayLinker.getValue();
     }
 
+    @Override
     public void setupCaptureDurationSlider(int defaultValue, int limitMax, int limitMin,
             int value) {
         captureDurationLinker.setDefaultValue(defaultValue);
@@ -129,11 +151,13 @@ public class MacroComponent extends BorderPane {
         captureDurationLinker.setValue(value);
     }
 
+    @Override
     public int getCaptureDuration() {
         return captureDurationLinker.getValue();
     }
 
-    public void setupKeyInputDurationLinkerSlider(int defaultValue, int limitMax, int limitMin,
+    @Override
+    public void setupKeyInputDurationSlider(int defaultValue, int limitMax, int limitMin,
             int value) {
         keyInputDurationLinker.setDefaultValue(defaultValue);
         keyInputDurationLinker.setLimitMax(limitMax);
@@ -141,6 +165,7 @@ public class MacroComponent extends BorderPane {
         keyInputDurationLinker.setValue(value);
     }
 
+    @Override
     public int getKeyInputDuration() {
         return keyInputDurationLinker.getValue();
     }

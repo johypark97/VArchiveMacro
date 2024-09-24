@@ -6,7 +6,6 @@ import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultDatabaseModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultMacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultRecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
@@ -69,8 +68,7 @@ public class Main extends Application {
         HomeView homeView = new HomeViewImpl(primaryStage);
         Mvp.linkViewAndPresenter(homeView,
                 new HomePresenterImpl(new DefaultConfigModel(), new DefaultDatabaseModel(),
-                        new DefaultRecordModel(), new DefaultScannerModel(),
-                        new DefaultMacroModel()));
+                        new DefaultRecordModel(), new DefaultScannerModel()));
 
         Platform.runLater(homeView::startView);
     }

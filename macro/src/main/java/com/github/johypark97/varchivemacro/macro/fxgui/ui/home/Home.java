@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
 import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonView;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 
 public interface Home {
@@ -57,12 +57,6 @@ public interface Home {
         void scanner_option_openCacheDirectorySelector();
 
         void scanner_option_openAccountFileSelector();
-
-        void macro_start_up();
-
-        void macro_start_down();
-
-        void macro_stop();
     }
 
 
@@ -74,6 +68,8 @@ public interface Home {
         void showInformation(String header, String content);
 
         boolean showConfirmation(String header, String content);
+
+        void setMacroTabContent(Node value);
 
         void home_openAbout();
 
@@ -137,28 +133,6 @@ public interface Home {
         File scanner_option_openCacheDirectorySelector(Path initialDirectory);
 
         File scanner_option_openAccountFileSelector(Path initialDirectory);
-
-        AnalysisKey macro_getAnalysisKey();
-
-        void macro_setAnalysisKey(AnalysisKey key);
-
-        void macro_setupCountSlider(int defaultValue, int limitMax, int limitMin, int value);
-
-        int macro_getCount();
-
-        void macro_setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin, int value);
-
-        int macro_getCaptureDelay();
-
-        void macro_setupCaptureDurationSlider(int defaultValue, int limitMax, int limitMin,
-                int value);
-
-        int macro_getCaptureDuration();
-
-        void macro_setupKeyInputDurationSlider(int defaultValue, int limitMax, int limitMin,
-                int value);
-
-        int macro_getKeyInputDuration();
     }
 
 

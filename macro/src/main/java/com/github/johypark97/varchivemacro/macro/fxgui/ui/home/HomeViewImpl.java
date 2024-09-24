@@ -2,7 +2,6 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
 
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
@@ -27,6 +26,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -50,7 +50,6 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     private static final String FXML_PATH = "/fxml/home/Home.fxml";
     private static final String GITHUB_URL = "https://github.com/johypark97/VArchiveMacro";
 
-    private final MacroComponent macroComponent = new MacroComponent();
     private final ScannerComponent scannerComponent = new ScannerComponent(this);
     private final ScannerDjNameInputComponent scannerDjNameInputComponent =
             new ScannerDjNameInputComponent(this);
@@ -110,7 +109,6 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     public void initialize() {
         scannerTab.setContent(
                 new StackPane(scannerDjNameInputComponent, scannerSafeGlassComponent));
-        macroTab.setContent(macroComponent);
 
         Locale locale = Language.getInstance().getLocale();
         if (Locale.ENGLISH.equals(locale)) {
@@ -165,6 +163,11 @@ public class HomeViewImpl extends BorderPane implements HomeView {
         alert.showAndWait();
 
         return ButtonType.OK.equals(alert.getResult());
+    }
+
+    @Override
+    public void setMacroTabContent(Node value) {
+        macroTab.setContent(value);
     }
 
     @Override
@@ -358,59 +361,6 @@ public class HomeViewImpl extends BorderPane implements HomeView {
                 .add(new FileChooser.ExtensionFilter("Account text file (*.txt)", "*.txt"));
 
         return chooser.showOpenDialog(stage);
-    }
-
-    @Override
-    public AnalysisKey macro_getAnalysisKey() {
-        return macroComponent.getAnalysisKey();
-    }
-
-    @Override
-    public void macro_setAnalysisKey(AnalysisKey key) {
-        macroComponent.setAnalysisKey(key);
-    }
-
-    @Override
-    public void macro_setupCountSlider(int defaultValue, int limitMax, int limitMin, int value) {
-        macroComponent.setupCountSlider(defaultValue, limitMax, limitMin, value);
-    }
-
-    @Override
-    public int macro_getCount() {
-        return macroComponent.getCount();
-    }
-
-    @Override
-    public void macro_setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin,
-            int value) {
-        macroComponent.setupCaptureDelaySlider(defaultValue, limitMax, limitMin, value);
-    }
-
-    @Override
-    public int macro_getCaptureDelay() {
-        return macroComponent.getCaptureDelay();
-    }
-
-    @Override
-    public void macro_setupCaptureDurationSlider(int defaultValue, int limitMax, int limitMin,
-            int value) {
-        macroComponent.setupCaptureDurationSlider(defaultValue, limitMax, limitMin, value);
-    }
-
-    @Override
-    public int macro_getCaptureDuration() {
-        return macroComponent.getCaptureDuration();
-    }
-
-    @Override
-    public void macro_setupKeyInputDurationSlider(int defaultValue, int limitMax, int limitMin,
-            int value) {
-        macroComponent.setupKeyInputDurationLinkerSlider(defaultValue, limitMax, limitMin, value);
-    }
-
-    @Override
-    public int macro_getKeyInputDuration() {
-        return macroComponent.getKeyInputDuration();
     }
 
     private class ScannerFrontControllerImpl implements ScannerFrontController {

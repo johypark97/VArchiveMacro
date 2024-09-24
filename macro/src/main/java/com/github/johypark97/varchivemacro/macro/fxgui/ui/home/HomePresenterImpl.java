@@ -6,12 +6,10 @@ import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultLicenseModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
+import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultMacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewer.AnalysisDataViewerView;
@@ -26,6 +24,8 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomePresente
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.ViewerRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.ViewerTreeData;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.MacroPresenterImpl;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.MacroViewImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditor.LinkEditorView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorStage;
@@ -53,7 +53,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.VerticalDirection;
 import javafx.scene.control.TreeItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -69,13 +68,13 @@ public class HomePresenterImpl implements HomePresenter {
             x -> Normalizer.normalize(x.toLowerCase(Locale.ENGLISH), Form.NFKD);
 
     private final NativeKeyListener scannerNativeKeyListener;
-    private final NativeKeyListener macroNativeKeyListener;
 
     private final ConfigModel configModel;
     private final DatabaseModel databaseModel;
-    private final MacroModel macroModel;
     private final RecordModel recordModel;
     private final ScannerModel scannerModel;
+
+    private MacroViewImpl macroView;
 
     private AnalysisDataViewerView analysisDataViewerView;
     private CaptureViewerView captureViewerView;
@@ -84,10 +83,9 @@ public class HomePresenterImpl implements HomePresenter {
     public HomeView view;
 
     public HomePresenterImpl(ConfigModel configModel, DatabaseModel databaseModel,
-            RecordModel recordModel, ScannerModel scannerModel, MacroModel macroModel) {
+            RecordModel recordModel, ScannerModel scannerModel) {
         this.configModel = configModel;
         this.databaseModel = databaseModel;
-        this.macroModel = macroModel;
         this.recordModel = recordModel;
         this.scannerModel = scannerModel;
 
@@ -116,38 +114,6 @@ public class HomePresenterImpl implements HomePresenter {
                 if (data.isCtrl() && !data.isAlt() && !data.isShift()) {
                     if (data.isPressed(NativeKeyEvent.VC_ENTER)) {
                         scanner_capture_start();
-                    }
-                }
-            }
-        };
-
-        macroNativeKeyListener = new NativeKeyListener() {
-            @Override
-            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
-
-                if (data.isOtherMod()) {
-                    return;
-                }
-
-                if (data.isPressed(NativeKeyEvent.VC_BACKSPACE)) {
-                    macro_stop();
-                }
-            }
-
-            @Override
-            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
-                NativeKeyEventData data = new NativeKeyEventData(nativeEvent);
-
-                if (data.isOtherMod()) {
-                    return;
-                }
-
-                if (!data.isCtrl() && data.isAlt() && !data.isShift()) {
-                    if (data.isPressed(NativeKeyEvent.VC_OPEN_BRACKET)) {
-                        macro_start_up();
-                    } else if (data.isPressed(NativeKeyEvent.VC_CLOSE_BRACKET)) {
-                        macro_start_down();
                     }
                 }
             }
@@ -199,15 +165,15 @@ public class HomePresenterImpl implements HomePresenter {
         } catch (IOException ignored) {
         }
 
+        macroView = new MacroViewImpl();
+        view.setMacroTabContent(macroView);
+        Mvp.linkViewAndPresenter(macroView,
+                new MacroPresenterImpl(new DefaultMacroModel(), configModel::getMacroConfig,
+                        configModel::setMacroConfig, view::showError));
+        macroView.startView();
+
         scannerModel.setupService(throwable -> {
             String header = "Scanner service exception";
-
-            LOGGER.atError().setCause(throwable).log(header);
-            view.showError(header, throwable);
-        });
-
-        macroModel.setupService(throwable -> {
-            String header = "Macro service exception";
 
             LOGGER.atError().setCause(throwable).log(header);
             view.showError(header, throwable);
@@ -235,24 +201,7 @@ public class HomePresenterImpl implements HomePresenter {
                 ScannerConfig.RECORD_UPLOAD_DELAY_MAX, ScannerConfig.RECORD_UPLOAD_DELAY_MIN,
                 configModel.getScannerConfig().recordUploadDelay);
 
-        view.macro_setAnalysisKey(configModel.getMacroConfig().analysisKey);
 
-        view.macro_setupCountSlider(MacroConfig.COUNT_DEFAULT, MacroConfig.COUNT_MAX,
-                MacroConfig.COUNT_MIN, configModel.getMacroConfig().count);
-
-        view.macro_setupCaptureDelaySlider(MacroConfig.CAPTURE_DELAY_DEFAULT,
-                MacroConfig.CAPTURE_DELAY_MAX, MacroConfig.CAPTURE_DELAY_MIN,
-                configModel.getMacroConfig().captureDelay);
-
-        view.macro_setupCaptureDurationSlider(MacroConfig.CAPTURE_DURATION_DEFAULT,
-                MacroConfig.CAPTURE_DURATION_MAX, MacroConfig.CAPTURE_DURATION_MIN,
-                configModel.getMacroConfig().captureDuration);
-
-        view.macro_setupKeyInputDurationSlider(MacroConfig.KEY_INPUT_DURATION_DEFAULT,
-                MacroConfig.KEY_INPUT_DURATION_MAX, MacroConfig.KEY_INPUT_DURATION_MIN,
-                configModel.getMacroConfig().keyInputDuration);
-
-        FxHookWrapper.addKeyListener(macroNativeKeyListener);
 
         try {
             databaseModel.load();
@@ -298,7 +247,6 @@ public class HomePresenterImpl implements HomePresenter {
     @Override
     public void onStopView() {
         FxHookWrapper.removeKeyListener(scannerNativeKeyListener);
-        FxHookWrapper.removeKeyListener(macroNativeKeyListener);
 
         ScannerConfig scannerConfig = new ScannerConfig();
         {
@@ -323,15 +271,7 @@ public class HomePresenterImpl implements HomePresenter {
         }
         configModel.setScannerConfig(scannerConfig);
 
-        MacroConfig macroConfig = new MacroConfig();
-        {
-            macroConfig.analysisKey = view.macro_getAnalysisKey();
-            macroConfig.count = view.macro_getCount();
-            macroConfig.captureDelay = view.macro_getCaptureDelay();
-            macroConfig.captureDuration = view.macro_getCaptureDuration();
-            macroConfig.keyInputDuration = view.macro_getKeyInputDuration();
-        }
-        configModel.setMacroConfig(macroConfig);
+        macroView.stopView();
 
         try {
             configModel.save();
@@ -700,34 +640,5 @@ public class HomePresenterImpl implements HomePresenter {
         if (path != null) {
             view.scanner_option_setAccountFile(path.toString());
         }
-    }
-
-    @Override
-    public void macro_start_up() {
-        AnalysisKey analysisKey = view.macro_getAnalysisKey();
-        int count = view.macro_getCount();
-        int captureDelay = view.macro_getCaptureDelay();
-        int captureDuration = view.macro_getCaptureDuration();
-        int keyInputDuration = view.macro_getKeyInputDuration();
-
-        macroModel.startMacro(analysisKey, count, captureDelay, captureDuration, keyInputDuration,
-                VerticalDirection.UP);
-    }
-
-    @Override
-    public void macro_start_down() {
-        AnalysisKey analysisKey = view.macro_getAnalysisKey();
-        int count = view.macro_getCount();
-        int captureDelay = view.macro_getCaptureDelay();
-        int captureDuration = view.macro_getCaptureDuration();
-        int keyInputDuration = view.macro_getKeyInputDuration();
-
-        macroModel.startMacro(analysisKey, count, captureDelay, captureDuration, keyInputDuration,
-                VerticalDirection.DOWN);
-    }
-
-    @Override
-    public void macro_stop() {
-        macroModel.stopMacro();
     }
 }
