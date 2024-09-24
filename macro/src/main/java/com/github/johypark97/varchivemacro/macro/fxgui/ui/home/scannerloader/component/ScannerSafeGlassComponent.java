@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
+package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.component;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import java.net.URL;
@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class ScannerSafeGlassComponent extends VBox {
-    private static final String FXML_PATH = "/fxml/home/ScannerSafeGlass.fxml";
+    private static final String FXML_PATH = "/fxml/home/scannerloader/ScannerSafeGlass.fxml";
 
     @FXML
     public ProgressIndicator progressIndicator;
@@ -27,7 +27,7 @@ public class ScannerSafeGlassComponent extends VBox {
 
     @FXML
     public void initialize() {
-        setVisible(false);
+        forbiddenMark.setVisible(false);
 
         messageLabel.setText(null);
     }

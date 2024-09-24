@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
+package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scanner;
 
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
@@ -13,8 +13,10 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDa
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.LinkMetadata;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
-import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.ViewerRecordData;
-import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.ViewerTreeData;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scanner.Scanner.ScannerPresenter;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scanner.Scanner.ScannerView;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scanner.Scanner.ViewerRecordData;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scanner.Scanner.ViewerTreeData;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.lang.ref.WeakReference;
 import java.net.URL;
@@ -56,10 +58,11 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
-public class ScannerComponent extends TabPane {
-    private static final String FXML_PATH = "/fxml/home/Scanner.fxml";
+public class ScannerViewImpl extends TabPane implements ScannerView {
+    private static final String FXML_PATH = "/fxml/home/scanner/Scanner.fxml";
 
-    private final HomeViewImpl view;
+    @MvpPresenter
+    public ScannerPresenter presenter;
 
     @FXML
     public TextField viewer_filterTextField;
@@ -194,10 +197,8 @@ public class ScannerComponent extends TabPane {
 
     private ViewerRecordController viewerRecordController;
 
-    public ScannerComponent(HomeViewImpl view) {
-        this.view = view;
-
-        URL url = ScannerComponent.class.getResource(FXML_PATH);
+    public ScannerViewImpl() {
+        URL url = ScannerViewImpl.class.getResource(FXML_PATH);
         MvpFxml.loadRoot(this, url, Language.getInstance().getResourceBundle());
     }
 
@@ -211,149 +212,11 @@ public class ScannerComponent extends TabPane {
         setupOption();
     }
 
-    public void viewer_setSongTreeViewRoot(TreeItem<ViewerTreeData> root) {
-        viewer_songTreeView.setRoot(root);
-    }
-
-    public void viewer_setSongInformationText(String value) {
-        viewer_informationTextArea.setText(value);
-    }
-
-    public void viewer_setRecordData(ViewerRecordData data) {
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                viewerRecordController.clearCell(i, j);
-
-                float rate = data.rate[i][j];
-                if (rate == -1) {
-                    viewerRecordController.shadowCell(i, j);
-                } else {
-                    boolean maxCombo = data.maxCombo[i][j];
-                    viewerRecordController.setCell(i, j, rate, maxCombo);
-                }
-            }
-        }
-    }
-
-    public void capture_setCaptureDataList(ObservableList<CaptureData> list) {
-        capture_captureTableView.setItems(list);
-    }
-
-    public void capture_refresh() {
-        capture_captureTableView.refresh();
-    }
-
-    public void capture_setTabList(List<String> list) {
-        ObservableList<CaptureTabListData> observableList =
-                list.stream().map(CaptureTabListData::new)
-                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
-
-        capture_categoryListView.setItems(observableList);
-    }
-
-    public Set<String> capture_getSelectedCategorySet() {
-        return capture_categoryListView.getItems().stream().filter(x -> x.checked.get())
-                .map(x -> x.name).collect(Collectors.toSet());
-    }
-
-    public void capture_setSelectedCategorySet(Set<String> value) {
-        capture_categoryListView.getItems().forEach(x -> x.checked.set(value.contains(x.name)));
-    }
-
-    public void song_setSongDataList(ObservableList<SongData> list) {
-        song_songTableView.setItems(list);
-    }
-
-    public void song_refresh() {
-        song_songTableView.refresh();
-    }
-
-    public void analysis_setAnalysisDataList(ObservableList<AnalysisData> list) {
-        analysis_analysisTableView.setItems(list);
-    }
-
-    public void setAnalysis_progressBarValue(double value) {
-        analysis_progressBar.setProgress(value);
-    }
-
-    public void setAnalysis_progressLabelText(String value) {
-        analysis_progressLabel.setText(value);
-    }
-
-    public void uploader_setNewRecordDataList(ObservableList<NewRecordData> list) {
-        uploader_recordTableView.setItems(list);
-    }
-
-    public String option_getCacheDirectory() {
-        return option_cacheDirectoryTextField.getText();
-    }
-
-    public void option_setCacheDirectory(String value) {
-        option_cacheDirectoryTextField.setText(value);
-    }
-
-    public void option_setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin,
-            int value) {
-        optionCaptureDelayLinker.setDefaultValue(defaultValue);
-        optionCaptureDelayLinker.setLimitMax(limitMax);
-        optionCaptureDelayLinker.setLimitMin(limitMin);
-        optionCaptureDelayLinker.setValue(value);
-    }
-
-    public int option_getCaptureDelay() {
-        return optionCaptureDelayLinker.getValue();
-    }
-
-    public void option_setupKeyInputDurationSlider(int defaultValue, int limitMax, int limitMin,
-            int value) {
-        optionKeyInputDurationLinker.setDefaultValue(defaultValue);
-        optionKeyInputDurationLinker.setLimitMax(limitMax);
-        optionKeyInputDurationLinker.setLimitMin(limitMin);
-        optionKeyInputDurationLinker.setValue(value);
-    }
-
-    public int option_getKeyInputDuration() {
-        return optionKeyInputDurationLinker.getValue();
-    }
-
-    public void option_setupAnalysisThreadCountSlider(int defaultValue, int max, int value) {
-        new CountSliderSetter(max, 2).attachTo(option_analysisThreadCountSlider);
-
-        optionAnalysisThreadCountLinker.setDefaultValue(defaultValue);
-        optionAnalysisThreadCountLinker.setLimitMax(max);
-        optionAnalysisThreadCountLinker.setLimitMin(1);
-        optionAnalysisThreadCountLinker.setValue(value);
-    }
-
-    public int option_getAnalysisThreadCount() {
-        return optionAnalysisThreadCountLinker.getValue();
-    }
-
-    public String option_getAccountFile() {
-        return option_accountFileTextField.getText();
-    }
-
-    public void option_setAccountFile(String value) {
-        option_accountFileTextField.setText(value);
-    }
-
-    public void option_setupRecordUploadDelaySlider(int defaultValue, int limitMax, int limitMin,
-            int value) {
-        optionRecordUploadDelayLinker.setDefaultValue(defaultValue);
-        optionRecordUploadDelayLinker.setLimitMax(limitMax);
-        optionRecordUploadDelayLinker.setLimitMin(limitMin);
-        optionRecordUploadDelayLinker.setValue(value);
-    }
-
-    public int option_getRecordUploadDelay() {
-        return optionRecordUploadDelayLinker.getValue();
-    }
-
     private void openCaptureViewer() {
         CaptureData selected = capture_captureTableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
-            view.presenter.scanner_capture_openCaptureViewer(selected.idProperty().get());
+            presenter.capture_openCaptureViewer(selected.idProperty().get());
         }
     }
 
@@ -361,7 +224,7 @@ public class ScannerComponent extends TabPane {
         SongData selected = song_songTableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
-            view.presenter.scanner_song_openLinkEditor(selected.idProperty().get());
+            presenter.song_openLinkEditor(selected.idProperty().get());
         }
     }
 
@@ -369,7 +232,7 @@ public class ScannerComponent extends TabPane {
         AnalysisData selected = analysis_analysisTableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
-            view.presenter.scanner_analysis_openAnalysisDataViewer(selected.idProperty().get());
+            presenter.analysis_openAnalysisDataViewer(selected.idProperty().get());
         }
     }
 
@@ -377,7 +240,7 @@ public class ScannerComponent extends TabPane {
         viewer_filterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             String value = newValue.trim();
             if (!value.equals(oldValue.trim())) {
-                view.presenter.scanner_viewer_updateSongTreeViewFilter(newValue.trim());
+                presenter.viewer_updateSongTreeViewFilter(newValue.trim());
             }
         });
 
@@ -422,7 +285,7 @@ public class ScannerComponent extends TabPane {
                         return;
                     }
 
-                    view.presenter.scanner_viewer_showRecord(data.song.id());
+                    presenter.viewer_showRecord(data.song.id());
                 });
     }
 
@@ -431,7 +294,7 @@ public class ScannerComponent extends TabPane {
 
         capture_showButton.setOnAction(event -> openCaptureViewer());
 
-        capture_clearButton.setOnAction(event -> view.presenter.scanner_capture_clearScanData());
+        capture_clearButton.setOnAction(event -> presenter.capture_clearScanData());
 
         capture_categoryListView.setCellFactory(
                 CheckBoxListCell.forListView(param -> param.checked));
@@ -737,12 +600,11 @@ public class ScannerComponent extends TabPane {
 
         analysis_showButton.setOnAction(event -> openAnalysisDataViewer());
 
-        analysis_startButton.setOnAction(event -> view.presenter.scanner_analysis_startAnalysis());
+        analysis_startButton.setOnAction(event -> presenter.analysis_startAnalysis());
 
-        analysis_stopButton.setOnAction(event -> view.presenter.scanner_analysis_stopAnalysis());
+        analysis_stopButton.setOnAction(event -> presenter.analysis_stopAnalysis());
 
-        analysis_clearButton.setOnAction(
-                event -> view.presenter.scanner_analysis_clearAnalysisData());
+        analysis_clearButton.setOnAction(event -> presenter.analysis_clearAnalysisData());
     }
 
     private void setupAnalysis_analysisTableView() {
@@ -925,7 +787,7 @@ public class ScannerComponent extends TabPane {
     private void setupUploader() {
         setupUploader_recordTableView();
 
-        uploader_refreshButton.setOnAction(event -> view.presenter.scanner_uploader_refresh());
+        uploader_refreshButton.setOnAction(event -> presenter.uploader_refresh());
 
         uploader_selectAllButton.setOnAction(
                 event -> uploader_recordTableView.getItems().forEach(x -> x.selected.set(true)));
@@ -937,11 +799,10 @@ public class ScannerComponent extends TabPane {
             long count = uploader_recordTableView.getItems().stream().filter(x -> x.selected.get())
                     .count();
 
-            view.presenter.scanner_uploader_startUpload(count);
+            presenter.uploader_startUpload(count);
         });
 
-        uploader_stopUploadButton.setOnAction(
-                event -> view.presenter.scanner_uploader_stopUpload());
+        uploader_stopUploadButton.setOnAction(event -> presenter.uploader_stopUpload());
     }
 
     private void setupUploader_recordTableView() {
@@ -1097,7 +958,7 @@ public class ScannerComponent extends TabPane {
 
     private void setupOption() {
         option_cacheDirectorySelectButton.setOnAction(
-                event -> view.presenter.scanner_option_openCacheDirectorySelector());
+                event -> presenter.option_openCacheDirectorySelector());
 
         optionCaptureDelayLinker =
                 new SliderTextFieldLinker(option_captureDelaySlider, option_captureDelayTextField);
@@ -1110,10 +971,184 @@ public class ScannerComponent extends TabPane {
                         option_analysisThreadCountTextField);
 
         option_accountFileSelectButton.setOnAction(
-                event -> view.presenter.scanner_option_openAccountFileSelector());
+                event -> presenter.option_openAccountFileSelector());
 
         optionRecordUploadDelayLinker = new SliderTextFieldLinker(option_recordUploadDelaySlider,
                 option_recordUploadDelayTextField);
+    }
+
+    @Override
+    public void startView() {
+        presenter.onStartView();
+    }
+
+    @Override
+    public void stopView() {
+        presenter.onStopView();
+    }
+
+    @Override
+    public void viewer_setSongTreeViewRoot(TreeItem<ViewerTreeData> root) {
+        viewer_songTreeView.setRoot(root);
+    }
+
+    @Override
+    public void viewer_setSongInformationText(String value) {
+        viewer_informationTextArea.setText(value);
+    }
+
+    @Override
+    public void viewer_setRecordData(ViewerRecordData data) {
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                viewerRecordController.clearCell(i, j);
+
+                float rate = data.rate[i][j];
+                if (rate == -1) {
+                    viewerRecordController.shadowCell(i, j);
+                } else {
+                    boolean maxCombo = data.maxCombo[i][j];
+                    viewerRecordController.setCell(i, j, rate, maxCombo);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void capture_setCaptureDataList(ObservableList<CaptureData> list) {
+        capture_captureTableView.setItems(list);
+    }
+
+    @Override
+    public void capture_refresh() {
+        capture_captureTableView.refresh();
+    }
+
+    @Override
+    public void capture_setTabList(List<String> list) {
+        ObservableList<CaptureTabListData> observableList =
+                list.stream().map(CaptureTabListData::new)
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+
+        capture_categoryListView.setItems(observableList);
+    }
+
+    @Override
+    public Set<String> capture_getSelectedCategorySet() {
+        return capture_categoryListView.getItems().stream().filter(x -> x.checked.get())
+                .map(x -> x.name).collect(Collectors.toSet());
+    }
+
+    @Override
+    public void capture_setSelectedCategorySet(Set<String> value) {
+        capture_categoryListView.getItems().forEach(x -> x.checked.set(value.contains(x.name)));
+    }
+
+    @Override
+    public void song_setSongDataList(ObservableList<SongData> list) {
+        song_songTableView.setItems(list);
+    }
+
+    @Override
+    public void song_refresh() {
+        song_songTableView.refresh();
+    }
+
+    @Override
+    public void analysis_setAnalysisDataList(ObservableList<AnalysisData> list) {
+        analysis_analysisTableView.setItems(list);
+    }
+
+    @Override
+    public void analysis_setProgressBarValue(double value) {
+        analysis_progressBar.setProgress(value);
+    }
+
+    @Override
+    public void analysis_setProgressLabelText(String value) {
+        analysis_progressLabel.setText(value);
+    }
+
+    @Override
+    public void uploader_setNewRecordDataList(ObservableList<NewRecordData> list) {
+        uploader_recordTableView.setItems(list);
+    }
+
+    @Override
+    public String option_getCacheDirectory() {
+        return option_cacheDirectoryTextField.getText();
+    }
+
+    @Override
+    public void option_setCacheDirectory(String value) {
+        option_cacheDirectoryTextField.setText(value);
+    }
+
+    @Override
+    public void option_setupCaptureDelaySlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        optionCaptureDelayLinker.setDefaultValue(defaultValue);
+        optionCaptureDelayLinker.setLimitMax(limitMax);
+        optionCaptureDelayLinker.setLimitMin(limitMin);
+        optionCaptureDelayLinker.setValue(value);
+    }
+
+    @Override
+    public int option_getCaptureDelay() {
+        return optionCaptureDelayLinker.getValue();
+    }
+
+    @Override
+    public void option_setupKeyInputDurationSlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        optionKeyInputDurationLinker.setDefaultValue(defaultValue);
+        optionKeyInputDurationLinker.setLimitMax(limitMax);
+        optionKeyInputDurationLinker.setLimitMin(limitMin);
+        optionKeyInputDurationLinker.setValue(value);
+    }
+
+    @Override
+    public int option_getKeyInputDuration() {
+        return optionKeyInputDurationLinker.getValue();
+    }
+
+    @Override
+    public void option_setupAnalysisThreadCountSlider(int defaultValue, int max, int value) {
+        new CountSliderSetter(max, 2).attachTo(option_analysisThreadCountSlider);
+
+        optionAnalysisThreadCountLinker.setDefaultValue(defaultValue);
+        optionAnalysisThreadCountLinker.setLimitMax(max);
+        optionAnalysisThreadCountLinker.setLimitMin(1);
+        optionAnalysisThreadCountLinker.setValue(value);
+    }
+
+    @Override
+    public int option_getAnalysisThreadCount() {
+        return optionAnalysisThreadCountLinker.getValue();
+    }
+
+    @Override
+    public String option_getAccountFile() {
+        return option_accountFileTextField.getText();
+    }
+
+    @Override
+    public void option_setAccountFile(String value) {
+        option_accountFileTextField.setText(value);
+    }
+
+    @Override
+    public void option_setupRecordUploadDelaySlider(int defaultValue, int limitMax, int limitMin,
+            int value) {
+        optionRecordUploadDelayLinker.setDefaultValue(defaultValue);
+        optionRecordUploadDelayLinker.setLimitMax(limitMax);
+        optionRecordUploadDelayLinker.setLimitMin(limitMin);
+        optionRecordUploadDelayLinker.setValue(value);
+    }
+
+    @Override
+    public int option_getRecordUploadDelay() {
+        return optionRecordUploadDelayLinker.getValue();
     }
 
     public static class ViewerRecordController {

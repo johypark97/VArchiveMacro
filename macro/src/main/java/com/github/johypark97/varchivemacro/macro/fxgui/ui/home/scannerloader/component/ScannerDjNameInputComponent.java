@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
+package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.component;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
@@ -13,9 +13,9 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class ScannerDjNameInputComponent extends VBox {
-    private static final String FXML_PATH = "/fxml/home/ScannerDjNameInput.fxml";
+    private static final String FXML_PATH = "/fxml/home/scannerloader/ScannerDjNameInput.fxml";
 
-    private final HomeViewImpl view;
+    public Runnable onLoad;
 
     @FXML
     public Label djNameErrorLabel;
@@ -29,9 +29,7 @@ public class ScannerDjNameInputComponent extends VBox {
     @FXML
     public Button loadButton;
 
-    public ScannerDjNameInputComponent(HomeViewImpl view) {
-        this.view = view;
-
+    public ScannerDjNameInputComponent() {
         URL url = ScannerDjNameInputComponent.class.getResource(FXML_PATH);
         MvpFxml.loadRoot(this, url, Language.getInstance().getResourceBundle());
     }
@@ -43,12 +41,11 @@ public class ScannerDjNameInputComponent extends VBox {
         djNameErrorLabel.setVisible(false);
         djNameErrorTooltip.setShowDelay(Duration.ZERO);
 
-        loadButton.setOnAction(event -> {
-            String djName = djNameTextField.getText().trim();
-            djNameTextField.setText(djName);
+        loadButton.setOnAction(event -> onLoad.run());
+    }
 
-            view.presenter.scanner_front_loadRemoteRecord(djName);
-        });
+    public String getDjNameText() {
+        return djNameTextField.getText();
     }
 
     public void showError(String message) {
