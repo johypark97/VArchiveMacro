@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultLicenseModel;
@@ -87,6 +88,10 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void onStopView() {
+        if (ServiceManager.getInstance().isRunningAny()) {
+            return;
+        }
+
         if (scannerView != null) {
             scannerView.stopView();
         }
