@@ -29,15 +29,26 @@
       // The Tune of the Azure Light ~Parang Remix~
       "id": 583,
       "value": "The Tune of the Azure Light ~Parang Re"
+    },
+    {
+      // Tekken Tag Tournament Piano Intro -Massive True Mix-
+      "id": 650,
+      "value": "Tekken Tag Tournament Piano Intro -Ma"
     }
   ],
   "remap": [
     {
+      // id: 42
+      "to": "voIdenuit",
+      "from": [
+        "voIdenut"
+      ]
+    },
+    {
       // id: 211
       "to": "sOmUCHiNLUV~MeIodicTwistedMix",
       "from": [
-        "sOmUCHiNLUV~MaeIodicTwistedMix",
-        "sOmUCHiNLUV~MaeIodicTwistedMix~"
+        "sOmUCHiNLUV~MaeIodicTwistedMix"
       ]
     },
     {
@@ -48,11 +59,39 @@
       ]
     },
     {
+      // id: 556
+      "to": "HeII'o",
+      "from": [
+        "HeIi'o"
+      ]
+    },
+    {
       // id: 583
       "to": "TheTuneoftheAzureLight~ParangRe",
       "from": [
         "TheTuneoftheAzureLight~ParangRen",
-        "TheTuneoftheAzureLight~ParangReiI"
+        "TheTuneoftheAzureLight~ParangRem"
+      ]
+    },
+    {
+      // id: 641
+      "to": "EmptyYourMind1st",
+      "from": [
+        "EmptyYourMind1ist"
+      ]
+    },
+    {
+      // id: 643
+      "to": "Fiji-ParaisoMix-(EternaIParadise)",
+      "from": [
+        "FijiParaisoMix-(EternaIParadise)"
+      ]
+    },
+    {
+      // id: 650
+      "to": "TekkenTagTournamentPianoIntro-Ma",
+      "from": [
+        "TekkenTagTournamentPianoIntro-Mas"
       ]
     }
   ]
