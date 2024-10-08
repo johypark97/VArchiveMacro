@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
+import com.github.johypark97.varchivemacro.macro.api.VersionChecker;
+import com.github.johypark97.varchivemacro.macro.api.data.GitHubRelease;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultLicenseModel;
@@ -20,9 +22,11 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.Open
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicensePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseViewImpl;
+import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 import javafx.application.Platform;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -84,6 +88,26 @@ public class HomePresenterImpl implements HomePresenter {
 
         Platform.runLater(scannerLoaderView::startView);
         Platform.runLater(macroView::startView);
+
+        CompletableFuture.runAsync(() -> {
+            VersionChecker versionChecker = new VersionChecker();
+
+            try {
+                versionChecker.fetch();
+            } catch (IOException e) {
+                Platform.runLater(() -> view.showError(
+                        Language.getInstance().getString("home.dialog.updateCheck.error"), e));
+                return;
+            } catch (InterruptedException e) {
+                return;
+            }
+
+            if (versionChecker.isUpdated(BuildInfo.version)) {
+                GitHubRelease latestRelease = versionChecker.getLatestRelease();
+                Platform.runLater(() -> view.showUpdateNotification(BuildInfo.version,
+                        latestRelease.getVersion(), latestRelease.htmlUrl()));
+            }
+        });
     }
 
     @Override

@@ -15,6 +15,10 @@
   <entry key="common.unselectAll">Unselect All</entry>
   <entry key="home.dialog.languageChange.content">The changed language will be applied after the program restarts.</entry>
   <entry key="home.dialog.languageChange.header">Language changed</entry>
+  <entry key="home.dialog.updateCheck.error">Update check error</entry>
+  <entry key="home.dialog.updateCheck.message">Current Version: %s%nLatest Version: %s</entry>
+  <entry key="home.dialog.updateCheck.title">Update Check</entry>
+  <entry key="home.dialog.updateCheck.updated">A new version is updated.</entry>
   <entry key="home.menu.about">About</entry>
   <entry key="home.menu.about.about">About</entry>
   <entry key="home.menu.about.osl">Open Source License</entry>

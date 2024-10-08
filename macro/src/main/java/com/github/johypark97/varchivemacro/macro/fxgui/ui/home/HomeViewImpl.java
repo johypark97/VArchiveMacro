@@ -7,8 +7,11 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomePresente
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
+import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import javafx.fxml.FXML;
@@ -18,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
@@ -138,6 +142,38 @@ public class HomeViewImpl extends BorderPane implements HomeView {
         alert.showAndWait();
 
         return ButtonType.OK.equals(alert.getResult());
+    }
+
+    @Override
+    public void showUpdateNotification(String currentVersion, String latestVersion, String url) {
+        Language language = Language.getInstance();
+
+        Alert alert = AlertBuilder.information()
+                .setTitle(language.getString("home.dialog.updateCheck.title"))
+                .setHeaderText(language.getString("home.dialog.updateCheck.updated"))
+                .setOwner(stage).alert;
+
+        VBox box = new VBox();
+        box.setSpacing(5);
+        {
+            box.getChildren().add(new Label(
+                    language.getFormatString("home.dialog.updateCheck.message", currentVersion,
+                            latestVersion)));
+
+            Hyperlink hyperlink = new Hyperlink(url);
+            hyperlink.setOnAction(event -> {
+                try {
+                    Desktop.getDesktop().browse(new URI(url));
+                } catch (IOException | URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            box.getChildren().add(hyperlink);
+        }
+        alert.getDialogPane().setContent(box);
+
+        Toolkit.getDefaultToolkit().beep();
+        alert.showAndWait();
     }
 
     @Override

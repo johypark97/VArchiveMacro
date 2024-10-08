@@ -24,6 +24,8 @@ public interface Home {
 
         boolean showConfirmation(String header, String content);
 
+        void showUpdateNotification(String currentVersion, String latestVersion, String url);
+
         void setScannerTabContent(Node value);
 
         void setMacroTabContent(Node value);

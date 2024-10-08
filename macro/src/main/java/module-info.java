@@ -2,6 +2,7 @@ import com.github.johypark97.varchivemacro.macro.spi.LanguageProvider;
 import com.github.johypark97.varchivemacro.macro.spi.LanguageProviderImpl;
 
 module varchivemacro.macro {
+    requires java.net.http;
     requires java.sql;
 
     requires varchivemacro.lib.common;
@@ -39,6 +40,7 @@ module varchivemacro.macro {
     uses LanguageProvider;
 
     // exports
+    exports com.github.johypark97.varchivemacro.macro.api.data to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.fxgui.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.fxgui.model.service to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer to varchivemacro.lib.jfx;
