@@ -10,6 +10,7 @@ var isDev = true
 
 plugins {
     id("buildlogic.java-application-conventions")
+    id("buildlogic.java-javacpp-conventions")
 
     // id("com.github.johnrengelman.shadow") version "8.1.1"
     alias(libs.plugins.launch4j)

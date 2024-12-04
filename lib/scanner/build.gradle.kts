@@ -1,6 +1,7 @@
 val buildVersion = Version.makeVersionString()
 
 plugins {
+    id("buildlogic.java-javacpp-conventions")
     id("buildlogic.java-library-conventions")
 }
 

@@ -1,6 +1,5 @@
 import org.gradle.accessors.dm.LibrariesForLibs
 
-val javacppPlatform by extra("windows-x86_64")
 val libs = the<LibrariesForLibs>()
 
 plugins {
@@ -8,9 +7,6 @@ plugins {
 
     // JavaFX
     id("org.openjfx.javafxplugin")
-
-    // gradle-javacpp-platform
-    id("org.bytedeco.gradle-javacpp-platform")
 
     // Static analysis tools
     pmd
@@ -25,7 +21,6 @@ dependencies {
     implementation(libs.guava)
     implementation(libs.jnativehook)
     implementation(libs.sqlite.jdbc)
-    implementation(libs.tesseract.platform)
 
     // -------- Logging --------
     implementation(libs.slf4j.api)
