@@ -163,7 +163,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
     private void findAndLinkSongAndCapture(Map<String, List<SongData>> lookup,
             CaptureData captureData) {
         String captureDataTitle = captureData.scannedTitle.get();
-        LOGGER.atDebug().log("[findAndLinkSongAndCapture()] {}", captureData);
+        LOGGER.atTrace().log("[findAndLinkSongAndCapture()] {}", captureData);
 
         // check if there is an exact match
         {
@@ -171,9 +171,9 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
             if (list != null) {
                 list.forEach(x -> {
                     if (!linkSongAndCapture(x, captureData)) {
-                        LOGGER.atDebug().log("[exact found - link skipped] {}", x);
+                        LOGGER.atTrace().log("[exact found - link skipped] {}", x);
                     } else {
-                        LOGGER.atDebug().log("[exact found - linked] {}, linked: {}", x,
+                        LOGGER.atTrace().log("[exact found - linked] {}, linked: {}", x,
                                 x.linkMapProperty().get());
                     }
                 });
@@ -190,9 +190,9 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
             if (map.size() <= DUPLICATE_LIMIT) {
                 map.values().forEach(x -> x.forEach(y -> {
                     if (!linkSongAndCapture(y, captureData)) {
-                        LOGGER.atDebug().log("[similar found - link skipped] {}", y);
+                        LOGGER.atTrace().log("[similar found - link skipped] {}", y);
                     } else {
-                        LOGGER.atDebug().log("[similar found - linked] {}, linked: {}", y,
+                        LOGGER.atTrace().log("[similar found - linked] {}, linked: {}", y,
                                 y.linkMapProperty().get());
                     }
                 }));
@@ -201,7 +201,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
             }
         }
 
-        LOGGER.atDebug().log("[not found] {}", captureData);
+        LOGGER.atTrace().log("[not found] {}", captureData);
     }
 
     @Override

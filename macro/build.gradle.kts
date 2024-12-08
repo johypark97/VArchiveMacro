@@ -31,7 +31,7 @@ application {
     applicationName = appName
     executableDir = ""
 
-    if (isDev) applicationDefaultJvmArgs += "-Dlog.level=ALL"
+    if (isDev) applicationDefaultJvmArgs += "-Dlog.level=DEBUG"
 
     // Include '$projectDir/data' directory in archive files of the distribution task.
     applicationDistribution.into("data") {
