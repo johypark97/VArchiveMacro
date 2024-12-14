@@ -32,7 +32,7 @@ public interface ConfigModel {
         public static final int KEY_INPUT_DURATION_MIN = 20;
 
         public static final int ANALYSIS_THREAD_COUNT_DEFAULT =
-                Math.max(1, Runtime.getRuntime().availableProcessors() / 2);
+                Math.max(1, Runtime.getRuntime().availableProcessors() / 4);
         public static final int ANALYSIS_THREAD_COUNT_MAX =
                 Runtime.getRuntime().availableProcessors();
 

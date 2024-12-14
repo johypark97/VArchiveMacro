@@ -732,7 +732,9 @@ public class ScannerViewImpl extends TabPane implements ScannerView {
                     case CANCELED -> "scanner.analysis.table.status.canceled";
                     case DONE -> "scanner.analysis.table.status.done";
                     case ERROR -> "scanner.analysis.table.status.error";
+                    case LOADING -> "scanner.analysis.table.status.loading";
                     case READY -> "scanner.analysis.table.status.ready";
+                    case WAITING -> "scanner.analysis.table.status.waiting";
                 };
 
                 setText(language.getString(key));

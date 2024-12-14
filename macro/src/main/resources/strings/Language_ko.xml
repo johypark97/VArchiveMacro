@@ -67,7 +67,9 @@
   <entry key="scanner.analysis.table.status.canceled">취소됨</entry>
   <entry key="scanner.analysis.table.status.done">완료</entry>
   <entry key="scanner.analysis.table.status.error">에러</entry>
+  <entry key="scanner.analysis.table.status.loading">이미지 로딩 중</entry>
   <entry key="scanner.analysis.table.status.ready">준비 중</entry>
+  <entry key="scanner.analysis.table.status.waiting">분석 대기 중</entry>
   <entry key="scanner.analysis.table.title">제목</entry>
   <entry key="scanner.capture">캡처</entry>
   <entry key="scanner.capture.categoryList">카테고리 리스트</entry>

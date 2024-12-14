@@ -89,7 +89,9 @@ public class AnalysisDataManager {
             CANCELED,
             DONE,
             ERROR,
-            READY
+            LOADING,
+            READY,
+            WAITING
         }
     }
 

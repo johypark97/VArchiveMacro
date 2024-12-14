@@ -67,7 +67,9 @@
   <entry key="scanner.analysis.table.status.canceled">Canceled</entry>
   <entry key="scanner.analysis.table.status.done">Done</entry>
   <entry key="scanner.analysis.table.status.error">Error</entry>
+  <entry key="scanner.analysis.table.status.loading">Loading images</entry>
   <entry key="scanner.analysis.table.status.ready">Ready</entry>
+  <entry key="scanner.analysis.table.status.waiting">Waiting for analysis</entry>
   <entry key="scanner.analysis.table.title">Title</entry>
   <entry key="scanner.capture">Capture</entry>
   <entry key="scanner.capture.categoryList">Category List</entry>

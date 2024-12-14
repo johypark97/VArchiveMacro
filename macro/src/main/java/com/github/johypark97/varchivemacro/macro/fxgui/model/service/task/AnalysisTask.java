@@ -2,9 +2,12 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model.service.task;
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
+import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrInitializationError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
+import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
@@ -18,16 +21,24 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.ocr.ScannerOcr;
 import com.google.common.base.CharMatcher;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +54,9 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
     private final CacheManager cacheManager;
     private final Runnable onDataReady;
-    private final int analysisThreadCount;
+    private final int analyzerThreadCount;
+    private final int imagePreloaderThreadCount;
+    private final int imagePreloadingLimit;
 
     private final WeakReference<AnalysisDataManager> analysisDataManagerReference;
     private final WeakReference<ScanDataManager> scanDataManagerReference;
@@ -52,10 +65,12 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private int totalTaskCount;
 
     public AnalysisTask(Runnable onDataReady, ScanDataManager scanDataManager,
-            AnalysisDataManager analysisDataManager, Path cacheDirectoryPath,
-            int analysisThreadCount) {
-        this.analysisThreadCount = analysisThreadCount;
+            AnalysisDataManager analysisDataManager, Path cacheDirectoryPath, int threadCount) {
         this.onDataReady = onDataReady;
+
+        analyzerThreadCount = threadCount;
+        imagePreloaderThreadCount = (int) (Math.log(threadCount) / Math.log(2));
+        imagePreloadingLimit = threadCount * 3 / 2;
 
         cacheManager = new CacheManager(cacheDirectoryPath);
 
@@ -71,13 +86,16 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         return scanDataManagerReference.get();
     }
 
-    private void analyze(OcrWrapper ocr, CollectionArea area, AnalysisData analysisData) {
+    private byte[] loadImage(AnalysisData analysisData) throws IOException {
+        return ImageConverter.imageToPngBytes(
+                cacheManager.read(analysisData.captureData.get().idProperty().get()));
+    }
+
+    private void analyze(OcrWrapper ocr, CollectionArea area, AnalysisData analysisData,
+            byte[] pngBytes) throws PixError {
         analysisData.status.set(Status.ANALYZING);
 
-        CaptureData captureData = analysisData.captureData.get();
-
-        try (PixWrapper pix = new PixWrapper(
-                cacheManager.createPath(captureData.idProperty().get()))) {
+        try (PixWrapper pix = new PixWrapper(pngBytes)) {
             // preprocessing
             PixPreprocessor.preprocessCell(pix);
 
@@ -111,9 +129,6 @@ public class AnalysisTask extends InterruptibleTask<Void> {
             }
 
             analysisData.status.set(Status.DONE);
-        } catch (Exception e) {
-            LOGGER.atError().setCause(e).log();
-            analysisData.setException(e);
         }
     }
 
@@ -125,6 +140,8 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
     @Override
     protected Void callTask() throws Exception {
+        Instant start = Instant.now();
+
         // throw an exception if there is no scan data
         if (getScanDataManager().isEmpty()) {
             throw new IllegalStateException("ScanDataManager is empty");
@@ -137,6 +154,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
         updateProgress(0, 1);
 
+        // prepare AnalysisData and filter out those that are not suitable for analysis
         List<AnalysisData> dataList = new LinkedList<>();
         getScanDataManager().copySongDataList().stream().filter(x -> x.selected.get())
                 .forEach(x -> {
@@ -165,6 +183,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         totalTaskCount = dataList.size();
         onDataReady.run();
 
+        // prepare CollectionArea using the first capture image
         CollectionArea area;
         {
             AnalysisData captureData = dataList.get(0);
@@ -174,35 +193,119 @@ public class AnalysisTask extends InterruptibleTask<Void> {
             area = CollectionAreaFactory.create(resolution);
         }
 
-        Map<Future<?>, AnalysisData> futureAnalysisDataMap;
+        // run tasks
+        List<CompletableFuture<Void>> cancelableFutureList = new ArrayList<>();
+        List<CompletableFuture<Void>> imagePreoaderFutureList = new ArrayList<>();
 
-        try (OcrWrapper ocr = new ScannerOcr()) {
-            ExecutorService executorService = Executors.newFixedThreadPool(analysisThreadCount);
-            futureAnalysisDataMap =
-                    dataList.stream().collect(Collectors.toMap(x -> executorService.submit(() -> {
-                        analyze(ocr, area, x);
-                        increaseProgress();
-                    }), x -> x));
-            executorService.shutdown();
+        BlockingQueue<Entry<AnalysisData, byte[]>> preloadedImageQueue =
+                new ArrayBlockingQueue<>(imagePreloadingLimit);
 
-            while (true) {
+        ExecutorService imagePreloaderExecutorService =
+                Executors.newFixedThreadPool(imagePreloaderThreadCount);
+
+        // run image preloader
+        dataList.forEach(analysisData -> {
+            CompletableFuture<Void> cancelableFuture = CompletableFuture.runAsync(() -> {
+            }, imagePreloaderExecutorService);
+            cancelableFutureList.add(cancelableFuture);
+
+            CompletableFuture<Void> imagePreloaderFuture = cancelableFuture.thenRun(() -> {
                 try {
-                    if (!executorService.awaitTermination(1, TimeUnit.DAYS)) {
-                        throw new AssertionError("Unexpected timeout");
-                    }
-
-                    break;
-                } catch (InterruptedException e) {
-                    executorService.shutdownNow();
+                    analysisData.status.set(Status.LOADING);
+                    preloadedImageQueue.put(Map.entry(analysisData, loadImage(analysisData)));
+                    analysisData.status.set(Status.WAITING);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
+            }).whenComplete((unused, throwable) -> {
+                if (throwable != null) {
+                    if (throwable instanceof CompletionException e) {
+                        Throwable cause = e.getCause();
+                        if (cause instanceof CancellationException) {
+                            analysisData.status.set(Status.CANCELED);
+                        } else {
+                            LOGGER.atError().setCause(e).log();
+                            analysisData.setException(e);
+                        }
+                    } else {
+                        LOGGER.atError().setCause(throwable)
+                                .log("Unexpected AnalysisTask exception");
+                        analysisData.setException(new Exception(throwable));
+                    }
+                }
+            });
+            imagePreoaderFutureList.add(imagePreloaderFuture);
+        });
+        imagePreloaderExecutorService.shutdown();
+
+        // run analyzer (load balancing)
+        ExecutorService analyzerExecutorService = Executors.newFixedThreadPool(analyzerThreadCount);
+        for (int i = 0; i < analyzerThreadCount; i++) {
+            analyzerExecutorService.submit(() -> {
+                try (OcrWrapper ocr = new ScannerOcr()) {
+                    while (!Thread.currentThread().isInterrupted()) {
+                        Entry<AnalysisData, byte[]> entry = preloadedImageQueue.take();
+
+                        AnalysisData analysisData = entry.getKey();
+                        byte[] pngBytes = entry.getValue();
+
+                        try {
+                            analyze(ocr, area, analysisData, pngBytes);
+                            increaseProgress();
+                        } catch (Exception e) {
+                            LOGGER.atError().setCause(e).log();
+                            analysisData.setException(e);
+                        }
+                    }
+                } catch (OcrInitializationError e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException ignored) {
+                }
+            });
+        }
+        analyzerExecutorService.shutdown();
+
+        // wait for image preloading tasks to be complete or cancel it if interrupted
+        while (true) {
+            try {
+                CompletableFuture.allOf(imagePreoaderFutureList.toArray(CompletableFuture[]::new))
+                        .get();
+                break;
+            } catch (InterruptedException e) {
+                cancelableFutureList.forEach(x -> x.cancel(false));
+            } catch (Exception e) {
+                break;
             }
         }
 
-        futureAnalysisDataMap.forEach((future, analysisData) -> {
-            if (!future.isDone()) {
-                analysisData.status.set(Status.CANCELED);
+        // wait for image preloading tasks that have already started, to be moved to the analysis task.
+        while (!preloadedImageQueue.isEmpty()) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException ignored) {
             }
-        });
+        }
+
+        // terminate analyzer threads
+        analyzerExecutorService.shutdownNow();
+
+        // wait for analyzer threads to complete analysis tasks and to be terminated
+        while (true) {
+            try {
+                if (!analyzerExecutorService.awaitTermination(1, TimeUnit.DAYS)) {
+                    throw new AssertionError("Unexpected timeout");
+                }
+
+                break;
+            } catch (InterruptedException ignored) {
+            }
+        }
+
+        if (LOGGER.isInfoEnabled()) {
+            Instant end = Instant.now();
+            LOGGER.info("AnalysisTask Execution Time: {} [s]",
+                    Duration.between(start, end).toMillis() / 1000.0);
+        }
 
         return null;
     }
