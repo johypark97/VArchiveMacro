@@ -1,0 +1,15 @@
+.tab.tab-color-green {
+    -fx-background-color: linear-gradient(#A0FFA0, #80FF80);
+}
+
+.tab:hover.tab-color-green {
+    -fx-background-color: linear-gradient(#C0FFC0, #A0FFA0);
+}
+
+.tab.tab-color-red {
+    -fx-background-color: linear-gradient(#FFA0A0, #FF8080);
+}
+
+.tab:hover.tab-color-red {
+    -fx-background-color: linear-gradient(#FFC0C0, #FFA0A0);
+}

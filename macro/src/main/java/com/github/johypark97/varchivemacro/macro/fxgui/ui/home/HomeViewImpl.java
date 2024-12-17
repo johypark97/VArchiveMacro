@@ -5,13 +5,11 @@ import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.GlobalResource;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.TabHighlightType;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
-import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import javafx.fxml.FXML;
@@ -21,7 +19,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
@@ -37,6 +34,9 @@ import javafx.stage.Window;
 public class HomeViewImpl extends BorderPane implements HomeView {
     private static final String FXML_PATH = "/fxml/home/Home.fxml";
     private static final String GITHUB_URL = "https://github.com/johypark97/VArchiveMacro";
+
+    private static final String STYLE_CLASS_TAB_COLOR_GREEN = "tab-color-green";
+    private static final String STYLE_CLASS_TAB_COLOR_RED = "tab-color-red";
 
     private final Stage stage;
 
@@ -64,11 +64,15 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     @FXML
     public Tab macroTab;
 
+    @FXML
+    public Tab updateCheckTab;
+
     public HomeViewImpl(Stage stage) {
         this.stage = stage;
 
         URL fxmlUrl = HomeViewImpl.class.getResource(FXML_PATH);
         URL globalCss = GlobalResource.getGlobalCss();
+        URL tabColorCss = GlobalResource.getTabColorCss();
         URL tableColorCss = GlobalResource.getTableColorCss();
 
         try {
@@ -80,6 +84,7 @@ public class HomeViewImpl extends BorderPane implements HomeView {
 
         Scene scene = new Scene(this);
         scene.getStylesheets().add(globalCss.toExternalForm());
+        scene.getStylesheets().add(tabColorCss.toExternalForm());
         scene.getStylesheets().add(tableColorCss.toExternalForm());
         stage.setScene(scene);
 
@@ -145,38 +150,6 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     }
 
     @Override
-    public void showUpdateNotification(String currentVersion, String latestVersion, String url) {
-        Language language = Language.getInstance();
-
-        Alert alert = AlertBuilder.information()
-                .setTitle(language.getString("home.dialog.updateCheck.title"))
-                .setHeaderText(language.getString("home.dialog.updateCheck.updated"))
-                .setOwner(stage).alert;
-
-        VBox box = new VBox();
-        box.setSpacing(5);
-        {
-            box.getChildren().add(new Label(
-                    language.getFormatString("home.dialog.updateCheck.message", currentVersion,
-                            latestVersion)));
-
-            Hyperlink hyperlink = new Hyperlink(url);
-            hyperlink.setOnAction(event -> {
-                try {
-                    Desktop.getDesktop().browse(new URI(url));
-                } catch (IOException | URISyntaxException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            box.getChildren().add(hyperlink);
-        }
-        alert.getDialogPane().setContent(box);
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
-    }
-
-    @Override
     public void setScannerTabContent(Node value) {
         scannerTab.setContent(value);
     }
@@ -184,6 +157,11 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     @Override
     public void setMacroTabContent(Node value) {
         macroTab.setContent(value);
+    }
+
+    @Override
+    public void setUpdateCheckTabContent(Node value) {
+        updateCheckTab.setContent(value);
     }
 
     @Override
@@ -213,5 +191,27 @@ public class HomeViewImpl extends BorderPane implements HomeView {
         alert.getDialogPane().setContent(box);
 
         alert.showAndWait();
+    }
+
+    @Override
+    public void highlightUpdateCheckTab(TabHighlightType type) {
+        if (updateCheckTab.isSelected()) {
+            return;
+        }
+
+        updateCheckTab.getStyleClass()
+                .removeAll(STYLE_CLASS_TAB_COLOR_GREEN, STYLE_CLASS_TAB_COLOR_RED);
+
+        updateCheckTab.getStyleClass().add(switch (type) {
+            case GREEN -> STYLE_CLASS_TAB_COLOR_GREEN;
+            case RED -> STYLE_CLASS_TAB_COLOR_RED;
+        });
+
+        updateCheckTab.setOnSelectionChanged(event -> {
+            updateCheckTab.setOnSelectionChanged(null);
+
+            updateCheckTab.getStyleClass()
+                    .removeAll(STYLE_CLASS_TAB_COLOR_GREEN, STYLE_CLASS_TAB_COLOR_RED);
+        });
     }
 }

@@ -6,6 +6,12 @@ import java.util.Locale;
 import javafx.scene.Node;
 
 public interface Home {
+    enum TabHighlightType {
+        GREEN,
+        RED
+    }
+
+
     interface HomePresenter extends CommonPresenter<HomeView, HomePresenter> {
         void home_changeLanguage(Locale locale);
 
@@ -24,12 +30,14 @@ public interface Home {
 
         boolean showConfirmation(String header, String content);
 
-        void showUpdateNotification(String currentVersion, String latestVersion, String url);
-
         void setScannerTabContent(Node value);
 
         void setMacroTabContent(Node value);
 
+        void setUpdateCheckTabContent(Node value);
+
         void home_openAbout();
+
+        void highlightUpdateCheckTab(TabHighlightType type);
     }
 }

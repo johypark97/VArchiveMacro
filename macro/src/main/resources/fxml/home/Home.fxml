@@ -41,6 +41,7 @@
       <tabs>
         <Tab closable="false" text="%home.tab.scanner" fx:id="scannerTab"/>
         <Tab closable="false" text="%home.tab.macro" fx:id="macroTab"/>
+        <Tab closable="false" text="%home.tab.updateCheck" fx:id="updateCheckTab"/>
       </tabs>
     </TabPane>
   </center>

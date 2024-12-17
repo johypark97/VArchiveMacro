@@ -15,10 +15,6 @@
   <entry key="common.unselectAll">전체 선택해제</entry>
   <entry key="home.dialog.languageChange.content">변경한 언어는 프로그램 재시작 후 적용됩니다.</entry>
   <entry key="home.dialog.languageChange.header">언어 변경됨</entry>
-  <entry key="home.dialog.updateCheck.error">업데이트 확인 오류</entry>
-  <entry key="home.dialog.updateCheck.message">현재 버전: %s%n최신 버전: %s</entry>
-  <entry key="home.dialog.updateCheck.title">업데이트 확인</entry>
-  <entry key="home.dialog.updateCheck.updated">새로운 버전이 업데이트되었습니다.</entry>
   <entry key="home.menu.about">정보</entry>
   <entry key="home.menu.about.about">정보</entry>
   <entry key="home.menu.about.osl">오픈 소스 라이선스</entry>
@@ -29,6 +25,15 @@
   <entry key="home.menu.language.ko">한국어</entry>
   <entry key="home.tab.macro">매크로</entry>
   <entry key="home.tab.scanner">컬렉션 스캐너</entry>
+  <entry key="home.tab.updateCheck">업데이트 확인</entry>
+  <entry key="home.updateCheck.checkAgainButton">다시 확인</entry>
+  <entry key="home.updateCheck.checking">업데이트 확인중...</entry>
+  <entry key="home.updateCheck.error.detail">자세히 보기</entry>
+  <entry key="home.updateCheck.error.exception">업데이트 확인 에러</entry>
+  <entry key="home.updateCheck.error.ioexception">인터넷 통신 오류</entry>
+  <entry key="home.updateCheck.up-to-date">최신 버전입니다.</entry>
+  <entry key="home.updateCheck.updated.message">새로운 버전이 업데이트되었습니다.</entry>
+  <entry key="home.updateCheck.updated.version">현재 버전: %s%n최신 버전: %s</entry>
   <entry key="linkEditor.close">닫기</entry>
   <entry key="linkEditor.dialog.link.header">다음 캡처를 연결하시겠습니까?</entry>
   <entry key="linkEditor.dialog.unlink.header">모든 캡처 연결을 해제하시겠습니까?</entry>

@@ -24,6 +24,7 @@ module varchivemacro.macro {
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scanner to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.component to javafx.fxml;
+    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home.updatecheck to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense to javafx.fxml;
 
@@ -50,6 +51,7 @@ module varchivemacro.macro {
     exports com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scanner to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.component to varchivemacro.lib.jfx;
+    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.home.updatecheck to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro;
