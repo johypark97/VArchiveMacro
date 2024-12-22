@@ -38,60 +38,17 @@
   ],
   "remap": [
     {
-      // id: 42
-      "to": "voIdenuit",
+      // id: 105
+      "to": "A.I",
       "from": [
-        "voIdenut"
+        "A."
       ]
     },
     {
-      // id: 211
-      "to": "sOmUCHiNLUV~MeIodicTwistedMix",
+      // id: 243
+      "to": "Ruti'n",
       "from": [
-        "sOmUCHiNLUV~MaeIodicTwistedMix"
-      ]
-    },
-    {
-      // id: 428
-      "to": "최종무곡",
-      "from": [
-        "최종무곡부작"
-      ]
-    },
-    {
-      // id: 556
-      "to": "HeII'o",
-      "from": [
-        "HeIi'o"
-      ]
-    },
-    {
-      // id: 583
-      "to": "TheTuneoftheAzureLight~ParangRe",
-      "from": [
-        "TheTuneoftheAzureLight~ParangRen",
-        "TheTuneoftheAzureLight~ParangRem"
-      ]
-    },
-    {
-      // id: 641
-      "to": "EmptyYourMind1st",
-      "from": [
-        "EmptyYourMind1ist"
-      ]
-    },
-    {
-      // id: 643
-      "to": "Fiji-ParaisoMix-(EternaIParadise)",
-      "from": [
-        "FijiParaisoMix-(EternaIParadise)"
-      ]
-    },
-    {
-      // id: 650
-      "to": "TekkenTagTournamentPianoIntro-Ma",
-      "from": [
-        "TekkenTagTournamentPianoIntro-Mas"
+        "Ruti'n)"
       ]
     }
   ]
