@@ -17,9 +17,14 @@ public class TitleData {
     @Expose
     public final List<RemapData> remap;
 
-    public TitleData(List<ClippedData> clipped, List<RemapData> remap) {
+    @Expose
+    public final List<RemoteTitleData> remoteTitle;
+
+    public TitleData(List<ClippedData> clipped, List<RemapData> remap,
+            List<RemoteTitleData> remoteTitle) {
         this.clipped = clipped;
         this.remap = remap;
+        this.remoteTitle = remoteTitle;
     }
 
     public static TitleData loadJson(Path path) throws IOException {
@@ -39,5 +44,9 @@ public class TitleData {
 
         @Expose
         public List<String> from;
+    }
+
+
+    public record RemoteTitleData(@Expose int id, @Expose String value) {
     }
 }

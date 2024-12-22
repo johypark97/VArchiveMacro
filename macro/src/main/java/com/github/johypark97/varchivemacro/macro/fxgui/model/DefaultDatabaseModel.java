@@ -57,4 +57,9 @@ public class DefaultDatabaseModel implements DatabaseModel {
         return songDatabase.songList().stream().filter(x -> x.priority() > 0).map(Song::id)
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public String getRemoteTitle(int id) {
+        return titleTool.getRemoteTitle(id);
+    }
 }

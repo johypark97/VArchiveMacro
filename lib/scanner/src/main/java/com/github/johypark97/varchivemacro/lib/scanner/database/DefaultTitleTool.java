@@ -8,13 +8,15 @@ import java.util.Map;
 
 public class DefaultTitleTool implements TitleTool {
     private final Map<Integer, String> clippedTitleMap = new HashMap<>();
+    private final Map<Integer, String> remoteTitleMap = new HashMap<>();
     private final Map<String, String> scannedTitleRemap = new HashMap<>();
 
     public DefaultTitleTool(Path path) throws IOException {
         TitleData titleData = TitleData.loadJson(path);
 
-        titleData.clipped.forEach((x) -> clippedTitleMap.put(x.id(), x.value()));
-        titleData.remap.forEach((x) -> x.from.forEach((y) -> scannedTitleRemap.put(y, x.to)));
+        titleData.clipped.forEach(x -> clippedTitleMap.put(x.id(), x.value()));
+        titleData.remap.forEach(x -> x.from.forEach(y -> scannedTitleRemap.put(y, x.to)));
+        titleData.remoteTitle.forEach(x -> remoteTitleMap.put(x.id(), x.value()));
     }
 
     @Override
@@ -30,5 +32,10 @@ public class DefaultTitleTool implements TitleTool {
     @Override
     public String remapScannedTitle(String scannedTitle) {
         return scannedTitleRemap.getOrDefault(scannedTitle, scannedTitle);
+    }
+
+    @Override
+    public String getRemoteTitle(int id) {
+        return remoteTitleMap.get(id);
     }
 }

@@ -22,4 +22,6 @@ public interface TitleTool {
     String getClippedTitleOrDefault(int id, String defaultValue);
 
     String remapScannedTitle(String scannedTitle);
+
+    String getRemoteTitle(int id);
 }

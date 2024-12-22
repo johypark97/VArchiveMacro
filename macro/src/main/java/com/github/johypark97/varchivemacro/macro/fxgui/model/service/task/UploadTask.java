@@ -65,9 +65,13 @@ public class UploadTask extends InterruptibleTask<Void> {
     }
 
     private RequestJson recordToRequest(Song song, LocalRecord record) {
+        String title = getDatabaseModel().getRemoteTitle(song.id());
+        if (title == null) {
+            title = song.title();
+        }
+
         RequestJson requestJson =
-                new RequestJson(song.title(), record.button, record.pattern, record.rate,
-                        record.maxCombo);
+                new RequestJson(title, record.button, record.pattern, record.rate, record.maxCombo);
         if (getDatabaseModel().duplicateTitleSongIdSet().contains(song.id())) {
             requestJson.composer = song.composer();
         }

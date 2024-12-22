@@ -20,4 +20,6 @@ public interface DatabaseModel {
     Map<String, List<Song>> categoryNameSongListMap();
 
     Set<Integer> duplicateTitleSongIdSet();
+
+    String getRemoteTitle(int id);
 }
