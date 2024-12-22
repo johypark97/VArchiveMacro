@@ -91,6 +91,7 @@
   <entry key="scanner.option.accountFile">Account File</entry>
   <entry key="scanner.option.analysisSetting">Analysis Settings</entry>
   <entry key="scanner.option.analysisThreadCount">Analysis Thread Counts</entry>
+  <entry key="scanner.option.analysisThreadCountRecommendation">The system could be unstable if you use too many threads. A quarter of the maximum number of threads is recommended generally.</entry>
   <entry key="scanner.option.cacheDirectory">Cache Directory</entry>
   <entry key="scanner.option.captureDelay">Capture Delay [ms]</entry>
   <entry key="scanner.option.dialog.AccountFileSelectorTitle">Select account file</entry>

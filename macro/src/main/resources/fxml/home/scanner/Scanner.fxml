@@ -284,6 +284,7 @@
                             <TextField prefColumnCount="4" fx:id="option_analysisThreadCountTextField"/>
                           </children>
                         </HBox>
+                        <Label text="%scanner.option.analysisThreadCountRecommendation"/>
                       </children>
                     </VBox>
                   </content>
