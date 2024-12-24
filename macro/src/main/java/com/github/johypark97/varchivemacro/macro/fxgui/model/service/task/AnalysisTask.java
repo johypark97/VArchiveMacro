@@ -69,7 +69,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         this.onDataReady = onDataReady;
 
         analyzerThreadCount = threadCount;
-        imagePreloaderThreadCount = (int) (Math.log(threadCount) / Math.log(2));
+        imagePreloaderThreadCount = (int) (Math.log(threadCount + 1) / Math.log(2));
         imagePreloadingLimit = threadCount * 3 / 2;
 
         cacheManager = new CacheManager(cacheDirectoryPath);
