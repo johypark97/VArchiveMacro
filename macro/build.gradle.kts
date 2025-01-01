@@ -4,16 +4,14 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 val appName = "VArchive Macro"
-val buildVersion = Version.makeVersionString()
 
-var isDev = true
+version = Version.makeVersionString()
 
 plugins {
     id("buildlogic.java-application-conventions")
     id("buildlogic.java-javacpp-conventions")
 
-    // id("com.github.johnrengelman.shadow") version "8.1.1"
-    alias(libs.plugins.launch4j)
+    alias(libs.plugins.launch4j.plugin)
 }
 
 dependencies {
@@ -27,137 +25,87 @@ dependencies {
 application {
     mainClass = "com.github.johypark97.varchivemacro.macro.Main"
     mainModule = "varchivemacro.macro"
-
-    applicationName = appName
-    executableDir = ""
-
-    if (isDev) applicationDefaultJvmArgs += "-Dlog.level=DEBUG"
-
-    // Include '$projectDir/data' directory in archive files of the distribution task.
-    applicationDistribution.into("data") {
-        from("data")
-    }
-
-    applicationDistribution.into("") {
-        from("${rootProject.projectDir}/LICENSE")
-        from("${rootProject.projectDir}/README.md")
-    }
-
-    applicationDistribution.into("doc") {
-        from("${rootProject.projectDir}/doc")
-    }
 }
 
-// Another way to include the '$projectDir/data' directory.
-// distributions.main.get().contents.into("data") {
-//     from("data")
-// }
-
-tasks.register<WriteProperties>("processResources_buildProperties") {
-    description = "Create a properties file containing build information."
-
-    destinationFile = File(sourceSets.main.get().output.resourcesDir, "build.properties")
-    property("build.date", ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
-    property("build.version", buildVersion)
-}
-
-tasks.register<Copy>("processResources_resourcesDev") {
-    description = "Copy 'resource-dev' directory."
-
-    if (isDev) {
-        from("src/main/resources-dev")
-        into("${layout.buildDirectory.get()}/resources/main")
-    }
+tasks.jar.get().doLast {
+    application.applicationDefaultJvmArgs += "-Dlog.level=ALL"
 }
 
 tasks.processResources {
-    dependsOn("processResources_buildProperties")
-    dependsOn("processResources_resourcesDev")
+    dependsOn("buildProperties")
 }
 
-tasks.jar {
-    manifest {
-        attributes["Implementation-Version"] = buildVersion
-        attributes["Main-Class"] = application.mainClass.get()
-    }
+tasks.register<WriteProperties>("buildProperties") {
+    description = "Creates a properties file containing the build information."
 
-    archiveBaseName = "macro"
-    archiveVersion = buildVersion
-}
-
-tasks.register<Copy>("copyDataDirToLaunch4j") {
-    description = "Copy '\$projectDir/data' directory to launch4j outputDir."
-
-    from("data")
-    into("${layout.buildDirectory.get()}/${launch4j.outputDir.get()}/data")
-}
-
-tasks.register<Copy>("copyLicenseAndReadmeToLaunch4j") {
-    description = "Copy the LICENSE and README files to launch4j outputDir."
-
-    from("${rootProject.projectDir}/LICENSE")
-    from("${rootProject.projectDir}/README.md")
-    into("${layout.buildDirectory.get()}/${launch4j.outputDir.get()}")
-}
-
-tasks.register<Copy>("copyDocDirToLaunch4j") {
-    description = "Copy '\${rootProject.projectDir}/doc' directory to launch4j outputDir."
-
-    from("${rootProject.projectDir}/doc")
-    into("${layout.buildDirectory.get()}/${launch4j.outputDir.get()}/doc")
+    destinationFile = File(sourceSets.main.get().output.resourcesDir, "build.properties")
+    property("build.date", ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+    property("build.version", version)
 }
 
 tasks.withType<DefaultLaunch4jTask> {
-    dependsOn("copyDataDirToLaunch4j")
-    dependsOn("copyDocDirToLaunch4j")
-    dependsOn("copyLicenseAndReadmeToLaunch4j")
-
-    outfile = "$appName v$buildVersion.exe"
+    outfile = "$appName v${project.version}.exe"
 
     headerType = "gui"
     icon = "$projectDir/src/main/resources/icon.ico"
-    jvmOptions = setOf("-Dfile.encoding=UTF-8")
+    jvmOptions = application.applicationDefaultJvmArgs.toSet()
     mainClassName = application.mainClass.get()
 
     copyright = "johypark97"
     fileDescription = rootProject.name
     language = "KOREAN"
     productName = rootProject.name
-    textVersion = buildVersion
-    version = buildVersion
+    textVersion = project.version.toString()
+    version = project.version.toString()
 
-    // copyConfigurable = emptyList<Any>()
-    // jarTask = tasks.shadowJar.get()
+    doLast {
+        val path = "${layout.buildDirectory.get()}/${launch4j.outputDir.get()}"
+
+        copy {
+            from("${rootProject.projectDir}/LICENSE")
+            from("${rootProject.projectDir}/README.md")
+            into(path)
+        }
+
+        copy {
+            from("data")
+            into("$path/data")
+        }
+
+        copy {
+            from("${rootProject.projectDir}/doc")
+            into("$path/doc")
+        }
+    }
 }
 
 tasks.register<Launch4jLibraryTask>("createExe_envJre") {
-    description = "Create an executable using JAVA_HOME env JRE."
+    description = "Creates an executable using JAVA_HOME env JRE."
     group = "launch4j"
 
-    outfile = "$appName env v$buildVersion.exe"
+    outfile = "$appName env v${project.version}.exe"
 
     bundledJrePath = "%JAVA_HOME%"
 }
 
 tasks.register<Launch4jLibraryTask>("createExe_localJre") {
-    description = "Create an executable using local JRE."
+    description = "Creates an executable using local JRE."
     group = "launch4j"
 
-    outfile = "$appName local v$buildVersion.exe"
+    outfile = "$appName local v${project.version}.exe"
 
     bundledJrePath = "jre17fx"
 }
 
 tasks.register<Zip>("release") {
-    dependsOn(tasks.createAllExecutables)
-    description = "Create an archive file to release."
+    description = "Creates an archive file to release."
     group = "distribution"
 
-    archiveBaseName = appName
-    archiveVersion = buildVersion
+    dependsOn(tasks.createAllExecutables)
 
-    isDev = false
+    archiveBaseName = appName
+    archiveVersion = version.toString()
 
     from("${layout.buildDirectory.get()}/${launch4j.outputDir.get()}")
-    into("$appName v$buildVersion")
+    into("$appName v$version")
 }
