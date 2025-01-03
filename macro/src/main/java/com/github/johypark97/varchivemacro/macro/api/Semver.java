@@ -26,11 +26,13 @@ public class Semver {
     public static int compare(Semver v1, Semver v2) {
         int x;
 
-        if ((x = v1.major - v2.major) != 0) {
+        x = v1.major - v2.major;
+        if (x != 0) {
             return x;
         }
 
-        if ((x = v1.minor - v2.minor) != 0) {
+        x = v1.minor - v2.minor;
+        if (x != 0) {
             return x;
         }
 

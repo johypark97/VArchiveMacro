@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 public class UpdateCheckPresenterImpl implements UpdateCheckPresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateCheckPresenterImpl.class);
 
-    private final BiConsumer<String, Throwable> showError;
+    private final BiConsumer<String, Throwable> showErrorConsumer;
     private final Consumer<TabHighlightType> tabHighlighter;
 
     @MvpView
@@ -26,7 +26,7 @@ public class UpdateCheckPresenterImpl implements UpdateCheckPresenter {
 
     public UpdateCheckPresenterImpl(BiConsumer<String, Throwable> showError,
             Consumer<TabHighlightType> tabHighlighter) {
-        this.showError = showError;
+        this.showErrorConsumer = showError;
         this.tabHighlighter = tabHighlighter;
     }
 
@@ -78,7 +78,7 @@ public class UpdateCheckPresenterImpl implements UpdateCheckPresenter {
 
     @Override
     public void showError(String header, Throwable throwable) {
-        showError.accept(header, throwable);
+        showErrorConsumer.accept(header, throwable);
     }
 
     @Override
