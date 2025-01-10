@@ -4,7 +4,7 @@
 # -------- Gradle Plugins --------
 gradle-javacpp = "1.5.10"
 javafx-plugin = "0.1.0"
-launch4j-plugin = "3.0.6"
+jlink-plugin = "3.1.1"
 
 # -------- Libraries --------
 gson = "2.11.0"
@@ -35,4 +35,4 @@ sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
 tesseract-platform = { module = "org.bytedeco:tesseract-platform", version.ref = "tesseract-platform" }
 
 [plugins]
-launch4j-plugin = { id = "edu.sc.seis.launch4j", version.ref = "launch4j-plugin" }
+jlink-plugin = { id = "org.beryx.jlink", version.ref = "jlink-plugin" }
