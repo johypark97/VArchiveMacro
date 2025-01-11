@@ -51,6 +51,7 @@ public class Main extends Application {
     @Override
     public void init() throws Exception {
         FxHookWrapper.disableLogging();
+        FxHookWrapper.useJLinkNativeLibraryLocator();
         FxHookWrapper.setEventDispatcher();
         FxHookWrapper.register();
     }

@@ -4,6 +4,7 @@ module varchivemacro.lib.hook {
 
     // libraries
     requires com.github.kwhat.jnativehook;
+    requires org.slf4j;
 
     // exports
     exports com.github.johypark97.varchivemacro.lib.hook;

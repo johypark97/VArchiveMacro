@@ -12,6 +12,10 @@ public class FxHookWrapper {
     private static final Logger LOGGER =
             Logger.getLogger(GlobalScreen.class.getPackage().getName());
 
+    public static void useJLinkNativeLibraryLocator() {
+        JLinkNativeLibraryLocator.use();
+    }
+
     public static void disableLogging() {
         LOGGER.setLevel(Level.OFF);
         LOGGER.setUseParentHandlers(false);
