@@ -1,7 +1,7 @@
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
-val buildVersion = Version.makeVersionString()
+version = findProperty("version") as String
 
 plugins {
     id("buildlogic.java-application-conventions")
@@ -22,26 +22,28 @@ application {
 
     applicationName = "DB Manager"
     executableDir = ""
-}
 
-tasks.register<WriteProperties>("processResources_buildProperties") {
-    description = "Create a properties file containing build information."
-
-    destinationFile = File(sourceSets.main.get().output.resourcesDir, "build.properties")
-    property("build.date", ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
-    property("build.version", buildVersion)
-}
-
-tasks.processResources {
-    dependsOn("processResources_buildProperties")
+    applicationDefaultJvmArgs += "-Dlog.level=ALL"
 }
 
 tasks.jar {
     manifest {
-        attributes["Implementation-Version"] = buildVersion
-        attributes["Main-Class"] = application.mainClass.get()
+        attributes["Implementation-Version"] = version
+        attributes["Main-Class"] = application.mainClass
     }
 
     archiveBaseName = "dbmanager"
-    archiveVersion = buildVersion
+    archiveVersion = version.toString()
+}
+
+tasks.processResources {
+    dependsOn("buildProperties")
+}
+
+tasks.register<WriteProperties>("buildProperties") {
+    description = "Creates a properties file containing the build information."
+
+    destinationFile = File(sourceSets.main.get().output.resourcesDir, "build.properties")
+    property("build.date", ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+    property("build.version", version)
 }

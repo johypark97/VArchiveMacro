@@ -1,4 +1,4 @@
-val buildVersion = Version.makeVersionString()
+version = findProperty("version") as String
 
 plugins {
     id("buildlogic.java-library-conventions")
@@ -10,9 +10,9 @@ dependencies {
 
 tasks.jar {
     manifest {
-        attributes["Implementation-Version"] = buildVersion
+        attributes["Implementation-Version"] = version
     }
 
     archiveBaseName = "libjfx"
-    archiveVersion = buildVersion
+    archiveVersion = version.toString()
 }

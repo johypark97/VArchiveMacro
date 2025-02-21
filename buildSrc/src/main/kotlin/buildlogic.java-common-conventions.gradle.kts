@@ -23,8 +23,8 @@ dependencies {
     implementation(libs.sqlite.jdbc)
 
     // -------- Logging --------
-    implementation(libs.slf4j.api)
     implementation(libs.log4j.slf4j2.impl)
+    implementation(libs.slf4j.api)
 
     // -------- Test libraries --------
     testImplementation(libs.junit.jupiter)
@@ -39,12 +39,12 @@ java {
 }
 
 javafx {
-    version = "21.0.4"
+    version = libs.versions.javafx.version.get()
 }
 
 pmd {
     isIgnoreFailures = false
-    toolVersion = "7.4.0"
+    toolVersion = libs.versions.pmd.get()
 
     ruleSetFiles = files("$rootDir/buildSrc/config/pmd/rules.xml")
     ruleSets = emptyList()

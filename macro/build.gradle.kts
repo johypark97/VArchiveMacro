@@ -5,7 +5,7 @@ val appName = "VArchive Macro"
 
 var isRelease = false
 
-version = Version.makeVersionString()
+version = findProperty("version") as String
 
 plugins {
     id("buildlogic.java-application-conventions")
