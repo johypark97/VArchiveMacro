@@ -5,8 +5,8 @@
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
   <description>Custom rules</description>
   <rule ref="category/java/bestpractices.xml">
-    <exclude name="JUnitAssertionsShouldIncludeMessage"/>
-    <exclude name="JUnitTestContainsTooManyAsserts"/>
+    <exclude name="UnitTestAssertionsShouldIncludeMessage"/>
+    <exclude name="UnitTestContainsTooManyAsserts"/>
     <exclude name="LooseCoupling"/>
   </rule>
   <!-- <rule ref="category/java/codestyle.xml"/> -->
@@ -21,6 +21,8 @@
     </properties>
   </rule>
   <rule ref="category/java/multithreading.xml">
+    <exclude name="AvoidSynchronizedAtMethodLevel"/>
+    <exclude name="AvoidSynchronizedStatement"/>
     <exclude name="DoNotUseThreads"/>
     <exclude name="UseConcurrentHashMap"/>
   </rule>
