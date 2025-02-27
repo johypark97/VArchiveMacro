@@ -200,8 +200,8 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         BlockingQueue<Entry<AnalysisData, byte[]>> preloadedImageQueue =
                 new ArrayBlockingQueue<>(imagePreloadingLimit);
 
-        ExecutorService imagePreloaderExecutorService =
-                Executors.newFixedThreadPool(imagePreloaderThreadCount);
+        ExecutorService imagePreloaderExecutorService; // NOPMD
+        imagePreloaderExecutorService = Executors.newFixedThreadPool(imagePreloaderThreadCount);
 
         // run image preloader
         dataList.forEach(analysisData -> {
@@ -239,7 +239,9 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         imagePreloaderExecutorService.shutdown();
 
         // run analyzer (load balancing)
-        ExecutorService analyzerExecutorService = Executors.newFixedThreadPool(analyzerThreadCount);
+        ExecutorService analyzerExecutorService; // NOPMD
+        analyzerExecutorService = Executors.newFixedThreadPool(analyzerThreadCount);
+
         for (int i = 0; i < analyzerThreadCount; i++) {
             analyzerExecutorService.submit(() -> {
                 try (OcrWrapper ocr = new ScannerOcr()) {

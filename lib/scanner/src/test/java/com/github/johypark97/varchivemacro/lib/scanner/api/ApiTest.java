@@ -14,20 +14,20 @@ import org.junit.jupiter.api.Test;
 class ApiTest {
     @Test
     void test_newHttpClient_tls() throws Exception {
-        HttpClient client = Api.newHttpClient();
-
-        String expected = "TLSv1.2";
-        String actual = client.sslContext().getProtocol();
-        assertEquals(expected, actual);
+        try (HttpClient client = Api.newHttpClient()) {
+            String expected = "TLSv1.2";
+            String actual = client.sslContext().getProtocol();
+            assertEquals(expected, actual);
+        }
     }
 
     @Test
     void test_newHttpClient_version() throws Exception {
-        HttpClient client = Api.newHttpClient();
-
-        HttpClient.Version expected = Version.HTTP_2;
-        HttpClient.Version actual = client.version();
-        assertEquals(expected, actual);
+        try (HttpClient client = Api.newHttpClient()) {
+            HttpClient.Version expected = Version.HTTP_2;
+            HttpClient.Version actual = client.version();
+            assertEquals(expected, actual);
+        }
     }
 
     @Test
