@@ -1,10 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.updatecheck;
 
-import com.github.johypark97.varchivemacro.macro.api.VersionChecker;
-import com.github.johypark97.varchivemacro.macro.api.data.GitHubRelease;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.TabHighlightType;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.updatecheck.UpdateCheck.UpdateCheckPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.updatecheck.UpdateCheck.UpdateCheckView;
+import com.github.johypark97.varchivemacro.macro.github.GitHubApi;
+import com.github.johypark97.varchivemacro.macro.github.VersionChecker;
+import com.github.johypark97.varchivemacro.macro.github.data.GitHubRelease;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
@@ -38,8 +39,8 @@ public class UpdateCheckPresenterImpl implements UpdateCheckPresenter {
                     () -> view.addMessage(language.getString("home.updateCheck.checking")));
 
             VersionChecker versionChecker = new VersionChecker();
-            try {
-                versionChecker.fetch();
+            try (GitHubApi api = new GitHubApi()) {
+                versionChecker.fetch(api);
             } catch (InterruptedException e) {
                 return;
             } catch (IOException e) {

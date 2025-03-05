@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.api;
+package com.github.johypark97.varchivemacro.macro.github;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

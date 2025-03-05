@@ -1,6 +1,6 @@
-package com.github.johypark97.varchivemacro.macro.api.data;
+package com.github.johypark97.varchivemacro.macro.github.data;
 
-import com.github.johypark97.varchivemacro.macro.api.Semver;
+import com.github.johypark97.varchivemacro.macro.github.Semver;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
