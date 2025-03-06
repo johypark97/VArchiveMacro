@@ -1,0 +1,25 @@
+{
+  "version": 202503061950,
+  "files": [
+    {
+      "path": "data/djmax.traineddata",
+      "request_path": "macro/data/djmax.traineddata",
+      "hash": "8a1beba2c881fb2d28260606399d2032c7642f0723d2b9b30aff97f947ec11e7"
+    },
+    {
+      "path": "data/eng.traineddata",
+      "request_path": "macro/data/eng.traineddata",
+      "hash": "8280aed0782fe27257a68ea10fe7ef324ca0f8d85bd2fd145d1c2b560bcb66ba"
+    },
+    {
+      "path": "data/song.db",
+      "request_path": "macro/data/song.db",
+      "hash": "3f2393afd060da758bc4409e80e9a0fbd3964b9b73ce2759d20ac20dbc31d5b6"
+    },
+    {
+      "path": "data/titles.json",
+      "request_path": "macro/data/titles.json",
+      "hash": "d6f8cecd72d9af07594b10192e2607f03f75aac068f05f6f39c7f746d90ab115"
+    }
+  ]
+}
