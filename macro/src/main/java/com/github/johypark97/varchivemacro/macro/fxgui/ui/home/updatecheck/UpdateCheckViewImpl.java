@@ -46,7 +46,7 @@ public class UpdateCheckViewImpl extends VBox implements UpdateCheck.UpdateCheck
     public void initialize() {
         contentBox.setStyle("-fx-background-color: white;");
 
-        checkAgainButton.setOnAction(event -> presenter.checkAgain());
+        checkAgainButton.setOnAction(event -> presenter.checkUpdate());
     }
 
     private HBox createTimeLine() {
@@ -82,6 +82,11 @@ public class UpdateCheckViewImpl extends VBox implements UpdateCheck.UpdateCheck
     @Override
     public void startView() {
         presenter.onStartView();
+    }
+
+    @Override
+    public void clearAllMessages() {
+        contentBox.getChildren().clear();
     }
 
     @Override
@@ -128,10 +133,5 @@ public class UpdateCheckViewImpl extends VBox implements UpdateCheck.UpdateCheck
             });
             adder.apply(hyperlink);
         });
-    }
-
-    @Override
-    public void clearAllMessages() {
-        contentBox.getChildren().clear();
     }
 }

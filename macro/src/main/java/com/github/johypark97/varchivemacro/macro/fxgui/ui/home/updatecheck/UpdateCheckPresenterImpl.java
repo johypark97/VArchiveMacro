@@ -31,49 +31,30 @@ public class UpdateCheckPresenterImpl implements UpdateCheckPresenter {
         this.tabHighlighter = tabHighlighter;
     }
 
-    private void checkLatestRelease() {
-        Language language = Language.getInstance();
+    private void checkUpdate_latestRelease(GitHubApi api) throws IOException, InterruptedException {
+        VersionChecker versionChecker = new VersionChecker();
+        versionChecker.fetch(api);
 
-        CompletableFuture.runAsync(() -> {
-            Platform.runLater(
-                    () -> view.addMessage(language.getString("home.updateCheck.checking")));
+        String currentVersion = BuildInfo.version;
+        if (!versionChecker.isUpdated(currentVersion)) {
+            return;
+        }
 
-            VersionChecker versionChecker = new VersionChecker();
-            try (GitHubApi api = new GitHubApi()) {
-                versionChecker.fetch(api);
-            } catch (InterruptedException e) {
-                return;
-            } catch (IOException e) {
-                String message = language.getString("home.updateCheck.error.ioexception");
-                LOGGER.atError().setCause(e).log(message);
-                Platform.runLater(() -> {
-                    tabHighlighter.accept(TabHighlightType.RED);
-                    view.addErrorMessage(message, e);
-                });
-                return;
-            } catch (Exception e) {
-                String message = language.getString("home.updateCheck.error.exception");
-                LOGGER.atError().setCause(e).log(message);
-                Platform.runLater(() -> {
-                    tabHighlighter.accept(TabHighlightType.RED);
-                    view.addErrorMessage(message, e);
-                });
-                return;
-            }
+        Platform.runLater(() -> {
+            tabHighlighter.accept(TabHighlightType.GREEN);
 
-            String currentVersion = BuildInfo.version;
-            if (versionChecker.isUpdated(currentVersion)) {
-                GitHubRelease latestRelease = versionChecker.getLatestRelease();
-                Platform.runLater(() -> {
-                    tabHighlighter.accept(TabHighlightType.GREEN);
-                    view.addUpdatedMessage(currentVersion, latestRelease.getVersion(),
-                            latestRelease.htmlUrl());
-                });
-                return;
-            }
+            GitHubRelease latestRelease = versionChecker.getLatestRelease();
+            view.addUpdatedMessage(currentVersion, latestRelease.getVersion(),
+                    latestRelease.htmlUrl());
+        });
+    }
 
-            Platform.runLater(
-                    () -> view.addMessage(language.getString("home.updateCheck.up-to-date")));
+    private void checkUpdate_showException(Exception e, String message) {
+        LOGGER.atError().setCause(e).log(message);
+
+        Platform.runLater(() -> {
+            tabHighlighter.accept(TabHighlightType.RED);
+            view.addErrorMessage(message, e);
         });
     }
 
@@ -83,14 +64,37 @@ public class UpdateCheckPresenterImpl implements UpdateCheckPresenter {
     }
 
     @Override
-    public void checkAgain() {
+    public void checkUpdate() {
         view.clearAllMessages();
-        checkLatestRelease();
+
+        CompletableFuture.runAsync(() -> {
+            Language language = Language.getInstance();
+
+            Platform.runLater(
+                    () -> view.addMessage(language.getString("home.updateCheck.checking")));
+
+            try (GitHubApi api = new GitHubApi()) {
+                checkUpdate_latestRelease(api);
+            } catch (InterruptedException e) {
+                return;
+            } catch (IOException e) {
+                checkUpdate_showException(e,
+                        language.getString("home.updateCheck.error.ioexception"));
+                return;
+            } catch (Exception e) {
+                checkUpdate_showException(e,
+                        language.getString("home.updateCheck.error.exception"));
+                return;
+            }
+
+            Platform.runLater(
+                    () -> view.addMessage(language.getString("home.updateCheck.up-to-date")));
+        });
     }
 
     @Override
     public void onStartView() {
-        checkLatestRelease();
+        checkUpdate();
     }
 
     @Override
