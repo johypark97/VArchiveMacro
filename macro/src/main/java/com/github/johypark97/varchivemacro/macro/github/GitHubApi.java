@@ -18,6 +18,11 @@ public class GitHubApi implements AutoCloseable {
         httpClient = HttpClient.newBuilder().connectTimeout(timeout).build();
     }
 
+    public HttpResponse<String> send_content(String owner, String repository, String path)
+            throws IOException, InterruptedException {
+        return send(UriBuilder.create_content(owner, repository, path));
+    }
+
     public HttpResponse<String> send_latestRelease(String owner, String repository)
             throws IOException, InterruptedException {
         return send(UriBuilder.create_latestRelease(owner, repository));
@@ -47,6 +52,10 @@ public class GitHubApi implements AutoCloseable {
         public UriBuilder(String owner, String repository) {
             append(owner);
             append(repository);
+        }
+
+        public static URI create_content(String owner, String repository, String path) {
+            return new UriBuilder(owner, repository).append("contents").append(path).build();
         }
 
         public static URI create_latestRelease(String owner, String repository) {

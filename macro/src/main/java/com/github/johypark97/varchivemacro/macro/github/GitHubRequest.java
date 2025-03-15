@@ -11,6 +11,18 @@ public class GitHubRequest {
     private static final String owner = "johypark97";
     private static final String repository = "VArchiveMacro";
 
+    public static String getContent(GitHubApi api, String path)
+            throws IOException, InterruptedException {
+        HttpResponse<String> httpResponse = api.send_content(owner, repository, path);
+
+        if (httpResponse.statusCode() != HttpURLConnection.HTTP_OK) {
+            throw new IOException(
+                    String.format("[%d] %s", httpResponse.statusCode(), httpResponse.body()));
+        }
+
+        return httpResponse.statusCode() == HttpURLConnection.HTTP_OK ? httpResponse.body() : "";
+    }
+
     public static GitHubRelease getLatestRelease(GitHubApi api)
             throws IOException, InterruptedException {
         HttpResponse<String> httpResponse = api.send_latestRelease(owner, repository);

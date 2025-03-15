@@ -87,7 +87,8 @@ public class HomePresenterImpl implements HomePresenter {
         UpdateCheckViewImpl updateCheckView = new UpdateCheckViewImpl();
         view.setUpdateCheckTabContent(updateCheckView);
         Mvp.linkViewAndPresenter(updateCheckView,
-                new UpdateCheckPresenterImpl(view::showError, view::highlightUpdateCheckTab));
+                new UpdateCheckPresenterImpl(view::showError, view::showInformation,
+                        view::highlightUpdateCheckTab));
 
         Platform.runLater(scannerLoaderView::startView);
         Platform.runLater(macroView::startView);

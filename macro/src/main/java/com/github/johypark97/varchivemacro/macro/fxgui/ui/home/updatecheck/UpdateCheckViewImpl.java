@@ -1,8 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.updatecheck;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
+import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.updatecheck.UpdateCheck.DataUpdateProgressController;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.Desktop;
+import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.net.URL;
 import java.time.LocalTime;
@@ -16,6 +18,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -32,6 +37,9 @@ public class UpdateCheckViewImpl extends VBox implements UpdateCheck.UpdateCheck
     public UpdateCheck.UpdateCheckPresenter presenter;
 
     @FXML
+    public ScrollPane scrollPane;
+
+    @FXML
     public VBox contentBox;
 
     @FXML
@@ -45,6 +53,9 @@ public class UpdateCheckViewImpl extends VBox implements UpdateCheck.UpdateCheck
     @FXML
     public void initialize() {
         contentBox.setStyle("-fx-background-color: white;");
+
+        contentBox.heightProperty().addListener(
+                (observable, oldValue, newValue) -> scrollPane.setVvalue(newValue.doubleValue()));
 
         checkAgainButton.setOnAction(event -> presenter.checkUpdate());
     }
@@ -114,11 +125,11 @@ public class UpdateCheckViewImpl extends VBox implements UpdateCheck.UpdateCheck
     }
 
     @Override
-    public void addUpdatedMessage(String currentVersion, String latestVersion, String url) {
+    public void addProgramUpdatedMessage(String currentVersion, String latestVersion, String url) {
         addContent(adder -> {
             Language language = Language.getInstance();
 
-            adder.apply(new Text(language.getString("home.updateCheck.updated.message")));
+            adder.apply(new Text(language.getString("home.updateCheck.updated.program")));
             adder.apply(new Text(
                     language.getFormatString("home.updateCheck.updated.version", currentVersion,
                             latestVersion)));
@@ -133,5 +144,80 @@ public class UpdateCheckViewImpl extends VBox implements UpdateCheck.UpdateCheck
             });
             adder.apply(hyperlink);
         });
+    }
+
+    @Override
+    public void addDataUpdatedMessage(long currentVersion, long latestVersion) {
+        addContent(adder -> {
+            Language language = Language.getInstance();
+
+            adder.apply(new Text(language.getString("home.updateCheck.updated.data")));
+            adder.apply(new Text(
+                    language.getFormatString("home.updateCheck.updated.version", currentVersion,
+                            latestVersion)));
+
+            Button updateButton = new Button(language.getString("home.updateCheck.button.update"));
+            updateButton.setOnAction(event -> presenter.updateData(updateButton::setDisable));
+            adder.apply(updateButton);
+        });
+    }
+
+    @Override
+    public DataUpdateProgressController addDataUpdateProgressMessage() {
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setMaxWidth(Double.MAX_VALUE);
+        progressBar.setMinHeight(16);
+
+        Label label = new Label();
+
+        DataUpdateProgressController controller =
+                new DataUpdateProgressControllerImpl(progressBar, label);
+
+        addContent(adder -> {
+            Language language = Language.getInstance();
+
+            adder.apply(new Label(language.getString("home.updateCheck.updatingData")));
+            adder.apply(progressBar);
+            adder.apply(label);
+        });
+
+        return controller;
+    }
+
+    @Override
+    public void addDataUpdateCompleteMessage(String header, String message) {
+        addContent(adder -> {
+            Label headerLabel = new Label(header);
+            adder.apply(headerLabel);
+
+            Label messageLabel = new Label(message);
+            adder.apply(messageLabel);
+        });
+    }
+
+    public static class DataUpdateProgressControllerImpl implements DataUpdateProgressController {
+        private final WeakReference<Label> labelReference;
+        private final WeakReference<ProgressBar> progressBarReference;
+
+        public DataUpdateProgressControllerImpl(ProgressBar progressBar, Label label) {
+            this.labelReference = new WeakReference<>(label);
+            this.progressBarReference = new WeakReference<>(progressBar);
+        }
+
+        @Override
+        public void setProgress(double value) {
+            ProgressBar progressBar = progressBarReference.get();
+            if (progressBar != null) {
+                progressBar.setProgress(value);
+            }
+        }
+
+        @Override
+        public void setMessage(String value) {
+            Label label = labelReference.get();
+            if (label != null) {
+                label.setText(value);
+            }
+        }
     }
 }
