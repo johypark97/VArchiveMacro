@@ -36,7 +36,7 @@ public interface Home {
 
         void setUpdateCheckTabContent(Node value);
 
-        void home_openAbout();
+        void home_openAbout(String buildDate, String programVersion, String dataVersion);
 
         void highlightUpdateCheckTab(TabHighlightType type);
     }

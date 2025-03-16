@@ -22,6 +22,8 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.Open
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicensePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseViewImpl;
+import com.github.johypark97.varchivemacro.macro.github.DataUpdater;
+import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
 import java.util.Locale;
@@ -146,6 +148,16 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void home_openAbout() {
-        view.home_openAbout();
+        long dataVersion = -1;
+
+        try {
+            DataUpdater updater = new DataUpdater();
+            updater.loadLocalDataVersion();
+            dataVersion = updater.getCurrentVersion();
+        } catch (Exception e) {
+            LOGGER.atError().setCause(e).log();
+        }
+
+        view.home_openAbout(BuildInfo.date, BuildInfo.version, String.valueOf(dataVersion));
     }
 }

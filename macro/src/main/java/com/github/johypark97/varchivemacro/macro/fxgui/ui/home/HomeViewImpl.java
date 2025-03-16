@@ -6,7 +6,6 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.GlobalResource;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.TabHighlightType;
-import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -165,13 +164,14 @@ public class HomeViewImpl extends BorderPane implements HomeView {
     }
 
     @Override
-    public void home_openAbout() {
+    public void home_openAbout(String buildDate, String programVersion, String dataVersion) {
         VBox box = new VBox();
         box.setPadding(new Insets(20));
         box.setSpacing(10);
         {
-            box.getChildren().add(new Label("Version: " + BuildInfo.version));
-            box.getChildren().add(new Label("Build date: " + BuildInfo.date));
+            box.getChildren().add(new Label("Program version: " + programVersion));
+            box.getChildren().add(new Label("Data version: " + dataVersion));
+            box.getChildren().add(new Label("Build date: " + buildDate));
 
             HBox sourceCodeBox = new HBox();
             sourceCodeBox.setAlignment(Pos.CENTER_LEFT);
