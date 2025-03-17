@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model.data;
+package com.github.johypark97.varchivemacro.macro.data;
 
 import java.io.IOException;
 import java.nio.file.Files;

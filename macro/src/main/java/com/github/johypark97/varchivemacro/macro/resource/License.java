@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model.data;
+package com.github.johypark97.varchivemacro.macro.resource;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
