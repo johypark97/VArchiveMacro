@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class ScannerSafeGlassComponent extends VBox {
-    private static final String FXML_PATH = "/fxml/home/scannerloader/ScannerSafeGlass.fxml";
+    private static final String FXML_PATH = "/fxml/ScannerSafeGlass.fxml";
 
     @FXML
     public ProgressIndicator progressIndicator;

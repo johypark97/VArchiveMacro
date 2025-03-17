@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class ScannerDjNameInputComponent extends VBox {
-    private static final String FXML_PATH = "/fxml/home/scannerloader/ScannerDjNameInput.fxml";
+    private static final String FXML_PATH = "/fxml/ScannerDjNameInput.fxml";
 
     public Runnable onLoad;
 

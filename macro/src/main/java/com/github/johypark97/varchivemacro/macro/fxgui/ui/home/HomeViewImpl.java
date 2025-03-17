@@ -31,7 +31,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class HomeViewImpl extends BorderPane implements HomeView {
-    private static final String FXML_PATH = "/fxml/home/Home.fxml";
+    private static final String FXML_PATH = "/fxml/Home.fxml";
     private static final String GITHUB_URL = "https://github.com/johypark97/VArchiveMacro";
 
     private static final String STYLE_CLASS_TAB_COLOR_GREEN = "tab-color-green";

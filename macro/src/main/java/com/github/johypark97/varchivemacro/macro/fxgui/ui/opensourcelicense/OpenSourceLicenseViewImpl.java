@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class OpenSourceLicenseViewImpl extends HBox implements OpenSourceLicenseView {
-    private static final String FXML_PATH = "/fxml/opensourcelicense/OpenSourceLicense.fxml";
+    private static final String FXML_PATH = "/fxml/OpenSourceLicense.fxml";
 
     private final Stage stage;
 

@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class CaptureViewerViewImpl extends BorderPane implements CaptureViewerView {
-    private static final String FXML_PATH = "/fxml/captureviewer/CaptureViewer.fxml";
+    private static final String FXML_PATH = "/fxml/CaptureViewer.fxml";
 
     private final ImageViewer imageViewer = new ImageViewer();
 

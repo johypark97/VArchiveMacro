@@ -31,7 +31,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 
 public class UpdateCheckViewImpl extends VBox implements UpdateCheck.UpdateCheckView {
-    private static final String FXML_PATH = "/fxml/home/updatecheck/UpdateCheck.fxml";
+    private static final String FXML_PATH = "/fxml/UpdateCheck.fxml";
 
     @MvpPresenter
     public UpdateCheck.UpdateCheckPresenter presenter;

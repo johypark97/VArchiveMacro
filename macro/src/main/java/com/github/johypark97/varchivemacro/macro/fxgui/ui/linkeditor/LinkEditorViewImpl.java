@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class LinkEditorViewImpl extends BorderPane implements LinkEditorView {
-    private static final String FXML_PATH = "/fxml/linkeditor/LinkEditor.fxml";
+    private static final String FXML_PATH = "/fxml/LinkEditor.fxml";
 
     private final ImageViewer imageViewer = new ImageViewer();
 

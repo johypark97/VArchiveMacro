@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 
 public class MacroViewImpl extends BorderPane implements MacroView {
-    private static final String FXML_PATH = "/fxml/home/macro/Macro.fxml";
+    private static final String FXML_PATH = "/fxml/Macro.fxml";
 
     @MvpPresenter
     public MacroPresenter presenter;

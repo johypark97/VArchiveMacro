@@ -37,7 +37,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class AnalysisDataViewerViewImpl extends VBox implements AnalysisDataViewerView {
-    private static final String FXML_PATH = "/fxml/analysisdataviewer/AnalysisDataViewer.fxml";
+    private static final String FXML_PATH = "/fxml/AnalysisDataViewer.fxml";
 
     private static final AtomicBoolean transposeRecord = new AtomicBoolean();
 

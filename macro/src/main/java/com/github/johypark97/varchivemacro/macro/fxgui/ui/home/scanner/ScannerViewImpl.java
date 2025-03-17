@@ -59,7 +59,7 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 public class ScannerViewImpl extends TabPane implements ScannerView {
-    private static final String FXML_PATH = "/fxml/home/scanner/Scanner.fxml";
+    private static final String FXML_PATH = "/fxml/Scanner.fxml";
 
     @MvpPresenter
     public ScannerPresenter presenter;
