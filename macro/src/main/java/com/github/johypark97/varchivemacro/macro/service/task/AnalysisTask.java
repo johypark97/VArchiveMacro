@@ -17,7 +17,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDat
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.ocr.ScannerOcr;
+import com.github.johypark97.varchivemacro.macro.service.ocr.ScannerOcr;
 import com.google.common.base.CharMatcher;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
