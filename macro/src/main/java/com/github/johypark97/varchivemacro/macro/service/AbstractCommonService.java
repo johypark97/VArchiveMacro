@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model.service;
+package com.github.johypark97.varchivemacro.macro.service;
 
 import java.util.function.Supplier;
 import javafx.concurrent.Service;

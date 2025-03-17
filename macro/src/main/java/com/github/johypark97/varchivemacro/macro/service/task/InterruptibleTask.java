@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model.service.task;
+package com.github.johypark97.varchivemacro.macro.service.task;
 
 import java.lang.ref.WeakReference;
 import javafx.concurrent.Task;
