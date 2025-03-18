@@ -10,13 +10,13 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData.Status;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.RecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
+import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.model.AnalysisData.Status;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.RecordData;
 import com.github.johypark97.varchivemacro.macro.service.ocr.ScannerOcr;
 import com.google.common.base.CharMatcher;
 import java.awt.Dimension;
@@ -58,14 +58,14 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private final int imagePreloaderThreadCount;
     private final int imagePreloadingLimit;
 
-    private final WeakReference<AnalysisDataManager> analysisDataManagerReference;
+    private final WeakReference<AnalysisDataDomain> analysisDataDomainReference;
     private final WeakReference<ScanDataDomain> scanDataDomainReference;
 
     private int completedTaskCount;
     private int totalTaskCount;
 
     public AnalysisTask(Runnable onDataReady, ScanDataDomain scanDataDomain,
-            AnalysisDataManager analysisDataManager, Path cacheDirectoryPath, int threadCount) {
+            AnalysisDataDomain analysisDataDomain, Path cacheDirectoryPath, int threadCount) {
         this.onDataReady = onDataReady;
 
         analyzerThreadCount = threadCount;
@@ -74,12 +74,12 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
         cacheManager = new CacheManager(cacheDirectoryPath);
 
-        analysisDataManagerReference = new WeakReference<>(analysisDataManager);
+        analysisDataDomainReference = new WeakReference<>(analysisDataDomain);
         scanDataDomainReference = new WeakReference<>(scanDataDomain);
     }
 
-    private AnalysisDataManager getAnalysisDataManager() {
-        return analysisDataManagerReference.get();
+    private AnalysisDataDomain getAnalysisDataDomain() {
+        return analysisDataDomainReference.get();
     }
 
     private ScanDataDomain getScanDataDomain() {
@@ -148,8 +148,8 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         }
 
         // throw an exception if there are previous analysis data
-        if (!getAnalysisDataManager().isEmpty()) {
-            throw new IllegalStateException("AnalysisDataManager is not clean");
+        if (!getAnalysisDataDomain().isEmpty()) {
+            throw new IllegalStateException("AnalysisDataDomain is not clean");
         }
 
         updateProgress(0, 1);
@@ -157,7 +157,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         // prepare AnalysisData and filter out those that are not suitable for analysis
         List<AnalysisData> dataList = new LinkedList<>();
         getScanDataDomain().copySongDataList().stream().filter(x -> x.selected.get()).forEach(x -> {
-            AnalysisData analysisData = getAnalysisDataManager().createAnalysisData(x);
+            AnalysisData analysisData = getAnalysisDataDomain().createAnalysisData(x);
 
             if (x.childListProperty().isEmpty()) {
                 analysisData.setException(

@@ -4,22 +4,22 @@ import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.RecordData;
+import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
+import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.model.RecordData;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.google.common.collect.Table.Cell;
 import java.lang.ref.WeakReference;
 
 public class CollectNewRecordTask extends InterruptibleTask<Void> {
-    private final WeakReference<AnalysisDataManager> analysisDataManagerReference;
+    private final WeakReference<AnalysisDataDomain> analysisDataDomainReference;
     private final WeakReference<NewRecordDataManager> newRecordDataManagerReference;
     private final WeakReference<RecordRepository> recordRepositoryReference;
 
     public CollectNewRecordTask(RecordRepository recordRepository,
-            AnalysisDataManager analysisDataManager, NewRecordDataManager newRecordDataManager) {
-        analysisDataManagerReference = new WeakReference<>(analysisDataManager);
+            AnalysisDataDomain analysisDataDomain, NewRecordDataManager newRecordDataManager) {
+        analysisDataDomainReference = new WeakReference<>(analysisDataDomain);
         newRecordDataManagerReference = new WeakReference<>(newRecordDataManager);
         recordRepositoryReference = new WeakReference<>(recordRepository);
     }
@@ -28,8 +28,8 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
         return recordRepositoryReference.get();
     }
 
-    private AnalysisDataManager getAnalysisDataManager() {
-        return analysisDataManagerReference.get();
+    private AnalysisDataDomain getAnalysisDataDomain() {
+        return analysisDataDomainReference.get();
     }
 
     private NewRecordDataManager getNewRecordDataManager() {
@@ -54,13 +54,13 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
     @Override
     protected Void callTask() throws Exception {
         // throw an exception if there is no analysis data
-        if (getAnalysisDataManager().isEmpty()) {
-            throw new IllegalStateException("AnalysisDataManager is empty");
+        if (getAnalysisDataDomain().isEmpty()) {
+            throw new IllegalStateException("AnalysisDataDomain is empty");
         }
 
         getNewRecordDataManager().clear();
 
-        for (AnalysisData data : getAnalysisDataManager().copyAnalysisDataList()) {
+        for (AnalysisData data : getAnalysisDataDomain().copyAnalysisDataList()) {
             Song song = data.songDataProperty().get().songProperty().get();
 
             for (Cell<Button, Pattern, RecordData> cell : data.recordDataTable.cellSet()) {

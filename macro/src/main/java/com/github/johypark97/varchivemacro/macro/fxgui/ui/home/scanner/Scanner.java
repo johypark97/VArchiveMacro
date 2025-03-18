@@ -3,8 +3,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scanner;
 import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpView;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
+import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
 import java.util.List;
@@ -73,7 +73,7 @@ public interface Scanner {
 
         void song_refresh();
 
-        void analysis_setAnalysisDataList(ObservableList<AnalysisDataManager.AnalysisData> list);
+        void analysis_setAnalysisDataList(ObservableList<AnalysisData> list);
 
         void analysis_setProgressBarValue(double value);
 

@@ -8,15 +8,16 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.DefaultAnalysisDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.DefaultScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.RecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
+import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.RecordData;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
@@ -40,7 +41,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 
 public class DefaultScannerModel implements ScannerModel {
-    private final AnalysisDataManager analysisDataManager = new AnalysisDataManager();
+    private final AnalysisDataDomain analysisDataDomain = new DefaultAnalysisDataDomain();
     private final NewRecordDataManager newRecordDataManager = new NewRecordDataManager();
     private final ScanDataDomain scanDataDomain = new DefaultScanDataDomain();
 
@@ -122,7 +123,7 @@ public class DefaultScannerModel implements ScannerModel {
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(() -> {
-            Task<Void> task = new AnalysisTask(onDataReady, scanDataDomain, analysisDataManager,
+            Task<Void> task = new AnalysisTask(onDataReady, scanDataDomain, analysisDataDomain,
                     cacheDirectoryPath, analysisThreadCount);
 
             task.setOnCancelled(event -> onCancel.run());
@@ -154,7 +155,7 @@ public class DefaultScannerModel implements ScannerModel {
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(() -> {
-            Task<Void> task = new CollectNewRecordTask(recordRepository, analysisDataManager,
+            Task<Void> task = new CollectNewRecordTask(recordRepository, analysisDataDomain,
                     newRecordDataManager);
 
             task.setOnSucceeded(event -> onDone.run());
@@ -217,7 +218,7 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public boolean isAnalysisDataEmpty() {
-        return analysisDataManager.isEmpty();
+        return analysisDataDomain.isEmpty();
     }
 
     @Override
@@ -228,7 +229,7 @@ public class DefaultScannerModel implements ScannerModel {
             return;
         }
 
-        analysisDataManager.clear();
+        analysisDataDomain.clear();
         newRecordDataManager.clear();
 
         onClear.run();
@@ -273,7 +274,7 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public List<AnalysisData> copyAnalysisDataList() {
-        return analysisDataManager.copyAnalysisDataList();
+        return analysisDataDomain.copyAnalysisDataList();
     }
 
     @Override
@@ -281,7 +282,7 @@ public class DefaultScannerModel implements ScannerModel {
             throws Exception {
         AnalyzedRecordData data = new AnalyzedRecordData();
 
-        AnalysisData analysisData = analysisDataManager.getAnalysisData(id);
+        AnalysisData analysisData = analysisDataDomain.getAnalysisData(id);
         data.song = analysisData.songDataProperty().get().songProperty().get();
 
         BufferedImage image = getCaptureImage(cacheDirectoryPath,
