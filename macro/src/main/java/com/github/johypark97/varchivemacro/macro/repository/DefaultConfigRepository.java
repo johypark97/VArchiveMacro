@@ -1,7 +1,9 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_dump;
 
+import com.github.johypark97.varchivemacro.macro.model.MacroConfig;
+import com.github.johypark97.varchivemacro.macro.model.ScannerConfig;
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonParseException;
@@ -13,14 +15,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class DefaultConfigModel implements ConfigModel {
+public class DefaultConfigRepository implements ConfigRepository {
     private static final Path CONFIG_PATH = Path.of("config.json");
 
     private final Gson gson;
 
     private ConfigData data = new ConfigData();
 
-    public DefaultConfigModel() {
+    public DefaultConfigRepository() {
         JsonSerializer<Path> pathSerializer =
                 (path, type, jsonSerializationContext) -> new JsonPrimitive(path.toString());
 

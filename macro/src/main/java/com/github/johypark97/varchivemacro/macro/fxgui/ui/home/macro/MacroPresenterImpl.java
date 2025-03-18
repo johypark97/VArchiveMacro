@@ -2,11 +2,11 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.Macro.MacroPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.Macro.MacroView;
+import com.github.johypark97.varchivemacro.macro.model.MacroConfig;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.util.function.BiConsumer;

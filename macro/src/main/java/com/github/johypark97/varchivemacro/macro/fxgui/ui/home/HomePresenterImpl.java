@@ -2,7 +2,6 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultMacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomePresenter;
@@ -20,6 +19,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.Open
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseViewImpl;
 import com.github.johypark97.varchivemacro.macro.github.DataUpdater;
+import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 public class HomePresenterImpl implements HomePresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomePresenterImpl.class);
 
-    private final ConfigModel configModel;
+    private final ConfigRepository configRepository;
     private final DatabaseRepository databaseRepository;
     private final OpenSourceLicenseRepository openSourceLicenseRepository;
     private final RecordRepository recordRepository;
@@ -47,10 +47,11 @@ public class HomePresenterImpl implements HomePresenter {
     @MvpView
     public HomeView view;
 
-    public HomePresenterImpl(ConfigModel configModel, DatabaseRepository databaseRepository,
+    public HomePresenterImpl(ConfigRepository configRepository,
+            DatabaseRepository databaseRepository,
             OpenSourceLicenseRepository openSourceLicenseRepository,
             RecordRepository recordRepository) {
-        this.configModel = configModel;
+        this.configRepository = configRepository;
         this.databaseRepository = databaseRepository;
         this.openSourceLicenseRepository = openSourceLicenseRepository;
         this.recordRepository = recordRepository;
@@ -62,8 +63,8 @@ public class HomePresenterImpl implements HomePresenter {
         Mvp.linkViewAndPresenter(scannerView,
                 new ScannerPresenterImpl(databaseRepository, recordRepository,
                         new DefaultScannerModel(), view::showInformation, view::showError,
-                        view::showConfirmation, configModel::getScannerConfig,
-                        configModel::setScannerConfig, view::getWindow));
+                        view::showConfirmation, configRepository::getScannerConfig,
+                        configRepository::setScannerConfig, view::getWindow));
 
         scannerView.startView();
     }
@@ -71,8 +72,8 @@ public class HomePresenterImpl implements HomePresenter {
     @Override
     public void onStartView() {
         try {
-            if (!configModel.load()) {
-                configModel.save();
+            if (!configRepository.load()) {
+                configRepository.save();
             }
         } catch (IOException ignored) {
         }
@@ -86,8 +87,8 @@ public class HomePresenterImpl implements HomePresenter {
         macroView = new MacroViewImpl();
         view.setMacroTabContent(macroView);
         Mvp.linkViewAndPresenter(macroView,
-                new MacroPresenterImpl(new DefaultMacroModel(), configModel::getMacroConfig,
-                        configModel::setMacroConfig, view::showError));
+                new MacroPresenterImpl(new DefaultMacroModel(), configRepository::getMacroConfig,
+                        configRepository::setMacroConfig, view::showError));
 
         UpdateCheckViewImpl updateCheckView = new UpdateCheckViewImpl();
         view.setUpdateCheckTabContent(updateCheckView);
@@ -113,7 +114,7 @@ public class HomePresenterImpl implements HomePresenter {
         macroView.stopView();
 
         try {
-            configModel.save();
+            configRepository.save();
         } catch (IOException ignored) {
         }
 
