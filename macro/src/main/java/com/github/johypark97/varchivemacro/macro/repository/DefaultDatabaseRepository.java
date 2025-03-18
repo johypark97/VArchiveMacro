@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.CachedReadOnlySongDatabase;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultTitleTool;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DefaultDatabaseModel implements DatabaseModel {
+public class DefaultDatabaseRepository implements DatabaseRepository {
     private static final Path BASE_PATH = Path.of("data");
 
     private static final Path SONG_DATABASE_PATH = BASE_PATH.resolve("song.db");

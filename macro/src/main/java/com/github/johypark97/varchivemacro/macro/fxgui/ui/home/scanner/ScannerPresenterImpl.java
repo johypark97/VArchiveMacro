@@ -6,7 +6,6 @@ import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.ScannerConfig;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewer.AnalysisDataViewerView;
@@ -25,6 +24,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditor;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorViewImpl;
+import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
@@ -63,7 +63,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     private final NativeKeyListener scannerNativeKeyListener;
 
-    private final DatabaseModel databaseModel;
+    private final DatabaseRepository databaseRepository;
     private final RecordModel recordModel;
     private final ScannerModel scannerModel;
 
@@ -80,12 +80,12 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     @MvpView
     public ScannerView view;
 
-    public ScannerPresenterImpl(DatabaseModel databaseModel, RecordModel recordModel,
+    public ScannerPresenterImpl(DatabaseRepository databaseRepository, RecordModel recordModel,
             ScannerModel scannerModel, BiConsumer<String, String> showInformation,
             BiConsumer<String, Throwable> showError, BiPredicate<String, String> showConfirmation,
             Supplier<ScannerConfig> scannerConfigGetter,
             Consumer<ScannerConfig> scannerConfigSetter, Supplier<Window> windowSupplier) {
-        this.databaseModel = databaseModel;
+        this.databaseRepository = databaseRepository;
         this.recordModel = recordModel;
         this.scannerConfigGetter = scannerConfigGetter;
         this.scannerConfigSetter = scannerConfigSetter;
@@ -135,7 +135,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         }
 
         TreeItem<ViewerTreeData> rootNode = new TreeItem<>();
-        databaseModel.categoryNameSongListMap().forEach((categoryName, songList) -> {
+        databaseRepository.categoryNameSongListMap().forEach((categoryName, songList) -> {
             TreeItem<ViewerTreeData> categoryNode =
                     new TreeItem<>(new ViewerTreeData(categoryName));
             categoryNode.setExpanded(normalizedFilter != null);
@@ -215,7 +215,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         viewer_setSongTreeViewRoot(null);
 
-        view.capture_setTabList(databaseModel.categoryNameList());
+        view.capture_setTabList(databaseRepository.categoryNameList());
         view.capture_setSelectedCategorySet(scannerConfig.selectedCategorySet);
 
         FxHookWrapper.addKeyListener(scannerNativeKeyListener);
@@ -257,7 +257,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void viewer_showRecord(int id) {
-        SongDatabase.Song song = databaseModel.getSong(id);
+        SongDatabase.Song song = databaseRepository.getSong(id);
         StringBuilder builder = new StringBuilder(32);
         builder.append("Title: ").append(song.title()).append("\nComposer: ")
                 .append(song.composer());
@@ -350,9 +350,9 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         int captureDelay = view.option_getCaptureDelay();
         int keyInputDuration = view.option_getKeyInputDuration();
 
-        scannerModel.startCollectionScan(onDone, onCancel, databaseModel.categoryNameSongListMap(),
-                databaseModel.getTitleTool(), selectedCategorySet, cacheDirectoryPath, captureDelay,
-                keyInputDuration);
+        scannerModel.startCollectionScan(onDone, onCancel,
+                databaseRepository.categoryNameSongListMap(), databaseRepository.getTitleTool(),
+                selectedCategorySet, cacheDirectoryPath, captureDelay, keyInputDuration);
     }
 
     @Override
@@ -505,7 +505,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
                     language.getString("scannerService.dialog.uploadDone"));
         }
 
-        scannerModel.startUpload(onDone, onCancel, databaseModel, recordModel, accountPath,
+        scannerModel.startUpload(onDone, onCancel, databaseRepository, recordModel, accountPath,
                 recordUploadDelay);
     }
 

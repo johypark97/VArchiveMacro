@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDat
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
+import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -33,7 +34,7 @@ public interface ScannerModel {
 
     void collectNewRecord(Runnable onDone, RecordModel recordModel);
 
-    void startUpload(Runnable onDone, Runnable onCancel, DatabaseModel databaseModel,
+    void startUpload(Runnable onDone, Runnable onCancel, DatabaseRepository databaseRepository,
             RecordModel recordModel, Path accountPath, int recordUploadDelay);
 
     void stopUpload();

@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader;
 
-import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.ScannerLoader.ScannerLoaderPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.ScannerLoader.ScannerLoaderView;
+import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,16 +16,16 @@ public class ScannerLoaderPresenterImpl implements ScannerLoaderPresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScannerLoaderPresenterImpl.class);
 
     private final BiConsumer<String, Exception> showError;
-    private final DatabaseModel databaseModel;
+    private final DatabaseRepository databaseRepository;
     private final RecordModel recordModel;
     private final Runnable onStop;
 
     @MvpView
     public ScannerLoaderView view;
 
-    public ScannerLoaderPresenterImpl(DatabaseModel databaseModel, RecordModel recordModel,
-            BiConsumer<String, Exception> showError, Runnable onStop) {
-        this.databaseModel = databaseModel;
+    public ScannerLoaderPresenterImpl(DatabaseRepository databaseRepository,
+            RecordModel recordModel, BiConsumer<String, Exception> showError, Runnable onStop) {
+        this.databaseRepository = databaseRepository;
         this.onStop = onStop;
         this.recordModel = recordModel;
         this.showError = showError;
@@ -34,16 +34,16 @@ public class ScannerLoaderPresenterImpl implements ScannerLoaderPresenter {
     @Override
     public void onStartView() {
         try {
-            databaseModel.load();
+            databaseRepository.load();
         } catch (SQLException | IOException e) {
             view.showForbiddenMark();
             showError.accept("Database loading error", e);
-            LOGGER.atError().setCause(e).log("DatabaseModel loading exception");
+            LOGGER.atError().setCause(e).log("DatabaseRepository loading exception");
             return;
         } catch (Exception e) {
             view.showForbiddenMark();
             showError.accept("Critical database loading error", e);
-            LOGGER.atError().setCause(e).log("Critical DatabaseModel loading exception");
+            LOGGER.atError().setCause(e).log("Critical DatabaseRepository loading exception");
             return;
         }
 

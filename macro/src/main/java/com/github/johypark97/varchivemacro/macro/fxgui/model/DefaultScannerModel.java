@@ -17,6 +17,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDa
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
+import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.service.CollectionScanService;
 import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import com.github.johypark97.varchivemacro.macro.service.task.AnalysisTask;
@@ -165,8 +166,9 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void startUpload(Runnable onDone, Runnable onCancel, DatabaseModel databaseModel,
-            RecordModel recordModel, Path accountPath, int recordUploadDelay) {
+    public void startUpload(Runnable onDone, Runnable onCancel,
+            DatabaseRepository databaseRepository, RecordModel recordModel, Path accountPath,
+            int recordUploadDelay) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -175,9 +177,8 @@ public class DefaultScannerModel implements ScannerModel {
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(() -> {
-            Task<Void> task =
-                    new UploadTask(databaseModel, recordModel, newRecordDataManager, accountPath,
-                            recordUploadDelay);
+            Task<Void> task = new UploadTask(databaseRepository, recordModel, newRecordDataManager,
+                    accountPath, recordUploadDelay);
 
             task.setOnCancelled(event -> onCancel.run());
             task.setOnSucceeded(event -> onDone.run());

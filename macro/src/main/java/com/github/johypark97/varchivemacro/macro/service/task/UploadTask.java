@@ -6,11 +6,11 @@ import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader.Reques
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.data.Account;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData.Status;
+import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
@@ -25,22 +25,22 @@ public class UploadTask extends InterruptibleTask<Void> {
     private final Path accountPath;
     private final int recordUploadDelay;
 
-    private final WeakReference<DatabaseModel> databaseModelWeakReference;
+    private final WeakReference<DatabaseRepository> databaseRepositoryReference;
     private final WeakReference<NewRecordDataManager> newRecordDataManagerReference;
     private final WeakReference<RecordModel> recordModelWeakReference;
 
-    public UploadTask(DatabaseModel databaseModel, RecordModel recordModel,
+    public UploadTask(DatabaseRepository databaseRepository, RecordModel recordModel,
             NewRecordDataManager newRecordDataManager, Path accountPath, int recordUploadDelay) {
         this.accountPath = accountPath;
         this.recordUploadDelay = recordUploadDelay;
 
-        databaseModelWeakReference = new WeakReference<>(databaseModel);
+        databaseRepositoryReference = new WeakReference<>(databaseRepository);
         newRecordDataManagerReference = new WeakReference<>(newRecordDataManager);
         recordModelWeakReference = new WeakReference<>(recordModel);
     }
 
-    private DatabaseModel getDatabaseModel() {
-        return databaseModelWeakReference.get();
+    private DatabaseRepository getDatabaseRepository() {
+        return databaseRepositoryReference.get();
     }
 
     private RecordModel getRecordModel() {
@@ -65,14 +65,14 @@ public class UploadTask extends InterruptibleTask<Void> {
     }
 
     private RequestJson recordToRequest(Song song, LocalRecord record) {
-        String title = getDatabaseModel().getRemoteTitle(song.id());
+        String title = getDatabaseRepository().getRemoteTitle(song.id());
         if (title == null) {
             title = song.title();
         }
 
         RequestJson requestJson =
                 new RequestJson(title, record.button, record.pattern, record.rate, record.maxCombo);
-        if (getDatabaseModel().duplicateTitleSongIdSet().contains(song.id())) {
+        if (getDatabaseRepository().duplicateTitleSongIdSet().contains(song.id())) {
             requestJson.composer = song.composer();
         }
 

@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.DatabaseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultLicenseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultMacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
@@ -23,6 +22,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.Open
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseViewImpl;
 import com.github.johypark97.varchivemacro.macro.github.DataUpdater;
+import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class HomePresenterImpl implements HomePresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomePresenterImpl.class);
 
     private final ConfigModel configModel;
-    private final DatabaseModel databaseModel;
+    private final DatabaseRepository databaseRepository;
     private final RecordModel recordModel;
 
     private MacroViewImpl macroView;
@@ -46,10 +46,10 @@ public class HomePresenterImpl implements HomePresenter {
     @MvpView
     public HomeView view;
 
-    public HomePresenterImpl(ConfigModel configModel, DatabaseModel databaseModel,
+    public HomePresenterImpl(ConfigModel configModel, DatabaseRepository databaseRepository,
             RecordModel recordModel) {
         this.configModel = configModel;
-        this.databaseModel = databaseModel;
+        this.databaseRepository = databaseRepository;
         this.recordModel = recordModel;
     }
 
@@ -57,7 +57,7 @@ public class HomePresenterImpl implements HomePresenter {
         scannerView = new ScannerViewImpl();
         view.setScannerTabContent(scannerView);
         Mvp.linkViewAndPresenter(scannerView,
-                new ScannerPresenterImpl(databaseModel, recordModel, new DefaultScannerModel(),
+                new ScannerPresenterImpl(databaseRepository, recordModel, new DefaultScannerModel(),
                         view::showInformation, view::showError, view::showConfirmation,
                         configModel::getScannerConfig, configModel::setScannerConfig,
                         view::getWindow));
@@ -77,7 +77,7 @@ public class HomePresenterImpl implements HomePresenter {
         ScannerLoaderViewImpl scannerLoaderView = new ScannerLoaderViewImpl();
         view.setScannerTabContent(scannerLoaderView);
         Mvp.linkViewAndPresenter(scannerLoaderView,
-                new ScannerLoaderPresenterImpl(databaseModel, recordModel, view::showError,
+                new ScannerLoaderPresenterImpl(databaseRepository, recordModel, view::showError,
                         this::showScanner));
 
         macroView = new MacroViewImpl();

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface DatabaseModel {
+public interface DatabaseRepository {
     void load() throws IOException, SQLException;
 
     TitleTool getTitleTool();
