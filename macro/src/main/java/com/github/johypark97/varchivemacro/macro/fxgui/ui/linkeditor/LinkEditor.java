@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor;
 
 import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonView;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 

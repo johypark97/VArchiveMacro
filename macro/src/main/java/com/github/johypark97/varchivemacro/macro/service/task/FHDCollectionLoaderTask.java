@@ -4,9 +4,9 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,10 +20,10 @@ public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
 
     private CollectionArea collectionArea;
 
-    public FHDCollectionLoaderTask(ScanDataManager scanDataManager,
+    public FHDCollectionLoaderTask(ScanDataDomain scanDataDomain,
             Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
             Set<String> selectedCategorySet, Path cacheDirectoryPath) {
-        super(scanDataManager, categoryNameSongListMap, titleTool, selectedCategorySet);
+        super(scanDataDomain, categoryNameSongListMap, titleTool, selectedCategorySet);
 
         cacheManager = new CacheManager(cacheDirectoryPath);
     }

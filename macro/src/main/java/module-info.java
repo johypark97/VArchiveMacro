@@ -27,6 +27,7 @@ module varchivemacro.macro {
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home.updatecheck to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense to javafx.fxml;
+    opens com.github.johypark97.varchivemacro.macro.model to javafx.base;
 
     // libraries
     requires com.github.kwhat.jnativehook;

@@ -8,15 +8,16 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.domain.DefaultScanDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.RecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
+import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.SongData;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.service.CollectionScanService;
@@ -41,7 +42,7 @@ import javafx.event.EventHandler;
 public class DefaultScannerModel implements ScannerModel {
     private final AnalysisDataManager analysisDataManager = new AnalysisDataManager();
     private final NewRecordDataManager newRecordDataManager = new NewRecordDataManager();
-    private final ScanDataManager scanDataManager = new ScanDataManager();
+    private final ScanDataDomain scanDataDomain = new DefaultScanDataDomain();
 
     @Override
     public void validateCacheDirectory(Path path) throws IOException {
@@ -80,10 +81,9 @@ public class DefaultScannerModel implements ScannerModel {
                 ServiceManager.getInstance().get(CollectionScanService.class));
 
         service.setTaskConstructor(() -> {
-            Task<Void> task =
-                    new DefaultCollectionScanTask(scanDataManager, categoryNameSongListMap,
-                            titleTool, selectedCategorySet, cacheDirectoryPath, captureDelay,
-                            keyInputDuration);
+            Task<Void> task = new DefaultCollectionScanTask(scanDataDomain, categoryNameSongListMap,
+                    titleTool, selectedCategorySet, cacheDirectoryPath, captureDelay,
+                    keyInputDuration);
 
             task.setOnCancelled(event -> onCancel.run());
             task.setOnSucceeded(event -> onDone.run());
@@ -93,7 +93,7 @@ public class DefaultScannerModel implements ScannerModel {
 
         // service.setTaskConstructor(() -> {
         //     Task<Void> task =
-        //             new FHDCollectionLoaderTask(scanDataManager, categoryNameSongListMap, titleTool,
+        //             new FHDCollectionLoaderTask(scanDataDomain, categoryNameSongListMap, titleTool,
         //                     selectedCategorySet, cacheDirectoryPath);
         //
         //     task.setOnCancelled(event -> onCancel.run());
@@ -122,7 +122,7 @@ public class DefaultScannerModel implements ScannerModel {
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(() -> {
-            Task<Void> task = new AnalysisTask(onDataReady, scanDataManager, analysisDataManager,
+            Task<Void> task = new AnalysisTask(onDataReady, scanDataDomain, analysisDataManager,
                     cacheDirectoryPath, analysisThreadCount);
 
             task.setOnCancelled(event -> onCancel.run());
@@ -199,7 +199,7 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public boolean isScanDataEmpty() {
-        return scanDataManager.isEmpty();
+        return scanDataDomain.isEmpty();
     }
 
     @Override
@@ -210,7 +210,7 @@ public class DefaultScannerModel implements ScannerModel {
             return;
         }
 
-        scanDataManager.clear();
+        scanDataDomain.clear();
 
         onClear.run();
     }
@@ -241,27 +241,27 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public CaptureData getCaptureData(int id) {
-        return scanDataManager.getCaptureData(id);
+        return scanDataDomain.getCaptureData(id);
     }
 
     @Override
     public List<CaptureData> copyCaptureDataList() {
-        return scanDataManager.copyCaptureDataList();
+        return scanDataDomain.copyCaptureDataList();
     }
 
     @Override
     public SongData getSongData(int id) {
-        return scanDataManager.getSongData(id);
+        return scanDataDomain.getSongData(id);
     }
 
     @Override
     public List<SongData> copySongDataList() {
-        return scanDataManager.copySongDataList();
+        return scanDataDomain.copySongDataList();
     }
 
     @Override
     public BufferedImage getCaptureImage(Path cacheDirectoryPath, int id) throws IOException {
-        CaptureData captureData = scanDataManager.getCaptureData(id);
+        CaptureData captureData = scanDataDomain.getCaptureData(id);
 
         try {
             return new CacheManager(cacheDirectoryPath).read(id);

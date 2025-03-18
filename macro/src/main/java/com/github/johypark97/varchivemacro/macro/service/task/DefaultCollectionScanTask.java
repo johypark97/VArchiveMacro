@@ -6,9 +6,9 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactor
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Robot;
@@ -36,11 +36,11 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
     private CollectionArea collectionArea;
     private ImageCachingService imageCachingService;
 
-    public DefaultCollectionScanTask(ScanDataManager scanDataManager,
+    public DefaultCollectionScanTask(ScanDataDomain scanDataDomain,
             Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
             Set<String> selectedCategorySet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration) {
-        super(scanDataManager, categoryNameSongListMap, titleTool, selectedCategorySet);
+        super(scanDataDomain, categoryNameSongListMap, titleTool, selectedCategorySet);
 
         try {
             robot = new Robot();

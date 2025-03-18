@@ -8,10 +8,10 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.LinkMetadata;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
+import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
+import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.LinkMetadata;
+import com.github.johypark97.varchivemacro.macro.model.SongData;
 import com.github.johypark97.varchivemacro.macro.service.ocr.TitleOcr;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -38,16 +38,16 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
     private final Set<String> selectedCategorySet;
     private final TitleTool titleTool;
 
-    private final WeakReference<ScanDataManager> scanDataManagerReference;
+    private final WeakReference<ScanDataDomain> scanDataDomainReference;
 
-    public AbstractCollectionScanTask(ScanDataManager scanDataManager,
+    public AbstractCollectionScanTask(ScanDataDomain scanDataDomain,
             Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
             Set<String> selectedCategorySet) {
         this.categoryNameSongListMap = categoryNameSongListMap;
         this.selectedCategorySet = selectedCategorySet;
         this.titleTool = titleTool;
 
-        scanDataManagerReference = new WeakReference<>(scanDataManager);
+        scanDataDomainReference = new WeakReference<>(scanDataDomain);
     }
 
     private static String normalizeTitle(String value) {
@@ -64,8 +64,8 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
 
     protected abstract BufferedImage cropTitle(BufferedImage image);
 
-    private ScanDataManager getScanDataManager() {
-        return scanDataManagerReference.get();
+    private ScanDataDomain getScanDataDomain() {
+        return scanDataDomainReference.get();
     }
 
     private String normalizeSongTitle(Song song) {
@@ -98,7 +98,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
 
         songList.forEach(song -> {
             String normalizedTitle = normalizeSongTitle(song);
-            SongData data = getScanDataManager().createSongData(song, normalizedTitle);
+            SongData data = getScanDataDomain().createSongData(song, normalizedTitle);
             map.computeIfAbsent(normalizedTitle, x -> new LinkedList<>()).add(data);
         });
 
@@ -207,8 +207,8 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
     @Override
     protected Void callTask() throws Exception {
         // throw an exception if there are previous capture data
-        if (!getScanDataManager().isEmpty()) {
-            throw new IllegalStateException("ScanDataManager is not clean");
+        if (!getScanDataDomain().isEmpty()) {
+            throw new IllegalStateException("ScanDataDomain is not clean");
         }
 
         // check the cache directory
@@ -250,7 +250,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
                     }
 
                     // create capture data
-                    CaptureData data = getScanDataManager().createCaptureData();
+                    CaptureData data = getScanDataDomain().createCaptureData();
 
                     // capture the screen
                     BufferedImage image = captureScreenshot(data);

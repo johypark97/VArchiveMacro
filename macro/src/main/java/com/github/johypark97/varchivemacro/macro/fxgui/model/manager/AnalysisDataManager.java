@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.macro.fxgui.model.manager;
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
+import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.SongData;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.ArrayList;

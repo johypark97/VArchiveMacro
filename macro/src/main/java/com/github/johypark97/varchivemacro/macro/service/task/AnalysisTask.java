@@ -10,13 +10,13 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData.Status;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.RecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.service.ocr.ScannerOcr;
 import com.google.common.base.CharMatcher;
 import java.awt.Dimension;
@@ -59,12 +59,12 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private final int imagePreloadingLimit;
 
     private final WeakReference<AnalysisDataManager> analysisDataManagerReference;
-    private final WeakReference<ScanDataManager> scanDataManagerReference;
+    private final WeakReference<ScanDataDomain> scanDataDomainReference;
 
     private int completedTaskCount;
     private int totalTaskCount;
 
-    public AnalysisTask(Runnable onDataReady, ScanDataManager scanDataManager,
+    public AnalysisTask(Runnable onDataReady, ScanDataDomain scanDataDomain,
             AnalysisDataManager analysisDataManager, Path cacheDirectoryPath, int threadCount) {
         this.onDataReady = onDataReady;
 
@@ -75,15 +75,15 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         cacheManager = new CacheManager(cacheDirectoryPath);
 
         analysisDataManagerReference = new WeakReference<>(analysisDataManager);
-        scanDataManagerReference = new WeakReference<>(scanDataManager);
+        scanDataDomainReference = new WeakReference<>(scanDataDomain);
     }
 
     private AnalysisDataManager getAnalysisDataManager() {
         return analysisDataManagerReference.get();
     }
 
-    private ScanDataManager getScanDataManager() {
-        return scanDataManagerReference.get();
+    private ScanDataDomain getScanDataDomain() {
+        return scanDataDomainReference.get();
     }
 
     private byte[] loadImage(AnalysisData analysisData) throws IOException {
@@ -143,8 +143,8 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         Instant start = Instant.now();
 
         // throw an exception if there is no scan data
-        if (getScanDataManager().isEmpty()) {
-            throw new IllegalStateException("ScanDataManager is empty");
+        if (getScanDataDomain().isEmpty()) {
+            throw new IllegalStateException("ScanDataDomain is empty");
         }
 
         // throw an exception if there are previous analysis data
@@ -156,30 +156,29 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
         // prepare AnalysisData and filter out those that are not suitable for analysis
         List<AnalysisData> dataList = new LinkedList<>();
-        getScanDataManager().copySongDataList().stream().filter(x -> x.selected.get())
-                .forEach(x -> {
-                    AnalysisData analysisData = getAnalysisDataManager().createAnalysisData(x);
+        getScanDataDomain().copySongDataList().stream().filter(x -> x.selected.get()).forEach(x -> {
+            AnalysisData analysisData = getAnalysisDataManager().createAnalysisData(x);
 
-                    if (x.childListProperty().isEmpty()) {
-                        analysisData.setException(
-                                new IllegalArgumentException("There are no linked captures."));
-                        return;
-                    } else if (x.childListProperty().size() > 1) {
-                        analysisData.setException(
-                                new IllegalArgumentException("Too many linked captures."));
-                        return;
-                    }
+            if (x.childListProperty().isEmpty()) {
+                analysisData.setException(
+                        new IllegalArgumentException("There are no linked captures."));
+                return;
+            } else if (x.childListProperty().size() > 1) {
+                analysisData.setException(
+                        new IllegalArgumentException("Too many linked captures."));
+                return;
+            }
 
-                    CaptureData captureData = x.childListProperty().get(0);
-                    if (captureData.exception.get() != null) {
-                        analysisData.setException(
-                                new IllegalArgumentException("An exception exists in capture."));
-                        return;
-                    }
+            CaptureData captureData = x.childListProperty().get(0);
+            if (captureData.exception.get() != null) {
+                analysisData.setException(
+                        new IllegalArgumentException("An exception exists in capture."));
+                return;
+            }
 
-                    analysisData.captureData.set(captureData);
-                    dataList.add(analysisData);
-                });
+            analysisData.captureData.set(captureData);
+            dataList.add(analysisData);
+        });
         totalTaskCount = dataList.size();
         onDataReady.run();
 

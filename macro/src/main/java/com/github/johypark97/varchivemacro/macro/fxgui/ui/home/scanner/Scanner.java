@@ -5,7 +5,8 @@ import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpView;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager;
+import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.SongData;
 import java.util.List;
 import java.util.Set;
 import javafx.collections.ObservableList;
@@ -58,7 +59,7 @@ public interface Scanner {
 
         void viewer_setRecordData(ViewerRecordData data);
 
-        void capture_setCaptureDataList(ObservableList<ScanDataManager.CaptureData> list);
+        void capture_setCaptureDataList(ObservableList<CaptureData> list);
 
         void capture_refresh();
 
@@ -68,7 +69,7 @@ public interface Scanner {
 
         void capture_setSelectedCategorySet(Set<String> value);
 
-        void song_setSongDataList(ObservableList<ScanDataManager.SongData> list);
+        void song_setSongDataList(ObservableList<SongData> list);
 
         void song_refresh();
 

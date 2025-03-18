@@ -1,0 +1,63 @@
+package com.github.johypark97.varchivemacro.macro.domain;
+
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
+import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.SongData;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DefaultScanDataDomain implements ScanDataDomain {
+    private final List<CaptureData> captureDataList = new ArrayList<>();
+    private final List<SongData> songDataList = new ArrayList<>();
+
+    @Override
+    public List<CaptureData> copyCaptureDataList() {
+        return List.copyOf(captureDataList);
+    }
+
+    @Override
+    public List<SongData> copySongDataList() {
+        return List.copyOf(songDataList);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return captureDataList.isEmpty() && songDataList.isEmpty();
+    }
+
+    @Override
+    public void clear() {
+        captureDataList.clear();
+        songDataList.clear();
+    }
+
+    @Override
+    public SongData getSongData(int index) {
+        return songDataList.get(index);
+    }
+
+    @Override
+    public SongData createSongData(Song song, String normalizedTitle) {
+        int id = songDataList.size();
+
+        SongData data = new SongData(id, song, normalizedTitle);
+        songDataList.add(data);
+
+        return data;
+    }
+
+    @Override
+    public CaptureData getCaptureData(int index) {
+        return captureDataList.get(index);
+    }
+
+    @Override
+    public CaptureData createCaptureData() {
+        int id = captureDataList.size();
+
+        CaptureData data = new CaptureData(id);
+        captureDataList.add(data);
+
+        return data;
+    }
+}
