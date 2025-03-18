@@ -57,10 +57,10 @@
   <entry key="macro.startToDown">Start Macro to Down</entry>
   <entry key="macro.startToUp">Start Macro to Up</entry>
   <entry key="macro.stop">Stop Macro</entry>
-  <entry key="recordModel.apiException">Failed to load records from the server</entry>
-  <entry key="recordModel.fileIOException">File IO Error</entry>
-  <entry key="recordModel.generalSecurityException">Failed to establish a secure connection</entry>
-  <entry key="recordModel.networkIOException">Network IO Error</entry>
+  <entry key="recordRepository.apiException">Failed to load records from the server</entry>
+  <entry key="recordRepository.fileIOException">File IO Error</entry>
+  <entry key="recordRepository.generalSecurityException">Failed to establish a secure connection</entry>
+  <entry key="recordRepository.networkIOException">Network IO Error</entry>
   <entry key="scanner.analysis">Analysis</entry>
   <entry key="scanner.analysis.clear">Clear</entry>
   <entry key="scanner.analysis.show">Show (Enter)</entry>

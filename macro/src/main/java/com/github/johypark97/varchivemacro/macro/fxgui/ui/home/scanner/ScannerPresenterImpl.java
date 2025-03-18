@@ -6,7 +6,6 @@ import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel.ScannerConfig;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewerPresenterImpl;
@@ -25,6 +24,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorP
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorViewImpl;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
+import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
@@ -64,7 +64,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     private final NativeKeyListener scannerNativeKeyListener;
 
     private final DatabaseRepository databaseRepository;
-    private final RecordModel recordModel;
+    private final RecordRepository recordRepository;
     private final ScannerModel scannerModel;
 
     private final BiConsumer<String, String> showInformation;
@@ -80,13 +80,14 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     @MvpView
     public ScannerView view;
 
-    public ScannerPresenterImpl(DatabaseRepository databaseRepository, RecordModel recordModel,
-            ScannerModel scannerModel, BiConsumer<String, String> showInformation,
-            BiConsumer<String, Throwable> showError, BiPredicate<String, String> showConfirmation,
+    public ScannerPresenterImpl(DatabaseRepository databaseRepository,
+            RecordRepository recordRepository, ScannerModel scannerModel,
+            BiConsumer<String, String> showInformation, BiConsumer<String, Throwable> showError,
+            BiPredicate<String, String> showConfirmation,
             Supplier<ScannerConfig> scannerConfigGetter,
             Consumer<ScannerConfig> scannerConfigSetter, Supplier<Window> windowSupplier) {
         this.databaseRepository = databaseRepository;
-        this.recordModel = recordModel;
+        this.recordRepository = recordRepository;
         this.scannerConfigGetter = scannerConfigGetter;
         this.scannerConfigSetter = scannerConfigSetter;
         this.scannerModel = scannerModel;
@@ -264,7 +265,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         view.viewer_setSongInformationText(builder.toString());
 
         ViewerRecordData data = new ViewerRecordData();
-        recordModel.getRecordList(id).forEach(x -> {
+        recordRepository.getRecordList(id).forEach(x -> {
             int column = x.pattern.getWeight();
             int row = x.button.getWeight();
 
@@ -467,7 +468,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         Runnable onDone = () -> view.uploader_setNewRecordDataList(
                 FXCollections.observableArrayList(scannerModel.copyNewRecordDataList()));
 
-        scannerModel.collectNewRecord(onDone, recordModel);
+        scannerModel.collectNewRecord(onDone, recordRepository);
     }
 
     @Override
@@ -505,8 +506,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
                     language.getString("scannerService.dialog.uploadDone"));
         }
 
-        scannerModel.startUpload(onDone, onCancel, databaseRepository, recordModel, accountPath,
-                recordUploadDelay);
+        scannerModel.startUpload(onDone, onCancel, databaseRepository, recordRepository,
+                accountPath, recordUploadDelay);
     }
 
     @Override

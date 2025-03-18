@@ -6,11 +6,11 @@ import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader.Reques
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.data.Account;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData.Status;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
+import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
@@ -27,24 +27,24 @@ public class UploadTask extends InterruptibleTask<Void> {
 
     private final WeakReference<DatabaseRepository> databaseRepositoryReference;
     private final WeakReference<NewRecordDataManager> newRecordDataManagerReference;
-    private final WeakReference<RecordModel> recordModelWeakReference;
+    private final WeakReference<RecordRepository> recordRepositoryReference;
 
-    public UploadTask(DatabaseRepository databaseRepository, RecordModel recordModel,
+    public UploadTask(DatabaseRepository databaseRepository, RecordRepository recordRepository,
             NewRecordDataManager newRecordDataManager, Path accountPath, int recordUploadDelay) {
         this.accountPath = accountPath;
         this.recordUploadDelay = recordUploadDelay;
 
         databaseRepositoryReference = new WeakReference<>(databaseRepository);
         newRecordDataManagerReference = new WeakReference<>(newRecordDataManager);
-        recordModelWeakReference = new WeakReference<>(recordModel);
+        recordRepositoryReference = new WeakReference<>(recordRepository);
     }
 
     private DatabaseRepository getDatabaseRepository() {
         return databaseRepositoryReference.get();
     }
 
-    private RecordModel getRecordModel() {
-        return recordModelWeakReference.get();
+    private RecordRepository getRecordRepository() {
+        return recordRepositoryReference.get();
     }
 
     private NewRecordDataManager getNewRecordDataManager() {
@@ -112,7 +112,7 @@ public class UploadTask extends InterruptibleTask<Void> {
                 RequestJson requestJson = recordToRequest(song, newRecord);
                 api.upload(requestJson);
 
-                getRecordModel().updateRecord(newRecord);
+                getRecordRepository().updateRecord(newRecord);
                 data.status.set(api.getResult() ? Status.UPLOADED : Status.HIGHER_RECORD_EXISTS);
             }
         } catch (InterruptedException e) {
@@ -125,7 +125,7 @@ public class UploadTask extends InterruptibleTask<Void> {
                 data.status.set(Status.CANCELED);
             }
         } finally {
-            getRecordModel().save();
+            getRecordRepository().save();
         }
 
         return null;

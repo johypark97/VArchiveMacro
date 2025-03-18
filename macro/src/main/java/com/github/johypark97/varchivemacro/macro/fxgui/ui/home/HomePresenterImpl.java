@@ -5,7 +5,6 @@ import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultMacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.MacroPresenterImpl;
@@ -23,6 +22,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.Open
 import com.github.johypark97.varchivemacro.macro.github.DataUpdater;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRepository;
+import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class HomePresenterImpl implements HomePresenter {
     private final ConfigModel configModel;
     private final DatabaseRepository databaseRepository;
     private final OpenSourceLicenseRepository openSourceLicenseRepository;
-    private final RecordModel recordModel;
+    private final RecordRepository recordRepository;
 
     private MacroViewImpl macroView;
     private ScannerViewImpl scannerView;
@@ -48,21 +48,22 @@ public class HomePresenterImpl implements HomePresenter {
     public HomeView view;
 
     public HomePresenterImpl(ConfigModel configModel, DatabaseRepository databaseRepository,
-            OpenSourceLicenseRepository openSourceLicenseRepository, RecordModel recordModel) {
+            OpenSourceLicenseRepository openSourceLicenseRepository,
+            RecordRepository recordRepository) {
         this.configModel = configModel;
         this.databaseRepository = databaseRepository;
         this.openSourceLicenseRepository = openSourceLicenseRepository;
-        this.recordModel = recordModel;
+        this.recordRepository = recordRepository;
     }
 
     private void showScanner() {
         scannerView = new ScannerViewImpl();
         view.setScannerTabContent(scannerView);
         Mvp.linkViewAndPresenter(scannerView,
-                new ScannerPresenterImpl(databaseRepository, recordModel, new DefaultScannerModel(),
-                        view::showInformation, view::showError, view::showConfirmation,
-                        configModel::getScannerConfig, configModel::setScannerConfig,
-                        view::getWindow));
+                new ScannerPresenterImpl(databaseRepository, recordRepository,
+                        new DefaultScannerModel(), view::showInformation, view::showError,
+                        view::showConfirmation, configModel::getScannerConfig,
+                        configModel::setScannerConfig, view::getWindow));
 
         scannerView.startView();
     }
@@ -79,8 +80,8 @@ public class HomePresenterImpl implements HomePresenter {
         ScannerLoaderViewImpl scannerLoaderView = new ScannerLoaderViewImpl();
         view.setScannerTabContent(scannerLoaderView);
         Mvp.linkViewAndPresenter(scannerLoaderView,
-                new ScannerLoaderPresenterImpl(databaseRepository, recordModel, view::showError,
-                        this::showScanner));
+                new ScannerLoaderPresenterImpl(databaseRepository, recordRepository,
+                        view::showError, this::showScanner));
 
         macroView = new MacroViewImpl();
         view.setMacroTabContent(macroView);

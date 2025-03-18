@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader;
 
-import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.ScannerLoader.ScannerLoaderPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.ScannerLoader.ScannerLoaderView;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
+import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -17,17 +17,18 @@ public class ScannerLoaderPresenterImpl implements ScannerLoaderPresenter {
 
     private final BiConsumer<String, Exception> showError;
     private final DatabaseRepository databaseRepository;
-    private final RecordModel recordModel;
+    private final RecordRepository recordRepository;
     private final Runnable onStop;
 
     @MvpView
     public ScannerLoaderView view;
 
     public ScannerLoaderPresenterImpl(DatabaseRepository databaseRepository,
-            RecordModel recordModel, BiConsumer<String, Exception> showError, Runnable onStop) {
+            RecordRepository recordRepository, BiConsumer<String, Exception> showError,
+            Runnable onStop) {
         this.databaseRepository = databaseRepository;
         this.onStop = onStop;
-        this.recordModel = recordModel;
+        this.recordRepository = recordRepository;
         this.showError = showError;
     }
 
@@ -48,7 +49,7 @@ public class ScannerLoaderPresenterImpl implements ScannerLoaderPresenter {
         }
 
         try {
-            if (!recordModel.loadLocal()) {
+            if (!recordRepository.loadLocal()) {
                 view.hideLoadingMark();
                 view.showDjNameInput();
                 return;
@@ -56,12 +57,12 @@ public class ScannerLoaderPresenterImpl implements ScannerLoaderPresenter {
         } catch (IOException e) {
             view.showDjNameInput();
             showError.accept("Local records loading error", e);
-            LOGGER.atError().setCause(e).log("RecordModel loading exception");
+            LOGGER.atError().setCause(e).log("RecordRepository loading exception");
             return;
         } catch (Exception e) {
             view.showDjNameInput();
             showError.accept("Critical local records loading error", e);
-            LOGGER.atError().setCause(e).log("Critical RecordModel loading exception");
+            LOGGER.atError().setCause(e).log("Critical RecordRepository loading exception");
             return;
         }
 
@@ -98,6 +99,6 @@ public class ScannerLoaderPresenterImpl implements ScannerLoaderPresenter {
             onStopView();
         };
 
-        recordModel.loadRemote(djName, onDone, showError);
+        recordRepository.loadRemote(djName, onDone, showError);
     }
 }

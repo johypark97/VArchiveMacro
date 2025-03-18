@@ -57,10 +57,10 @@
   <entry key="macro.startToDown">아래로 매크로 시작</entry>
   <entry key="macro.startToUp">위로 매크로 시작</entry>
   <entry key="macro.stop">매크로 중지</entry>
-  <entry key="recordModel.apiException">서버 기록 불러오기 실패</entry>
-  <entry key="recordModel.fileIOException">파일 입출력 에러</entry>
-  <entry key="recordModel.generalSecurityException">보안 연결 구성 실패</entry>
-  <entry key="recordModel.networkIOException">네트워크 통신 에러</entry>
+  <entry key="recordRepository.apiException">서버 기록 불러오기 실패</entry>
+  <entry key="recordRepository.fileIOException">파일 입출력 에러</entry>
+  <entry key="recordRepository.generalSecurityException">보안 연결 구성 실패</entry>
+  <entry key="recordRepository.networkIOException">네트워크 통신 에러</entry>
   <entry key="scanner.analysis">분석</entry>
   <entry key="scanner.analysis.clear">삭제</entry>
   <entry key="scanner.analysis.show">보기 (Enter)</entry>

@@ -18,6 +18,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataMan
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.CaptureData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.ScanDataManager.SongData;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
+import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.service.CollectionScanService;
 import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import com.github.johypark97.varchivemacro.macro.service.task.AnalysisTask;
@@ -144,7 +145,7 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void collectNewRecord(Runnable onDone, RecordModel recordModel) {
+    public void collectNewRecord(Runnable onDone, RecordRepository recordRepository) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -153,7 +154,7 @@ public class DefaultScannerModel implements ScannerModel {
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(() -> {
-            Task<Void> task = new CollectNewRecordTask(recordModel, analysisDataManager,
+            Task<Void> task = new CollectNewRecordTask(recordRepository, analysisDataManager,
                     newRecordDataManager);
 
             task.setOnSucceeded(event -> onDone.run());
@@ -167,8 +168,8 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void startUpload(Runnable onDone, Runnable onCancel,
-            DatabaseRepository databaseRepository, RecordModel recordModel, Path accountPath,
-            int recordUploadDelay) {
+            DatabaseRepository databaseRepository, RecordRepository recordRepository,
+            Path accountPath, int recordUploadDelay) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -177,8 +178,9 @@ public class DefaultScannerModel implements ScannerModel {
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
 
         service.setTaskConstructor(() -> {
-            Task<Void> task = new UploadTask(databaseRepository, recordModel, newRecordDataManager,
-                    accountPath, recordUploadDelay);
+            Task<Void> task =
+                    new UploadTask(databaseRepository, recordRepository, newRecordDataManager,
+                            accountPath, recordUploadDelay);
 
             task.setOnCancelled(event -> onCancel.run());
             task.setOnSucceeded(event -> onDone.run());

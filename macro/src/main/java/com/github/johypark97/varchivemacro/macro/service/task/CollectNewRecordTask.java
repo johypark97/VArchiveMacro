@@ -4,28 +4,28 @@ import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.AnalysisDataManager.RecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
+import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.google.common.collect.Table.Cell;
 import java.lang.ref.WeakReference;
 
 public class CollectNewRecordTask extends InterruptibleTask<Void> {
     private final WeakReference<AnalysisDataManager> analysisDataManagerReference;
     private final WeakReference<NewRecordDataManager> newRecordDataManagerReference;
-    private final WeakReference<RecordModel> recordModelWeakReference;
+    private final WeakReference<RecordRepository> recordRepositoryReference;
 
-    public CollectNewRecordTask(RecordModel recordModel, AnalysisDataManager analysisDataManager,
-            NewRecordDataManager newRecordDataManager) {
+    public CollectNewRecordTask(RecordRepository recordRepository,
+            AnalysisDataManager analysisDataManager, NewRecordDataManager newRecordDataManager) {
         analysisDataManagerReference = new WeakReference<>(analysisDataManager);
         newRecordDataManagerReference = new WeakReference<>(newRecordDataManager);
-        recordModelWeakReference = new WeakReference<>(recordModel);
+        recordRepositoryReference = new WeakReference<>(recordRepository);
     }
 
-    private RecordModel getRecordModel() {
-        return recordModelWeakReference.get();
+    private RecordRepository getRecordRepository() {
+        return recordRepositoryReference.get();
     }
 
     private AnalysisDataManager getAnalysisDataManager() {
@@ -75,7 +75,7 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
                 boolean maxCombo = cell.getValue().maxCombo.get();
 
                 LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
-                LocalRecord previousRecord = getRecordModel().findSameRecord(newRecord);
+                LocalRecord previousRecord = getRecordRepository().findSameRecord(newRecord);
 
                 if (previousRecord == null) {
                     LocalRecord nullRecord = LocalRecord.nullRecord(song.id(), button, pattern);

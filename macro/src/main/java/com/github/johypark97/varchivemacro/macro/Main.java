@@ -5,13 +5,13 @@ import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultConfigModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultRecordModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomeStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.repository.DefaultDatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DefaultOpenSourceLicenseRepository;
+import com.github.johypark97.varchivemacro.macro.repository.DefaultRecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.awt.Toolkit;
 import javafx.application.Application;
@@ -69,7 +69,7 @@ public class Main extends Application {
         HomeView homeView = new HomeViewImpl(primaryStage);
         Mvp.linkViewAndPresenter(homeView,
                 new HomePresenterImpl(new DefaultConfigModel(), new DefaultDatabaseRepository(),
-                        new DefaultOpenSourceLicenseRepository(), new DefaultRecordModel()));
+                        new DefaultOpenSourceLicenseRepository(), new DefaultRecordRepository()));
 
         Platform.runLater(homeView::startView);
     }

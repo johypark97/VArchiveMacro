@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultRecordManager;
@@ -17,8 +17,8 @@ import javafx.application.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DefaultRecordModel implements RecordModel {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRecordModel.class);
+public class DefaultRecordRepository implements RecordRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRecordRepository.class);
 
     private static final Path RECORD_PATH = Path.of("records.json");
 
@@ -51,21 +51,22 @@ public class DefaultRecordModel implements RecordModel {
             } catch (ApiException e) {
                 LOGGER.atError().setCause(e).log("ApiException");
                 Platform.runLater(() -> {
-                    String message = language.getString("recordModel.apiException");
+                    String message = language.getString("recordRepository.apiException");
                     onThrow.accept(message, e);
                 });
                 return false;
             } catch (GeneralSecurityException e) {
                 LOGGER.atError().setCause(e).log("GeneralSecurityException");
                 Platform.runLater(() -> {
-                    String message = language.getString("recordModel.generalSecurityException");
+                    String message =
+                            language.getString("recordRepository.generalSecurityException");
                     onThrow.accept(message, e);
                 });
                 return false;
             } catch (IOException e) {
                 LOGGER.atError().setCause(e).log("Network IOException");
                 Platform.runLater(() -> {
-                    String message = language.getString("recordModel.networkIOException");
+                    String message = language.getString("recordRepository.networkIOException");
                     onThrow.accept(message, e);
                 });
                 return false;
@@ -78,7 +79,7 @@ public class DefaultRecordModel implements RecordModel {
             } catch (IOException e) {
                 LOGGER.atError().setCause(e).log("File IOException");
                 Platform.runLater(() -> {
-                    String message = language.getString("recordModel.fileIOException");
+                    String message = language.getString("recordRepository.fileIOException");
                     onThrow.accept(message, e);
                 });
                 return false;
