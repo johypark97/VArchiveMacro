@@ -1,9 +1,9 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import java.io.IOException;
 import java.util.List;
 
-public interface LicenseModel {
+public interface OpenSourceLicenseRepository {
     List<String> getLibraryList();
 
     String getLicenseText(String library) throws IOException;

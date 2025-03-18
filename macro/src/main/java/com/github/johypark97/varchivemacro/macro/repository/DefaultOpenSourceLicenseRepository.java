@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_general;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
@@ -11,13 +11,13 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultLicenseModel implements LicenseModel {
+public class DefaultOpenSourceLicenseRepository implements OpenSourceLicenseRepository {
     private static final String BASE_PATH = "/licenses/";
     private static final String JSON_PATH = BASE_PATH + "licenses.json";
 
     private final Map<String, License> libraryLicenseMap;
 
-    public DefaultLicenseModel() {
+    public DefaultOpenSourceLicenseRepository() {
         URL url = getClass().getResource(JSON_PATH);
         if (url == null) {
             throw new RuntimeException("file not found: " + JSON_PATH);

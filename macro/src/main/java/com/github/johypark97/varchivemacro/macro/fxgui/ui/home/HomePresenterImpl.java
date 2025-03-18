@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.ConfigModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultLicenseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultMacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.RecordModel;
@@ -23,6 +22,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.Open
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseViewImpl;
 import com.github.johypark97.varchivemacro.macro.github.DataUpdater;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
+import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRepository;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import java.io.IOException;
@@ -38,6 +38,7 @@ public class HomePresenterImpl implements HomePresenter {
 
     private final ConfigModel configModel;
     private final DatabaseRepository databaseRepository;
+    private final OpenSourceLicenseRepository openSourceLicenseRepository;
     private final RecordModel recordModel;
 
     private MacroViewImpl macroView;
@@ -47,9 +48,10 @@ public class HomePresenterImpl implements HomePresenter {
     public HomeView view;
 
     public HomePresenterImpl(ConfigModel configModel, DatabaseRepository databaseRepository,
-            RecordModel recordModel) {
+            OpenSourceLicenseRepository openSourceLicenseRepository, RecordModel recordModel) {
         this.configModel = configModel;
         this.databaseRepository = databaseRepository;
+        this.openSourceLicenseRepository = openSourceLicenseRepository;
         this.recordModel = recordModel;
     }
 
@@ -141,7 +143,7 @@ public class HomePresenterImpl implements HomePresenter {
 
         OpenSourceLicenseView openSourceLicenseView = new OpenSourceLicenseViewImpl(stage);
         Mvp.linkViewAndPresenter(openSourceLicenseView,
-                new OpenSourceLicensePresenterImpl(new DefaultLicenseModel()));
+                new OpenSourceLicensePresenterImpl(openSourceLicenseRepository));
 
         openSourceLicenseView.startView();
     }

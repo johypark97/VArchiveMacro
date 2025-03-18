@@ -1,25 +1,25 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense;
 
-import com.github.johypark97.varchivemacro.macro.fxgui.model.LicenseModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicense.OpenSourceLicensePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicense.OpenSourceLicenseView;
+import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRepository;
 import java.io.IOException;
 import java.util.List;
 import javafx.collections.FXCollections;
 
 public class OpenSourceLicensePresenterImpl implements OpenSourceLicensePresenter {
-    private final LicenseModel licenseModel;
+    private final OpenSourceLicenseRepository openSourceLicenseRepository;
 
     @MvpView
     public OpenSourceLicenseView view;
 
-    public OpenSourceLicensePresenterImpl(LicenseModel licenseModel) {
-        this.licenseModel = licenseModel;
+    public OpenSourceLicensePresenterImpl(OpenSourceLicenseRepository openSourceLicenseRepository) {
+        this.openSourceLicenseRepository = openSourceLicenseRepository;
     }
 
     @Override
     public void onStartView() {
-        List<String> libraryList = licenseModel.getLibraryList();
+        List<String> libraryList = openSourceLicenseRepository.getLibraryList();
         view.setLibraryList(FXCollections.observableList(libraryList));
     }
 
@@ -32,12 +32,12 @@ public class OpenSourceLicensePresenterImpl implements OpenSourceLicensePresente
     public void showLicense(String library) {
         String licenseText;
         try {
-            licenseText = licenseModel.getLicenseText(library);
+            licenseText = openSourceLicenseRepository.getLicenseText(library);
         } catch (IOException e) {
             licenseText = "Resource IO Error";
         }
 
         view.setLicenseText(licenseText);
-        view.setLicenseUrl(licenseModel.getLibraryUrl(library));
+        view.setLicenseUrl(openSourceLicenseRepository.getLibraryUrl(library));
     }
 }
