@@ -10,13 +10,14 @@ import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Son
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.DefaultAnalysisDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.DefaultNewRecordDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.DefaultScanDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.model.RecordData;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
@@ -42,7 +43,7 @@ import javafx.event.EventHandler;
 
 public class DefaultScannerModel implements ScannerModel {
     private final AnalysisDataDomain analysisDataDomain = new DefaultAnalysisDataDomain();
-    private final NewRecordDataManager newRecordDataManager = new NewRecordDataManager();
+    private final NewRecordDataDomain newRecordDataDomain = new DefaultNewRecordDataDomain();
     private final ScanDataDomain scanDataDomain = new DefaultScanDataDomain();
 
     @Override
@@ -156,7 +157,7 @@ public class DefaultScannerModel implements ScannerModel {
 
         service.setTaskConstructor(() -> {
             Task<Void> task = new CollectNewRecordTask(recordRepository, analysisDataDomain,
-                    newRecordDataManager);
+                    newRecordDataDomain);
 
             task.setOnSucceeded(event -> onDone.run());
 
@@ -180,7 +181,7 @@ public class DefaultScannerModel implements ScannerModel {
 
         service.setTaskConstructor(() -> {
             Task<Void> task =
-                    new UploadTask(databaseRepository, recordRepository, newRecordDataManager,
+                    new UploadTask(databaseRepository, recordRepository, newRecordDataDomain,
                             accountPath, recordUploadDelay);
 
             task.setOnCancelled(event -> onCancel.run());
@@ -230,14 +231,14 @@ public class DefaultScannerModel implements ScannerModel {
         }
 
         analysisDataDomain.clear();
-        newRecordDataManager.clear();
+        newRecordDataDomain.clear();
 
         onClear.run();
     }
 
     @Override
     public boolean isNewRecordDataEmpty() {
-        return newRecordDataManager.isEmpty();
+        return newRecordDataDomain.isEmpty();
     }
 
     @Override
@@ -317,6 +318,6 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public List<NewRecordData> copyNewRecordDataList() {
-        return newRecordDataManager.copyNewRecordDataList();
+        return newRecordDataDomain.copyNewRecordDataList();
     }
 }

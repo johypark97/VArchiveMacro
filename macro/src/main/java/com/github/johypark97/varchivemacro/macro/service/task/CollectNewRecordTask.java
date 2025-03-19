@@ -5,7 +5,7 @@ import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
+import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.RecordData;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
@@ -14,13 +14,13 @@ import java.lang.ref.WeakReference;
 
 public class CollectNewRecordTask extends InterruptibleTask<Void> {
     private final WeakReference<AnalysisDataDomain> analysisDataDomainReference;
-    private final WeakReference<NewRecordDataManager> newRecordDataManagerReference;
+    private final WeakReference<NewRecordDataDomain> newRecordDataDomainReference;
     private final WeakReference<RecordRepository> recordRepositoryReference;
 
     public CollectNewRecordTask(RecordRepository recordRepository,
-            AnalysisDataDomain analysisDataDomain, NewRecordDataManager newRecordDataManager) {
+            AnalysisDataDomain analysisDataDomain, NewRecordDataDomain newRecordDataDomain) {
         analysisDataDomainReference = new WeakReference<>(analysisDataDomain);
-        newRecordDataManagerReference = new WeakReference<>(newRecordDataManager);
+        newRecordDataDomainReference = new WeakReference<>(newRecordDataDomain);
         recordRepositoryReference = new WeakReference<>(recordRepository);
     }
 
@@ -32,8 +32,8 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
         return analysisDataDomainReference.get();
     }
 
-    private NewRecordDataManager getNewRecordDataManager() {
-        return newRecordDataManagerReference.get();
+    private NewRecordDataDomain getNewRecordDataDomain() {
+        return newRecordDataDomainReference.get();
     }
 
     private float parseRateText(String text) {
@@ -58,7 +58,7 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
             throw new IllegalStateException("AnalysisDataDomain is empty");
         }
 
-        getNewRecordDataManager().clear();
+        getNewRecordDataDomain().clear();
 
         for (AnalysisData data : getAnalysisDataDomain().copyAnalysisDataList()) {
             Song song = data.songDataProperty().get().songProperty().get();
@@ -79,9 +79,9 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
 
                 if (previousRecord == null) {
                     LocalRecord nullRecord = LocalRecord.nullRecord(song.id(), button, pattern);
-                    getNewRecordDataManager().createNewRecordData(song, nullRecord, newRecord);
+                    getNewRecordDataDomain().createNewRecordData(song, nullRecord, newRecord);
                 } else if (previousRecord.isUpdated(newRecord)) {
-                    getNewRecordDataManager().createNewRecordData(song, previousRecord, newRecord);
+                    getNewRecordDataDomain().createNewRecordData(song, previousRecord, newRecord);
                 }
             }
         }

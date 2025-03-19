@@ -6,9 +6,9 @@ import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader.Reques
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.data.Account;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.NewRecordDataManager.NewRecordData.Status;
+import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
+import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
+import com.github.johypark97.varchivemacro.macro.model.NewRecordData.Status;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import java.io.IOException;
@@ -26,16 +26,16 @@ public class UploadTask extends InterruptibleTask<Void> {
     private final int recordUploadDelay;
 
     private final WeakReference<DatabaseRepository> databaseRepositoryReference;
-    private final WeakReference<NewRecordDataManager> newRecordDataManagerReference;
+    private final WeakReference<NewRecordDataDomain> newRecordDataDomainReference;
     private final WeakReference<RecordRepository> recordRepositoryReference;
 
     public UploadTask(DatabaseRepository databaseRepository, RecordRepository recordRepository,
-            NewRecordDataManager newRecordDataManager, Path accountPath, int recordUploadDelay) {
+            NewRecordDataDomain newRecordDataDomain, Path accountPath, int recordUploadDelay) {
         this.accountPath = accountPath;
         this.recordUploadDelay = recordUploadDelay;
 
         databaseRepositoryReference = new WeakReference<>(databaseRepository);
-        newRecordDataManagerReference = new WeakReference<>(newRecordDataManager);
+        newRecordDataDomainReference = new WeakReference<>(newRecordDataDomain);
         recordRepositoryReference = new WeakReference<>(recordRepository);
     }
 
@@ -47,8 +47,8 @@ public class UploadTask extends InterruptibleTask<Void> {
         return recordRepositoryReference.get();
     }
 
-    private NewRecordDataManager getNewRecordDataManager() {
-        return newRecordDataManagerReference.get();
+    private NewRecordDataDomain getNewRecordDataDomain() {
+        return newRecordDataDomainReference.get();
     }
 
     private RecordUploader createRecordUploader() throws IOException, GeneralSecurityException {
@@ -59,7 +59,7 @@ public class UploadTask extends InterruptibleTask<Void> {
     private Queue<NewRecordData> createUploadQueue() {
         EnumSet<Status> statusSet = EnumSet.of(Status.HIGHER_RECORD_EXISTS, Status.UPLOADED);
 
-        return getNewRecordDataManager().copyNewRecordDataList().stream()
+        return getNewRecordDataDomain().copyNewRecordDataList().stream()
                 .filter(x -> x.selected.get() && !statusSet.contains(x.status.get()))
                 .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -82,8 +82,8 @@ public class UploadTask extends InterruptibleTask<Void> {
     @Override
     protected Void callTask() throws Exception {
         // throw an exception if there is no new record data
-        if (getNewRecordDataManager().isEmpty()) {
-            throw new IllegalStateException("NewRecordDataManager is empty");
+        if (getNewRecordDataDomain().isEmpty()) {
+            throw new IllegalStateException("NewRecordDataDomain is empty");
         }
 
         RecordUploader api = createRecordUploader();
