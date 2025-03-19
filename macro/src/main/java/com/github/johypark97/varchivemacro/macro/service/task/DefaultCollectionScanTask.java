@@ -6,8 +6,8 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactor
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.domain.CacheManager;
 import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import java.awt.AWTException;
 import java.awt.Dimension;

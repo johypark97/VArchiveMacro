@@ -9,12 +9,12 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactor
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.CacheManager;
 import com.github.johypark97.varchivemacro.macro.domain.DefaultAnalysisDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.DefaultNewRecordDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.DefaultScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.manager.CacheManager;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData;

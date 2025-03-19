@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model.manager;
+package com.github.johypark97.varchivemacro.macro.domain;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

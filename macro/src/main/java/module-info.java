@@ -16,7 +16,6 @@ module varchivemacro.macro {
     requires javafx.fxml;
     requires javafx.swing;
 
-    opens com.github.johypark97.varchivemacro.macro.fxgui.model.manager to javafx.base;
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.captureviewer to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home to javafx.fxml;
