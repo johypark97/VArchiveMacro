@@ -22,8 +22,8 @@ import com.github.johypark97.varchivemacro.macro.model.RecordData;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
-import com.github.johypark97.varchivemacro.macro.service.CollectionScanService;
-import com.github.johypark97.varchivemacro.macro.service.ScannerService;
+import com.github.johypark97.varchivemacro.macro.service.fxservice.CollectionScanFxService;
+import com.github.johypark97.varchivemacro.macro.service.fxservice.ScannerFxService;
 import com.github.johypark97.varchivemacro.macro.service.task.AnalysisTask;
 import com.github.johypark97.varchivemacro.macro.service.task.CollectNewRecordTask;
 import com.github.johypark97.varchivemacro.macro.service.task.DefaultCollectionScanTask;
@@ -56,18 +56,19 @@ public class DefaultScannerModel implements ScannerModel {
         EventHandler<WorkerStateEvent> onFailedEventHandler =
                 event -> onThrow.accept(event.getSource().getException());
 
-        CollectionScanService collectionScanService =
-                ServiceManager.getInstance().create(CollectionScanService.class);
-        if (collectionScanService == null) {
-            throw new IllegalStateException("CollectionScanService has already been created.");
+        CollectionScanFxService collectionScanFxService =
+                ServiceManager.getInstance().create(CollectionScanFxService.class);
+        if (collectionScanFxService == null) {
+            throw new IllegalStateException("CollectionScanFxService has already been created.");
         }
-        collectionScanService.setOnFailed(onFailedEventHandler);
+        collectionScanFxService.setOnFailed(onFailedEventHandler);
 
-        ScannerService scannerService = ServiceManager.getInstance().create(ScannerService.class);
-        if (scannerService == null) {
-            throw new IllegalStateException("ScannerService has already been created.");
+        ScannerFxService scannerFxService =
+                ServiceManager.getInstance().create(ScannerFxService.class);
+        if (scannerFxService == null) {
+            throw new IllegalStateException("ScannerFxService has already been created.");
         }
-        scannerService.setOnFailed(onFailedEventHandler);
+        scannerFxService.setOnFailed(onFailedEventHandler);
     }
 
     @Override
@@ -79,8 +80,8 @@ public class DefaultScannerModel implements ScannerModel {
             return;
         }
 
-        CollectionScanService service = Objects.requireNonNull(
-                ServiceManager.getInstance().get(CollectionScanService.class));
+        CollectionScanFxService service = Objects.requireNonNull(
+                ServiceManager.getInstance().get(CollectionScanFxService.class));
 
         service.setTaskConstructor(() -> {
             Task<Void> task = new DefaultCollectionScanTask(scanDataDomain, categoryNameSongListMap,
@@ -110,7 +111,7 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void stopCollectionScan() {
-        ServiceManagerHelper.stopService(CollectionScanService.class);
+        ServiceManagerHelper.stopService(CollectionScanFxService.class);
     }
 
     @Override
@@ -120,8 +121,8 @@ public class DefaultScannerModel implements ScannerModel {
             return;
         }
 
-        ScannerService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        ScannerFxService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
 
         service.setTaskConstructor(() -> {
             Task<Void> task = new AnalysisTask(onDataReady, scanDataDomain, analysisDataDomain,
@@ -143,7 +144,7 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void stopAnalysis() {
-        ServiceManagerHelper.stopService(ScannerService.class);
+        ServiceManagerHelper.stopService(ScannerFxService.class);
     }
 
     @Override
@@ -152,8 +153,8 @@ public class DefaultScannerModel implements ScannerModel {
             return;
         }
 
-        ScannerService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        ScannerFxService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
 
         service.setTaskConstructor(() -> {
             Task<Void> task = new CollectNewRecordTask(recordRepository, analysisDataDomain,
@@ -176,8 +177,8 @@ public class DefaultScannerModel implements ScannerModel {
             return;
         }
 
-        ScannerService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        ScannerFxService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
 
         service.setTaskConstructor(() -> {
             Task<Void> task =
@@ -196,7 +197,7 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void stopUpload() {
-        ServiceManagerHelper.stopService(ScannerService.class);
+        ServiceManagerHelper.stopService(ScannerFxService.class);
     }
 
     @Override
@@ -206,8 +207,8 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void clearScanData(Runnable onClear) {
-        ScannerService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        ScannerFxService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
         if (service.isRunning()) {
             return;
         }
@@ -224,8 +225,8 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void clearAnalysisData(Runnable onClear) {
-        ScannerService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerService.class));
+        ScannerFxService service =
+                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
         if (service.isRunning()) {
             return;
         }

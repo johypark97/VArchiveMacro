@@ -327,7 +327,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         }
 
         Language language = Language.getInstance();
-        String header = language.getString("scannerService.dialog.header");
+        String header = language.getString("scannerFxService.dialog.header");
 
         Runnable onCancel = () -> {
             view.capture_setCaptureDataList(
@@ -336,7 +336,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
                     FXCollections.observableArrayList(scannerModel.copySongDataList()));
 
             showInformation.accept(header,
-                    language.getString("scannerService.dialog.scanCanceled"));
+                    language.getString("scannerFxService.dialog.scanCanceled"));
         };
         Runnable onDone = () -> {
             view.capture_setCaptureDataList(
@@ -344,7 +344,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             view.song_setSongDataList(
                     FXCollections.observableArrayList(scannerModel.copySongDataList()));
 
-            showInformation.accept(header, language.getString("scannerService.dialog.scanDone"));
+            showInformation.accept(header, language.getString("scannerFxService.dialog.scanDone"));
         };
 
         Set<String> selectedCategorySet = view.capture_getSelectedCategorySet();
@@ -427,17 +427,17 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         }
 
         Language language = Language.getInstance();
-        String header = language.getString("scannerService.dialog.header");
+        String header = language.getString("scannerFxService.dialog.header");
 
         Runnable onCancel = () -> {
             uploader_refresh();
             showInformation.accept(header,
-                    language.getString("scannerService.dialog.analysisCanceled"));
+                    language.getString("scannerFxService.dialog.analysisCanceled"));
         };
         Runnable onDone = () -> {
             uploader_refresh();
             showInformation.accept(header,
-                    language.getString("scannerService.dialog.analysisDone"));
+                    language.getString("scannerFxService.dialog.analysisDone"));
         };
 
         Runnable onDataReady = () -> view.analysis_setAnalysisDataList(
@@ -498,12 +498,12 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         Runnable onCancel;
         Runnable onDone;
         {
-            String header = language.getString("scannerService.dialog.header");
+            String header = language.getString("scannerFxService.dialog.header");
 
             onCancel = () -> showInformation.accept(header,
-                    language.getString("scannerService.dialog.uploadCanceled"));
+                    language.getString("scannerFxService.dialog.uploadCanceled"));
             onDone = () -> showInformation.accept(header,
-                    language.getString("scannerService.dialog.uploadDone"));
+                    language.getString("scannerFxService.dialog.uploadDone"));
         }
 
         scannerModel.startUpload(onDone, onCancel, databaseRepository, recordRepository,

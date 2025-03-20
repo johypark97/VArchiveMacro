@@ -147,11 +147,11 @@
   <entry key="scannerDjNameInput.load">Load</entry>
   <entry key="scannerSafeGlass.forbiddenMark">Failed to load database. Not available.</entry>
   <entry key="scannerSafeGlass.loadingMark">Loading records from the server.%nDJ Name: %s</entry>
-  <entry key="scannerService.dialog.analysisCanceled">Analysis canceled</entry>
-  <entry key="scannerService.dialog.analysisDone">Analysis done</entry>
-  <entry key="scannerService.dialog.header">Collection Scanner</entry>
-  <entry key="scannerService.dialog.scanCanceled">Scan canceled</entry>
-  <entry key="scannerService.dialog.scanDone">Scan done</entry>
-  <entry key="scannerService.dialog.uploadCanceled">Upload canceled</entry>
-  <entry key="scannerService.dialog.uploadDone">Upload done</entry>
+  <entry key="scannerFxService.dialog.analysisCanceled">Analysis canceled</entry>
+  <entry key="scannerFxService.dialog.analysisDone">Analysis done</entry>
+  <entry key="scannerFxService.dialog.header">Collection Scanner</entry>
+  <entry key="scannerFxService.dialog.scanCanceled">Scan canceled</entry>
+  <entry key="scannerFxService.dialog.scanDone">Scan done</entry>
+  <entry key="scannerFxService.dialog.uploadCanceled">Upload canceled</entry>
+  <entry key="scannerFxService.dialog.uploadDone">Upload done</entry>
 </properties>

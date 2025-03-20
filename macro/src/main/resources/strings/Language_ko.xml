@@ -147,11 +147,11 @@
   <entry key="scannerDjNameInput.load">불러오기</entry>
   <entry key="scannerSafeGlass.forbiddenMark">데이터베이스 불러오기에 실패. 사용 불가.</entry>
   <entry key="scannerSafeGlass.loadingMark">서버에서 기록을 불러오는 중.%nDJ 이름: %s</entry>
-  <entry key="scannerService.dialog.analysisCanceled">분석 취소됨</entry>
-  <entry key="scannerService.dialog.analysisDone">분석 완료</entry>
-  <entry key="scannerService.dialog.header">컬렉션 스캐너</entry>
-  <entry key="scannerService.dialog.scanCanceled">스캔 취소됨</entry>
-  <entry key="scannerService.dialog.scanDone">스캔 완료</entry>
-  <entry key="scannerService.dialog.uploadCanceled">업로드 취소됨</entry>
-  <entry key="scannerService.dialog.uploadDone">업로드 완료</entry>
+  <entry key="scannerFxService.dialog.analysisCanceled">분석 취소됨</entry>
+  <entry key="scannerFxService.dialog.analysisDone">분석 완료</entry>
+  <entry key="scannerFxService.dialog.header">컬렉션 스캐너</entry>
+  <entry key="scannerFxService.dialog.scanCanceled">스캔 취소됨</entry>
+  <entry key="scannerFxService.dialog.scanDone">스캔 완료</entry>
+  <entry key="scannerFxService.dialog.uploadCanceled">업로드 취소됨</entry>
+  <entry key="scannerFxService.dialog.uploadDone">업로드 완료</entry>
 </properties>

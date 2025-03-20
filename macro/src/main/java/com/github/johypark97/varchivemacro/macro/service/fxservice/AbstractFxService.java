@@ -1,10 +1,10 @@
-package com.github.johypark97.varchivemacro.macro.service;
+package com.github.johypark97.varchivemacro.macro.service.fxservice;
 
 import java.util.function.Supplier;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
-public abstract class AbstractCommonService extends Service<Void> {
+public abstract class AbstractFxService extends Service<Void> {
     private Supplier<? extends Task<Void>> taskConstructor;
 
     public void setTaskConstructor(Supplier<? extends Task<Void>> taskConstructor) {
