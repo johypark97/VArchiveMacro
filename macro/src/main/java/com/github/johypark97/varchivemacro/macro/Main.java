@@ -8,11 +8,17 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomeStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomeViewImpl;
+import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
+import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DefaultConfigRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DefaultDatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DefaultOpenSourceLicenseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DefaultRecordRepository;
+import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRepository;
+import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.service.DefaultMacroService;
+import com.github.johypark97.varchivemacro.macro.service.MacroService;
 import java.awt.Toolkit;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -66,10 +72,18 @@ public class Main extends Application {
 
         HomeStage.setupStage(primaryStage);
 
+        ConfigRepository configRepository = new DefaultConfigRepository();
+        DatabaseRepository databaseRepository = new DefaultDatabaseRepository();
+        OpenSourceLicenseRepository openSourceLicenseRepository =
+                new DefaultOpenSourceLicenseRepository();
+        RecordRepository recordRepository = new DefaultRecordRepository();
+
+        MacroService macroService = new DefaultMacroService();
+
         HomeView homeView = new HomeViewImpl(primaryStage);
-        Mvp.linkViewAndPresenter(homeView, new HomePresenterImpl(new DefaultConfigRepository(),
-                new DefaultDatabaseRepository(), new DefaultOpenSourceLicenseRepository(),
-                new DefaultRecordRepository()));
+        Mvp.linkViewAndPresenter(homeView,
+                new HomePresenterImpl(configRepository, databaseRepository,
+                        openSourceLicenseRepository, recordRepository, macroService));
 
         Platform.runLater(homeView::startView);
     }

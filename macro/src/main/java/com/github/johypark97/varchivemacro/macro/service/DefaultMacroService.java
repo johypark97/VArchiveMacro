@@ -1,14 +1,15 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model;
+package com.github.johypark97.varchivemacro.macro.service;
 
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManagerHelper;
+import com.github.johypark97.varchivemacro.macro.model.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.service.fxservice.MacroFxService;
 import com.github.johypark97.varchivemacro.macro.service.task.MacroTask;
 import java.util.Objects;
 import java.util.function.Consumer;
 import javafx.geometry.VerticalDirection;
 
-public class DefaultMacroModel implements MacroModel {
+public class DefaultMacroService implements MacroService {
     @Override
     public void setupService(Consumer<Throwable> onThrow) {
         MacroFxService service = ServiceManager.getInstance().create(MacroFxService.class);

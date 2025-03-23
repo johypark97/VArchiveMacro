@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.service.task;
 
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
+import com.github.johypark97.varchivemacro.macro.model.AnalysisKey;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;

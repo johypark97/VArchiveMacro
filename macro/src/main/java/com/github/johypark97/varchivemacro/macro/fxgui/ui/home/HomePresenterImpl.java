@@ -2,7 +2,6 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultMacroModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
@@ -25,6 +24,7 @@ import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRep
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.service.MacroService;
 import java.io.IOException;
 import java.util.Locale;
 import javafx.application.Platform;
@@ -41,6 +41,8 @@ public class HomePresenterImpl implements HomePresenter {
     private final OpenSourceLicenseRepository openSourceLicenseRepository;
     private final RecordRepository recordRepository;
 
+    private final MacroService macroService;
+
     private MacroViewImpl macroView;
     private ScannerViewImpl scannerView;
 
@@ -50,9 +52,10 @@ public class HomePresenterImpl implements HomePresenter {
     public HomePresenterImpl(ConfigRepository configRepository,
             DatabaseRepository databaseRepository,
             OpenSourceLicenseRepository openSourceLicenseRepository,
-            RecordRepository recordRepository) {
+            RecordRepository recordRepository, MacroService macroService) {
         this.configRepository = configRepository;
         this.databaseRepository = databaseRepository;
+        this.macroService = macroService;
         this.openSourceLicenseRepository = openSourceLicenseRepository;
         this.recordRepository = recordRepository;
     }
@@ -86,7 +89,7 @@ public class HomePresenterImpl implements HomePresenter {
         macroView = new MacroViewImpl();
         view.setMacroTabContent(macroView);
         Mvp.linkViewAndPresenter(macroView,
-                new MacroPresenterImpl(configRepository, new DefaultMacroModel(), view::showError));
+                new MacroPresenterImpl(configRepository, macroService, view::showError));
 
         UpdateCheckViewImpl updateCheckView = new UpdateCheckViewImpl();
         view.setUpdateCheckTabContent(updateCheckView);

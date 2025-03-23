@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.model;
 
-import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel;
 import com.google.gson.annotations.Expose;
 
 public class MacroConfig {
@@ -21,7 +20,7 @@ public class MacroConfig {
     public static final int KEY_INPUT_DURATION_MIN = 20;
 
     @Expose
-    public MacroModel.AnalysisKey analysisKey = MacroModel.AnalysisKey.F11;
+    public AnalysisKey analysisKey = AnalysisKey.F11;
 
     @Expose
     public int count = COUNT_DEFAULT;

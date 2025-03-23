@@ -2,12 +2,12 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.Macro.MacroPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.Macro.MacroView;
+import com.github.johypark97.varchivemacro.macro.model.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
+import com.github.johypark97.varchivemacro.macro.service.MacroService;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.util.function.BiConsumer;
@@ -21,17 +21,17 @@ public class MacroPresenterImpl implements MacroPresenter {
     private final NativeKeyListener macroNativeKeyListener;
 
     private final ConfigRepository configRepository;
-    private final MacroModel macroModel;
+    private final MacroService macroService;
 
     private final BiConsumer<String, Throwable> showError;
 
     @MvpView
     public MacroView view;
 
-    public MacroPresenterImpl(ConfigRepository configRepository, MacroModel macroModel,
+    public MacroPresenterImpl(ConfigRepository configRepository, MacroService macroService,
             BiConsumer<String, Throwable> showError) {
         this.configRepository = configRepository;
-        this.macroModel = macroModel;
+        this.macroService = macroService;
         this.showError = showError;
 
         macroNativeKeyListener = new NativeKeyListener() {
@@ -69,7 +69,7 @@ public class MacroPresenterImpl implements MacroPresenter {
 
     @Override
     public void onStartView() {
-        macroModel.setupService(throwable -> {
+        macroService.setupService(throwable -> {
             String header = "Macro service exception";
 
             LOGGER.atError().setCause(throwable).log(header);
@@ -121,7 +121,7 @@ public class MacroPresenterImpl implements MacroPresenter {
         int captureDuration = view.getCaptureDuration();
         int keyInputDuration = view.getKeyInputDuration();
 
-        macroModel.startMacro(analysisKey, count, captureDelay, captureDuration, keyInputDuration,
+        macroService.startMacro(analysisKey, count, captureDelay, captureDuration, keyInputDuration,
                 VerticalDirection.UP);
     }
 
@@ -133,12 +133,12 @@ public class MacroPresenterImpl implements MacroPresenter {
         int captureDuration = view.getCaptureDuration();
         int keyInputDuration = view.getKeyInputDuration();
 
-        macroModel.startMacro(analysisKey, count, captureDelay, captureDuration, keyInputDuration,
+        macroService.startMacro(analysisKey, count, captureDelay, captureDuration, keyInputDuration,
                 VerticalDirection.DOWN);
     }
 
     @Override
     public void stop() {
-        macroModel.stopMacro();
+        macroService.stopMacro();
     }
 }
