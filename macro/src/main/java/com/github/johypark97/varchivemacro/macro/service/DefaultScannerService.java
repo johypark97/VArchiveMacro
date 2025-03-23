@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.fxgui.model;
+package com.github.johypark97.varchivemacro.macro.service;
 
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManagerHelper;
@@ -6,16 +6,12 @@ import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
-import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.CacheManager;
-import com.github.johypark97.varchivemacro.macro.domain.DefaultAnalysisDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.DefaultNewRecordDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.DefaultScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
 import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.model.AnalyzedRecordData;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.model.RecordData;
@@ -33,7 +29,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -41,10 +36,23 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 
-public class DefaultScannerModel implements ScannerModel {
-    private final AnalysisDataDomain analysisDataDomain = new DefaultAnalysisDataDomain();
-    private final NewRecordDataDomain newRecordDataDomain = new DefaultNewRecordDataDomain();
-    private final ScanDataDomain scanDataDomain = new DefaultScanDataDomain();
+public class DefaultScannerService implements ScannerService {
+    private final DatabaseRepository databaseRepository;
+    private final RecordRepository recordRepository;
+
+    private final AnalysisDataDomain analysisDataDomain;
+    private final NewRecordDataDomain newRecordDataDomain;
+    private final ScanDataDomain scanDataDomain;
+
+    public DefaultScannerService(DatabaseRepository databaseRepository,
+            RecordRepository recordRepository, AnalysisDataDomain analysisDataDomain,
+            NewRecordDataDomain newRecordDataDomain, ScanDataDomain scanDataDomain) {
+        this.analysisDataDomain = analysisDataDomain;
+        this.databaseRepository = databaseRepository;
+        this.newRecordDataDomain = newRecordDataDomain;
+        this.recordRepository = recordRepository;
+        this.scanDataDomain = scanDataDomain;
+    }
 
     @Override
     public void validateCacheDirectory(Path path) throws IOException {
@@ -73,7 +81,6 @@ public class DefaultScannerModel implements ScannerModel {
 
     @Override
     public void startCollectionScan(Runnable onDone, Runnable onCancel,
-            Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
             Set<String> selectedCategorySet, Path cacheDirectoryPath, int captureDelay,
             int keyInputDuration) {
         if (ServiceManager.getInstance().isRunningAny()) {
@@ -84,26 +91,19 @@ public class DefaultScannerModel implements ScannerModel {
                 ServiceManager.getInstance().get(CollectionScanFxService.class));
 
         service.setTaskConstructor(() -> {
-            Task<Void> task = new DefaultCollectionScanTask(scanDataDomain, categoryNameSongListMap,
-                    titleTool, selectedCategorySet, cacheDirectoryPath, captureDelay,
-                    keyInputDuration);
+            Task<Void> task = new DefaultCollectionScanTask(scanDataDomain,
+                    databaseRepository.categoryNameSongListMap(), databaseRepository.getTitleTool(),
+                    selectedCategorySet, cacheDirectoryPath, captureDelay, keyInputDuration);
+
+            // Task<Void> task = new FHDCollectionLoaderTask(scanDataDomain,
+            //         databaseRepository.categoryNameSongListMap(), databaseRepository.getTitleTool(),
+            //         selectedCategorySet, cacheDirectoryPath);
 
             task.setOnCancelled(event -> onCancel.run());
             task.setOnSucceeded(event -> onDone.run());
 
             return task;
         });
-
-        // service.setTaskConstructor(() -> {
-        //     Task<Void> task =
-        //             new FHDCollectionLoaderTask(scanDataDomain, categoryNameSongListMap, titleTool,
-        //                     selectedCategorySet, cacheDirectoryPath);
-        //
-        //     task.setOnCancelled(event -> onCancel.run());
-        //     task.setOnSucceeded(event -> onDone.run());
-        //
-        //     return task;
-        // });
 
         service.reset();
         service.start();
@@ -115,7 +115,7 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void starAnalysis(Consumer<Double> onUpdateProgress, Runnable onDataReady,
+    public void startAnalysis(Consumer<Double> onUpdateProgress, Runnable onDataReady,
             Runnable onDone, Runnable onCancel, Path cacheDirectoryPath, int analysisThreadCount) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
@@ -148,7 +148,7 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void collectNewRecord(Runnable onDone, RecordRepository recordRepository) {
+    public void collectNewRecord(Runnable onDone) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -170,9 +170,8 @@ public class DefaultScannerModel implements ScannerModel {
     }
 
     @Override
-    public void startUpload(Runnable onDone, Runnable onCancel,
-            DatabaseRepository databaseRepository, RecordRepository recordRepository,
-            Path accountPath, int recordUploadDelay) {
+    public void startUpload(Runnable onDone, Runnable onCancel, Path accountPath,
+            int recordUploadDelay) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }

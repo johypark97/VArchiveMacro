@@ -4,6 +4,12 @@ import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
+import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.DefaultAnalysisDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.DefaultNewRecordDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.DefaultScanDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomeStage;
@@ -18,7 +24,9 @@ import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRep
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.johypark97.varchivemacro.macro.service.DefaultMacroService;
+import com.github.johypark97.varchivemacro.macro.service.DefaultScannerService;
 import com.github.johypark97.varchivemacro.macro.service.MacroService;
+import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import java.awt.Toolkit;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -78,12 +86,20 @@ public class Main extends Application {
                 new DefaultOpenSourceLicenseRepository();
         RecordRepository recordRepository = new DefaultRecordRepository();
 
+        AnalysisDataDomain analysisDataDomain = new DefaultAnalysisDataDomain();
+        NewRecordDataDomain newRecordDataDomain = new DefaultNewRecordDataDomain();
+        ScanDataDomain scanDataDomain = new DefaultScanDataDomain();
+
         MacroService macroService = new DefaultMacroService();
+        ScannerService scannerService =
+                new DefaultScannerService(databaseRepository, recordRepository, analysisDataDomain,
+                        newRecordDataDomain, scanDataDomain);
 
         HomeView homeView = new HomeViewImpl(primaryStage);
         Mvp.linkViewAndPresenter(homeView,
                 new HomePresenterImpl(configRepository, databaseRepository,
-                        openSourceLicenseRepository, recordRepository, macroService));
+                        openSourceLicenseRepository, recordRepository, macroService,
+                        scannerService));
 
         Platform.runLater(homeView::startView);
     }

@@ -1,24 +1,24 @@
 package com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer;
 
-import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel.AnalyzedRecordData;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewer.RecordBoxData;
+import com.github.johypark97.varchivemacro.macro.model.AnalyzedRecordData;
+import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import javafx.embed.swing.SwingFXUtils;
 
 public class AnalysisDataViewerPresenterImpl implements AnalysisDataViewerPresenter {
     private final Runnable onStop;
-    private final ScannerModel scannerModel;
+    private final ScannerService scannerService;
 
     @MvpView
     public AnalysisDataViewerView view;
 
-    public AnalysisDataViewerPresenterImpl(ScannerModel scannerModel, Runnable onStop) {
+    public AnalysisDataViewerPresenterImpl(ScannerService scannerService, Runnable onStop) {
         this.onStop = onStop;
-        this.scannerModel = scannerModel;
+        this.scannerService = scannerService;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class AnalysisDataViewerPresenterImpl implements AnalysisDataViewerPresen
     public void showAnalysisData(Path cacheDirectoryPath, int analysisDataId) {
         AnalyzedRecordData data;
         try {
-            data = scannerModel.getAnalyzedRecordData(cacheDirectoryPath, analysisDataId);
+            data = scannerService.getAnalyzedRecordData(cacheDirectoryPath, analysisDataId);
         } catch (Exception e) {
             view.showError("Analyzed record data loading error", e);
             return;

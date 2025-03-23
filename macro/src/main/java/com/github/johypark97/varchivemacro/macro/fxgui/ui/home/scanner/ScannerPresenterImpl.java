@@ -5,7 +5,6 @@ import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.ScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewerPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewerStage;
@@ -27,6 +26,7 @@ import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.awt.image.BufferedImage;
@@ -67,7 +67,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     private final ConfigRepository configRepository;
     private final DatabaseRepository databaseRepository;
     private final RecordRepository recordRepository;
-    private final ScannerModel scannerModel;
+    private final ScannerService scannerService;
 
     private final BiConsumer<String, String> showInformation;
     private final BiConsumer<String, Throwable> showError;
@@ -82,13 +82,13 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     public ScannerPresenterImpl(ConfigRepository configRepository,
             DatabaseRepository databaseRepository, RecordRepository recordRepository,
-            ScannerModel scannerModel, BiConsumer<String, String> showInformation,
+            ScannerService scannerService, BiConsumer<String, String> showInformation,
             BiConsumer<String, Throwable> showError, BiPredicate<String, String> showConfirmation,
             Supplier<Window> windowSupplier) {
         this.configRepository = configRepository;
         this.databaseRepository = databaseRepository;
         this.recordRepository = recordRepository;
-        this.scannerModel = scannerModel;
+        this.scannerService = scannerService;
         this.showConfirmation = showConfirmation;
         this.showError = showError;
         this.showInformation = showInformation;
@@ -184,7 +184,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void onStartView() {
-        scannerModel.setupService(throwable -> {
+        scannerService.setupService(throwable -> {
             String header = "Scanner service exception";
 
             LOGGER.atError().setCause(throwable).log(header);
@@ -282,7 +282,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         BufferedImage image;
         try {
-            image = scannerModel.getCaptureImage(cacheDirectoryPath, id);
+            image = scannerService.getCaptureImage(cacheDirectoryPath, id);
         } catch (IOException e) {
             showError.accept("Cache image reading error", e);
             return;
@@ -310,12 +310,12 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             analysis_clearAnalysisData();
         };
 
-        scannerModel.clearScanData(onClear);
+        scannerService.clearScanData(onClear);
     }
 
     @Override
     public void capture_start() {
-        if (!scannerModel.isScanDataEmpty()) {
+        if (!scannerService.isScanDataEmpty()) {
             return;
         }
 
@@ -329,18 +329,18 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         Runnable onCancel = () -> {
             view.capture_setCaptureDataList(
-                    FXCollections.observableArrayList(scannerModel.copyCaptureDataList()));
+                    FXCollections.observableArrayList(scannerService.copyCaptureDataList()));
             view.song_setSongDataList(
-                    FXCollections.observableArrayList(scannerModel.copySongDataList()));
+                    FXCollections.observableArrayList(scannerService.copySongDataList()));
 
             showInformation.accept(header,
                     language.getString("scannerFxService.dialog.scanCanceled"));
         };
         Runnable onDone = () -> {
             view.capture_setCaptureDataList(
-                    FXCollections.observableArrayList(scannerModel.copyCaptureDataList()));
+                    FXCollections.observableArrayList(scannerService.copyCaptureDataList()));
             view.song_setSongDataList(
-                    FXCollections.observableArrayList(scannerModel.copySongDataList()));
+                    FXCollections.observableArrayList(scannerService.copySongDataList()));
 
             showInformation.accept(header, language.getString("scannerFxService.dialog.scanDone"));
         };
@@ -349,14 +349,13 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         int captureDelay = view.option_getCaptureDelay();
         int keyInputDuration = view.option_getKeyInputDuration();
 
-        scannerModel.startCollectionScan(onDone, onCancel,
-                databaseRepository.categoryNameSongListMap(), databaseRepository.getTitleTool(),
-                selectedCategorySet, cacheDirectoryPath, captureDelay, keyInputDuration);
+        scannerService.startCollectionScan(onDone, onCancel, selectedCategorySet,
+                cacheDirectoryPath, captureDelay, keyInputDuration);
     }
 
     @Override
     public void capture_stop() {
-        scannerModel.stopCollectionScan();
+        scannerService.stopCollectionScan();
     }
 
     @Override
@@ -372,7 +371,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         LinkEditor.LinkEditorView linkEditorView = new LinkEditorViewImpl(stage);
         Mvp.linkViewAndPresenter(linkEditorView,
-                new LinkEditorPresenterImpl(scannerModel, cacheDirectoryPath, id, () -> {
+                new LinkEditorPresenterImpl(scannerService, cacheDirectoryPath, id, () -> {
                     view.capture_refresh();
                     view.song_refresh();
                 }));
@@ -389,7 +388,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             view.analysis_setProgressLabelText(null);
         };
 
-        scannerModel.clearAnalysisData(onClear);
+        scannerService.clearAnalysisData(onClear);
     }
 
     @Override
@@ -405,7 +404,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
             analysisDataViewerView = new AnalysisDataViewerViewImpl(stage);
             Mvp.linkViewAndPresenter(analysisDataViewerView,
-                    new AnalysisDataViewerPresenterImpl(scannerModel, () -> {
+                    new AnalysisDataViewerPresenterImpl(scannerService, () -> {
                         analysisDataViewerView = null; // NOPMD
                     }));
         }
@@ -415,7 +414,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void analysis_startAnalysis() {
-        if (scannerModel.isScanDataEmpty() || !scannerModel.isAnalysisDataEmpty()) {
+        if (scannerService.isScanDataEmpty() || !scannerService.isAnalysisDataEmpty()) {
             return;
         }
 
@@ -439,7 +438,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         };
 
         Runnable onDataReady = () -> view.analysis_setAnalysisDataList(
-                FXCollections.observableArrayList(scannerModel.copyAnalysisDataList()));
+                FXCollections.observableArrayList(scannerService.copyAnalysisDataList()));
 
         Consumer<Double> onUpdateProgress = value -> {
             view.analysis_setProgressBarValue(value);
@@ -448,30 +447,30 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         int analysisThreadCount = view.option_getAnalysisThreadCount();
 
-        scannerModel.starAnalysis(onUpdateProgress, onDataReady, onDone, onCancel,
+        scannerService.startAnalysis(onUpdateProgress, onDataReady, onDone, onCancel,
                 cacheDirectoryPath, analysisThreadCount);
     }
 
     @Override
     public void analysis_stopAnalysis() {
-        scannerModel.stopAnalysis();
+        scannerService.stopAnalysis();
     }
 
     @Override
     public void uploader_refresh() {
-        if (scannerModel.isAnalysisDataEmpty()) {
+        if (scannerService.isAnalysisDataEmpty()) {
             return;
         }
 
         Runnable onDone = () -> view.uploader_setNewRecordDataList(
-                FXCollections.observableArrayList(scannerModel.copyNewRecordDataList()));
+                FXCollections.observableArrayList(scannerService.copyNewRecordDataList()));
 
-        scannerModel.collectNewRecord(onDone, recordRepository);
+        scannerService.collectNewRecord(onDone);
     }
 
     @Override
     public void uploader_startUpload(long count) {
-        if (scannerModel.isNewRecordDataEmpty()) {
+        if (scannerService.isNewRecordDataEmpty()) {
             return;
         }
 
@@ -504,13 +503,12 @@ public class ScannerPresenterImpl implements ScannerPresenter {
                     language.getString("scannerFxService.dialog.uploadDone"));
         }
 
-        scannerModel.startUpload(onDone, onCancel, databaseRepository, recordRepository,
-                accountPath, recordUploadDelay);
+        scannerService.startUpload(onDone, onCancel, accountPath, recordUploadDelay);
     }
 
     @Override
     public void uploader_stopUpload() {
-        scannerModel.stopUpload();
+        scannerService.stopUpload();
     }
 
     @Override
@@ -522,7 +520,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         Path path = file.toPath();
         try {
-            scannerModel.validateCacheDirectory(path);
+            scannerService.validateCacheDirectory(path);
         } catch (IOException e) {
             String header =
                     Language.getInstance().getString("scanner.option.dialog.invalidDirectory");

@@ -2,7 +2,6 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
-import com.github.johypark97.varchivemacro.macro.fxgui.model.DefaultScannerModel;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.MacroPresenterImpl;
@@ -25,6 +24,7 @@ import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.johypark97.varchivemacro.macro.service.MacroService;
+import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import java.io.IOException;
 import java.util.Locale;
 import javafx.application.Platform;
@@ -42,6 +42,7 @@ public class HomePresenterImpl implements HomePresenter {
     private final RecordRepository recordRepository;
 
     private final MacroService macroService;
+    private final ScannerService scannerService;
 
     private MacroViewImpl macroView;
     private ScannerViewImpl scannerView;
@@ -52,12 +53,14 @@ public class HomePresenterImpl implements HomePresenter {
     public HomePresenterImpl(ConfigRepository configRepository,
             DatabaseRepository databaseRepository,
             OpenSourceLicenseRepository openSourceLicenseRepository,
-            RecordRepository recordRepository, MacroService macroService) {
+            RecordRepository recordRepository, MacroService macroService,
+            ScannerService scannerService) {
         this.configRepository = configRepository;
         this.databaseRepository = databaseRepository;
         this.macroService = macroService;
         this.openSourceLicenseRepository = openSourceLicenseRepository;
         this.recordRepository = recordRepository;
+        this.scannerService = scannerService;
     }
 
     private void showScanner() {
@@ -65,7 +68,7 @@ public class HomePresenterImpl implements HomePresenter {
         view.setScannerTabContent(scannerView);
         Mvp.linkViewAndPresenter(scannerView,
                 new ScannerPresenterImpl(configRepository, databaseRepository, recordRepository,
-                        new DefaultScannerModel(), view::showInformation, view::showError,
+                        scannerService, view::showInformation, view::showError,
                         view::showConfirmation, view::getWindow));
 
         scannerView.startView();
