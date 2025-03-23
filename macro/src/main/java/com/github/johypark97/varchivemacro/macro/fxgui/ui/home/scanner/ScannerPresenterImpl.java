@@ -23,6 +23,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorP
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorViewImpl;
 import com.github.johypark97.varchivemacro.macro.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
@@ -63,6 +64,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     private final NativeKeyListener scannerNativeKeyListener;
 
+    private final ConfigRepository configRepository;
     private final DatabaseRepository databaseRepository;
     private final RecordRepository recordRepository;
     private final ScannerModel scannerModel;
@@ -70,8 +72,6 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     private final BiConsumer<String, String> showInformation;
     private final BiConsumer<String, Throwable> showError;
     private final BiPredicate<String, String> showConfirmation;
-    private final Consumer<ScannerConfig> scannerConfigSetter;
-    private final Supplier<ScannerConfig> scannerConfigGetter;
     private final Supplier<Window> windowSupplier;
 
     private AnalysisDataViewerView analysisDataViewerView;
@@ -80,16 +80,14 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     @MvpView
     public ScannerView view;
 
-    public ScannerPresenterImpl(DatabaseRepository databaseRepository,
-            RecordRepository recordRepository, ScannerModel scannerModel,
-            BiConsumer<String, String> showInformation, BiConsumer<String, Throwable> showError,
-            BiPredicate<String, String> showConfirmation,
-            Supplier<ScannerConfig> scannerConfigGetter,
-            Consumer<ScannerConfig> scannerConfigSetter, Supplier<Window> windowSupplier) {
+    public ScannerPresenterImpl(ConfigRepository configRepository,
+            DatabaseRepository databaseRepository, RecordRepository recordRepository,
+            ScannerModel scannerModel, BiConsumer<String, String> showInformation,
+            BiConsumer<String, Throwable> showError, BiPredicate<String, String> showConfirmation,
+            Supplier<Window> windowSupplier) {
+        this.configRepository = configRepository;
         this.databaseRepository = databaseRepository;
         this.recordRepository = recordRepository;
-        this.scannerConfigGetter = scannerConfigGetter;
-        this.scannerConfigSetter = scannerConfigSetter;
         this.scannerModel = scannerModel;
         this.showConfirmation = showConfirmation;
         this.showError = showError;
@@ -193,7 +191,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             showError.accept(header, throwable);
         });
 
-        ScannerConfig scannerConfig = scannerConfigGetter.get();
+        ScannerConfig scannerConfig = configRepository.getScannerConfig();
 
         view.option_setCacheDirectory(scannerConfig.cacheDirectory.toString());
 
@@ -248,7 +246,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             scannerConfig.recordUploadDelay = view.option_getRecordUploadDelay();
         }
 
-        scannerConfigSetter.accept(scannerConfig);
+        configRepository.setScannerConfig(scannerConfig);
     }
 
     @Override

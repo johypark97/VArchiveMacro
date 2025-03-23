@@ -61,10 +61,9 @@ public class HomePresenterImpl implements HomePresenter {
         scannerView = new ScannerViewImpl();
         view.setScannerTabContent(scannerView);
         Mvp.linkViewAndPresenter(scannerView,
-                new ScannerPresenterImpl(databaseRepository, recordRepository,
+                new ScannerPresenterImpl(configRepository, databaseRepository, recordRepository,
                         new DefaultScannerModel(), view::showInformation, view::showError,
-                        view::showConfirmation, configRepository::getScannerConfig,
-                        configRepository::setScannerConfig, view::getWindow));
+                        view::showConfirmation, view::getWindow));
 
         scannerView.startView();
     }
@@ -87,8 +86,7 @@ public class HomePresenterImpl implements HomePresenter {
         macroView = new MacroViewImpl();
         view.setMacroTabContent(macroView);
         Mvp.linkViewAndPresenter(macroView,
-                new MacroPresenterImpl(new DefaultMacroModel(), configRepository::getMacroConfig,
-                        configRepository::setMacroConfig, view::showError));
+                new MacroPresenterImpl(configRepository, new DefaultMacroModel(), view::showError));
 
         UpdateCheckViewImpl updateCheckView = new UpdateCheckViewImpl();
         view.setUpdateCheckTabContent(updateCheckView);

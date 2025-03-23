@@ -7,11 +7,10 @@ import com.github.johypark97.varchivemacro.macro.fxgui.model.MacroModel.Analysis
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.Macro.MacroPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro.Macro.MacroView;
 import com.github.johypark97.varchivemacro.macro.model.MacroConfig;
+import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import javafx.geometry.VerticalDirection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,20 +18,19 @@ import org.slf4j.LoggerFactory;
 public class MacroPresenterImpl implements MacroPresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(MacroPresenterImpl.class);
 
-    private final MacroModel macroModel;
     private final NativeKeyListener macroNativeKeyListener;
 
+    private final ConfigRepository configRepository;
+    private final MacroModel macroModel;
+
     private final BiConsumer<String, Throwable> showError;
-    private final Consumer<MacroConfig> macroConfigSetter;
-    private final Supplier<MacroConfig> macroConfigGetter;
 
     @MvpView
     public MacroView view;
 
-    public MacroPresenterImpl(MacroModel macroModel, Supplier<MacroConfig> macroConfigGetter,
-            Consumer<MacroConfig> macroConfigSetter, BiConsumer<String, Throwable> showError) {
-        this.macroConfigGetter = macroConfigGetter;
-        this.macroConfigSetter = macroConfigSetter;
+    public MacroPresenterImpl(ConfigRepository configRepository, MacroModel macroModel,
+            BiConsumer<String, Throwable> showError) {
+        this.configRepository = configRepository;
         this.macroModel = macroModel;
         this.showError = showError;
 
@@ -78,7 +76,7 @@ public class MacroPresenterImpl implements MacroPresenter {
             showError.accept(header, throwable);
         });
 
-        MacroConfig macroConfig = macroConfigGetter.get();
+        MacroConfig macroConfig = configRepository.getMacroConfig();
 
         view.setAnalysisKey(macroConfig.analysisKey);
 
@@ -112,7 +110,7 @@ public class MacroPresenterImpl implements MacroPresenter {
         macroConfig.captureDuration = view.getCaptureDuration();
         macroConfig.keyInputDuration = view.getKeyInputDuration();
 
-        macroConfigSetter.accept(macroConfig);
+        configRepository.setMacroConfig(macroConfig);
     }
 
     @Override
