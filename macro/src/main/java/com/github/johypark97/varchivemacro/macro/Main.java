@@ -4,29 +4,17 @@ import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
-import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.DefaultAnalysisDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.DefaultNewRecordDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.DefaultScanDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomeStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.HomeViewImpl;
-import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultConfigRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultDatabaseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultOpenSourceLicenseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultRecordRepository;
-import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
+import com.github.johypark97.varchivemacro.macro.provider.DefaultDomainProvider;
+import com.github.johypark97.varchivemacro.macro.provider.DefaultRepositoryProvider;
+import com.github.johypark97.varchivemacro.macro.provider.DefaultServiceProvider;
+import com.github.johypark97.varchivemacro.macro.provider.DomainProvider;
+import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
+import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
-import com.github.johypark97.varchivemacro.macro.service.DefaultMacroService;
-import com.github.johypark97.varchivemacro.macro.service.DefaultScannerService;
-import com.github.johypark97.varchivemacro.macro.service.MacroService;
-import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import java.awt.Toolkit;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -80,26 +68,14 @@ public class Main extends Application {
 
         HomeStage.setupStage(primaryStage);
 
-        ConfigRepository configRepository = new DefaultConfigRepository();
-        DatabaseRepository databaseRepository = new DefaultDatabaseRepository();
-        OpenSourceLicenseRepository openSourceLicenseRepository =
-                new DefaultOpenSourceLicenseRepository();
-        RecordRepository recordRepository = new DefaultRecordRepository();
-
-        AnalysisDataDomain analysisDataDomain = new DefaultAnalysisDataDomain();
-        NewRecordDataDomain newRecordDataDomain = new DefaultNewRecordDataDomain();
-        ScanDataDomain scanDataDomain = new DefaultScanDataDomain();
-
-        MacroService macroService = new DefaultMacroService();
-        ScannerService scannerService =
-                new DefaultScannerService(databaseRepository, recordRepository, analysisDataDomain,
-                        newRecordDataDomain, scanDataDomain);
+        RepositoryProvider repositoryProvider = new DefaultRepositoryProvider();
+        DomainProvider domainProvider = new DefaultDomainProvider();
+        ServiceProvider serviceProvider =
+                new DefaultServiceProvider(repositoryProvider, domainProvider);
 
         HomeView homeView = new HomeViewImpl(primaryStage);
         Mvp.linkViewAndPresenter(homeView,
-                new HomePresenterImpl(configRepository, databaseRepository,
-                        openSourceLicenseRepository, recordRepository, macroService,
-                        scannerService));
+                new HomePresenterImpl(repositoryProvider, serviceProvider));
 
         Platform.runLater(homeView::startView);
     }

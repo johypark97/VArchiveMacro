@@ -4,21 +4,24 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.Ana
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer.AnalysisDataViewer.RecordBoxData;
 import com.github.johypark97.varchivemacro.macro.model.AnalyzedRecordData;
+import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
 import javafx.embed.swing.SwingFXUtils;
 
 public class AnalysisDataViewerPresenterImpl implements AnalysisDataViewerPresenter {
+    private final ServiceProvider serviceProvider;
+
     private final Runnable onStop;
-    private final ScannerService scannerService;
 
     @MvpView
     public AnalysisDataViewerView view;
 
-    public AnalysisDataViewerPresenterImpl(ScannerService scannerService, Runnable onStop) {
+    public AnalysisDataViewerPresenterImpl(ServiceProvider serviceProvider, Runnable onStop) {
+        this.serviceProvider = serviceProvider;
+
         this.onStop = onStop;
-        this.scannerService = scannerService;
     }
 
     @Override
@@ -34,6 +37,8 @@ public class AnalysisDataViewerPresenterImpl implements AnalysisDataViewerPresen
 
     @Override
     public void showAnalysisData(Path cacheDirectoryPath, int analysisDataId) {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         AnalyzedRecordData data;
         try {
             data = scannerService.getAnalyzedRecordData(cacheDirectoryPath, analysisDataId);

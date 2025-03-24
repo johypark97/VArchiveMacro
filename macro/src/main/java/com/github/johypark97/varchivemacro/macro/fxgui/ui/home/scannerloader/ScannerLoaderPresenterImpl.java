@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader;
 
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.ScannerLoader.ScannerLoaderPresenter;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.ScannerLoader.ScannerLoaderView;
+import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
@@ -15,25 +16,27 @@ import org.slf4j.LoggerFactory;
 public class ScannerLoaderPresenterImpl implements ScannerLoaderPresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScannerLoaderPresenterImpl.class);
 
+    private final RepositoryProvider repositoryProvider;
+
     private final BiConsumer<String, Exception> showError;
-    private final DatabaseRepository databaseRepository;
-    private final RecordRepository recordRepository;
     private final Runnable onStop;
 
     @MvpView
     public ScannerLoaderView view;
 
-    public ScannerLoaderPresenterImpl(DatabaseRepository databaseRepository,
-            RecordRepository recordRepository, BiConsumer<String, Exception> showError,
-            Runnable onStop) {
-        this.databaseRepository = databaseRepository;
+    public ScannerLoaderPresenterImpl(RepositoryProvider repositoryProvider,
+            BiConsumer<String, Exception> showError, Runnable onStop) {
+        this.repositoryProvider = repositoryProvider;
+
         this.onStop = onStop;
-        this.recordRepository = recordRepository;
         this.showError = showError;
     }
 
     @Override
     public void onStartView() {
+        DatabaseRepository databaseRepository = repositoryProvider.getDatabaseRepository();
+        RecordRepository recordRepository = repositoryProvider.getRecordRepository();
+
         try {
             databaseRepository.load();
         } catch (SQLException | IOException e) {
@@ -76,6 +79,8 @@ public class ScannerLoaderPresenterImpl implements ScannerLoaderPresenter {
 
     @Override
     public void loadRemoteRecord() {
+        RecordRepository recordRepository = repositoryProvider.getRecordRepository();
+
         view.hideDjNameInputError();
 
         String djName = view.getDjNameText().trim();

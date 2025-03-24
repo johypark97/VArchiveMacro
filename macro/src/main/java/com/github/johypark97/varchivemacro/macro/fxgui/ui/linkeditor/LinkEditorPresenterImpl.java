@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditor.
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditor.LinkEditorView;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
+import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import java.io.IOException;
@@ -24,9 +25,10 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
             TitleTool.normalizeTitle_recognition(x).toLowerCase(Locale.ENGLISH),
             Normalizer.Form.NFKD);
 
+    private final ServiceProvider serviceProvider;
+
     private final Path cacheDirectoryPath;
     private final Runnable onUpdateLink;
-    private final ScannerService scannerService;
     private final int songDataId;
 
     private FilteredList<CaptureData> filteredCaptureDataList;
@@ -34,16 +36,19 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
     @MvpView
     public LinkEditorView view;
 
-    public LinkEditorPresenterImpl(ScannerService scannerService, Path cacheDirectoryPath,
+    public LinkEditorPresenterImpl(ServiceProvider serviceProvider, Path cacheDirectoryPath,
             int songDataId, Runnable onUpdateLink) {
+        this.serviceProvider = serviceProvider;
+
         this.cacheDirectoryPath = cacheDirectoryPath;
         this.onUpdateLink = onUpdateLink;
-        this.scannerService = scannerService;
         this.songDataId = songDataId;
     }
 
     @Override
     public void onStartView() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         Song song = scannerService.getSongData(songDataId).songProperty().get();
         view.setSongText(
                 String.format("[%s] %s - %s", song.pack().name(), song.title(), song.composer()));
@@ -70,6 +75,8 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     @Override
     public void showCaptureDataList(String pattern, boolean findAll) {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         ObservableList<CaptureData> list = findAll
                 ? FXCollections.observableArrayList(scannerService.copyCaptureDataList())
                 : scannerService.getSongData(songDataId).childListProperty();
@@ -83,6 +90,8 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     @Override
     public void showCaptureImage(int captureDataId) {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         try {
             view.setCaptureImage(SwingFXUtils.toFXImage(
                     scannerService.getCaptureImage(cacheDirectoryPath, captureDataId), null));
@@ -93,6 +102,8 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     @Override
     public void linkCaptureData(int captureDataId) {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         CaptureData captureData = scannerService.getCaptureData(captureDataId);
 
         String header = Language.getInstance().getString("linkEditor.dialog.link.header");
@@ -119,6 +130,8 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     @Override
     public void unlinkCaptureData() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         String header = Language.getInstance().getString("linkEditor.dialog.unlink.header");
         if (!view.showConfirmation(header, null)) {
             return;

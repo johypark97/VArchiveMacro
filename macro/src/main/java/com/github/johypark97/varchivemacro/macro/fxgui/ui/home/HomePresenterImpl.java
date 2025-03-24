@@ -17,14 +17,11 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.Open
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense.OpenSourceLicenseViewImpl;
 import com.github.johypark97.varchivemacro.macro.github.DataUpdater;
+import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
+import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
-import com.github.johypark97.varchivemacro.macro.service.MacroService;
-import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import java.io.IOException;
 import java.util.Locale;
 import javafx.application.Platform;
@@ -36,13 +33,8 @@ import org.slf4j.LoggerFactory;
 public class HomePresenterImpl implements HomePresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomePresenterImpl.class);
 
-    private final ConfigRepository configRepository;
-    private final DatabaseRepository databaseRepository;
-    private final OpenSourceLicenseRepository openSourceLicenseRepository;
-    private final RecordRepository recordRepository;
-
-    private final MacroService macroService;
-    private final ScannerService scannerService;
+    private final RepositoryProvider repositoryProvider;
+    private final ServiceProvider serviceProvider;
 
     private MacroViewImpl macroView;
     private ScannerViewImpl scannerView;
@@ -50,32 +42,26 @@ public class HomePresenterImpl implements HomePresenter {
     @MvpView
     public HomeView view;
 
-    public HomePresenterImpl(ConfigRepository configRepository,
-            DatabaseRepository databaseRepository,
-            OpenSourceLicenseRepository openSourceLicenseRepository,
-            RecordRepository recordRepository, MacroService macroService,
-            ScannerService scannerService) {
-        this.configRepository = configRepository;
-        this.databaseRepository = databaseRepository;
-        this.macroService = macroService;
-        this.openSourceLicenseRepository = openSourceLicenseRepository;
-        this.recordRepository = recordRepository;
-        this.scannerService = scannerService;
+    public HomePresenterImpl(RepositoryProvider repositoryProvider,
+            ServiceProvider serviceProvider) {
+        this.repositoryProvider = repositoryProvider;
+        this.serviceProvider = serviceProvider;
     }
 
     private void showScanner() {
         scannerView = new ScannerViewImpl();
         view.setScannerTabContent(scannerView);
         Mvp.linkViewAndPresenter(scannerView,
-                new ScannerPresenterImpl(configRepository, databaseRepository, recordRepository,
-                        scannerService, view::showInformation, view::showError,
-                        view::showConfirmation, view::getWindow));
+                new ScannerPresenterImpl(repositoryProvider, serviceProvider, view::showInformation,
+                        view::showError, view::showConfirmation, view::getWindow));
 
         scannerView.startView();
     }
 
     @Override
     public void onStartView() {
+        ConfigRepository configRepository = repositoryProvider.getConfigRepository();
+
         try {
             if (!configRepository.load()) {
                 configRepository.save();
@@ -86,13 +72,13 @@ public class HomePresenterImpl implements HomePresenter {
         ScannerLoaderViewImpl scannerLoaderView = new ScannerLoaderViewImpl();
         view.setScannerTabContent(scannerLoaderView);
         Mvp.linkViewAndPresenter(scannerLoaderView,
-                new ScannerLoaderPresenterImpl(databaseRepository, recordRepository,
-                        view::showError, this::showScanner));
+                new ScannerLoaderPresenterImpl(repositoryProvider, view::showError,
+                        this::showScanner));
 
         macroView = new MacroViewImpl();
         view.setMacroTabContent(macroView);
         Mvp.linkViewAndPresenter(macroView,
-                new MacroPresenterImpl(configRepository, macroService, view::showError));
+                new MacroPresenterImpl(repositoryProvider, serviceProvider, view::showError));
 
         UpdateCheckViewImpl updateCheckView = new UpdateCheckViewImpl();
         view.setUpdateCheckTabContent(updateCheckView);
@@ -107,6 +93,8 @@ public class HomePresenterImpl implements HomePresenter {
 
     @Override
     public void onStopView() {
+        ConfigRepository configRepository = repositoryProvider.getConfigRepository();
+
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -149,7 +137,7 @@ public class HomePresenterImpl implements HomePresenter {
 
         OpenSourceLicenseView openSourceLicenseView = new OpenSourceLicenseViewImpl(stage);
         Mvp.linkViewAndPresenter(openSourceLicenseView,
-                new OpenSourceLicensePresenterImpl(openSourceLicenseRepository));
+                new OpenSourceLicensePresenterImpl(repositoryProvider));
 
         openSourceLicenseView.startView();
     }

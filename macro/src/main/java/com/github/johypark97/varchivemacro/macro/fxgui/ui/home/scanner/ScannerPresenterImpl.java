@@ -22,6 +22,8 @@ import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorP
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorStage;
 import com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor.LinkEditorViewImpl;
 import com.github.johypark97.varchivemacro.macro.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
+import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
@@ -62,17 +64,15 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     private final Function<String, String> VIEWER_TITLE_NORMALIZER =
             x -> Normalizer.normalize(x.toLowerCase(Locale.ENGLISH), Normalizer.Form.NFKD);
 
-    private final NativeKeyListener scannerNativeKeyListener;
-
-    private final ConfigRepository configRepository;
-    private final DatabaseRepository databaseRepository;
-    private final RecordRepository recordRepository;
-    private final ScannerService scannerService;
+    private final RepositoryProvider repositoryProvider;
+    private final ServiceProvider serviceProvider;
 
     private final BiConsumer<String, String> showInformation;
     private final BiConsumer<String, Throwable> showError;
     private final BiPredicate<String, String> showConfirmation;
     private final Supplier<Window> windowSupplier;
+
+    private final NativeKeyListener scannerNativeKeyListener;
 
     private AnalysisDataViewerView analysisDataViewerView;
     private CaptureViewerView captureViewerView;
@@ -80,15 +80,13 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     @MvpView
     public ScannerView view;
 
-    public ScannerPresenterImpl(ConfigRepository configRepository,
-            DatabaseRepository databaseRepository, RecordRepository recordRepository,
-            ScannerService scannerService, BiConsumer<String, String> showInformation,
+    public ScannerPresenterImpl(RepositoryProvider repositoryProvider,
+            ServiceProvider serviceProvider, BiConsumer<String, String> showInformation,
             BiConsumer<String, Throwable> showError, BiPredicate<String, String> showConfirmation,
             Supplier<Window> windowSupplier) {
-        this.configRepository = configRepository;
-        this.databaseRepository = databaseRepository;
-        this.recordRepository = recordRepository;
-        this.scannerService = scannerService;
+        this.repositoryProvider = repositoryProvider;
+        this.serviceProvider = serviceProvider;
+
         this.showConfirmation = showConfirmation;
         this.showError = showError;
         this.showInformation = showInformation;
@@ -126,6 +124,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     }
 
     private void viewer_setSongTreeViewRoot(String filter) {
+        DatabaseRepository databaseRepository = repositoryProvider.getDatabaseRepository();
+
         String normalizedFilter;
         if (filter == null || filter.isBlank()) {
             normalizedFilter = null; // NOPMD
@@ -184,6 +184,10 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void onStartView() {
+        ConfigRepository configRepository = repositoryProvider.getConfigRepository();
+        DatabaseRepository databaseRepository = repositoryProvider.getDatabaseRepository();
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         scannerService.setupService(throwable -> {
             String header = "Scanner service exception";
 
@@ -222,6 +226,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void onStopView() {
+        ConfigRepository configRepository = repositoryProvider.getConfigRepository();
+
         FxHookWrapper.removeKeyListener(scannerNativeKeyListener);
 
         ScannerConfig scannerConfig = new ScannerConfig();
@@ -256,6 +262,9 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void viewer_showRecord(int id) {
+        DatabaseRepository databaseRepository = repositoryProvider.getDatabaseRepository();
+        RecordRepository recordRepository = repositoryProvider.getRecordRepository();
+
         SongDatabase.Song song = databaseRepository.getSong(id);
         StringBuilder builder = new StringBuilder(32);
         builder.append("Title: ").append(song.title()).append("\nComposer: ")
@@ -275,6 +284,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void capture_openCaptureViewer(int id) {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         Path cacheDirectoryPath = convertStringToPath(view.option_getCacheDirectory());
         if (cacheDirectoryPath == null) {
             return;
@@ -303,6 +314,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void capture_clearScanData() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         Runnable onClear = () -> {
             view.capture_setCaptureDataList(FXCollections.emptyObservableList());
             view.song_setSongDataList(FXCollections.emptyObservableList());
@@ -315,6 +328,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void capture_start() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         if (!scannerService.isScanDataEmpty()) {
             return;
         }
@@ -355,6 +370,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void capture_stop() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         scannerService.stopCollectionScan();
     }
 
@@ -371,7 +388,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         LinkEditor.LinkEditorView linkEditorView = new LinkEditorViewImpl(stage);
         Mvp.linkViewAndPresenter(linkEditorView,
-                new LinkEditorPresenterImpl(scannerService, cacheDirectoryPath, id, () -> {
+                new LinkEditorPresenterImpl(serviceProvider, cacheDirectoryPath, id, () -> {
                     view.capture_refresh();
                     view.song_refresh();
                 }));
@@ -381,6 +398,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void analysis_clearAnalysisData() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         Runnable onClear = () -> {
             view.analysis_setAnalysisDataList(FXCollections.emptyObservableList());
             view.uploader_setNewRecordDataList(FXCollections.emptyObservableList());
@@ -404,7 +423,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
             analysisDataViewerView = new AnalysisDataViewerViewImpl(stage);
             Mvp.linkViewAndPresenter(analysisDataViewerView,
-                    new AnalysisDataViewerPresenterImpl(scannerService, () -> {
+                    new AnalysisDataViewerPresenterImpl(serviceProvider, () -> {
                         analysisDataViewerView = null; // NOPMD
                     }));
         }
@@ -414,6 +433,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void analysis_startAnalysis() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         if (scannerService.isScanDataEmpty() || !scannerService.isAnalysisDataEmpty()) {
             return;
         }
@@ -453,11 +474,15 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void analysis_stopAnalysis() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         scannerService.stopAnalysis();
     }
 
     @Override
     public void uploader_refresh() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         if (scannerService.isAnalysisDataEmpty()) {
             return;
         }
@@ -470,6 +495,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void uploader_startUpload(long count) {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         if (scannerService.isNewRecordDataEmpty()) {
             return;
         }
@@ -508,11 +535,15 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void uploader_stopUpload() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         scannerService.stopUpload();
     }
 
     @Override
     public void option_openCacheDirectorySelector() {
+        ScannerService scannerService = serviceProvider.getScannerService();
+
         File file = openCacheDirectorySelector();
         if (file == null) {
             return;
