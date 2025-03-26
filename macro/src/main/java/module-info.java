@@ -16,17 +16,9 @@ module varchivemacro.macro {
     requires javafx.fxml;
     requires javafx.swing;
 
-    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer to javafx.fxml;
-    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.captureviewer to javafx.fxml;
-    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home to javafx.fxml;
-    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro to javafx.fxml;
-    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scanner to javafx.fxml;
-    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader to javafx.fxml;
-    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.component to javafx.fxml;
-    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.home.updatecheck to javafx.fxml;
-    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor to javafx.fxml;
-    opens com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.model to javafx.base;
+    opens com.github.johypark97.varchivemacro.macro.ui.view to javafx.fxml;
+    opens com.github.johypark97.varchivemacro.macro.ui.view.component to javafx.fxml;
 
     // libraries
     requires com.github.kwhat.jnativehook;
@@ -40,20 +32,12 @@ module varchivemacro.macro {
 
     // exports
     exports com.github.johypark97.varchivemacro.macro.data to com.google.gson;
-    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.analysisdataviewer to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.captureviewer to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.home to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.home.macro to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scanner to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.home.scannerloader.component to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.home.updatecheck to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.linkeditor to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.fxgui.ui.opensourcelicense to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro.github.data to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.repository to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.resource to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.service.fxservice to varchivemacro.lib.jfx;
+    exports com.github.johypark97.varchivemacro.macro.ui.presenter to varchivemacro.lib.jfx;
+    exports com.github.johypark97.varchivemacro.macro.ui.view to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro;
 }
