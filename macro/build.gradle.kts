@@ -87,6 +87,11 @@ tasks.jpackageImage.get().doLast {
     }
 
     copy {
+        from("${rootProject.projectDir}/doc")
+        into("$jPackageImageDir/doc")
+    }
+
+    copy {
         from("data")
         into("$jPackageImageDir/data")
     }
