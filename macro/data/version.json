@@ -1,5 +1,5 @@
 {
-  "version": 202503061950,
+  "version": 202503291109,
   "files": [
     {
       "path": "data/djmax.traineddata",
@@ -14,7 +14,7 @@
     {
       "path": "data/song.db",
       "request_path": "macro/data/song.db",
-      "hash": "3f2393afd060da758bc4409e80e9a0fbd3964b9b73ce2759d20ac20dbc31d5b6"
+      "hash": "a44cc37f80889920a6fdaea6ea7205cd475781b8d6ca8fe2095b91f8e250968a"
     },
     {
       "path": "data/titles.json",
