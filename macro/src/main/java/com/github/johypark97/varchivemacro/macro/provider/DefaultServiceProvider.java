@@ -12,7 +12,8 @@ public class DefaultServiceProvider implements ServiceProvider {
 
     public DefaultServiceProvider(RepositoryProvider repositoryProvider,
             DomainProvider domainProvider) {
-        instanceManager.setConstructor(MacroService.class, DefaultMacroService::new);
+        instanceManager.setConstructor(MacroService.class,
+                () -> new DefaultMacroService(repositoryProvider.getConfigRepository()));
 
         instanceManager.setConstructor(ScannerService.class,
                 () -> new DefaultScannerService(repositoryProvider.getDatabaseRepository(),

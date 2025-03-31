@@ -2,17 +2,17 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
-import com.github.johypark97.varchivemacro.macro.model.AnalysisKey;
 import com.github.johypark97.varchivemacro.macro.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
-import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
-import com.github.johypark97.varchivemacro.macro.service.MacroService;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Macro.MacroPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Macro.MacroView;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.geometry.VerticalDirection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,33 +70,40 @@ public class MacroPresenterImpl implements MacroPresenter {
         };
     }
 
+    private void updateConfig() {
+        MacroConfig macroConfig = new MacroConfig();
+
+        macroConfig.analysisKey = view.getAnalysisKey();
+        macroConfig.count = view.getCount();
+        macroConfig.captureDelay = view.getCaptureDelay();
+        macroConfig.captureDuration = view.getCaptureDuration();
+        macroConfig.keyInputDuration = view.getKeyInputDuration();
+
+        repositoryProvider.getConfigRepository().setMacroConfig(macroConfig);
+    }
+
+    private void onTaskFailed(WorkerStateEvent event) {
+        Throwable throwable = event.getSource().getException();
+
+        String header = "MacroTask exception";
+
+        LOGGER.atError().setCause(throwable).log(header);
+        showError.accept(header, throwable);
+    }
+
     @Override
     public void onStartView() {
-        ConfigRepository configRepository = repositoryProvider.getConfigRepository();
-        MacroService macroService = serviceProvider.getMacroService();
-
-        macroService.setupService(throwable -> {
-            String header = "Macro service exception";
-
-            LOGGER.atError().setCause(throwable).log(header);
-            showError.accept(header, throwable);
-        });
-
-        MacroConfig macroConfig = configRepository.getMacroConfig();
+        MacroConfig macroConfig = repositoryProvider.getConfigRepository().getMacroConfig();
 
         view.setAnalysisKey(macroConfig.analysisKey);
-
         view.setupCountSlider(MacroConfig.COUNT_DEFAULT, MacroConfig.COUNT_MAX,
                 MacroConfig.COUNT_MIN, macroConfig.count);
-
         view.setupCaptureDelaySlider(MacroConfig.CAPTURE_DELAY_DEFAULT,
                 MacroConfig.CAPTURE_DELAY_MAX, MacroConfig.CAPTURE_DELAY_MIN,
                 macroConfig.captureDelay);
-
         view.setupCaptureDurationSlider(MacroConfig.CAPTURE_DURATION_DEFAULT,
                 MacroConfig.CAPTURE_DURATION_MAX, MacroConfig.CAPTURE_DURATION_MIN,
                 macroConfig.captureDuration);
-
         view.setupKeyInputDurationSlider(MacroConfig.KEY_INPUT_DURATION_DEFAULT,
                 MacroConfig.KEY_INPUT_DURATION_MAX, MacroConfig.KEY_INPUT_DURATION_MIN,
                 macroConfig.keyInputDuration);
@@ -106,53 +113,41 @@ public class MacroPresenterImpl implements MacroPresenter {
 
     @Override
     public void onStopView() {
-        ConfigRepository configRepository = repositoryProvider.getConfigRepository();
-
         FxHookWrapper.removeKeyListener(macroNativeKeyListener);
 
-        MacroConfig macroConfig = new MacroConfig();
-
-        macroConfig.analysisKey = view.getAnalysisKey();
-        macroConfig.count = view.getCount();
-        macroConfig.captureDelay = view.getCaptureDelay();
-        macroConfig.captureDuration = view.getCaptureDuration();
-        macroConfig.keyInputDuration = view.getKeyInputDuration();
-
-        configRepository.setMacroConfig(macroConfig);
+        updateConfig();
     }
 
     @Override
     public void start_up() {
-        MacroService macroService = serviceProvider.getMacroService();
+        updateConfig();
 
-        AnalysisKey analysisKey = view.getAnalysisKey();
-        int count = view.getCount();
-        int captureDelay = view.getCaptureDelay();
-        int captureDuration = view.getCaptureDuration();
-        int keyInputDuration = view.getKeyInputDuration();
+        Task<Void> task = serviceProvider.getMacroService().createMacroTask(VerticalDirection.UP);
+        if (task == null) {
+            return;
+        }
 
-        macroService.startMacro(analysisKey, count, captureDelay, captureDuration, keyInputDuration,
-                VerticalDirection.UP);
+        task.setOnFailed(this::onTaskFailed);
+
+        CompletableFuture.runAsync(task);
     }
 
     @Override
     public void start_down() {
-        MacroService macroService = serviceProvider.getMacroService();
+        updateConfig();
 
-        AnalysisKey analysisKey = view.getAnalysisKey();
-        int count = view.getCount();
-        int captureDelay = view.getCaptureDelay();
-        int captureDuration = view.getCaptureDuration();
-        int keyInputDuration = view.getKeyInputDuration();
+        Task<Void> task = serviceProvider.getMacroService().createMacroTask(VerticalDirection.DOWN);
+        if (task == null) {
+            return;
+        }
 
-        macroService.startMacro(analysisKey, count, captureDelay, captureDuration, keyInputDuration,
-                VerticalDirection.DOWN);
+        task.setOnFailed(this::onTaskFailed);
+
+        CompletableFuture.runAsync(task);
     }
 
     @Override
     public void stop() {
-        MacroService macroService = serviceProvider.getMacroService();
-
-        macroService.stopMacro();
+        serviceProvider.getMacroService().stopMacroTask();
     }
 }
