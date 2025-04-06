@@ -34,7 +34,6 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.Locale;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -148,15 +147,6 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         view.viewer_setSongTreeViewRoot(rootNode);
     }
 
-    private Path convertStringToPath(String pathString) {
-        try {
-            return Path.of(pathString);
-        } catch (InvalidPathException e) {
-            showError.accept("Invalid path.", e);
-            return null;
-        }
-    }
-
     private File openCacheDirectorySelector() {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setInitialDirectory(INITIAL_DIRECTORY.toFile());
@@ -176,6 +166,38 @@ public class ScannerPresenterImpl implements ScannerPresenter {
                 .add(new FileChooser.ExtensionFilter("Account text file (*.txt)", "*.txt"));
 
         return chooser.showOpenDialog(windowSupplier.get());
+    }
+
+    private boolean updateConfig(boolean showErrorDialog) {
+        ScannerConfig scannerConfig = new ScannerConfig();
+
+        try {
+            scannerConfig.accountFile = Path.of(view.option_getAccountFile());
+        } catch (InvalidPathException e) {
+            if (showErrorDialog) {
+                showError.accept("Invalid path.", e);
+                return false;
+            }
+        }
+
+        try {
+            scannerConfig.cacheDirectory = Path.of(view.option_getCacheDirectory());
+        } catch (InvalidPathException e) {
+            if (showErrorDialog) {
+                showError.accept("Invalid path.", e);
+                return false;
+            }
+        }
+
+        scannerConfig.analysisThreadCount = view.option_getAnalysisThreadCount();
+        scannerConfig.captureDelay = view.option_getCaptureDelay();
+        scannerConfig.keyInputDuration = view.option_getKeyInputDuration();
+        scannerConfig.recordUploadDelay = view.option_getRecordUploadDelay();
+        scannerConfig.selectedCategorySet = view.capture_getSelectedCategorySet();
+
+        repositoryProvider.getConfigRepository().setScannerConfig(scannerConfig);
+
+        return true;
     }
 
     @Override
@@ -222,33 +244,9 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void onStopView() {
-        ConfigRepository configRepository = repositoryProvider.getConfigRepository();
-
         FxHookWrapper.removeKeyListener(scannerNativeKeyListener);
 
-        ScannerConfig scannerConfig = new ScannerConfig();
-        {
-            scannerConfig.selectedCategorySet = view.capture_getSelectedCategorySet();
-
-            try {
-                scannerConfig.cacheDirectory = Path.of(view.option_getCacheDirectory());
-            } catch (InvalidPathException ignored) {
-            }
-
-            scannerConfig.captureDelay = view.option_getCaptureDelay();
-            scannerConfig.keyInputDuration = view.option_getKeyInputDuration();
-
-            scannerConfig.analysisThreadCount = view.option_getAnalysisThreadCount();
-
-            try {
-                scannerConfig.accountFile = Path.of(view.option_getAccountFile());
-            } catch (InvalidPathException ignored) {
-            }
-
-            scannerConfig.recordUploadDelay = view.option_getRecordUploadDelay();
-        }
-
-        configRepository.setScannerConfig(scannerConfig);
+        updateConfig(false);
     }
 
     @Override
@@ -282,14 +280,13 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     public void capture_openCaptureViewer(int id) {
         ScannerService scannerService = serviceProvider.getScannerService();
 
-        Path cacheDirectoryPath = convertStringToPath(view.option_getCacheDirectory());
-        if (cacheDirectoryPath == null) {
+        if (!updateConfig(true)) {
             return;
         }
 
         BufferedImage image;
         try {
-            image = scannerService.getCaptureImage(cacheDirectoryPath, id);
+            image = scannerService.getCaptureImage(id);
         } catch (IOException e) {
             showError.accept("Cache image reading error", e);
             return;
@@ -330,8 +327,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             return;
         }
 
-        Path cacheDirectoryPath = convertStringToPath(view.option_getCacheDirectory());
-        if (cacheDirectoryPath == null) {
+        if (!updateConfig(true)) {
             return;
         }
 
@@ -356,12 +352,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             showInformation.accept(header, language.getString("scannerFxService.dialog.scanDone"));
         };
 
-        Set<String> selectedCategorySet = view.capture_getSelectedCategorySet();
-        int captureDelay = view.option_getCaptureDelay();
-        int keyInputDuration = view.option_getKeyInputDuration();
-
-        scannerService.startCollectionScan(onDone, onCancel, selectedCategorySet,
-                cacheDirectoryPath, captureDelay, keyInputDuration);
+        scannerService.startCollectionScan(onDone, onCancel);
     }
 
     @Override
@@ -373,8 +364,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void song_openLinkEditor(int id) {
-        Path cacheDirectoryPath = convertStringToPath(view.option_getCacheDirectory());
-        if (cacheDirectoryPath == null) {
+        if (!updateConfig(true)) {
             return;
         }
 
@@ -384,7 +374,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         LinkEditor.LinkEditorView linkEditorView = new LinkEditorViewImpl(stage);
         Mvp.linkViewAndPresenter(linkEditorView,
-                new LinkEditorPresenterImpl(serviceProvider, cacheDirectoryPath, id, () -> {
+                new LinkEditorPresenterImpl(serviceProvider, id, () -> {
                     view.capture_refresh();
                     view.song_refresh();
                 }));
@@ -408,8 +398,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void analysis_openAnalysisDataViewer(int id) {
-        Path cacheDirectoryPath = convertStringToPath(view.option_getCacheDirectory());
-        if (cacheDirectoryPath == null) {
+        if (!updateConfig(true)) {
             return;
         }
 
@@ -424,7 +413,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
                     }));
         }
 
-        analysisDataViewerView.startView(cacheDirectoryPath, id);
+        analysisDataViewerView.startView(id);
     }
 
     @Override
@@ -435,8 +424,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             return;
         }
 
-        Path cacheDirectoryPath = convertStringToPath(view.option_getCacheDirectory());
-        if (cacheDirectoryPath == null) {
+        if (!updateConfig(true)) {
             return;
         }
 
@@ -462,10 +450,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             view.analysis_setProgressLabelText(String.format("%.2f%%", value * 100));
         };
 
-        int analysisThreadCount = view.option_getAnalysisThreadCount();
-
-        scannerService.startAnalysis(onUpdateProgress, onDataReady, onDone, onCancel,
-                cacheDirectoryPath, analysisThreadCount);
+        scannerService.startAnalysis(onUpdateProgress, onDataReady, onDone, onCancel);
     }
 
     @Override
@@ -508,12 +493,9 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             }
         }
 
-        Path accountPath = convertStringToPath(view.option_getAccountFile());
-        if (accountPath == null) {
+        if (!updateConfig(true)) {
             return;
         }
-
-        int recordUploadDelay = view.option_getRecordUploadDelay();
 
         Runnable onCancel;
         Runnable onDone;
@@ -526,7 +508,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
                     language.getString("scannerFxService.dialog.uploadDone"));
         }
 
-        scannerService.startUpload(onDone, onCancel, accountPath, recordUploadDelay);
+        scannerService.startUpload(onDone, onCancel);
     }
 
     @Override

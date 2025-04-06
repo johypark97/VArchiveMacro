@@ -2,19 +2,18 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonView;
-import java.nio.file.Path;
 import javafx.scene.image.Image;
 
 public interface AnalysisDataViewer {
     interface AnalysisDataViewerPresenter
             extends CommonPresenter<AnalysisDataViewerView, AnalysisDataViewerPresenter> {
-        void showAnalysisData(Path cacheDirectoryPath, int analysisDataId);
+        void showAnalysisData(int analysisDataId);
     }
 
 
     interface AnalysisDataViewerView
             extends CommonView<AnalysisDataViewerView, AnalysisDataViewerPresenter> {
-        void startView(Path cacheDirectoryPath, int analysisDataId);
+        void startView(int analysisDataId);
 
         void showError(String header, Throwable throwable);
 

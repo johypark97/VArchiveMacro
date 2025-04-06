@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 
 public interface ScannerService {
@@ -17,19 +16,18 @@ public interface ScannerService {
 
     void setupService(Consumer<Throwable> onThrow);
 
-    void startCollectionScan(Runnable onDone, Runnable onCancel, Set<String> selectedCategorySet,
-            Path cacheDirectoryPath, int captureDelay, int keyInputDuration);
+    void startCollectionScan(Runnable onDone, Runnable onCancel);
 
     void stopCollectionScan();
 
     void startAnalysis(Consumer<Double> onUpdateProgress, Runnable onDataReady, Runnable onDone,
-            Runnable onCancel, Path cacheDirectoryPath, int analysisThreadCount);
+            Runnable onCancel);
 
     void stopAnalysis();
 
     void collectNewRecord(Runnable onDone);
 
-    void startUpload(Runnable onDone, Runnable onCancel, Path accountPath, int recordUploadDelay);
+    void startUpload(Runnable onDone, Runnable onCancel);
 
     void stopUpload();
 
@@ -51,11 +49,11 @@ public interface ScannerService {
 
     List<SongData> copySongDataList();
 
-    BufferedImage getCaptureImage(Path cacheDirectoryPath, int id) throws IOException;
+    BufferedImage getCaptureImage(int id) throws IOException;
 
     List<AnalysisData> copyAnalysisDataList();
 
-    AnalyzedRecordData getAnalyzedRecordData(Path cacheDirectoryPath, int id) throws Exception;
+    AnalyzedRecordData getAnalyzedRecordData(int id) throws Exception;
 
     List<NewRecordData> copyNewRecordDataList();
 }

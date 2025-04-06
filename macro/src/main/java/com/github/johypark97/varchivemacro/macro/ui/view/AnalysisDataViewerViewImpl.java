@@ -10,7 +10,6 @@ import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -115,10 +114,6 @@ public class AnalysisDataViewerViewImpl extends VBox implements AnalysisDataView
         }
     }
 
-    public void showAnalysisData(Path cacheDirectoryPath, int analysisDataId) {
-        presenter.showAnalysisData(cacheDirectoryPath, analysisDataId);
-    }
-
     private void transposeRecordGridPane() {
         recordGridPane.getChildren().forEach(x -> {
             int column = Objects.requireNonNullElse(GridPane.getColumnIndex(x), 0);
@@ -148,8 +143,8 @@ public class AnalysisDataViewerViewImpl extends VBox implements AnalysisDataView
     }
 
     @Override
-    public void startView(Path cacheDirectoryPath, int analysisDataId) {
-        presenter.showAnalysisData(cacheDirectoryPath, analysisDataId);
+    public void startView(int analysisDataId) {
+        presenter.showAnalysisData(analysisDataId);
 
         stage.show();
     }

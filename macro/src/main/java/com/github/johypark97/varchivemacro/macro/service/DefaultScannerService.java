@@ -15,7 +15,9 @@ import com.github.johypark97.varchivemacro.macro.model.AnalyzedRecordData;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.model.RecordData;
+import com.github.johypark97.varchivemacro.macro.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
+import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.service.fxservice.CollectionScanFxService;
@@ -30,13 +32,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Consumer;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 
 public class DefaultScannerService implements ScannerService {
+    private final ConfigRepository configRepository;
     private final DatabaseRepository databaseRepository;
     private final RecordRepository recordRepository;
 
@@ -44,10 +46,12 @@ public class DefaultScannerService implements ScannerService {
     private final NewRecordDataDomain newRecordDataDomain;
     private final ScanDataDomain scanDataDomain;
 
-    public DefaultScannerService(DatabaseRepository databaseRepository,
-            RecordRepository recordRepository, AnalysisDataDomain analysisDataDomain,
-            NewRecordDataDomain newRecordDataDomain, ScanDataDomain scanDataDomain) {
+    public DefaultScannerService(ConfigRepository configRepository,
+            DatabaseRepository databaseRepository, RecordRepository recordRepository,
+            AnalysisDataDomain analysisDataDomain, NewRecordDataDomain newRecordDataDomain,
+            ScanDataDomain scanDataDomain) {
         this.analysisDataDomain = analysisDataDomain;
+        this.configRepository = configRepository;
         this.databaseRepository = databaseRepository;
         this.newRecordDataDomain = newRecordDataDomain;
         this.recordRepository = recordRepository;
@@ -80,9 +84,7 @@ public class DefaultScannerService implements ScannerService {
     }
 
     @Override
-    public void startCollectionScan(Runnable onDone, Runnable onCancel,
-            Set<String> selectedCategorySet, Path cacheDirectoryPath, int captureDelay,
-            int keyInputDuration) {
+    public void startCollectionScan(Runnable onDone, Runnable onCancel) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -90,14 +92,17 @@ public class DefaultScannerService implements ScannerService {
         CollectionScanFxService service = Objects.requireNonNull(
                 ServiceManager.getInstance().get(CollectionScanFxService.class));
 
+        ScannerConfig config = configRepository.getScannerConfig();
+
         service.setTaskConstructor(() -> {
             Task<Void> task = new DefaultCollectionScanTask(scanDataDomain,
                     databaseRepository.categoryNameSongListMap(), databaseRepository.getTitleTool(),
-                    selectedCategorySet, cacheDirectoryPath, captureDelay, keyInputDuration);
+                    config.selectedCategorySet, config.cacheDirectory, config.captureDelay,
+                    config.keyInputDuration);
 
             // Task<Void> task = new FHDCollectionLoaderTask(scanDataDomain,
             //         databaseRepository.categoryNameSongListMap(), databaseRepository.getTitleTool(),
-            //         selectedCategorySet, cacheDirectoryPath);
+            //         config.selectedCategorySet, config.cacheDirectory);
 
             task.setOnCancelled(event -> onCancel.run());
             task.setOnSucceeded(event -> onDone.run());
@@ -116,7 +121,7 @@ public class DefaultScannerService implements ScannerService {
 
     @Override
     public void startAnalysis(Consumer<Double> onUpdateProgress, Runnable onDataReady,
-            Runnable onDone, Runnable onCancel, Path cacheDirectoryPath, int analysisThreadCount) {
+            Runnable onDone, Runnable onCancel) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -124,9 +129,11 @@ public class DefaultScannerService implements ScannerService {
         ScannerFxService service =
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
 
+        ScannerConfig config = configRepository.getScannerConfig();
+
         service.setTaskConstructor(() -> {
             Task<Void> task = new AnalysisTask(onDataReady, scanDataDomain, analysisDataDomain,
-                    cacheDirectoryPath, analysisThreadCount);
+                    config.cacheDirectory, config.analysisThreadCount);
 
             task.setOnCancelled(event -> onCancel.run());
             task.setOnSucceeded(event -> onDone.run());
@@ -170,8 +177,7 @@ public class DefaultScannerService implements ScannerService {
     }
 
     @Override
-    public void startUpload(Runnable onDone, Runnable onCancel, Path accountPath,
-            int recordUploadDelay) {
+    public void startUpload(Runnable onDone, Runnable onCancel) {
         if (ServiceManager.getInstance().isRunningAny()) {
             return;
         }
@@ -179,10 +185,12 @@ public class DefaultScannerService implements ScannerService {
         ScannerFxService service =
                 Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
 
+        ScannerConfig config = configRepository.getScannerConfig();
+
         service.setTaskConstructor(() -> {
             Task<Void> task =
                     new UploadTask(databaseRepository, recordRepository, newRecordDataDomain,
-                            accountPath, recordUploadDelay);
+                            config.accountFile, config.recordUploadDelay);
 
             task.setOnCancelled(event -> onCancel.run());
             task.setOnSucceeded(event -> onDone.run());
@@ -262,11 +270,11 @@ public class DefaultScannerService implements ScannerService {
     }
 
     @Override
-    public BufferedImage getCaptureImage(Path cacheDirectoryPath, int id) throws IOException {
+    public BufferedImage getCaptureImage(int id) throws IOException {
         CaptureData captureData = scanDataDomain.getCaptureData(id);
 
         try {
-            return new CacheManager(cacheDirectoryPath).read(id);
+            return new CacheManager(configRepository.getScannerConfig().cacheDirectory).read(id);
         } catch (IOException e) {
             captureData.exception.set(e);
             throw e;
@@ -279,15 +287,13 @@ public class DefaultScannerService implements ScannerService {
     }
 
     @Override
-    public AnalyzedRecordData getAnalyzedRecordData(Path cacheDirectoryPath, int id)
-            throws Exception {
+    public AnalyzedRecordData getAnalyzedRecordData(int id) throws Exception {
         AnalyzedRecordData data = new AnalyzedRecordData();
 
         AnalysisData analysisData = analysisDataDomain.getAnalysisData(id);
         data.song = analysisData.songDataProperty().get().songProperty().get();
 
-        BufferedImage image = getCaptureImage(cacheDirectoryPath,
-                analysisData.captureData.get().idProperty().get());
+        BufferedImage image = getCaptureImage(analysisData.captureData.get().idProperty().get());
         Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
         CollectionArea area = CollectionAreaFactory.create(resolution);
 

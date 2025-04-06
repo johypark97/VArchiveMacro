@@ -10,7 +10,6 @@ import com.github.johypark97.varchivemacro.macro.service.ScannerService;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.LinkEditor.LinkEditorPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.LinkEditor.LinkEditorView;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.List;
 import java.util.Locale;
@@ -27,7 +26,6 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     private final ServiceProvider serviceProvider;
 
-    private final Path cacheDirectoryPath;
     private final Runnable onUpdateLink;
     private final int songDataId;
 
@@ -36,11 +34,10 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
     @MvpView
     public LinkEditorView view;
 
-    public LinkEditorPresenterImpl(ServiceProvider serviceProvider, Path cacheDirectoryPath,
-            int songDataId, Runnable onUpdateLink) {
+    public LinkEditorPresenterImpl(ServiceProvider serviceProvider, int songDataId,
+            Runnable onUpdateLink) {
         this.serviceProvider = serviceProvider;
 
-        this.cacheDirectoryPath = cacheDirectoryPath;
         this.onUpdateLink = onUpdateLink;
         this.songDataId = songDataId;
     }
@@ -93,8 +90,8 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
         ScannerService scannerService = serviceProvider.getScannerService();
 
         try {
-            view.setCaptureImage(SwingFXUtils.toFXImage(
-                    scannerService.getCaptureImage(cacheDirectoryPath, captureDataId), null));
+            view.setCaptureImage(
+                    SwingFXUtils.toFXImage(scannerService.getCaptureImage(captureDataId), null));
         } catch (IOException e) {
             view.showError("Cache image loading error", e);
         }

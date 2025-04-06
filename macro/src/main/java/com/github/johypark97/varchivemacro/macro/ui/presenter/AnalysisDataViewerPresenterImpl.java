@@ -7,7 +7,6 @@ import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.RecordBoxData;
 import java.awt.image.BufferedImage;
-import java.nio.file.Path;
 import javafx.embed.swing.SwingFXUtils;
 
 public class AnalysisDataViewerPresenterImpl implements AnalysisDataViewerPresenter {
@@ -36,12 +35,12 @@ public class AnalysisDataViewerPresenterImpl implements AnalysisDataViewerPresen
     }
 
     @Override
-    public void showAnalysisData(Path cacheDirectoryPath, int analysisDataId) {
+    public void showAnalysisData(int analysisDataId) {
         ScannerService scannerService = serviceProvider.getScannerService();
 
         AnalyzedRecordData data;
         try {
-            data = scannerService.getAnalyzedRecordData(cacheDirectoryPath, analysisDataId);
+            data = scannerService.getAnalyzedRecordData(analysisDataId);
         } catch (Exception e) {
             view.showError("Analyzed record data loading error", e);
             return;
