@@ -9,7 +9,6 @@ import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,11 +36,6 @@ public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
     }
 
     @Override
-    protected void checkCacheDirectory() throws IOException {
-        cacheManager.validate();
-    }
-
-    @Override
     protected BufferedImage captureScreenshot(CaptureData data) throws Exception {
         return cacheManager.read(data.idProperty().get());
     }
@@ -54,6 +48,8 @@ public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
     @Override
     protected Void callTask() throws Exception {
         cacheManager = new CacheManager(cacheDirectory);
+        cacheManager.validate();
+
         collectionArea = CollectionAreaFactory.create(new Dimension(1920, 1080));
 
         return super.callTask();

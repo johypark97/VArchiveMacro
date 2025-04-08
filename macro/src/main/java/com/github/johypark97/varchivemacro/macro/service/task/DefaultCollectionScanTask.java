@@ -14,7 +14,6 @@ import java.awt.Dimension;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,11 +67,6 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
     @Override
     protected void moveToNextSong() throws InterruptedException {
         AwtRobotHelper.tabKey(robot, keyInputDuration, KeyEvent.VK_DOWN);
-    }
-
-    @Override
-    protected void checkCacheDirectory() throws IOException {
-        cacheManager.prepare();
     }
 
     @Override

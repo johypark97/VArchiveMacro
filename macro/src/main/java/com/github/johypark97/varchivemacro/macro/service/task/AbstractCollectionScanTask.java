@@ -58,8 +58,6 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
 
     protected abstract void moveToNextSong() throws InterruptedException;
 
-    protected abstract void checkCacheDirectory() throws IOException;
-
     protected abstract BufferedImage captureScreenshot(CaptureData data) throws Exception;
 
     protected abstract BufferedImage cropTitle(BufferedImage image);
@@ -210,9 +208,6 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
         if (!getScanDataDomain().isEmpty()) {
             throw new IllegalStateException("ScanDataDomain is not clean");
         }
-
-        // check the cache directory
-        checkCacheDirectory();
 
         // create queue that filtered by selectedCategorySet
         Queue<Entry<String, List<Song>>> captureQueue = createCaptureQueue(categoryNameSongListMap);
