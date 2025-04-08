@@ -9,27 +9,24 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.function.Consumer;
+import javafx.concurrent.Task;
 
 public interface ScannerService {
     void validateCacheDirectory(Path path) throws IOException;
 
-    void setupService(Consumer<Throwable> onThrow);
+    Task<Void> createTask_collectionScan();
 
-    void startCollectionScan(Runnable onDone, Runnable onCancel);
+    void stopTask_collectionScan();
 
-    void stopCollectionScan();
+    Task<Void> createTask_analysis(Runnable onDataReady);
 
-    void startAnalysis(Consumer<Double> onUpdateProgress, Runnable onDataReady, Runnable onDone,
-            Runnable onCancel);
+    void stopTask_analysis();
 
-    void stopAnalysis();
+    Task<Void> createTask_collectNewRecord();
 
-    void collectNewRecord(Runnable onDone);
+    Task<Void> createTask_startUpload();
 
-    void startUpload(Runnable onDone, Runnable onCancel);
-
-    void stopUpload();
+    void stopTask_upload();
 
     boolean isScanDataEmpty();
 

@@ -1,7 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.service;
 
-import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
-import com.github.johypark97.varchivemacro.lib.jfx.ServiceManagerHelper;
+import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
@@ -20,8 +19,7 @@ import com.github.johypark97.varchivemacro.macro.model.SongData;
 import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
-import com.github.johypark97.varchivemacro.macro.service.fxservice.CollectionScanFxService;
-import com.github.johypark97.varchivemacro.macro.service.fxservice.ScannerFxService;
+import com.github.johypark97.varchivemacro.macro.service.task.AbstractCollectionScanTask;
 import com.github.johypark97.varchivemacro.macro.service.task.AnalysisTask;
 import com.github.johypark97.varchivemacro.macro.service.task.CollectNewRecordTask;
 import com.github.johypark97.varchivemacro.macro.service.task.DefaultCollectionScanTask;
@@ -31,11 +29,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 
 public class DefaultScannerService implements ScannerService {
     private final ConfigRepository configRepository;
@@ -64,147 +58,59 @@ public class DefaultScannerService implements ScannerService {
     }
 
     @Override
-    public void setupService(Consumer<Throwable> onThrow) {
-        EventHandler<WorkerStateEvent> onFailedEventHandler =
-                event -> onThrow.accept(event.getSource().getException());
-
-        CollectionScanFxService collectionScanFxService =
-                ServiceManager.getInstance().create(CollectionScanFxService.class);
-        if (collectionScanFxService == null) {
-            throw new IllegalStateException("CollectionScanFxService has already been created.");
-        }
-        collectionScanFxService.setOnFailed(onFailedEventHandler);
-
-        ScannerFxService scannerFxService =
-                ServiceManager.getInstance().create(ScannerFxService.class);
-        if (scannerFxService == null) {
-            throw new IllegalStateException("ScannerFxService has already been created.");
-        }
-        scannerFxService.setOnFailed(onFailedEventHandler);
-    }
-
-    @Override
-    public void startCollectionScan(Runnable onDone, Runnable onCancel) {
-        if (ServiceManager.getInstance().isRunningAny()) {
-            return;
-        }
-
-        CollectionScanFxService service = Objects.requireNonNull(
-                ServiceManager.getInstance().get(CollectionScanFxService.class));
-
+    public Task<Void> createTask_collectionScan() {
         ScannerConfig config = configRepository.getScannerConfig();
 
-        service.setTaskConstructor(() -> {
-            Task<Void> task = new DefaultCollectionScanTask(scanDataDomain,
-                    databaseRepository.categoryNameSongListMap(), databaseRepository.getTitleTool(),
-                    config.selectedCategorySet, config.cacheDirectory, config.captureDelay,
-                    config.keyInputDuration);
+        AbstractCollectionScanTask task = new DefaultCollectionScanTask(scanDataDomain,
+                databaseRepository.categoryNameSongListMap(), databaseRepository.getTitleTool(),
+                config.selectedCategorySet, config.cacheDirectory, config.captureDelay,
+                config.keyInputDuration);
 
-            // Task<Void> task = new FHDCollectionLoaderTask(scanDataDomain,
-            //         databaseRepository.categoryNameSongListMap(), databaseRepository.getTitleTool(),
-            //         config.selectedCategorySet, config.cacheDirectory);
+        // AbstractCollectionScanTask task = new FHDCollectionLoaderTask(scanDataDomain,
+        //         databaseRepository.categoryNameSongListMap(), databaseRepository.getTitleTool(),
+        //         config.selectedCategorySet, config.cacheDirectory);
 
-            task.setOnCancelled(event -> onCancel.run());
-            task.setOnSucceeded(event -> onDone.run());
-
-            return task;
-        });
-
-        service.reset();
-        service.start();
+        return TaskManager.getInstance().register(AbstractCollectionScanTask.class, task);
     }
 
     @Override
-    public void stopCollectionScan() {
-        ServiceManagerHelper.stopService(CollectionScanFxService.class);
+    public void stopTask_collectionScan() {
+        TaskManager.Helper.cancel(AbstractCollectionScanTask.class);
     }
 
     @Override
-    public void startAnalysis(Consumer<Double> onUpdateProgress, Runnable onDataReady,
-            Runnable onDone, Runnable onCancel) {
-        if (ServiceManager.getInstance().isRunningAny()) {
-            return;
-        }
-
-        ScannerFxService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
-
+    public Task<Void> createTask_analysis(Runnable onDataReady) {
         ScannerConfig config = configRepository.getScannerConfig();
 
-        service.setTaskConstructor(() -> {
-            Task<Void> task = new AnalysisTask(onDataReady, scanDataDomain, analysisDataDomain,
-                    config.cacheDirectory, config.analysisThreadCount);
-
-            task.setOnCancelled(event -> onCancel.run());
-            task.setOnSucceeded(event -> onDone.run());
-
-            task.progressProperty().addListener(
-                    (observable, oldValue, newValue) -> onUpdateProgress.accept(
-                            newValue.doubleValue()));
-
-            return task;
-        });
-
-        service.reset();
-        service.start();
+        return TaskManager.getInstance().register(AnalysisTask.class,
+                new AnalysisTask(onDataReady, scanDataDomain, analysisDataDomain,
+                        config.cacheDirectory, config.analysisThreadCount));
     }
 
     @Override
-    public void stopAnalysis() {
-        ServiceManagerHelper.stopService(ScannerFxService.class);
+    public void stopTask_analysis() {
+        TaskManager.Helper.cancel(AnalysisTask.class);
     }
 
     @Override
-    public void collectNewRecord(Runnable onDone) {
-        if (ServiceManager.getInstance().isRunningAny()) {
-            return;
-        }
-
-        ScannerFxService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
-
-        service.setTaskConstructor(() -> {
-            Task<Void> task = new CollectNewRecordTask(recordRepository, analysisDataDomain,
-                    newRecordDataDomain);
-
-            task.setOnSucceeded(event -> onDone.run());
-
-            return task;
-        });
-
-        service.reset();
-        service.start();
+    public Task<Void> createTask_collectNewRecord() {
+        return TaskManager.getInstance().register(CollectNewRecordTask.class,
+                new CollectNewRecordTask(recordRepository, analysisDataDomain,
+                        newRecordDataDomain));
     }
 
     @Override
-    public void startUpload(Runnable onDone, Runnable onCancel) {
-        if (ServiceManager.getInstance().isRunningAny()) {
-            return;
-        }
-
-        ScannerFxService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
-
+    public Task<Void> createTask_startUpload() {
         ScannerConfig config = configRepository.getScannerConfig();
 
-        service.setTaskConstructor(() -> {
-            Task<Void> task =
-                    new UploadTask(databaseRepository, recordRepository, newRecordDataDomain,
-                            config.accountFile, config.recordUploadDelay);
-
-            task.setOnCancelled(event -> onCancel.run());
-            task.setOnSucceeded(event -> onDone.run());
-
-            return task;
-        });
-
-        service.reset();
-        service.start();
+        return TaskManager.getInstance().register(UploadTask.class,
+                new UploadTask(databaseRepository, recordRepository, newRecordDataDomain,
+                        config.accountFile, config.recordUploadDelay));
     }
 
     @Override
-    public void stopUpload() {
-        ServiceManagerHelper.stopService(ScannerFxService.class);
+    public void stopTask_upload() {
+        TaskManager.Helper.cancel(UploadTask.class);
     }
 
     @Override
@@ -214,9 +120,7 @@ public class DefaultScannerService implements ScannerService {
 
     @Override
     public void clearScanData(Runnable onClear) {
-        ScannerFxService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
-        if (service.isRunning()) {
+        if (TaskManager.getInstance().isRunningAny()) {
             return;
         }
 
@@ -232,9 +136,7 @@ public class DefaultScannerService implements ScannerService {
 
     @Override
     public void clearAnalysisData(Runnable onClear) {
-        ScannerFxService service =
-                Objects.requireNonNull(ServiceManager.getInstance().get(ScannerFxService.class));
-        if (service.isRunning()) {
+        if (TaskManager.getInstance().isRunningAny()) {
             return;
         }
 

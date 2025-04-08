@@ -8,7 +8,6 @@ import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
 import com.github.johypark97.varchivemacro.macro.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
-import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
@@ -33,13 +32,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.TreeItem;
 import javafx.stage.DirectoryChooser;
@@ -181,43 +181,32 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         repositoryProvider.getConfigRepository().setScannerConfig(scannerConfig);
     }
 
+    private void onTaskFailed(String header, Throwable throwable) {
+        LOGGER.atError().setCause(throwable).log(header);
+        showError.accept(header, throwable);
+    }
+
     @Override
     public void onStartView() {
-        ConfigRepository configRepository = repositoryProvider.getConfigRepository();
-        DatabaseRepository databaseRepository = repositoryProvider.getDatabaseRepository();
-        ScannerService scannerService = serviceProvider.getScannerService();
-
-        scannerService.setupService(throwable -> {
-            String header = "Scanner service exception";
-
-            LOGGER.atError().setCause(throwable).log(header);
-            showError.accept(header, throwable);
-        });
-
-        ScannerConfig scannerConfig = configRepository.getScannerConfig();
+        ScannerConfig scannerConfig = repositoryProvider.getConfigRepository().getScannerConfig();
 
         view.option_setCacheDirectory(scannerConfig.cacheDirectory);
-
         view.option_setupCaptureDelaySlider(ScannerConfig.CAPTURE_DELAY_DEFAULT,
                 ScannerConfig.CAPTURE_DELAY_MAX, ScannerConfig.CAPTURE_DELAY_MIN,
                 scannerConfig.captureDelay);
-
         view.option_setupKeyInputDurationSlider(ScannerConfig.KEY_INPUT_DURATION_DEFAULT,
                 ScannerConfig.KEY_INPUT_DURATION_MAX, ScannerConfig.KEY_INPUT_DURATION_MIN,
                 scannerConfig.keyInputDuration);
-
         view.option_setupAnalysisThreadCountSlider(ScannerConfig.ANALYSIS_THREAD_COUNT_DEFAULT,
                 ScannerConfig.ANALYSIS_THREAD_COUNT_MAX, scannerConfig.analysisThreadCount);
-
         view.option_setAccountFile(scannerConfig.accountFile);
-
         view.option_setupRecordUploadDelaySlider(ScannerConfig.RECORD_UPLOAD_DELAY_DEFAULT,
                 ScannerConfig.RECORD_UPLOAD_DELAY_MAX, ScannerConfig.RECORD_UPLOAD_DELAY_MIN,
                 scannerConfig.recordUploadDelay);
 
         viewer_setSongTreeViewRoot(null);
 
-        view.capture_setTabList(databaseRepository.categoryNameList());
+        view.capture_setTabList(repositoryProvider.getDatabaseRepository().categoryNameList());
         view.capture_setSelectedCategorySet(scannerConfig.selectedCategorySet);
 
         FxHookWrapper.addKeyListener(scannerNativeKeyListener);
@@ -308,10 +297,18 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         updateConfig();
 
+        Task<Void> task = scannerService.createTask_collectionScan();
+        if (task == null) {
+            return;
+        }
+
         Language language = Language.getInstance();
         String header = language.getString("scannerFxService.dialog.header");
 
-        Runnable onCancel = () -> {
+        task.setOnFailed(event -> onTaskFailed("CollectionScanTask exception",
+                event.getSource().getException()));
+
+        task.setOnCancelled(event -> {
             view.capture_setCaptureDataList(
                     FXCollections.observableArrayList(scannerService.copyCaptureDataList()));
             view.song_setSongDataList(
@@ -319,24 +316,23 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
             showInformation.accept(header,
                     language.getString("scannerFxService.dialog.scanCanceled"));
-        };
-        Runnable onDone = () -> {
+        });
+
+        task.setOnSucceeded(event -> {
             view.capture_setCaptureDataList(
                     FXCollections.observableArrayList(scannerService.copyCaptureDataList()));
             view.song_setSongDataList(
                     FXCollections.observableArrayList(scannerService.copySongDataList()));
 
             showInformation.accept(header, language.getString("scannerFxService.dialog.scanDone"));
-        };
+        });
 
-        scannerService.startCollectionScan(onDone, onCancel);
+        CompletableFuture.runAsync(task);
     }
 
     @Override
     public void capture_stop() {
-        ScannerService scannerService = serviceProvider.getScannerService();
-
-        scannerService.stopCollectionScan();
+        serviceProvider.getScannerService().stopTask_collectionScan();
     }
 
     @Override
@@ -399,36 +395,44 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         updateConfig();
 
-        Language language = Language.getInstance();
-        String header = language.getString("scannerFxService.dialog.header");
-
-        Runnable onCancel = () -> {
-            uploader_refresh();
-            showInformation.accept(header,
-                    language.getString("scannerFxService.dialog.analysisCanceled"));
-        };
-        Runnable onDone = () -> {
-            uploader_refresh();
-            showInformation.accept(header,
-                    language.getString("scannerFxService.dialog.analysisDone"));
-        };
-
         Runnable onDataReady = () -> view.analysis_setAnalysisDataList(
                 FXCollections.observableArrayList(scannerService.copyAnalysisDataList()));
 
-        Consumer<Double> onUpdateProgress = value -> {
-            view.analysis_setProgressBarValue(value);
-            view.analysis_setProgressLabelText(String.format("%.2f%%", value * 100));
-        };
+        Task<Void> task = scannerService.createTask_analysis(onDataReady);
+        if (task == null) {
+            return;
+        }
 
-        scannerService.startAnalysis(onUpdateProgress, onDataReady, onDone, onCancel);
+        Language language = Language.getInstance();
+        String header = language.getString("scannerFxService.dialog.header");
+
+        task.setOnFailed(
+                event -> onTaskFailed("AnalysisTask exception", event.getSource().getException()));
+
+        task.setOnCancelled(event -> {
+            uploader_refresh();
+            showInformation.accept(header,
+                    language.getString("scannerFxService.dialog.analysisCanceled"));
+        });
+
+        task.setOnSucceeded(event -> {
+            uploader_refresh();
+            showInformation.accept(header,
+                    language.getString("scannerFxService.dialog.analysisDone"));
+        });
+
+        task.progressProperty().addListener((observable, oldValue, newValue) -> {
+            view.analysis_setProgressBarValue(newValue.doubleValue());
+            view.analysis_setProgressLabelText(
+                    String.format("%.2f%%", newValue.doubleValue() * 100));
+        });
+
+        CompletableFuture.runAsync(task);
     }
 
     @Override
     public void analysis_stopAnalysis() {
-        ScannerService scannerService = serviceProvider.getScannerService();
-
-        scannerService.stopAnalysis();
+        serviceProvider.getScannerService().stopTask_analysis();
     }
 
     @Override
@@ -439,10 +443,18 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             return;
         }
 
-        Runnable onDone = () -> view.uploader_setNewRecordDataList(
-                FXCollections.observableArrayList(scannerService.copyNewRecordDataList()));
+        Task<Void> task = scannerService.createTask_collectNewRecord();
+        if (task == null) {
+            return;
+        }
 
-        scannerService.collectNewRecord(onDone);
+        task.setOnFailed(event -> onTaskFailed("CollectNewRecordTask exception",
+                event.getSource().getException()));
+
+        task.setOnSucceeded(event -> view.uploader_setNewRecordDataList(
+                FXCollections.observableArrayList(scannerService.copyNewRecordDataList())));
+
+        CompletableFuture.runAsync(task);
     }
 
     @Override
@@ -466,25 +478,30 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         updateConfig();
 
-        Runnable onCancel;
-        Runnable onDone;
+        Task<Void> task = scannerService.createTask_startUpload();
+        if (task == null) {
+            return;
+        }
+
+        task.setOnFailed(
+                event -> onTaskFailed("UploadTask exception", event.getSource().getException()));
+
         {
             String header = language.getString("scannerFxService.dialog.header");
 
-            onCancel = () -> showInformation.accept(header,
-                    language.getString("scannerFxService.dialog.uploadCanceled"));
-            onDone = () -> showInformation.accept(header,
-                    language.getString("scannerFxService.dialog.uploadDone"));
+            task.setOnCancelled(event -> showInformation.accept(header,
+                    language.getString("scannerFxService.dialog.uploadCanceled")));
+
+            task.setOnSucceeded(event -> showInformation.accept(header,
+                    language.getString("scannerFxService.dialog.uploadDone")));
         }
 
-        scannerService.startUpload(onDone, onCancel);
+        CompletableFuture.runAsync(task);
     }
 
     @Override
     public void uploader_stopUpload() {
-        ScannerService scannerService = serviceProvider.getScannerService();
-
-        scannerService.stopUpload();
+        serviceProvider.getScannerService().stopTask_upload();
     }
 
     @Override
