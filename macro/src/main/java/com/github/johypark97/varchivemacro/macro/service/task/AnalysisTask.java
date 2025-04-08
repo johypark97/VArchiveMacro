@@ -23,7 +23,6 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -52,8 +51,8 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private static final int RATE_FACTOR = 8;
     private static final int RATE_THRESHOLD = 224;
 
-    private final CacheManager cacheManager;
     private final Runnable onDataReady;
+    private final String cacheDirectory;
     private final int analyzerThreadCount;
     private final int imagePreloaderThreadCount;
     private final int imagePreloadingLimit;
@@ -61,18 +60,18 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private final WeakReference<AnalysisDataDomain> analysisDataDomainReference;
     private final WeakReference<ScanDataDomain> scanDataDomainReference;
 
+    private CacheManager cacheManager;
     private int completedTaskCount;
     private int totalTaskCount;
 
     public AnalysisTask(Runnable onDataReady, ScanDataDomain scanDataDomain,
-            AnalysisDataDomain analysisDataDomain, Path cacheDirectoryPath, int threadCount) {
+            AnalysisDataDomain analysisDataDomain, String cacheDirectory, int threadCount) {
+        this.cacheDirectory = cacheDirectory;
         this.onDataReady = onDataReady;
 
         analyzerThreadCount = threadCount;
         imagePreloaderThreadCount = (int) (Math.log(threadCount + 1) / Math.log(2));
         imagePreloadingLimit = threadCount * 3 / 2;
-
-        cacheManager = new CacheManager(cacheDirectoryPath);
 
         analysisDataDomainReference = new WeakReference<>(analysisDataDomain);
         scanDataDomainReference = new WeakReference<>(scanDataDomain);
@@ -151,6 +150,8 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         if (!getAnalysisDataDomain().isEmpty()) {
             throw new IllegalStateException("AnalysisDataDomain is not clean");
         }
+
+        cacheManager = new CacheManager(cacheDirectory);
 
         updateProgress(0, 1);
 

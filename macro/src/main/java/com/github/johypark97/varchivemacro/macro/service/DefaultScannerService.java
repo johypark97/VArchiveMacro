@@ -271,12 +271,13 @@ public class DefaultScannerService implements ScannerService {
 
     @Override
     public BufferedImage getCaptureImage(int id) throws IOException {
-        CaptureData captureData = scanDataDomain.getCaptureData(id);
+        CacheManager cacheManager =
+                new CacheManager(configRepository.getScannerConfig().cacheDirectory);
 
         try {
-            return new CacheManager(configRepository.getScannerConfig().cacheDirectory).read(id);
+            return cacheManager.read(id);
         } catch (IOException e) {
-            captureData.exception.set(e);
+            scanDataDomain.getCaptureData(id).exception.set(e);
             throw e;
         }
     }

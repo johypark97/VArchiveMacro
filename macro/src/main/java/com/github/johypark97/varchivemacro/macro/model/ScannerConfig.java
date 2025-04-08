@@ -1,12 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.model;
 
 import com.google.gson.annotations.Expose;
-import java.nio.file.Path;
 import java.util.Set;
 
 public class ScannerConfig {
-    public static final Path ACCOUNT_FILE_DEFAULT = Path.of("account.txt");
-    public static final Path CACHE_DIRECTORY_DEFAULT = Path.of("cache");
+    public static final String ACCOUNT_FILE_DEFAULT = "account.txt";
+    public static final String CACHE_DIRECTORY_DEFAULT = "cache";
 
     public static final int CAPTURE_DELAY_DEFAULT = 0;
     public static final int CAPTURE_DELAY_MAX = 1000;
@@ -28,7 +27,7 @@ public class ScannerConfig {
     public Set<String> selectedCategorySet = Set.of();
 
     @Expose
-    public Path cacheDirectory = CACHE_DIRECTORY_DEFAULT;
+    public String cacheDirectory = CACHE_DIRECTORY_DEFAULT;
 
     @Expose
     public int captureDelay = CAPTURE_DELAY_DEFAULT;
@@ -40,7 +39,7 @@ public class ScannerConfig {
     public int analysisThreadCount = ANALYSIS_THREAD_COUNT_DEFAULT;
 
     @Expose
-    public Path accountFile = ACCOUNT_FILE_DEFAULT;
+    public String accountFile = ACCOUNT_FILE_DEFAULT;
 
     @Expose
     public int recordUploadDelay = RECORD_UPLOAD_DELAY_DEFAULT;

@@ -10,22 +10,22 @@ import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
-    private final CacheManager cacheManager;
+    private final String cacheDirectory;
 
+    private CacheManager cacheManager;
     private CollectionArea collectionArea;
 
     public FHDCollectionLoaderTask(ScanDataDomain scanDataDomain,
             Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
-            Set<String> selectedCategorySet, Path cacheDirectoryPath) {
+            Set<String> selectedCategorySet, String cacheDirectory) {
         super(scanDataDomain, categoryNameSongListMap, titleTool, selectedCategorySet);
 
-        cacheManager = new CacheManager(cacheDirectoryPath);
+        this.cacheDirectory = cacheDirectory;
     }
 
     @Override
@@ -53,6 +53,7 @@ public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
 
     @Override
     protected Void callTask() throws Exception {
+        cacheManager = new CacheManager(cacheDirectory);
         collectionArea = CollectionAreaFactory.create(new Dimension(1920, 1080));
 
         return super.callTask();

@@ -30,7 +30,6 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.text.Normalizer;
 import java.util.Locale;
@@ -168,36 +167,18 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         return chooser.showOpenDialog(windowSupplier.get());
     }
 
-    private boolean updateConfig(boolean showErrorDialog) {
+    private void updateConfig() {
         ScannerConfig scannerConfig = new ScannerConfig();
 
-        try {
-            scannerConfig.accountFile = Path.of(view.option_getAccountFile());
-        } catch (InvalidPathException e) {
-            if (showErrorDialog) {
-                showError.accept("Invalid path.", e);
-                return false;
-            }
-        }
-
-        try {
-            scannerConfig.cacheDirectory = Path.of(view.option_getCacheDirectory());
-        } catch (InvalidPathException e) {
-            if (showErrorDialog) {
-                showError.accept("Invalid path.", e);
-                return false;
-            }
-        }
-
+        scannerConfig.accountFile = view.option_getAccountFile();
         scannerConfig.analysisThreadCount = view.option_getAnalysisThreadCount();
+        scannerConfig.cacheDirectory = view.option_getCacheDirectory();
         scannerConfig.captureDelay = view.option_getCaptureDelay();
         scannerConfig.keyInputDuration = view.option_getKeyInputDuration();
         scannerConfig.recordUploadDelay = view.option_getRecordUploadDelay();
         scannerConfig.selectedCategorySet = view.capture_getSelectedCategorySet();
 
         repositoryProvider.getConfigRepository().setScannerConfig(scannerConfig);
-
-        return true;
     }
 
     @Override
@@ -215,7 +196,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         ScannerConfig scannerConfig = configRepository.getScannerConfig();
 
-        view.option_setCacheDirectory(scannerConfig.cacheDirectory.toString());
+        view.option_setCacheDirectory(scannerConfig.cacheDirectory);
 
         view.option_setupCaptureDelaySlider(ScannerConfig.CAPTURE_DELAY_DEFAULT,
                 ScannerConfig.CAPTURE_DELAY_MAX, ScannerConfig.CAPTURE_DELAY_MIN,
@@ -228,7 +209,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
         view.option_setupAnalysisThreadCountSlider(ScannerConfig.ANALYSIS_THREAD_COUNT_DEFAULT,
                 ScannerConfig.ANALYSIS_THREAD_COUNT_MAX, scannerConfig.analysisThreadCount);
 
-        view.option_setAccountFile(scannerConfig.accountFile.toString());
+        view.option_setAccountFile(scannerConfig.accountFile);
 
         view.option_setupRecordUploadDelaySlider(ScannerConfig.RECORD_UPLOAD_DELAY_DEFAULT,
                 ScannerConfig.RECORD_UPLOAD_DELAY_MAX, ScannerConfig.RECORD_UPLOAD_DELAY_MIN,
@@ -246,7 +227,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     public void onStopView() {
         FxHookWrapper.removeKeyListener(scannerNativeKeyListener);
 
-        updateConfig(false);
+        updateConfig();
     }
 
     @Override
@@ -280,9 +261,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     public void capture_openCaptureViewer(int id) {
         ScannerService scannerService = serviceProvider.getScannerService();
 
-        if (!updateConfig(true)) {
-            return;
-        }
+        updateConfig();
 
         BufferedImage image;
         try {
@@ -327,9 +306,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             return;
         }
 
-        if (!updateConfig(true)) {
-            return;
-        }
+        updateConfig();
 
         Language language = Language.getInstance();
         String header = language.getString("scannerFxService.dialog.header");
@@ -364,9 +341,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void song_openLinkEditor(int id) {
-        if (!updateConfig(true)) {
-            return;
-        }
+        updateConfig();
 
         Stage stage = LinkEditorStage.create();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -398,9 +373,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void analysis_openAnalysisDataViewer(int id) {
-        if (!updateConfig(true)) {
-            return;
-        }
+        updateConfig();
 
         if (analysisDataViewerView == null) {
             Stage stage = AnalysisDataViewerStage.create();
@@ -424,9 +397,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             return;
         }
 
-        if (!updateConfig(true)) {
-            return;
-        }
+        updateConfig();
 
         Language language = Language.getInstance();
         String header = language.getString("scannerFxService.dialog.header");
@@ -493,9 +464,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             }
         }
 
-        if (!updateConfig(true)) {
-            return;
-        }
+        updateConfig();
 
         Runnable onCancel;
         Runnable onDone;

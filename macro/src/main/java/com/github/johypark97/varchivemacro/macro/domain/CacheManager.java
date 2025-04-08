@@ -20,8 +20,12 @@ public class CacheManager {
 
     private final Path cacheDirectoryPath;
 
-    public CacheManager(Path cacheDirectoryPath) {
-        this.cacheDirectoryPath = cacheDirectoryPath;
+    public CacheManager(Path path) {
+        this.cacheDirectoryPath = path;
+    }
+
+    public CacheManager(String path) throws IOException {
+        this(PathValidator.validateAndConvert(path));
     }
 
     private static void createMarkerFile(Path path) throws IOException {

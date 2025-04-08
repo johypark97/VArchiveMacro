@@ -7,13 +7,13 @@ import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.Lo
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.data.Account;
 import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
+import com.github.johypark97.varchivemacro.macro.domain.PathValidator;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData.Status;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.EnumSet;
 import java.util.LinkedList;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class UploadTask extends InterruptibleTask<Void> {
-    private final Path accountPath;
+    private final String accountFile;
     private final int recordUploadDelay;
 
     private final WeakReference<DatabaseRepository> databaseRepositoryReference;
@@ -30,8 +30,8 @@ public class UploadTask extends InterruptibleTask<Void> {
     private final WeakReference<RecordRepository> recordRepositoryReference;
 
     public UploadTask(DatabaseRepository databaseRepository, RecordRepository recordRepository,
-            NewRecordDataDomain newRecordDataDomain, Path accountPath, int recordUploadDelay) {
-        this.accountPath = accountPath;
+            NewRecordDataDomain newRecordDataDomain, String accountFile, int recordUploadDelay) {
+        this.accountFile = accountFile;
         this.recordUploadDelay = recordUploadDelay;
 
         databaseRepositoryReference = new WeakReference<>(databaseRepository);
@@ -52,7 +52,7 @@ public class UploadTask extends InterruptibleTask<Void> {
     }
 
     private RecordUploader createRecordUploader() throws IOException, GeneralSecurityException {
-        Account account = new Account(accountPath);
+        Account account = new Account(PathValidator.validateAndConvert(accountFile));
         return Api.newRecordUploader(account.userNo, account.token);
     }
 

@@ -15,7 +15,6 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,17 +27,18 @@ import java.util.concurrent.TimeUnit;
 public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
     private static final int REJECTED_SLEEP_TIME = 1000;
 
-    private final CacheManager cacheManager;
     private final Robot robot;
+    private final String cacheDirectory;
     private final int captureDelay;
     private final int keyInputDuration;
 
+    private CacheManager cacheManager;
     private CollectionArea collectionArea;
     private ImageCachingService imageCachingService;
 
     public DefaultCollectionScanTask(ScanDataDomain scanDataDomain,
             Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
-            Set<String> selectedCategorySet, Path cacheDirectoryPath, int captureDelay,
+            Set<String> selectedCategorySet, String cacheDirectory, int captureDelay,
             int keyInputDuration) {
         super(scanDataDomain, categoryNameSongListMap, titleTool, selectedCategorySet);
 
@@ -48,10 +48,9 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
             throw new RuntimeException(e);
         }
 
+        this.cacheDirectory = cacheDirectory;
         this.captureDelay = captureDelay;
         this.keyInputDuration = keyInputDuration;
-
-        cacheManager = new CacheManager(cacheDirectoryPath);
     }
 
     private CollectionArea createCollectionArea() throws NotSupportedResolutionException {
@@ -113,6 +112,7 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
         collectionArea = createCollectionArea();
 
         // check the cache directory
+        cacheManager = new CacheManager(cacheDirectory);
         cacheManager.prepare();
 
         try {
