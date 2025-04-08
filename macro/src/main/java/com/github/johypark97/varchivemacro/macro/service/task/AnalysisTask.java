@@ -22,7 +22,6 @@ import com.google.common.base.CharMatcher;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -51,14 +50,14 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private static final int RATE_FACTOR = 8;
     private static final int RATE_THRESHOLD = 224;
 
+    private final AnalysisDataDomain analysisDataDomain;
+    private final ScanDataDomain scanDataDomain;
+
     private final Runnable onDataReady;
     private final String cacheDirectory;
     private final int analyzerThreadCount;
     private final int imagePreloaderThreadCount;
     private final int imagePreloadingLimit;
-
-    private final WeakReference<AnalysisDataDomain> analysisDataDomainReference;
-    private final WeakReference<ScanDataDomain> scanDataDomainReference;
 
     private CacheManager cacheManager;
     private int completedTaskCount;
@@ -66,23 +65,15 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
     public AnalysisTask(Runnable onDataReady, ScanDataDomain scanDataDomain,
             AnalysisDataDomain analysisDataDomain, String cacheDirectory, int threadCount) {
+        this.analysisDataDomain = analysisDataDomain;
+        this.scanDataDomain = scanDataDomain;
+
         this.cacheDirectory = cacheDirectory;
         this.onDataReady = onDataReady;
 
         analyzerThreadCount = threadCount;
         imagePreloaderThreadCount = (int) (Math.log(threadCount + 1) / Math.log(2));
         imagePreloadingLimit = threadCount * 3 / 2;
-
-        analysisDataDomainReference = new WeakReference<>(analysisDataDomain);
-        scanDataDomainReference = new WeakReference<>(scanDataDomain);
-    }
-
-    private AnalysisDataDomain getAnalysisDataDomain() {
-        return analysisDataDomainReference.get();
-    }
-
-    private ScanDataDomain getScanDataDomain() {
-        return scanDataDomainReference.get();
     }
 
     private byte[] loadImage(AnalysisData analysisData) throws IOException {
@@ -142,12 +133,12 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         Instant start = Instant.now();
 
         // throw an exception if there is no scan data
-        if (getScanDataDomain().isEmpty()) {
+        if (scanDataDomain.isEmpty()) {
             throw new IllegalStateException("ScanDataDomain is empty");
         }
 
         // throw an exception if there are previous analysis data
-        if (!getAnalysisDataDomain().isEmpty()) {
+        if (!analysisDataDomain.isEmpty()) {
             throw new IllegalStateException("AnalysisDataDomain is not clean");
         }
 
@@ -157,8 +148,8 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
         // prepare AnalysisData and filter out those that are not suitable for analysis
         List<AnalysisData> dataList = new LinkedList<>();
-        getScanDataDomain().copySongDataList().stream().filter(x -> x.selected.get()).forEach(x -> {
-            AnalysisData analysisData = getAnalysisDataDomain().createAnalysisData(x);
+        scanDataDomain.copySongDataList().stream().filter(x -> x.selected.get()).forEach(x -> {
+            AnalysisData analysisData = analysisDataDomain.createAnalysisData(x);
 
             if (x.childListProperty().isEmpty()) {
                 analysisData.setException(

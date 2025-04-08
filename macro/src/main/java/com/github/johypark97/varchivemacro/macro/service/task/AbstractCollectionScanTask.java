@@ -15,7 +15,6 @@ import com.github.johypark97.varchivemacro.macro.model.SongData;
 import com.github.johypark97.varchivemacro.macro.service.ocr.TitleOcr;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -34,20 +33,20 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
     private static final String CATEGORY_CLEAR_PASS_PLUS = "CLEARPASS+";
     private static final int DUPLICATE_LIMIT = 2;
 
+    private final ScanDataDomain scanDataDomain;
+
     private final Map<String, List<Song>> categoryNameSongListMap;
     private final Set<String> selectedCategorySet;
     private final TitleTool titleTool;
 
-    private final WeakReference<ScanDataDomain> scanDataDomainReference;
-
     public AbstractCollectionScanTask(ScanDataDomain scanDataDomain,
             Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
             Set<String> selectedCategorySet) {
+        this.scanDataDomain = scanDataDomain;
+
         this.categoryNameSongListMap = categoryNameSongListMap;
         this.selectedCategorySet = selectedCategorySet;
         this.titleTool = titleTool;
-
-        scanDataDomainReference = new WeakReference<>(scanDataDomain);
     }
 
     private static String normalizeTitle(String value) {
@@ -61,10 +60,6 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
     protected abstract BufferedImage captureScreenshot(CaptureData data) throws Exception;
 
     protected abstract BufferedImage cropTitle(BufferedImage image);
-
-    private ScanDataDomain getScanDataDomain() {
-        return scanDataDomainReference.get();
-    }
 
     private String normalizeSongTitle(Song song) {
         return normalizeTitle(titleTool.getClippedTitleOrDefault(song.id(), song.title()));
@@ -96,7 +91,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
 
         songList.forEach(song -> {
             String normalizedTitle = normalizeSongTitle(song);
-            SongData data = getScanDataDomain().createSongData(song, normalizedTitle);
+            SongData data = scanDataDomain.createSongData(song, normalizedTitle);
             map.computeIfAbsent(normalizedTitle, x -> new LinkedList<>()).add(data);
         });
 
@@ -205,7 +200,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
     @Override
     protected Void callTask() throws Exception {
         // throw an exception if there are previous capture data
-        if (!getScanDataDomain().isEmpty()) {
+        if (!scanDataDomain.isEmpty()) {
             throw new IllegalStateException("ScanDataDomain is not clean");
         }
 
@@ -245,7 +240,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
                     }
 
                     // create capture data
-                    CaptureData data = getScanDataDomain().createCaptureData();
+                    CaptureData data = scanDataDomain.createCaptureData();
 
                     // capture the screen
                     BufferedImage image = captureScreenshot(data);

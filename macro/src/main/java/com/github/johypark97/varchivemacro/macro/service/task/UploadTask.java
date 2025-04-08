@@ -13,7 +13,6 @@ import com.github.johypark97.varchivemacro.macro.model.NewRecordData.Status;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.security.GeneralSecurityException;
 import java.util.EnumSet;
 import java.util.LinkedList;
@@ -22,33 +21,22 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class UploadTask extends InterruptibleTask<Void> {
+    private final DatabaseRepository databaseRepository;
+    private final RecordRepository recordRepository;
+
+    private final NewRecordDataDomain newRecordDataDomain;
+
     private final String accountFile;
     private final int recordUploadDelay;
 
-    private final WeakReference<DatabaseRepository> databaseRepositoryReference;
-    private final WeakReference<NewRecordDataDomain> newRecordDataDomainReference;
-    private final WeakReference<RecordRepository> recordRepositoryReference;
-
     public UploadTask(DatabaseRepository databaseRepository, RecordRepository recordRepository,
             NewRecordDataDomain newRecordDataDomain, String accountFile, int recordUploadDelay) {
+        this.databaseRepository = databaseRepository;
+        this.newRecordDataDomain = newRecordDataDomain;
+        this.recordRepository = recordRepository;
+
         this.accountFile = accountFile;
         this.recordUploadDelay = recordUploadDelay;
-
-        databaseRepositoryReference = new WeakReference<>(databaseRepository);
-        newRecordDataDomainReference = new WeakReference<>(newRecordDataDomain);
-        recordRepositoryReference = new WeakReference<>(recordRepository);
-    }
-
-    private DatabaseRepository getDatabaseRepository() {
-        return databaseRepositoryReference.get();
-    }
-
-    private RecordRepository getRecordRepository() {
-        return recordRepositoryReference.get();
-    }
-
-    private NewRecordDataDomain getNewRecordDataDomain() {
-        return newRecordDataDomainReference.get();
     }
 
     private RecordUploader createRecordUploader() throws IOException, GeneralSecurityException {
@@ -59,20 +47,20 @@ public class UploadTask extends InterruptibleTask<Void> {
     private Queue<NewRecordData> createUploadQueue() {
         EnumSet<Status> statusSet = EnumSet.of(Status.HIGHER_RECORD_EXISTS, Status.UPLOADED);
 
-        return getNewRecordDataDomain().copyNewRecordDataList().stream()
+        return newRecordDataDomain.copyNewRecordDataList().stream()
                 .filter(x -> x.selected.get() && !statusSet.contains(x.status.get()))
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
     private RequestJson recordToRequest(Song song, LocalRecord record) {
-        String title = getDatabaseRepository().getRemoteTitle(song.id());
+        String title = databaseRepository.getRemoteTitle(song.id());
         if (title == null) {
             title = song.title();
         }
 
         RequestJson requestJson =
                 new RequestJson(title, record.button, record.pattern, record.rate, record.maxCombo);
-        if (getDatabaseRepository().duplicateTitleSongIdSet().contains(song.id())) {
+        if (databaseRepository.duplicateTitleSongIdSet().contains(song.id())) {
             requestJson.composer = song.composer();
         }
 
@@ -82,7 +70,7 @@ public class UploadTask extends InterruptibleTask<Void> {
     @Override
     protected Void callTask() throws Exception {
         // throw an exception if there is no new record data
-        if (getNewRecordDataDomain().isEmpty()) {
+        if (newRecordDataDomain.isEmpty()) {
             throw new IllegalStateException("NewRecordDataDomain is empty");
         }
 
@@ -112,7 +100,7 @@ public class UploadTask extends InterruptibleTask<Void> {
                 RequestJson requestJson = recordToRequest(song, newRecord);
                 api.upload(requestJson);
 
-                getRecordRepository().updateRecord(newRecord);
+                recordRepository.updateRecord(newRecord);
                 data.status.set(api.getResult() ? Status.UPLOADED : Status.HIGHER_RECORD_EXISTS);
             }
         } catch (InterruptedException e) {
@@ -125,7 +113,7 @@ public class UploadTask extends InterruptibleTask<Void> {
                 data.status.set(Status.CANCELED);
             }
         } finally {
-            getRecordRepository().save();
+            recordRepository.save();
         }
 
         return null;

@@ -10,30 +10,18 @@ import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.RecordData;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.google.common.collect.Table.Cell;
-import java.lang.ref.WeakReference;
 
 public class CollectNewRecordTask extends InterruptibleTask<Void> {
-    private final WeakReference<AnalysisDataDomain> analysisDataDomainReference;
-    private final WeakReference<NewRecordDataDomain> newRecordDataDomainReference;
-    private final WeakReference<RecordRepository> recordRepositoryReference;
+    private final RecordRepository recordRepository;
+
+    private final AnalysisDataDomain analysisDataDomain;
+    private final NewRecordDataDomain newRecordDataDomain;
 
     public CollectNewRecordTask(RecordRepository recordRepository,
             AnalysisDataDomain analysisDataDomain, NewRecordDataDomain newRecordDataDomain) {
-        analysisDataDomainReference = new WeakReference<>(analysisDataDomain);
-        newRecordDataDomainReference = new WeakReference<>(newRecordDataDomain);
-        recordRepositoryReference = new WeakReference<>(recordRepository);
-    }
-
-    private RecordRepository getRecordRepository() {
-        return recordRepositoryReference.get();
-    }
-
-    private AnalysisDataDomain getAnalysisDataDomain() {
-        return analysisDataDomainReference.get();
-    }
-
-    private NewRecordDataDomain getNewRecordDataDomain() {
-        return newRecordDataDomainReference.get();
+        this.analysisDataDomain = analysisDataDomain;
+        this.newRecordDataDomain = newRecordDataDomain;
+        this.recordRepository = recordRepository;
     }
 
     private float parseRateText(String text) {
@@ -54,13 +42,13 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
     @Override
     protected Void callTask() throws Exception {
         // throw an exception if there is no analysis data
-        if (getAnalysisDataDomain().isEmpty()) {
+        if (analysisDataDomain.isEmpty()) {
             throw new IllegalStateException("AnalysisDataDomain is empty");
         }
 
-        getNewRecordDataDomain().clear();
+        newRecordDataDomain.clear();
 
-        for (AnalysisData data : getAnalysisDataDomain().copyAnalysisDataList()) {
+        for (AnalysisData data : analysisDataDomain.copyAnalysisDataList()) {
             Song song = data.songDataProperty().get().songProperty().get();
 
             for (Cell<Button, Pattern, RecordData> cell : data.recordDataTable.cellSet()) {
@@ -75,13 +63,13 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
                 boolean maxCombo = cell.getValue().maxCombo.get();
 
                 LocalRecord newRecord = new LocalRecord(song.id(), button, pattern, rate, maxCombo);
-                LocalRecord previousRecord = getRecordRepository().findSameRecord(newRecord);
+                LocalRecord previousRecord = recordRepository.findSameRecord(newRecord);
 
                 if (previousRecord == null) {
                     LocalRecord nullRecord = LocalRecord.nullRecord(song.id(), button, pattern);
-                    getNewRecordDataDomain().createNewRecordData(song, nullRecord, newRecord);
+                    newRecordDataDomain.createNewRecordData(song, nullRecord, newRecord);
                 } else if (previousRecord.isUpdated(newRecord)) {
-                    getNewRecordDataDomain().createNewRecordData(song, previousRecord, newRecord);
+                    newRecordDataDomain.createNewRecordData(song, previousRecord, newRecord);
                 }
             }
         }
