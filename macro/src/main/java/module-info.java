@@ -36,7 +36,6 @@ module varchivemacro.macro {
     exports com.github.johypark97.varchivemacro.macro.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.repository to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.resource to com.google.gson;
-    exports com.github.johypark97.varchivemacro.macro.service.fxservice to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro.ui.presenter to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro.ui.view to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro;
