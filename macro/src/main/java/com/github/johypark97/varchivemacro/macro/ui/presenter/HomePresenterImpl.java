@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
-import com.github.johypark97.varchivemacro.lib.jfx.ServiceManager;
+import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.github.DataUpdater;
 import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
@@ -90,7 +90,7 @@ public class HomePresenterImpl implements HomePresenter {
     public void onStopView() {
         ConfigRepository configRepository = repositoryProvider.getConfigRepository();
 
-        if (ServiceManager.getInstance().isRunningAny()) {
+        if (TaskManager.getInstance().isRunningAny()) {
             return;
         }
 
