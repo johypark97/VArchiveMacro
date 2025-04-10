@@ -59,7 +59,7 @@ public class DefaultDatabaseRepository implements DatabaseRepository {
     }
 
     @Override
-    public String getRemoteTitle(int id) {
-        return titleTool.getRemoteTitle(id);
+    public String getRemoteTitleOrDefault(Song song) {
+        return titleTool.getRemoteTitleOrDefault(song);
     }
 }

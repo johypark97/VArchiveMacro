@@ -88,7 +88,7 @@ public class OcrCacheClassificationTask extends Task<Void> {
 
             Song song = songList.get(i);
 
-            String title = titleTool.getClippedTitleOrDefault(song.id(), song.title());
+            String title = titleTool.getClippedTitleOrDefault(song);
             title = TitleTool.normalizeTitle_training(title);
 
             boolean containEng = false;
@@ -102,7 +102,7 @@ public class OcrCacheClassificationTask extends Task<Void> {
             }
 
             Path baseDir;
-            if (titleTool.hasClippedTitle(song.id())) {
+            if (titleTool.hasClippedTitle(song)) {
                 baseDir = exceededOutputDir;
             } else if (containEng && !containKor) {
                 baseDir = engOutputDir;

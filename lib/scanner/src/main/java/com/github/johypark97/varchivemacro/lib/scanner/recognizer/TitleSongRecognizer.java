@@ -34,7 +34,7 @@ public class TitleSongRecognizer {
         lookupSong.clear();
 
         for (Song song : songDataList) {
-            String normalizedTitle = titleTool.getClippedTitleOrDefault(song.id(), song.title());
+            String normalizedTitle = titleTool.getClippedTitleOrDefault(song);
             normalizedTitle = titleNormalizer.apply(normalizedTitle);
 
             lookupSong.computeIfAbsent(normalizedTitle, x -> new LinkedList<>()).add(song);

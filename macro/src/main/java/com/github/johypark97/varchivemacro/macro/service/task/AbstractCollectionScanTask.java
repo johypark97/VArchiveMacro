@@ -62,7 +62,7 @@ public abstract class AbstractCollectionScanTask extends InterruptibleTask<Void>
     protected abstract BufferedImage cropTitle(BufferedImage image);
 
     private String normalizeSongTitle(Song song) {
-        return normalizeTitle(titleTool.getClippedTitleOrDefault(song.id(), song.title()));
+        return normalizeTitle(titleTool.getClippedTitleOrDefault(song));
     }
 
     private String normalizeScannedTitle(String value) {

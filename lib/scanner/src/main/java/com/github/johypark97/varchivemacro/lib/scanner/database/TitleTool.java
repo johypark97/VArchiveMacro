@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.scanner.database;
 
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.google.common.base.CharMatcher;
 
 public interface TitleTool {
@@ -17,11 +18,11 @@ public interface TitleTool {
         return s;
     }
 
-    boolean hasClippedTitle(int id);
+    boolean hasClippedTitle(Song song);
 
-    String getClippedTitleOrDefault(int id, String defaultValue);
+    String getClippedTitleOrDefault(Song song);
 
-    String remapScannedTitle(String scannedTitle);
+    String getRemoteTitleOrDefault(Song song);
 
-    String getRemoteTitle(int id);
+    String remapScannedTitle(String value);
 }

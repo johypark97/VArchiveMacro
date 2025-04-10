@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.scanner.database;
 
+import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.datastruct.TitleData;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -20,22 +21,22 @@ public class DefaultTitleTool implements TitleTool {
     }
 
     @Override
-    public boolean hasClippedTitle(int id) {
-        return clippedTitleMap.containsKey(id);
+    public boolean hasClippedTitle(Song song) {
+        return clippedTitleMap.containsKey(song.id());
     }
 
     @Override
-    public String getClippedTitleOrDefault(int id, String defaultValue) {
-        return clippedTitleMap.getOrDefault(id, defaultValue);
+    public String getClippedTitleOrDefault(Song song) {
+        return clippedTitleMap.getOrDefault(song.id(), song.title());
     }
 
     @Override
-    public String remapScannedTitle(String scannedTitle) {
-        return scannedTitleRemap.getOrDefault(scannedTitle, scannedTitle);
+    public String getRemoteTitleOrDefault(Song song) {
+        return remoteTitleMap.getOrDefault(song.id(), song.title());
     }
 
     @Override
-    public String getRemoteTitle(int id) {
-        return remoteTitleMap.get(id);
+    public String remapScannedTitle(String value) {
+        return scannedTitleRemap.getOrDefault(value, value);
     }
 }

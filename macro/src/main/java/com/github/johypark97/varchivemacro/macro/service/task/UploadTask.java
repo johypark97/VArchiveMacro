@@ -53,10 +53,7 @@ public class UploadTask extends InterruptibleTask<Void> {
     }
 
     private RequestJson recordToRequest(Song song, LocalRecord record) {
-        String title = databaseRepository.getRemoteTitle(song.id());
-        if (title == null) {
-            title = song.title();
-        }
+        String title = databaseRepository.getRemoteTitleOrDefault(song);
 
         RequestJson requestJson =
                 new RequestJson(title, record.button, record.pattern, record.rate, record.maxCombo);

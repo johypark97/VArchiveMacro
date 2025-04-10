@@ -21,5 +21,5 @@ public interface DatabaseRepository {
 
     Set<Integer> duplicateTitleSongIdSet();
 
-    String getRemoteTitle(int id);
+    String getRemoteTitleOrDefault(Song song);
 }
