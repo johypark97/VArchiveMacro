@@ -6,7 +6,7 @@ import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
-import com.github.johypark97.varchivemacro.macro.service.ScannerService;
+import com.github.johypark97.varchivemacro.macro.service.CollectionScanService;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.LinkEditor.LinkEditorPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.LinkEditor.LinkEditorView;
 import java.io.IOException;
@@ -44,9 +44,9 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     @Override
     public void onStartView() {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
-        Song song = scannerService.getSongData(songDataId).songProperty().get();
+        Song song = collectionScanService.getSongData(songDataId).songProperty().get();
         view.setSongText(
                 String.format("[%s] %s - %s", song.pack().name(), song.title(), song.composer()));
 
@@ -72,11 +72,11 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     @Override
     public void showCaptureDataList(String pattern, boolean findAll) {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
         ObservableList<CaptureData> list = findAll
-                ? FXCollections.observableArrayList(scannerService.copyCaptureDataList())
-                : scannerService.getSongData(songDataId).childListProperty();
+                ? FXCollections.observableArrayList(collectionScanService.copyCaptureDataList())
+                : collectionScanService.getSongData(songDataId).childListProperty();
 
         filteredCaptureDataList = new FilteredList<>(list);
 
@@ -87,11 +87,12 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     @Override
     public void showCaptureImage(int captureDataId) {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
         try {
             view.setCaptureImage(
-                    SwingFXUtils.toFXImage(scannerService.getCaptureImage(captureDataId), null));
+                    SwingFXUtils.toFXImage(collectionScanService.getCaptureImage(captureDataId),
+                            null));
         } catch (IOException e) {
             view.showError("Cache image loading error", e);
         }
@@ -99,9 +100,9 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     @Override
     public void linkCaptureData(int captureDataId) {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
-        CaptureData captureData = scannerService.getCaptureData(captureDataId);
+        CaptureData captureData = collectionScanService.getCaptureData(captureDataId);
 
         String header = Language.getInstance().getString("linkEditor.dialog.link.header");
         String content = String.format("(%d) %s", captureData.idProperty().get(),
@@ -110,7 +111,7 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
             return;
         }
 
-        SongData songData = scannerService.getSongData(songDataId);
+        SongData songData = collectionScanService.getSongData(songDataId);
         songData.selected.set(true);
 
         List<CaptureData> childList = List.copyOf(songData.childListProperty());
@@ -127,14 +128,14 @@ public class LinkEditorPresenterImpl implements LinkEditorPresenter {
 
     @Override
     public void unlinkCaptureData() {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
         String header = Language.getInstance().getString("linkEditor.dialog.unlink.header");
         if (!view.showConfirmation(header, null)) {
             return;
         }
 
-        SongData songData = scannerService.getSongData(songDataId);
+        SongData songData = collectionScanService.getSongData(songDataId);
         songData.selected.set(false);
 
         List<CaptureData> childList = List.copyOf(songData.childListProperty());

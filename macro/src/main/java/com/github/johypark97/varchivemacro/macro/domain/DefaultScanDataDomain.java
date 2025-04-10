@@ -3,6 +3,8 @@ package com.github.johypark97.varchivemacro.macro.domain;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,5 +61,17 @@ public class DefaultScanDataDomain implements ScanDataDomain {
         captureDataList.add(data);
 
         return data;
+    }
+
+    @Override
+    public BufferedImage getCaptureImage(int index, String cacheDirectory) throws IOException {
+        CacheManager cacheManager = new CacheManager(cacheDirectory);
+
+        try {
+            return cacheManager.read(index);
+        } catch (IOException e) {
+            captureDataList.get(index).exception.set(e);
+            throw e;
+        }
     }
 }

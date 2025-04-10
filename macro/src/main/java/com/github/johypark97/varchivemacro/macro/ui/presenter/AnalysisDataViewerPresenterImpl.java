@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.macro.model.AnalyzedRecordData;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
-import com.github.johypark97.varchivemacro.macro.service.ScannerService;
+import com.github.johypark97.varchivemacro.macro.service.AnalysisService;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.RecordBoxData;
@@ -36,11 +36,11 @@ public class AnalysisDataViewerPresenterImpl implements AnalysisDataViewerPresen
 
     @Override
     public void showAnalysisData(int analysisDataId) {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        AnalysisService analysisService = serviceProvider.getAnalysisService();
 
         AnalyzedRecordData data;
         try {
-            data = scannerService.getAnalyzedRecordData(analysisDataId);
+            data = analysisService.getAnalyzedRecordData(analysisDataId);
         } catch (Exception e) {
             view.showError("Analyzed record data loading error", e);
             return;

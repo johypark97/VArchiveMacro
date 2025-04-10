@@ -11,7 +11,9 @@ import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
-import com.github.johypark97.varchivemacro.macro.service.ScannerService;
+import com.github.johypark97.varchivemacro.macro.service.AnalysisService;
+import com.github.johypark97.varchivemacro.macro.service.CollectionScanService;
+import com.github.johypark97.varchivemacro.macro.service.UploadService;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.CaptureViewer.CaptureViewerView;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Scanner.ScannerPresenter;
@@ -248,13 +250,13 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void capture_openCaptureViewer(int id) {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
         updateConfig();
 
         BufferedImage image;
         try {
-            image = scannerService.getCaptureImage(id);
+            image = collectionScanService.getCaptureImage(id);
         } catch (IOException e) {
             showError.accept("Cache image reading error", e);
             return;
@@ -275,7 +277,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void capture_clearScanData() {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
         Runnable onClear = () -> {
             view.capture_setCaptureDataList(FXCollections.emptyObservableList());
@@ -284,20 +286,20 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             analysis_clearAnalysisData();
         };
 
-        scannerService.clearScanData(onClear);
+        collectionScanService.clearScanData(onClear);
     }
 
     @Override
     public void capture_start() {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
-        if (!scannerService.isScanDataEmpty()) {
+        if (!collectionScanService.isScanDataEmpty()) {
             return;
         }
 
         updateConfig();
 
-        Task<Void> task = scannerService.createTask_collectionScan();
+        Task<Void> task = collectionScanService.createTask_collectionScan();
         if (task == null) {
             return;
         }
@@ -310,9 +312,9 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         task.setOnCancelled(event -> {
             view.capture_setCaptureDataList(
-                    FXCollections.observableArrayList(scannerService.copyCaptureDataList()));
+                    FXCollections.observableArrayList(collectionScanService.copyCaptureDataList()));
             view.song_setSongDataList(
-                    FXCollections.observableArrayList(scannerService.copySongDataList()));
+                    FXCollections.observableArrayList(collectionScanService.copySongDataList()));
 
             showInformation.accept(header,
                     language.getString("scannerFxService.dialog.scanCanceled"));
@@ -320,9 +322,9 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         task.setOnSucceeded(event -> {
             view.capture_setCaptureDataList(
-                    FXCollections.observableArrayList(scannerService.copyCaptureDataList()));
+                    FXCollections.observableArrayList(collectionScanService.copyCaptureDataList()));
             view.song_setSongDataList(
-                    FXCollections.observableArrayList(scannerService.copySongDataList()));
+                    FXCollections.observableArrayList(collectionScanService.copySongDataList()));
 
             showInformation.accept(header, language.getString("scannerFxService.dialog.scanDone"));
         });
@@ -355,7 +357,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void analysis_clearAnalysisData() {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        AnalysisService analysisService = serviceProvider.getAnalysisService();
 
         Runnable onClear = () -> {
             view.analysis_setAnalysisDataList(FXCollections.emptyObservableList());
@@ -364,7 +366,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
             view.analysis_setProgressLabelText(null);
         };
 
-        scannerService.clearAnalysisData(onClear);
+        analysisService.clearAnalysisData(onClear);
     }
 
     @Override
@@ -387,18 +389,19 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void analysis_startAnalysis() {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        AnalysisService analysisService = serviceProvider.getAnalysisService();
+        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
-        if (scannerService.isScanDataEmpty() || !scannerService.isAnalysisDataEmpty()) {
+        if (collectionScanService.isScanDataEmpty() || !analysisService.isAnalysisDataEmpty()) {
             return;
         }
 
         updateConfig();
 
         Runnable onDataReady = () -> view.analysis_setAnalysisDataList(
-                FXCollections.observableArrayList(scannerService.copyAnalysisDataList()));
+                FXCollections.observableArrayList(analysisService.copyAnalysisDataList()));
 
-        Task<Void> task = scannerService.createTask_analysis(onDataReady);
+        Task<Void> task = analysisService.createTask_analysis(onDataReady);
         if (task == null) {
             return;
         }
@@ -432,18 +435,19 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void analysis_stopAnalysis() {
-        serviceProvider.getScannerService().stopTask_analysis();
+        serviceProvider.getAnalysisService().stopTask_analysis();
     }
 
     @Override
     public void uploader_refresh() {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        AnalysisService analysisService = serviceProvider.getAnalysisService();
+        UploadService uploadService = serviceProvider.getUploadService();
 
-        if (scannerService.isAnalysisDataEmpty()) {
+        if (analysisService.isAnalysisDataEmpty()) {
             return;
         }
 
-        Task<Void> task = scannerService.createTask_collectNewRecord();
+        Task<Void> task = uploadService.createTask_collectNewRecord();
         if (task == null) {
             return;
         }
@@ -452,16 +456,16 @@ public class ScannerPresenterImpl implements ScannerPresenter {
                 event.getSource().getException()));
 
         task.setOnSucceeded(event -> view.uploader_setNewRecordDataList(
-                FXCollections.observableArrayList(scannerService.copyNewRecordDataList())));
+                FXCollections.observableArrayList(uploadService.copyNewRecordDataList())));
 
         CompletableFuture.runAsync(task);
     }
 
     @Override
     public void uploader_startUpload(long count) {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        UploadService uploadService = serviceProvider.getUploadService();
 
-        if (scannerService.isNewRecordDataEmpty()) {
+        if (uploadService.isNewRecordDataEmpty()) {
             return;
         }
 
@@ -478,7 +482,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         updateConfig();
 
-        Task<Void> task = scannerService.createTask_startUpload();
+        Task<Void> task = uploadService.createTask_startUpload();
         if (task == null) {
             return;
         }
@@ -501,12 +505,12 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void uploader_stopUpload() {
-        serviceProvider.getScannerService().stopTask_upload();
+        serviceProvider.getUploadService().stopTask_upload();
     }
 
     @Override
     public void option_openCacheDirectorySelector() {
-        ScannerService scannerService = serviceProvider.getScannerService();
+        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
         File file = openCacheDirectorySelector();
         if (file == null) {
@@ -515,7 +519,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
         Path path = file.toPath();
         try {
-            scannerService.validateCacheDirectory(path);
+            collectionScanService.validateCacheDirectory(path);
         } catch (IOException e) {
             String header =
                     Language.getInstance().getString("scanner.option.dialog.invalidDirectory");
