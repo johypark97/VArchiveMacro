@@ -11,11 +11,11 @@ import javafx.concurrent.Task;
 public interface CollectionScanService {
     void validateCacheDirectory(Path path) throws IOException;
 
+    boolean isReady_collectionScan();
+
     Task<Void> createTask_collectionScan();
 
     void stopTask_collectionScan();
-
-    boolean isScanDataEmpty();
 
     void clearScanData(Runnable onClear);
 

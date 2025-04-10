@@ -35,6 +35,11 @@ public class DefaultCollectionScanService implements CollectionScanService {
     }
 
     @Override
+    public boolean isReady_collectionScan() {
+        return scanDataDomain.isEmpty();
+    }
+
+    @Override
     public Task<Void> createTask_collectionScan() {
         ScannerConfig config = configRepository.getScannerConfig();
 
@@ -53,11 +58,6 @@ public class DefaultCollectionScanService implements CollectionScanService {
     @Override
     public void stopTask_collectionScan() {
         TaskManager.Helper.cancel(AbstractCollectionScanTask.class);
-    }
-
-    @Override
-    public boolean isScanDataEmpty() {
-        return scanDataDomain.isEmpty();
     }
 
     @Override

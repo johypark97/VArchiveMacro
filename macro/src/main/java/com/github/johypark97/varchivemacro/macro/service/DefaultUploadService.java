@@ -32,10 +32,20 @@ public class DefaultUploadService implements UploadService {
     }
 
     @Override
+    public boolean isReady_collectNewRecord() {
+        return !analysisDataDomain.isEmpty();
+    }
+
+    @Override
     public Task<Void> createTask_collectNewRecord() {
         return TaskManager.getInstance().register(CollectNewRecordTask.class,
                 new CollectNewRecordTask(recordRepository, analysisDataDomain,
                         newRecordDataDomain));
+    }
+
+    @Override
+    public boolean isReady_upload() {
+        return !newRecordDataDomain.isEmpty();
     }
 
     @Override
@@ -50,11 +60,6 @@ public class DefaultUploadService implements UploadService {
     @Override
     public void stopTask_upload() {
         TaskManager.Helper.cancel(UploadTask.class);
-    }
-
-    @Override
-    public boolean isNewRecordDataEmpty() {
-        return newRecordDataDomain.isEmpty();
     }
 
     @Override

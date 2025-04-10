@@ -35,6 +35,11 @@ public class DefaultAnalysisService implements AnalysisService {
     }
 
     @Override
+    public boolean isReady_analysis() {
+        return !scanDataDomain.isEmpty() && analysisDataDomain.isEmpty();
+    }
+
+    @Override
     public Task<Void> createTask_analysis(Runnable onDataReady) {
         ScannerConfig config = configRepository.getScannerConfig();
 
@@ -46,11 +51,6 @@ public class DefaultAnalysisService implements AnalysisService {
     @Override
     public void stopTask_analysis() {
         TaskManager.Helper.cancel(AnalysisTask.class);
-    }
-
-    @Override
-    public boolean isAnalysisDataEmpty() {
-        return analysisDataDomain.isEmpty();
     }
 
     @Override

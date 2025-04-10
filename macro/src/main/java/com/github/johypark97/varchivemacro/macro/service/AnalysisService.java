@@ -6,11 +6,11 @@ import java.util.List;
 import javafx.concurrent.Task;
 
 public interface AnalysisService {
+    boolean isReady_analysis();
+
     Task<Void> createTask_analysis(Runnable onDataReady);
 
     void stopTask_analysis();
-
-    boolean isAnalysisDataEmpty();
 
     void clearAnalysisData(Runnable onClear);
 

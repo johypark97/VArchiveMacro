@@ -293,7 +293,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     public void capture_start() {
         CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
-        if (!collectionScanService.isScanDataEmpty()) {
+        if (!collectionScanService.isReady_collectionScan()) {
             return;
         }
 
@@ -390,9 +390,8 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     @Override
     public void analysis_startAnalysis() {
         AnalysisService analysisService = serviceProvider.getAnalysisService();
-        CollectionScanService collectionScanService = serviceProvider.getScannerService();
 
-        if (collectionScanService.isScanDataEmpty() || !analysisService.isAnalysisDataEmpty()) {
+        if (!analysisService.isReady_analysis()) {
             return;
         }
 
@@ -440,10 +439,9 @@ public class ScannerPresenterImpl implements ScannerPresenter {
 
     @Override
     public void uploader_refresh() {
-        AnalysisService analysisService = serviceProvider.getAnalysisService();
         UploadService uploadService = serviceProvider.getUploadService();
 
-        if (analysisService.isAnalysisDataEmpty()) {
+        if (!uploadService.isReady_collectNewRecord()) {
             return;
         }
 
@@ -465,7 +463,7 @@ public class ScannerPresenterImpl implements ScannerPresenter {
     public void uploader_startUpload(long count) {
         UploadService uploadService = serviceProvider.getUploadService();
 
-        if (uploadService.isNewRecordDataEmpty()) {
+        if (!uploadService.isReady_upload()) {
             return;
         }
 
