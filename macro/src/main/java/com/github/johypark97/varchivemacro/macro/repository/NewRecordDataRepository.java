@@ -1,11 +1,11 @@
-package com.github.johypark97.varchivemacro.macro.domain;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
 import java.util.List;
 
-public interface NewRecordDataDomain {
+public interface NewRecordDataRepository {
     List<NewRecordData> copyNewRecordDataList();
 
     boolean isEmpty();

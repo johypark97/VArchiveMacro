@@ -4,10 +4,8 @@ import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
-import com.github.johypark97.varchivemacro.macro.provider.DefaultDomainProvider;
 import com.github.johypark97.varchivemacro.macro.provider.DefaultRepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.provider.DefaultServiceProvider;
-import com.github.johypark97.varchivemacro.macro.provider.DomainProvider;
 import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
@@ -69,9 +67,7 @@ public class Main extends Application {
         HomeStage.setupStage(primaryStage);
 
         RepositoryProvider repositoryProvider = new DefaultRepositoryProvider();
-        DomainProvider domainProvider = new DefaultDomainProvider();
-        ServiceProvider serviceProvider =
-                new DefaultServiceProvider(repositoryProvider, domainProvider);
+        ServiceProvider serviceProvider = new DefaultServiceProvider(repositoryProvider);
 
         HomeView homeView = new HomeViewImpl(primaryStage);
         Mvp.linkViewAndPresenter(homeView,

@@ -1,11 +1,11 @@
-package com.github.johypark97.varchivemacro.macro.domain;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultAnalysisDataDomain implements AnalysisDataDomain {
+public class DefaultAnalysisDataRepository implements AnalysisDataRepository {
     private final List<AnalysisData> analysisDataList = new ArrayList<>();
 
     @Override

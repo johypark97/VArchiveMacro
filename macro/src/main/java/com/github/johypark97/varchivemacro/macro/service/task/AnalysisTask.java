@@ -10,13 +10,13 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
-import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.CacheManager;
-import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData.Status;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.model.RecordData;
+import com.github.johypark97.varchivemacro.macro.repository.AnalysisDataRepository;
+import com.github.johypark97.varchivemacro.macro.repository.CacheRepository;
+import com.github.johypark97.varchivemacro.macro.repository.ScanDataRepository;
 import com.github.johypark97.varchivemacro.macro.service.ocr.ScannerOcr;
 import com.google.common.base.CharMatcher;
 import java.awt.Dimension;
@@ -50,8 +50,8 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private static final int RATE_FACTOR = 8;
     private static final int RATE_THRESHOLD = 224;
 
-    private final AnalysisDataDomain analysisDataDomain;
-    private final ScanDataDomain scanDataDomain;
+    private final AnalysisDataRepository analysisDataRepository;
+    private final ScanDataRepository scanDataRepository;
 
     private final Runnable onDataReady;
     private final String cacheDirectory;
@@ -59,14 +59,15 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private final int imagePreloaderThreadCount;
     private final int imagePreloadingLimit;
 
-    private CacheManager cacheManager;
+    private CacheRepository cacheRepository;
     private int completedTaskCount;
     private int totalTaskCount;
 
-    public AnalysisTask(Runnable onDataReady, ScanDataDomain scanDataDomain,
-            AnalysisDataDomain analysisDataDomain, String cacheDirectory, int threadCount) {
-        this.analysisDataDomain = analysisDataDomain;
-        this.scanDataDomain = scanDataDomain;
+    public AnalysisTask(AnalysisDataRepository analysisDataRepository,
+            ScanDataRepository scanDataRepository, String cacheDirectory, int threadCount,
+            Runnable onDataReady) {
+        this.analysisDataRepository = analysisDataRepository;
+        this.scanDataRepository = scanDataRepository;
 
         this.cacheDirectory = cacheDirectory;
         this.onDataReady = onDataReady;
@@ -78,7 +79,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
     private byte[] loadImage(AnalysisData analysisData) throws IOException {
         return ImageConverter.imageToPngBytes(
-                cacheManager.read(analysisData.captureData.get().idProperty().get()));
+                cacheRepository.read(analysisData.captureData.get().idProperty().get()));
     }
 
     private void analyze(OcrWrapper ocr, CollectionArea area, AnalysisData analysisData,
@@ -133,23 +134,23 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         Instant start = Instant.now();
 
         // throw an exception if there is no scan data
-        if (scanDataDomain.isEmpty()) {
-            throw new IllegalStateException("ScanDataDomain is empty");
+        if (scanDataRepository.isEmpty()) {
+            throw new IllegalStateException("ScanDataRepository is empty");
         }
 
         // throw an exception if there are previous analysis data
-        if (!analysisDataDomain.isEmpty()) {
-            throw new IllegalStateException("AnalysisDataDomain is not clean");
+        if (!analysisDataRepository.isEmpty()) {
+            throw new IllegalStateException("AnalysisDataRepository is not clean");
         }
 
-        cacheManager = new CacheManager(cacheDirectory);
+        cacheRepository = new CacheRepository(cacheDirectory);
 
         updateProgress(0, 1);
 
         // prepare AnalysisData and filter out those that are not suitable for analysis
         List<AnalysisData> dataList = new LinkedList<>();
-        scanDataDomain.copySongDataList().stream().filter(x -> x.selected.get()).forEach(x -> {
-            AnalysisData analysisData = analysisDataDomain.createAnalysisData(x);
+        scanDataRepository.copySongDataList().stream().filter(x -> x.selected.get()).forEach(x -> {
+            AnalysisData analysisData = analysisDataRepository.createAnalysisData(x);
 
             if (x.childListProperty().isEmpty()) {
                 analysisData.setException(
@@ -178,7 +179,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         CollectionArea area;
         {
             AnalysisData captureData = dataList.get(0);
-            BufferedImage image = cacheManager.read(captureData.idProperty().get());
+            BufferedImage image = cacheRepository.read(captureData.idProperty().get());
 
             Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
             area = CollectionAreaFactory.create(resolution);

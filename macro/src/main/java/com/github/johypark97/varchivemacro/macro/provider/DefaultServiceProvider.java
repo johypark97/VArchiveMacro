@@ -14,28 +14,27 @@ import com.github.johypark97.varchivemacro.macro.service.UploadService;
 public class DefaultServiceProvider implements ServiceProvider {
     private final InstanceManager<Object> instanceManager = new LazyInstanceManager<>();
 
-    public DefaultServiceProvider(RepositoryProvider repositoryProvider,
-            DomainProvider domainProvider) {
+    public DefaultServiceProvider(RepositoryProvider repositoryProvider) {
         instanceManager.setConstructor(AnalysisService.class,
-                () -> new DefaultAnalysisService(repositoryProvider.getConfigRepository(),
-                        domainProvider.getAnalysisDataDomain(),
-                        domainProvider.getNewRecordDataDomain(),
-                        domainProvider.getScanDataDomain()));
+                () -> new DefaultAnalysisService(repositoryProvider.getAnalysisDataRepository(),
+                        repositoryProvider.getConfigRepository(),
+                        repositoryProvider.getNewRecordDataRepository(),
+                        repositoryProvider.getScanDataRepository()));
 
         instanceManager.setConstructor(CollectionScanService.class,
                 () -> new DefaultCollectionScanService(repositoryProvider.getConfigRepository(),
                         repositoryProvider.getDatabaseRepository(),
-                        domainProvider.getScanDataDomain()));
+                        repositoryProvider.getScanDataRepository()));
 
         instanceManager.setConstructor(MacroService.class,
                 () -> new DefaultMacroService(repositoryProvider.getConfigRepository()));
 
         instanceManager.setConstructor(UploadService.class,
-                () -> new DefaultUploadService(repositoryProvider.getConfigRepository(),
+                () -> new DefaultUploadService(repositoryProvider.getAnalysisDataRepository(),
+                        repositoryProvider.getConfigRepository(),
                         repositoryProvider.getDatabaseRepository(),
-                        repositoryProvider.getRecordRepository(),
-                        domainProvider.getAnalysisDataDomain(),
-                        domainProvider.getNewRecordDataDomain()));
+                        repositoryProvider.getNewRecordDataRepository(),
+                        repositoryProvider.getRecordRepository()));
     }
 
     @Override

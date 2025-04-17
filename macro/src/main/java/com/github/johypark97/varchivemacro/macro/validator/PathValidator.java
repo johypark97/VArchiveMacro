@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.domain;
+package com.github.johypark97.varchivemacro.macro.validator;
 
 import java.io.IOException;
 import java.nio.file.InvalidPathException;

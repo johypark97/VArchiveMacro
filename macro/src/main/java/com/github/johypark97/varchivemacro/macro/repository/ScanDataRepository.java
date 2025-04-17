@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.domain;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
-public interface ScanDataDomain {
+public interface ScanDataRepository {
     List<CaptureData> copyCaptureDataList();
 
     List<SongData> copySongDataList();

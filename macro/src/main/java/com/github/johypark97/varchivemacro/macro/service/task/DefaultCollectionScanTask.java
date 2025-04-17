@@ -6,9 +6,9 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactor
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
-import com.github.johypark97.varchivemacro.macro.domain.CacheManager;
-import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.repository.CacheRepository;
+import com.github.johypark97.varchivemacro.macro.repository.ScanDataRepository;
 import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Robot;
@@ -31,15 +31,15 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
     private final int captureDelay;
     private final int keyInputDuration;
 
-    private CacheManager cacheManager;
+    private CacheRepository cacheRepository;
     private CollectionArea collectionArea;
     private ImageCachingService imageCachingService;
 
-    public DefaultCollectionScanTask(ScanDataDomain scanDataDomain,
+    public DefaultCollectionScanTask(ScanDataRepository scanDataRepository,
             Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
             Set<String> selectedCategorySet, String cacheDirectory, int captureDelay,
             int keyInputDuration) {
-        super(scanDataDomain, categoryNameSongListMap, titleTool, selectedCategorySet);
+        super(scanDataRepository, categoryNameSongListMap, titleTool, selectedCategorySet);
 
         try {
             robot = new Robot();
@@ -77,7 +77,7 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
 
         Runnable command = () -> {
             try {
-                cacheManager.write(data.idProperty().get(), image);
+                cacheRepository.write(data.idProperty().get(), image);
             } catch (Exception e) {
                 data.exception.set(e);
             }
@@ -106,8 +106,8 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
         collectionArea = createCollectionArea();
 
         // check the cache directory
-        cacheManager = new CacheManager(cacheDirectory);
-        cacheManager.prepare();
+        cacheRepository = new CacheRepository(cacheDirectory);
+        cacheRepository.prepare();
 
         try {
             imageCachingService = new ImageCachingService();

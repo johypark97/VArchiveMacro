@@ -1,10 +1,10 @@
-package com.github.johypark97.varchivemacro.macro.domain;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
 import java.util.List;
 
-public interface AnalysisDataDomain {
+public interface AnalysisDataRepository {
     List<AnalysisData> copyAnalysisDataList();
 
     boolean isEmpty();

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.domain;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
@@ -6,7 +6,7 @@ import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultNewRecordDataDomain implements NewRecordDataDomain {
+public class DefaultNewRecordDataRepository implements NewRecordDataRepository {
     private final List<NewRecordData> newRecordDataList = new ArrayList<>();
 
     @Override

@@ -1,5 +1,6 @@
-package com.github.johypark97.varchivemacro.macro.domain;
+package com.github.johypark97.varchivemacro.macro.repository;
 
+import com.github.johypark97.varchivemacro.macro.validator.PathValidator;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;
@@ -14,17 +15,17 @@ import java.util.Set;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
-public class CacheManager {
+public class CacheRepository {
     private static final String FORMAT = "png";
     private static final String MARKER_FILE_NAME = ".vamacro";
 
     private final Path cacheDirectoryPath;
 
-    public CacheManager(Path path) {
+    public CacheRepository(Path path) {
         this.cacheDirectoryPath = path;
     }
 
-    public CacheManager(String path) throws IOException {
+    public CacheRepository(String path) throws IOException {
         this(PathValidator.validateAndConvert(path));
     }
 

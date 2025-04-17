@@ -4,9 +4,9 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
-import com.github.johypark97.varchivemacro.macro.domain.CacheManager;
-import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.repository.CacheRepository;
+import com.github.johypark97.varchivemacro.macro.repository.ScanDataRepository;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -16,13 +16,13 @@ import java.util.Set;
 public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
     private final String cacheDirectory;
 
-    private CacheManager cacheManager;
+    private CacheRepository cacheRepository;
     private CollectionArea collectionArea;
 
-    public FHDCollectionLoaderTask(ScanDataDomain scanDataDomain,
+    public FHDCollectionLoaderTask(ScanDataRepository scanDataRepository,
             Map<String, List<Song>> categoryNameSongListMap, TitleTool titleTool,
             Set<String> selectedCategorySet, String cacheDirectory) {
-        super(scanDataDomain, categoryNameSongListMap, titleTool, selectedCategorySet);
+        super(scanDataRepository, categoryNameSongListMap, titleTool, selectedCategorySet);
 
         this.cacheDirectory = cacheDirectory;
     }
@@ -37,7 +37,7 @@ public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
 
     @Override
     protected BufferedImage captureScreenshot(CaptureData data) throws Exception {
-        return cacheManager.read(data.idProperty().get());
+        return cacheRepository.read(data.idProperty().get());
     }
 
     @Override
@@ -47,8 +47,8 @@ public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
 
     @Override
     protected Void callTask() throws Exception {
-        cacheManager = new CacheManager(cacheDirectory);
-        cacheManager.validate();
+        cacheRepository = new CacheRepository(cacheDirectory);
+        cacheRepository.validate();
 
         collectionArea = CollectionAreaFactory.create(new Dimension(1920, 1080));
 

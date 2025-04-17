@@ -4,14 +4,14 @@ import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.ScanDataDomain;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.AnalyzedRecordData;
 import com.github.johypark97.varchivemacro.macro.model.RecordData;
 import com.github.johypark97.varchivemacro.macro.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.repository.AnalysisDataRepository;
 import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
+import com.github.johypark97.varchivemacro.macro.repository.NewRecordDataRepository;
+import com.github.johypark97.varchivemacro.macro.repository.ScanDataRepository;
 import com.github.johypark97.varchivemacro.macro.service.task.AnalysisTask;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -19,24 +19,23 @@ import java.util.List;
 import javafx.concurrent.Task;
 
 public class DefaultAnalysisService implements AnalysisService {
+    private final AnalysisDataRepository analysisDataRepository;
     private final ConfigRepository configRepository;
+    private final NewRecordDataRepository newRecordDataRepository;
+    private final ScanDataRepository scanDataRepository;
 
-    private final AnalysisDataDomain analysisDataDomain;
-    private final NewRecordDataDomain newRecordDataDomain;
-    private final ScanDataDomain scanDataDomain;
-
-    public DefaultAnalysisService(ConfigRepository configRepository,
-            AnalysisDataDomain analysisDataDomain, NewRecordDataDomain newRecordDataDomain,
-            ScanDataDomain scanDataDomain) {
-        this.analysisDataDomain = analysisDataDomain;
+    public DefaultAnalysisService(AnalysisDataRepository analysisDataRepository,
+            ConfigRepository configRepository, NewRecordDataRepository newRecordDataRepository,
+            ScanDataRepository scanDataRepository) {
+        this.analysisDataRepository = analysisDataRepository;
         this.configRepository = configRepository;
-        this.newRecordDataDomain = newRecordDataDomain;
-        this.scanDataDomain = scanDataDomain;
+        this.newRecordDataRepository = newRecordDataRepository;
+        this.scanDataRepository = scanDataRepository;
     }
 
     @Override
     public boolean isReady_analysis() {
-        return !scanDataDomain.isEmpty() && analysisDataDomain.isEmpty();
+        return !scanDataRepository.isEmpty() && analysisDataRepository.isEmpty();
     }
 
     @Override
@@ -44,8 +43,8 @@ public class DefaultAnalysisService implements AnalysisService {
         ScannerConfig config = configRepository.getScannerConfig();
 
         return TaskManager.getInstance().register(AnalysisTask.class,
-                new AnalysisTask(onDataReady, scanDataDomain, analysisDataDomain,
-                        config.cacheDirectory, config.analysisThreadCount));
+                new AnalysisTask(analysisDataRepository, scanDataRepository, config.cacheDirectory,
+                        config.analysisThreadCount, onDataReady));
     }
 
     @Override
@@ -59,28 +58,27 @@ public class DefaultAnalysisService implements AnalysisService {
             return;
         }
 
-        analysisDataDomain.clear();
-        newRecordDataDomain.clear();
+        analysisDataRepository.clear();
+        newRecordDataRepository.clear();
 
         onClear.run();
     }
 
     @Override
     public List<AnalysisData> copyAnalysisDataList() {
-        return analysisDataDomain.copyAnalysisDataList();
+        return analysisDataRepository.copyAnalysisDataList();
     }
 
     @Override
     public AnalyzedRecordData getAnalyzedRecordData(int id) throws Exception {
         AnalyzedRecordData data = new AnalyzedRecordData();
 
-        AnalysisData analysisData = analysisDataDomain.getAnalysisData(id);
+        AnalysisData analysisData = analysisDataRepository.getAnalysisData(id);
         data.song = analysisData.songDataProperty().get().songProperty().get();
 
         String cacheDirectory = configRepository.getScannerConfig().cacheDirectory;
-        BufferedImage image =
-                scanDataDomain.getCaptureImage(analysisData.captureData.get().idProperty().get(),
-                        cacheDirectory);
+        BufferedImage image = scanDataRepository.getCaptureImage(
+                analysisData.captureData.get().idProperty().get(), cacheDirectory);
 
         Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
         CollectionArea area = CollectionAreaFactory.create(resolution);

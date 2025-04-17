@@ -6,12 +6,12 @@ import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader.Reques
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.data.Account;
-import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.PathValidator;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData.Status;
 import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
+import com.github.johypark97.varchivemacro.macro.repository.NewRecordDataRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
+import com.github.johypark97.varchivemacro.macro.validator.PathValidator;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.EnumSet;
@@ -22,17 +22,17 @@ import java.util.stream.Collectors;
 
 public class UploadTask extends InterruptibleTask<Void> {
     private final DatabaseRepository databaseRepository;
+    private final NewRecordDataRepository newRecordDataRepository;
     private final RecordRepository recordRepository;
-
-    private final NewRecordDataDomain newRecordDataDomain;
 
     private final String accountFile;
     private final int recordUploadDelay;
 
-    public UploadTask(DatabaseRepository databaseRepository, RecordRepository recordRepository,
-            NewRecordDataDomain newRecordDataDomain, String accountFile, int recordUploadDelay) {
+    public UploadTask(DatabaseRepository databaseRepository,
+            NewRecordDataRepository newRecordDataRepository, RecordRepository recordRepository,
+            String accountFile, int recordUploadDelay) {
         this.databaseRepository = databaseRepository;
-        this.newRecordDataDomain = newRecordDataDomain;
+        this.newRecordDataRepository = newRecordDataRepository;
         this.recordRepository = recordRepository;
 
         this.accountFile = accountFile;
@@ -47,7 +47,7 @@ public class UploadTask extends InterruptibleTask<Void> {
     private Queue<NewRecordData> createUploadQueue() {
         EnumSet<Status> statusSet = EnumSet.of(Status.HIGHER_RECORD_EXISTS, Status.UPLOADED);
 
-        return newRecordDataDomain.copyNewRecordDataList().stream()
+        return newRecordDataRepository.copyNewRecordDataList().stream()
                 .filter(x -> x.selected.get() && !statusSet.contains(x.status.get()))
                 .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -67,8 +67,8 @@ public class UploadTask extends InterruptibleTask<Void> {
     @Override
     protected Void callTask() throws Exception {
         // throw an exception if there is no new record data
-        if (newRecordDataDomain.isEmpty()) {
-            throw new IllegalStateException("NewRecordDataDomain is empty");
+        if (newRecordDataRepository.isEmpty()) {
+            throw new IllegalStateException("NewRecordDataRepository is empty");
         }
 
         RecordUploader api = createRecordUploader();

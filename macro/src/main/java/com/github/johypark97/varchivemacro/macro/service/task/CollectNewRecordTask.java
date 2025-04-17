@@ -4,23 +4,22 @@ import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
-import com.github.johypark97.varchivemacro.macro.domain.AnalysisDataDomain;
-import com.github.johypark97.varchivemacro.macro.domain.NewRecordDataDomain;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.RecordData;
+import com.github.johypark97.varchivemacro.macro.repository.AnalysisDataRepository;
+import com.github.johypark97.varchivemacro.macro.repository.NewRecordDataRepository;
 import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.google.common.collect.Table.Cell;
 
 public class CollectNewRecordTask extends InterruptibleTask<Void> {
+    private final AnalysisDataRepository analysisDataRepository;
+    private final NewRecordDataRepository newRecordDataRepository;
     private final RecordRepository recordRepository;
 
-    private final AnalysisDataDomain analysisDataDomain;
-    private final NewRecordDataDomain newRecordDataDomain;
-
-    public CollectNewRecordTask(RecordRepository recordRepository,
-            AnalysisDataDomain analysisDataDomain, NewRecordDataDomain newRecordDataDomain) {
-        this.analysisDataDomain = analysisDataDomain;
-        this.newRecordDataDomain = newRecordDataDomain;
+    public CollectNewRecordTask(AnalysisDataRepository analysisDataRepository,
+            NewRecordDataRepository newRecordDataRepository, RecordRepository recordRepository) {
+        this.analysisDataRepository = analysisDataRepository;
+        this.newRecordDataRepository = newRecordDataRepository;
         this.recordRepository = recordRepository;
     }
 
@@ -42,13 +41,13 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
     @Override
     protected Void callTask() throws Exception {
         // throw an exception if there is no analysis data
-        if (analysisDataDomain.isEmpty()) {
-            throw new IllegalStateException("AnalysisDataDomain is empty");
+        if (analysisDataRepository.isEmpty()) {
+            throw new IllegalStateException("AnalysisDataRepository is empty");
         }
 
-        newRecordDataDomain.clear();
+        newRecordDataRepository.clear();
 
-        for (AnalysisData data : analysisDataDomain.copyAnalysisDataList()) {
+        for (AnalysisData data : analysisDataRepository.copyAnalysisDataList()) {
             Song song = data.songDataProperty().get().songProperty().get();
 
             for (Cell<Button, Pattern, RecordData> cell : data.recordDataTable.cellSet()) {
@@ -67,9 +66,9 @@ public class CollectNewRecordTask extends InterruptibleTask<Void> {
 
                 if (previousRecord == null) {
                     LocalRecord nullRecord = LocalRecord.nullRecord(song.id(), button, pattern);
-                    newRecordDataDomain.createNewRecordData(song, nullRecord, newRecord);
+                    newRecordDataRepository.createNewRecordData(song, nullRecord, newRecord);
                 } else if (previousRecord.isUpdated(newRecord)) {
-                    newRecordDataDomain.createNewRecordData(song, previousRecord, newRecord);
+                    newRecordDataRepository.createNewRecordData(song, previousRecord, newRecord);
                 }
             }
         }

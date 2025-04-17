@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.domain;
+package com.github.johypark97.varchivemacro.macro.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultScanDataDomain implements ScanDataDomain {
+public class DefaultScanDataRepository implements ScanDataRepository {
     private final List<CaptureData> captureDataList = new ArrayList<>();
     private final List<SongData> songDataList = new ArrayList<>();
 
@@ -65,10 +65,10 @@ public class DefaultScanDataDomain implements ScanDataDomain {
 
     @Override
     public BufferedImage getCaptureImage(int index, String cacheDirectory) throws IOException {
-        CacheManager cacheManager = new CacheManager(cacheDirectory);
+        CacheRepository cacheRepository = new CacheRepository(cacheDirectory);
 
         try {
-            return cacheManager.read(index);
+            return cacheRepository.read(index);
         } catch (IOException e) {
             captureDataList.get(index).exception.set(e);
             throw e;
