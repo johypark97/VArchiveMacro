@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.service;
 
-import com.github.johypark97.varchivemacro.macro.model.CaptureData;
-import com.github.johypark97.varchivemacro.macro.model.SongData;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongData;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;

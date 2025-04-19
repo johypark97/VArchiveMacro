@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.model;
+package com.github.johypark97.varchivemacro.macro.domain.scanner.model;
 
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;

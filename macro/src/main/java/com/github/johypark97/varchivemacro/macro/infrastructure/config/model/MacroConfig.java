@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.model;
+package com.github.johypark97.varchivemacro.macro.infrastructure.config.model;
 
 import com.google.gson.annotations.Expose;
 

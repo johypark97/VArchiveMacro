@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp.MvpView;
-import com.github.johypark97.varchivemacro.macro.model.AnalysisKey;
+import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.AnalysisKey;
 
 public interface Macro {
     interface MacroPresenter extends CommonPresenter<MacroView, MacroPresenter> {

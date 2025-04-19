@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonPresenter;
 import com.github.johypark97.varchivemacro.lib.jfx.CommonMvp.CommonView;
-import com.github.johypark97.varchivemacro.macro.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureData;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 

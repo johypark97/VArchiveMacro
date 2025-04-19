@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.service;
 
-import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
-import com.github.johypark97.varchivemacro.macro.model.AnalyzedRecordData;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.ui.viewmodel.AnalyzedRecordData;
 import java.util.List;
 import javafx.concurrent.Task;
 

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.model;
+package com.github.johypark97.varchivemacro.macro.domain.scanner.model;
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager;

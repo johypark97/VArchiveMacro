@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.domain.scanner.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
-import com.github.johypark97.varchivemacro.macro.model.CaptureData;
-import com.github.johypark97.varchivemacro.macro.model.SongData;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongData;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;

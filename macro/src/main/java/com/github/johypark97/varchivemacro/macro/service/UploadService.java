@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.service;
 
-import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.NewRecordData;
 import java.util.List;
 import javafx.concurrent.Task;
 

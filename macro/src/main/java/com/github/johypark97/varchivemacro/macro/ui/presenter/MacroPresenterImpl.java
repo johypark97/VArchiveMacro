@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.hook.NativeKeyEventData;
-import com.github.johypark97.varchivemacro.macro.model.MacroConfig;
+import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Macro.MacroPresenter;

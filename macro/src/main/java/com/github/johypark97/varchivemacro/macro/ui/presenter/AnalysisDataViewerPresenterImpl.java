@@ -1,11 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
-import com.github.johypark97.varchivemacro.macro.model.AnalyzedRecordData;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.service.AnalysisService;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.RecordBoxData;
+import com.github.johypark97.varchivemacro.macro.ui.viewmodel.AnalyzedRecordData;
 import java.awt.image.BufferedImage;
 import javafx.embed.swing.SwingFXUtils;
 

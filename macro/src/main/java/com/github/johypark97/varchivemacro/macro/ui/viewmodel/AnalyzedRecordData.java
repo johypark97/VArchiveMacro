@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.model;
+package com.github.johypark97.varchivemacro.macro.ui.viewmodel;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
 import java.awt.image.BufferedImage;

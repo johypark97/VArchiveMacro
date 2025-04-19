@@ -6,9 +6,9 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactor
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service.CaptureImageCacheService;
-import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Robot;

@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.domain.scanner.repository;
 
-import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
-import com.github.johypark97.varchivemacro.macro.model.SongData;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.AnalysisData;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongData;
 import java.util.List;
 
 public interface AnalysisDataRepository {

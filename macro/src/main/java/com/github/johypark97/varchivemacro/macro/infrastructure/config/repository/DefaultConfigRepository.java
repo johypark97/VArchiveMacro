@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.macro.infrastructure.config.reposito
 
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_dump;
 
-import com.github.johypark97.varchivemacro.macro.model.MacroConfig;
-import com.github.johypark97.varchivemacro.macro.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.MacroConfig;
+import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.ScannerConfig;
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonParseException;

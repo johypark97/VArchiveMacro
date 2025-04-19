@@ -1,10 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.infrastructure.scanner.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureData;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service.CaptureImageCacheService;
-import com.github.johypark97.varchivemacro.macro.model.CaptureData;
-import com.github.johypark97.varchivemacro.macro.model.SongData;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;

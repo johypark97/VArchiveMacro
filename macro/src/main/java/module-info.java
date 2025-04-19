@@ -16,7 +16,7 @@ module varchivemacro.macro {
     requires javafx.fxml;
     requires javafx.swing;
 
-    opens com.github.johypark97.varchivemacro.macro.model to javafx.base;
+    opens com.github.johypark97.varchivemacro.macro.domain.scanner.model to javafx.base;
     opens com.github.johypark97.varchivemacro.macro.ui.view to javafx.fxml;
     opens com.github.johypark97.varchivemacro.macro.ui.view.component to javafx.fxml;
 
@@ -28,8 +28,8 @@ module varchivemacro.macro {
 
     exports com.github.johypark97.varchivemacro.macro.data to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.github.data to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.infrastructure.config.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.infrastructure.config.repository to com.google.gson;
-    exports com.github.johypark97.varchivemacro.macro.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.resource to com.google.gson;
 
     // xml language resource bundle provider
