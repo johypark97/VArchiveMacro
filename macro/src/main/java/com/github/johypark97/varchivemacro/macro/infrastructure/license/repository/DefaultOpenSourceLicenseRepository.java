@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.repository;
+package com.github.johypark97.varchivemacro.macro.infrastructure.license.repository;
 
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_general;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;

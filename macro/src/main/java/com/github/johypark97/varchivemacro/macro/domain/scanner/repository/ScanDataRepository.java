@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.repository;
+package com.github.johypark97.varchivemacro.macro.domain.scanner.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;

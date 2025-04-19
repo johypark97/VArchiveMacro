@@ -4,11 +4,11 @@ import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.AnalysisDataRepository;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.NewRecordDataRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.record.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.RecordData;
-import com.github.johypark97.varchivemacro.macro.repository.AnalysisDataRepository;
-import com.github.johypark97.varchivemacro.macro.repository.NewRecordDataRepository;
-import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.google.common.collect.Table.Cell;
 
 public class CollectNewRecordTask extends InterruptibleTask<Void> {

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.repository;
+package com.github.johypark97.varchivemacro.macro.infrastructure.license.repository;
 
 import java.io.IOException;
 import java.util.List;

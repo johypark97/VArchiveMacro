@@ -4,9 +4,9 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service.CaptureImageCacheService;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
-import com.github.johypark97.varchivemacro.macro.repository.CacheRepository;
-import com.github.johypark97.varchivemacro.macro.repository.ScanDataRepository;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Set;
 public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
     private final String cacheDirectory;
 
-    private CacheRepository cacheRepository;
+    private CaptureImageCacheService captureImageCacheService;
     private CollectionArea collectionArea;
 
     public FHDCollectionLoaderTask(ScanDataRepository scanDataRepository,
@@ -37,7 +37,7 @@ public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
 
     @Override
     protected BufferedImage captureScreenshot(CaptureData data) throws Exception {
-        return cacheRepository.read(data.idProperty().get());
+        return captureImageCacheService.read(data.idProperty().get());
     }
 
     @Override
@@ -47,8 +47,8 @@ public class FHDCollectionLoaderTask extends AbstractCollectionScanTask {
 
     @Override
     protected Void callTask() throws Exception {
-        cacheRepository = new CacheRepository(cacheDirectory);
-        cacheRepository.validate();
+        captureImageCacheService = new CaptureImageCacheService(cacheDirectory);
+        captureImageCacheService.validate();
 
         collectionArea = CollectionAreaFactory.create(new Dimension(1920, 1080));
 

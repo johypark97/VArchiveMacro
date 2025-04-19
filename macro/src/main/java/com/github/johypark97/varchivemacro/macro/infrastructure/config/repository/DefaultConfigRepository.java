@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.repository;
+package com.github.johypark97.varchivemacro.macro.infrastructure.config.repository;
 
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_dump;
 

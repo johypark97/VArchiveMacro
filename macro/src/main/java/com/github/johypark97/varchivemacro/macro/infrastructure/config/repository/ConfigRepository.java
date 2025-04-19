@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.repository;
+package com.github.johypark97.varchivemacro.macro.infrastructure.config.repository;
 
 import com.github.johypark97.varchivemacro.macro.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.model.ScannerConfig;

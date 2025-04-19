@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.repository;
+package com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service;
 
 import com.github.johypark97.varchivemacro.macro.validator.PathValidator;
 import java.awt.image.BufferedImage;
@@ -15,17 +15,17 @@ import java.util.Set;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
-public class CacheRepository {
+public class CaptureImageCacheService {
     private static final String FORMAT = "png";
     private static final String MARKER_FILE_NAME = ".vamacro";
 
     private final Path cacheDirectoryPath;
 
-    public CacheRepository(Path path) {
+    public CaptureImageCacheService(Path path) {
         this.cacheDirectoryPath = path;
     }
 
-    public CacheRepository(String path) throws IOException {
+    public CaptureImageCacheService(String path) throws IOException {
         this(PathValidator.validateAndConvert(path));
     }
 

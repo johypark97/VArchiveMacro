@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
+import com.github.johypark97.varchivemacro.macro.infrastructure.license.repository.OpenSourceLicenseRepository;
 import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
-import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRepository;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.OpenSourceLicense.OpenSourceLicensePresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.OpenSourceLicense.OpenSourceLicenseView;
 import java.io.IOException;

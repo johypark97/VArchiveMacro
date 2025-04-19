@@ -6,11 +6,11 @@ import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader.Reques
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.data.Account;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.NewRecordDataRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.database.repository.DatabaseRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.record.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData.Status;
-import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.NewRecordDataRepository;
-import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
 import com.github.johypark97.varchivemacro.macro.validator.PathValidator;
 import java.io.IOException;
 import java.security.GeneralSecurityException;

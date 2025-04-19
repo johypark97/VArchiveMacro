@@ -1,7 +1,8 @@
-package com.github.johypark97.varchivemacro.macro.repository;
+package com.github.johypark97.varchivemacro.macro.infrastructure.scanner.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.NewRecordDataRepository;
 import com.github.johypark97.varchivemacro.macro.model.NewRecordData;
 import java.util.ArrayList;
 import java.util.List;

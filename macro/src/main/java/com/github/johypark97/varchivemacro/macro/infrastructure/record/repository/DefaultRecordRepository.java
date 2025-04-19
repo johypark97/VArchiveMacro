@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.repository;
+package com.github.johypark97.varchivemacro.macro.infrastructure.record.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultRecordManager;

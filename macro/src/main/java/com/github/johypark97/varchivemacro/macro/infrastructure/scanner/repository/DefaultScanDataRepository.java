@@ -1,6 +1,8 @@
-package com.github.johypark97.varchivemacro.macro.repository;
+package com.github.johypark97.varchivemacro.macro.infrastructure.scanner.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service.CaptureImageCacheService;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.model.SongData;
 import java.awt.image.BufferedImage;
@@ -65,10 +67,11 @@ public class DefaultScanDataRepository implements ScanDataRepository {
 
     @Override
     public BufferedImage getCaptureImage(int index, String cacheDirectory) throws IOException {
-        CacheRepository cacheRepository = new CacheRepository(cacheDirectory);
+        CaptureImageCacheService captureImageCacheService =
+                new CaptureImageCacheService(cacheDirectory);
 
         try {
-            return cacheRepository.read(index);
+            return captureImageCacheService.read(index);
         } catch (IOException e) {
             captureDataList.get(index).exception.set(e);
             throw e;

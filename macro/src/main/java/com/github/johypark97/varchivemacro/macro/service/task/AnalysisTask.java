@@ -10,13 +10,13 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.AnalysisDataRepository;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service.CaptureImageCacheService;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.model.AnalysisData.Status;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.model.RecordData;
-import com.github.johypark97.varchivemacro.macro.repository.AnalysisDataRepository;
-import com.github.johypark97.varchivemacro.macro.repository.CacheRepository;
-import com.github.johypark97.varchivemacro.macro.repository.ScanDataRepository;
 import com.github.johypark97.varchivemacro.macro.service.ocr.ScannerOcr;
 import com.google.common.base.CharMatcher;
 import java.awt.Dimension;
@@ -59,7 +59,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
     private final int imagePreloaderThreadCount;
     private final int imagePreloadingLimit;
 
-    private CacheRepository cacheRepository;
+    private CaptureImageCacheService captureImageCacheService;
     private int completedTaskCount;
     private int totalTaskCount;
 
@@ -79,7 +79,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
 
     private byte[] loadImage(AnalysisData analysisData) throws IOException {
         return ImageConverter.imageToPngBytes(
-                cacheRepository.read(analysisData.captureData.get().idProperty().get()));
+                captureImageCacheService.read(analysisData.captureData.get().idProperty().get()));
     }
 
     private void analyze(OcrWrapper ocr, CollectionArea area, AnalysisData analysisData,
@@ -143,7 +143,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
             throw new IllegalStateException("AnalysisDataRepository is not clean");
         }
 
-        cacheRepository = new CacheRepository(cacheDirectory);
+        captureImageCacheService = new CaptureImageCacheService(cacheDirectory);
 
         updateProgress(0, 1);
 
@@ -179,7 +179,7 @@ public class AnalysisTask extends InterruptibleTask<Void> {
         CollectionArea area;
         {
             AnalysisData captureData = dataList.get(0);
-            BufferedImage image = cacheRepository.read(captureData.idProperty().get());
+            BufferedImage image = captureImageCacheService.read(captureData.idProperty().get());
 
             Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
             area = CollectionAreaFactory.create(resolution);

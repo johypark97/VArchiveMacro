@@ -6,9 +6,9 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactor
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service.CaptureImageCacheService;
 import com.github.johypark97.varchivemacro.macro.model.CaptureData;
-import com.github.johypark97.varchivemacro.macro.repository.CacheRepository;
-import com.github.johypark97.varchivemacro.macro.repository.ScanDataRepository;
 import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Robot;
@@ -31,7 +31,7 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
     private final int captureDelay;
     private final int keyInputDuration;
 
-    private CacheRepository cacheRepository;
+    private CaptureImageCacheService captureImageCacheService;
     private CollectionArea collectionArea;
     private ImageCachingService imageCachingService;
 
@@ -77,7 +77,7 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
 
         Runnable command = () -> {
             try {
-                cacheRepository.write(data.idProperty().get(), image);
+                captureImageCacheService.write(data.idProperty().get(), image);
             } catch (Exception e) {
                 data.exception.set(e);
             }
@@ -106,8 +106,8 @@ public class DefaultCollectionScanTask extends AbstractCollectionScanTask {
         collectionArea = createCollectionArea();
 
         // check the cache directory
-        cacheRepository = new CacheRepository(cacheDirectory);
-        cacheRepository.prepare();
+        captureImageCacheService = new CaptureImageCacheService(cacheDirectory);
+        captureImageCacheService.prepare();
 
         try {
             imageCachingService = new ImageCachingService();

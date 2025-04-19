@@ -2,20 +2,20 @@ package com.github.johypark97.varchivemacro.macro.provider;
 
 import com.github.johypark97.varchivemacro.lib.common.manager.InstanceManager;
 import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManager;
-import com.github.johypark97.varchivemacro.macro.repository.AnalysisDataRepository;
-import com.github.johypark97.varchivemacro.macro.repository.ConfigRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DatabaseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultAnalysisDataRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultConfigRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultDatabaseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultNewRecordDataRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultOpenSourceLicenseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultRecordRepository;
-import com.github.johypark97.varchivemacro.macro.repository.DefaultScanDataRepository;
-import com.github.johypark97.varchivemacro.macro.repository.NewRecordDataRepository;
-import com.github.johypark97.varchivemacro.macro.repository.OpenSourceLicenseRepository;
-import com.github.johypark97.varchivemacro.macro.repository.RecordRepository;
-import com.github.johypark97.varchivemacro.macro.repository.ScanDataRepository;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.AnalysisDataRepository;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.NewRecordDataRepository;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.config.repository.ConfigRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.config.repository.DefaultConfigRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.database.repository.DatabaseRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.database.repository.DefaultDatabaseRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.license.repository.DefaultOpenSourceLicenseRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.license.repository.OpenSourceLicenseRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.record.repository.DefaultRecordRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.record.repository.RecordRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.repository.DefaultAnalysisDataRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.repository.DefaultNewRecordDataRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.repository.DefaultScanDataRepository;
 
 public class DefaultRepositoryProvider implements RepositoryProvider {
     private final InstanceManager<Object> instanceManager = new LazyInstanceManager<>();

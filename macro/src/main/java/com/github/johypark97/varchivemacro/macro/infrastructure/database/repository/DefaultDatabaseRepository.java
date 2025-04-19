@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.repository;
+package com.github.johypark97.varchivemacro.macro.infrastructure.database.repository;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.CachedReadOnlySongDatabase;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultTitleTool;
