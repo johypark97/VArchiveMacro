@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.service;
+package com.github.johypark97.varchivemacro.macro.application.scanner.service;
 
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.NewRecordData;
 import java.util.List;

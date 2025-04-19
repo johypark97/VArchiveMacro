@@ -1,6 +1,8 @@
-package com.github.johypark97.varchivemacro.macro.service;
+package com.github.johypark97.varchivemacro.macro.application.scanner.service;
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
+import com.github.johypark97.varchivemacro.macro.application.scanner.task.AbstractCollectionScanTask;
+import com.github.johypark97.varchivemacro.macro.application.scanner.task.DefaultCollectionScanTask;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
@@ -8,8 +10,6 @@ import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.Sca
 import com.github.johypark97.varchivemacro.macro.infrastructure.config.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.database.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service.CaptureImageCacheService;
-import com.github.johypark97.varchivemacro.macro.service.task.AbstractCollectionScanTask;
-import com.github.johypark97.varchivemacro.macro.service.task.DefaultCollectionScanTask;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;

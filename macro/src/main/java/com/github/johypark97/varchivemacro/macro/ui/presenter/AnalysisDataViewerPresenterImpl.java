@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.AnalysisService;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
-import com.github.johypark97.varchivemacro.macro.service.AnalysisService;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.RecordBoxData;

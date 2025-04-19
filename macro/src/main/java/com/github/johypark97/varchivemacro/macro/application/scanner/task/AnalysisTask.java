@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.service.task;
+package com.github.johypark97.varchivemacro.macro.application.scanner.task;
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
@@ -10,14 +10,15 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.macro.application.common.InterruptibleTask;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.AnalysisData.Status;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.RecordData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.AnalysisDataRepository;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.ocr.ScannerOcr;
 import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service.CaptureImageCacheService;
-import com.github.johypark97.varchivemacro.macro.service.ocr.ScannerOcr;
 import com.google.common.base.CharMatcher;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;

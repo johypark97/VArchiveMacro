@@ -1,10 +1,11 @@
-package com.github.johypark97.varchivemacro.macro.service.task;
+package com.github.johypark97.varchivemacro.macro.application.scanner.task;
 
 import com.github.johypark97.varchivemacro.lib.scanner.api.Api;
 import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader;
 import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader.RequestJson;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
+import com.github.johypark97.varchivemacro.macro.application.common.InterruptibleTask;
 import com.github.johypark97.varchivemacro.macro.data.Account;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.NewRecordData.Status;

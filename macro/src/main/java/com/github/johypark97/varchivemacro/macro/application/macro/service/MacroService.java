@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.service;
+package com.github.johypark97.varchivemacro.macro.application.macro.service;
 
 import javafx.concurrent.Task;
 import javafx.geometry.VerticalDirection;

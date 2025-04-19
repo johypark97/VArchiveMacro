@@ -1,9 +1,10 @@
-package com.github.johypark97.varchivemacro.macro.service;
+package com.github.johypark97.varchivemacro.macro.application.scanner.service;
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.macro.application.scanner.task.AnalysisTask;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.RecordData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.AnalysisDataRepository;
@@ -11,7 +12,6 @@ import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.NewRe
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.infrastructure.config.repository.ConfigRepository;
-import com.github.johypark97.varchivemacro.macro.service.task.AnalysisTask;
 import com.github.johypark97.varchivemacro.macro.ui.viewmodel.AnalyzedRecordData;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;

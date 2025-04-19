@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.service.task;
+package com.github.johypark97.varchivemacro.macro.application.scanner.task;
 
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils;
@@ -8,11 +8,12 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.macro.application.common.InterruptibleTask;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.LinkMetadata;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.ScanDataRepository;
-import com.github.johypark97.varchivemacro.macro.service.ocr.TitleOcr;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.ocr.TitleOcr;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;

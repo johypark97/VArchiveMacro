@@ -1,6 +1,7 @@
-package com.github.johypark97.varchivemacro.macro.service.task;
+package com.github.johypark97.varchivemacro.macro.application.macro.task;
 
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
+import com.github.johypark97.varchivemacro.macro.application.common.InterruptibleTask;
 import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.AnalysisKey;
 import java.awt.AWTException;
 import java.awt.Robot;

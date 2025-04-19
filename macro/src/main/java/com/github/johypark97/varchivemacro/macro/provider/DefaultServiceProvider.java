@@ -2,14 +2,14 @@ package com.github.johypark97.varchivemacro.macro.provider;
 
 import com.github.johypark97.varchivemacro.lib.common.manager.InstanceManager;
 import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManager;
-import com.github.johypark97.varchivemacro.macro.service.AnalysisService;
-import com.github.johypark97.varchivemacro.macro.service.CollectionScanService;
-import com.github.johypark97.varchivemacro.macro.service.DefaultAnalysisService;
-import com.github.johypark97.varchivemacro.macro.service.DefaultCollectionScanService;
-import com.github.johypark97.varchivemacro.macro.service.DefaultMacroService;
-import com.github.johypark97.varchivemacro.macro.service.DefaultUploadService;
-import com.github.johypark97.varchivemacro.macro.service.MacroService;
-import com.github.johypark97.varchivemacro.macro.service.UploadService;
+import com.github.johypark97.varchivemacro.macro.application.macro.service.DefaultMacroService;
+import com.github.johypark97.varchivemacro.macro.application.macro.service.MacroService;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.AnalysisService;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.CollectionScanService;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.DefaultAnalysisService;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.DefaultCollectionScanService;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.DefaultUploadService;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.UploadService;
 
 public class DefaultServiceProvider implements ServiceProvider {
     private final InstanceManager<Object> instanceManager = new LazyInstanceManager<>();

@@ -2,11 +2,11 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.CollectionScanService;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongData;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.resource.Language;
-import com.github.johypark97.varchivemacro.macro.service.CollectionScanService;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.LinkEditor.LinkEditorPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.LinkEditor.LinkEditorView;
 import java.io.IOException;

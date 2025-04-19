@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.service.ocr;
+package com.github.johypark97.varchivemacro.macro.infrastructure.scanner.ocr;
 
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.DefaultOcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrInitializationError;

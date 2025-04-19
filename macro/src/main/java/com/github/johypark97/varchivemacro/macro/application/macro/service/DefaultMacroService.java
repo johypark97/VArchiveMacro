@@ -1,9 +1,9 @@
-package com.github.johypark97.varchivemacro.macro.service;
+package com.github.johypark97.varchivemacro.macro.application.macro.service;
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
+import com.github.johypark97.varchivemacro.macro.application.macro.task.MacroTask;
 import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.infrastructure.config.repository.ConfigRepository;
-import com.github.johypark97.varchivemacro.macro.service.task.MacroTask;
 import javafx.concurrent.Task;
 import javafx.geometry.VerticalDirection;
 
