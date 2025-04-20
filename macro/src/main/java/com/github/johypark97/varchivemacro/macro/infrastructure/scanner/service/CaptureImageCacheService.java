@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service;
 
-import com.github.johypark97.varchivemacro.macro.validator.PathValidator;
+import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;

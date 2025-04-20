@@ -6,13 +6,13 @@ import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader.Reques
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
 import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Song;
 import com.github.johypark97.varchivemacro.macro.application.common.InterruptibleTask;
+import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.NewRecordData.Status;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.NewRecordDataRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.api.model.Account;
 import com.github.johypark97.varchivemacro.macro.infrastructure.database.repository.DatabaseRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.record.repository.RecordRepository;
-import com.github.johypark97.varchivemacro.macro.validator.PathValidator;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.EnumSet;
