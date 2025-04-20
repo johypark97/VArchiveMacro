@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.resource;
+package com.github.johypark97.varchivemacro.macro.common.i18n;
 
 import com.github.johypark97.varchivemacro.lib.common.service.XmlResourceBundleControl;
 import com.github.johypark97.varchivemacro.macro.spi.LanguageProviderImpl;

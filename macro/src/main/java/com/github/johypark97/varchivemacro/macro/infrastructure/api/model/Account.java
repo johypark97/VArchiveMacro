@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.data;
+package com.github.johypark97.varchivemacro.macro.infrastructure.api.model;
 
 import java.io.IOException;
 import java.nio.file.Files;

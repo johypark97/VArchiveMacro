@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.resource;
+package com.github.johypark97.varchivemacro.macro.infrastructure.license.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;

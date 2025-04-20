@@ -2,10 +2,10 @@ package com.github.johypark97.varchivemacro.macro.ui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.component.ImageViewer;
-import com.github.johypark97.varchivemacro.macro.resource.GlobalResource;
-import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.CaptureViewer.CaptureViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.CaptureViewer.CaptureViewerView;
+import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import java.io.IOException;
 import java.net.URL;
 import javafx.fxml.FXML;
@@ -34,8 +34,8 @@ public class CaptureViewerViewImpl extends BorderPane implements CaptureViewerVi
         this.stage = stage;
 
         URL fxmlUrl = CaptureViewerViewImpl.class.getResource(FXML_PATH);
-        URL globalCss = GlobalResource.getGlobalCss();
-        URL tableColorCss = GlobalResource.getTableColorCss();
+        URL globalCss = UiResource.getGlobalCss();
+        URL tableColorCss = UiResource.getTableColorCss();
 
         try {
             Mvp.loadFxml(this, fxmlUrl,

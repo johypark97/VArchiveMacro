@@ -8,12 +8,12 @@ import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase.Son
 import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.SongPackComparator;
 import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.SongTitleComparator;
 import com.github.johypark97.varchivemacro.lib.scanner.database.comparator.TitleComparator;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.AnalysisData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.LinkMetadata;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.NewRecordData;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongData;
-import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Scanner.ScannerPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Scanner.ScannerView;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Scanner.ViewerRecordData;

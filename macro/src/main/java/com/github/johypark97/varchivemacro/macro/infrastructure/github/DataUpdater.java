@@ -1,10 +1,10 @@
-package com.github.johypark97.varchivemacro.macro.github;
+package com.github.johypark97.varchivemacro.macro.infrastructure.github;
 
-import static com.github.johypark97.varchivemacro.macro.data.DataVersion.DataFile;
-import static com.github.johypark97.varchivemacro.macro.data.DataVersion.from;
+import static com.github.johypark97.varchivemacro.macro.infrastructure.github.data.DataVersion.DataFile;
+import static com.github.johypark97.varchivemacro.macro.infrastructure.github.data.DataVersion.from;
 
-import com.github.johypark97.varchivemacro.macro.data.DataVersion;
-import com.github.johypark97.varchivemacro.macro.github.data.GitHubContent;
+import com.github.johypark97.varchivemacro.macro.infrastructure.github.data.DataVersion;
+import com.github.johypark97.varchivemacro.macro.infrastructure.github.data.GitHubContent;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;

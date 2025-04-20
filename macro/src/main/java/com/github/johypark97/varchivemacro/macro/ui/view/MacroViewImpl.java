@@ -2,8 +2,8 @@ package com.github.johypark97.varchivemacro.macro.ui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.AnalysisKey;
-import com.github.johypark97.varchivemacro.macro.resource.Language;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Macro.MacroPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Macro.MacroView;
 import java.net.URL;

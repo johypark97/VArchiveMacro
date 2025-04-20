@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.github;
+package com.github.johypark97.varchivemacro.macro.infrastructure.github;
 
 import java.io.IOException;
 import java.net.URI;

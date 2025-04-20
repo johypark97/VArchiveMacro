@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage;
 
-import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
-import com.github.johypark97.varchivemacro.macro.resource.GlobalResource;
+import com.github.johypark97.varchivemacro.macro.infrastructure.resource.BuildInfo;
+import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import java.net.URL;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -19,7 +19,7 @@ public class HomeStage {
     }
 
     public static void setupStage(Stage stage) {
-        URL iconUrl = GlobalResource.getIcon();
+        URL iconUrl = UiResource.getIcon();
 
         stage.getIcons().add(new Image(iconUrl.toString()));
         stage.setTitle(String.format("%s v%s", TITLE, BuildInfo.version));

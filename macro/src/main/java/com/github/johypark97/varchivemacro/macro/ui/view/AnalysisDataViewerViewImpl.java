@@ -2,11 +2,11 @@ package com.github.johypark97.varchivemacro.macro.ui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
-import com.github.johypark97.varchivemacro.macro.resource.GlobalResource;
-import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.AnalysisDataViewerPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.AnalysisDataViewerView;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.AnalysisDataViewer.RecordBoxData;
+import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
@@ -66,8 +66,8 @@ public class AnalysisDataViewerViewImpl extends VBox implements AnalysisDataView
         this.stage = stage;
 
         URL fxmlUrl = AnalysisDataViewerViewImpl.class.getResource(FXML_PATH);
-        URL globalCss = GlobalResource.getGlobalCss();
-        URL tableColorCss = GlobalResource.getTableColorCss();
+        URL globalCss = UiResource.getGlobalCss();
+        URL tableColorCss = UiResource.getTableColorCss();
 
         try {
             Mvp.loadFxml(this, fxmlUrl,

@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.macro.infrastructure.record.reposito
 import com.github.johypark97.varchivemacro.lib.scanner.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultRecordManager;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager.LocalRecord;
-import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

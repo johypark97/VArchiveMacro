@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.view;
 
-import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerLoader.ScannerLoaderPresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerLoader.ScannerLoaderView;
 import com.github.johypark97.varchivemacro.macro.ui.view.component.ScannerDjNameInputComponent;

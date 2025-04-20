@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.data;
+package com.github.johypark97.varchivemacro.macro.infrastructure.github.data;
 
 import com.github.johypark97.varchivemacro.lib.common.GsonWrapper;
 import com.google.gson.Gson;

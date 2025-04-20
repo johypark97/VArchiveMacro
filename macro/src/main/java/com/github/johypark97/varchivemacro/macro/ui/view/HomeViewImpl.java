@@ -2,11 +2,11 @@ package com.github.johypark97.varchivemacro.macro.ui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
-import com.github.johypark97.varchivemacro.macro.resource.GlobalResource;
-import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Home.HomePresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Home.TabHighlightType;
+import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
@@ -70,9 +70,9 @@ public class HomeViewImpl extends BorderPane implements HomeView {
         this.stage = stage;
 
         URL fxmlUrl = HomeViewImpl.class.getResource(FXML_PATH);
-        URL globalCss = GlobalResource.getGlobalCss();
-        URL tabColorCss = GlobalResource.getTabColorCss();
-        URL tableColorCss = GlobalResource.getTableColorCss();
+        URL globalCss = UiResource.getGlobalCss();
+        URL tabColorCss = UiResource.getTabColorCss();
+        URL tableColorCss = UiResource.getTableColorCss();
 
         try {
             Mvp.loadFxml(this, fxmlUrl,

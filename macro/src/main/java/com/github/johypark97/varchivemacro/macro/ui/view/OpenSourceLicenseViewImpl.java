@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.ui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
-import com.github.johypark97.varchivemacro.macro.resource.GlobalResource;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.OpenSourceLicense.OpenSourceLicensePresenter;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.OpenSourceLicense.OpenSourceLicenseView;
+import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import java.io.IOException;
 import java.net.URL;
 import javafx.collections.ObservableList;
@@ -37,8 +37,8 @@ public class OpenSourceLicenseViewImpl extends HBox implements OpenSourceLicense
         this.stage = stage;
 
         URL fxmlUrl = OpenSourceLicenseViewImpl.class.getResource(FXML_PATH);
-        URL globalCss = GlobalResource.getGlobalCss();
-        URL tableColorCss = GlobalResource.getTableColorCss();
+        URL globalCss = UiResource.getGlobalCss();
+        URL tableColorCss = UiResource.getTableColorCss();
 
         try {
             Mvp.loadFxml(this, fxmlUrl, null);

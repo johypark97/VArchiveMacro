@@ -1,11 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
-import com.github.johypark97.varchivemacro.macro.github.DataUpdater;
-import com.github.johypark97.varchivemacro.macro.github.GitHubApi;
-import com.github.johypark97.varchivemacro.macro.github.VersionChecker;
-import com.github.johypark97.varchivemacro.macro.github.data.GitHubRelease;
-import com.github.johypark97.varchivemacro.macro.resource.BuildInfo;
-import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.infrastructure.github.DataUpdater;
+import com.github.johypark97.varchivemacro.macro.infrastructure.github.GitHubApi;
+import com.github.johypark97.varchivemacro.macro.infrastructure.github.VersionChecker;
+import com.github.johypark97.varchivemacro.macro.infrastructure.github.data.GitHubRelease;
+import com.github.johypark97.varchivemacro.macro.infrastructure.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Home.TabHighlightType;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.UpdateCheck.DataUpdateProgressController;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.UpdateCheck.UpdateCheckPresenter;

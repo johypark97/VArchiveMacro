@@ -8,7 +8,7 @@ import com.github.johypark97.varchivemacro.macro.provider.DefaultRepositoryProvi
 import com.github.johypark97.varchivemacro.macro.provider.DefaultServiceProvider;
 import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
-import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Home.HomeView;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.HomePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;

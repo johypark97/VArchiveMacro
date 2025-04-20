@@ -1,6 +1,6 @@
-package com.github.johypark97.varchivemacro.macro.github;
+package com.github.johypark97.varchivemacro.macro.infrastructure.github;
 
-import com.github.johypark97.varchivemacro.macro.github.data.GitHubRelease;
+import com.github.johypark97.varchivemacro.macro.infrastructure.github.data.GitHubRelease;
 import java.io.IOException;
 
 public class VersionChecker {

@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.macro.infrastructure.license.reposit
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_general;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
 
-import com.github.johypark97.varchivemacro.macro.resource.License;
+import com.github.johypark97.varchivemacro.macro.infrastructure.license.model.License;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;

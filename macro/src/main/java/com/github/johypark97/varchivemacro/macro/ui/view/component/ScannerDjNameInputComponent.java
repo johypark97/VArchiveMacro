@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.view.component;
 
 import com.github.johypark97.varchivemacro.lib.jfx.mvp.MvpFxml;
-import com.github.johypark97.varchivemacro.macro.resource.Language;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

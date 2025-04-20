@@ -1,7 +1,7 @@
-package com.github.johypark97.varchivemacro.macro.github;
+package com.github.johypark97.varchivemacro.macro.infrastructure.github;
 
 import com.github.johypark97.varchivemacro.lib.common.GsonWrapper;
-import com.github.johypark97.varchivemacro.macro.github.data.GitHubRelease;
+import com.github.johypark97.varchivemacro.macro.infrastructure.github.data.GitHubRelease;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.HttpURLConnection;
