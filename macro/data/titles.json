@@ -50,6 +50,34 @@
       "from": [
         "Ruti'n)"
       ]
+    },
+    {
+      // id: 685
+      "to": "aIIiance",
+      "from": [
+        "aIIianceI"
+      ]
+    },
+    {
+      // id: 690
+      "to": "Gregorius|Symphony",
+      "from": [
+        "GregoriusISymphony"
+      ]
+    },
+    {
+      // id: 692
+      "to": "HIGH5LANDER",
+      "from": [
+        "HIGHSLANDER"
+      ]
+    },
+    {
+      // id: 694
+      "to": "Operation☆DOTABATA!",
+      "from": [
+        "Operation☆XDOTABATA!"
+      ]
     }
   ],
   "remoteTitle": [
