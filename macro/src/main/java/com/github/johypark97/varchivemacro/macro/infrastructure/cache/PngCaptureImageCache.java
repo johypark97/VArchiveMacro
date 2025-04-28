@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.infrastructure.cache.service;
+package com.github.johypark97.varchivemacro.macro.infrastructure.cache;
 
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import java.awt.image.BufferedImage;
@@ -15,25 +15,30 @@ import java.util.Set;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 
-public class CaptureImageCacheService {
+public class PngCaptureImageCache implements CaptureImageCache {
     private static final String FORMAT = "png";
-    private static final String MARKER_FILE_NAME = ".vamacro";
+    private static final String MARKER_FILENAME = ".vamacro";
 
     private final Path cacheDirectoryPath;
 
-    public CaptureImageCacheService(Path path) {
-        this.cacheDirectoryPath = path;
+    public PngCaptureImageCache(Path path) {
+        cacheDirectoryPath = path;
     }
 
-    public CaptureImageCacheService(String path) throws IOException {
+    public PngCaptureImageCache(String path) throws IOException {
         this(PathValidator.validateAndConvert(path));
     }
 
-    private static void createMarkerFile(Path path) throws IOException {
+    protected void createMarkerFile(Path path) throws IOException {
         // write the present time to prevent being deleted by the empty file automatic deletion
         Files.writeString(path, ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS).toString());
     }
 
+    protected Path createFilePath(int id) {
+        return cacheDirectoryPath.resolve(String.format("%04d.%s", id, FORMAT));
+    }
+
+    @Override
     public void validate() throws IOException {
         if (!Files.exists(cacheDirectoryPath)) {
             return;
@@ -43,7 +48,7 @@ public class CaptureImageCacheService {
             throw new NotDirectoryException(cacheDirectoryPath.toString());
         }
 
-        if (Files.exists(cacheDirectoryPath.resolve(MARKER_FILE_NAME))) {
+        if (Files.exists(cacheDirectoryPath.resolve(MARKER_FILENAME))) {
             return;
         }
 
@@ -57,10 +62,11 @@ public class CaptureImageCacheService {
         }
     }
 
+    @Override
     public void prepare() throws IOException {
         validate();
 
-        Path markerPath = cacheDirectoryPath.resolve(MARKER_FILE_NAME);
+        Path markerPath = cacheDirectoryPath.resolve(MARKER_FILENAME);
 
         if (!Files.exists(cacheDirectoryPath)) {
             Files.createDirectories(cacheDirectoryPath);
@@ -90,18 +96,16 @@ public class CaptureImageCacheService {
         }
     }
 
+    @Override
     public void write(int id, BufferedImage image) throws IOException {
-        Path path = createPath(id);
+        Path path = createFilePath(id);
 
         Files.deleteIfExists(path);
         ImageIO.write(image, FORMAT, path.toFile());
     }
 
+    @Override
     public BufferedImage read(int id) throws IOException {
-        return ImageIO.read(createPath(id).toFile());
-    }
-
-    public Path createPath(int id) {
-        return cacheDirectoryPath.resolve(String.format("%04d.%s", id, FORMAT));
+        return ImageIO.read(createFilePath(id).toFile());
     }
 }
