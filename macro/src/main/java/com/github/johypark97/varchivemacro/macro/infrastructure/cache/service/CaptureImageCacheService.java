@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.infrastructure.scanner.service;
+package com.github.johypark97.varchivemacro.macro.infrastructure.cache.service;
 
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import java.awt.image.BufferedImage;
