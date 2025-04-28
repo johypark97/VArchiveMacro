@@ -3,13 +3,13 @@ package com.github.johypark97.varchivemacro.macro.infrastructure.scanner.reposit
 import com.github.johypark97.varchivemacro.lib.scanner.Enums;
 import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultRecordManager;
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager;
+import com.github.johypark97.varchivemacro.macro.converter.RecordButtonConverter;
+import com.github.johypark97.varchivemacro.macro.converter.RecordPatternConverter;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.RecordButton;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.RecordPattern;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongRecord;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongRecordTable;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.SongRecordRepository;
-import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.converter.RecordButtonConverter;
-import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.converter.RecordPatternConverter;
 import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.loader.SongRecordRepositoryLoader;
 import java.io.IOException;
 
