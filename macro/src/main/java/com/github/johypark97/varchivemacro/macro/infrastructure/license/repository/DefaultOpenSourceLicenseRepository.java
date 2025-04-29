@@ -3,8 +3,10 @@ package com.github.johypark97.varchivemacro.macro.infrastructure.license.reposit
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_general;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
 
+import com.github.johypark97.varchivemacro.macro.infrastructure.license.model.LibraryLicense;
 import com.github.johypark97.varchivemacro.macro.infrastructure.license.model.License;
 import com.google.gson.Gson;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -15,57 +17,54 @@ public class DefaultOpenSourceLicenseRepository implements OpenSourceLicenseRepo
     private static final String BASE_PATH = "/licenses/";
     private static final String JSON_PATH = BASE_PATH + "licenses.json";
 
-    private final Map<String, License> libraryLicenseMap;
+    private Map<String, LibraryLicense> libraryLicenseMap;
 
-    public DefaultOpenSourceLicenseRepository() {
-        URL url = getClass().getResource(JSON_PATH);
+    @Override
+    public void load() {
+        URL url = getClass().getResource(BASE_PATH + JSON_PATH);
         if (url == null) {
-            throw new RuntimeException("file not found: " + JSON_PATH);
+            throw new RuntimeException(new FileNotFoundException(
+                    "LibraryLicense not found: " + BASE_PATH + JSON_PATH));
         }
 
         try (InputStream stream = url.openStream()) {
-            List<String> lines = readAllLines(stream);
-            String allLine = String.join("", lines);
+            List<String> lineList = readAllLines(stream);
+            String allLine = String.join("", lineList);
 
             Gson gson = newGsonBuilder_general().create();
-            libraryLicenseMap = gson.fromJson(allLine, new License.GsonTypeToken());
+            libraryLicenseMap = gson.fromJson(allLine, new LibraryLicense.GsonTypeToken());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public List<String> getLibraryList() {
+    public List<String> findAllLibrary() {
         return libraryLicenseMap.keySet().stream().toList();
     }
 
     @Override
-    public String getLicenseText(String library) throws IOException {
-        License license = libraryLicenseMap.get(library);
-        if (license == null) {
-            return "ERROR: Unknown library";
+    public License findLicense(String library) throws IOException {
+        if (libraryLicenseMap == null) {
+            throw new IllegalStateException("Not loaded");
         }
 
-        URL url = getClass().getResource(BASE_PATH + license.path());
+        LibraryLicense libraryLicense = libraryLicenseMap.get(library);
+        if (libraryLicense == null) {
+            throw new RuntimeException("Unknown library.");
+        }
+
+        URL url = getClass().getResource(BASE_PATH + libraryLicense.path());
         if (url == null) {
-            return "ERROR: resource not found";
+            throw new FileNotFoundException("License file not found: " + libraryLicense.path());
         }
 
-        List<String> lineList;
+        String license;
         try (InputStream stream = url.openStream()) {
-            lineList = readAllLines(stream);
+            List<String> lineList = readAllLines(stream);
+            license = String.join(System.lineSeparator(), lineList);
         }
 
-        return String.join(System.lineSeparator(), lineList);
-    }
-
-    @Override
-    public String getLibraryUrl(String library) {
-        License license = libraryLicenseMap.get(library);
-        if (license == null) {
-            return "";
-        }
-
-        return license.url();
+        return new License(license, libraryLicense.url());
     }
 }
