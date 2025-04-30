@@ -7,13 +7,13 @@ import java.io.IOException;
 public interface ConfigRepository {
     boolean load() throws IOException;
 
-    void save() throws IOException;
+    void flush() throws IOException;
 
-    ScannerConfig getScannerConfig();
+    MacroConfig findMacroConfig();
 
-    MacroConfig getMacroConfig();
+    void saveMacroConfig(MacroConfig value);
 
-    void setScannerConfig(ScannerConfig value);
+    ScannerConfig findScannerConfig();
 
-    void setMacroConfig(MacroConfig value);
+    void saveScannerConfig(ScannerConfig value);
 }

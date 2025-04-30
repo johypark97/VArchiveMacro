@@ -2,7 +2,10 @@ package com.github.johypark97.varchivemacro.macro.infrastructure.config.model;
 
 import com.google.gson.annotations.Expose;
 
-public class MacroConfig {
+public record MacroConfig(@Expose UploadKey uploadKey, @Expose int count, @Expose int captureDelay,
+                          @Expose int captureDuration, @Expose int keyInputDuration) {
+    public static final UploadKey UPLOAD_KEY_DEFAULT = UploadKey.F11;
+
     public static final int COUNT_DEFAULT = 100;
     public static final int COUNT_MAX = 10000;
     public static final int COUNT_MIN = 1;
@@ -19,18 +22,8 @@ public class MacroConfig {
     public static final int KEY_INPUT_DURATION_MAX = 100;
     public static final int KEY_INPUT_DURATION_MIN = 20;
 
-    @Expose
-    public AnalysisKey analysisKey = AnalysisKey.F11;
-
-    @Expose
-    public int count = COUNT_DEFAULT;
-
-    @Expose
-    public int captureDelay = CAPTURE_DELAY_DEFAULT;
-
-    @Expose
-    public int captureDuration = CAPTURE_DURATION_DEFAULT;
-
-    @Expose
-    public int keyInputDuration = KEY_INPUT_DURATION_DEFAULT;
+    public static MacroConfig createDefault() {
+        return new MacroConfig(UPLOAD_KEY_DEFAULT, COUNT_DEFAULT, CAPTURE_DELAY_DEFAULT,
+                CAPTURE_DURATION_DEFAULT, KEY_INPUT_DURATION_DEFAULT);
+    }
 }
