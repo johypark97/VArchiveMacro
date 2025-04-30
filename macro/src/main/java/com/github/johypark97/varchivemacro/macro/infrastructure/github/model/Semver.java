@@ -1,16 +1,12 @@
-package com.github.johypark97.varchivemacro.macro.infrastructure.github;
+package com.github.johypark97.varchivemacro.macro.infrastructure.github.model;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Semver {
+public record Semver(int major, int minor, int patch) implements Comparable<Semver> {
     private static final String REGEX = "^v?(\\d+)\\.(\\d+)\\.(\\d+)";
 
-    public final int major;
-    public final int minor;
-    public final int patch;
-
-    public Semver(String version) {
+    public static Semver from(String version) {
         Pattern pattern = Pattern.compile(REGEX);
         Matcher matcher = pattern.matcher(version);
 
@@ -18,25 +14,28 @@ public class Semver {
             throw new IllegalArgumentException(String.format("Not a valid semver: %s", version));
         }
 
-        major = Integer.parseInt(matcher.group(1));
-        minor = Integer.parseInt(matcher.group(2));
-        patch = Integer.parseInt(matcher.group(3));
+        int major = Integer.parseInt(matcher.group(1));
+        int minor = Integer.parseInt(matcher.group(2));
+        int patch = Integer.parseInt(matcher.group(3));
+
+        return new Semver(major, minor, patch);
     }
 
-    public static int compare(Semver v1, Semver v2) {
+    @Override
+    public int compareTo(Semver o) {
         int x;
 
-        x = v1.major - v2.major;
+        x = major - o.major;
         if (x != 0) {
             return x;
         }
 
-        x = v1.minor - v2.minor;
+        x = minor - o.minor;
         if (x != 0) {
             return x;
         }
 
-        return v1.patch - v2.patch;
+        return patch - o.patch;
     }
 
     @Override

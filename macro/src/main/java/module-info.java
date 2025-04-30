@@ -28,7 +28,8 @@ module varchivemacro.macro {
 
     exports com.github.johypark97.varchivemacro.macro.infrastructure.config.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.infrastructure.config.repository to com.google.gson;
-    exports com.github.johypark97.varchivemacro.macro.infrastructure.github.data to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.infrastructure.data.model to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.infrastructure.github.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.infrastructure.license.model to com.google.gson;
 
     // xml language resource bundle provider

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.infrastructure.github;
+package com.github.johypark97.varchivemacro.macro.infrastructure.github.api;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,17 +18,7 @@ public class GitHubApi implements AutoCloseable {
         httpClient = HttpClient.newBuilder().connectTimeout(timeout).build();
     }
 
-    public HttpResponse<String> send_content(String owner, String repository, String path)
-            throws IOException, InterruptedException {
-        return send(UriBuilder.create_content(owner, repository, path));
-    }
-
-    public HttpResponse<String> send_latestRelease(String owner, String repository)
-            throws IOException, InterruptedException {
-        return send(UriBuilder.create_latestRelease(owner, repository));
-    }
-
-    protected HttpResponse<String> send(URI uri) throws IOException, InterruptedException {
+    public HttpResponse<String> send(URI uri) throws IOException, InterruptedException {
         HttpRequest.Builder builder = HttpRequest.newBuilder();
 
         builder.header("Accept", "application/vnd.github+json");
@@ -36,6 +26,7 @@ public class GitHubApi implements AutoCloseable {
         builder.uri(uri);
 
         HttpRequest request = builder.build();
+
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
@@ -62,14 +53,14 @@ public class GitHubApi implements AutoCloseable {
             return new UriBuilder(owner, repository).append("releases/latest").build();
         }
 
-        public URI build() {
-            return URI.create(builder.toString());
-        }
-
-        protected final UriBuilder append(String value) {
+        public final UriBuilder append(String value) {
             builder.append('/').append(value);
 
             return this;
+        }
+
+        public URI build() {
+            return URI.create(builder.toString());
         }
     }
 }

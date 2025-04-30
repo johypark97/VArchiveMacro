@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.infrastructure.github.data;
+package com.github.johypark97.varchivemacro.macro.infrastructure.github.model;
 
 import com.github.johypark97.varchivemacro.lib.common.GsonWrapper;
 import com.google.gson.Gson;
@@ -13,8 +13,8 @@ public record GitHubContent(
         @Expose String type
         // @formatter:on
 ) {
-    public static GitHubContent from(String data) {
+    public static GitHubContent from(String json) {
         Gson gson = GsonWrapper.newGsonBuilder_general().create();
-        return gson.fromJson(data, GitHubContent.class);
+        return gson.fromJson(json, GitHubContent.class);
     }
 }
