@@ -2,36 +2,36 @@ package com.github.johypark97.varchivemacro.macro.application.macro.task;
 
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.macro.application.common.InterruptibleTask;
-import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.AnalysisKey;
+import com.github.johypark97.varchivemacro.macro.application.macro.model.MacroDirection;
+import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.UploadKey;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.util.concurrent.TimeUnit;
-import javafx.geometry.VerticalDirection;
 
 public class MacroTask extends InterruptibleTask<Void> {
-    private final AnalysisKey analysisKey;
+    private final MacroDirection direction;
     private final Robot robot;
-    private final VerticalDirection direction;
+    private final UploadKey uploadKey;
     private final int captureDelay;
     private final int captureDuration;
     private final int count;
     private final int keyInputDuration;
 
-    public MacroTask(AnalysisKey analysisKey, int count, int captureDelay, int captureDuration,
-            int keyInputDuration, VerticalDirection direction) {
+    public MacroTask(UploadKey uploadKey, int count, int captureDelay, int captureDuration,
+            int keyInputDuration, MacroDirection direction) {
         try {
             robot = new Robot();
         } catch (AWTException e) {
             throw new RuntimeException(e);
         }
 
-        this.analysisKey = analysisKey;
         this.captureDelay = captureDelay;
         this.captureDuration = captureDuration;
         this.count = count;
         this.direction = direction;
         this.keyInputDuration = keyInputDuration;
+        this.uploadKey = uploadKey;
     }
 
     private void tabKey(int keyCode, int... modifier) throws InterruptedException {
@@ -55,8 +55,8 @@ public class MacroTask extends InterruptibleTask<Void> {
         TimeUnit.MILLISECONDS.sleep(captureDuration);
     }
 
-    private void analyze() throws InterruptedException {
-        int keyCode = switch (analysisKey) {
+    private void upload() throws InterruptedException {
+        int keyCode = switch (uploadKey) {
             case F11 -> KeyEvent.VK_F11;
             case F12 -> KeyEvent.VK_F12;
             case HOME -> KeyEvent.VK_HOME;
@@ -75,7 +75,7 @@ public class MacroTask extends InterruptibleTask<Void> {
                 }
 
                 capture();
-                analyze();
+                upload();
             }
         } catch (InterruptedException ignored) {
         }

@@ -1,10 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.application.macro.service;
 
+import com.github.johypark97.varchivemacro.macro.application.macro.model.MacroDirection;
+import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.MacroConfig;
 import javafx.concurrent.Task;
-import javafx.geometry.VerticalDirection;
 
 public interface MacroService {
-    Task<Void> createMacroTask(VerticalDirection direction);
+    Task<Void> createMacroTask(MacroConfig config, MacroDirection direction);
 
-    void stopMacroTask();
+    boolean stopMacroTask();
 }
