@@ -2,20 +2,10 @@ package com.github.johypark97.varchivemacro.macro;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
-import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
-import com.github.johypark97.varchivemacro.macro.provider.DefaultRepositoryProvider;
-import com.github.johypark97.varchivemacro.macro.provider.DefaultServiceProvider;
-import com.github.johypark97.varchivemacro.macro.provider.RepositoryProvider;
-import com.github.johypark97.varchivemacro.macro.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.ui.presenter.Home.HomeView;
-import com.github.johypark97.varchivemacro.macro.ui.presenter.HomePresenterImpl;
-import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
-import com.github.johypark97.varchivemacro.macro.ui.view.HomeViewImpl;
 import java.awt.Toolkit;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -63,17 +53,6 @@ public class Main extends Application {
             Main.logUncaughtException(e);
             Main.showUncaughtExceptionAlert(e);
         });
-
-        HomeStage.setupStage(primaryStage);
-
-        RepositoryProvider repositoryProvider = new DefaultRepositoryProvider();
-        ServiceProvider serviceProvider = new DefaultServiceProvider(repositoryProvider);
-
-        HomeView homeView = new HomeViewImpl(primaryStage);
-        Mvp.linkViewAndPresenter(homeView,
-                new HomePresenterImpl(repositoryProvider, serviceProvider));
-
-        Platform.runLater(homeView::startView);
     }
 
     @Override

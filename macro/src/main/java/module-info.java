@@ -17,8 +17,6 @@ module varchivemacro.macro {
     requires javafx.swing;
 
     opens com.github.johypark97.varchivemacro.macro.domain.scanner.model to javafx.base;
-    opens com.github.johypark97.varchivemacro.macro.ui.view to javafx.fxml;
-    opens com.github.johypark97.varchivemacro.macro.ui.view.component to javafx.fxml;
 
     // libraries
     requires com.github.kwhat.jnativehook;
@@ -36,7 +34,5 @@ module varchivemacro.macro {
     uses LanguageProvider;
 
     // exports
-    exports com.github.johypark97.varchivemacro.macro.ui.presenter to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.ui.view to varchivemacro.lib.jfx;
     exports com.github.johypark97.varchivemacro.macro;
 }
