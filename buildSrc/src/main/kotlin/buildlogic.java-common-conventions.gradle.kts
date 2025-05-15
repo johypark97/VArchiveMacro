@@ -42,6 +42,7 @@ java {
 }
 
 javafx {
+    modules = listOf("javafx.controls", "javafx.fxml", "javafx.swing")
     version = libs.versions.javafx.version.get()
 }
 
