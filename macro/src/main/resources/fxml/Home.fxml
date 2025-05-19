@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21.0.6">
+  <top>
+    <MenuBar>
+      <menus>
+        <Menu text="%home.menu.file">
+          <items>
+            <MenuItem text="%home.menu.file.setting" fx:id="settingMenuItem"/>
+            <MenuItem text="%home.menu.file.close" fx:id="closeMenuItem"/>
+          </items>
+        </Menu>
+        <Menu text="%home.menu.language">
+          <items>
+            <RadioMenuItem text="%home.menu.language.en" fx:id="langEnRadioMenuItem">
+              <toggleGroup>
+                <ToggleGroup fx:id="language"/>
+              </toggleGroup>
+            </RadioMenuItem>
+            <RadioMenuItem text="%home.menu.language.ko" toggleGroup="$language" fx:id="langKoRadioMenuItem"/>
+          </items>
+        </Menu>
+        <Menu text="%home.menu.about">
+          <items>
+            <MenuItem text="%home.menu.about.osl" fx:id="openSourceLicenseMenuItem"/>
+            <MenuItem text="%home.menu.about.about" fx:id="aboutMenuItem"/>
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+  </top>
+</fx:root>

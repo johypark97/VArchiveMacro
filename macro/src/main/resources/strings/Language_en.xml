@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="home.menu.about">About</entry>
+  <entry key="home.menu.about.about">About</entry>
+  <entry key="home.menu.about.osl">Open Source License</entry>
+  <entry key="home.menu.file">File</entry>
+  <entry key="home.menu.file.close">Close</entry>
+  <entry key="home.menu.file.setting">Settings</entry>
+  <entry key="home.menu.language">Language</entry>
+  <entry key="home.menu.language.en">English</entry>
+  <entry key="home.menu.language.ko">Korean (한국어)</entry>
+  <entry key="modeSelector.description.left">Automate the V-ARCHIVE Client</entry>
+  <entry key="modeSelector.description.right">Scan all records in the Collection Menu</entry>
 </properties>

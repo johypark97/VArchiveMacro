@@ -1,0 +1,27 @@
+#mode-selector-left-background-image-pane {
+    -fx-background-image: url(../../images/freestyle.png);
+}
+
+#mode-selector-right-background-image-pane {
+    -fx-background-image: url(../../images/collection.png);
+}
+
+.mode-selector-background-image {
+    -fx-background-position: center;
+    -fx-background-size: 1600px 900px;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.mode-selector-header {
+    -fx-text-background-color: white;
+    -fx-font-size: 2.4em;
+}
+
+.mode-selector-description {
+    -fx-font-family: Dotum, SansSerif;
+    -fx-font-size: 1.6em;
+    -fx-font-weight: bolder;
+    -fx-padding: 1em;
+    -fx-text-background-color: white;
+}

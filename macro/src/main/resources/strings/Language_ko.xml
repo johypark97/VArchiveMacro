@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="home.menu.about">정보</entry>
+  <entry key="home.menu.about.about">정보</entry>
+  <entry key="home.menu.about.osl">오픈 소스 라이선스</entry>
+  <entry key="home.menu.file">파일</entry>
+  <entry key="home.menu.file.close">닫기</entry>
+  <entry key="home.menu.file.setting">설정</entry>
+  <entry key="home.menu.language">언어 (Language)</entry>
+  <entry key="home.menu.language.en">영어 (English)</entry>
+  <entry key="home.menu.language.ko">한국어</entry>
+  <entry key="modeSelector.description.left">V-ARCHIVE 클라이언트를 자동화합니다</entry>
+  <entry key="modeSelector.description.right">컬렉션 메뉴에서 모든 기록을 스캔합니다</entry>
 </properties>

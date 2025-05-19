@@ -1,0 +1,15 @@
+package com.github.johypark97.varchivemacro.macro.ui.stage;
+
+public interface HomeStage {
+    void startStage();
+
+    void stopStage();
+
+    void showError(String header, Throwable throwable);
+
+    void showInformation(String header, String content);
+
+    boolean showConfirmation(String header, String content);
+
+    void changeCenterView_modeSelector();
+}

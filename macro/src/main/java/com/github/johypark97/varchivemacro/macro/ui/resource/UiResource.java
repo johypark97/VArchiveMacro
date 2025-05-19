@@ -9,6 +9,7 @@ public enum UiResource {
 
     // css
     GLOBAL_CSS("/fxml/styles/global.css"),
+    MODE_SELECTOR_CSS("/fxml/styles/mode-selector.css"),
     TABLE_COLOR_CSS("/fxml/styles/table-color.css"),
     TAB_COLOR_CSS("/fxml/styles/tab-color.css");
 

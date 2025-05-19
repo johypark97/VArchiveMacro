@@ -4,8 +4,11 @@ import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
+import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStageImpl;
 import java.awt.Toolkit;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -53,6 +56,10 @@ public class Main extends Application {
             Main.logUncaughtException(e);
             Main.showUncaughtExceptionAlert(e);
         });
+
+        HomeStage homeStage = new HomeStageImpl(primaryStage);
+
+        Platform.runLater(homeStage::startStage);
     }
 
     @Override
