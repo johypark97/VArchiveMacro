@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import java.util.Locale;
 import javafx.scene.Node;
 
 public interface Home {
@@ -12,10 +13,14 @@ public interface Home {
         void requestStopStage();
 
         void setCenterView(Node value);
+
+        void changeLanguage(Locale locale);
     }
 
 
     interface HomeView extends Mvp.MvpView<HomeView, HomePresenter> {
         void setCenterNode(Node value);
+
+        void setSelectedLanguage(Locale locale);
     }
 }

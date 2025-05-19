@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Home;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
@@ -49,10 +50,22 @@ public class HomeViewImpl extends BorderPane implements Home.HomeView {
     @FXML
     public void initialize() {
         closeMenuItem.setOnAction(event -> presenter.requestStopStage());
+
+        langEnRadioMenuItem.setOnAction(event -> presenter.changeLanguage(Locale.ENGLISH));
+        langKoRadioMenuItem.setOnAction(event -> presenter.changeLanguage(Locale.KOREAN));
     }
 
     @Override
     public void setCenterNode(Node value) {
         setCenter(value);
+    }
+
+    @Override
+    public void setSelectedLanguage(Locale locale) {
+        if (Locale.ENGLISH.equals(locale)) {
+            langEnRadioMenuItem.setSelected(true);
+        } else if (Locale.KOREAN.equals(locale)) {
+            langKoRadioMenuItem.setSelected(true);
+        }
     }
 }
