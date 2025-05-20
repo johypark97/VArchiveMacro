@@ -40,8 +40,7 @@ public class HomeViewImpl extends BorderPane implements Home.HomeView {
         URL fxmlUrl = HomeViewImpl.class.getResource(FXML_PATH);
 
         try {
-            Mvp.loadFxml(this, fxmlUrl,
-                    x -> x.setResources(Language.getInstance().getResourceBundle()));
+            Mvp.loadFxml(this, fxmlUrl, x -> x.setResources(Language.INSTANCE.getResourceBundle()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

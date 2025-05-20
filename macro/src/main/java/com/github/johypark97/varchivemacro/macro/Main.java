@@ -24,7 +24,7 @@ public class Main extends Application {
 
         ImageConverter.disableDiskCache();
 
-        Language.getInstance().initialize();
+        Language.INSTANCE.initialize();
 
         launch(args);
     }

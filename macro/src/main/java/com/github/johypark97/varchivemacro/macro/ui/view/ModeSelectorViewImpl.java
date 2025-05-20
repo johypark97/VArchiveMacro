@@ -66,8 +66,7 @@ public class ModeSelectorViewImpl extends GridPane implements ModeSelector.ModeS
         URL fxmlUrl = ModeSelectorViewImpl.class.getResource(FXML_PATH);
 
         try {
-            Mvp.loadFxml(this, fxmlUrl,
-                    x -> x.setResources(Language.getInstance().getResourceBundle()));
+            Mvp.loadFxml(this, fxmlUrl, x -> x.setResources(Language.INSTANCE.getResourceBundle()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

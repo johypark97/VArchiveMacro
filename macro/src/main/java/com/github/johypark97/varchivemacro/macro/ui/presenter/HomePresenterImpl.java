@@ -22,7 +22,7 @@ public class HomePresenterImpl implements Home.HomePresenter {
 
     @Override
     public void startView() {
-        view.setSelectedLanguage(Language.getInstance().getLocale());
+        view.setSelectedLanguage(Language.INSTANCE.getLocale());
 
         homeStage.changeCenterView_modeSelector();
     }
@@ -44,10 +44,10 @@ public class HomePresenterImpl implements Home.HomePresenter {
 
     @Override
     public void changeLanguage(Locale locale) {
-        Language language = Language.getInstance();
+        Language language = Language.INSTANCE;
 
         try {
-            Language.saveLocale(locale);
+            language.changeLocale(locale);
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Language changing error");
             homeStage.showError(language.getString("home.dialog.languageChange.error"), e);
