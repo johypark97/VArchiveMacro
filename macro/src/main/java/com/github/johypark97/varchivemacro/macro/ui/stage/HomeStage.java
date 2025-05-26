@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage;
 
-public interface HomeStage {
-    void startStage();
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.TreeableStage;
 
-    void stopStage();
+public interface HomeStage extends TreeableStage {
+    void startStage();
 
     void showError(String header, Throwable throwable);
 

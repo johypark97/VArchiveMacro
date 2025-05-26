@@ -4,8 +4,7 @@ import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
-import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import java.awt.Toolkit;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -57,9 +56,9 @@ public class Main extends Application {
             Main.showUncaughtExceptionAlert(e);
         });
 
-        HomeStage homeStage = new HomeStageImpl(primaryStage);
+        StageManager stageManager = new StageManager(primaryStage);
 
-        Platform.runLater(homeStage::startStage);
+        Platform.runLater(stageManager::showHomeStage);
     }
 
     @Override

@@ -3,11 +3,13 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.infrastructure.resource.BuildInfo;
+import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Home;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.HomePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ModeSelector;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ModeSelectorPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ModeSelectorViewImpl;
 import java.awt.Toolkit;
@@ -17,19 +19,21 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class HomeStageImpl implements HomeStage {
+public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     private static final String TITLE = "VArchive Macro";
 
     private static final int STAGE_HEIGHT = 540;
     private static final int STAGE_WIDTH = 960;
 
-    private final Stage stage;
+    private final StageManager stageManager;
 
     private Home.HomePresenter homePresenter;
     private ModeSelector.ModeSelectorPresenter modeSelectorPresenter;
 
-    public HomeStageImpl(Stage stage) {
-        this.stage = stage;
+    public HomeStageImpl(StageManager stageManager, Stage stage) {
+        super(stage);
+
+        this.stageManager = stageManager;
 
         setupStage();
     }
@@ -57,22 +61,8 @@ public class HomeStageImpl implements HomeStage {
 
         stage.setScene(scene);
         stage.setOnShown(event -> homePresenter.startView());
-        Mvp.hookWindowCloseRequest(stage, event -> stopStage());
 
         stage.show();
-    }
-
-    @Override
-    public void stopStage() {
-        if (modeSelectorPresenter != null && !modeSelectorPresenter.stopView()) {
-            return;
-        }
-
-        if (!homePresenter.stopView()) {
-            return;
-        }
-
-        stage.hide();
     }
 
     @Override
@@ -114,5 +104,14 @@ public class HomeStageImpl implements HomeStage {
         homePresenter.setCenterView(view);
 
         modeSelectorPresenter.startView();
+    }
+
+    @Override
+    protected boolean onStopStage() {
+        if (modeSelectorPresenter != null && !modeSelectorPresenter.stopView()) {
+            return false;
+        }
+
+        return homePresenter.stopView();
     }
 }
