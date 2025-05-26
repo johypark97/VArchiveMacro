@@ -1,4 +1,12 @@
 {
+  "Badass JLink Plugin": {
+    "path": "badass-jlink-plugin.txt",
+    "url": "https://github.com/beryx/badass-jlink-plugin"
+  },
+  "Gradle JavaCPP": {
+    "path": "gradle-javacpp.txt",
+    "url": "https://github.com/bytedeco/gradle-javacpp"
+  },
   "Gson": {
     "path": "gson.txt",
     "url": "https://github.com/google/gson"
@@ -15,21 +23,33 @@
     "path": "javafx.txt",
     "url": "https://github.com/openjdk/jfx"
   },
+  "JavaFX Gradle Plugin": {
+    "path": "javafx-gradle-plugin.txt",
+    "url": "https://github.com/openjfx/javafx-gradle-plugin"
+  },
   "JNativeHook": {
     "path": "jnativehook.txt",
     "url": "https://github.com/kwhat/jnativehook"
   },
-  "Launch4j": {
-    "path": "launch4j.txt",
-    "url": "https://launch4j.sourceforge.net/"
+  "JUnit 5": {
+    "path": "junit5.txt",
+    "url": "https://junit.org/junit5/"
   },
   "Leptonica": {
     "path": "leptonica.txt",
     "url": "https://github.com/danbloomberg/leptonica"
   },
-  "Log4j": {
-    "path": "log4j.txt",
+  "Log4j 2": {
+    "path": "log4j2.txt",
     "url": "https://logging.apache.org/log4j/2.x/"
+  },
+  "Mockito": {
+    "path": "mockito.txt",
+    "url": "https://site.mockito.org/"
+  },
+  "PMD": {
+    "path": "pmd.txt",
+    "url": "https://pmd.github.io/"
   },
   "SLF4J": {
     "path": "slf4j.txt",
@@ -46,5 +66,9 @@
   "Tesseract OCR": {
     "path": "tesseract.txt",
     "url": "https://github.com/tesseract-ocr/tesseract"
+  },
+  "tesstrain": {
+    "path": "tesstrain.txt",
+    "url": "https://github.com/tesseract-ocr/tesstrain"
   }
 }
