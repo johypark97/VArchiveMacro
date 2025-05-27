@@ -15,4 +15,6 @@
   <entry key="home.menu.language.ko">Korean (한국어)</entry>
   <entry key="modeSelector.description.left">Automate the V-ARCHIVE Client</entry>
   <entry key="modeSelector.description.right">Scan all records in the Collection Menu</entry>
+  <entry key="osl.hyperlinkLabel">Library Link:</entry>
+  <entry key="osl.windowTitle">Open Source License</entry>
 </properties>

@@ -15,6 +15,8 @@ public interface Home {
         void setCenterView(Node value);
 
         void changeLanguage(Locale locale);
+
+        void showOpenSourceLicense();
     }
 
 

@@ -59,4 +59,9 @@ public class HomePresenterImpl implements Home.HomePresenter {
         String content = language.getString("home.dialog.languageChange.done.content");
         homeStage.showInformation(header, content);
     }
+
+    @Override
+    public void showOpenSourceLicense() {
+        homeStage.showOpenSourceLicense();
+    }
 }

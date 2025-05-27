@@ -15,4 +15,6 @@
   <entry key="home.menu.language.ko">한국어</entry>
   <entry key="modeSelector.description.left">V-ARCHIVE 클라이언트를 자동화합니다</entry>
   <entry key="modeSelector.description.right">컬렉션 메뉴에서 모든 기록을 스캔합니다</entry>
+  <entry key="osl.hyperlinkLabel">라이브러리 링크:</entry>
+  <entry key="osl.windowTitle">오픈 소스 라이선스</entry>
 </properties>

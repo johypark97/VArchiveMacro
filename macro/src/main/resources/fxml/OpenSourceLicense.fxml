@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" spacing="10.0" type="HBox" xmlns="http://javafx.com/javafx/21.0.6">
+  <children>
+    <ListView fx:id="libraryListView"/>
+    <VBox HBox.hgrow="ALWAYS" spacing="10.0">
+      <children>
+        <TextArea VBox.vgrow="ALWAYS" editable="false" fx:id="licenseTextArea"/>
+        <HBox alignment="CENTER_LEFT">
+          <children>
+            <Label text="%osl.hyperlinkLabel"/>
+            <Hyperlink text="Hyperlink" fx:id="libraryUrlHyperlink"/>
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+  </children>
+  <padding>
+    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+  </padding>
+</fx:root>

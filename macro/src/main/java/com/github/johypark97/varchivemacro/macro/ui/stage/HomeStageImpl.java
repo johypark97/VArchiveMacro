@@ -107,6 +107,11 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     }
 
     @Override
+    public void showOpenSourceLicense() {
+        stageManager.showOpenSourceLicenseStage(this);
+    }
+
+    @Override
     protected boolean onStopStage() {
         if (modeSelectorPresenter != null && !modeSelectorPresenter.stopView()) {
             return false;

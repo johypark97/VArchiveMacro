@@ -12,4 +12,6 @@ public interface HomeStage extends TreeableStage {
     boolean showConfirmation(String header, String content);
 
     void changeCenterView_modeSelector();
+
+    void showOpenSourceLicense();
 }
