@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="home.about.buildDate">빌드 날짜: %s</entry>
+  <entry key="home.about.exception">프로그램 데이터 버전을 가져올 수 없습니다.</entry>
+  <entry key="home.about.programDataVersion">데이터 버전: %s</entry>
+  <entry key="home.about.programVersion">프로그램 버전: v%s</entry>
+  <entry key="home.about.sourceCode">소스 코드:</entry>
+  <entry key="home.about.windowTitle">정보</entry>
   <entry key="home.dialog.languageChange.done.content">변경한 언어는 프로그램 재시작 후 적용됩니다.</entry>
   <entry key="home.dialog.languageChange.done.header">언어 변경됨</entry>
   <entry key="home.dialog.languageChange.error">언어 변경 중 오류가 발생하였습니다.</entry>

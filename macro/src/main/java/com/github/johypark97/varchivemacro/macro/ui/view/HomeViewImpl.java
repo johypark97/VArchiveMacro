@@ -54,6 +54,8 @@ public class HomeViewImpl extends BorderPane implements Home.HomeView {
         langKoRadioMenuItem.setOnAction(event -> presenter.changeLanguage(Locale.KOREAN));
 
         openSourceLicenseMenuItem.setOnAction(event -> presenter.showOpenSourceLicense());
+
+        aboutMenuItem.setOnAction(event -> presenter.showAbout());
     }
 
     @Override

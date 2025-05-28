@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="home.about.buildDate">Build date: %s</entry>
+  <entry key="home.about.exception">Unable to fetch the program data version.</entry>
+  <entry key="home.about.programDataVersion">Program data version: %s</entry>
+  <entry key="home.about.programVersion">Program version: v%s</entry>
+  <entry key="home.about.sourceCode">Source code:</entry>
+  <entry key="home.about.windowTitle">About</entry>
   <entry key="home.dialog.languageChange.done.content">The changed language will be applied after the program restarts.</entry>
   <entry key="home.dialog.languageChange.done.header">Language changed</entry>
   <entry key="home.dialog.languageChange.error">An error occurred while changing the language.</entry>

@@ -2,12 +2,16 @@ package com.github.johypark97.varchivemacro.macro.application.provider;
 
 import com.github.johypark97.varchivemacro.lib.common.manager.InstanceManager;
 import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManager;
+import com.github.johypark97.varchivemacro.macro.application.data.ProgramDataVersionService;
 import com.github.johypark97.varchivemacro.macro.application.service.WebBrowserService;
+import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.application.HostServices;
 
 public enum ServiceProvider {
     INSTANCE; // Singleton
+
+    private final Path PROGRAM_DATA_DIRECTORY_PATH = Path.of("data");
 
     private final InstanceManager<Object> instanceManager = new LazyInstanceManager<>();
 
@@ -22,6 +26,10 @@ public enum ServiceProvider {
                 () -> new WebBrowserService(hostServices));
 
         initialized.set(true);
+    }
+
+    public ProgramDataVersionService getProgramDataVersionService() {
+        return new ProgramDataVersionService(PROGRAM_DATA_DIRECTORY_PATH);
     }
 
     public WebBrowserService getWebBrowserService() {

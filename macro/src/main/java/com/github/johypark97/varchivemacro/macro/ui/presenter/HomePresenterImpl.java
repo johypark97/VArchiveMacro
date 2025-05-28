@@ -64,4 +64,9 @@ public class HomePresenterImpl implements Home.HomePresenter {
     public void showOpenSourceLicense() {
         homeStage.showOpenSourceLicense();
     }
+
+    @Override
+    public void showAbout() {
+        homeStage.showAbout();
+    }
 }

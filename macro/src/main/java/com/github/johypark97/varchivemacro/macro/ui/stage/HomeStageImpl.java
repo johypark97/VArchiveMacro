@@ -2,7 +2,13 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import com.github.johypark97.varchivemacro.macro.application.data.ProgramDataVersionService;
+import com.github.johypark97.varchivemacro.macro.application.provider.ServiceProvider;
+import com.github.johypark97.varchivemacro.macro.application.provider.UrlProvider;
+import com.github.johypark97.varchivemacro.macro.application.service.WebBrowserService;
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.infrastructure.resource.BuildInfo;
+import com.github.johypark97.varchivemacro.macro.ui.alert.About;
 import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Home;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.HomePresenterImpl;
@@ -13,13 +19,18 @@ import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableS
 import com.github.johypark97.varchivemacro.macro.ui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ModeSelectorViewImpl;
 import java.awt.Toolkit;
+import java.io.IOException;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomeStageImpl.class);
+
     private static final String TITLE = "VArchive Macro";
 
     private static final int STAGE_HEIGHT = 540;
@@ -109,6 +120,21 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     @Override
     public void showOpenSourceLicense() {
         stageManager.showOpenSourceLicenseStage(this);
+    }
+
+    @Override
+    public void showAbout() {
+        ProgramDataVersionService programDataVersionService =
+                ServiceProvider.INSTANCE.getProgramDataVersionService();
+        WebBrowserService webBrowserService = ServiceProvider.INSTANCE.getWebBrowserService();
+
+        try {
+            new About(stage, UrlProvider.GITHUB_URL, programDataVersionService,
+                    webBrowserService).showAndWait();
+        } catch (IOException e) {
+            LOGGER.atError().setCause(e).log("Opening the About alert exception.");
+            showError(Language.INSTANCE.getString("home.about.exception"), e);
+        }
     }
 
     @Override
