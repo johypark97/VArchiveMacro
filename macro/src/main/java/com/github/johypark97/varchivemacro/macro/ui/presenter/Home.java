@@ -16,6 +16,8 @@ public interface Home {
 
         void changeLanguage(Locale locale);
 
+        void showSetting();
+
         void showOpenSourceLicense();
 
         void showAbout();

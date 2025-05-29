@@ -48,6 +48,7 @@ public class HomeViewImpl extends BorderPane implements Home.HomeView {
 
     @FXML
     public void initialize() {
+        settingMenuItem.setOnAction(event -> presenter.showSetting());
         closeMenuItem.setOnAction(event -> presenter.requestStopStage());
 
         langEnRadioMenuItem.setOnAction(event -> presenter.changeLanguage(Locale.ENGLISH));

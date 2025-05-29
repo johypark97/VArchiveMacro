@@ -4,6 +4,8 @@ import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.OpenSourceLicenseStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.OpenSourceLicenseStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStage;
+import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import javafx.stage.Stage;
 
@@ -12,6 +14,7 @@ public class StageManager {
 
     private HomeStage homeStage;
     private OpenSourceLicenseStage openSourceLicenseStage;
+    private SettingStage settingStage;
 
     public StageManager(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -37,5 +40,13 @@ public class StageManager {
         });
 
         openSourceLicenseStage.startStage();
+    }
+
+    public void showSettingStage(AbstractTreeableStage parent) {
+        settingStage = new SettingStageImpl(parent, () -> {
+            settingStage = null; // NOPMD
+        });
+
+        settingStage.startStage();
     }
 }

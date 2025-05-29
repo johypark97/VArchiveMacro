@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox" xmlns="http://javafx.com/javafx/21.0.6">
+  <children>
+    <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+        <Tab text="%setting.macro.tabName">
+          <content>
+            <ScrollPane fitToWidth="true" vbarPolicy="ALWAYS">
+              <content>
+                <VBox spacing="10.0">
+                  <children>
+                    <TitledPane animated="false" collapsible="false" text="%setting.macro.client.sectionName">
+                      <content>
+                        <GridPane hgap="10.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                          </rowConstraints>
+                          <children>
+                            <Label text="%setting.macro.client.mode.label"/>
+                            <FlowPane GridPane.columnIndex="1" hgap="10.0" vgap="10.0">
+                              <children>
+                                <RadioButton text="%setting.macro.client.mode.separately" fx:id="macroClientModeSeparatelyRadioButton">
+                                  <toggleGroup>
+                                    <ToggleGroup fx:id="macroClientMode"/>
+                                  </toggleGroup>
+                                </RadioButton>
+                                <RadioButton text="%setting.macro.client.mode.atOnce" toggleGroup="$macroClientMode" fx:id="macroClientModeAtOnceRadioButton"/>
+                              </children>
+                            </FlowPane>
+                            <Label GridPane.rowIndex="1" text="%setting.macro.client.uploadKeyLabel"/>
+                            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" editable="false" fx:id="macroClientUploadKeyTextField"/>
+                          </children>
+                        </GridPane>
+                      </content>
+                    </TitledPane>
+                    <TitledPane animated="false" collapsible="false" text="%setting.macro.shortcut.sectionName">
+                      <content>
+                        <GridPane hgap="10.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                          </rowConstraints>
+                          <children>
+                            <Label text="%setting.macro.shortcut.startUpKeyLabel"/>
+                            <TextField GridPane.columnIndex="1" alignment="CENTER" editable="false" fx:id="macroStartUpKeyTextField"/>
+                            <Label GridPane.rowIndex="1" text="%setting.macro.shortcut.startDownKeyLabel"/>
+                            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" editable="false" fx:id="macroStartDownKeyTextField"/>
+                            <Label GridPane.rowIndex="2" text="%setting.macro.shortcut.stopKeyLabel"/>
+                            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" alignment="CENTER" editable="false" fx:id="macroStopKeyTextField"/>
+                          </children>
+                        </GridPane>
+                      </content>
+                    </TitledPane>
+                    <TitledPane expanded="false" text="%setting.macro.advanced.sectionName">
+                      <content>
+                        <GridPane hgap="10.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints/>
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                          </rowConstraints>
+                          <children>
+                            <Label text="%setting.macro.advanced.songSwitchingTime"/>
+                            <Slider GridPane.columnIndex="1" fx:id="macroSongSwitchingTimeSlider"/>
+                            <TextField GridPane.columnIndex="2" alignment="CENTER_RIGHT" fx:id="macroSongSwitchingTimeTextField"/>
+                            <Label GridPane.rowIndex="1" text="%setting.macro.advanced.postCaptureDelay"/>
+                            <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="macroPostCaptureDelaySlider"/>
+                            <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER_RIGHT" fx:id="macroPostCaptureDelayTextField"/>
+                            <Label GridPane.rowIndex="2" text="%setting.macro.advanced.keyHoldTime"/>
+                            <Slider GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="macroKeyHoldTimeSlider"/>
+                            <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" alignment="CENTER_RIGHT" fx:id="macroKeyHoldTimeTextField"/>
+                          </children>
+                        </GridPane>
+                      </content>
+                    </TitledPane>
+                  </children>
+                  <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                  </padding>
+                </VBox>
+              </content>
+            </ScrollPane>
+          </content>
+        </Tab>
+        <Tab text="%setting.scanner.tabName">
+          <content>
+            <ScrollPane fitToWidth="true" vbarPolicy="ALWAYS">
+              <content>
+                <VBox spacing="10.0">
+                  <children>
+                    <TitledPane animated="false" collapsible="false" text="%setting.scanner.account.sectionName">
+                      <content>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                          <children>
+                            <Label text="%setting.scanner.account.accountFile.label"/>
+                            <TextField HBox.hgrow="ALWAYS" fx:id="scannerAccountFileTextField"/>
+                            <Button text="%setting.scanner.account.accountFile.selectButton" fx:id="scannerAccountFileSelectButton"/>
+                          </children>
+                        </HBox>
+                      </content>
+                    </TitledPane>
+                    <TitledPane animated="false" collapsible="false" text="%setting.scanner.shortcut.sectionName">
+                      <content>
+                        <GridPane hgap="10.0" vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints/>
+                            <RowConstraints/>
+                          </rowConstraints>
+                          <children>
+                            <Label text="%setting.scanner.shortcut.startKeyLabel"/>
+                            <TextField GridPane.columnIndex="1" alignment="CENTER" editable="false" fx:id="scannerStartKeyTextField"/>
+                            <Label GridPane.rowIndex="1" text="%setting.scanner.shortcut.stopKeyLabel"/>
+                            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER" editable="false" fx:id="scannerStopKeyTextField"/>
+                          </children>
+                        </GridPane>
+                      </content>
+                    </TitledPane>
+                    <TitledPane animated="false" collapsible="false" text="%setting.scanner.cache.sectionName">
+                      <content>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                          <children>
+                            <Label text="%setting.scanner.cache.cacheDirectory.label"/>
+                            <TextField HBox.hgrow="ALWAYS" fx:id="scannerCacheDirectoryTextField"/>
+                            <Button text="%setting.scanner.cache.cacheDirectory.selectButton" fx:id="scannerCacheDirectorySelectButton"/>
+                          </children>
+                        </HBox>
+                      </content>
+                    </TitledPane>
+                    <TitledPane animated="false" collapsible="false" text="%setting.scanner.analyzer.sectionName">
+                      <content>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                          <children>
+                            <Label text="%setting.scanner.analyzer.autoAnalysisLabel"/>
+                            <ToggleButton text="ToggleButton" fx:id="scannerAutoAnalysisToggleButton"/>
+                          </children>
+                        </HBox>
+                      </content>
+                    </TitledPane>
+                    <TitledPane expanded="false" text="%setting.scanner.advanced.sectionName">
+                      <content>
+                        <VBox spacing="10.0">
+                          <children>
+                            <GridPane hgap="10.0" vgap="10.0">
+                              <columnConstraints>
+                                <ColumnConstraints/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                                <ColumnConstraints/>
+                              </columnConstraints>
+                              <rowConstraints>
+                                <RowConstraints/>
+                                <RowConstraints/>
+                              </rowConstraints>
+                              <children>
+                                <Label text="%setting.scanner.advanced.analyzerThreadCount.label"/>
+                                <Slider GridPane.columnIndex="1" fx:id="scannerAnalyzerThreadCountSlider"/>
+                                <TextField GridPane.columnIndex="2" alignment="CENTER_RIGHT" fx:id="scannerAnalyzerThreadCountTextField"/>
+                                <Label GridPane.columnSpan="2147483647" GridPane.rowIndex="1" text="%setting.scanner.advanced.analyzerThreadCount.recommendation" wrapText="true"/>
+                              </children>
+                            </GridPane>
+                            <Separator prefWidth="200.0"/>
+                            <GridPane hgap="10.0" vgap="10.0">
+                              <columnConstraints>
+                                <ColumnConstraints halignment="RIGHT"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                                <ColumnConstraints/>
+                              </columnConstraints>
+                              <rowConstraints>
+                                <RowConstraints/>
+                                <RowConstraints/>
+                              </rowConstraints>
+                              <children>
+                                <Label text="%setting.scanner.advanced.captureDelay"/>
+                                <Slider GridPane.columnIndex="1" fx:id="scannerCaptureDelaySlider"/>
+                                <TextField GridPane.columnIndex="2" alignment="CENTER_RIGHT" fx:id="scannerCaptureDelayTextField"/>
+                                <Label GridPane.rowIndex="1" text="%setting.scanner.advanced.keyHoldTime"/>
+                                <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="scannerKeyHoldTimeSlider"/>
+                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER_RIGHT" fx:id="scannerKeyHoldTimeTextField"/>
+                              </children>
+                            </GridPane>
+                          </children>
+                        </VBox>
+                      </content>
+                    </TitledPane>
+                  </children>
+                  <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                  </padding>
+                </VBox>
+              </content>
+            </ScrollPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <Separator/>
+    <ButtonBar>
+      <buttons>
+        <Button text="%setting.apply" fx:id="applyButton"/>
+        <Button text="%setting.revert" fx:id="revertButton"/>
+        <Button text="%setting.close" fx:id="closeButton"/>
+      </buttons>
+      <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+      </padding>
+    </ButtonBar>
+  </children>
+</fx:root>

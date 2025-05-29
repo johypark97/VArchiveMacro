@@ -118,6 +118,11 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     }
 
     @Override
+    public void showSetting() {
+        stageManager.showSettingStage(this);
+    }
+
+    @Override
     public void showOpenSourceLicense() {
         stageManager.showOpenSourceLicenseStage(this);
     }

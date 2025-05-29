@@ -13,6 +13,8 @@ public interface HomeStage extends TreeableStage {
 
     void changeCenterView_modeSelector();
 
+    void showSetting();
+
     void showOpenSourceLicense();
 
     void showAbout();
