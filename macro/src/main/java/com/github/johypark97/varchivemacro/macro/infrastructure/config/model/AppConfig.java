@@ -4,10 +4,10 @@ import com.google.gson.annotations.Expose;
 
 public class AppConfig {
     @Expose
-    private MacroConfig macroConfig = MacroConfig.createDefault();
+    private MacroConfig macroConfig = new MacroConfig.Builder().build();
 
     @Expose
-    private ScannerConfig scannerConfig = ScannerConfig.createDefault();
+    private ScannerConfig scannerConfig = new ScannerConfig.Builder().build();
 
     public MacroConfig getMacroConfig() {
         return macroConfig;
