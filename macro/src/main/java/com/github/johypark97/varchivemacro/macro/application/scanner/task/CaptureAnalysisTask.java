@@ -65,7 +65,7 @@ public class CaptureAnalysisTask
         this.captureImageCache = captureImageCache;
         this.commonOcrFactory = commonOcrFactory;
 
-        analyzerThreadCount = Math.max(1, config.analysisThreadCount());
+        analyzerThreadCount = Math.max(1, config.analyzerThreadCount());
         imagePreloaderQueueCapacity = analyzerThreadCount * 3 / 2;
         imagePreloaderThreadCount = (int) (Math.log(analyzerThreadCount + 1) / Math.log(2));
     }

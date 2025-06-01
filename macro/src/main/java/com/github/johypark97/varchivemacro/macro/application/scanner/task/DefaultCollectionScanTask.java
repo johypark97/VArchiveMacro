@@ -83,12 +83,12 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
 
     @Override
     protected void moveToNextCategory() throws InterruptedException {
-        AwtRobotHelper.tabKey(robot, config.keyInputDuration(), KeyEvent.VK_SPACE);
+        AwtRobotHelper.tabKey(robot, config.keyHoldTime(), KeyEvent.VK_SPACE);
     }
 
     @Override
     protected void moveToNextSong() throws InterruptedException {
-        AwtRobotHelper.tabKey(robot, config.keyInputDuration(), KeyEvent.VK_DOWN);
+        AwtRobotHelper.tabKey(robot, config.keyHoldTime(), KeyEvent.VK_DOWN);
     }
 
     @Override
