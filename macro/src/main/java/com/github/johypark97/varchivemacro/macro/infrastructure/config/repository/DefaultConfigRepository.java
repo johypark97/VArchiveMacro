@@ -41,21 +41,21 @@ public class DefaultConfigRepository implements ConfigRepository {
 
     @Override
     public MacroConfig findMacroConfig() {
-        return appConfig.getMacroConfig();
+        return appConfig.macroConfig;
     }
 
     @Override
     public void saveMacroConfig(MacroConfig value) {
-        appConfig.setMacroConfig(value);
+        appConfig.macroConfig = value;
     }
 
     @Override
     public ScannerConfig findScannerConfig() {
-        return appConfig.getScannerConfig();
+        return appConfig.scannerConfig;
     }
 
     @Override
     public void saveScannerConfig(ScannerConfig value) {
-        appConfig.setScannerConfig(value);
+        appConfig.scannerConfig = value;
     }
 }
