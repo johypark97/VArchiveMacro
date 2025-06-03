@@ -1,25 +1,32 @@
 package com.github.johypark97.varchivemacro.lib.jfx.fxgui;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 
 public class SliderTextFieldLinker {
+    private final IntegerProperty linkedValue = new SimpleIntegerProperty();
+
     public final Slider slider;
     public final TextField textField;
-
-    private boolean blockSliderProperty;
-    private int linkedValue;
 
     private Integer defaultValue;
     private Integer limitMax;
     private Integer limitMin;
+    private boolean blockSliderEvent;
 
     public SliderTextFieldLinker(Slider slider, TextField textField) {
         this.slider = slider;
         this.textField = textField;
 
         setHandler();
+    }
+
+    public final ReadOnlyIntegerProperty valueProperty() {
+        return linkedValue;
     }
 
     public void setDefaultValue(int value) {
@@ -47,7 +54,7 @@ public class SliderTextFieldLinker {
     }
 
     public int getValue() {
-        return linkedValue;
+        return linkedValue.get();
     }
 
     public void setValue(int value) {
@@ -67,8 +74,8 @@ public class SliderTextFieldLinker {
 
         // onValueChanged
         slider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (!blockSliderProperty) {
-                setValue(newValue.intValue());
+            if (!blockSliderEvent) {
+                setValue(Math.round(newValue.floatValue()));
             }
         });
 
@@ -87,17 +94,17 @@ public class SliderTextFieldLinker {
         int max = (limitMax != null) ? limitMax : (int) slider.getMax();
         int min = (limitMin != null) ? limitMin : (int) slider.getMin();
 
-        linkedValue = Math.min(Math.max(min, value), max);
+        linkedValue.set(Math.min(Math.max(min, value), max));
     }
 
     private void updateSliderValue() {
-        blockSliderProperty = true; // NOPMD
-        slider.setValue(linkedValue);
-        blockSliderProperty = false;
+        blockSliderEvent = true; // NOPMD
+        slider.setValue(linkedValue.get());
+        blockSliderEvent = false;
     }
 
     private void updateTextFieldText() {
-        textField.setText(Integer.toString(linkedValue));
+        textField.setText(Integer.toString(linkedValue.get()));
     }
 
     private void updateFromTextField() {
