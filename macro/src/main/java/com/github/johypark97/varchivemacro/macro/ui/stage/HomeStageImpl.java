@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.application.data.ProgramDataVersionService;
+import com.github.johypark97.varchivemacro.macro.application.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.application.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.application.provider.UrlProvider;
 import com.github.johypark97.varchivemacro.macro.application.service.WebBrowserService;
@@ -64,7 +65,8 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     public void startStage() {
         HomeViewImpl homeView = new HomeViewImpl();
 
-        homePresenter = new HomePresenterImpl(this);
+        homePresenter =
+                new HomePresenterImpl(this, RepositoryProvider.INSTANCE.getConfigRepository());
         Mvp.linkViewAndPresenter(homeView, homePresenter);
 
         Scene scene = new Scene(homeView);

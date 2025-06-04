@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro;
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
+import com.github.johypark97.varchivemacro.macro.application.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.application.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
@@ -57,6 +58,7 @@ public class Main extends Application {
             Main.showUncaughtExceptionAlert(e);
         });
 
+        RepositoryProvider.INSTANCE.initialize();
         ServiceProvider.INSTANCE.initialize(getHostServices());
 
         StageManager stageManager = new StageManager(primaryStage);

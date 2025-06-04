@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.infrastructure.config.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import java.io.IOException;
 import java.util.Locale;
@@ -11,12 +12,16 @@ import org.slf4j.LoggerFactory;
 public class HomePresenterImpl implements Home.HomePresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomePresenterImpl.class);
 
+    private final ConfigRepository configRepository;
+
     private final HomeStage homeStage;
 
     @MvpView
     public Home.HomeView view;
 
-    public HomePresenterImpl(HomeStage homeStage) {
+    public HomePresenterImpl(HomeStage homeStage, ConfigRepository configRepository) {
+        this.configRepository = configRepository;
+
         this.homeStage = homeStage;
     }
 
@@ -25,6 +30,15 @@ public class HomePresenterImpl implements Home.HomePresenter {
         view.setSelectedLanguage(Language.INSTANCE.getLocale());
 
         homeStage.changeCenterView_modeSelector();
+
+        try {
+            if (!configRepository.load()) {
+                configRepository.flush();
+            }
+        } catch (IOException e) {
+            LOGGER.atError().setCause(e).log("Config loading exception.");
+            homeStage.showError(Language.INSTANCE.getString("home.config.loadingException"), e);
+        }
     }
 
     @Override

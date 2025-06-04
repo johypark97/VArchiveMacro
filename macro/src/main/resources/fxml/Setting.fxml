@@ -97,14 +97,14 @@
                           </rowConstraints>
                           <children>
                             <Label text="%setting.macro.advanced.songSwitchingTime"/>
-                            <Slider GridPane.columnIndex="1" fx:id="macroSongSwitchingTimeSlider"/>
-                            <TextField GridPane.columnIndex="2" alignment="CENTER_RIGHT" fx:id="macroSongSwitchingTimeTextField"/>
+                            <Slider GridPane.columnIndex="1" majorTickUnit="100.0" max="1000.0" min="200.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="macroSongSwitchingTimeSlider"/>
+                            <TextField GridPane.columnIndex="2" alignment="CENTER_RIGHT" prefColumnCount="4" fx:id="macroSongSwitchingTimeTextField"/>
                             <Label GridPane.rowIndex="1" text="%setting.macro.advanced.postCaptureDelay"/>
-                            <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="macroPostCaptureDelaySlider"/>
-                            <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER_RIGHT" fx:id="macroPostCaptureDelayTextField"/>
+                            <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" majorTickUnit="50.0" max="200.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" fx:id="macroPostCaptureDelaySlider"/>
+                            <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER_RIGHT" prefColumnCount="4" fx:id="macroPostCaptureDelayTextField"/>
                             <Label GridPane.rowIndex="2" text="%setting.macro.advanced.keyHoldTime"/>
-                            <Slider GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="macroKeyHoldTimeSlider"/>
-                            <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" alignment="CENTER_RIGHT" fx:id="macroKeyHoldTimeTextField"/>
+                            <Slider GridPane.columnIndex="1" GridPane.rowIndex="2" majorTickUnit="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="macroKeyHoldTimeSlider"/>
+                            <TextField GridPane.columnIndex="2" GridPane.rowIndex="2" alignment="CENTER_RIGHT" prefColumnCount="4" fx:id="macroKeyHoldTimeTextField"/>
                           </children>
                         </GridPane>
                       </content>
@@ -193,7 +193,7 @@
                               <children>
                                 <Label text="%setting.scanner.advanced.analyzerThreadCount.label"/>
                                 <Slider GridPane.columnIndex="1" fx:id="scannerAnalyzerThreadCountSlider"/>
-                                <TextField GridPane.columnIndex="2" alignment="CENTER_RIGHT" fx:id="scannerAnalyzerThreadCountTextField"/>
+                                <TextField GridPane.columnIndex="2" alignment="CENTER_RIGHT" prefColumnCount="4" fx:id="scannerAnalyzerThreadCountTextField"/>
                                 <Label GridPane.columnSpan="2147483647" GridPane.rowIndex="1" text="%setting.scanner.advanced.analyzerThreadCount.recommendation" wrapText="true"/>
                               </children>
                             </GridPane>
@@ -210,11 +210,11 @@
                               </rowConstraints>
                               <children>
                                 <Label text="%setting.scanner.advanced.captureDelay"/>
-                                <Slider GridPane.columnIndex="1" fx:id="scannerCaptureDelaySlider"/>
-                                <TextField GridPane.columnIndex="2" alignment="CENTER_RIGHT" fx:id="scannerCaptureDelayTextField"/>
+                                <Slider GridPane.columnIndex="1" majorTickUnit="100.0" max="500.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="scannerCaptureDelaySlider"/>
+                                <TextField GridPane.columnIndex="2" alignment="CENTER_RIGHT" prefColumnCount="4" fx:id="scannerCaptureDelayTextField"/>
                                 <Label GridPane.rowIndex="1" text="%setting.scanner.advanced.keyHoldTime"/>
-                                <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="scannerKeyHoldTimeSlider"/>
-                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER_RIGHT" fx:id="scannerKeyHoldTimeTextField"/>
+                                <Slider GridPane.columnIndex="1" GridPane.rowIndex="1" majorTickUnit="20.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="scannerKeyHoldTimeSlider"/>
+                                <TextField GridPane.columnIndex="2" GridPane.rowIndex="1" alignment="CENTER_RIGHT" prefColumnCount="4" fx:id="scannerKeyHoldTimeTextField"/>
                               </children>
                             </GridPane>
                           </children>
