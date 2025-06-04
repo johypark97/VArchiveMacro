@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.guava)
     implementation(libs.jnativehook)
+    implementation(libs.rxjava)
     implementation(libs.sqlite.jdbc)
 
     // -------- Logging --------

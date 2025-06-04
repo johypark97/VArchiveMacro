@@ -15,6 +15,7 @@ junit-jupiter = "5.11.4"
 log4j = "2.24.3"
 mockito = "5.15.2"
 pmd = "7.10.0"
+rxjava = "3.1.10"
 slf4j-api = "2.0.16"
 sqlite-jdbc = "3.49.1.0"
 tesseract-platform = "5.5.0-1.5.11"
@@ -33,6 +34,7 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
 sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
 tesseract-platform = { module = "org.bytedeco:tesseract-platform", version.ref = "tesseract-platform" }

@@ -51,6 +51,10 @@
     "path": "pmd.txt",
     "url": "https://pmd.github.io/"
   },
+  "RxJava": {
+    "path": "rxjava.txt",
+    "url": "https://reactivex.io/"
+  },
   "SLF4J": {
     "path": "slf4j.txt",
     "url": "https://www.slf4j.org/"
