@@ -23,6 +23,7 @@ module varchivemacro.macro {
     requires com.github.kwhat.jnativehook;
     requires com.google.common;
     requires com.google.gson;
+    requires io.reactivex.rxjava3;
     requires org.slf4j;
 
     exports com.github.johypark97.varchivemacro.macro.infrastructure.config.model to com.google.gson;
