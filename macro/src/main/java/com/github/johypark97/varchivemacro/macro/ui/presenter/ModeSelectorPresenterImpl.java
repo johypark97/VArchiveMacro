@@ -27,5 +27,6 @@ public class ModeSelectorPresenterImpl implements ModeSelector.ModeSelectorPrese
 
     @Override
     public void showFreestyleMacroView() {
+        homeStage.changeCenterView_freestyleMacro();
     }
 }

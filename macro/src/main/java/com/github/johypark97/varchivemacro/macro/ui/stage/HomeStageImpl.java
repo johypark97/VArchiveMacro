@@ -13,11 +13,14 @@ import com.github.johypark97.varchivemacro.macro.ui.alert.About;
 import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Home;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.HomePresenterImpl;
+import com.github.johypark97.varchivemacro.macro.ui.presenter.Macro;
+import com.github.johypark97.varchivemacro.macro.ui.presenter.MacroPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ModeSelector;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ModeSelectorPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.HomeViewImpl;
+import com.github.johypark97.varchivemacro.macro.ui.view.MacroViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ModeSelectorViewImpl;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -40,6 +43,7 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     private final StageManager stageManager;
 
     private Home.HomePresenter homePresenter;
+    private Macro.MacroPresenter macroPresenter;
     private ModeSelector.ModeSelectorPresenter modeSelectorPresenter;
 
     public HomeStageImpl(StageManager stageManager, Stage stage) {
@@ -59,6 +63,24 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
         stage.setMinHeight(STAGE_HEIGHT);
         stage.setMinWidth(STAGE_WIDTH);
+    }
+
+    private boolean stopAllCenterView() {
+        if (modeSelectorPresenter != null) {
+            if (!modeSelectorPresenter.stopView()) {
+                return false;
+            }
+
+            modeSelectorPresenter = null; // NOPMD
+        } else if (macroPresenter != null) {
+            if (!macroPresenter.stopView()) {
+                return false;
+            }
+
+            macroPresenter = null; // NOPMD
+        }
+
+        return true;
     }
 
     @Override
@@ -109,6 +131,10 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
     @Override
     public void changeCenterView_modeSelector() {
+        if (!stopAllCenterView()) {
+            return;
+        }
+
         ModeSelectorViewImpl view = new ModeSelectorViewImpl();
 
         modeSelectorPresenter = new ModeSelectorPresenterImpl(this);
@@ -117,6 +143,22 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         homePresenter.setCenterView(view);
 
         modeSelectorPresenter.startView();
+    }
+
+    @Override
+    public void changeCenterView_freestyleMacro() {
+        if (!stopAllCenterView()) {
+            return;
+        }
+
+        MacroViewImpl view = new MacroViewImpl();
+
+        macroPresenter = new MacroPresenterImpl();
+        Mvp.linkViewAndPresenter(view, macroPresenter);
+
+        homePresenter.setCenterView(view);
+
+        macroPresenter.startView();
     }
 
     @Override
@@ -146,7 +188,7 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
     @Override
     protected boolean onStopStage() {
-        if (modeSelectorPresenter != null && !modeSelectorPresenter.stopView()) {
+        if (!stopAllCenterView()) {
             return false;
         }
 
