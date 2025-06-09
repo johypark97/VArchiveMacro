@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import com.github.johypark97.varchivemacro.macro.application.event.GlobalEvent;
+import com.github.johypark97.varchivemacro.macro.application.event.GlobalEventBus;
 import com.github.johypark97.varchivemacro.macro.application.provider.FactoryProvider;
 import com.github.johypark97.varchivemacro.macro.application.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
@@ -66,6 +68,8 @@ public class SettingStageImpl extends AbstractTreeableStage implements SettingSt
         stage.setOnShown(event -> presenter.startView());
 
         stage.show();
+
+        GlobalEventBus.INSTANCE.fire(GlobalEvent.SETTING_WINDOW_OPENED);
     }
 
     @Override
@@ -146,6 +150,8 @@ public class SettingStageImpl extends AbstractTreeableStage implements SettingSt
         }
 
         onStop.run();
+
+        GlobalEventBus.INSTANCE.fire(GlobalEvent.SETTING_WINDOW_CLOSED);
 
         return true;
     }

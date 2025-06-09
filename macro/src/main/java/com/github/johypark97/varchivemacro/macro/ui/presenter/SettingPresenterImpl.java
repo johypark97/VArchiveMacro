@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
 import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
+import com.github.johypark97.varchivemacro.macro.application.event.GlobalEvent;
+import com.github.johypark97.varchivemacro.macro.application.event.GlobalEventBus;
 import com.github.johypark97.varchivemacro.macro.application.scanner.factory.CaptureImageCacheFactory;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
@@ -123,6 +125,8 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
             LOGGER.atError().setCause(e).log("Config flush exception.");
             settingStage.showError(Language.INSTANCE.getString("setting.dialog.applyException"), e);
         }
+
+        GlobalEventBus.INSTANCE.fire(GlobalEvent.SETTING_UPDATED);
 
         return true;
     }
