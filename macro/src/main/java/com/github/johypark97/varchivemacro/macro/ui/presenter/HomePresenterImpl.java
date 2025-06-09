@@ -43,6 +43,12 @@ public class HomePresenterImpl implements Home.HomePresenter {
 
     @Override
     public boolean stopView() {
+        try {
+            configRepository.flush();
+        } catch (IOException e) {
+            LOGGER.atError().setCause(e).log("Config saving exception.");
+        }
+
         return true;
     }
 
