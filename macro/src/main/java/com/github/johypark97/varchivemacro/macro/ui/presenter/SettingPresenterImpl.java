@@ -44,6 +44,8 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
 
     private MacroConfig.Builder macroConfigBuilder;
     private ScannerConfig.Builder scannerConfigBuilder;
+    private boolean invalidAccountFile;
+    private boolean invalidCacheDirectory;
 
     @MvpView
     public Setting.SettingView view;
@@ -60,6 +62,8 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
         showConfig_scanner();
 
         changed.set(false);
+        invalidAccountFile = false;
+        invalidCacheDirectory = false;
     }
 
     private void showConfig_macro() {
@@ -111,9 +115,18 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     }
 
     private boolean applyConfig() {
-        if (!validateAccountFile(scannerConfigBuilder.accountFile) || !validateCacheDirectory(
-                scannerConfigBuilder.cacheDirectory)) {
-            return false;
+        if (invalidAccountFile) {
+            if (!validateAccountFile(scannerConfigBuilder.accountFile)) {
+                return false;
+            }
+            invalidAccountFile = false;
+        }
+
+        if (invalidCacheDirectory) {
+            if (!validateCacheDirectory(scannerConfigBuilder.cacheDirectory)) {
+                return false;
+            }
+            invalidCacheDirectory = false;
         }
 
         configRepository.saveMacroConfig(macroConfigBuilder.build());
@@ -134,7 +147,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     private void updateKey(KeyEvent event, Consumer<InputKeyCombination> configKeySetter,
             Consumer<String> viewTextSetter) {
         InputKey key = InputKeyConverter.from(event.getCode());
-        if (INVALID_INPUT_KEY_SET.contains(key)) {
+        if (INVALID_INPUT_KEY_SET.contains(key) || !InputKeyConverter.isInteroperable(key)) {
             return;
         }
 
@@ -308,6 +321,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     @Override
     public void scanner_onChangeAccountFile(String value) {
         scannerConfigBuilder.accountFile = value;
+        invalidAccountFile = true;
         changed.set(true);
     }
 
@@ -340,6 +354,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     @Override
     public void scanner_onChangeCacheDirectory(String value) {
         scannerConfigBuilder.cacheDirectory = value;
+        invalidCacheDirectory = true;
         changed.set(true);
     }
 
