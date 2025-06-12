@@ -3,6 +3,8 @@ package com.github.johypark97.varchivemacro.macro.application.provider;
 import com.github.johypark97.varchivemacro.lib.common.manager.InstanceManager;
 import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManager;
 import com.github.johypark97.varchivemacro.macro.application.data.ProgramDataVersionService;
+import com.github.johypark97.varchivemacro.macro.application.macro.service.DefaultMacroService;
+import com.github.johypark97.varchivemacro.macro.application.macro.service.MacroService;
 import com.github.johypark97.varchivemacro.macro.application.service.WebBrowserService;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -26,6 +28,10 @@ public enum ServiceProvider {
                 () -> new WebBrowserService(hostServices));
 
         initialized.set(true);
+    }
+
+    public MacroService getMacroService() {
+        return new DefaultMacroService(RepositoryProvider.INSTANCE.getConfigRepository());
     }
 
     public ProgramDataVersionService getProgramDataVersionService() {

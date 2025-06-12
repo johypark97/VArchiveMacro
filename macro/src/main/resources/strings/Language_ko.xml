@@ -20,9 +20,12 @@
   <entry key="home.menu.language">언어 (Language)</entry>
   <entry key="home.menu.language.en">영어 (English)</entry>
   <entry key="home.menu.language.ko">한국어</entry>
+  <entry key="macro.clientMode.atOnce">캡처 + 업로드 한번에</entry>
+  <entry key="macro.clientMode.separately">캡처 / 업로드 따로</entry>
   <entry key="macro.clientModeLabel">분석 모드</entry>
   <entry key="macro.countLabel">횟수</entry>
   <entry key="macro.homeButton">홈 메뉴</entry>
+  <entry key="macro.serviceException">매크로 서비스 오류</entry>
   <entry key="macro.startDownKeyLabel">아래로 시작 키</entry>
   <entry key="macro.startUpKeyLabel">위로 시작 키</entry>
   <entry key="macro.stopKeyLabel">중지 키</entry>

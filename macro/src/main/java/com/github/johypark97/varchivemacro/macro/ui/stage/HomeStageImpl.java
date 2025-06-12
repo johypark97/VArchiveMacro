@@ -101,9 +101,18 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     }
 
     @Override
-    public void showError(String header, Throwable throwable) {
-        Alert alert = AlertBuilder.error().setOwner(stage).setHeaderText(header)
-                .setContentText(throwable.toString()).setThrowable(throwable).alert;
+    public void showError(String content, Throwable throwable) {
+        showError(null, content, throwable);
+    }
+
+    @Override
+    public void showError(String header, String content, Throwable throwable) {
+        Alert alert = AlertBuilder.error().setOwner(stage).setContentText(content)
+                .setThrowable(throwable).alert;
+
+        if (header != null) {
+            alert.setHeaderText(header);
+        }
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
@@ -153,7 +162,9 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
         MacroViewImpl view = new MacroViewImpl();
 
-        macroPresenter = new MacroPresenterImpl();
+        macroPresenter =
+                new MacroPresenterImpl(this, RepositoryProvider.INSTANCE.getConfigRepository(),
+                        ServiceProvider.INSTANCE.getMacroService());
         Mvp.linkViewAndPresenter(view, macroPresenter);
 
         homePresenter.setCenterView(view);

@@ -20,9 +20,12 @@
   <entry key="home.menu.language">Language</entry>
   <entry key="home.menu.language.en">English</entry>
   <entry key="home.menu.language.ko">Korean (한국어)</entry>
+  <entry key="macro.clientMode.atOnce">Capture + Upload at once</entry>
+  <entry key="macro.clientMode.separately">Capture / Upload separately</entry>
   <entry key="macro.clientModeLabel">Analysis mode</entry>
   <entry key="macro.countLabel">Count</entry>
   <entry key="macro.homeButton">Home menu</entry>
+  <entry key="macro.serviceException">Macro service error</entry>
   <entry key="macro.startDownKeyLabel">Start downward key</entry>
   <entry key="macro.startUpKeyLabel">Start upward key</entry>
   <entry key="macro.stopKeyLabel">Stop key</entry>
