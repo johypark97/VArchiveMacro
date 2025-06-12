@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
@@ -12,57 +14,69 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21.0.6">
   <center>
-    <VBox alignment="CENTER" spacing="20.0">
+    <StackPane>
       <children>
-        <VBox alignment="CENTER" maxWidth="512.0" spacing="20.0">
+        <VBox alignment="CENTER" spacing="20.0" fx:id="macroBox">
           <children>
-            <Label text="%macro.countLabel"/>
-            <HBox prefHeight="64.0" spacing="10.0">
+            <VBox alignment="CENTER" maxWidth="512.0" spacing="20.0">
               <children>
-                <Button maxHeight="1.7976931348623157E308" text="-10" fx:id="countDecrease10Button"/>
-                <Button maxHeight="1.7976931348623157E308" text="-1" fx:id="countDecrease1Button"/>
-                <TextField HBox.hgrow="ALWAYS" alignment="CENTER" maxHeight="1.7976931348623157E308" fx:id="countTextField"/>
-                <Button maxHeight="1.7976931348623157E308" text="+1" fx:id="countIncrease1Button"/>
-                <Button maxHeight="1.7976931348623157E308" text="+10" fx:id="countIncrease10Button"/>
+                <Label text="%macro.countLabel"/>
+                <HBox prefHeight="64.0" spacing="10.0">
+                  <children>
+                    <Button maxHeight="1.7976931348623157E308" text="-10" fx:id="countDecrease10Button"/>
+                    <Button maxHeight="1.7976931348623157E308" text="-1" fx:id="countDecrease1Button"/>
+                    <TextField HBox.hgrow="ALWAYS" alignment="CENTER" maxHeight="1.7976931348623157E308" fx:id="countTextField"/>
+                    <Button maxHeight="1.7976931348623157E308" text="+1" fx:id="countIncrease1Button"/>
+                    <Button maxHeight="1.7976931348623157E308" text="+10" fx:id="countIncrease10Button"/>
+                  </children>
+                </HBox>
+                <Slider majorTickUnit="200.0" max="1000.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="countSlider"/>
               </children>
-            </HBox>
-            <Slider majorTickUnit="200.0" max="1000.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" fx:id="countSlider"/>
+            </VBox>
+            <Separator/>
+            <GridPane hgap="20.0" maxWidth="512.0" vgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS"/>
+                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
+                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS"/>
+                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+              </rowConstraints>
+              <children>
+                <Label text="%macro.clientModeLabel"/>
+                <Label GridPane.columnIndex="1" fx:id="clientModeLabel"/>
+                <Label GridPane.rowIndex="1" text="%macro.uploadKeyLabel"/>
+                <Label GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="uploadKeyLabel"/>
+                <Label GridPane.columnIndex="2" text="%macro.startUpKeyLabel"/>
+                <Label GridPane.columnIndex="3" fx:id="startUpKeyLabel"/>
+                <Label GridPane.columnIndex="2" GridPane.rowIndex="1" text="%macro.startDownKeyLabel"/>
+                <Label GridPane.columnIndex="3" GridPane.rowIndex="1" fx:id="startDownKeyLabel"/>
+                <Label GridPane.columnIndex="2" GridPane.rowIndex="2" text="%macro.stopKeyLabel"/>
+                <Label GridPane.columnIndex="3" GridPane.rowIndex="2" fx:id="stopKeyLabel"/>
+              </children>
+            </GridPane>
+          </children>
+          <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+          </padding>
+        </VBox>
+        <VBox alignment="CENTER" spacing="10.0" fx:id="progressBox">
+          <children>
+            <ProgressIndicator/>
+            <ProgressBar fx:id="progressBar"/>
+            <Label fx:id="progressLabel"/>
           </children>
         </VBox>
-        <Separator/>
-        <GridPane hgap="20.0" maxWidth="512.0" vgap="10.0">
-          <columnConstraints>
-            <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS"/>
-            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
-            <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS"/>
-            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
-          </columnConstraints>
-          <rowConstraints>
-            <RowConstraints/>
-            <RowConstraints/>
-            <RowConstraints/>
-          </rowConstraints>
-          <children>
-            <Label text="%macro.clientModeLabel"/>
-            <Label GridPane.columnIndex="1" fx:id="clientModeLabel"/>
-            <Label GridPane.rowIndex="1" text="%macro.uploadKeyLabel"/>
-            <Label GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="uploadKeyLabel"/>
-            <Label GridPane.columnIndex="2" text="%macro.startUpKeyLabel"/>
-            <Label GridPane.columnIndex="3" fx:id="startUpKeyLabel"/>
-            <Label GridPane.columnIndex="2" GridPane.rowIndex="1" text="%macro.startDownKeyLabel"/>
-            <Label GridPane.columnIndex="3" GridPane.rowIndex="1" fx:id="startDownKeyLabel"/>
-            <Label GridPane.columnIndex="2" GridPane.rowIndex="2" text="%macro.stopKeyLabel"/>
-            <Label GridPane.columnIndex="3" GridPane.rowIndex="2" fx:id="stopKeyLabel"/>
-          </children>
-        </GridPane>
       </children>
-      <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-      </padding>
-    </VBox>
+    </StackPane>
   </center>
   <bottom>
     <ToolBar>

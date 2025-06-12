@@ -8,12 +8,17 @@ import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 public class MacroViewImpl extends BorderPane implements Macro.MacroView {
     private static final String FXML_PATH = "/fxml/Macro.fxml";
+
+    @FXML
+    private VBox macroBox;
 
     @FXML
     private Button countDecrease10Button;
@@ -47,6 +52,15 @@ public class MacroViewImpl extends BorderPane implements Macro.MacroView {
 
     @FXML
     private Label stopKeyLabel;
+
+    @FXML
+    private VBox progressBox;
+
+    @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private Label progressLabel;
 
     @FXML
     private Button homeButton;
