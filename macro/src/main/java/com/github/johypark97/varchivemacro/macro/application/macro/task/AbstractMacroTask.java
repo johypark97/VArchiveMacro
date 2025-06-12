@@ -4,12 +4,13 @@ import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
 import com.github.johypark97.varchivemacro.macro.application.common.InterruptibleTask;
 import com.github.johypark97.varchivemacro.macro.application.macro.model.MacroDirection;
+import com.github.johypark97.varchivemacro.macro.application.macro.model.MacroProgress;
 import com.github.johypark97.varchivemacro.macro.infrastructure.config.model.MacroConfig;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.util.concurrent.TimeUnit;
 
-public abstract class AbstractMacroTask extends InterruptibleTask<Void> {
+public abstract class AbstractMacroTask extends InterruptibleTask<MacroProgress> {
     private final Robot robot;
 
     private final int count;
@@ -67,18 +68,25 @@ public abstract class AbstractMacroTask extends InterruptibleTask<Void> {
     }
 
     @Override
-    protected final Void callTask() throws Exception {
-        for (int i = 1; i <= count; i++) {
-            if (i > 1) {
-                nextSong();
-                sleep_songSwitchingTime();
+    protected final MacroProgress callTask() throws Exception {
+        updateValue(new MacroProgress(0, count));
+
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+
+            for (int i = 1; i <= count; i++) {
+                if (i > 1) {
+                    nextSong();
+                    sleep_songSwitchingTime();
+                }
+
+                runMacro_forSong();
+
+                updateValue(new MacroProgress(i, count));
             }
-
-            runMacro_forSong();
-
-            updateProgress(i, count);
+        } catch (InterruptedException ignored) {
         }
 
-        return null;
+        return new MacroProgress(count, count);
     }
 }

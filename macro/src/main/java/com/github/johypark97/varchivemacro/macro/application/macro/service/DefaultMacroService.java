@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.application.macro.service;
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.application.macro.model.MacroDirection;
+import com.github.johypark97.varchivemacro.macro.application.macro.model.MacroProgress;
 import com.github.johypark97.varchivemacro.macro.application.macro.task.AbstractMacroTask;
 import com.github.johypark97.varchivemacro.macro.application.macro.task.AtOnceMacroTask;
 import com.github.johypark97.varchivemacro.macro.application.macro.task.SeparatelyMacroTask;
@@ -17,7 +18,7 @@ public class DefaultMacroService implements MacroService {
     }
 
     @Override
-    public Task<Void> createMacroTask(MacroDirection direction) {
+    public Task<MacroProgress> createMacroTask(MacroDirection direction) {
         if (TaskManager.getInstance().isRunningAny()) {
             return null;
         }
