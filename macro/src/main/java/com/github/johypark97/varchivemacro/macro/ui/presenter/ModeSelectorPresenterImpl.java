@@ -23,6 +23,7 @@ public class ModeSelectorPresenterImpl implements ModeSelector.ModeSelectorPrese
 
     @Override
     public void showCollectionScannerView() {
+        homeStage.changeCenterView_collectionScanner();
     }
 
     @Override

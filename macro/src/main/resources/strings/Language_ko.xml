@@ -34,6 +34,16 @@
   <entry key="modeSelector.description.right">컬렉션 메뉴에서 모든 기록을 스캔합니다</entry>
   <entry key="osl.hyperlinkLabel">라이브러리 링크:</entry>
   <entry key="osl.windowTitle">오픈 소스 라이선스</entry>
+  <entry key="scanner.recordLoader.accountFile.label">계정 파일</entry>
+  <entry key="scanner.recordLoader.accountFile.selectButton">선택</entry>
+  <entry key="scanner.recordLoader.cancelButton">취소</entry>
+  <entry key="scanner.recordLoader.djNameLabel">DJ 이름</entry>
+  <entry key="scanner.recordLoader.loadButton">불러오기</entry>
+  <entry key="scanner.recordLoader.titleLabel">V-ARCHIVE의 DJ 이름과 계정 파일을 지정해주세요.</entry>
+  <entry key="scanner.recordViewer.reloadRecordButton">기록 다시 불러오기</entry>
+  <entry key="scanner.recordViewer.scanButton">스캔 시작하기</entry>
+  <entry key="scanner.recordViewer.songFilter.label">필터:</entry>
+  <entry key="scanner.toolBar.homeButton">홈 메뉴</entry>
   <entry key="setting.apply">적용</entry>
   <entry key="setting.close">닫기</entry>
   <entry key="setting.dialog.accountFile.header">컬렉션 스캐너 계정 파일 오류</entry>

@@ -34,6 +34,16 @@
   <entry key="modeSelector.description.right">Scan all records in the Collection Menu</entry>
   <entry key="osl.hyperlinkLabel">Library Link:</entry>
   <entry key="osl.windowTitle">Open Source License</entry>
+  <entry key="scanner.recordLoader.accountFile.label">Account file</entry>
+  <entry key="scanner.recordLoader.accountFile.selectButton">Select</entry>
+  <entry key="scanner.recordLoader.cancelButton">Cancel</entry>
+  <entry key="scanner.recordLoader.djNameLabel">DJ name</entry>
+  <entry key="scanner.recordLoader.loadButton">Load</entry>
+  <entry key="scanner.recordLoader.titleLabel">Please specify the DJ name and Account file of V-ARCHIVE.</entry>
+  <entry key="scanner.recordViewer.reloadRecordButton">Reload records</entry>
+  <entry key="scanner.recordViewer.scanButton">Start scanning</entry>
+  <entry key="scanner.recordViewer.songFilter.label">Filter:</entry>
+  <entry key="scanner.toolBar.homeButton">Home menu</entry>
   <entry key="setting.apply">Apply</entry>
   <entry key="setting.close">Close</entry>
   <entry key="setting.dialog.accountFile.header">Collection scanner account file error</entry>

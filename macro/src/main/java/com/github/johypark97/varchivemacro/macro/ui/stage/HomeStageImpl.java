@@ -17,11 +17,14 @@ import com.github.johypark97.varchivemacro.macro.ui.presenter.Macro;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.MacroPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ModeSelector;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ModeSelectorPresenterImpl;
+import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerHome;
+import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerHomePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.MacroViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ModeSelectorViewImpl;
+import com.github.johypark97.varchivemacro.macro.ui.view.ScannerHomeViewImpl;
 import java.awt.Toolkit;
 import java.io.IOException;
 import javafx.scene.Scene;
@@ -45,6 +48,7 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     private Home.HomePresenter homePresenter;
     private Macro.MacroPresenter macroPresenter;
     private ModeSelector.ModeSelectorPresenter modeSelectorPresenter;
+    private ScannerHome.ScannerHomePresenter scannerHomePresenter;
 
     public HomeStageImpl(StageManager stageManager, Stage stage) {
         super(stage);
@@ -170,6 +174,22 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         homePresenter.setCenterView(view);
 
         macroPresenter.startView();
+    }
+
+    @Override
+    public void changeCenterView_collectionScanner() {
+        if (!stopAllCenterView()) {
+            return;
+        }
+
+        ScannerHomeViewImpl view = new ScannerHomeViewImpl();
+
+        scannerHomePresenter = new ScannerHomePresenterImpl();
+        Mvp.linkViewAndPresenter(view, scannerHomePresenter);
+
+        homePresenter.setCenterView(view);
+
+        scannerHomePresenter.startView();
     }
 
     @Override
