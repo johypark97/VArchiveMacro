@@ -65,8 +65,6 @@ public class SongRecordUploadTask
                     : SongRecordUploadTaskResult.Status.HIGHER_RECORD_EXISTS);
         }
 
-        songRecordRepository.flush();
-
         return resultMap;
     }
 }

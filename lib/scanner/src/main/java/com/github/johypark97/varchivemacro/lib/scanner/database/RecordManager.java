@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.lib.scanner.database;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public interface RecordManager {
     boolean updateRecord(LocalRecord record);
@@ -14,6 +15,8 @@ public interface RecordManager {
     Map<Pattern, LocalRecord> getRecord(int id, Button button);
 
     Map<Button, Map<Pattern, LocalRecord>> getRecord(int id);
+
+    void forEach(BiConsumer<Integer, Map<Button, Map<Pattern, LocalRecord>>> consumer);
 
     class LocalRecord implements Cloneable {
         public final Button button;

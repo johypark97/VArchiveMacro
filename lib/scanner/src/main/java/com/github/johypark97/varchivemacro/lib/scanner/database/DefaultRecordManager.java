@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.BiConsumer;
 
 public class DefaultRecordManager implements RecordManager {
     private static final List<Board> BOARDS = Arrays.stream(Board.values())
@@ -134,6 +135,13 @@ public class DefaultRecordManager implements RecordManager {
         lock.readLock().unlock();
 
         return map;
+    }
+
+    @Override
+    public void forEach(BiConsumer<Integer, Map<Button, Map<Pattern, LocalRecord>>> consumer) {
+        lock.readLock().lock();
+        recordMap.keySet().forEach(id -> consumer.accept(id, getRecord(id)));
+        lock.readLock().unlock();
     }
 
     protected static class RecordMap extends HashMap<Integer, ButtonMap> {
