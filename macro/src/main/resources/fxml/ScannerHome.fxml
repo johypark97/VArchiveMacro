@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -30,7 +31,11 @@
                   <children>
                     <Label text="%scanner.recordViewer.songFilter.label"/>
                     <TextField HBox.hgrow="ALWAYS" prefColumnCount="0" fx:id="recordViewerSongFilterTextField"/>
-                    <Button text="↺" fx:id="recordViewerSongFilterResetButton"/>
+                    <Button text="↺" fx:id="recordViewerSongFilterResetButton">
+                      <tooltip>
+                        <Tooltip text="%scanner.recordViewer.songFilter.resetButtonTooltip"/>
+                      </tooltip>
+                    </Button>
                   </children>
                   <padding>
                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
@@ -64,7 +69,11 @@
                     <RowConstraints/>
                   </rowConstraints>
                   <children>
-                    <Button text="T"/>
+                    <Button text="T">
+                      <tooltip>
+                        <Tooltip text="%scanner.recordViewer.recordGrid.transposeButtonTooltip"/>
+                      </tooltip>
+                    </Button>
                     <Label GridPane.columnIndex="1" text="NORMAL"/>
                     <Label GridPane.columnIndex="2" text="HARD"/>
                     <Label GridPane.columnIndex="3" text="MAXIMUM"/>
@@ -121,7 +130,11 @@
                 <Label text="%scanner.recordLoader.djNameLabel"/>
                 <TextField GridPane.columnIndex="1" GridPane.columnSpan="2147483647" fx:id="recordLoaderDjNameTextField"/>
                 <Label GridPane.rowIndex="1" text="%scanner.recordLoader.accountFile.label"/>
-                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="recordLoaderAccountFileTextField"/>
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="recordLoaderAccountFileTextField">
+                  <tooltip>
+                    <Tooltip fx:id="recordLoaderAccountFileTextFieldTooltip"/>
+                  </tooltip>
+                </TextField>
                 <Button GridPane.columnIndex="2" GridPane.rowIndex="1" text="%scanner.recordLoader.accountFile.selectButton" fx:id="recordLoaderAccountFileSelectButton"/>
               </children>
             </GridPane>

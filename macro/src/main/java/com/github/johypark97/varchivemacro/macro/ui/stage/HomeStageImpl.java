@@ -26,11 +26,14 @@ import com.github.johypark97.varchivemacro.macro.ui.view.MacroViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ModeSelectorViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerHomeViewImpl;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +85,12 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
             }
 
             macroPresenter = null; // NOPMD
+        } else if (scannerHomePresenter != null) {
+            if (!scannerHomePresenter.stopView()) {
+                return false;
+            }
+
+            scannerHomePresenter = null; // NOPMD
         }
 
         return true;
@@ -117,6 +126,14 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         if (header != null) {
             alert.setHeaderText(header);
         }
+
+        Toolkit.getDefaultToolkit().beep();
+        alert.showAndWait();
+    }
+
+    @Override
+    public void showWarning(String content) {
+        Alert alert = AlertBuilder.warning().setOwner(stage).setContentText(content).alert;
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
@@ -184,12 +201,31 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
         ScannerHomeViewImpl view = new ScannerHomeViewImpl();
 
-        scannerHomePresenter = new ScannerHomePresenterImpl();
+        scannerHomePresenter = new ScannerHomePresenterImpl(this,
+                RepositoryProvider.INSTANCE.getConfigRepository(),
+                RepositoryProvider.INSTANCE.getSongRecordRepository(),
+                RepositoryProvider.INSTANCE.getSongRepository(),
+                ServiceProvider.INSTANCE.getSongRecordLoadService(),
+                ServiceProvider.INSTANCE.getSongRecordSaveService());
         Mvp.linkViewAndPresenter(view, scannerHomePresenter);
 
         homePresenter.setCenterView(view);
 
         scannerHomePresenter.startView();
+    }
+
+    @Override
+    public File showAccountFileSelector() {
+        FileChooser chooser = new FileChooser();
+
+        chooser.setInitialDirectory(Path.of("").toAbsolutePath().toFile());
+        chooser.setTitle(
+                Language.INSTANCE.getString("scanner.recordLoader.accountFileSelectorTitle"));
+
+        chooser.getExtensionFilters()
+                .add(new FileChooser.ExtensionFilter("Account file (*.txt)", "*.txt"));
+
+        return chooser.showOpenDialog(stage);
     }
 
     @Override

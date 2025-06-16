@@ -5,6 +5,8 @@ import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManage
 import com.github.johypark97.varchivemacro.macro.application.data.ProgramDataVersionService;
 import com.github.johypark97.varchivemacro.macro.application.macro.service.DefaultMacroService;
 import com.github.johypark97.varchivemacro.macro.application.macro.service.MacroService;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.SongRecordLoadService;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.SongRecordSaveService;
 import com.github.johypark97.varchivemacro.macro.application.service.WebBrowserService;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,6 +16,7 @@ public enum ServiceProvider {
     INSTANCE; // Singleton
 
     private final Path PROGRAM_DATA_DIRECTORY_PATH = Path.of("data");
+    private final Path RECORD_FILE_PATH = Path.of("records.json");
 
     private final InstanceManager<Object> instanceManager = new LazyInstanceManager<>();
 
@@ -36,6 +39,16 @@ public enum ServiceProvider {
 
     public ProgramDataVersionService getProgramDataVersionService() {
         return new ProgramDataVersionService(PROGRAM_DATA_DIRECTORY_PATH);
+    }
+
+    public SongRecordLoadService getSongRecordLoadService() {
+        return new SongRecordLoadService(RepositoryProvider.INSTANCE.getSongRecordRepository(),
+                RECORD_FILE_PATH);
+    }
+
+    public SongRecordSaveService getSongRecordSaveService() {
+        return new SongRecordSaveService(RepositoryProvider.INSTANCE.getSongRecordRepository(),
+                RECORD_FILE_PATH);
     }
 
     public WebBrowserService getWebBrowserService() {
