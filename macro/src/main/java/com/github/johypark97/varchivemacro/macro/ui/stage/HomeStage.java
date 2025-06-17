@@ -29,4 +29,6 @@ public interface HomeStage extends TreeableStage {
     void showOpenSourceLicense();
 
     void showAbout();
+
+    void showScanner();
 }

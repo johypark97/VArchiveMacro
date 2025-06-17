@@ -247,6 +247,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
 
     @Override
     public void showScannerWindow() {
+        homeStage.showScanner();
     }
 
     @Override

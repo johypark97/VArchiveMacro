@@ -4,6 +4,8 @@ import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.OpenSourceLicenseStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.OpenSourceLicenseStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStage;
+import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
@@ -14,6 +16,7 @@ public class StageManager {
 
     private HomeStage homeStage;
     private OpenSourceLicenseStage openSourceLicenseStage;
+    private ScannerScannerStage scannerScannerStage;
     private SettingStage settingStage;
 
     public StageManager(Stage primaryStage) {
@@ -48,5 +51,18 @@ public class StageManager {
         });
 
         settingStage.startStage();
+    }
+
+    public void showScannerScannerStage(AbstractTreeableStage parent) {
+        if (scannerScannerStage != null) {
+            scannerScannerStage.focusStage();
+            return;
+        }
+
+        scannerScannerStage = new ScannerScannerStageImpl(parent, () -> {
+            scannerScannerStage = null; // NOPMD
+        });
+
+        scannerScannerStage.startStage();
     }
 }

@@ -254,6 +254,11 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     }
 
     @Override
+    public void showScanner() {
+        stageManager.showScannerScannerStage(this);
+    }
+
+    @Override
     protected boolean onStopStage() {
         if (!stopAllCenterView()) {
             return false;

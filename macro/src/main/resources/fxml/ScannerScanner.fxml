@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="StackPane" xmlns="http://javafx.com/javafx/21.0.6">
+  <children>
+    <HBox spacing="10.0" fx:id="scannerBox">
+      <children>
+        <VBox HBox.hgrow="ALWAYS" spacing="10.0">
+          <children>
+            <TitledPane animated="false" collapsible="false" text="%scanner.scanner.setting.sectionName">
+              <content>
+                <FlowPane alignment="TOP_CENTER" hgap="40.0" vgap="20.0">
+                  <children>
+                    <GridPane hgap="10.0" vgap="10.0">
+                      <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT"/>
+                        <ColumnConstraints/>
+                        <ColumnConstraints/>
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                      </rowConstraints>
+                      <children>
+                        <Label text="%scanner.scanner.setting.accountFileLabel"/>
+                        <TextField GridPane.columnIndex="1" editable="false" fx:id="accountFileTextField"/>
+                        <CheckBox GridPane.columnIndex="2" text="%scanner.scanner.setting.showCheckBox" fx:id="accountFileShowCheckBox"/>
+                        <Label GridPane.rowIndex="1" text="%scanner.scanner.setting.cacheDirectoryLabel"/>
+                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" editable="false" fx:id="cacheDirectoryTextField"/>
+                        <CheckBox GridPane.columnIndex="2" GridPane.rowIndex="1" text="%scanner.scanner.setting.showCheckBox" fx:id="cacheDirectoryShowCheckBox"/>
+                      </children>
+                    </GridPane>
+                    <GridPane hgap="10.0" vgap="10.0">
+                      <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT"/>
+                        <ColumnConstraints halignment="LEFT"/>
+                        <ColumnConstraints halignment="RIGHT"/>
+                        <ColumnConstraints halignment="LEFT"/>
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                      </rowConstraints>
+                      <children>
+                        <Label text="%scanner.scanner.setting.autoAnalysisLabel"/>
+                        <Label GridPane.columnIndex="1" fx:id="autoAnalysisLabel"/>
+                        <Label GridPane.columnIndex="2" text="%scanner.scanner.setting.startKeyLabel"/>
+                        <Label GridPane.columnIndex="3" fx:id="startKeyLabel"/>
+                        <Label GridPane.columnIndex="2" GridPane.rowIndex="1" text="%scanner.scanner.setting.stopKeyLabel"/>
+                        <Label GridPane.columnIndex="3" GridPane.rowIndex="1" fx:id="stopKeyLabel"/>
+                      </children>
+                    </GridPane>
+                  </children>
+                </FlowPane>
+              </content>
+            </TitledPane>
+            <TitledPane VBox.vgrow="ALWAYS" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="%scanner.scanner.checker.sectionName" fx:id="checkerTitledPane"/>
+            <Button maxWidth="1.7976931348623157E308" minHeight="64.0" text="%scanner.scanner.checkButton" fx:id="checkButton"/>
+          </children>
+        </VBox>
+        <VBox spacing="10.0">
+          <children>
+            <TitledPane VBox.vgrow="ALWAYS" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="%scanner.scanner.categoryList.sectionName">
+              <content>
+                <ListView fx:id="categoryListView"/>
+              </content>
+            </TitledPane>
+            <HBox spacing="10.0">
+              <children>
+                <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%scanner.scanner.categoryList.selectAllButton" fx:id="selectAllCategoryButton"/>
+                <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%scanner.scanner.categoryList.unselectAllButton" fx:id="unselectAllCategoryButton"/>
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </children>
+      <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+      </padding>
+    </HBox>
+    <VBox alignment="CENTER" spacing="10.0" fx:id="progressBox">
+      <children>
+        <ProgressIndicator/>
+        <Label text="%scanner.scanner.progressLabel"/>
+      </children>
+    </VBox>
+  </children>
+</fx:root>
