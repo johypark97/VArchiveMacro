@@ -191,6 +191,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
             case SETTING_WINDOW_CLOSED:
                 registerKeyboardHook();
                 break;
+            default:
         }
     }
 

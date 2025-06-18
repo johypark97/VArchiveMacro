@@ -142,6 +142,7 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
             case SETTING_WINDOW_CLOSED:
                 registerKeyboardHook();
                 break;
+            default:
         }
     }
 
