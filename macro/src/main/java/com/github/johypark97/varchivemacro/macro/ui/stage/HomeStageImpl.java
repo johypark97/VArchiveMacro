@@ -161,6 +161,10 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
     @Override
     public void changeCenterView_modeSelector() {
+        if (stageManager.isScannerScannerStageOpened()) {
+            return;
+        }
+
         if (!stopAllCenterView()) {
             return;
         }

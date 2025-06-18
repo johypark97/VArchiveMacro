@@ -58,6 +58,13 @@
   <entry key="scanner.scanner.categoryList.unselectAllButton">Unselect all</entry>
   <entry key="scanner.scanner.checkButton">Check the monitor display and resolution</entry>
   <entry key="scanner.scanner.checker.sectionName">Test image viewer</entry>
+  <entry key="scanner.scanner.dialog.checkerOkHeader">This is a scanable resolution</entry>
+  <entry key="scanner.scanner.dialog.checkerOkMessage">Please make sure that the Test image viewer displays the screen of the monitor that will run the game.</entry>
+  <entry key="scanner.scanner.dialog.exception.cacheDirectoryNotEmpty">The cache directory is not empty.</entry>
+  <entry key="scanner.scanner.dialog.exception.notSupportedResolution">Not supported resolution: %s</entry>
+  <entry key="scanner.scanner.dialog.taskDone">Completed the collection scanning</entry>
+  <entry key="scanner.scanner.dialog.taskInitException">Scanner initialization error</entry>
+  <entry key="scanner.scanner.dialog.taskRunningExceptionHeader">Scanner running error</entry>
   <entry key="scanner.scanner.progressLabel">Scanning</entry>
   <entry key="scanner.scanner.setting.accountFileLabel">Account file</entry>
   <entry key="scanner.scanner.setting.autoAnalysisLabel">Auto analysis</entry>

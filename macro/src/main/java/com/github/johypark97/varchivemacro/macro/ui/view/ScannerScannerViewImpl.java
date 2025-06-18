@@ -1,10 +1,18 @@
 package com.github.johypark97.varchivemacro.macro.ui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import com.github.johypark97.varchivemacro.lib.jfx.component.ImageViewer;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScanner;
+import com.github.johypark97.varchivemacro.macro.ui.utility.SimpleTransition;
+import com.github.johypark97.varchivemacro.macro.ui.viewmodel.ScannerScannerViewModel;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+import java.util.Set;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ObservableStringValue;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -12,12 +20,24 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.ScannerScannerView {
     private static final String FXML_PATH = "/fxml/ScannerScanner.fxml";
+
+    private static final Duration PROGRESS_TRANSITION_DURATION = Duration.millis(500);
+    private static final int PROGRESS_TRANSITION_BLUR_RADIUS = 4;
+
+    private final ImageViewer imageViewer = new ImageViewer();
+
+    private final GaussianBlur scannerBoxBlur = new GaussianBlur(0);
 
     @FXML
     private HBox scannerBox;
@@ -26,10 +46,16 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     private TextField accountFileTextField;
 
     @FXML
+    private Tooltip accountFileTextFieldTooltip;
+
+    @FXML
     private CheckBox accountFileShowCheckBox;
 
     @FXML
     private TextField cacheDirectoryTextField;
+
+    @FXML
+    private Tooltip cacheDirectoryTextFieldTooltip;
 
     @FXML
     private CheckBox cacheDirectoryShowCheckBox;
@@ -50,7 +76,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     private Button checkButton;
 
     @FXML
-    private ListView<String> categoryListView;
+    private ListView<ScannerScannerViewModel.CategoryData> categoryListView;
 
     @FXML
     private Button selectAllCategoryButton;
@@ -76,5 +102,103 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
 
     @FXML
     public void initialize() {
+        scannerBox.setEffect(scannerBoxBlur);
+
+        accountFileTextFieldTooltip.textProperty().bind(accountFileTextField.textProperty());
+        cacheDirectoryTextFieldTooltip.textProperty().bind(cacheDirectoryTextField.textProperty());
+
+        checkerTitledPane.setContent(imageViewer);
+        imageViewer.getStyleClass().add("image-viewer");
+        imageViewer.setPrefHeight(0);
+        imageViewer.setPrefWidth(0);
+        checkButton.setOnAction(event -> presenter.checkDisplayAndResolution());
+
+        categoryListView.setCellFactory(CheckBoxListCell.forListView(param -> param.selected));
+        selectAllCategoryButton.setOnAction(
+                event -> categoryListView.getItems().forEach(x -> x.selected.set(true)));
+        unselectAllCategoryButton.setOnAction(
+                event -> categoryListView.getItems().forEach(x -> x.selected.set(false)));
+
+        progressBox.setVisible(false);
+    }
+
+    @Override
+    public void bindAccountFileText(ObservableStringValue value) {
+        accountFileTextField.textProperty()
+                .bind(Bindings.when(accountFileShowCheckBox.selectedProperty()).then(value)
+                        .otherwise("********"));
+    }
+
+    @Override
+    public void bindCacheDirectoryText(ObservableStringValue value) {
+        cacheDirectoryTextField.textProperty()
+                .bind(Bindings.when(cacheDirectoryShowCheckBox.selectedProperty()).then(value)
+                        .otherwise("********"));
+    }
+
+    @Override
+    public void setAutoAnalysis(boolean value) {
+        autoAnalysisLabel.setText(value ? "ON" : "OFF");
+    }
+
+    @Override
+    public void setStartKeyText(String value) {
+        startKeyLabel.setText(value);
+    }
+
+    @Override
+    public void setStopKeyText(String value) {
+        stopKeyLabel.setText(value);
+    }
+
+    @Override
+    public void setCheckerImageViewImage(Image value) {
+        imageViewer.setImage(value);
+    }
+
+    @Override
+    public void setCategoryList(List<ScannerScannerViewModel.CategoryData> value) {
+        categoryListView.setItems(FXCollections.observableList(value));
+    }
+
+    @Override
+    public List<ScannerScannerViewModel.CategoryData> getSelectedCategoryList() {
+        return categoryListView.getItems().stream().filter(x -> x.selected.get()).toList();
+    }
+
+    @Override
+    public void setSelectedCategory(Set<String> value) {
+        categoryListView.getItems().forEach(x -> {
+            if (value.contains(x.category.name())) {
+                x.selected.set(true);
+            }
+        });
+    }
+
+    @Override
+    public void showProgressBox() {
+        scannerBox.setDisable(true);
+
+        progressBox.setVisible(true);
+
+        new SimpleTransition(PROGRESS_TRANSITION_DURATION, x -> {
+            scannerBox.setOpacity(1 - 0.8 * x);
+            progressBox.setOpacity(x);
+            scannerBoxBlur.setRadius(x * PROGRESS_TRANSITION_BLUR_RADIUS);
+        }).play();
+    }
+
+    @Override
+    public void hideProgressBox() {
+        scannerBox.setDisable(false);
+
+        SimpleTransition transition = new SimpleTransition(PROGRESS_TRANSITION_DURATION, x -> {
+            scannerBox.setOpacity(0.2 + 0.8 * x);
+            progressBox.setOpacity(1 - x);
+            scannerBoxBlur.setRadius(PROGRESS_TRANSITION_BLUR_RADIUS * (1 - x));
+        });
+        transition.setOnFinished(event -> progressBox.setVisible(false));
+
+        transition.play();
     }
 }

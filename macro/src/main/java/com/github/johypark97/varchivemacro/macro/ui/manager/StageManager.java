@@ -65,4 +65,8 @@ public class StageManager {
 
         scannerScannerStage.startStage();
     }
+
+    public boolean isScannerScannerStageOpened() {
+        return scannerScannerStage != null;
+    }
 }

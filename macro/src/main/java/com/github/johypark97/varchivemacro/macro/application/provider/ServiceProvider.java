@@ -5,9 +5,19 @@ import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManage
 import com.github.johypark97.varchivemacro.macro.application.data.ProgramDataVersionService;
 import com.github.johypark97.varchivemacro.macro.application.macro.service.DefaultMacroService;
 import com.github.johypark97.varchivemacro.macro.application.macro.service.MacroService;
+import com.github.johypark97.varchivemacro.macro.application.scanner.factory.CaptureImageCacheFactory;
+import com.github.johypark97.varchivemacro.macro.application.scanner.factory.OcrFactory;
+import com.github.johypark97.varchivemacro.macro.application.scanner.factory.SongTitleMapperFactory;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.CollectionScanTaskService;
+import com.github.johypark97.varchivemacro.macro.application.scanner.service.DefaultCollectionScanTaskService;
 import com.github.johypark97.varchivemacro.macro.application.scanner.service.SongRecordLoadService;
 import com.github.johypark97.varchivemacro.macro.application.scanner.service.SongRecordSaveService;
 import com.github.johypark97.varchivemacro.macro.application.service.WebBrowserService;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.CaptureRepository;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.SongCaptureLinkRepository;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.SongRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.config.repository.ConfigRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.songtitle.SongTitleNormalizer;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.application.HostServices;
@@ -49,6 +59,26 @@ public enum ServiceProvider {
     public SongRecordSaveService getSongRecordSaveService() {
         return new SongRecordSaveService(RepositoryProvider.INSTANCE.getSongRecordRepository(),
                 RECORD_FILE_PATH);
+    }
+
+    public CollectionScanTaskService getCollectionScanTaskService() {
+        CaptureRepository captureRepository = RepositoryProvider.INSTANCE.getCaptureRepository();
+        ConfigRepository configRepository = RepositoryProvider.INSTANCE.getConfigRepository();
+        SongCaptureLinkRepository songCaptureLinkRepository =
+                RepositoryProvider.INSTANCE.getSongCaptureLinkRepository();
+        SongRepository songRepository = RepositoryProvider.INSTANCE.getSongRepository();
+
+        CaptureImageCacheFactory captureImageCacheFactory =
+                FactoryProvider.createCaptureImageCacheFactory();
+        OcrFactory songTitleOcrFactory = FactoryProvider.createSongTitleOcrFactory();
+        SongTitleMapperFactory songTitleMapperFactory =
+                FactoryProvider.createSongTitleMapperFactory();
+
+        SongTitleNormalizer songTitleNormalizer = new SongTitleNormalizer();
+
+        return new DefaultCollectionScanTaskService(captureRepository, configRepository,
+                songCaptureLinkRepository, songRepository, captureImageCacheFactory,
+                songTitleOcrFactory, songTitleMapperFactory, songTitleNormalizer);
     }
 
     public WebBrowserService getWebBrowserService() {

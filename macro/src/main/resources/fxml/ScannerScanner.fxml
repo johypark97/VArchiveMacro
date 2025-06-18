@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -37,10 +38,18 @@
                       </rowConstraints>
                       <children>
                         <Label text="%scanner.scanner.setting.accountFileLabel"/>
-                        <TextField GridPane.columnIndex="1" editable="false" fx:id="accountFileTextField"/>
+                        <TextField GridPane.columnIndex="1" editable="false" fx:id="accountFileTextField">
+                          <tooltip>
+                            <Tooltip fx:id="accountFileTextFieldTooltip"/>
+                          </tooltip>
+                        </TextField>
                         <CheckBox GridPane.columnIndex="2" text="%scanner.scanner.setting.showCheckBox" fx:id="accountFileShowCheckBox"/>
                         <Label GridPane.rowIndex="1" text="%scanner.scanner.setting.cacheDirectoryLabel"/>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" editable="false" fx:id="cacheDirectoryTextField"/>
+                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" editable="false" fx:id="cacheDirectoryTextField">
+                          <tooltip>
+                            <Tooltip fx:id="cacheDirectoryTextFieldTooltip"/>
+                          </tooltip>
+                        </TextField>
                         <CheckBox GridPane.columnIndex="2" GridPane.rowIndex="1" text="%scanner.scanner.setting.showCheckBox" fx:id="cacheDirectoryShowCheckBox"/>
                       </children>
                     </GridPane>

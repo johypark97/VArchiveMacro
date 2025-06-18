@@ -2,11 +2,15 @@ package com.github.johypark97.varchivemacro.macro.application.provider;
 
 import com.github.johypark97.varchivemacro.lib.common.manager.InstanceManager;
 import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManager;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.CaptureRepository;
+import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.SongRecordRepository;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.SongRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.config.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.config.repository.DefaultConfigRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.loader.SongRepositoryLoader;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.repository.DefaultCaptureRepository;
+import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.repository.DefaultSongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.repository.DefaultSongRecordRepository;
 import com.github.johypark97.varchivemacro.macro.infrastructure.scanner.repository.DefaultSongRepository;
 import java.nio.file.Path;
@@ -27,8 +31,13 @@ public enum RepositoryProvider {
             throw new IllegalStateException("RepositoryProvider is already initialized.");
         }
 
+        instanceManager.setConstructor(CaptureRepository.class, DefaultCaptureRepository::new);
+
         instanceManager.setConstructor(ConfigRepository.class,
                 () -> new DefaultConfigRepository(CONFIG_FILE_PATH));
+
+        instanceManager.setConstructor(SongCaptureLinkRepository.class,
+                DefaultSongCaptureLinkRepository::new);
 
         instanceManager.setConstructor(SongRecordRepository.class,
                 DefaultSongRecordRepository::new);
@@ -39,8 +48,16 @@ public enum RepositoryProvider {
         initialized.set(true);
     }
 
+    public CaptureRepository getCaptureRepository() {
+        return getInstance(CaptureRepository.class);
+    }
+
     public ConfigRepository getConfigRepository() {
         return getInstance(ConfigRepository.class);
+    }
+
+    public SongCaptureLinkRepository getSongCaptureLinkRepository() {
+        return getInstance(SongCaptureLinkRepository.class);
     }
 
     public SongRecordRepository getSongRecordRepository() {
