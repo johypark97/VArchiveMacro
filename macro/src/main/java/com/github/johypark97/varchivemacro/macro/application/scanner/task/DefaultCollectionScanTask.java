@@ -123,6 +123,9 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
         // check if the screen resolution is supported using whether an exception occurs
         collectionArea = createCollectionArea();
 
+        // validate and prepare the cache directory
+        captureImageCache.prepare();
+
         try {
             imageCachingService = new ImageCachingService();
 

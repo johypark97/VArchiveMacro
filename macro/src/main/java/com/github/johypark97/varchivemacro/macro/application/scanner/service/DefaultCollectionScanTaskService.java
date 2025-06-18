@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.application.scanner.service;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.application.scanner.factory.CaptureImageCacheFactory;
 import com.github.johypark97.varchivemacro.macro.application.scanner.factory.OcrFactory;
+import com.github.johypark97.varchivemacro.macro.application.scanner.factory.SongTitleMapperFactory;
 import com.github.johypark97.varchivemacro.macro.application.scanner.task.CollectionScanTask;
 import com.github.johypark97.varchivemacro.macro.application.scanner.task.DefaultCollectionScanTask;
 import com.github.johypark97.varchivemacro.macro.domain.scanner.repository.CaptureRepository;
@@ -25,20 +26,20 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
 
     private final CaptureImageCacheFactory captureImageCacheFactory;
     private final OcrFactory songTitleOcrFactory;
-    private final SongTitleMapper songTitleMapper;
+    private final SongTitleMapperFactory songTitleMapperFactory;
     private final SongTitleNormalizer songTitleNormalizer;
 
     public DefaultCollectionScanTaskService(CaptureRepository captureRepository,
             ConfigRepository configRepository, SongCaptureLinkRepository songCaptureLinkRepository,
             SongRepository songRepository, CaptureImageCacheFactory captureImageCacheFactory,
-            OcrFactory songTitleOcrFactory, SongTitleMapper songTitleMapper,
+            OcrFactory songTitleOcrFactory, SongTitleMapperFactory songTitleMapperFactory,
             SongTitleNormalizer songTitleNormalizer) {
         this.captureImageCacheFactory = captureImageCacheFactory;
         this.captureRepository = captureRepository;
         this.configRepository = configRepository;
         this.songCaptureLinkRepository = songCaptureLinkRepository;
         this.songRepository = songRepository;
-        this.songTitleMapper = songTitleMapper;
+        this.songTitleMapperFactory = songTitleMapperFactory;
         this.songTitleNormalizer = songTitleNormalizer;
         this.songTitleOcrFactory = songTitleOcrFactory;
     }
@@ -53,6 +54,8 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
 
         CaptureImageCache captureImageCache =
                 captureImageCacheFactory.create(config.cacheDirectory());
+
+        SongTitleMapper songTitleMapper = songTitleMapperFactory.create();
 
         return TaskManager.getInstance().register(CollectionScanTask.class,
                 new DefaultCollectionScanTask(captureRepository, songCaptureLinkRepository,
