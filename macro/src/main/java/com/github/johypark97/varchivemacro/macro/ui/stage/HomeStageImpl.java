@@ -3,6 +3,8 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.application.data.ProgramDataVersionService;
+import com.github.johypark97.varchivemacro.macro.application.event.GlobalEvent;
+import com.github.johypark97.varchivemacro.macro.application.event.GlobalEventBus;
 import com.github.johypark97.varchivemacro.macro.application.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.application.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.application.provider.UrlProvider;
@@ -25,6 +27,7 @@ import com.github.johypark97.varchivemacro.macro.ui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.MacroViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ModeSelectorViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerHomeViewImpl;
+import io.reactivex.rxjava3.disposables.Disposable;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +55,8 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     private Macro.MacroPresenter macroPresenter;
     private ModeSelector.ModeSelectorPresenter modeSelectorPresenter;
     private ScannerHome.ScannerHomePresenter scannerHomePresenter;
+
+    private Disposable disposableGlobalEvent;
 
     public HomeStageImpl(StageManager stageManager, Stage stage) {
         super(stage);
@@ -96,6 +101,12 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         return true;
     }
 
+    private void onGlobalEvent(GlobalEvent event) {
+        if (GlobalEvent.SCANNER_SCAN_DONE.equals(event)) {
+            stageManager.showScannerProcessorStage(this);
+        }
+    }
+
     @Override
     public void startStage() {
         HomeViewImpl homeView = new HomeViewImpl();
@@ -111,6 +122,8 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         stage.setOnShown(event -> homePresenter.startView());
 
         stage.show();
+
+        disposableGlobalEvent = GlobalEventBus.INSTANCE.subscribe(this::onGlobalEvent);
     }
 
     @Override
@@ -161,7 +174,8 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
     @Override
     public void changeCenterView_modeSelector() {
-        if (stageManager.isScannerScannerStageOpened()) {
+        if (stageManager.isScannerScannerStageOpened()
+                || stageManager.isScannerProcessorStageOpened()) {
             return;
         }
 
@@ -267,6 +281,8 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         if (!stopAllCenterView()) {
             return false;
         }
+
+        disposableGlobalEvent.dispose();
 
         return homePresenter.stopView();
     }

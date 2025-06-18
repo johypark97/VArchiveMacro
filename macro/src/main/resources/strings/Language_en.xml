@@ -34,6 +34,12 @@
   <entry key="modeSelector.description.right">Scan all records in the Collection Menu</entry>
   <entry key="osl.hyperlinkLabel">Library Link:</entry>
   <entry key="osl.windowTitle">Open Source License</entry>
+  <entry key="scanner.processor.frame.analysisLabel">Analysis</entry>
+  <entry key="scanner.processor.frame.captureLabel">Capture</entry>
+  <entry key="scanner.processor.frame.conflictLabel">Conflict</entry>
+  <entry key="scanner.processor.frame.selectLabel">Select</entry>
+  <entry key="scanner.processor.frame.uploadLabel">Upload</entry>
+  <entry key="scanner.processor.windowTitle">Collection Scanner - Processor</entry>
   <entry key="scanner.recordLoader.accountFile.label">Account file</entry>
   <entry key="scanner.recordLoader.accountFile.selectButton">Select</entry>
   <entry key="scanner.recordLoader.accountFileSelectorTitle">Select account file</entry>
