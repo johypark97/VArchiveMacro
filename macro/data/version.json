@@ -1,10 +1,10 @@
 {
-  "version": 202504242350,
+  "version": 202506201855,
   "files": [
     {
       "path": "data/djmax.traineddata",
       "request_path": "macro/data/djmax.traineddata",
-      "hash": "8a1beba2c881fb2d28260606399d2032c7642f0723d2b9b30aff97f947ec11e7"
+      "hash": "a01e80a6be3b8e9ccfe13d8ca5cfdb12e159045d34ea9bb81bff43fa31c0b146"
     },
     {
       "path": "data/eng.traineddata",
@@ -14,12 +14,12 @@
     {
       "path": "data/song.db",
       "request_path": "macro/data/song.db",
-      "hash": "b4fecabc04a340e2c11b58f63613a746b1c781519290d59b3631404d5a94f400"
+      "hash": "36bbd5cb553ea3648499b7e58c00f9fa2a9a290bdbc22341086ac41004bd12f6"
     },
     {
       "path": "data/titles.json",
       "request_path": "macro/data/titles.json",
-      "hash": "d1ae907687bdcfdf2c93c892b1190cab79159ad1fa470dffdc835e15142b652a"
+      "hash": "59a3ece28a68be57837af2cfb0dede12cc7a9d6812072ffbfe1dfad83b229b6a"
     }
   ]
 }

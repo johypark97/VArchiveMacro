@@ -38,24 +38,38 @@
   ],
   "remap": [
     {
-      // id: 105
-      "to": "A.I",
+      // id: 19
+      "to": "Liar",
       "from": [
-        "A."
+        "Liar!"
       ]
     },
     {
-      // id: 243
-      "to": "Ruti'n",
+      // id: 187
+      "to": "StarFish",
       "from": [
-        "Ruti'n)"
+        "StarFish)"
       ]
     },
     {
-      // id: 685
-      "to": "aIIiance",
+      // id: 398
+      "to": "Lisrim",
       "from": [
-        "aIIianceI"
+        "Lisrim!"
+      ]
+    },
+    {
+      // id: 419
+      "to": "I'vegotafeeIing",
+      "from": [
+        "I''vegotafeeIing"
+      ]
+    },
+    {
+      // id: 622
+      "to": "The90'sDecision",
+      "from": [
+        "The90'sDecisionI"
       ]
     },
     {
@@ -71,16 +85,17 @@
       "from": [
         "HIGHSLANDER"
       ]
-    },
-    {
-      // id: 694
-      "to": "Operation☆DOTABATA!",
-      "from": [
-        "Operation☆XDOTABATA!"
-      ]
     }
   ],
   "remoteTitle": [
+    {
+      "id": 346,
+      "value": "Thor (Extended Mix)"
+    },
+    {
+      "id": 442,
+      "value": "꿈의 기억 (feat. Jisun)"
+    },
     {
       "id": 657,
       "value": "Cata (feat. NC.A)"
