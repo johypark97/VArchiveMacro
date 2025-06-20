@@ -45,6 +45,13 @@
       ]
     },
     {
+      // id: 42
+      "to": "voIdenuit",
+      "from": [
+        "voIdenuit."
+      ]
+    },
+    {
       // id: 187
       "to": "StarFish",
       "from": [
@@ -66,6 +73,13 @@
       ]
     },
     {
+      // id: 533
+      "to": "LieLie",
+      "from": [
+        "LieLie!"
+      ]
+    },
+    {
       // id: 622
       "to": "The90'sDecision",
       "from": [
@@ -83,7 +97,15 @@
       // id: 692
       "to": "HIGH5LANDER",
       "from": [
+        "HIGHS5LANDER",
         "HIGHSLANDER"
+      ]
+    },
+    {
+      // id: 694
+      "to": "Operation☆DOTABATA!",
+      "from": [
+        "Operation☆DOTABATAI!"
       ]
     }
   ],
