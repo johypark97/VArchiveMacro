@@ -4,8 +4,6 @@ import com.github.johypark97.varchivemacro.lib.scanner.database.SongDatabase;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.converter.SongDatabaseConverter;
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.service.SongRepositoryLoader;
-import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,21 +11,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DefaultSongRepository implements SongRepository {
-    private final SongRepositoryLoader loader;
-
     private SongDatabase songDatabase;
 
-    public DefaultSongRepository(SongRepositoryLoader loader) {
-        this.loader = loader;
-    }
-
-    @Override
-    public void load() {
-        try {
-            songDatabase = loader.load();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void setSongDatabase(SongDatabase songDatabase) {
+        this.songDatabase = songDatabase;
     }
 
     @Override

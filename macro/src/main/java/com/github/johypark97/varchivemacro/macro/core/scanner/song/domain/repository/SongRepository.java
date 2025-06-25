@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface SongRepository {
-    void load();
-
     Song findSongById(int songId);
 
     List<Song> findAllSong();

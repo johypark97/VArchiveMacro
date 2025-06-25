@@ -220,10 +220,11 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
         scannerHomePresenter = new ScannerHomePresenterImpl(this,
                 RepositoryProvider.INSTANCE.getSongRecordRepository(),
-                RepositoryProvider.INSTANCE.getSongRepository(),
                 ServiceProvider.INSTANCE.getConfigService(),
                 ServiceProvider.INSTANCE.getSongRecordLoadService(),
-                ServiceProvider.INSTANCE.getSongRecordSaveService());
+                ServiceProvider.INSTANCE.getSongRecordSaveService(),
+                ServiceProvider.INSTANCE.getSongService(),
+                ServiceProvider.INSTANCE.getSongStorageService());
         Mvp.linkViewAndPresenter(view, scannerHomePresenter);
 
         homePresenter.setCenterView(view);

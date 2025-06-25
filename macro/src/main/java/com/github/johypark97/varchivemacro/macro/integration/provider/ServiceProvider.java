@@ -13,6 +13,8 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.rep
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.service.SongRecordLoadService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.service.SongRecordSaveService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongStorageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleNormalizer;
 import com.github.johypark97.varchivemacro.macro.integration.app.macro.service.DefaultMacroService;
@@ -33,6 +35,7 @@ public enum ServiceProvider {
     private final Path CONFIG_FILE_PATH = Path.of("config.json");
     private final Path PROGRAM_DATA_DIRECTORY_PATH = Path.of("data");
     private final Path RECORD_FILE_PATH = Path.of("records.json");
+    private final Path SONG_DATABASE_FILE_PATH = Path.of("data/song.db");
 
     private final InstanceManager<Object> instanceManager = new LazyInstanceManager<>();
 
@@ -84,6 +87,15 @@ public enum ServiceProvider {
     public SongRecordSaveService getSongRecordSaveService() {
         return new SongRecordSaveService(RepositoryProvider.INSTANCE.getSongRecordRepository(),
                 RECORD_FILE_PATH);
+    }
+
+    public SongService getSongService() {
+        return new SongService(RepositoryProvider.INSTANCE.getSongRepository());
+    }
+
+    public SongStorageService getSongStorageService() {
+        return new SongStorageService(RepositoryProvider.INSTANCE.getSongRepository(),
+                SONG_DATABASE_FILE_PATH);
     }
 
     public CollectionScanTaskService getCollectionScanTaskService() {

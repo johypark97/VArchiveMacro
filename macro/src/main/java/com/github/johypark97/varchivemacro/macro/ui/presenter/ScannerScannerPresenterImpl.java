@@ -10,7 +10,7 @@ import com.github.johypark97.varchivemacro.macro.common.config.domain.model.Inpu
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.CollectionScanTaskService;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
@@ -42,10 +42,9 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
 
     private final ScannerScannerStage scannerScannerStage;
 
-    private final SongRepository songRepository;
-
     private final CollectionScanTaskService collectionScanTaskService;
     private final ConfigService configService;
+    private final SongService songService;
 
     private final StringProperty accountFileText = new SimpleStringProperty();
     private final StringProperty cacheDirectoryText = new SimpleStringProperty();
@@ -57,14 +56,13 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
     public ScannerScanner.ScannerScannerView view;
 
     public ScannerScannerPresenterImpl(ScannerScannerStage scannerScannerStage,
-            SongRepository songRepository, CollectionScanTaskService collectionScanTaskService,
-            ConfigService configService) {
+            CollectionScanTaskService collectionScanTaskService, ConfigService configService,
+            SongService songService) {
         this.scannerScannerStage = scannerScannerStage;
-
-        this.songRepository = songRepository;
 
         this.collectionScanTaskService = collectionScanTaskService;
         this.configService = configService;
+        this.songService = songService;
     }
 
     private void showConfig() {
@@ -202,7 +200,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
         view.bindAccountFileText(accountFileText);
         view.bindCacheDirectoryText(cacheDirectoryText);
 
-        view.setCategoryList(songRepository.findAllCategory().stream()
+        view.setCategoryList(songService.findAllCategory().stream()
                 .map(ScannerScannerViewModel.CategoryData::new).toList());
         view.setSelectedCategory(configService.findScannerConfig().selectedCategory());
 

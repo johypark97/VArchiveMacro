@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.integration.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.integration.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScanner;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScannerPresenterImpl;
@@ -45,9 +44,9 @@ public class ScannerScannerStageImpl extends AbstractTreeableStage implements Sc
     @Override
     public void startStage() {
         presenter = new ScannerScannerPresenterImpl(this,
-                RepositoryProvider.INSTANCE.getSongRepository(),
                 ServiceProvider.INSTANCE.getCollectionScanTaskService(),
-                ServiceProvider.INSTANCE.getConfigService());
+                ServiceProvider.INSTANCE.getConfigService(),
+                ServiceProvider.INSTANCE.getSongService());
 
         ScannerScannerViewImpl view = new ScannerScannerViewImpl();
         Mvp.linkViewAndPresenter(view, presenter);

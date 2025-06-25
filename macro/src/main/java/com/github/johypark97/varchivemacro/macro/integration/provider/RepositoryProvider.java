@@ -14,14 +14,10 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.repo
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.repository.DefaultSongRecordRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.repository.DefaultSongRepository;
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.service.SongRepositoryLoader;
-import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public enum RepositoryProvider {
     INSTANCE; // Singleton
-
-    private final Path SONG_DATABASE_PATH = Path.of("data/song.db");
 
     private final InstanceManager<Object> instanceManager = new LazyInstanceManager<>();
 
@@ -42,8 +38,7 @@ public enum RepositoryProvider {
         instanceManager.setConstructor(SongRecordRepository.class,
                 DefaultSongRecordRepository::new);
 
-        instanceManager.setConstructor(SongRepository.class,
-                () -> new DefaultSongRepository(new SongRepositoryLoader(SONG_DATABASE_PATH)));
+        instanceManager.setConstructor(SongRepository.class, DefaultSongRepository::new);
 
         initialized.set(true);
     }
