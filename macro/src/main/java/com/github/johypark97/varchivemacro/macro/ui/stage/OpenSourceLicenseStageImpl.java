@@ -1,10 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
-import com.github.johypark97.varchivemacro.macro.application.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.infrastructure.license.loader.OpenSourceLicenseLoader;
-import com.github.johypark97.varchivemacro.macro.infrastructure.license.repository.DefaultOpenSourceLicenseRepository;
+import com.github.johypark97.varchivemacro.macro.common.license.infra.loader.OpenSourceLicenseLoader;
+import com.github.johypark97.varchivemacro.macro.common.license.infra.repository.DefaultOpenSourceLicenseRepository;
+import com.github.johypark97.varchivemacro.macro.integration.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.OpenSourceLicense;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.OpenSourceLicensePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;

@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.common.converter;
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums;
-import com.github.johypark97.varchivemacro.macro.domain.scanner.model.RecordButton;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordButton;
 
 public class RecordButtonConverter {
     public static RecordButton toDomain(Enums.Button button) {

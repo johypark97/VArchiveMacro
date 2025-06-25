@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
-import com.github.johypark97.varchivemacro.macro.application.license.model.License;
-import com.github.johypark97.varchivemacro.macro.application.license.repository.OpenSourceLicenseRepository;
-import com.github.johypark97.varchivemacro.macro.application.service.WebBrowserService;
-import com.github.johypark97.varchivemacro.macro.infrastructure.license.loader.OpenSourceLicenseLoader;
+import com.github.johypark97.varchivemacro.macro.common.license.domain.model.License;
+import com.github.johypark97.varchivemacro.macro.common.license.domain.repository.OpenSourceLicenseRepository;
+import com.github.johypark97.varchivemacro.macro.common.license.infra.loader.OpenSourceLicenseLoader;
+import com.github.johypark97.varchivemacro.macro.integration.app.service.WebBrowserService;
 import java.io.IOException;
 import java.util.List;
 

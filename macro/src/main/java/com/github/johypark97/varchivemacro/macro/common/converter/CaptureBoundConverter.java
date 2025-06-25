@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.common.converter;
 
-import com.github.johypark97.varchivemacro.macro.domain.scanner.model.CaptureBound;
+import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import java.awt.Rectangle;
 
 public class CaptureBoundConverter {

@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.viewmodel;
 
-import com.github.johypark97.varchivemacro.macro.domain.scanner.model.Song;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 

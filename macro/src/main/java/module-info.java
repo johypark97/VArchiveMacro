@@ -16,7 +16,6 @@ module varchivemacro.macro {
     requires javafx.fxml;
     requires javafx.swing;
 
-    opens com.github.johypark97.varchivemacro.macro.domain.scanner.model to javafx.base;
     opens com.github.johypark97.varchivemacro.macro.ui.view to javafx.fxml;
 
     // libraries
@@ -26,10 +25,10 @@ module varchivemacro.macro {
     requires io.reactivex.rxjava3;
     requires org.slf4j;
 
-    exports com.github.johypark97.varchivemacro.macro.infrastructure.config.model to com.google.gson;
-    exports com.github.johypark97.varchivemacro.macro.infrastructure.data.model to com.google.gson;
-    exports com.github.johypark97.varchivemacro.macro.infrastructure.github.model to com.google.gson;
-    exports com.github.johypark97.varchivemacro.macro.infrastructure.license.model to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.common.config.domain.model to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.common.config.infra.model to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.common.license.infra.model to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.common.programdata.infra.model to com.google.gson;
 
     // xml language resource bundle provider
     provides LanguageProvider with LanguageProviderImpl;

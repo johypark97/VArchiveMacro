@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage.base;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
-import com.github.johypark97.varchivemacro.macro.ui.utility.Treeable;
+import com.github.johypark97.varchivemacro.macro.ui.common.Treeable;
 import javafx.stage.Stage;
 
 public abstract class AbstractTreeableStage extends Treeable<AbstractTreeableStage>

@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.common.converter;
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums;
-import com.github.johypark97.varchivemacro.macro.domain.scanner.model.RecordPattern;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordPattern;
 
 public class RecordPatternConverter {
     public static RecordPattern toDomain(Enums.Pattern pattern) {

@@ -2,9 +2,9 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
-import com.github.johypark97.varchivemacro.macro.application.provider.RepositoryProvider;
-import com.github.johypark97.varchivemacro.macro.application.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.integration.provider.RepositoryProvider;
+import com.github.johypark97.varchivemacro.macro.integration.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScanner;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScannerPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;

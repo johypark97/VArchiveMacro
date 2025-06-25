@@ -2,9 +2,9 @@ package com.github.johypark97.varchivemacro.macro.ui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.ui.common.SimpleTransition;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ModeSelector;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
-import com.github.johypark97.varchivemacro.macro.ui.utility.SimpleTransition;
 import java.io.IOException;
 import java.net.URL;
 import javafx.animation.FadeTransition;

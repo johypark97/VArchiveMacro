@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.viewmodel;
 
-import com.github.johypark97.varchivemacro.macro.domain.scanner.model.Song;
-import com.github.johypark97.varchivemacro.macro.domain.scanner.model.SongRecordTable;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecordTable;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 
 public class ScannerHomeViewModel {
     public record SongTreeViewData(String category, String title, String composer, int songId) {

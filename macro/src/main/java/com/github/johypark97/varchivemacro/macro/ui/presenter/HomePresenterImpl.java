@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
+import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.infrastructure.config.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import java.io.IOException;
 import java.util.Locale;
