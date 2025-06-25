@@ -10,14 +10,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-public class LocalSongRecordSaver implements SongRecordSaver {
+public class LocalSongRecordSaveService {
     private final Path path;
 
-    public LocalSongRecordSaver(Path path) {
+    public LocalSongRecordSaveService(Path path) {
         this.path = path;
     }
 
-    @Override
     public void save(List<SongRecordTable> value) throws IOException {
         DefaultRecordManager recordManager = new DefaultRecordManager();
 

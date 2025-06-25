@@ -7,10 +7,9 @@ import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.UnicodeFilter;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.loader.AccountFileLoader;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.service.SongRecordLoadService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.service.SongRecordSaveService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordStorageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecordTable;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.repository.SongRecordRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongStorageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
@@ -33,28 +32,23 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
 
     private final HomeStage homeStage;
 
-    private final SongRecordRepository songRecordRepository;
-
     private final ConfigService configService;
-    private final SongRecordLoadService songRecordLoadService;
-    private final SongRecordSaveService songRecordSaveService;
+    private final SongRecordService songRecordService;
+    private final SongRecordStorageService songRecordStorageService;
     private final SongService songService;
     private final SongStorageService songStorageService;
 
     @MvpView
     public ScannerHome.ScannerHomeView view;
 
-    public ScannerHomePresenterImpl(HomeStage homeStage, SongRecordRepository songRecordRepository,
-            ConfigService configService, SongRecordLoadService songRecordLoadService,
-            SongRecordSaveService songRecordSaveService, SongService songService,
-            SongStorageService songStorageService) {
+    public ScannerHomePresenterImpl(HomeStage homeStage, ConfigService configService,
+            SongRecordService songRecordService, SongRecordStorageService songRecordStorageService,
+            SongService songService, SongStorageService songStorageService) {
         this.homeStage = homeStage;
 
-        this.songRecordRepository = songRecordRepository;
-
         this.configService = configService;
-        this.songRecordLoadService = songRecordLoadService;
-        this.songRecordSaveService = songRecordSaveService;
+        this.songRecordService = songRecordService;
+        this.songRecordStorageService = songRecordStorageService;
         this.songService = songService;
         this.songStorageService = songStorageService;
     }
@@ -136,7 +130,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
     public void startView() {
         view.showProgress();
 
-        if (!songRecordRepository.isEmpty()) {
+        if (!songRecordService.isEmpty()) {
             showRecordViewer();
             return;
         }
@@ -144,7 +138,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
         CompletableFuture.runAsync(() -> {
             try {
                 songStorageService.load();
-                songRecordLoadService.loadFromLocal();
+                songRecordStorageService.loadFromLocal();
                 Platform.runLater(this::showRecordViewer);
                 return;
             } catch (NoSuchFileException ignored) {
@@ -216,8 +210,8 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
 
         CompletableFuture.runAsync(() -> {
             try {
-                songRecordLoadService.loadFromRemote(djName);
-                songRecordSaveService.save();
+                songRecordStorageService.loadFromRemote(djName);
+                songRecordStorageService.saveToLocal();
             } catch (Exception e) {
                 LOGGER.atError().setCause(e).log("Remote records loading exception.");
                 Platform.runLater(() -> {
@@ -243,7 +237,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
         Song song = songService.findSongById(songId);
         view.showSongInformation(song.title(), song.composer());
 
-        SongRecordTable table = songRecordRepository.findById(songId);
+        SongRecordTable table = songRecordService.findById(songId);
         view.showSongRecord(ScannerHomeViewModel.SongRecord.from(table));
     }
 

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.service;
+package com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.converter;
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.RecordManager;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordButtonConverter;
@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractSongRecordLoader implements SongRecordLoader {
-    protected List<SongRecordTable> convertRecord(RecordManager recordManager) {
+public class RecordManagerConverter {
+    public static List<SongRecordTable> toSongRecordTableList(RecordManager recordManager) {
         Map<Integer, SongRecordTable> map = new HashMap<>();
 
         recordManager.forEach((songId, buttonMap) -> {

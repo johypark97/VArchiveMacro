@@ -6,7 +6,6 @@ import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataVersionService;
 import com.github.johypark97.varchivemacro.macro.common.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.integration.app.service.WebBrowserService;
-import com.github.johypark97.varchivemacro.macro.integration.provider.RepositoryProvider;
 import com.github.johypark97.varchivemacro.macro.integration.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.integration.provider.UrlProvider;
 import com.github.johypark97.varchivemacro.macro.ui.dialog.About;
@@ -218,13 +217,12 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
         ScannerHomeViewImpl view = new ScannerHomeViewImpl();
 
-        scannerHomePresenter = new ScannerHomePresenterImpl(this,
-                RepositoryProvider.INSTANCE.getSongRecordRepository(),
-                ServiceProvider.INSTANCE.getConfigService(),
-                ServiceProvider.INSTANCE.getSongRecordLoadService(),
-                ServiceProvider.INSTANCE.getSongRecordSaveService(),
-                ServiceProvider.INSTANCE.getSongService(),
-                ServiceProvider.INSTANCE.getSongStorageService());
+        scannerHomePresenter =
+                new ScannerHomePresenterImpl(this, ServiceProvider.INSTANCE.getConfigService(),
+                        ServiceProvider.INSTANCE.getSongRecordService(),
+                        ServiceProvider.INSTANCE.getSongRecordStorageService(),
+                        ServiceProvider.INSTANCE.getSongService(),
+                        ServiceProvider.INSTANCE.getSongStorageService());
         Mvp.linkViewAndPresenter(view, scannerHomePresenter);
 
         homePresenter.setCenterView(view);

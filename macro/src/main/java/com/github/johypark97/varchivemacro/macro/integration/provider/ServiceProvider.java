@@ -11,8 +11,8 @@ import com.github.johypark97.varchivemacro.macro.common.license.domain.repositor
 import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataVersionService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.service.SongRecordLoadService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.service.SongRecordSaveService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordStorageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongStorageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
@@ -79,13 +79,12 @@ public enum ServiceProvider {
         return new ProgramDataVersionService(PROGRAM_DATA_DIRECTORY_PATH);
     }
 
-    public SongRecordLoadService getSongRecordLoadService() {
-        return new SongRecordLoadService(RepositoryProvider.INSTANCE.getSongRecordRepository(),
-                RECORD_FILE_PATH);
+    public SongRecordService getSongRecordService() {
+        return new SongRecordService(RepositoryProvider.INSTANCE.getSongRecordRepository());
     }
 
-    public SongRecordSaveService getSongRecordSaveService() {
-        return new SongRecordSaveService(RepositoryProvider.INSTANCE.getSongRecordRepository(),
+    public SongRecordStorageService getSongRecordStorageService() {
+        return new SongRecordStorageService(RepositoryProvider.INSTANCE.getSongRecordRepository(),
                 RECORD_FILE_PATH);
     }
 

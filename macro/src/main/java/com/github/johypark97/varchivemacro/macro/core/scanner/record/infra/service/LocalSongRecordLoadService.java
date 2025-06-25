@@ -2,18 +2,19 @@ package com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.serv
 
 import com.github.johypark97.varchivemacro.lib.scanner.database.DefaultRecordManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecordTable;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.converter.RecordManagerConverter;
 import java.nio.file.Path;
 import java.util.List;
 
-public class LocalSongRecordLoader extends AbstractSongRecordLoader {
+public class LocalSongRecordLoadService implements SongRecordLoadService {
     private final Path path;
 
-    public LocalSongRecordLoader(Path path) {
+    public LocalSongRecordLoadService(Path path) {
         this.path = path;
     }
 
     @Override
     public List<SongRecordTable> load() throws Exception {
-        return convertRecord(new DefaultRecordManager(path));
+        return RecordManagerConverter.toSongRecordTableList(new DefaultRecordManager(path));
     }
 }
