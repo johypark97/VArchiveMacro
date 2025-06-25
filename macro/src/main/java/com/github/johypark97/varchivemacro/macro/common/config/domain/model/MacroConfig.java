@@ -46,6 +46,21 @@ public record MacroConfig(
     public static final int KEY_HOLD_TIME_MAX = 100;
     public static final int KEY_HOLD_TIME_MIN = 20;
 
+    public Builder toBuilder() {
+        Builder builder = new Builder();
+
+        builder.clientMode = clientMode;
+        builder.count = count;
+        builder.keyHoldTime = keyHoldTime;
+        builder.postCaptureDelay = postCaptureDelay;
+        builder.songSwitchingTime = songSwitchingTime;
+        builder.startDownKey = startDownKey;
+        builder.startUpKey = startUpKey;
+        builder.stopKey = stopKey;
+        builder.uploadKey = uploadKey;
+
+        return builder;
+    }
 
     public static class Builder {
         public InputKeyCombination startDownKey = START_DOWN_KEY_DEFAULT;
@@ -57,22 +72,6 @@ public record MacroConfig(
         public int keyHoldTime = KEY_HOLD_TIME_DEFAULT;
         public int postCaptureDelay = POST_CAPTURE_DELAY_DEFAULT;
         public int songSwitchingTime = SONG_SWITCHING_TIME_DEFAULT;
-
-        public static Builder from(MacroConfig config) {
-            Builder builder = new Builder();
-
-            builder.clientMode = config.clientMode;
-            builder.count = config.count;
-            builder.keyHoldTime = config.keyHoldTime;
-            builder.postCaptureDelay = config.postCaptureDelay;
-            builder.songSwitchingTime = config.songSwitchingTime;
-            builder.startDownKey = config.startDownKey;
-            builder.startUpKey = config.startUpKey;
-            builder.stopKey = config.stopKey;
-            builder.uploadKey = config.uploadKey;
-
-            return builder;
-        }
 
         public MacroConfig build() {
             return new MacroConfig(startDownKey, startUpKey, stopKey, uploadKey, clientMode, count,

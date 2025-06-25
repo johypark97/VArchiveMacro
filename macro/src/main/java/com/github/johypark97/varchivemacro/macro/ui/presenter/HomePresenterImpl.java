@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
-import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
+import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigStorageService;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import java.io.IOException;
@@ -12,17 +12,17 @@ import org.slf4j.LoggerFactory;
 public class HomePresenterImpl implements Home.HomePresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomePresenterImpl.class);
 
-    private final ConfigRepository configRepository;
-
     private final HomeStage homeStage;
+
+    private final ConfigStorageService configStorageService;
 
     @MvpView
     public Home.HomeView view;
 
-    public HomePresenterImpl(HomeStage homeStage, ConfigRepository configRepository) {
-        this.configRepository = configRepository;
-
+    public HomePresenterImpl(HomeStage homeStage, ConfigStorageService configStorageService) {
         this.homeStage = homeStage;
+
+        this.configStorageService = configStorageService;
     }
 
     @Override
@@ -32,8 +32,8 @@ public class HomePresenterImpl implements Home.HomePresenter {
         homeStage.changeCenterView_modeSelector();
 
         try {
-            if (!configRepository.load()) {
-                configRepository.flush();
+            if (!configStorageService.load()) {
+                configStorageService.save();
             }
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Config loading exception.");
@@ -44,7 +44,7 @@ public class HomePresenterImpl implements Home.HomePresenter {
     @Override
     public boolean stopView() {
         try {
-            configRepository.flush();
+            configStorageService.save();
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Config saving exception.");
         }

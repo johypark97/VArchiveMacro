@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
+import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.UnicodeFilter;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
@@ -30,30 +30,30 @@ import org.slf4j.LoggerFactory;
 public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScannerHomePresenterImpl.class);
 
-    private final ConfigRepository configRepository;
+    private final HomeStage homeStage;
+
     private final SongRecordRepository songRecordRepository;
     private final SongRepository songRepository;
 
+    private final ConfigService configService;
     private final SongRecordLoadService songRecordLoadService;
     private final SongRecordSaveService songRecordSaveService;
-
-    private final HomeStage homeStage;
 
     @MvpView
     public ScannerHome.ScannerHomeView view;
 
-    public ScannerHomePresenterImpl(HomeStage homeStage, ConfigRepository configRepository,
-            SongRecordRepository songRecordRepository, SongRepository songRepository,
+    public ScannerHomePresenterImpl(HomeStage homeStage, SongRecordRepository songRecordRepository,
+            SongRepository songRepository, ConfigService configService,
             SongRecordLoadService songRecordLoadService,
             SongRecordSaveService songRecordSaveService) {
-        this.configRepository = configRepository;
+        this.homeStage = homeStage;
+
         this.songRecordRepository = songRecordRepository;
         this.songRepository = songRepository;
 
+        this.configService = configService;
         this.songRecordLoadService = songRecordLoadService;
         this.songRecordSaveService = songRecordSaveService;
-
-        this.homeStage = homeStage;
     }
 
     private boolean validateAccountFile(String value) {
@@ -163,7 +163,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
 
     @Override
     public void showRecordLoader() {
-        view.setAccountFileText(configRepository.findScannerConfig().accountFile());
+        view.setAccountFileText(configService.findScannerConfig().accountFile());
         view.showLoader();
     }
 
@@ -205,10 +205,9 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
             return;
         }
 
-        ScannerConfig.Builder builder =
-                ScannerConfig.Builder.from(configRepository.findScannerConfig());
+        ScannerConfig.Builder builder = configService.findScannerConfig().toBuilder();
         builder.accountFile = accountFile;
-        configRepository.saveScannerConfig(builder.build());
+        configService.saveScannerConfig(builder.build());
 
         Platform.runLater(view::showProgress);
 

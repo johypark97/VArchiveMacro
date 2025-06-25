@@ -45,9 +45,9 @@ public class ScannerScannerStageImpl extends AbstractTreeableStage implements Sc
     @Override
     public void startStage() {
         presenter = new ScannerScannerPresenterImpl(this,
-                RepositoryProvider.INSTANCE.getConfigRepository(),
                 RepositoryProvider.INSTANCE.getSongRepository(),
-                ServiceProvider.INSTANCE.getCollectionScanTaskService());
+                ServiceProvider.INSTANCE.getCollectionScanTaskService(),
+                ServiceProvider.INSTANCE.getConfigService());
 
         ScannerScannerViewImpl view = new ScannerScannerViewImpl();
         Mvp.linkViewAndPresenter(view, presenter);

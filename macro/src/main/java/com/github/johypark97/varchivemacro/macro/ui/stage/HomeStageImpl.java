@@ -112,7 +112,7 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         HomeViewImpl homeView = new HomeViewImpl();
 
         homePresenter =
-                new HomePresenterImpl(this, RepositoryProvider.INSTANCE.getConfigRepository());
+                new HomePresenterImpl(this, ServiceProvider.INSTANCE.getConfigStorageService());
         Mvp.linkViewAndPresenter(homeView, homePresenter);
 
         Scene scene = new Scene(homeView);
@@ -201,9 +201,8 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
         MacroViewImpl view = new MacroViewImpl();
 
-        macroPresenter =
-                new MacroPresenterImpl(this, RepositoryProvider.INSTANCE.getConfigRepository(),
-                        ServiceProvider.INSTANCE.getMacroService());
+        macroPresenter = new MacroPresenterImpl(this, ServiceProvider.INSTANCE.getConfigService(),
+                ServiceProvider.INSTANCE.getMacroService());
         Mvp.linkViewAndPresenter(view, macroPresenter);
 
         homePresenter.setCenterView(view);
@@ -220,9 +219,9 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         ScannerHomeViewImpl view = new ScannerHomeViewImpl();
 
         scannerHomePresenter = new ScannerHomePresenterImpl(this,
-                RepositoryProvider.INSTANCE.getConfigRepository(),
                 RepositoryProvider.INSTANCE.getSongRecordRepository(),
                 RepositoryProvider.INSTANCE.getSongRepository(),
+                ServiceProvider.INSTANCE.getConfigService(),
                 ServiceProvider.INSTANCE.getSongRecordLoadService(),
                 ServiceProvider.INSTANCE.getSongRecordSaveService());
         Mvp.linkViewAndPresenter(view, scannerHomePresenter);

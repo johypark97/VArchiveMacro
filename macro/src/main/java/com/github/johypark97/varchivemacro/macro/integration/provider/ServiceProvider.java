@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.integration.provider;
 
 import com.github.johypark97.varchivemacro.lib.common.manager.InstanceManager;
 import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManager;
+import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
+import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigStorageService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataVersionService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
@@ -25,6 +27,7 @@ import javafx.application.HostServices;
 public enum ServiceProvider {
     INSTANCE; // Singleton
 
+    private final Path CONFIG_FILE_PATH = Path.of("config.json");
     private final Path PROGRAM_DATA_DIRECTORY_PATH = Path.of("data");
     private final Path RECORD_FILE_PATH = Path.of("records.json");
 
@@ -41,6 +44,15 @@ public enum ServiceProvider {
                 () -> new WebBrowserService(hostServices));
 
         initialized.set(true);
+    }
+
+    public ConfigService getConfigService() {
+        return new ConfigService(RepositoryProvider.INSTANCE.getConfigRepository());
+    }
+
+    public ConfigStorageService getConfigStorageService() {
+        return new ConfigStorageService(RepositoryProvider.INSTANCE.getConfigRepository(),
+                CONFIG_FILE_PATH);
     }
 
     public MacroService getMacroService() {

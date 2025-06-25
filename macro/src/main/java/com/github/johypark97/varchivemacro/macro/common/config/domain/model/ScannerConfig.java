@@ -49,6 +49,21 @@ public record ScannerConfig(
                 Math.max(ANALYZER_THREAD_COUNT_MIN, ANALYZER_THREAD_COUNT_MAX / 4);
     }
 
+    public Builder toBuilder() {
+        Builder builder = new Builder();
+
+        builder.accountFile = accountFile;
+        builder.analyzerThreadCount = analyzerThreadCount;
+        builder.autoAnalysis = autoAnalysis;
+        builder.cacheDirectory = cacheDirectory;
+        builder.captureDelay = captureDelay;
+        builder.keyHoldTime = keyHoldTime;
+        builder.selectedCategory = selectedCategory;
+        builder.startKey = startKey;
+        builder.stopKey = stopKey;
+
+        return builder;
+    }
 
     public static class Builder {
         public InputKeyCombination startKey = START_KEY_DEFAULT;
@@ -60,22 +75,6 @@ public record ScannerConfig(
         public int analyzerThreadCount = ANALYZER_THREAD_COUNT_DEFAULT;
         public int captureDelay = CAPTURE_DELAY_DEFAULT;
         public int keyHoldTime = KEY_HOLD_TIME_DEFAULT;
-
-        public static Builder from(ScannerConfig config) {
-            Builder builder = new Builder();
-
-            builder.accountFile = config.accountFile;
-            builder.analyzerThreadCount = config.analyzerThreadCount;
-            builder.autoAnalysis = config.autoAnalysis;
-            builder.cacheDirectory = config.cacheDirectory;
-            builder.captureDelay = config.captureDelay;
-            builder.keyHoldTime = config.keyHoldTime;
-            builder.selectedCategory = config.selectedCategory;
-            builder.startKey = config.startKey;
-            builder.stopKey = config.stopKey;
-
-            return builder;
-        }
 
         public ScannerConfig build() {
             return new ScannerConfig(startKey, stopKey, selectedCategory, accountFile,

@@ -4,7 +4,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.provider.FactoryProvider;
-import com.github.johypark97.varchivemacro.macro.integration.provider.RepositoryProvider;
+import com.github.johypark97.varchivemacro.macro.integration.provider.ServiceProvider;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Setting;
@@ -54,9 +54,9 @@ public class SettingStageImpl extends AbstractTreeableStage implements SettingSt
 
     @Override
     public void startStage() {
-        presenter =
-                new SettingPresenterImpl(this, RepositoryProvider.INSTANCE.getConfigRepository(),
-                        FactoryProvider.createCaptureImageCacheFactory());
+        presenter = new SettingPresenterImpl(this, ServiceProvider.INSTANCE.getConfigService(),
+                ServiceProvider.INSTANCE.getConfigStorageService(),
+                FactoryProvider.createCaptureImageCacheFactory());
 
         SettingViewImpl view = new SettingViewImpl();
         Mvp.linkViewAndPresenter(view, presenter);

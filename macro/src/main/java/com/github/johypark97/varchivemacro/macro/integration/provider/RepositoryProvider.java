@@ -19,7 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public enum RepositoryProvider {
     INSTANCE; // Singleton
 
-    private final Path CONFIG_FILE_PATH = Path.of("config.json");
     private final Path SONG_DATABASE_PATH = Path.of("data/song.db");
 
     private final InstanceManager<Object> instanceManager = new LazyInstanceManager<>();
@@ -33,8 +32,7 @@ public enum RepositoryProvider {
 
         instanceManager.setConstructor(CaptureRepository.class, DefaultCaptureRepository::new);
 
-        instanceManager.setConstructor(ConfigRepository.class,
-                () -> new DefaultConfigRepository(CONFIG_FILE_PATH));
+        instanceManager.setConstructor(ConfigRepository.class, DefaultConfigRepository::new);
 
         instanceManager.setConstructor(SongCaptureLinkRepository.class,
                 DefaultSongCaptureLinkRepository::new);

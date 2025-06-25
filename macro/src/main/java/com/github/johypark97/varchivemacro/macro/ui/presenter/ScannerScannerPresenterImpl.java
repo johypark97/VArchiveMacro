@@ -5,9 +5,9 @@ import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
+import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
@@ -40,12 +40,12 @@ import org.slf4j.LoggerFactory;
 public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScannerPresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScannerScannerPresenterImpl.class);
 
-    private final ConfigRepository configRepository;
+    private final ScannerScannerStage scannerScannerStage;
+
     private final SongRepository songRepository;
 
     private final CollectionScanTaskService collectionScanTaskService;
-
-    private final ScannerScannerStage scannerScannerStage;
+    private final ConfigService configService;
 
     private final StringProperty accountFileText = new SimpleStringProperty();
     private final StringProperty cacheDirectoryText = new SimpleStringProperty();
@@ -57,18 +57,18 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
     public ScannerScanner.ScannerScannerView view;
 
     public ScannerScannerPresenterImpl(ScannerScannerStage scannerScannerStage,
-            ConfigRepository configRepository, SongRepository songRepository,
-            CollectionScanTaskService collectionScanTaskService) {
+            SongRepository songRepository, CollectionScanTaskService collectionScanTaskService,
+            ConfigService configService) {
         this.scannerScannerStage = scannerScannerStage;
+
         this.songRepository = songRepository;
 
         this.collectionScanTaskService = collectionScanTaskService;
-
-        this.configRepository = configRepository;
+        this.configService = configService;
     }
 
     private void showConfig() {
-        ScannerConfig config = configRepository.findScannerConfig();
+        ScannerConfig config = configService.findScannerConfig();
 
         accountFileText.set(config.accountFile());
         cacheDirectoryText.set(config.cacheDirectory());
@@ -84,7 +84,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
     }
 
     private void registerKeyboardHook() {
-        ScannerConfig config = configRepository.findScannerConfig();
+        ScannerConfig config = configService.findScannerConfig();
 
         InputKeyCombination startKey = config.startKey();
         InputKeyCombination stopKey = config.stopKey();
@@ -204,7 +204,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
 
         view.setCategoryList(songRepository.findAllCategory().stream()
                 .map(ScannerScannerViewModel.CategoryData::new).toList());
-        view.setSelectedCategory(configRepository.findScannerConfig().selectedCategory());
+        view.setSelectedCategory(configService.findScannerConfig().selectedCategory());
 
         showConfig();
         registerKeyboardHook();
@@ -219,10 +219,9 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
         unregisterKeyboardHook();
         disposableGlobalEvent.dispose();
 
-        ScannerConfig.Builder builder =
-                ScannerConfig.Builder.from(configRepository.findScannerConfig());
+        ScannerConfig.Builder builder = configService.findScannerConfig().toBuilder();
         builder.selectedCategory = getSelectedCategorySet();
-        configRepository.saveScannerConfig(builder.build());
+        configService.saveScannerConfig(builder.build());
 
         return true;
     }

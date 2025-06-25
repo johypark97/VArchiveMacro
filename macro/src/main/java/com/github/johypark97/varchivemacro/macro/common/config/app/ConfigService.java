@@ -1,30 +1,33 @@
-package com.github.johypark97.varchivemacro.macro.common.config.infra.repository;
+package com.github.johypark97.varchivemacro.macro.common.config.app;
 
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 
-public class DefaultConfigRepository implements ConfigRepository {
-    private MacroConfig macroConfig = new MacroConfig.Builder().build();
-    private ScannerConfig scannerConfig = new ScannerConfig.Builder().build();
+public class ConfigService implements ConfigRepository {
+    private final ConfigRepository configRepository;
+
+    public ConfigService(ConfigRepository configRepository) {
+        this.configRepository = configRepository;
+    }
 
     @Override
     public MacroConfig findMacroConfig() {
-        return macroConfig;
+        return configRepository.findMacroConfig();
     }
 
     @Override
     public void saveMacroConfig(MacroConfig value) {
-        macroConfig = value;
+        configRepository.saveMacroConfig(value);
     }
 
     @Override
     public ScannerConfig findScannerConfig() {
-        return scannerConfig;
+        return configRepository.findScannerConfig();
     }
 
     @Override
     public void saveScannerConfig(ScannerConfig value) {
-        scannerConfig = value;
+        configRepository.saveScannerConfig(value);
     }
 }

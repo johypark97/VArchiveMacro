@@ -2,11 +2,12 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
 import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
+import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
+import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigStorageService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroClientMode;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.common.converter.InputKeyConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
@@ -35,10 +36,12 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     private static final EnumSet<InputKey> INVALID_INPUT_KEY_SET =
             EnumSet.of(InputKey.UNDEFINED, InputKey.CONTROL, InputKey.ALT, InputKey.SHIFT);
 
-    private final ConfigRepository configRepository;
-    private final CaptureImageCacheFactory captureImageCacheFactory;
-
     private final SettingStage settingStage;
+
+    private final ConfigService configService;
+    private final ConfigStorageService configStorageService;
+
+    private final CaptureImageCacheFactory captureImageCacheFactory;
 
     private final SimpleBooleanProperty changed = new SimpleBooleanProperty();
 
@@ -50,11 +53,15 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     @MvpView
     public Setting.SettingView view;
 
-    public SettingPresenterImpl(SettingStage settingStage, ConfigRepository configRepository,
+    public SettingPresenterImpl(SettingStage settingStage, ConfigService configService,
+            ConfigStorageService configStorageService,
             CaptureImageCacheFactory captureImageCacheFactory) {
-        this.captureImageCacheFactory = captureImageCacheFactory;
-        this.configRepository = configRepository;
         this.settingStage = settingStage;
+
+        this.configService = configService;
+        this.configStorageService = configStorageService;
+
+        this.captureImageCacheFactory = captureImageCacheFactory;
     }
 
     private void showConfig() {
@@ -67,7 +74,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     }
 
     private void showConfig_macro() {
-        macroConfigBuilder = MacroConfig.Builder.from(configRepository.findMacroConfig());
+        macroConfigBuilder = configService.findMacroConfig().toBuilder();
 
         view.setMacroClientMode(macroConfigBuilder.clientMode);
         view.setMacroUploadKeyText(macroConfigBuilder.uploadKey.toString());
@@ -90,7 +97,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     }
 
     private void showConfig_scanner() {
-        scannerConfigBuilder = ScannerConfig.Builder.from(configRepository.findScannerConfig());
+        scannerConfigBuilder = configService.findScannerConfig().toBuilder();
 
         view.setScannerAccountFileText(scannerConfigBuilder.accountFile);
 
@@ -129,11 +136,11 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
             invalidCacheDirectory = false;
         }
 
-        configRepository.saveMacroConfig(macroConfigBuilder.build());
-        configRepository.saveScannerConfig(scannerConfigBuilder.build());
+        configService.saveMacroConfig(macroConfigBuilder.build());
+        configService.saveScannerConfig(scannerConfigBuilder.build());
 
         try {
-            configRepository.flush();
+            configStorageService.save();
         } catch (Exception e) {
             LOGGER.atError().setCause(e).log("Config flush exception.");
             settingStage.showError(Language.INSTANCE.getString("setting.dialog.applyException"), e);

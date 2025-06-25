@@ -2,9 +2,9 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
+import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
 import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.MacroDirection;
@@ -25,11 +25,10 @@ import org.slf4j.LoggerFactory;
 public class MacroPresenterImpl implements Macro.MacroPresenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(MacroPresenterImpl.class);
 
-    private final ConfigRepository configRepository;
-
-    private final MacroService macroService;
-
     private final HomeStage homeStage;
+
+    private final ConfigService configService;
+    private final MacroService macroService;
 
     private Disposable disposableGlobalEvent;
     private NativeKeyListener nativeKeyListener;
@@ -37,16 +36,16 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
     @MvpView
     public Macro.MacroView view;
 
-    public MacroPresenterImpl(HomeStage homeStage, ConfigRepository configRepository,
+    public MacroPresenterImpl(HomeStage homeStage, ConfigService configService,
             MacroService macroService) {
-        this.configRepository = configRepository;
-        this.macroService = macroService;
-
         this.homeStage = homeStage;
+
+        this.configService = configService;
+        this.macroService = macroService;
     }
 
     private void showConfig() {
-        MacroConfig config = configRepository.findMacroConfig();
+        MacroConfig config = configService.findMacroConfig();
 
         view.setupCountSlider(config.count(), MacroConfig.COUNT_DEFAULT, MacroConfig.COUNT_MIN,
                 MacroConfig.COUNT_MAX);
@@ -63,7 +62,7 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
     }
 
     private void registerKeyboardHook() {
-        MacroConfig config = configRepository.findMacroConfig();
+        MacroConfig config = configService.findMacroConfig();
 
         InputKeyCombination startUpKey = config.startUpKey();
         InputKeyCombination startDownKey = config.startDownKey();
@@ -168,32 +167,30 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
 
     @Override
     public void updateCount(int value) {
-        MacroConfig config = configRepository.findMacroConfig();
-
-        MacroConfig.Builder builder = MacroConfig.Builder.from(config);
+        MacroConfig.Builder builder = configService.findMacroConfig().toBuilder();
         builder.count = value;
 
-        configRepository.saveMacroConfig(builder.build());
+        configService.saveMacroConfig(builder.build());
     }
 
     @Override
     public void decreaseCount10() {
-        view.setCount(configRepository.findMacroConfig().count() - 10);
+        view.setCount(configService.findMacroConfig().count() - 10);
     }
 
     @Override
     public void decreaseCount1() {
-        view.setCount(configRepository.findMacroConfig().count() - 1);
+        view.setCount(configService.findMacroConfig().count() - 1);
     }
 
     @Override
     public void increaseCount1() {
-        view.setCount(configRepository.findMacroConfig().count() + 1);
+        view.setCount(configService.findMacroConfig().count() + 1);
     }
 
     @Override
     public void increaseCount10() {
-        view.setCount(configRepository.findMacroConfig().count() + 10);
+        view.setCount(configService.findMacroConfig().count() + 10);
     }
 
     @Override

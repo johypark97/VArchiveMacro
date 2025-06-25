@@ -4,10 +4,10 @@ import com.github.johypark97.varchivemacro.macro.common.config.domain.model.Macr
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.google.gson.annotations.Expose;
 
-public class AppConfig {
+public class ConfigJson {
     @Expose
-    public MacroConfig macroConfig = new MacroConfig.Builder().build();
+    public MacroConfig macroConfig;
 
     @Expose
-    public ScannerConfig scannerConfig = new ScannerConfig.Builder().build();
+    public ScannerConfig scannerConfig;
 }
