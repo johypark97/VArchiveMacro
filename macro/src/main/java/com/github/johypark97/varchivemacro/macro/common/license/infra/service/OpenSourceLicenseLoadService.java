@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.common.license.infra.loader;
+package com.github.johypark97.varchivemacro.macro.common.license.infra.service;
 
 import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_general;
 import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class OpenSourceLicenseLoader {
+public class OpenSourceLicenseLoadService {
     private static final String BASE_PATH = "/licenses/";
     private static final String JSON_PATH = BASE_PATH + "licenses.json";
 

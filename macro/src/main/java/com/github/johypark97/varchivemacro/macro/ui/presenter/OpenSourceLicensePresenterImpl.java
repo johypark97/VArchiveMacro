@@ -1,50 +1,46 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
+import com.github.johypark97.varchivemacro.macro.common.license.app.OpenSourceLicenseService;
+import com.github.johypark97.varchivemacro.macro.common.license.app.OpenSourceLicenseStorageService;
 import com.github.johypark97.varchivemacro.macro.common.license.domain.model.License;
-import com.github.johypark97.varchivemacro.macro.common.license.domain.repository.OpenSourceLicenseRepository;
-import com.github.johypark97.varchivemacro.macro.common.license.infra.loader.OpenSourceLicenseLoader;
 import com.github.johypark97.varchivemacro.macro.integration.app.service.WebBrowserService;
 import java.io.IOException;
-import java.util.List;
 
 public class OpenSourceLicensePresenterImpl
         implements OpenSourceLicense.OpenSourceLicensePresenter {
-    private final OpenSourceLicenseLoader openSourceLicenseLoader;
-    private final OpenSourceLicenseRepository openSourceLicenseRepository;
+    private final OpenSourceLicenseService openSourceLicenseService;
+    private final OpenSourceLicenseStorageService openSourceLicenseStorageService;
     private final WebBrowserService webBrowserService;
 
     @MvpView
     public OpenSourceLicense.OpenSourceLicenseView view;
 
-    public OpenSourceLicensePresenterImpl(OpenSourceLicenseLoader openSourceLicenseLoader,
-            OpenSourceLicenseRepository openSourceLicenseRepository,
+    public OpenSourceLicensePresenterImpl(OpenSourceLicenseService openSourceLicenseService,
+            OpenSourceLicenseStorageService openSourceLicenseStorageService,
             WebBrowserService webBrowserService) {
-        this.openSourceLicenseLoader = openSourceLicenseLoader;
-        this.openSourceLicenseRepository = openSourceLicenseRepository;
+        this.openSourceLicenseService = openSourceLicenseService;
+        this.openSourceLicenseStorageService = openSourceLicenseStorageService;
         this.webBrowserService = webBrowserService;
     }
 
     private void loadLicenseList() {
-        List<License> licenseList;
         try {
-            licenseList = openSourceLicenseLoader.load();
+            openSourceLicenseStorageService.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        licenseList.forEach(openSourceLicenseRepository::save);
     }
 
     @Override
     public void startView() {
         loadLicenseList();
 
-        view.showLibraryList(openSourceLicenseRepository.findAllLibrary());
+        view.showLibraryList(openSourceLicenseService.findAllLibrary());
     }
 
     @Override
     public void showLicense(String value) {
-        License license = openSourceLicenseRepository.findLicense(value);
+        License license = openSourceLicenseService.findLicense(value);
 
         view.showLicenseText(license.licenseText());
         view.showLibraryUrl(license.libraryUrl());

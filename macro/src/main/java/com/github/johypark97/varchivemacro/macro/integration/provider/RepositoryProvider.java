@@ -4,6 +4,8 @@ import com.github.johypark97.varchivemacro.lib.common.manager.InstanceManager;
 import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManager;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.common.config.infra.repository.DefaultConfigRepository;
+import com.github.johypark97.varchivemacro.macro.common.license.domain.repository.OpenSourceLicenseRepository;
+import com.github.johypark97.varchivemacro.macro.common.license.infra.repository.DefaultOpenSourceLicenseRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.infra.repository.DefaultCaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
@@ -52,6 +54,10 @@ public enum RepositoryProvider {
 
     public ConfigRepository getConfigRepository() {
         return getInstance(ConfigRepository.class);
+    }
+
+    public OpenSourceLicenseRepository createOpenSourceLicenseRepository() {
+        return new DefaultOpenSourceLicenseRepository();
     }
 
     public SongCaptureLinkRepository getSongCaptureLinkRepository() {

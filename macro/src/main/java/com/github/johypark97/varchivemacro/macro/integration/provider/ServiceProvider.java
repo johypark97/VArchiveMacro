@@ -5,6 +5,9 @@ import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManage
 import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigStorageService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
+import com.github.johypark97.varchivemacro.macro.common.license.app.OpenSourceLicenseService;
+import com.github.johypark97.varchivemacro.macro.common.license.app.OpenSourceLicenseStorageService;
+import com.github.johypark97.varchivemacro.macro.common.license.domain.repository.OpenSourceLicenseRepository;
 import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataVersionService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
@@ -57,6 +60,16 @@ public enum ServiceProvider {
 
     public MacroService getMacroService() {
         return new DefaultMacroService(RepositoryProvider.INSTANCE.getConfigRepository());
+    }
+
+    public OpenSourceLicenseService getOpenSourceLicenseService(
+            OpenSourceLicenseRepository openSourceLicenseRepository) {
+        return new OpenSourceLicenseService(openSourceLicenseRepository);
+    }
+
+    public OpenSourceLicenseStorageService getOpenSourceLicenseStorageService(
+            OpenSourceLicenseRepository openSourceLicenseRepository) {
+        return new OpenSourceLicenseStorageService(openSourceLicenseRepository);
     }
 
     public ProgramDataVersionService getProgramDataVersionService() {
