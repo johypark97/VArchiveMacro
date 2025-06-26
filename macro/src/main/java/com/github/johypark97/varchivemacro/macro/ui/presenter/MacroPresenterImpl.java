@@ -2,14 +2,14 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
-import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
 import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.MacroDirection;
 import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.MacroProgress;
-import com.github.johypark97.varchivemacro.macro.integration.app.macro.service.MacroService;
+import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
+import com.github.johypark97.varchivemacro.macro.integration.context.MacroContext;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
@@ -27,8 +27,8 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
 
     private final HomeStage homeStage;
 
-    private final ConfigService configService;
-    private final MacroService macroService;
+    private final GlobalContext globalContext;
+    private final MacroContext macroContext;
 
     private Disposable disposableGlobalEvent;
     private NativeKeyListener nativeKeyListener;
@@ -36,16 +36,16 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
     @MvpView
     public Macro.MacroView view;
 
-    public MacroPresenterImpl(HomeStage homeStage, ConfigService configService,
-            MacroService macroService) {
+    public MacroPresenterImpl(HomeStage homeStage, GlobalContext globalContext,
+            MacroContext macroContext) {
         this.homeStage = homeStage;
 
-        this.configService = configService;
-        this.macroService = macroService;
+        this.globalContext = globalContext;
+        this.macroContext = macroContext;
     }
 
     private void showConfig() {
-        MacroConfig config = configService.findMacroConfig();
+        MacroConfig config = globalContext.configService.findMacroConfig();
 
         view.setupCountSlider(config.count(), MacroConfig.COUNT_DEFAULT, MacroConfig.COUNT_MIN,
                 MacroConfig.COUNT_MAX);
@@ -62,7 +62,7 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
     }
 
     private void registerKeyboardHook() {
-        MacroConfig config = configService.findMacroConfig();
+        MacroConfig config = globalContext.configService.findMacroConfig();
 
         InputKeyCombination startUpKey = config.startUpKey();
         InputKeyCombination startDownKey = config.startDownKey();
@@ -73,7 +73,7 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
             public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
                 NativeInputKey nativeInputKey = new NativeInputKey(nativeEvent);
                 if (nativeInputKey.isInteroperable() && nativeInputKey.isEqual(stopKey)) {
-                    macroService.stopMacroTask();
+                    macroContext.macroService.stopMacroTask();
                 }
             }
 
@@ -86,9 +86,9 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
 
                 Task<MacroProgress> task = null;
                 if (nativeInputKey.isEqual(startUpKey)) {
-                    task = macroService.createMacroTask(MacroDirection.UP);
+                    task = macroContext.macroService.createMacroTask(MacroDirection.UP);
                 } else if (nativeInputKey.isEqual(startDownKey)) {
-                    task = macroService.createMacroTask(MacroDirection.DOWN);
+                    task = macroContext.macroService.createMacroTask(MacroDirection.DOWN);
                 }
 
                 if (task == null) {
@@ -167,30 +167,30 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
 
     @Override
     public void updateCount(int value) {
-        MacroConfig.Builder builder = configService.findMacroConfig().toBuilder();
+        MacroConfig.Builder builder = globalContext.configService.findMacroConfig().toBuilder();
         builder.count = value;
 
-        configService.saveMacroConfig(builder.build());
+        globalContext.configService.saveMacroConfig(builder.build());
     }
 
     @Override
     public void decreaseCount10() {
-        view.setCount(configService.findMacroConfig().count() - 10);
+        view.setCount(globalContext.configService.findMacroConfig().count() - 10);
     }
 
     @Override
     public void decreaseCount1() {
-        view.setCount(configService.findMacroConfig().count() - 1);
+        view.setCount(globalContext.configService.findMacroConfig().count() - 1);
     }
 
     @Override
     public void increaseCount1() {
-        view.setCount(configService.findMacroConfig().count() + 1);
+        view.setCount(globalContext.configService.findMacroConfig().count() + 1);
     }
 
     @Override
     public void increaseCount10() {
-        view.setCount(configService.findMacroConfig().count() + 10);
+        view.setCount(globalContext.configService.findMacroConfig().count() + 10);
     }
 
     @Override

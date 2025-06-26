@@ -5,13 +5,12 @@ import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
-import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.CollectionScanTaskService;
+import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
+import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStage;
@@ -42,9 +41,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
 
     private final ScannerScannerStage scannerScannerStage;
 
-    private final CollectionScanTaskService collectionScanTaskService;
-    private final ConfigService configService;
-    private final SongService songService;
+    private final GlobalContext globalContext;
+    private final ScannerContext scannerContext;
 
     private final StringProperty accountFileText = new SimpleStringProperty();
     private final StringProperty cacheDirectoryText = new SimpleStringProperty();
@@ -56,17 +54,15 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
     public ScannerScanner.ScannerScannerView view;
 
     public ScannerScannerPresenterImpl(ScannerScannerStage scannerScannerStage,
-            CollectionScanTaskService collectionScanTaskService, ConfigService configService,
-            SongService songService) {
+            GlobalContext globalContext, ScannerContext scannerContext) {
         this.scannerScannerStage = scannerScannerStage;
 
-        this.collectionScanTaskService = collectionScanTaskService;
-        this.configService = configService;
-        this.songService = songService;
+        this.globalContext = globalContext;
+        this.scannerContext = scannerContext;
     }
 
     private void showConfig() {
-        ScannerConfig config = configService.findScannerConfig();
+        ScannerConfig config = globalContext.configService.findScannerConfig();
 
         accountFileText.set(config.accountFile());
         cacheDirectoryText.set(config.cacheDirectory());
@@ -82,7 +78,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
     }
 
     private void registerKeyboardHook() {
-        ScannerConfig config = configService.findScannerConfig();
+        ScannerConfig config = globalContext.configService.findScannerConfig();
 
         InputKeyCombination startKey = config.startKey();
         InputKeyCombination stopKey = config.stopKey();
@@ -92,7 +88,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
             public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
                 NativeInputKey nativeInputKey = new NativeInputKey(nativeEvent);
                 if (nativeInputKey.isInteroperable() && nativeInputKey.isEqual(stopKey)) {
-                    collectionScanTaskService.stopTask();
+                    scannerContext.collectionScanTaskService.stopTask();
                 }
             }
 
@@ -104,7 +100,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
 
                     Task<Void> task;
                     try {
-                        task = collectionScanTaskService.createTask(selectedCategorySet);
+                        task = scannerContext.collectionScanTaskService.createTask(
+                                selectedCategorySet);
                     } catch (IOException e) {
                         LOGGER.atError().setCause(e)
                                 .log("Collection task initialization exception.");
@@ -200,9 +197,10 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
         view.bindAccountFileText(accountFileText);
         view.bindCacheDirectoryText(cacheDirectoryText);
 
-        view.setCategoryList(songService.findAllCategory().stream()
+        view.setCategoryList(globalContext.songService.findAllCategory().stream()
                 .map(ScannerScannerViewModel.CategoryData::new).toList());
-        view.setSelectedCategory(configService.findScannerConfig().selectedCategory());
+        view.setSelectedCategory(
+                globalContext.configService.findScannerConfig().selectedCategory());
 
         showConfig();
         registerKeyboardHook();
@@ -217,9 +215,9 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
         unregisterKeyboardHook();
         disposableGlobalEvent.dispose();
 
-        ScannerConfig.Builder builder = configService.findScannerConfig().toBuilder();
+        ScannerConfig.Builder builder = globalContext.configService.findScannerConfig().toBuilder();
         builder.selectedCategory = getSelectedCategorySet();
-        configService.saveScannerConfig(builder.build());
+        globalContext.configService.saveScannerConfig(builder.build());
 
         return true;
     }

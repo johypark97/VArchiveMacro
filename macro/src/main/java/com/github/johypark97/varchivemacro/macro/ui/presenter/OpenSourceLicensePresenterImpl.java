@@ -1,31 +1,27 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
-import com.github.johypark97.varchivemacro.macro.common.license.app.OpenSourceLicenseService;
-import com.github.johypark97.varchivemacro.macro.common.license.app.OpenSourceLicenseStorageService;
 import com.github.johypark97.varchivemacro.macro.common.license.domain.model.License;
-import com.github.johypark97.varchivemacro.macro.integration.app.service.WebBrowserService;
+import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
+import com.github.johypark97.varchivemacro.macro.integration.context.OpenSourceLicenseContext;
 import java.io.IOException;
 
 public class OpenSourceLicensePresenterImpl
         implements OpenSourceLicense.OpenSourceLicensePresenter {
-    private final OpenSourceLicenseService openSourceLicenseService;
-    private final OpenSourceLicenseStorageService openSourceLicenseStorageService;
-    private final WebBrowserService webBrowserService;
+    private final GlobalContext globalContext;
+    private final OpenSourceLicenseContext openSourceLicenseContext;
 
     @MvpView
     public OpenSourceLicense.OpenSourceLicenseView view;
 
-    public OpenSourceLicensePresenterImpl(OpenSourceLicenseService openSourceLicenseService,
-            OpenSourceLicenseStorageService openSourceLicenseStorageService,
-            WebBrowserService webBrowserService) {
-        this.openSourceLicenseService = openSourceLicenseService;
-        this.openSourceLicenseStorageService = openSourceLicenseStorageService;
-        this.webBrowserService = webBrowserService;
+    public OpenSourceLicensePresenterImpl(GlobalContext globalContext,
+            OpenSourceLicenseContext openSourceLicenseContext) {
+        this.globalContext = globalContext;
+        this.openSourceLicenseContext = openSourceLicenseContext;
     }
 
     private void loadLicenseList() {
         try {
-            openSourceLicenseStorageService.load();
+            openSourceLicenseContext.openSourceLicenseStorageService.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -35,12 +31,12 @@ public class OpenSourceLicensePresenterImpl
     public void startView() {
         loadLicenseList();
 
-        view.showLibraryList(openSourceLicenseService.findAllLibrary());
+        view.showLibraryList(openSourceLicenseContext.openSourceLicenseService.findAllLibrary());
     }
 
     @Override
     public void showLicense(String value) {
-        License license = openSourceLicenseService.findLicense(value);
+        License license = openSourceLicenseContext.openSourceLicenseService.findLicense(value);
 
         view.showLicenseText(license.licenseText());
         view.showLibraryUrl(license.libraryUrl());
@@ -48,6 +44,6 @@ public class OpenSourceLicensePresenterImpl
 
     @Override
     public void openWebBrowser(String url) {
-        webBrowserService.open(url);
+        globalContext.webBrowserService.open(url);
     }
 }

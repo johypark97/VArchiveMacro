@@ -3,10 +3,8 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataVersionService;
 import com.github.johypark97.varchivemacro.macro.common.resource.BuildInfo;
-import com.github.johypark97.varchivemacro.macro.integration.app.service.WebBrowserService;
-import com.github.johypark97.varchivemacro.macro.integration.provider.ServiceProvider;
+import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.integration.provider.UrlProvider;
 import com.github.johypark97.varchivemacro.macro.ui.dialog.About;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
@@ -108,8 +106,7 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
     @Override
     public void startStage() {
-        homePresenter =
-                new HomePresenterImpl(this, ServiceProvider.INSTANCE.getConfigStorageService());
+        homePresenter = new HomePresenterImpl(this, ContextManager.INSTANCE.getGlobalContext());
 
         HomeViewImpl view = new HomeViewImpl();
         Mvp.linkViewAndPresenter(view, homePresenter);
@@ -198,8 +195,8 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
             return;
         }
 
-        macroPresenter = new MacroPresenterImpl(this, ServiceProvider.INSTANCE.getConfigService(),
-                ServiceProvider.INSTANCE.getMacroService());
+        macroPresenter = new MacroPresenterImpl(this, ContextManager.INSTANCE.getGlobalContext(),
+                ContextManager.INSTANCE.createMacroContext());
 
         MacroViewImpl view = new MacroViewImpl();
         Mvp.linkViewAndPresenter(view, macroPresenter);
@@ -216,11 +213,7 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         }
 
         scannerHomePresenter =
-                new ScannerHomePresenterImpl(this, ServiceProvider.INSTANCE.getConfigService(),
-                        ServiceProvider.INSTANCE.getSongRecordService(),
-                        ServiceProvider.INSTANCE.getSongRecordStorageService(),
-                        ServiceProvider.INSTANCE.getSongService(),
-                        ServiceProvider.INSTANCE.getSongStorageService());
+                new ScannerHomePresenterImpl(this, ContextManager.INSTANCE.getGlobalContext());
 
         ScannerHomeViewImpl view = new ScannerHomeViewImpl();
         Mvp.linkViewAndPresenter(view, scannerHomePresenter);
@@ -256,13 +249,9 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
     @Override
     public void showAbout() {
-        ProgramDataVersionService programDataVersionService =
-                ServiceProvider.INSTANCE.getProgramDataVersionService();
-        WebBrowserService webBrowserService = ServiceProvider.INSTANCE.getWebBrowserService();
-
         try {
-            new About(stage, UrlProvider.GITHUB_URL, programDataVersionService,
-                    webBrowserService).showAndWait();
+            new About(stage, UrlProvider.GITHUB_URL,
+                    ContextManager.INSTANCE.getGlobalContext()).showAndWait();
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Opening the About alert exception.");
             showError(Language.INSTANCE.getString("home.about.exception"), e);

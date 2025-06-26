@@ -2,8 +2,6 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
 import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
-import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
-import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigStorageService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroClientMode;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
@@ -14,6 +12,7 @@ import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.loader.AccountFileLoader;
 import com.github.johypark97.varchivemacro.macro.core.scanner.cache.infra.CaptureImageCache;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.CaptureImageCacheFactory;
+import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStage;
@@ -38,8 +37,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
 
     private final SettingStage settingStage;
 
-    private final ConfigService configService;
-    private final ConfigStorageService configStorageService;
+    private final GlobalContext globalContext;
 
     private final CaptureImageCacheFactory captureImageCacheFactory;
 
@@ -53,13 +51,11 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     @MvpView
     public Setting.SettingView view;
 
-    public SettingPresenterImpl(SettingStage settingStage, ConfigService configService,
-            ConfigStorageService configStorageService,
+    public SettingPresenterImpl(SettingStage settingStage, GlobalContext globalContext,
             CaptureImageCacheFactory captureImageCacheFactory) {
         this.settingStage = settingStage;
 
-        this.configService = configService;
-        this.configStorageService = configStorageService;
+        this.globalContext = globalContext;
 
         this.captureImageCacheFactory = captureImageCacheFactory;
     }
@@ -74,7 +70,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     }
 
     private void showConfig_macro() {
-        macroConfigBuilder = configService.findMacroConfig().toBuilder();
+        macroConfigBuilder = globalContext.configService.findMacroConfig().toBuilder();
 
         view.setMacroClientMode(macroConfigBuilder.clientMode);
         view.setMacroUploadKeyText(macroConfigBuilder.uploadKey.toString());
@@ -97,7 +93,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     }
 
     private void showConfig_scanner() {
-        scannerConfigBuilder = configService.findScannerConfig().toBuilder();
+        scannerConfigBuilder = globalContext.configService.findScannerConfig().toBuilder();
 
         view.setScannerAccountFileText(scannerConfigBuilder.accountFile);
 
@@ -136,11 +132,11 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
             invalidCacheDirectory = false;
         }
 
-        configService.saveMacroConfig(macroConfigBuilder.build());
-        configService.saveScannerConfig(scannerConfigBuilder.build());
+        globalContext.configService.saveMacroConfig(macroConfigBuilder.build());
+        globalContext.configService.saveScannerConfig(scannerConfigBuilder.build());
 
         try {
-            configStorageService.save();
+            globalContext.configStorageService.save();
         } catch (Exception e) {
             LOGGER.atError().setCause(e).log("Config flush exception.");
             settingStage.showError(Language.INSTANCE.getString("setting.dialog.applyException"), e);

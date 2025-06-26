@@ -2,11 +2,7 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.common.license.app.OpenSourceLicenseService;
-import com.github.johypark97.varchivemacro.macro.common.license.app.OpenSourceLicenseStorageService;
-import com.github.johypark97.varchivemacro.macro.common.license.domain.repository.OpenSourceLicenseRepository;
-import com.github.johypark97.varchivemacro.macro.integration.provider.RepositoryProvider;
-import com.github.johypark97.varchivemacro.macro.integration.provider.ServiceProvider;
+import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.OpenSourceLicense;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.OpenSourceLicensePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
@@ -45,16 +41,8 @@ public class OpenSourceLicenseStageImpl extends AbstractTreeableStage
 
     @Override
     public void startStage() {
-        OpenSourceLicenseRepository repository =
-                RepositoryProvider.INSTANCE.createOpenSourceLicenseRepository();
-
-        OpenSourceLicenseService openSourceLicenseService =
-                ServiceProvider.INSTANCE.getOpenSourceLicenseService(repository);
-        OpenSourceLicenseStorageService openSourceLicenseStorageService =
-                ServiceProvider.INSTANCE.getOpenSourceLicenseStorageService(repository);
-
-        presenter = new OpenSourceLicensePresenterImpl(openSourceLicenseService,
-                openSourceLicenseStorageService, ServiceProvider.INSTANCE.getWebBrowserService());
+        presenter = new OpenSourceLicensePresenterImpl(ContextManager.INSTANCE.getGlobalContext(),
+                ContextManager.INSTANCE.createOpenSourceLicenseContext());
 
         OpenSourceLicenseViewImpl view = new OpenSourceLicenseViewImpl();
         Mvp.linkViewAndPresenter(view, presenter);

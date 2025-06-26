@@ -1,18 +1,14 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
-import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.UnicodeFilter;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.loader.AccountFileLoader;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordStorageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecordTable;
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongStorageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
+import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import com.github.johypark97.varchivemacro.macro.ui.viewmodel.ScannerHomeViewModel;
 import java.io.File;
@@ -32,25 +28,15 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
 
     private final HomeStage homeStage;
 
-    private final ConfigService configService;
-    private final SongRecordService songRecordService;
-    private final SongRecordStorageService songRecordStorageService;
-    private final SongService songService;
-    private final SongStorageService songStorageService;
+    private final GlobalContext globalContext;
 
     @MvpView
     public ScannerHome.ScannerHomeView view;
 
-    public ScannerHomePresenterImpl(HomeStage homeStage, ConfigService configService,
-            SongRecordService songRecordService, SongRecordStorageService songRecordStorageService,
-            SongService songService, SongStorageService songStorageService) {
+    public ScannerHomePresenterImpl(HomeStage homeStage, GlobalContext globalContext) {
         this.homeStage = homeStage;
 
-        this.configService = configService;
-        this.songRecordService = songRecordService;
-        this.songRecordStorageService = songRecordStorageService;
-        this.songService = songService;
-        this.songStorageService = songStorageService;
+        this.globalContext = globalContext;
     }
 
     private boolean validateAccountFile(String value) {
@@ -97,7 +83,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
 
         TreeItem<ScannerHomeViewModel.SongTreeViewData> rootNode = new TreeItem<>();
 
-        songService.groupSongByCategory().forEach((category, songList) -> {
+        globalContext.songService.groupSongByCategory().forEach((category, songList) -> {
             Stream<Song> songStream = songList.stream();
 
             if (filter != null) {
@@ -130,15 +116,15 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
     public void startView() {
         view.showProgress();
 
-        if (!songRecordService.isEmpty()) {
+        if (!globalContext.songRecordService.isEmpty()) {
             showRecordViewer();
             return;
         }
 
         CompletableFuture.runAsync(() -> {
             try {
-                songStorageService.load();
-                songRecordStorageService.loadFromLocal();
+                globalContext.songStorageService.load();
+                globalContext.songRecordStorageService.loadFromLocal();
                 Platform.runLater(this::showRecordViewer);
                 return;
             } catch (NoSuchFileException ignored) {
@@ -160,7 +146,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
 
     @Override
     public void showRecordLoader() {
-        view.setAccountFileText(configService.findScannerConfig().accountFile());
+        view.setAccountFileText(globalContext.configService.findScannerConfig().accountFile());
         view.showLoader();
     }
 
@@ -202,16 +188,16 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
             return;
         }
 
-        ScannerConfig.Builder builder = configService.findScannerConfig().toBuilder();
+        ScannerConfig.Builder builder = globalContext.configService.findScannerConfig().toBuilder();
         builder.accountFile = accountFile;
-        configService.saveScannerConfig(builder.build());
+        globalContext.configService.saveScannerConfig(builder.build());
 
         Platform.runLater(view::showProgress);
 
         CompletableFuture.runAsync(() -> {
             try {
-                songRecordStorageService.loadFromRemote(djName);
-                songRecordStorageService.saveToLocal();
+                globalContext.songRecordStorageService.loadFromRemote(djName);
+                globalContext.songRecordStorageService.saveToLocal();
             } catch (Exception e) {
                 LOGGER.atError().setCause(e).log("Remote records loading exception.");
                 Platform.runLater(() -> {
@@ -234,10 +220,10 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
 
     @Override
     public void showSong(int songId) {
-        Song song = songService.findSongById(songId);
+        Song song = globalContext.songService.findSongById(songId);
         view.showSongInformation(song.title(), song.composer());
 
-        SongRecordTable table = songRecordService.findById(songId);
+        SongRecordTable table = globalContext.songRecordService.findById(songId);
         view.showSongRecord(ScannerHomeViewModel.SongRecord.from(table));
     }
 

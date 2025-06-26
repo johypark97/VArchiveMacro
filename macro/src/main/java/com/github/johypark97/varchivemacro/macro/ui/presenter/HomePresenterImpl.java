@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
-import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigStorageService;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import java.io.IOException;
 import java.util.Locale;
@@ -14,15 +14,15 @@ public class HomePresenterImpl implements Home.HomePresenter {
 
     private final HomeStage homeStage;
 
-    private final ConfigStorageService configStorageService;
+    private final GlobalContext globalContext;
 
     @MvpView
     public Home.HomeView view;
 
-    public HomePresenterImpl(HomeStage homeStage, ConfigStorageService configStorageService) {
+    public HomePresenterImpl(HomeStage homeStage, GlobalContext globalContext) {
         this.homeStage = homeStage;
 
-        this.configStorageService = configStorageService;
+        this.globalContext = globalContext;
     }
 
     @Override
@@ -32,8 +32,8 @@ public class HomePresenterImpl implements Home.HomePresenter {
         homeStage.changeCenterView_modeSelector();
 
         try {
-            if (!configStorageService.load()) {
-                configStorageService.save();
+            if (!globalContext.configStorageService.load()) {
+                globalContext.configStorageService.save();
             }
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Config loading exception.");
@@ -44,7 +44,7 @@ public class HomePresenterImpl implements Home.HomePresenter {
     @Override
     public boolean stopView() {
         try {
-            configStorageService.save();
+            globalContext.configStorageService.save();
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Config saving exception.");
         }

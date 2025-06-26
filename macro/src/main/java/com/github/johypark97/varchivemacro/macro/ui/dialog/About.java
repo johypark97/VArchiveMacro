@@ -1,9 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.ui.dialog;
 
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataVersionService;
 import com.github.johypark97.varchivemacro.macro.common.resource.BuildInfo;
-import com.github.johypark97.varchivemacro.macro.integration.app.service.WebBrowserService;
+import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import java.io.IOException;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,9 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
 public class About extends Alert {
-    public About(Window parent, String sourceCodeUrl,
-            ProgramDataVersionService programDataVersionService,
-            WebBrowserService webBrowserService) throws IOException {
+    public About(Window parent, String sourceCodeUrl, GlobalContext globalContext)
+            throws IOException {
         super(AlertType.INFORMATION);
 
         Language language = Language.INSTANCE;
@@ -35,7 +33,7 @@ public class About extends Alert {
 
             box.getChildren().add(new Label(
                     language.getFormatString("home.about.programDataVersion",
-                            programDataVersionService.getVersion())));
+                            globalContext.programDataVersionService.getVersion())));
 
             box.getChildren().add(new Label(
                     language.getFormatString("home.about.buildDate", BuildInfo.date)));
@@ -47,7 +45,7 @@ public class About extends Alert {
                         .add(new Label(language.getString("home.about.sourceCode")));
 
                 Hyperlink hyperlink = new Hyperlink(sourceCodeUrl);
-                hyperlink.setOnAction(event -> webBrowserService.open(sourceCodeUrl));
+                hyperlink.setOnAction(event -> globalContext.webBrowserService.open(sourceCodeUrl));
 
                 sourceCodeBox.getChildren().add(hyperlink);
             }
