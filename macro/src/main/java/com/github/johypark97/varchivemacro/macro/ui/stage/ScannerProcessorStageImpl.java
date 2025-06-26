@@ -40,9 +40,9 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
 
     @Override
     public void startStage() {
-        ScannerProcessorFrameViewImpl view = new ScannerProcessorFrameViewImpl();
-
         framePresenter = new ScannerProcessorFramePresenterImpl();
+
+        ScannerProcessorFrameViewImpl view = new ScannerProcessorFrameViewImpl();
         Mvp.linkViewAndPresenter(view, framePresenter);
 
         Scene scene = new Scene(view);

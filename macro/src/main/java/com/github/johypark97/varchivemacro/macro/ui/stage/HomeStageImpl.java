@@ -108,13 +108,13 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
     @Override
     public void startStage() {
-        HomeViewImpl homeView = new HomeViewImpl();
-
         homePresenter =
                 new HomePresenterImpl(this, ServiceProvider.INSTANCE.getConfigStorageService());
-        Mvp.linkViewAndPresenter(homeView, homePresenter);
 
-        Scene scene = new Scene(homeView);
+        HomeViewImpl view = new HomeViewImpl();
+        Mvp.linkViewAndPresenter(view, homePresenter);
+
+        Scene scene = new Scene(view);
         scene.getStylesheets().add(UiResource.GLOBAL_CSS.url().toExternalForm());
 
         stage.setScene(scene);
@@ -182,9 +182,9 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
             return;
         }
 
-        ModeSelectorViewImpl view = new ModeSelectorViewImpl();
-
         modeSelectorPresenter = new ModeSelectorPresenterImpl(this);
+
+        ModeSelectorViewImpl view = new ModeSelectorViewImpl();
         Mvp.linkViewAndPresenter(view, modeSelectorPresenter);
 
         homePresenter.setCenterView(view);
@@ -198,10 +198,10 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
             return;
         }
 
-        MacroViewImpl view = new MacroViewImpl();
-
         macroPresenter = new MacroPresenterImpl(this, ServiceProvider.INSTANCE.getConfigService(),
                 ServiceProvider.INSTANCE.getMacroService());
+
+        MacroViewImpl view = new MacroViewImpl();
         Mvp.linkViewAndPresenter(view, macroPresenter);
 
         homePresenter.setCenterView(view);
@@ -215,14 +215,14 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
             return;
         }
 
-        ScannerHomeViewImpl view = new ScannerHomeViewImpl();
-
         scannerHomePresenter =
                 new ScannerHomePresenterImpl(this, ServiceProvider.INSTANCE.getConfigService(),
                         ServiceProvider.INSTANCE.getSongRecordService(),
                         ServiceProvider.INSTANCE.getSongRecordStorageService(),
                         ServiceProvider.INSTANCE.getSongService(),
                         ServiceProvider.INSTANCE.getSongStorageService());
+
+        ScannerHomeViewImpl view = new ScannerHomeViewImpl();
         Mvp.linkViewAndPresenter(view, scannerHomePresenter);
 
         homePresenter.setCenterView(view);
