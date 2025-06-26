@@ -32,4 +32,20 @@ public class LazyInstanceManager<T> implements InstanceManager<T> {
 
         return instance;
     }
+
+    @Override
+    public <U extends T> U setInstance(Class<U> cls, U instance) {
+        @SuppressWarnings("unchecked")
+        U previousInstance = (U) instanceMap.put(cls, instance);
+
+        return previousInstance;
+    }
+
+    @Override
+    public <U extends T> U removeInstance(Class<U> cls) {
+        @SuppressWarnings("unchecked")
+        U removedInstance = (U) instanceMap.remove(cls);
+
+        return removedInstance;
+    }
 }
