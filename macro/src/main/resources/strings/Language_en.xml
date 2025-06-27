@@ -50,9 +50,13 @@
   <entry key="scanner.recordLoader.dialog.emptyAccountFile">Please specify the account file.</entry>
   <entry key="scanner.recordLoader.dialog.emptyDjName">Please enter your DJ Name.</entry>
   <entry key="scanner.recordLoader.dialog.remoteError">An error has occurred while loading the server records.</entry>
+  <entry key="scanner.recordLoader.dialog.songLoadingException">An error has occurred while loading the song database.</entry>
   <entry key="scanner.recordLoader.dialog.unexpectedError">An unexpected error has occurred while loading the records file.</entry>
   <entry key="scanner.recordLoader.djNameLabel">DJ name</entry>
   <entry key="scanner.recordLoader.loadButton">Load</entry>
+  <entry key="scanner.recordLoader.progressBox.loadingRecord">Loading records...</entry>
+  <entry key="scanner.recordLoader.progressBox.loadingSong">Loading song database...</entry>
+  <entry key="scanner.recordLoader.progressBox.unavailable">Unavailable</entry>
   <entry key="scanner.recordLoader.titleLabel">Please specify the DJ name and Account file of V-ARCHIVE.</entry>
   <entry key="scanner.recordViewer.recordGrid.transposeButtonTooltip">Transpose rows and columns</entry>
   <entry key="scanner.recordViewer.reloadRecordButton">Reload records</entry>

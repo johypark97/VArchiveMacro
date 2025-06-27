@@ -13,6 +13,11 @@ public class SongService implements SongRepository {
     }
 
     @Override
+    public boolean isEmpty() {
+        return songRepository.isEmpty();
+    }
+
+    @Override
     public Song findSongById(int songId) {
         return songRepository.findSongById(songId);
     }

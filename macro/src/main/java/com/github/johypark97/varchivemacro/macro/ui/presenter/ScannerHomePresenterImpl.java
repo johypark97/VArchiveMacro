@@ -114,25 +114,52 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
 
     @Override
     public void startView() {
-        view.showProgress();
+        view.showProgress("...");
 
-        if (!globalContext.songRecordService.isEmpty()) {
+        if (!globalContext.songService.isEmpty() && !globalContext.songRecordService.isEmpty()) {
             showRecordViewer();
             return;
         }
 
         CompletableFuture.runAsync(() -> {
-            try {
-                globalContext.songStorageService.load();
-                globalContext.songRecordStorageService.loadFromLocal();
-                Platform.runLater(this::showRecordViewer);
-                return;
-            } catch (NoSuchFileException ignored) {
-            } catch (Exception e) {
-                LOGGER.atError().setCause(e).log("Local records loading exception.");
-                Platform.runLater(() -> homeStage.showError(
-                        Language.INSTANCE.getString("scanner.recordLoader.dialog.unexpectedError"),
-                        e.toString(), e));
+            Language language = Language.INSTANCE;
+
+            if (globalContext.songService.isEmpty()) {
+                Platform.runLater(() -> view.showProgress(
+                        language.getString("scanner.recordLoader.progressBox.loadingSong")));
+
+                try {
+                    globalContext.songStorageService.load();
+                } catch (Exception e) {
+                    LOGGER.atError().setCause(e).log("Song loading exception.");
+                    Platform.runLater(() -> {
+                        homeStage.showError(language.getString(
+                                        "scanner.recordLoader.dialog.songLoadingException"), e.toString(),
+                                e);
+                        view.showUnavailable(
+                                language.getString("scanner.recordLoader.progressBox.unavailable"));
+                    });
+
+                    return;
+                }
+            }
+
+            if (globalContext.songRecordService.isEmpty()) {
+                Platform.runLater(() -> view.showProgress(
+                        language.getString("scanner.recordLoader.progressBox.loadingRecord")));
+
+                try {
+                    globalContext.songRecordStorageService.loadFromLocal();
+                    Platform.runLater(this::showRecordViewer);
+
+                    return;
+                } catch (NoSuchFileException ignored) {
+                } catch (Exception e) {
+                    LOGGER.atError().setCause(e).log("Local records loading exception.");
+                    Platform.runLater(() -> homeStage.showError(
+                            language.getString("scanner.recordLoader.dialog.unexpectedError"),
+                            e.toString(), e));
+                }
             }
 
             Platform.runLater(this::showRecordLoader);
@@ -192,7 +219,8 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
         builder.accountFile = accountFile;
         globalContext.configService.saveScannerConfig(builder.build());
 
-        Platform.runLater(view::showProgress);
+        Platform.runLater(() -> view.showProgress(
+                language.getString("scanner.recordLoader.progressBox.loadingRecord")));
 
         CompletableFuture.runAsync(() -> {
             try {

@@ -18,6 +18,11 @@ public class DefaultSongRepository implements SongRepository {
     }
 
     @Override
+    public boolean isEmpty() {
+        return songDatabase == null || songDatabase.songList().isEmpty();
+    }
+
+    @Override
     public Song findSongById(int songId) {
         return SongDatabaseConverter.toDomainSong(songDatabase.getSong(songId));
     }

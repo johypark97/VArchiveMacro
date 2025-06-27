@@ -50,9 +50,13 @@
   <entry key="scanner.recordLoader.dialog.emptyAccountFile">계정 파일을 선택해주세요.</entry>
   <entry key="scanner.recordLoader.dialog.emptyDjName">DJ 이름을 입력해주세요.</entry>
   <entry key="scanner.recordLoader.dialog.remoteError">서버 기록을 불러오는 도중 오류가 발생하였습니다.</entry>
+  <entry key="scanner.recordLoader.dialog.songLoadingException">곡 데이터베이스를 불러오는 도중 오류가 발생하였습니다.</entry>
   <entry key="scanner.recordLoader.dialog.unexpectedError">기록 파일을 불러오는 도중 예상치 못한 오류가 발생하였습니다.</entry>
   <entry key="scanner.recordLoader.djNameLabel">DJ 이름</entry>
   <entry key="scanner.recordLoader.loadButton">불러오기</entry>
+  <entry key="scanner.recordLoader.progressBox.loadingRecord">기록 불러오는 중...</entry>
+  <entry key="scanner.recordLoader.progressBox.loadingSong">곡 데이터베이스 불러오는 중...</entry>
+  <entry key="scanner.recordLoader.progressBox.unavailable">사용 불가</entry>
   <entry key="scanner.recordLoader.titleLabel">V-ARCHIVE의 DJ 이름과 계정 파일을 지정해주세요.</entry>
   <entry key="scanner.recordViewer.recordGrid.transposeButtonTooltip">행렬 전치</entry>
   <entry key="scanner.recordViewer.reloadRecordButton">기록 다시 불러오기</entry>

@@ -31,7 +31,9 @@ public interface ScannerHome {
 
         void showLoader();
 
-        void showProgress();
+        void showProgress(String text);
+
+        void showUnavailable(String text);
 
         String getDjNameText();
 

@@ -10,7 +10,10 @@ import java.util.Objects;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -74,6 +77,15 @@ public class ScannerHomeViewImpl extends BorderPane implements ScannerHome.Scann
 
     @FXML
     private VBox progressBox;
+
+    @FXML
+    private ProgressIndicator progressIndicator;
+
+    @FXML
+    private Group unavailableGroup;
+
+    @FXML
+    private Label progressLabel;
 
     @FXML
     private Button homeButton;
@@ -189,10 +201,27 @@ public class ScannerHomeViewImpl extends BorderPane implements ScannerHome.Scann
     }
 
     @Override
-    public void showProgress() {
+    public void showProgress(String text) {
         recordViewerSplitPane.setVisible(false);
         recordLoaderBox.setVisible(false);
         progressBox.setVisible(true);
+
+        progressIndicator.setVisible(true);
+        unavailableGroup.setVisible(false);
+
+        progressLabel.setText(text);
+    }
+
+    @Override
+    public void showUnavailable(String text) {
+        recordViewerSplitPane.setVisible(false);
+        recordLoaderBox.setVisible(false);
+        progressBox.setVisible(true);
+
+        progressIndicator.setVisible(false);
+        unavailableGroup.setVisible(true);
+
+        progressLabel.setText(text);
     }
 
     @Override

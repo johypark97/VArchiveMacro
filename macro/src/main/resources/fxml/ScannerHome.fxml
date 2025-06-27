@@ -11,6 +11,7 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -19,6 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21.0.6">
   <center>
     <StackPane>
@@ -146,9 +148,20 @@
             </ButtonBar>
           </children>
         </VBox>
-        <VBox alignment="CENTER" fillWidth="false" fx:id="progressBox">
+        <VBox alignment="CENTER" fillWidth="false" spacing="10.0" fx:id="progressBox">
           <children>
-            <ProgressIndicator/>
+            <StackPane>
+              <children>
+                <ProgressIndicator fx:id="progressIndicator"/>
+                <Group fx:id="unavailableGroup">
+                  <children>
+                    <Rectangle fill="RED" height="16.0" rotate="45.0" stroke="BLACK" width="64.0"/>
+                    <Rectangle fill="RED" height="16.0" rotate="135.0" stroke="BLACK" width="64.0"/>
+                  </children>
+                </Group>
+              </children>
+            </StackPane>
+            <Label text="Label" fx:id="progressLabel"/>
           </children>
         </VBox>
       </children>
