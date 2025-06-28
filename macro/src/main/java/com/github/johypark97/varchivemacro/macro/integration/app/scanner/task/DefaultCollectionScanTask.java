@@ -5,9 +5,9 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
-import com.github.johypark97.varchivemacro.macro.core.scanner.cache.infra.CaptureImageCache;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleMapper;
@@ -35,7 +35,8 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
 
     private static final int REJECTED_SLEEP_TIME = 1000;
 
-    private final CaptureImageCache captureImageCache;
+    private final CaptureImageRepository captureImageRepository;
+
     private final ScannerConfig config;
 
     private final AtomicReference<Exception> imageCachingTaskException = new AtomicReference<>();
@@ -44,15 +45,17 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     private CollectionArea collectionArea;
     private ImageCachingService imageCachingService;
 
-    public DefaultCollectionScanTask(CaptureRepository captureRepository,
+    public DefaultCollectionScanTask(CaptureImageRepository captureImageRepository,
+            CaptureRepository captureRepository,
             SongCaptureLinkRepository songCaptureLinkRepository, SongRepository songRepository,
-            CaptureImageCache captureImageCache, OcrFactory songTitleOcrFactory,
-            SongTitleMapper songTitleMapper, SongTitleNormalizer songTitleNormalizer,
-            ScannerConfig config, Set<String> selectedCategorySet) {
+            OcrFactory songTitleOcrFactory, SongTitleMapper songTitleMapper,
+            SongTitleNormalizer songTitleNormalizer, ScannerConfig config,
+            Set<String> selectedCategorySet) {
         super(captureRepository, songCaptureLinkRepository, songRepository, songTitleOcrFactory,
                 songTitleMapper, songTitleNormalizer, selectedCategorySet);
 
-        this.captureImageCache = captureImageCache;
+        this.captureImageRepository = captureImageRepository;
+
         this.config = config;
 
         try {
@@ -103,7 +106,7 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
             try {
                 imageCachingService.execute(() -> {
                     try {
-                        captureImageCache.write(captureId, captureImage);
+                        captureImageRepository.save(captureId, captureImage);
                     } catch (IOException e) {
                         LOGGER.atError().setCause(e).log("writeImage() Exception");
                         imageCachingTaskException.compareAndSet(null, e);
@@ -123,8 +126,8 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
         // check if the screen resolution is supported using whether an exception occurs
         collectionArea = createCollectionArea();
 
-        // validate and prepare the cache directory
-        captureImageCache.prepare();
+        // delete all previous images
+        captureImageRepository.deleteAll();
 
         try {
             imageCachingService = new ImageCachingService();

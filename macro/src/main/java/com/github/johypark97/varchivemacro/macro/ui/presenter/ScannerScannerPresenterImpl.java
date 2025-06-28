@@ -9,6 +9,7 @@ import com.github.johypark97.varchivemacro.macro.common.config.domain.model.Inpu
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
+import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
@@ -42,23 +43,22 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
     private final ScannerScannerStage scannerScannerStage;
 
     private final GlobalContext globalContext;
-    private final ScannerContext scannerContext;
 
     private final StringProperty accountFileText = new SimpleStringProperty();
     private final StringProperty cacheDirectoryText = new SimpleStringProperty();
 
     private Disposable disposableGlobalEvent;
     private NativeKeyListener nativeKeyListener;
+    private ScannerContext scannerContext;
 
     @MvpView
     public ScannerScanner.ScannerScannerView view;
 
     public ScannerScannerPresenterImpl(ScannerScannerStage scannerScannerStage,
-            GlobalContext globalContext, ScannerContext scannerContext) {
+            GlobalContext globalContext) {
         this.scannerScannerStage = scannerScannerStage;
 
         this.globalContext = globalContext;
-        this.scannerContext = scannerContext;
     }
 
     private void showConfig() {
@@ -77,6 +77,49 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
                 .collect(Collectors.toSet());
     }
 
+    private synchronized void startScan() {
+        Set<String> selectedCategorySet = getSelectedCategorySet();
+
+        Task<Void> task;
+        try {
+            if (scannerContext == null) {
+                scannerContext = ContextManager.INSTANCE.createScannerContext();
+            }
+
+            task = scannerContext.collectionScanTaskService.createTask(selectedCategorySet);
+        } catch (IOException e) {
+            LOGGER.atError().setCause(e).log("Collection task initialization exception.");
+            scannerScannerStage.showError(
+                    Language.INSTANCE.getString("scanner.scanner.dialog.taskInitException"),
+                    e.toString(), e);
+            return;
+        } catch (Exception e) {
+            String message = "Unexpected collection task initialization exception.";
+            LOGGER.atError().setCause(e).log(message);
+            scannerScannerStage.showError(message, e.toString(), e);
+            return;
+        }
+
+        if (task == null) {
+            return;
+        }
+
+        task.setOnRunning(event -> view.showProgressBox());
+
+        task.setOnCancelled(ScannerScannerPresenterImpl.this::onStopTask);
+        task.setOnFailed(ScannerScannerPresenterImpl.this::onStopTask);
+        task.setOnSucceeded(ScannerScannerPresenterImpl.this::onStopTask);
+
+        CompletableFuture.runAsync(task);
+    }
+
+    private synchronized void stopScan() {
+        if (scannerContext != null) {
+            scannerContext.collectionScanTaskService.stopTask();
+            scannerContext = null; // NOPMD
+        }
+    }
+
     private void registerKeyboardHook() {
         ScannerConfig config = globalContext.configService.findScannerConfig();
 
@@ -88,7 +131,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
             public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
                 NativeInputKey nativeInputKey = new NativeInputKey(nativeEvent);
                 if (nativeInputKey.isInteroperable() && nativeInputKey.isEqual(stopKey)) {
-                    scannerContext.collectionScanTaskService.stopTask();
+                    stopScan();
                 }
             }
 
@@ -96,36 +139,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
             public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
                 NativeInputKey nativeInputKey = new NativeInputKey(nativeEvent);
                 if (nativeInputKey.isInteroperable() && nativeInputKey.isEqual(startKey)) {
-                    Set<String> selectedCategorySet = getSelectedCategorySet();
-
-                    Task<Void> task;
-                    try {
-                        task = scannerContext.collectionScanTaskService.createTask(
-                                selectedCategorySet);
-                    } catch (IOException e) {
-                        LOGGER.atError().setCause(e)
-                                .log("Collection task initialization exception.");
-                        scannerScannerStage.showError(Language.INSTANCE.getString(
-                                "scanner.scanner.dialog.taskInitException"), e.toString(), e);
-                        return;
-                    } catch (Exception e) {
-                        String message = "Unexpected collection task initialization exception.";
-                        LOGGER.atError().setCause(e).log(message);
-                        scannerScannerStage.showError(message, e.toString(), e);
-                        return;
-                    }
-
-                    if (task == null) {
-                        return;
-                    }
-
-                    task.setOnRunning(event -> view.showProgressBox());
-
-                    task.setOnCancelled(ScannerScannerPresenterImpl.this::onStopTask);
-                    task.setOnFailed(ScannerScannerPresenterImpl.this::onStopTask);
-                    task.setOnSucceeded(ScannerScannerPresenterImpl.this::onStopTask);
-
-                    CompletableFuture.runAsync(task);
+                    startScan();
                 }
             }
         };

@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.integration.context;
 
 import com.github.johypark97.varchivemacro.lib.common.manager.InstanceManager;
 import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManager;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.application.HostServices;
 
@@ -18,9 +19,6 @@ public enum ContextManager {
         }
 
         instanceManager.setInstance(GlobalContext.class, new GlobalContext(hostServices));
-
-        instanceManager.setConstructor(ScannerContext.class,
-                () -> new ScannerContext(getGlobalContext()));
 
         initialized.set(true);
     }
@@ -39,14 +37,8 @@ public enum ContextManager {
         return new OpenSourceLicenseContext();
     }
 
-    public ScannerContext getScannerContext() {
-        checkInitialization();
-
-        return getInstance(ScannerContext.class);
-    }
-
-    public void clearScannerContext() {
-        instanceManager.removeInstance(ScannerContext.class);
+    public ScannerContext createScannerContext() throws IOException {
+        return new ScannerContext(getGlobalContext());
     }
 
     private <T extends Context> T getInstance(Class<T> cls) {

@@ -8,10 +8,9 @@ import com.github.johypark97.varchivemacro.macro.common.config.domain.model.Macr
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.converter.InputKeyConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.common.validator.DiskCaptureImageCacheDirectoryValidator;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.loader.AccountFileLoader;
-import com.github.johypark97.varchivemacro.macro.core.scanner.cache.infra.CaptureImageCache;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.CaptureImageCacheFactory;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
@@ -39,8 +38,6 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
 
     private final GlobalContext globalContext;
 
-    private final CaptureImageCacheFactory captureImageCacheFactory;
-
     private final SimpleBooleanProperty changed = new SimpleBooleanProperty();
 
     private MacroConfig.Builder macroConfigBuilder;
@@ -51,13 +48,10 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     @MvpView
     public Setting.SettingView view;
 
-    public SettingPresenterImpl(SettingStage settingStage, GlobalContext globalContext,
-            CaptureImageCacheFactory captureImageCacheFactory) {
+    public SettingPresenterImpl(SettingStage settingStage, GlobalContext globalContext) {
         this.settingStage = settingStage;
 
         this.globalContext = globalContext;
-
-        this.captureImageCacheFactory = captureImageCacheFactory;
     }
 
     private void showConfig() {
@@ -200,10 +194,10 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     private boolean validateCacheDirectory(String value) {
         Language language = Language.INSTANCE;
 
-        CaptureImageCache cache;
+        Path cacheDirectoryPath;
 
         try {
-            cache = captureImageCacheFactory.create(value);
+            cacheDirectoryPath = PathValidator.validateAndConvert(value);
         } catch (IOException e) {
             settingStage.showError(language.getString("setting.dialog.cacheDirectory.header"),
                     language.getString("setting.dialog.cacheDirectory.invalidPath"), e);
@@ -212,7 +206,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
         }
 
         try {
-            cache.validate();
+            DiskCaptureImageCacheDirectoryValidator.validate(cacheDirectoryPath);
         } catch (NotDirectoryException e) {
             settingStage.showError(language.getString("setting.dialog.cacheDirectory.header"),
                     language.getString("setting.dialog.cacheDirectory.notDirectory"), e);
