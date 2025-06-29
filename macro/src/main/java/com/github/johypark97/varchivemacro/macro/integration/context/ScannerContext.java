@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.integration.context;
 
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
+import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.infra.repository.DefaultCaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
@@ -28,6 +29,7 @@ public class ScannerContext implements Context {
 
     // services
     public final CaptureImageService captureImageService;
+    public final CaptureService captureService = new CaptureService(captureRepository);
     public final SongTitleService songTitleService = new SongTitleService(SONG_TITLE_FILE_PATH);
 
     // integrations
@@ -43,7 +45,7 @@ public class ScannerContext implements Context {
         OcrFactory songTitleOcrFactory = FactoryProvider.createSongTitleOcrFactory();
 
         collectionScanTaskService =
-                new DefaultCollectionScanTaskService(captureImageService, captureRepository,
+                new DefaultCollectionScanTaskService(captureImageService, captureService,
                         globalContext.configService, songCaptureLinkRepository,
                         globalContext.songService, songTitleService, songTitleOcrFactory);
     }

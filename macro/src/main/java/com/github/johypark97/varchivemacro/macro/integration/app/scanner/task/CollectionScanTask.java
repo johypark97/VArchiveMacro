@@ -6,10 +6,10 @@ import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
-import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.model.SongCaptureLink;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
@@ -36,7 +36,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
     private static final int CAPTURE_DUPLICATE_LIMIT = 2;
     private static final int LINK_DUPLICATE_LIMIT = 2;
 
-    private final CaptureRepository captureRepository;
+    private final CaptureService captureService;
     private final SongCaptureLinkRepository songCaptureLinkRepository;
     private final SongService songService;
     private final SongTitleService songTitleService;
@@ -45,11 +45,11 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
     private final Set<String> selectedCategorySet;
 
-    public CollectionScanTask(CaptureRepository captureRepository,
+    public CollectionScanTask(CaptureService captureService,
             SongCaptureLinkRepository songCaptureLinkRepository, SongService songService,
             SongTitleService songTitleService, OcrFactory songTitleOcrFactory,
             Set<String> selectedCategorySet) {
-        this.captureRepository = captureRepository;
+        this.captureService = captureService;
         this.songCaptureLinkRepository = songCaptureLinkRepository;
         this.songService = songService;
         this.songTitleService = songTitleService;
@@ -204,7 +204,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
     @Override
     protected Void callTask() throws Exception {
-        if (!captureRepository.isEmpty()) {
+        if (!captureService.isEmpty()) {
             throw new IllegalStateException();
         }
 
@@ -252,7 +252,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
                     // store cache data and image
                     Capture capture = new Capture(scannedTitle, titleBound);
-                    CaptureEntry captureEntry = captureRepository.save(capture);
+                    CaptureEntry captureEntry = captureService.save(capture);
 
                     writeImage(captureEntry.entryId(), captureImage);
 

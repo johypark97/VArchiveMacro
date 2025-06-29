@@ -5,8 +5,8 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
-import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
@@ -45,11 +45,10 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     private ImageCachingService imageCachingService;
 
     public DefaultCollectionScanTask(CaptureImageService captureImageService,
-            CaptureRepository captureRepository,
-            SongCaptureLinkRepository songCaptureLinkRepository, SongService songService,
-            SongTitleService songTitleService, OcrFactory songTitleOcrFactory, ScannerConfig config,
-            Set<String> selectedCategorySet) {
-        super(captureRepository, songCaptureLinkRepository, songService, songTitleService,
+            CaptureService captureService, SongCaptureLinkRepository songCaptureLinkRepository,
+            SongService songService, SongTitleService songTitleService,
+            OcrFactory songTitleOcrFactory, ScannerConfig config, Set<String> selectedCategorySet) {
+        super(captureService, songCaptureLinkRepository, songService, songTitleService,
                 songTitleOcrFactory, selectedCategorySet);
 
         this.captureImageService = captureImageService;
