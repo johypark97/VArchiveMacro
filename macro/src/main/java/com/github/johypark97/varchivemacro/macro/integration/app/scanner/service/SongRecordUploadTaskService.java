@@ -6,8 +6,7 @@ import java.util.Map;
 import javafx.concurrent.Task;
 
 public interface SongRecordUploadTaskService {
-    Task<Map<Integer, SongRecordUploadTaskResult>> createTask(List<Integer> selectedEntryIdList)
-            throws Exception;
+    Task<Map<Integer, SongRecordUploadTaskResult>> createTask(List<Integer> selectedEntryIdList);
 
     boolean stopTask();
 }

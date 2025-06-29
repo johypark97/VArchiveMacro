@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.uploader;
+package com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.service;
 
 import com.github.johypark97.varchivemacro.lib.scanner.api.Api;
 import com.github.johypark97.varchivemacro.lib.scanner.api.ApiException;
@@ -9,32 +9,24 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.model.Ac
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordButton;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordPattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecord;
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
-import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-public class SongRecordUploader {
-    private final SongTitleService songTitleService;
-
+public class RecordUploadService {
     private final RecordUploader uploader;
 
-    public SongRecordUploader(SongTitleService songTitleService, Account account)
-            throws GeneralSecurityException {
-        this.songTitleService = songTitleService;
-
+    public RecordUploadService(Account account) throws GeneralSecurityException {
         uploader = Api.newRecordUploader(account.userNo(), account.token());
     }
 
-    public boolean upload(Song song, RecordButton button, RecordPattern pattern, SongRecord record,
-            boolean includeComposer) throws IOException, InterruptedException, ApiException {
+    public boolean upload(String title, String composer, RecordButton button, RecordPattern pattern,
+            SongRecord record) throws IOException, InterruptedException, ApiException {
         RecordUploader.RequestJson json =
-                new RecordUploader.RequestJson(songTitleService.getRemoteTitleOrDefault(song),
-                        RecordButtonConverter.toLib(button), RecordPatternConverter.toLib(pattern),
-                        record.rate(), record.maxCombo());
+                new RecordUploader.RequestJson(title, RecordButtonConverter.toLib(button),
+                        RecordPatternConverter.toLib(pattern), record.rate(), record.maxCombo());
 
-        if (includeComposer) {
-            json.composer = song.composer();
+        if (composer != null) {
+            json.composer = composer;
         }
 
         uploader.upload(json);

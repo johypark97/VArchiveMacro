@@ -8,9 +8,10 @@ import com.github.johypark97.varchivemacro.macro.common.config.domain.model.Macr
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.converter.InputKeyConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.common.validator.AccountFileValidator;
 import com.github.johypark97.varchivemacro.macro.common.validator.DiskCaptureImageCacheDirectoryValidator;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
-import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.loader.AccountFileLoader;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.InvalidAccountFileException;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
@@ -173,17 +174,21 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
         }
 
         try {
-            new AccountFileLoader(path).load();
+            AccountFileValidator.validate(path);
         } catch (NoSuchFileException e) {
             settingStage.showError(language.getString("setting.dialog.accountFile.header"),
                     language.getString("setting.dialog.accountFile.notExists"), e);
 
             return false;
-        } catch (Exception e) {
-            LOGGER.atError().setCause(e).log("Account file validation exception.");
-
+        } catch (InvalidAccountFileException e) {
             settingStage.showError(language.getString("setting.dialog.accountFile.header"),
                     language.getString("setting.dialog.accountFile.invalidFile"), e);
+
+            return false;
+        } catch (Exception e) {
+            String message = "Account file validation exception.";
+            LOGGER.atError().setCause(e).log(message);
+            settingStage.showError(message, e);
 
             return false;
         }

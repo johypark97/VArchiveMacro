@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
 
-import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.uploader.SongRecordUploader;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.SongRecordUploadService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordButton;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordPattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecord;
@@ -9,6 +9,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.mode
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.repository.SongRecordRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.SongRecordUploadTaskResult;
 import java.util.List;
@@ -21,19 +22,24 @@ public class SongRecordUploadTask
     private final SongRecordRepository songRecordRepository;
     private final SongRepository songRepository;
 
-    private final SongRecordUploader songRecordUploader;
+    private final SongRecordUploadService songRecordUploadService;
+    private final SongTitleService songTitleService;
 
     private final List<UpdatedSongRecordEntry> entryList;
     private final Set<Song> duplicateTitleSongSet;
 
     public SongRecordUploadTask(SongRecordRepository songRecordRepository,
-            SongRepository songRepository, SongRecordUploader songRecordUploader,
-            List<UpdatedSongRecordEntry> entryList, Set<Song> duplicateTitleSongSet) {
+            SongRepository songRepository, SongRecordUploadService songRecordUploadService,
+            SongTitleService songTitleService, List<UpdatedSongRecordEntry> entryList,
+            Set<Song> duplicateTitleSongSet) {
+        this.songRecordRepository = songRecordRepository;
+        this.songRepository = songRepository;
+
+        this.songRecordUploadService = songRecordUploadService;
+        this.songTitleService = songTitleService;
+
         this.duplicateTitleSongSet = duplicateTitleSongSet;
         this.entryList = entryList;
-        this.songRecordRepository = songRecordRepository;
-        this.songRecordUploader = songRecordUploader;
-        this.songRepository = songRepository;
     }
 
     @Override
@@ -49,13 +55,14 @@ public class SongRecordUploadTask
 
             Song song = songRepository.findSongById(entry.record().songId());
 
+            String title = songTitleService.getRemoteTitleOrDefault(song);
+            String composer = duplicateTitleSongSet.contains(song) ? song.composer() : null;
             RecordButton button = entry.record().button();
             RecordPattern pattern = entry.record().pattern();
             SongRecord newRecord = entry.record().newRecord();
-            boolean includeComposer = duplicateTitleSongSet.contains(song);
 
             boolean updated =
-                    songRecordUploader.upload(song, button, pattern, newRecord, includeComposer);
+                    songRecordUploadService.upload(title, composer, button, pattern, newRecord);
 
             SongRecordTable table = songRecordRepository.findById(song.songId());
             table.setSongRecord(button, pattern, newRecord);

@@ -4,8 +4,9 @@ import com.github.johypark97.varchivemacro.lib.common.PathHelper;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.UnicodeFilter;
+import com.github.johypark97.varchivemacro.macro.common.validator.AccountFileValidator;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
-import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.loader.AccountFileLoader;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.InvalidAccountFileException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecordTable;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
@@ -54,17 +55,21 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
         }
 
         try {
-            new AccountFileLoader(path).load();
+            AccountFileValidator.validate(path);
         } catch (NoSuchFileException e) {
             homeStage.showError(
                     language.getString("scanner.recordLoader.dialog.accountFile.notExists"), e);
 
             return false;
-        } catch (Exception e) {
-            LOGGER.atError().setCause(e).log("Account file validation exception.");
-
+        } catch (InvalidAccountFileException e) {
             homeStage.showError(
                     language.getString("scanner.recordLoader.dialog.accountFile.invalidFile"), e);
+
+            return false;
+        } catch (Exception e) {
+            String message = "Account file validation exception.";
+            LOGGER.atError().setCause(e).log(message);
+            homeStage.showError(message, e);
 
             return false;
         }
