@@ -7,13 +7,10 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.rep
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
-import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleMapper;
-import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleNormalizer;
+import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.OcrFactory;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.SongTitleMapperFactory;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.CollectionScanTask;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.DefaultCollectionScanTask;
-import java.io.IOException;
 import java.util.Set;
 import javafx.concurrent.Task;
 
@@ -24,40 +21,37 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
     private final SongCaptureLinkRepository songCaptureLinkRepository;
     private final SongRepository songRepository;
 
+    private final SongTitleService songTitleService;
+
     private final OcrFactory songTitleOcrFactory;
-    private final SongTitleMapperFactory songTitleMapperFactory;
-    private final SongTitleNormalizer songTitleNormalizer;
 
     public DefaultCollectionScanTaskService(CaptureImageRepository captureImageRepository,
             CaptureRepository captureRepository, ConfigRepository configRepository,
             SongCaptureLinkRepository songCaptureLinkRepository, SongRepository songRepository,
-            OcrFactory songTitleOcrFactory, SongTitleMapperFactory songTitleMapperFactory,
-            SongTitleNormalizer songTitleNormalizer) {
+            SongTitleService songTitleService, OcrFactory songTitleOcrFactory) {
         this.captureImageRepository = captureImageRepository;
         this.captureRepository = captureRepository;
         this.configRepository = configRepository;
         this.songCaptureLinkRepository = songCaptureLinkRepository;
         this.songRepository = songRepository;
 
-        this.songTitleMapperFactory = songTitleMapperFactory;
-        this.songTitleNormalizer = songTitleNormalizer;
+        this.songTitleService = songTitleService;
+
         this.songTitleOcrFactory = songTitleOcrFactory;
     }
 
     @Override
-    public Task<Void> createTask(Set<String> selectedCategorySet) throws IOException {
+    public Task<Void> createTask(Set<String> selectedCategorySet) {
         if (TaskManager.getInstance().isRunningAny()) {
             return null;
         }
 
         ScannerConfig config = configRepository.findScannerConfig();
 
-        SongTitleMapper songTitleMapper = songTitleMapperFactory.create();
-
         return TaskManager.getInstance().register(CollectionScanTask.class,
                 new DefaultCollectionScanTask(captureImageRepository, captureRepository,
-                        songCaptureLinkRepository, songRepository, songTitleOcrFactory,
-                        songTitleMapper, songTitleNormalizer, config, selectedCategorySet));
+                        songCaptureLinkRepository, songRepository, songTitleService,
+                        songTitleOcrFactory, config, selectedCategorySet));
     }
 
     @Override

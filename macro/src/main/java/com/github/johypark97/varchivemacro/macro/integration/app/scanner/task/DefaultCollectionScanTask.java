@@ -10,8 +10,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.rep
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
-import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleMapper;
-import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleNormalizer;
+import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.OcrFactory;
 import java.awt.AWTException;
 import java.awt.Dimension;
@@ -48,11 +47,10 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     public DefaultCollectionScanTask(CaptureImageRepository captureImageRepository,
             CaptureRepository captureRepository,
             SongCaptureLinkRepository songCaptureLinkRepository, SongRepository songRepository,
-            OcrFactory songTitleOcrFactory, SongTitleMapper songTitleMapper,
-            SongTitleNormalizer songTitleNormalizer, ScannerConfig config,
+            SongTitleService songTitleService, OcrFactory songTitleOcrFactory, ScannerConfig config,
             Set<String> selectedCategorySet) {
-        super(captureRepository, songCaptureLinkRepository, songRepository, songTitleOcrFactory,
-                songTitleMapper, songTitleNormalizer, selectedCategorySet);
+        super(captureRepository, songCaptureLinkRepository, songRepository, songTitleService,
+                songTitleOcrFactory, selectedCategorySet);
 
         this.captureImageRepository = captureImageRepository;
 

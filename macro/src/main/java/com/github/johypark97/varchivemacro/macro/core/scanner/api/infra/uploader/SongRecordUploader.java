@@ -10,17 +10,18 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.mode
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordPattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecord;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
-import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleMapper;
+import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 public class SongRecordUploader {
-    private final RecordUploader uploader;
-    private final SongTitleMapper songTitleMapper;
+    private final SongTitleService songTitleService;
 
-    public SongRecordUploader(Account account, SongTitleMapper songTitleMapper)
+    private final RecordUploader uploader;
+
+    public SongRecordUploader(SongTitleService songTitleService, Account account)
             throws GeneralSecurityException {
-        this.songTitleMapper = songTitleMapper;
+        this.songTitleService = songTitleService;
 
         uploader = Api.newRecordUploader(account.userNo(), account.token());
     }
@@ -28,7 +29,7 @@ public class SongRecordUploader {
     public boolean upload(Song song, RecordButton button, RecordPattern pattern, SongRecord record,
             boolean includeComposer) throws IOException, InterruptedException, ApiException {
         RecordUploader.RequestJson json =
-                new RecordUploader.RequestJson(songTitleMapper.getRemoteTitleOrDefault(song),
+                new RecordUploader.RequestJson(songTitleService.getRemoteTitleOrDefault(song),
                         RecordButtonConverter.toLib(button), RecordPatternConverter.toLib(pattern),
                         record.rate(), record.maxCombo());
 

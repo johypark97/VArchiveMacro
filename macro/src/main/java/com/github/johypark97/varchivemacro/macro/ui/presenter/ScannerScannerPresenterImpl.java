@@ -78,15 +78,10 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
     }
 
     private synchronized void startScan() {
-        Set<String> selectedCategorySet = getSelectedCategorySet();
-
-        Task<Void> task;
         try {
             if (scannerContext == null) {
                 scannerContext = ContextManager.INSTANCE.createScannerContext();
             }
-
-            task = scannerContext.collectionScanTaskService.createTask(selectedCategorySet);
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Collection task initialization exception.");
             scannerScannerStage.showError(
@@ -100,6 +95,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
             return;
         }
 
+        Set<String> selectedCategorySet = getSelectedCategorySet();
+        Task<Void> task = scannerContext.collectionScanTaskService.createTask(selectedCategorySet);
         if (task == null) {
             return;
         }

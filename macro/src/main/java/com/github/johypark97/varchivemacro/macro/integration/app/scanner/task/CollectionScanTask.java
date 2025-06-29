@@ -14,8 +14,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.model.
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
-import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleMapper;
-import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleNormalizer;
+import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.OcrFactory;
 import java.awt.image.BufferedImage;
@@ -41,23 +40,25 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
     private final SongCaptureLinkRepository songCaptureLinkRepository;
     private final SongRepository songRepository;
 
+    private final SongTitleService songTitleService;
+
     private final OcrFactory songTitleOcrFactory;
-    private final SongTitleMapper songTitleMapper;
-    private final SongTitleNormalizer songTitleNormalizer;
 
     private final Set<String> selectedCategorySet;
 
     protected CollectionScanTask(CaptureRepository captureRepository,
             SongCaptureLinkRepository songCaptureLinkRepository, SongRepository songRepository,
-            OcrFactory songTitleOcrFactory, SongTitleMapper songTitleMapper,
-            SongTitleNormalizer songTitleNormalizer, Set<String> selectedCategorySet) {
+            SongTitleService songTitleService, OcrFactory songTitleOcrFactory,
+            Set<String> selectedCategorySet) {
         this.captureRepository = captureRepository;
-        this.selectedCategorySet = selectedCategorySet;
         this.songCaptureLinkRepository = songCaptureLinkRepository;
         this.songRepository = songRepository;
-        this.songTitleMapper = songTitleMapper;
-        this.songTitleNormalizer = songTitleNormalizer;
+
+        this.songTitleService = songTitleService;
+
         this.songTitleOcrFactory = songTitleOcrFactory;
+
+        this.selectedCategorySet = selectedCategorySet;
     }
 
     protected abstract BufferedImage captureScreen() throws InterruptedException;
@@ -100,7 +101,8 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
     private Map<String, List<Song>> createLookup(List<Song> songList) {
         return songList.stream().collect(Collectors.groupingBy(
-                song -> songTitleNormalizer.apply(songTitleMapper.getClippedTitleOrDefault(song))));
+                song -> songTitleService.normalizeTitle(
+                        songTitleService.getClippedTitleOrDefault(song))));
     }
 
     private void findAndLinkSongAndCaptureEntry(Map<String, List<Song>> lookup,
@@ -248,7 +250,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
                     // read title
                     String scannedTitle = readTitle(ocr, captureImage, titleBound);
-                    scannedTitle = songTitleNormalizer.apply(scannedTitle);
+                    scannedTitle = songTitleService.normalizeTitle(scannedTitle);
 
                     // store cache data and image
                     Capture capture = new Capture(scannedTitle, titleBound);

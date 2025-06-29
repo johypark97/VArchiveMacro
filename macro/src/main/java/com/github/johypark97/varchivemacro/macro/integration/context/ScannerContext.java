@@ -7,9 +7,8 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domai
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.infra.repository.DiskCaptureImageRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.infra.repository.DefaultSongCaptureLinkRepository;
-import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleNormalizer;
+import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.OcrFactory;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.SongTitleMapperFactory;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.CollectionScanTaskService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.DefaultCollectionScanTaskService;
 import com.github.johypark97.varchivemacro.macro.integration.provider.FactoryProvider;
@@ -17,6 +16,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class ScannerContext implements Context {
+    // constants
+    private static final Path SONG_TITLE_FILE_PATH = Path.of("data/titles.json");
+
     // repositories
     final CaptureImageRepository captureImageRepository;
     final CaptureRepository captureRepository = new DefaultCaptureRepository();
@@ -24,6 +26,9 @@ public class ScannerContext implements Context {
             new DefaultSongCaptureLinkRepository();
 
     // services
+    public final SongTitleService songTitleService = new SongTitleService(SONG_TITLE_FILE_PATH);
+
+    // integrations
     public final CollectionScanTaskService collectionScanTaskService;
 
     public ScannerContext(GlobalContext globalContext) throws IOException {
@@ -33,15 +38,10 @@ public class ScannerContext implements Context {
         captureImageRepository = new DiskCaptureImageRepository(cacheDirectoryPath);
 
         OcrFactory songTitleOcrFactory = FactoryProvider.createSongTitleOcrFactory();
-        SongTitleMapperFactory songTitleMapperFactory =
-                FactoryProvider.createSongTitleMapperFactory();
-
-        SongTitleNormalizer songTitleNormalizer = new SongTitleNormalizer();
 
         collectionScanTaskService =
                 new DefaultCollectionScanTaskService(captureImageRepository, captureRepository,
                         globalContext.configRepository, songCaptureLinkRepository,
-                        globalContext.songRepository, songTitleOcrFactory, songTitleMapperFactory,
-                        songTitleNormalizer);
+                        globalContext.songRepository, songTitleService, songTitleOcrFactory);
     }
 }
