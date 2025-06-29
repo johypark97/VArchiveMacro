@@ -12,8 +12,8 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.mod
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.model.SongCaptureLink;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.OcrFactory;
@@ -38,22 +38,20 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
     private final CaptureRepository captureRepository;
     private final SongCaptureLinkRepository songCaptureLinkRepository;
-    private final SongRepository songRepository;
-
+    private final SongService songService;
     private final SongTitleService songTitleService;
 
     private final OcrFactory songTitleOcrFactory;
 
     private final Set<String> selectedCategorySet;
 
-    protected CollectionScanTask(CaptureRepository captureRepository,
-            SongCaptureLinkRepository songCaptureLinkRepository, SongRepository songRepository,
+    public CollectionScanTask(CaptureRepository captureRepository,
+            SongCaptureLinkRepository songCaptureLinkRepository, SongService songService,
             SongTitleService songTitleService, OcrFactory songTitleOcrFactory,
             Set<String> selectedCategorySet) {
         this.captureRepository = captureRepository;
         this.songCaptureLinkRepository = songCaptureLinkRepository;
-        this.songRepository = songRepository;
-
+        this.songService = songService;
         this.songTitleService = songTitleService;
 
         this.songTitleOcrFactory = songTitleOcrFactory;
@@ -75,7 +73,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
     private Queue<List<Song>> createCategoryQueue() {
         Queue<List<Song>> queue = new LinkedList<>();
 
-        songRepository.groupSongByCategory().forEach((category, songList) -> {
+        songService.groupSongByCategory().forEach((category, songList) -> {
             if (CATEGORY_NAME_CLEAR_PASS_PLUS.equals(category.name())) {
                 queue.add(List.of());
             }

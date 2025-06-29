@@ -7,9 +7,9 @@ import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResoluti
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
-import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.OcrFactory;
 import java.awt.AWTException;
@@ -34,7 +34,7 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
 
     private static final int REJECTED_SLEEP_TIME = 1000;
 
-    private final CaptureImageRepository captureImageRepository;
+    private final CaptureImageService captureImageService;
 
     private final ScannerConfig config;
 
@@ -44,15 +44,15 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     private CollectionArea collectionArea;
     private ImageCachingService imageCachingService;
 
-    public DefaultCollectionScanTask(CaptureImageRepository captureImageRepository,
+    public DefaultCollectionScanTask(CaptureImageService captureImageService,
             CaptureRepository captureRepository,
-            SongCaptureLinkRepository songCaptureLinkRepository, SongRepository songRepository,
+            SongCaptureLinkRepository songCaptureLinkRepository, SongService songService,
             SongTitleService songTitleService, OcrFactory songTitleOcrFactory, ScannerConfig config,
             Set<String> selectedCategorySet) {
-        super(captureRepository, songCaptureLinkRepository, songRepository, songTitleService,
+        super(captureRepository, songCaptureLinkRepository, songService, songTitleService,
                 songTitleOcrFactory, selectedCategorySet);
 
-        this.captureImageRepository = captureImageRepository;
+        this.captureImageService = captureImageService;
 
         this.config = config;
 
@@ -104,7 +104,7 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
             try {
                 imageCachingService.execute(() -> {
                     try {
-                        captureImageRepository.save(captureId, captureImage);
+                        captureImageService.save(captureId, captureImage);
                     } catch (IOException e) {
                         LOGGER.atError().setCause(e).log("writeImage() Exception");
                         imageCachingTaskException.compareAndSet(null, e);
@@ -125,7 +125,7 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
         collectionArea = createCollectionArea();
 
         // delete all previous images
-        captureImageRepository.deleteAll();
+        captureImageService.deleteAll();
 
         try {
             imageCachingService = new ImageCachingService();

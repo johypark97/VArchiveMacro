@@ -1,10 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.service;
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
+import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
-import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.OcrFactory;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.CaptureAnalysisTaskResult;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.CaptureAnalysisTask;
@@ -13,15 +13,15 @@ import java.util.Map;
 import javafx.concurrent.Task;
 
 public class DefaultCaptureAnalysisTaskService implements CaptureAnalysisTaskService {
-    private final CaptureImageRepository captureImageRepository;
-    private final ConfigRepository configRepository;
+    private final CaptureImageService captureImageService;
+    private final ConfigService configService;
 
     private final OcrFactory commonOcrFactory;
 
-    public DefaultCaptureAnalysisTaskService(CaptureImageRepository captureImageRepository,
-            ConfigRepository configRepository, OcrFactory commonOcrFactory) {
-        this.captureImageRepository = captureImageRepository;
-        this.configRepository = configRepository;
+    public DefaultCaptureAnalysisTaskService(CaptureImageService captureImageService,
+            ConfigService configService, OcrFactory commonOcrFactory) {
+        this.captureImageService = captureImageService;
+        this.configService = configService;
 
         this.commonOcrFactory = commonOcrFactory;
     }
@@ -33,10 +33,10 @@ public class DefaultCaptureAnalysisTaskService implements CaptureAnalysisTaskSer
             return null;
         }
 
-        ScannerConfig config = configRepository.findScannerConfig();
+        ScannerConfig config = configService.findScannerConfig();
 
         return TaskManager.getInstance().register(CaptureAnalysisTask.class,
-                new CaptureAnalysisTask(captureImageRepository, commonOcrFactory, config,
+                new CaptureAnalysisTask(captureImageService, commonOcrFactory, config,
                         captureEntryList));
     }
 

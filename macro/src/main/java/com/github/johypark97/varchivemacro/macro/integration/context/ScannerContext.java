@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.integration.context;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.infra.repository.DefaultCaptureRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.infra.repository.DiskCaptureImageRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
@@ -26,6 +27,7 @@ public class ScannerContext implements Context {
             new DefaultSongCaptureLinkRepository();
 
     // services
+    public final CaptureImageService captureImageService;
     public final SongTitleService songTitleService = new SongTitleService(SONG_TITLE_FILE_PATH);
 
     // integrations
@@ -36,12 +38,13 @@ public class ScannerContext implements Context {
                 globalContext.configService.findScannerConfig().cacheDirectory());
 
         captureImageRepository = new DiskCaptureImageRepository(cacheDirectoryPath);
+        captureImageService = new CaptureImageService(captureImageRepository);
 
         OcrFactory songTitleOcrFactory = FactoryProvider.createSongTitleOcrFactory();
 
         collectionScanTaskService =
-                new DefaultCollectionScanTaskService(captureImageRepository, captureRepository,
-                        globalContext.configRepository, songCaptureLinkRepository,
-                        globalContext.songRepository, songTitleService, songTitleOcrFactory);
+                new DefaultCollectionScanTaskService(captureImageService, captureRepository,
+                        globalContext.configService, songCaptureLinkRepository,
+                        globalContext.songService, songTitleService, songTitleOcrFactory);
     }
 }

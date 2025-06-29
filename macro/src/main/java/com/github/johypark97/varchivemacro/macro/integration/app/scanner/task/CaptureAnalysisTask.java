@@ -16,7 +16,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.mod
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureArea;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
-import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordButton;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordPattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecord;
@@ -51,7 +51,7 @@ public class CaptureAnalysisTask
     private static final int RATE_FACTOR = 8;
     private static final int RATE_THRESHOLD = 224;
 
-    private final CaptureImageRepository captureImageRepository;
+    private final CaptureImageService captureImageService;
     private final OcrFactory commonOcrFactory;
     private final int analyzerThreadCount;
     private final int imagePreloaderQueueCapacity;
@@ -59,10 +59,9 @@ public class CaptureAnalysisTask
 
     private final List<CaptureEntry> captureEntryList;
 
-    public CaptureAnalysisTask(CaptureImageRepository captureImageRepository,
-            OcrFactory commonOcrFactory, ScannerConfig config,
-            List<CaptureEntry> captureEntryList) {
-        this.captureImageRepository = captureImageRepository;
+    public CaptureAnalysisTask(CaptureImageService captureImageService, OcrFactory commonOcrFactory,
+            ScannerConfig config, List<CaptureEntry> captureEntryList) {
+        this.captureImageService = captureImageService;
 
         this.commonOcrFactory = commonOcrFactory;
 
@@ -159,7 +158,7 @@ public class CaptureAnalysisTask
         CollectionArea area;
         {
             int id = captureEntryList.getFirst().entryId();
-            BufferedImage image = captureImageRepository.findById(id);
+            BufferedImage image = captureImageService.findById(id);
             Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
             area = CollectionAreaFactory.create(resolution);
         }
@@ -207,8 +206,7 @@ public class CaptureAnalysisTask
                     for (CaptureEntry entry : captureEntryList) {
                         imagePreloaderExecutorService.submit(() -> {
                             try {
-                                BufferedImage image =
-                                        captureImageRepository.findById(entry.entryId());
+                                BufferedImage image = captureImageService.findById(entry.entryId());
                                 byte[] imagePngByte = ImageConverter.imageToPngBytes(image);
                                 preloadedImageQueue.put(Map.entry(entry, imagePngByte));
                             } catch (InterruptedException ignored) {

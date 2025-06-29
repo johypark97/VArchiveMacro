@@ -2,11 +2,11 @@ package com.github.johypark97.varchivemacro.macro.integration.app.scanner.servic
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.SongRecordUploadService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.UpdatedSongRecordEntry;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.repository.SongRecordRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.repository.UpdatedSongRecordRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.SongRecordUploadTaskResult;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.SongRecordUploadTask;
@@ -16,22 +16,21 @@ import java.util.Set;
 import javafx.concurrent.Task;
 
 public class DefaultSongRecordUploadTaskService implements SongRecordUploadTaskService {
-    private final SongRecordRepository songRecordRepository;
-    private final SongRepository songRepository;
+    private final SongRecordService songRecordService;
+    private final SongRecordUploadService songRecordUploadService;
+    private final SongService songService;
+    private final SongTitleService songTitleService;
     private final UpdatedSongRecordRepository updatedSongRecordRepository;
 
-    private final SongRecordUploadService songRecordUploadService;
-    private final SongTitleService songTitleService;
-
-    public DefaultSongRecordUploadTaskService(SongRecordRepository songRecordRepository,
-            SongRepository songRepository, UpdatedSongRecordRepository updatedSongRecordRepository,
-            SongRecordUploadService songRecordUploadService, SongTitleService songTitleService) {
-        this.songRecordRepository = songRecordRepository;
-        this.songRepository = songRepository;
-        this.updatedSongRecordRepository = updatedSongRecordRepository;
-
+    public DefaultSongRecordUploadTaskService(SongRecordService songRecordService,
+            SongRecordUploadService songRecordUploadService, SongService songService,
+            SongTitleService songTitleService,
+            UpdatedSongRecordRepository updatedSongRecordRepository) {
+        this.songRecordService = songRecordService;
         this.songRecordUploadService = songRecordUploadService;
+        this.songService = songService;
         this.songTitleService = songTitleService;
+        this.updatedSongRecordRepository = updatedSongRecordRepository;
     }
 
     @Override
@@ -44,12 +43,11 @@ public class DefaultSongRecordUploadTaskService implements SongRecordUploadTaskS
         List<UpdatedSongRecordEntry> entryList =
                 updatedSongRecordRepository.findAllById(selectedEntryIdList);
 
-        Set<Song> duplicateTitleSongSet = Set.copyOf(songRepository.filterSongByDuplicateTitle());
+        Set<Song> duplicateTitleSongSet = Set.copyOf(songService.filterSongByDuplicateTitle());
 
         return TaskManager.getInstance().register(SongRecordUploadTask.class,
-                new SongRecordUploadTask(songRecordRepository, songRepository,
-                        songRecordUploadService, songTitleService, entryList,
-                        duplicateTitleSongSet));
+                new SongRecordUploadTask(songRecordService, songRecordUploadService, songService,
+                        songTitleService, entryList, duplicateTitleSongSet));
     }
 
     @Override
