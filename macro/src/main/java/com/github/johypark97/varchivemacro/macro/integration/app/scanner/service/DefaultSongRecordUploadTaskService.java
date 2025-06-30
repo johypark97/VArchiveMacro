@@ -3,8 +3,8 @@ package com.github.johypark97.varchivemacro.macro.integration.app.scanner.servic
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.SongRecordUploadService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.UpdatedSongRecordService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.UpdatedSongRecordEntry;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.repository.UpdatedSongRecordRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
@@ -20,17 +20,16 @@ public class DefaultSongRecordUploadTaskService implements SongRecordUploadTaskS
     private final SongRecordUploadService songRecordUploadService;
     private final SongService songService;
     private final SongTitleService songTitleService;
-    private final UpdatedSongRecordRepository updatedSongRecordRepository;
+    private final UpdatedSongRecordService updatedSongRecordService;
 
     public DefaultSongRecordUploadTaskService(SongRecordService songRecordService,
             SongRecordUploadService songRecordUploadService, SongService songService,
-            SongTitleService songTitleService,
-            UpdatedSongRecordRepository updatedSongRecordRepository) {
+            SongTitleService songTitleService, UpdatedSongRecordService updatedSongRecordService) {
         this.songRecordService = songRecordService;
         this.songRecordUploadService = songRecordUploadService;
         this.songService = songService;
         this.songTitleService = songTitleService;
-        this.updatedSongRecordRepository = updatedSongRecordRepository;
+        this.updatedSongRecordService = updatedSongRecordService;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class DefaultSongRecordUploadTaskService implements SongRecordUploadTaskS
         }
 
         List<UpdatedSongRecordEntry> entryList =
-                updatedSongRecordRepository.findAllById(selectedEntryIdList);
+                updatedSongRecordService.findAllById(selectedEntryIdList);
 
         Set<Song> duplicateTitleSongSet = Set.copyOf(songService.filterSongByDuplicateTitle());
 
