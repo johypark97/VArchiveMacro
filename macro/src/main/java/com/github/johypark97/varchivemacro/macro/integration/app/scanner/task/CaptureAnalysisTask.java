@@ -4,7 +4,6 @@ import com.github.johypark97.varchivemacro.lib.scanner.Enums;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
@@ -17,11 +16,12 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.mod
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordButton;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordPattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecord;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.OcrFactory;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.CaptureAnalysisTaskResult;
 import com.google.common.base.CharMatcher;
 import java.awt.Dimension;
@@ -52,18 +52,19 @@ public class CaptureAnalysisTask
     private static final int RATE_THRESHOLD = 224;
 
     private final CaptureImageService captureImageService;
-    private final OcrFactory commonOcrFactory;
+    private final OcrServiceFactory commonOcrServiceFactory;
     private final int analyzerThreadCount;
     private final int imagePreloaderQueueCapacity;
     private final int imagePreloaderThreadCount;
 
     private final List<CaptureEntry> captureEntryList;
 
-    public CaptureAnalysisTask(CaptureImageService captureImageService, OcrFactory commonOcrFactory,
-            ScannerConfig config, List<CaptureEntry> captureEntryList) {
+    public CaptureAnalysisTask(CaptureImageService captureImageService,
+            OcrServiceFactory commonOcrServiceFactory, ScannerConfig config,
+            List<CaptureEntry> captureEntryList) {
         this.captureImageService = captureImageService;
 
-        this.commonOcrFactory = commonOcrFactory;
+        this.commonOcrServiceFactory = commonOcrServiceFactory;
 
         this.captureEntryList = captureEntryList;
 
@@ -72,7 +73,7 @@ public class CaptureAnalysisTask
         imagePreloaderThreadCount = (int) (Math.log(analyzerThreadCount + 1) / Math.log(2));
     }
 
-    private void analyze(OcrWrapper ocr, CollectionArea area, CaptureEntry captureEntry,
+    private void analyze(OcrService ocrService, CollectionArea area, CaptureEntry captureEntry,
             byte[] pngByte) throws PixError {
         Capture capture = captureEntry.capture();
 
@@ -108,7 +109,7 @@ public class CaptureAnalysisTask
                             continue;
                         }
 
-                        String text = ocr.run(recordPix.pixInstance);
+                        String text = ocrService.run(recordPix);
                         text = CharMatcher.whitespace().removeFrom(text);
 
                         rate = parseRateText(text);
@@ -168,8 +169,8 @@ public class CaptureAnalysisTask
                 Collectors.toMap(CaptureEntry::entryId,
                         x -> new CaptureAnalysisTaskResult(x.entryId())));
 
-        // prepare a list for ocr instances
-        List<OcrWrapper> ocrInstanceList = new ArrayList<>(analyzerThreadCount);
+        // prepare a list for ocr services
+        List<OcrService> ocrServiceList = new ArrayList<>(analyzerThreadCount);
 
         // start measuring task time
         Instant start = Instant.EPOCH;
@@ -179,9 +180,9 @@ public class CaptureAnalysisTask
 
         // run main tasks
         try {
-            // initialize ocr instances
+            // initialize ocr services
             for (int i = 0; i < analyzerThreadCount; i++) {
-                ocrInstanceList.add(commonOcrFactory.create());
+                ocrServiceList.add(commonOcrServiceFactory.create());
             }
 
             // prepare an ExecutorService for analyzing
@@ -218,7 +219,7 @@ public class CaptureAnalysisTask
                     }
 
                     // run analyzer (load balancing)
-                    for (OcrWrapper ocr : ocrInstanceList) { // NOPMD
+                    for (OcrService ocrService : ocrServiceList) { // NOPMD
                         analyzerExecutorService.submit(() -> {
                             try {
                                 // this loop will break out by shutdownNow() invoked after emptying
@@ -228,7 +229,7 @@ public class CaptureAnalysisTask
                                             preloadedImageQueue.take();
 
                                     try {
-                                        analyze(ocr, area, queueEntry.getKey(),
+                                        analyze(ocrService, area, queueEntry.getKey(),
                                                 queueEntry.getValue());
                                         resultMap.get(queueEntry.getKey().entryId())
                                                 .setStatus(CaptureAnalysisTaskResult.Status.DONE);
@@ -266,7 +267,7 @@ public class CaptureAnalysisTask
                 // For more information: {@link ExecutorService#close}
             }
         } finally {
-            ocrInstanceList.forEach(OcrWrapper::close);
+            ocrServiceList.forEach(OcrService::close);
         }
 
         // stop measuring task time and log it

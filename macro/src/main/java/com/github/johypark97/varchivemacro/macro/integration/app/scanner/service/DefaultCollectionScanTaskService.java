@@ -6,9 +6,9 @@ import com.github.johypark97.varchivemacro.macro.common.config.domain.model.Scan
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.OcrFactory;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.CollectionScanTask;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.DefaultCollectionScanTask;
 import java.util.Set;
@@ -22,12 +22,12 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
     private final SongService songService;
     private final SongTitleService songTitleService;
 
-    private final OcrFactory songTitleOcrFactory;
+    private final OcrServiceFactory songTitleOcrServiceFactory;
 
     public DefaultCollectionScanTaskService(CaptureImageService captureImageService,
             CaptureService captureService, ConfigService configService,
             SongCaptureLinkRepository songCaptureLinkRepository, SongService songService,
-            SongTitleService songTitleService, OcrFactory songTitleOcrFactory) {
+            SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory) {
         this.captureImageService = captureImageService;
         this.captureService = captureService;
         this.configService = configService;
@@ -35,7 +35,7 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
         this.songService = songService;
         this.songTitleService = songTitleService;
 
-        this.songTitleOcrFactory = songTitleOcrFactory;
+        this.songTitleOcrServiceFactory = songTitleOcrServiceFactory;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
         return TaskManager.getInstance().register(CollectionScanTask.class,
                 new DefaultCollectionScanTask(captureImageService, captureService,
                         songCaptureLinkRepository, songService, songTitleService,
-                        songTitleOcrFactory, config, selectedCategorySet));
+                        songTitleOcrServiceFactory, config, selectedCategorySet));
     }
 
     @Override

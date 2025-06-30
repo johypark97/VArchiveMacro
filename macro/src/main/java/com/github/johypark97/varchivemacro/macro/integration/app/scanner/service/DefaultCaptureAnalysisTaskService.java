@@ -5,7 +5,7 @@ import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.factory.OcrFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.CaptureAnalysisTaskResult;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.CaptureAnalysisTask;
 import java.util.List;
@@ -16,14 +16,14 @@ public class DefaultCaptureAnalysisTaskService implements CaptureAnalysisTaskSer
     private final CaptureImageService captureImageService;
     private final ConfigService configService;
 
-    private final OcrFactory commonOcrFactory;
+    private final OcrServiceFactory commonOcrServiceFactory;
 
     public DefaultCaptureAnalysisTaskService(CaptureImageService captureImageService,
-            ConfigService configService, OcrFactory commonOcrFactory) {
+            ConfigService configService, OcrServiceFactory commonOcrServiceFactory) {
         this.captureImageService = captureImageService;
         this.configService = configService;
 
-        this.commonOcrFactory = commonOcrFactory;
+        this.commonOcrServiceFactory = commonOcrServiceFactory;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class DefaultCaptureAnalysisTaskService implements CaptureAnalysisTaskSer
         ScannerConfig config = configService.findScannerConfig();
 
         return TaskManager.getInstance().register(CaptureAnalysisTask.class,
-                new CaptureAnalysisTask(captureImageService, commonOcrFactory, config,
+                new CaptureAnalysisTask(captureImageService, commonOcrServiceFactory, config,
                         captureEntryList));
     }
 
