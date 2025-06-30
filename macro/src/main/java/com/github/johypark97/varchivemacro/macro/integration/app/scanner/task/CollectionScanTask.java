@@ -5,8 +5,8 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.Captur
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
+import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptureLinkService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.model.SongCaptureLink;
-import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
@@ -37,7 +37,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
     private final CaptureService captureService;
     private final PixImageService pixImageService;
-    private final SongCaptureLinkRepository songCaptureLinkRepository;
+    private final SongCaptureLinkService songCaptureLinkService;
     private final SongService songService;
     private final SongTitleService songTitleService;
 
@@ -46,12 +46,12 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
     private final Set<String> selectedCategorySet;
 
     public CollectionScanTask(CaptureService captureService, PixImageService pixImageService,
-            SongCaptureLinkRepository songCaptureLinkRepository, SongService songService,
+            SongCaptureLinkService songCaptureLinkService, SongService songService,
             SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory,
             Set<String> selectedCategorySet) {
         this.captureService = captureService;
         this.pixImageService = pixImageService;
-        this.songCaptureLinkRepository = songCaptureLinkRepository;
+        this.songCaptureLinkService = songCaptureLinkService;
         this.songService = songService;
         this.songTitleService = songTitleService;
 
@@ -119,7 +119,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
                         LOGGER.atTrace().log("[exact found - linked] {}", song);
 
                         List<CaptureEntry> linkedCaptureEntryList =
-                                songCaptureLinkRepository.groupBySong().get(song).values().stream()
+                                songCaptureLinkService.groupBySong().get(song).values().stream()
                                         .map(SongCaptureLink::captureEntry).toList();
                         LOGGER.atTrace().log("[linked] {}", linkedCaptureEntryList);
                     }
@@ -143,8 +143,8 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
                             LOGGER.atTrace().log("[similar found - linked] {}", song);
 
                             List<CaptureEntry> linkedCaptureEntryList =
-                                    songCaptureLinkRepository.groupBySong().get(song).values()
-                                            .stream().map(SongCaptureLink::captureEntry).toList();
+                                    songCaptureLinkService.groupBySong().get(song).values().stream()
+                                            .map(SongCaptureLink::captureEntry).toList();
                             LOGGER.atTrace().log("[linked] {}", linkedCaptureEntryList);
                         }
                     });
@@ -183,11 +183,10 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
     private boolean linkSongAndCapture(Song song, CaptureEntry captureEntry,
             String normalizedSongTitle) {
         List<SongCaptureLink> alreadyLinkedCaptureList =
-                songCaptureLinkRepository.groupBySong().get(song).values().stream().toList();
+                songCaptureLinkService.groupBySong().get(song).values().stream().toList();
 
         for (SongCaptureLink link : alreadyLinkedCaptureList) {
-            if (songCaptureLinkRepository.groupByCaptureEntry().get(link.captureEntry()).size()
-                    == 1) {
+            if (songCaptureLinkService.groupByCaptureEntry().get(link.captureEntry()).size() == 1) {
                 if (link.distance() == 0) {
                     return false;
                 }
@@ -196,7 +195,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
         StringUtils.StringDiff diff = new StringUtils.StringDiff(normalizedSongTitle,
                 captureEntry.capture().scannedTitle);
-        songCaptureLinkRepository.save(
+        songCaptureLinkService.save(
                 new SongCaptureLink(song, captureEntry, diff.getDistance(), diff.getSimilarity()));
 
         return true;
@@ -208,7 +207,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
             throw new IllegalStateException();
         }
 
-        songCaptureLinkRepository.deleteAll();
+        songCaptureLinkService.deleteAll();
 
         // create a queue that filtered by selectedCategorySet
         Queue<List<Song>> captureQueue = createCategoryQueue();

@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.infra.repo
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.infra.repository.DiskCaptureImageRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptureLinkService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.infra.repository.DefaultSongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
@@ -35,6 +36,8 @@ public class ScannerContext implements Context {
     public final OcrServiceFactory songTitleOcrServiceFactory =
             new OcrServiceFactory(TRAINEDDATA_DIRECTORY_PATH, SONG_TITLE_LANGUAGE);
     public final PixImageService pixImageService = new PixImageService();
+    public final SongCaptureLinkService songCaptureLinkService =
+            new SongCaptureLinkService(songCaptureLinkRepository);
     public final SongTitleService songTitleService = new SongTitleService(SONG_TITLE_FILE_PATH);
 
     // integrations
@@ -49,7 +52,7 @@ public class ScannerContext implements Context {
 
         collectionScanTaskService =
                 new DefaultCollectionScanTaskService(captureImageService, captureService,
-                        globalContext.configService, pixImageService, songCaptureLinkRepository,
+                        globalContext.configService, pixImageService, songCaptureLinkService,
                         globalContext.songService, songTitleService, songTitleOcrServiceFactory);
     }
 }
