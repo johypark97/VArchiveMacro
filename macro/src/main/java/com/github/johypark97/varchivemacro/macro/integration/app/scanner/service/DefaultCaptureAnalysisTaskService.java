@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.common.config.domain.model.Scan
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.CaptureAnalysisTaskResult;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.CaptureAnalysisTask;
 import java.util.List;
@@ -15,13 +16,16 @@ import javafx.concurrent.Task;
 public class DefaultCaptureAnalysisTaskService implements CaptureAnalysisTaskService {
     private final CaptureImageService captureImageService;
     private final ConfigService configService;
+    private final PixImageService pixImageService;
 
     private final OcrServiceFactory commonOcrServiceFactory;
 
     public DefaultCaptureAnalysisTaskService(CaptureImageService captureImageService,
-            ConfigService configService, OcrServiceFactory commonOcrServiceFactory) {
+            ConfigService configService, PixImageService pixImageService,
+            OcrServiceFactory commonOcrServiceFactory) {
         this.captureImageService = captureImageService;
         this.configService = configService;
+        this.pixImageService = pixImageService;
 
         this.commonOcrServiceFactory = commonOcrServiceFactory;
     }
@@ -36,8 +40,8 @@ public class DefaultCaptureAnalysisTaskService implements CaptureAnalysisTaskSer
         ScannerConfig config = configService.findScannerConfig();
 
         return TaskManager.getInstance().register(CaptureAnalysisTask.class,
-                new CaptureAnalysisTask(captureImageService, commonOcrServiceFactory, config,
-                        captureEntryList));
+                new CaptureAnalysisTask(captureImageService, pixImageService,
+                        commonOcrServiceFactory, config, captureEntryList));
     }
 
     @Override

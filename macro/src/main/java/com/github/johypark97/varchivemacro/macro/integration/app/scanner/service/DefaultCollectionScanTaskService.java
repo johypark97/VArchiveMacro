@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.Captur
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.CollectionScanTask;
@@ -18,6 +19,7 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
     private final CaptureImageService captureImageService;
     private final CaptureService captureService;
     private final ConfigService configService;
+    private final PixImageService pixImageService;
     private final SongCaptureLinkRepository songCaptureLinkRepository;
     private final SongService songService;
     private final SongTitleService songTitleService;
@@ -26,11 +28,13 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
 
     public DefaultCollectionScanTaskService(CaptureImageService captureImageService,
             CaptureService captureService, ConfigService configService,
-            SongCaptureLinkRepository songCaptureLinkRepository, SongService songService,
-            SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory) {
+            PixImageService pixImageService, SongCaptureLinkRepository songCaptureLinkRepository,
+            SongService songService, SongTitleService songTitleService,
+            OcrServiceFactory songTitleOcrServiceFactory) {
         this.captureImageService = captureImageService;
         this.captureService = captureService;
         this.configService = configService;
+        this.pixImageService = pixImageService;
         this.songCaptureLinkRepository = songCaptureLinkRepository;
         this.songService = songService;
         this.songTitleService = songTitleService;
@@ -47,7 +51,7 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
         ScannerConfig config = configService.findScannerConfig();
 
         return TaskManager.getInstance().register(CollectionScanTask.class,
-                new DefaultCollectionScanTask(captureImageService, captureService,
+                new DefaultCollectionScanTask(captureImageService, captureService, pixImageService,
                         songCaptureLinkRepository, songService, songTitleService,
                         songTitleOcrServiceFactory, config, selectedCategorySet));
     }

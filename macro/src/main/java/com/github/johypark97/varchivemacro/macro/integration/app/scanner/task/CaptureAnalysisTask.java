@@ -4,9 +4,6 @@ import com.github.johypark97.varchivemacro.lib.scanner.Enums;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
 import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.converter.CaptureBoundConverter;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordButtonConverter;
@@ -16,8 +13,11 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.mod
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.exception.PixImageException;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.model.PixImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordButton;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordPattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecord;
@@ -52,17 +52,21 @@ public class CaptureAnalysisTask
     private static final int RATE_THRESHOLD = 224;
 
     private final CaptureImageService captureImageService;
+    private final PixImageService pixImageService;
+
     private final OcrServiceFactory commonOcrServiceFactory;
+
+    private final List<CaptureEntry> captureEntryList;
+
     private final int analyzerThreadCount;
     private final int imagePreloaderQueueCapacity;
     private final int imagePreloaderThreadCount;
 
-    private final List<CaptureEntry> captureEntryList;
-
     public CaptureAnalysisTask(CaptureImageService captureImageService,
-            OcrServiceFactory commonOcrServiceFactory, ScannerConfig config,
-            List<CaptureEntry> captureEntryList) {
+            PixImageService pixImageService, OcrServiceFactory commonOcrServiceFactory,
+            ScannerConfig config, List<CaptureEntry> captureEntryList) {
         this.captureImageService = captureImageService;
+        this.pixImageService = pixImageService;
 
         this.commonOcrServiceFactory = commonOcrServiceFactory;
 
@@ -74,16 +78,16 @@ public class CaptureAnalysisTask
     }
 
     private void analyze(OcrService ocrService, CollectionArea area, CaptureEntry captureEntry,
-            byte[] pngByte) throws PixError {
+            byte[] pngByte) throws PixImageException {
         Capture capture = captureEntry.capture();
 
         if (!capture.isCaptureAreaEmpty()) {
             capture.clearCaptureAreaEmpty();
         }
 
-        try (PixWrapper pix = new PixWrapper(pngByte)) {
+        try (PixImage pix = pixImageService.createPixImage(pngByte)) {
             // preprocessing
-            PixPreprocessor.preprocessCell(pix);
+            pixImageService.preprocessCell(pix);
 
             // analyze
             for (RecordButton button : RecordButton.values()) {
@@ -100,8 +104,7 @@ public class CaptureAnalysisTask
                     boolean maxCombo;
                     float rate;
 
-                    try (PixWrapper recordPix = pix.crop(
-                            CaptureBoundConverter.toRectangle(rateBound))) {
+                    try (PixImage recordPix = pix.crop(rateBound)) {
                         // test whether the image contains enough black pixels using the
                         // histogram. if true, run ocr.
                         float r = recordPix.getGrayRatio(RATE_FACTOR, RATE_THRESHOLD);
@@ -118,8 +121,7 @@ public class CaptureAnalysisTask
                         }
                     }
 
-                    try (PixWrapper comboMarkPix = pix.crop(
-                            CaptureBoundConverter.toRectangle(maxComboBound))) {
+                    try (PixImage comboMarkPix = pix.crop(maxComboBound)) {
                         maxCombo =
                                 comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR, COMBO_MARK_THRESHOLD)
                                         >= COMBO_MARK_RATIO;

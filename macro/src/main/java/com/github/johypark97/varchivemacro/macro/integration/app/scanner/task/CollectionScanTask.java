@@ -1,18 +1,17 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
 
-import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.model.SongCaptureLink;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
-import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.exception.PixImageException;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.model.PixImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
@@ -37,6 +36,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
     private static final int LINK_DUPLICATE_LIMIT = 2;
 
     private final CaptureService captureService;
+    private final PixImageService pixImageService;
     private final SongCaptureLinkRepository songCaptureLinkRepository;
     private final SongService songService;
     private final SongTitleService songTitleService;
@@ -45,11 +45,12 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
     private final Set<String> selectedCategorySet;
 
-    public CollectionScanTask(CaptureService captureService,
+    public CollectionScanTask(CaptureService captureService, PixImageService pixImageService,
             SongCaptureLinkRepository songCaptureLinkRepository, SongService songService,
             SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory,
             Set<String> selectedCategorySet) {
         this.captureService = captureService;
+        this.pixImageService = pixImageService;
         this.songCaptureLinkRepository = songCaptureLinkRepository;
         this.songService = songService;
         this.songTitleService = songTitleService;
@@ -85,14 +86,13 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
     }
 
     private String readTitle(OcrService ocrService, BufferedImage image, CaptureBound titleBound)
-            throws IOException, PixError {
+            throws IOException, PixImageException {
         BufferedImage titleImage =
                 image.getSubimage(titleBound.x(), titleBound.y(), titleBound.width(),
                         titleBound.height());
 
-        byte[] titleImageBytes = ImageConverter.imageToPngBytes(titleImage);
-        try (PixWrapper pix = new PixWrapper(titleImageBytes)) {
-            PixPreprocessor.preprocessTitle(pix);
+        try (PixImage pix = pixImageService.createPixImage(titleImage)) {
+            pixImageService.preprocessTitle(pix);
             return ocrService.run(pix);
         }
     }

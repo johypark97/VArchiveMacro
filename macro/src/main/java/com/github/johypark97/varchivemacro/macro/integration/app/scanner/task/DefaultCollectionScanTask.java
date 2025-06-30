@@ -10,6 +10,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.mod
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import java.awt.AWTException;
@@ -45,12 +46,12 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     private ImageCachingService imageCachingService;
 
     public DefaultCollectionScanTask(CaptureImageService captureImageService,
-            CaptureService captureService, SongCaptureLinkRepository songCaptureLinkRepository,
-            SongService songService, SongTitleService songTitleService,
-            OcrServiceFactory songTitleOcrServiceFactory, ScannerConfig config,
-            Set<String> selectedCategorySet) {
-        super(captureService, songCaptureLinkRepository, songService, songTitleService,
-                songTitleOcrServiceFactory, selectedCategorySet);
+            CaptureService captureService, PixImageService pixImageService,
+            SongCaptureLinkRepository songCaptureLinkRepository, SongService songService,
+            SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory,
+            ScannerConfig config, Set<String> selectedCategorySet) {
+        super(captureService, pixImageService, songCaptureLinkRepository, songService,
+                songTitleService, songTitleOcrServiceFactory, selectedCategorySet);
 
         this.captureImageService = captureImageService;
 
