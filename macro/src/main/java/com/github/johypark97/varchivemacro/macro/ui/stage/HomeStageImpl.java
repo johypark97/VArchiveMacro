@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
+import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
 import com.github.johypark97.varchivemacro.macro.integration.provider.UrlProvider;
 import com.github.johypark97.varchivemacro.macro.ui.dialog.About;
 import com.github.johypark97.varchivemacro.macro.ui.event.ScannerScanDoneUiEvent;
@@ -100,8 +101,8 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
     }
 
     private void onUiEvent(UiEvent uiEvent) {
-        if (uiEvent instanceof ScannerScanDoneUiEvent) {
-            stageManager.showScannerProcessorStage(this);
+        if (uiEvent instanceof ScannerScanDoneUiEvent(ScannerContext scannerContext)) {
+            stageManager.showScannerProcessorStage(this, scannerContext);
         }
     }
 

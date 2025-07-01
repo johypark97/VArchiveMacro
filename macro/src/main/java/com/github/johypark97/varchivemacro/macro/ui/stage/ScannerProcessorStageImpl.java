@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorFrame;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorFramePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
@@ -15,12 +16,17 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
     private static final int STAGE_HEIGHT = 720;
     private static final int STAGE_WIDTH = 1280;
 
+    private final ScannerContext scannerContext;
+
     private final Runnable onStop;
 
     private ScannerProcessorFrame.ScannerProcessorFramePresenter framePresenter;
 
-    public ScannerProcessorStageImpl(AbstractTreeableStage parent, Runnable onStop) {
+    public ScannerProcessorStageImpl(AbstractTreeableStage parent, ScannerContext scannerContext,
+            Runnable onStop) {
         super(parent);
+
+        this.scannerContext = scannerContext;
 
         this.onStop = onStop;
 

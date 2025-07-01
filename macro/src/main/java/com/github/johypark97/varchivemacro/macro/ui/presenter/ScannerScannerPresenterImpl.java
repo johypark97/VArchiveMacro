@@ -189,7 +189,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
                 Language.INSTANCE.getString("scanner.scanner.dialog.taskDone"));
 
         Platform.runLater(scannerScannerStage::stopStage);
-        Platform.runLater(() -> UiEventBus.INSTANCE.fire(new ScannerScanDoneUiEvent()));
+        Platform.runLater(
+                () -> UiEventBus.INSTANCE.fire(new ScannerScanDoneUiEvent(scannerContext)));
     }
 
     private void onUiEvent(UiEvent uiEvent) {

@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.manager;
 
+import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.OpenSourceLicenseStage;
@@ -74,12 +75,13 @@ public class StageManager {
         scannerScannerStage.startStage();
     }
 
-    public void showScannerProcessorStage(AbstractTreeableStage parent) {
+    public void showScannerProcessorStage(AbstractTreeableStage parent,
+            ScannerContext scannerContext) {
         if (scannerProcessorStage != null) {
             return;
         }
 
-        scannerProcessorStage = new ScannerProcessorStageImpl(parent, () -> {
+        scannerProcessorStage = new ScannerProcessorStageImpl(parent, scannerContext, () -> {
             scannerProcessorStage = null; // NOPMD
         });
 
