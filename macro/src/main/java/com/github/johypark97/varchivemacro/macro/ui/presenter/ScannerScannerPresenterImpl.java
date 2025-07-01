@@ -83,11 +83,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
 
     private synchronized void startScan() {
         try {
-            if (scannerContext == null) {
-                boolean debug =
-                        globalContext.configService.isDebug() && view.getDebugCheckBoxValue();
-                scannerContext = ContextManager.INSTANCE.createScannerContext(debug);
-            }
+            boolean debug = globalContext.configService.isDebug() && view.getDebugCheckBoxValue();
+            scannerContext = ContextManager.INSTANCE.createScannerContext(debug);
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Collection task initialization exception.");
             scannerScannerStage.showError(
@@ -119,7 +116,6 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
     private synchronized void stopScan() {
         if (scannerContext != null) {
             scannerContext.collectionScanTaskService.stopTask();
-            scannerContext = null; // NOPMD
         }
     }
 
