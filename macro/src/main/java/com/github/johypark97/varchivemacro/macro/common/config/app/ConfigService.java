@@ -5,10 +5,16 @@ import com.github.johypark97.varchivemacro.macro.common.config.domain.model.Scan
 import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 
 public class ConfigService implements ConfigRepository {
+    private static final boolean DEBUG = Boolean.getBoolean("debug");
+
     private final ConfigRepository configRepository;
 
     public ConfigService(ConfigRepository configRepository) {
         this.configRepository = configRepository;
+    }
+
+    public boolean isDebug() {
+        return DEBUG;
     }
 
     @Override

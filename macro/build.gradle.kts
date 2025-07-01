@@ -61,7 +61,10 @@ jlink {
 }
 
 tasks.jar.get().doLast {
-    if (!isRelease) application.applicationDefaultJvmArgs += "-Dlog.level=ALL"
+    if (!isRelease) {
+        application.applicationDefaultJvmArgs += "-Ddebug=true"
+        application.applicationDefaultJvmArgs += "-Dlog.level=ALL"
+    }
 }
 
 tasks.processResources {
