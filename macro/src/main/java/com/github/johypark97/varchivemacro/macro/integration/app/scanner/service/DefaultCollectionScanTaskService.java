@@ -12,6 +12,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongServi
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.CollectionScanTask;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.DefaultCollectionScanTask;
+import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.FhdDebugCollectionScanTask;
 import java.util.Set;
 import javafx.concurrent.Task;
 
@@ -26,11 +27,13 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
 
     private final OcrServiceFactory songTitleOcrServiceFactory;
 
+    private final boolean debug;
+
     public DefaultCollectionScanTaskService(CaptureImageService captureImageService,
             CaptureService captureService, ConfigService configService,
             PixImageService pixImageService, SongCaptureLinkService songCaptureLinkService,
             SongService songService, SongTitleService songTitleService,
-            OcrServiceFactory songTitleOcrServiceFactory) {
+            OcrServiceFactory songTitleOcrServiceFactory, boolean debug) {
         this.captureImageService = captureImageService;
         this.captureService = captureService;
         this.configService = configService;
@@ -40,6 +43,8 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
         this.songTitleService = songTitleService;
 
         this.songTitleOcrServiceFactory = songTitleOcrServiceFactory;
+
+        this.debug = debug;
     }
 
     @Override
@@ -51,9 +56,14 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
         ScannerConfig config = configService.findScannerConfig();
 
         return TaskManager.getInstance().register(CollectionScanTask.class,
-                new DefaultCollectionScanTask(captureImageService, captureService, pixImageService,
-                        songCaptureLinkService, songService, songTitleService,
-                        songTitleOcrServiceFactory, config, selectedCategorySet));
+                debug
+                        ? new FhdDebugCollectionScanTask(captureImageService, captureService,
+                        pixImageService, songCaptureLinkService, songService, songTitleService,
+                        songTitleOcrServiceFactory, selectedCategorySet)
+                        : new DefaultCollectionScanTask(captureImageService, captureService,
+                                pixImageService, songCaptureLinkService, songService,
+                                songTitleService, songTitleOcrServiceFactory, config,
+                                selectedCategorySet));
     }
 
     @Override

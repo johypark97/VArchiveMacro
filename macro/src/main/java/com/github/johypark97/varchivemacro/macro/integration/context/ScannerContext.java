@@ -43,7 +43,7 @@ public class ScannerContext implements Context {
     // integrations
     public final CollectionScanTaskService collectionScanTaskService;
 
-    public ScannerContext(GlobalContext globalContext) throws IOException {
+    public ScannerContext(GlobalContext globalContext, boolean debug) throws IOException {
         Path cacheDirectoryPath = PathValidator.validateAndConvert(
                 globalContext.configService.findScannerConfig().cacheDirectory());
 
@@ -53,6 +53,7 @@ public class ScannerContext implements Context {
         collectionScanTaskService =
                 new DefaultCollectionScanTaskService(captureImageService, captureService,
                         globalContext.configService, pixImageService, songCaptureLinkService,
-                        globalContext.songService, songTitleService, songTitleOcrServiceFactory);
+                        globalContext.songService, songTitleService, songTitleOcrServiceFactory,
+                        debug);
     }
 }

@@ -73,6 +73,7 @@
                         <Label GridPane.columnIndex="3" GridPane.rowIndex="1" fx:id="stopKeyLabel"/>
                       </children>
                     </GridPane>
+                    <CheckBox selected="true" text="Debug" fx:id="debugCheckBox"/>
                   </children>
                 </FlowPane>
               </content>

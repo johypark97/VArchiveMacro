@@ -70,6 +70,9 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     private Label stopKeyLabel;
 
     @FXML
+    private CheckBox debugCheckBox;
+
+    @FXML
     private TitledPane checkerTitledPane;
 
     @FXML
@@ -106,6 +109,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
 
         accountFileTextFieldTooltip.textProperty().bind(accountFileTextField.textProperty());
         cacheDirectoryTextFieldTooltip.textProperty().bind(cacheDirectoryTextField.textProperty());
+        debugCheckBox.setVisible(false);
 
         checkerTitledPane.setContent(imageViewer);
         imageViewer.getStyleClass().add("image-viewer");
@@ -149,6 +153,16 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     @Override
     public void setStopKeyText(String value) {
         stopKeyLabel.setText(value);
+    }
+
+    @Override
+    public void setDebugCheckBoxVisible(boolean value) {
+        debugCheckBox.setVisible(value);
+    }
+
+    @Override
+    public boolean getDebugCheckBoxValue() {
+        return debugCheckBox.isSelected();
     }
 
     @Override

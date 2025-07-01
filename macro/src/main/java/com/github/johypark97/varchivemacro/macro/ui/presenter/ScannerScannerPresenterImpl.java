@@ -80,7 +80,9 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
     private synchronized void startScan() {
         try {
             if (scannerContext == null) {
-                scannerContext = ContextManager.INSTANCE.createScannerContext();
+                boolean debug =
+                        globalContext.configService.isDebug() && view.getDebugCheckBoxValue();
+                scannerContext = ContextManager.INSTANCE.createScannerContext(debug);
             }
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Collection task initialization exception.");
@@ -215,6 +217,10 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
 
         showConfig();
         registerKeyboardHook();
+
+        if (globalContext.configService.isDebug()) {
+            view.setDebugCheckBoxVisible(true);
+        }
     }
 
     @Override

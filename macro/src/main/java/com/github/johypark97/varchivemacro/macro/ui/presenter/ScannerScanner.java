@@ -29,6 +29,10 @@ public interface ScannerScanner {
 
         void setStopKeyText(String value);
 
+        void setDebugCheckBoxVisible(boolean value);
+
+        boolean getDebugCheckBoxValue();
+
         void setCheckerImageViewImage(Image value);
 
         void setCategoryList(List<ScannerScannerViewModel.CategoryData> value);

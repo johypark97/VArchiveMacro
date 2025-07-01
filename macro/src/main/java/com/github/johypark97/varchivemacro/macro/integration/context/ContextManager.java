@@ -37,8 +37,8 @@ public enum ContextManager {
         return new OpenSourceLicenseContext();
     }
 
-    public ScannerContext createScannerContext() throws IOException {
-        return new ScannerContext(getGlobalContext());
+    public ScannerContext createScannerContext(boolean debug) throws IOException {
+        return new ScannerContext(getGlobalContext(), debug);
     }
 
     private <T extends Context> T getInstance(Class<T> cls) {
