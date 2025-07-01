@@ -118,6 +118,8 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
                     } else {
                         LOGGER.atTrace().log("[exact found - linked] {}", song);
 
+                        // Due to the behavior of the linkSongAndCapture() method, the return value
+                        // of the groupBySong().get() method is guaranteed to be non-null.
                         List<CaptureEntry> linkedCaptureEntryList =
                                 songCaptureLinkService.groupBySong().get(song).values().stream()
                                         .map(SongCaptureLink::captureEntry).toList();
@@ -142,6 +144,8 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
                         } else {
                             LOGGER.atTrace().log("[similar found - linked] {}", song);
 
+                            // Due to the behavior of the linkSongAndCapture() method, the return
+                            // value of the groupBySong().get() method is guaranteed to be non-null.
                             List<CaptureEntry> linkedCaptureEntryList =
                                     songCaptureLinkService.groupBySong().get(song).values().stream()
                                             .map(SongCaptureLink::captureEntry).toList();
@@ -182,13 +186,24 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
     private boolean linkSongAndCapture(Song song, CaptureEntry captureEntry,
             String normalizedSongTitle) {
-        List<SongCaptureLink> alreadyLinkedCaptureList =
-                songCaptureLinkService.groupBySong().get(song).values().stream().toList();
+        // Get all captures already linked with the song.
+        Map<CaptureEntry, SongCaptureLink> alreadyLinkedCaptureMap =
+                songCaptureLinkService.groupBySong().get(song);
 
-        for (SongCaptureLink link : alreadyLinkedCaptureList) {
-            if (songCaptureLinkService.groupByCaptureEntry().get(link.captureEntry()).size() == 1) {
-                if (link.distance() == 0) {
-                    return false;
+        // If at least one capture is already linked.
+        if (alreadyLinkedCaptureMap != null) {
+            List<SongCaptureLink> alreadyLinkedCaptureList =
+                    alreadyLinkedCaptureMap.values().stream().toList();
+
+            // If there is only a capture that perfectly matches the song, skip linking.
+            for (SongCaptureLink link : alreadyLinkedCaptureList) {
+                // The return value of the groupByCaptureEntry().get() method is guaranteed to be
+                // non-null.
+                if (songCaptureLinkService.groupByCaptureEntry().get(link.captureEntry()).size()
+                        == 1) {
+                    if (link.distance() == 0) {
+                        return false;
+                    }
                 }
             }
         }
