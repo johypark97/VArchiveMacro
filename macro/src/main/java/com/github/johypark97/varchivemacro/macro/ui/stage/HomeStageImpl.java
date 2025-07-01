@@ -7,8 +7,9 @@ import com.github.johypark97.varchivemacro.macro.common.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.integration.provider.UrlProvider;
 import com.github.johypark97.varchivemacro.macro.ui.dialog.About;
-import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
-import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
+import com.github.johypark97.varchivemacro.macro.ui.event.ScannerScanDoneUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.UiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Home;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.HomePresenterImpl;
@@ -98,8 +99,8 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         return true;
     }
 
-    private void onGlobalEvent(GlobalEvent event) {
-        if (GlobalEvent.SCANNER_SCAN_DONE.equals(event)) {
+    private void onUiEvent(UiEvent uiEvent) {
+        if (uiEvent instanceof ScannerScanDoneUiEvent) {
             stageManager.showScannerProcessorStage(this);
         }
     }
@@ -119,7 +120,7 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
         stage.show();
 
-        disposableGlobalEvent = GlobalEventBus.INSTANCE.subscribe(this::onGlobalEvent);
+        disposableGlobalEvent = UiEventBus.INSTANCE.subscribe(this::onUiEvent);
     }
 
     @Override

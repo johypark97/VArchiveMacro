@@ -13,8 +13,8 @@ import com.github.johypark97.varchivemacro.macro.common.validator.DiskCaptureIma
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.InvalidAccountFileException;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
-import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
-import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
+import com.github.johypark97.varchivemacro.macro.ui.event.SettingUpdatedUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStage;
 import java.io.File;
 import java.io.IOException;
@@ -137,7 +137,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
             settingStage.showError(Language.INSTANCE.getString("setting.dialog.applyException"), e);
         }
 
-        GlobalEventBus.INSTANCE.fire(GlobalEvent.SETTING_UPDATED);
+        UiEventBus.INSTANCE.fire(new SettingUpdatedUiEvent());
 
         return true;
     }

@@ -12,8 +12,12 @@ import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
-import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
-import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
+import com.github.johypark97.varchivemacro.macro.ui.event.ScannerScanDoneUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.SettingUpdatedUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.SettingWindowClosedUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.SettingWindowOpenedUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.UiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStage;
 import com.github.johypark97.varchivemacro.macro.ui.viewmodel.ScannerScannerViewModel;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
@@ -185,18 +189,18 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
                 Language.INSTANCE.getString("scanner.scanner.dialog.taskDone"));
 
         Platform.runLater(scannerScannerStage::stopStage);
-        Platform.runLater(() -> GlobalEventBus.INSTANCE.fire(GlobalEvent.SCANNER_SCAN_DONE));
+        Platform.runLater(() -> UiEventBus.INSTANCE.fire(new ScannerScanDoneUiEvent()));
     }
 
-    private void onGlobalEvent(GlobalEvent event) {
-        switch (event) {
-            case SETTING_UPDATED:
+    private void onUiEvent(UiEvent uiEvent) {
+        switch (uiEvent) {
+            case SettingUpdatedUiEvent ignored:
                 showConfig();
                 break;
-            case SETTING_WINDOW_OPENED:
+            case SettingWindowOpenedUiEvent ignored:
                 unregisterKeyboardHook();
                 break;
-            case SETTING_WINDOW_CLOSED:
+            case SettingWindowClosedUiEvent ignored:
                 registerKeyboardHook();
                 break;
             default:
@@ -205,7 +209,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
 
     @Override
     public void startView() {
-        disposableGlobalEvent = GlobalEventBus.INSTANCE.subscribe(this::onGlobalEvent);
+        disposableGlobalEvent = UiEventBus.INSTANCE.subscribe(this::onUiEvent);
 
         view.bindAccountFileText(accountFileText);
         view.bindCacheDirectoryText(cacheDirectoryText);

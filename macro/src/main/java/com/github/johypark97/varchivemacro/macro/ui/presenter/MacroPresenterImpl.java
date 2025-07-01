@@ -10,8 +10,11 @@ import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.Mac
 import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.MacroProgress;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.MacroContext;
-import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
-import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
+import com.github.johypark97.varchivemacro.macro.ui.event.SettingUpdatedUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.SettingWindowClosedUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.SettingWindowOpenedUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.UiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
@@ -130,15 +133,15 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
         view.hideProgressBox();
     }
 
-    private void onGlobalEvent(GlobalEvent event) {
-        switch (event) {
-            case SETTING_UPDATED:
+    private void onUiEvent(UiEvent uiEvent) {
+        switch (uiEvent) {
+            case SettingUpdatedUiEvent ignored:
                 showConfig();
                 break;
-            case SETTING_WINDOW_OPENED:
+            case SettingWindowOpenedUiEvent ignored:
                 unregisterKeyboardHook();
                 break;
-            case SETTING_WINDOW_CLOSED:
+            case SettingWindowClosedUiEvent ignored:
                 registerKeyboardHook();
                 break;
             default:
@@ -147,7 +150,7 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
 
     @Override
     public void startView() {
-        disposableGlobalEvent = GlobalEventBus.INSTANCE.subscribe(this::onGlobalEvent);
+        disposableGlobalEvent = UiEventBus.INSTANCE.subscribe(this::onUiEvent);
 
         showConfig();
         registerKeyboardHook();

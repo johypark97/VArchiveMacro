@@ -4,8 +4,9 @@ import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
-import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEvent;
-import com.github.johypark97.varchivemacro.macro.ui.event.GlobalEventBus;
+import com.github.johypark97.varchivemacro.macro.ui.event.SettingWindowClosedUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.SettingWindowOpenedUiEvent;
+import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Setting;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.SettingPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
@@ -66,7 +67,7 @@ public class SettingStageImpl extends AbstractTreeableStage implements SettingSt
 
         stage.show();
 
-        GlobalEventBus.INSTANCE.fire(GlobalEvent.SETTING_WINDOW_OPENED);
+        UiEventBus.INSTANCE.fire(new SettingWindowOpenedUiEvent());
     }
 
     @Override
@@ -148,7 +149,7 @@ public class SettingStageImpl extends AbstractTreeableStage implements SettingSt
 
         onStop.run();
 
-        GlobalEventBus.INSTANCE.fire(GlobalEvent.SETTING_WINDOW_CLOSED);
+        UiEventBus.INSTANCE.fire(new SettingWindowClosedUiEvent());
 
         return true;
     }

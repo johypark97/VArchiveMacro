@@ -5,16 +5,16 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
 
-public enum GlobalEventBus {
+public enum UiEventBus {
     INSTANCE; // Singleton
 
-    private final Subject<GlobalEvent> subject = PublishSubject.create();
+    private final Subject<UiEvent> subject = PublishSubject.create();
 
-    public void fire(GlobalEvent event) {
-        subject.onNext(event);
+    public void fire(UiEvent uiEvent) {
+        subject.onNext(uiEvent);
     }
 
-    public Disposable subscribe(Consumer<GlobalEvent> onNext) {
+    public Disposable subscribe(Consumer<UiEvent> onNext) {
         return subject.subscribe(onNext);
     }
 }
