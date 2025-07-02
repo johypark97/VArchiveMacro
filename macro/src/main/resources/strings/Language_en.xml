@@ -34,6 +34,10 @@
   <entry key="modeSelector.description.right">Scan all records in the Collection Menu</entry>
   <entry key="osl.hyperlinkLabel">Library Link:</entry>
   <entry key="osl.windowTitle">Open Source License</entry>
+  <entry key="scanner.captureImageViewer.closeButton">Close (ESC)</entry>
+  <entry key="scanner.captureImageViewer.filter.label">Filter:</entry>
+  <entry key="scanner.captureImageViewer.filter.resetButtonTooltip">Reset</entry>
+  <entry key="scanner.captureImageViewer.windowTitle">Collection Scanner - Capture Image Viewer</entry>
   <entry key="scanner.processor.frame.analysisLabel">Analysis</entry>
   <entry key="scanner.processor.frame.captureImageViewerButton">Show all capture images</entry>
   <entry key="scanner.processor.frame.conflictLabel">Conflict</entry>

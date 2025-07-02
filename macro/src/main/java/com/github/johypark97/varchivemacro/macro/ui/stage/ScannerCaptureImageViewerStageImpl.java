@@ -3,33 +3,28 @@ package com.github.johypark97.varchivemacro.macro.ui.stage;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
-import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
-import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorFrame;
-import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorFramePresenterImpl;
+import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerCaptureImageViewer;
+import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerCaptureImageViewerPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
-import com.github.johypark97.varchivemacro.macro.ui.view.ScannerProcessorFrameViewImpl;
+import com.github.johypark97.varchivemacro.macro.ui.view.ScannerCaptureImageViewerViewImpl;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
-public class ScannerProcessorStageImpl extends AbstractTreeableStage
-        implements ScannerProcessorStage {
-    private static final int STAGE_HEIGHT = 720;
-    private static final int STAGE_WIDTH = 1280;
-
-    private final StageManager stageManager;
+public class ScannerCaptureImageViewerStageImpl extends AbstractTreeableStage
+        implements ScannerCaptureImageViewerStage {
+    private static final int STAGE_HEIGHT = 900;
+    private static final int STAGE_WIDTH = 1600;
 
     private final ScannerContext scannerContext;
 
     private final Runnable onStop;
 
-    private ScannerProcessorFrame.ScannerProcessorFramePresenter framePresenter;
+    private ScannerCaptureImageViewer.ScannerCaptureImageViewerPresenter presenter;
 
-    public ScannerProcessorStageImpl(AbstractTreeableStage parent, StageManager stageManager,
+    public ScannerCaptureImageViewerStageImpl(AbstractTreeableStage parent,
             ScannerContext scannerContext, Runnable onStop) {
         super(parent);
-
-        this.stageManager = stageManager;
 
         this.scannerContext = scannerContext;
 
@@ -40,7 +35,7 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
 
     private void setupStage() {
         stage.getIcons().add(new Image(UiResource.ICON.url().toString()));
-        stage.setTitle(Language.INSTANCE.getString("scanner.processor.windowTitle"));
+        stage.setTitle(Language.INSTANCE.getString("scanner.captureImageViewer.windowTitle"));
 
         stage.setHeight(STAGE_HEIGHT);
         stage.setWidth(STAGE_WIDTH);
@@ -51,16 +46,16 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
 
     @Override
     public void startStage() {
-        framePresenter = new ScannerProcessorFramePresenterImpl(this);
+        presenter = new ScannerCaptureImageViewerPresenterImpl();
 
-        ScannerProcessorFrameViewImpl view = new ScannerProcessorFrameViewImpl();
-        Mvp.linkViewAndPresenter(view, framePresenter);
+        ScannerCaptureImageViewerViewImpl view = new ScannerCaptureImageViewerViewImpl();
+        Mvp.linkViewAndPresenter(view, presenter);
 
         Scene scene = new Scene(view);
         scene.getStylesheets().add(UiResource.GLOBAL_CSS.url().toExternalForm());
 
         stage.setScene(scene);
-        stage.setOnShown(event -> framePresenter.startView());
+        stage.setOnShown(event -> presenter.startView());
 
         stage.show();
     }
@@ -71,16 +66,7 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
     }
 
     @Override
-    public void showCaptureImageViewer() {
-        stageManager.showCaptureImageViewer(this, scannerContext);
-    }
-
-    @Override
     protected boolean onStopStage() {
-        if (!framePresenter.stopView()) {
-            return false;
-        }
-
         onStop.run();
 
         return true;

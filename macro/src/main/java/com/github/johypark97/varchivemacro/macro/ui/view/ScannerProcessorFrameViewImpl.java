@@ -50,5 +50,6 @@ public class ScannerProcessorFrameViewImpl extends BorderPane
 
     @FXML
     public void initialize() {
+        captureImageViewerButton.setOnAction(event -> presenter.showCaptureImageViewer());
     }
 }

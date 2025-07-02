@@ -8,6 +8,8 @@ public interface ScannerProcessorFrame {
         void startView();
 
         boolean stopView();
+
+        void showCaptureImageViewer();
     }
 
 

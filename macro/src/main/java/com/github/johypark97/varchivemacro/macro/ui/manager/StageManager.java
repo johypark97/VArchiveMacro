@@ -5,6 +5,8 @@ import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.OpenSourceLicenseStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.OpenSourceLicenseStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerCaptureImageViewerStage;
+import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerCaptureImageViewerStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStage;
@@ -19,6 +21,7 @@ public class StageManager {
 
     private HomeStage homeStage;
     private OpenSourceLicenseStage openSourceLicenseStage;
+    private ScannerCaptureImageViewerStage captureImageViewerStage;
     private ScannerProcessorStage scannerProcessorStage;
     private ScannerScannerStage scannerScannerStage;
     private SettingStage settingStage;
@@ -81,7 +84,7 @@ public class StageManager {
             return;
         }
 
-        scannerProcessorStage = new ScannerProcessorStageImpl(parent, scannerContext, () -> {
+        scannerProcessorStage = new ScannerProcessorStageImpl(parent, this, scannerContext, () -> {
             scannerProcessorStage = null; // NOPMD
         });
 
@@ -94,5 +97,20 @@ public class StageManager {
 
     public boolean isScannerScannerStageOpened() {
         return scannerScannerStage != null;
+    }
+
+    public void showCaptureImageViewer(AbstractTreeableStage parent,
+            ScannerContext scannerContext) {
+        if (captureImageViewerStage != null) {
+            captureImageViewerStage.focusStage();
+            return;
+        }
+
+        captureImageViewerStage =
+                new ScannerCaptureImageViewerStageImpl(parent, scannerContext, () -> {
+                    captureImageViewerStage = null; // NOPMD
+                });
+
+        captureImageViewerStage.startStage();
     }
 }

@@ -1,9 +1,17 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
+import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
+
 public class ScannerProcessorFramePresenterImpl
         implements ScannerProcessorFrame.ScannerProcessorFramePresenter {
+    private final ScannerProcessorStage scannerProcessorStage;
+
     @MvpView
     public ScannerProcessorFrame.ScannerProcessorFrameView view;
+
+    public ScannerProcessorFramePresenterImpl(ScannerProcessorStage scannerProcessorStage) {
+        this.scannerProcessorStage = scannerProcessorStage;
+    }
 
     @Override
     public void startView() {
@@ -12,5 +20,10 @@ public class ScannerProcessorFramePresenterImpl
     @Override
     public boolean stopView() {
         return true;
+    }
+
+    @Override
+    public void showCaptureImageViewer() {
+        scannerProcessorStage.showCaptureImageViewer();
     }
 }
