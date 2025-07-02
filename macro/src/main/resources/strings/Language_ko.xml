@@ -35,7 +35,7 @@
   <entry key="osl.hyperlinkLabel">라이브러리 링크:</entry>
   <entry key="osl.windowTitle">오픈 소스 라이선스</entry>
   <entry key="scanner.processor.frame.analysisLabel">분석</entry>
-  <entry key="scanner.processor.frame.captureLabel">캡처</entry>
+  <entry key="scanner.processor.frame.captureImageViewerButton">모든 캡처 이미지 보기</entry>
   <entry key="scanner.processor.frame.conflictLabel">충돌</entry>
   <entry key="scanner.processor.frame.selectLabel">선택</entry>
   <entry key="scanner.processor.frame.uploadLabel">업로드</entry>

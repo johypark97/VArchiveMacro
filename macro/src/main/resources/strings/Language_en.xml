@@ -35,7 +35,7 @@
   <entry key="osl.hyperlinkLabel">Library Link:</entry>
   <entry key="osl.windowTitle">Open Source License</entry>
   <entry key="scanner.processor.frame.analysisLabel">Analysis</entry>
-  <entry key="scanner.processor.frame.captureLabel">Capture</entry>
+  <entry key="scanner.processor.frame.captureImageViewerButton">Show all capture images</entry>
   <entry key="scanner.processor.frame.conflictLabel">Conflict</entry>
   <entry key="scanner.processor.frame.selectLabel">Select</entry>
   <entry key="scanner.processor.frame.uploadLabel">Upload</entry>

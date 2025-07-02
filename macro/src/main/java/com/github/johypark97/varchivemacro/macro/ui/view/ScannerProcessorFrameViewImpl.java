@@ -15,9 +15,6 @@ public class ScannerProcessorFrameViewImpl extends BorderPane
     private static final String FXML_PATH = "/fxml/ScannerProcessorFrame.fxml";
 
     @FXML
-    private Label captureLabel;
-
-    @FXML
     private Label conflictLabel;
 
     @FXML
@@ -28,6 +25,9 @@ public class ScannerProcessorFrameViewImpl extends BorderPane
 
     @FXML
     private Label uploadLabel;
+
+    @FXML
+    private Button captureImageViewerButton;
 
     @FXML
     private Button leftButton;
