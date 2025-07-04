@@ -7,7 +7,6 @@ import com.github.johypark97.varchivemacro.macro.common.converter.CaptureBoundCo
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptureLinkService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
@@ -27,12 +26,11 @@ public class FhdDebugCollectionScanTask extends CollectionScanTask {
     private int imageIndex;
 
     public FhdDebugCollectionScanTask(CaptureImageService captureImageService,
-            CaptureService captureService, PixImageService pixImageService,
-            SongCaptureLinkService songCaptureLinkService, SongService songService,
+            CaptureService captureService, PixImageService pixImageService, SongService songService,
             SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory,
             Set<String> selectedCategorySet) {
-        super(captureService, pixImageService, songCaptureLinkService, songService,
-                songTitleService, songTitleOcrServiceFactory, selectedCategorySet);
+        super(captureService, pixImageService, songService, songTitleService,
+                songTitleOcrServiceFactory, selectedCategorySet);
 
         this.captureImageService = captureImageService;
     }

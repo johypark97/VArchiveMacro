@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.mo
 
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordButton;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordPattern;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.stream.Stream;
@@ -11,9 +12,12 @@ public class Capture {
             HashBasedTable.create();
 
     public final CaptureBound scannedTitleBound;
+    public final Song.Pack.Category category;
     public final String scannedTitle;
 
-    public Capture(String scannedTitle, CaptureBound scannedTitleBound) {
+    public Capture(Song.Pack.Category category, String scannedTitle,
+            CaptureBound scannedTitleBound) {
+        this.category = category;
         this.scannedTitle = scannedTitle;
         this.scannedTitleBound = scannedTitleBound;
     }

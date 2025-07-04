@@ -5,7 +5,6 @@ import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptureLinkService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
@@ -21,7 +20,6 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
     private final CaptureService captureService;
     private final ConfigService configService;
     private final PixImageService pixImageService;
-    private final SongCaptureLinkService songCaptureLinkService;
     private final SongService songService;
     private final SongTitleService songTitleService;
 
@@ -31,14 +29,13 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
 
     public DefaultCollectionScanTaskService(CaptureImageService captureImageService,
             CaptureService captureService, ConfigService configService,
-            PixImageService pixImageService, SongCaptureLinkService songCaptureLinkService,
-            SongService songService, SongTitleService songTitleService,
-            OcrServiceFactory songTitleOcrServiceFactory, boolean debug) {
+            PixImageService pixImageService, SongService songService,
+            SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory,
+            boolean debug) {
         this.captureImageService = captureImageService;
         this.captureService = captureService;
         this.configService = configService;
         this.pixImageService = pixImageService;
-        this.songCaptureLinkService = songCaptureLinkService;
         this.songService = songService;
         this.songTitleService = songTitleService;
 
@@ -58,12 +55,11 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
         return TaskManager.getInstance().register(CollectionScanTask.class,
                 debug
                         ? new FhdDebugCollectionScanTask(captureImageService, captureService,
-                        pixImageService, songCaptureLinkService, songService, songTitleService,
-                        songTitleOcrServiceFactory, selectedCategorySet)
+                        pixImageService, songService, songTitleService, songTitleOcrServiceFactory,
+                        selectedCategorySet)
                         : new DefaultCollectionScanTask(captureImageService, captureService,
-                                pixImageService, songCaptureLinkService, songService,
-                                songTitleService, songTitleOcrServiceFactory, config,
-                                selectedCategorySet));
+                                pixImageService, songService, songTitleService,
+                                songTitleOcrServiceFactory, config, selectedCategorySet));
     }
 
     @Override
