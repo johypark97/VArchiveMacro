@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.core.scanner.capture.app;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
+import java.util.List;
 
 public class CaptureService implements CaptureRepository {
     private final CaptureRepository captureRepository;
@@ -24,6 +25,11 @@ public class CaptureService implements CaptureRepository {
     @Override
     public CaptureEntry save(Capture value) {
         return captureRepository.save(value);
+    }
+
+    @Override
+    public List<CaptureEntry> findAll() {
+        return captureRepository.findAll();
     }
 
     @Override

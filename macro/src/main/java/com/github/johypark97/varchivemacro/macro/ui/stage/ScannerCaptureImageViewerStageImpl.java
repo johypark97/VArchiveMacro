@@ -46,7 +46,7 @@ public class ScannerCaptureImageViewerStageImpl extends AbstractTreeableStage
 
     @Override
     public void startStage() {
-        presenter = new ScannerCaptureImageViewerPresenterImpl();
+        presenter = new ScannerCaptureImageViewerPresenterImpl(this, scannerContext);
 
         ScannerCaptureImageViewerViewImpl view = new ScannerCaptureImageViewerViewImpl();
         Mvp.linkViewAndPresenter(view, presenter);

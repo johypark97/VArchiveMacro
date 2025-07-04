@@ -3,7 +3,9 @@ package com.github.johypark97.varchivemacro.macro.core.scanner.capture.infra.rep
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -43,6 +45,17 @@ public class DefaultCaptureRepository implements CaptureRepository {
             return entry;
         } finally {
             lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public List<CaptureEntry> findAll() {
+        lock.readLock().lock();
+        try {
+            return entryMap.values().stream().sorted(Comparator.comparingInt(CaptureEntry::entryId))
+                    .toList();
+        } finally {
+            lock.readLock().unlock();
         }
     }
 

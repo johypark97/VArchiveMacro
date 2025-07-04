@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.re
 
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
+import java.util.List;
 
 public interface CaptureRepository {
     boolean isEmpty();
@@ -9,6 +10,8 @@ public interface CaptureRepository {
     void deleteAll();
 
     CaptureEntry save(Capture value);
+
+    List<CaptureEntry> findAll();
 
     CaptureEntry findById(int entryId);
 }
