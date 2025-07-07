@@ -34,6 +34,13 @@
   <entry key="modeSelector.description.right">Scan all records in the Collection Menu</entry>
   <entry key="osl.hyperlinkLabel">Library Link:</entry>
   <entry key="osl.windowTitle">Open Source License</entry>
+  <entry key="scanner.captureImageViewer.analysisData.cell.sectionName">Records</entry>
+  <entry key="scanner.captureImageViewer.analysisData.tabName">Analysis data</entry>
+  <entry key="scanner.captureImageViewer.analysisData.title.sectionName">Song title</entry>
+  <entry key="scanner.captureImageViewer.captureImage.lmb">Left Mouse Button: Move</entry>
+  <entry key="scanner.captureImageViewer.captureImage.mmb">Middle Mouse Button: Zoom in/out</entry>
+  <entry key="scanner.captureImageViewer.captureImage.rmb">Right Mouse Button: Reset</entry>
+  <entry key="scanner.captureImageViewer.captureImage.tabName">Capture image</entry>
   <entry key="scanner.captureImageViewer.closeButton">Close (ESC)</entry>
   <entry key="scanner.captureImageViewer.filter.label">Filter:</entry>
   <entry key="scanner.captureImageViewer.filter.resetButtonTooltip">Reset</entry>

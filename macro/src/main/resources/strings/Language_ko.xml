@@ -34,6 +34,13 @@
   <entry key="modeSelector.description.right">컬렉션 메뉴에서 모든 기록을 스캔합니다</entry>
   <entry key="osl.hyperlinkLabel">라이브러리 링크:</entry>
   <entry key="osl.windowTitle">오픈 소스 라이선스</entry>
+  <entry key="scanner.captureImageViewer.analysisData.cell.sectionName">기록</entry>
+  <entry key="scanner.captureImageViewer.analysisData.tabName">분석 데이터</entry>
+  <entry key="scanner.captureImageViewer.analysisData.title.sectionName">곡 제목</entry>
+  <entry key="scanner.captureImageViewer.captureImage.lmb">왼쪽 마우스 버튼: 이동</entry>
+  <entry key="scanner.captureImageViewer.captureImage.mmb">가운데 마우스 버튼: 확대/축소</entry>
+  <entry key="scanner.captureImageViewer.captureImage.rmb">오른쪽 마우스 버튼: 초기화</entry>
+  <entry key="scanner.captureImageViewer.captureImage.tabName">캡처 이미지</entry>
   <entry key="scanner.captureImageViewer.closeButton">닫기 (ESC)</entry>
   <entry key="scanner.captureImageViewer.filter.label">필터:</entry>
   <entry key="scanner.captureImageViewer.filter.resetButtonTooltip">초기화</entry>
