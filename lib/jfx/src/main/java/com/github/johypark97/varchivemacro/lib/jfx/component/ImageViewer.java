@@ -7,8 +7,9 @@ import javafx.scene.layout.Pane;
 
 public class ImageViewer extends Pane {
     private static final double ZOOM_FACTOR = 0.005;
-    private static final double ZOOM_LIMIT_MAX = 10;
-    private static final double ZOOM_LIMIT_MIN = 0.1;
+
+    private static final double ZOOM_LIMIT_MAX = 16;
+    private static final double ZOOM_LIMIT_MIN = 0.0625; // 1 / 16
 
     private final ImageView imageView = new ImageView();
     private final PointDelta pointDelta = new PointDelta();
@@ -19,10 +20,10 @@ public class ImageViewer extends Pane {
     private double viewportZoom;
 
     public ImageViewer() {
-        super.getChildren().add(imageView);
+        getChildren().add(imageView);
 
-        imageView.fitHeightProperty().bind(heightProperty());
         imageView.fitWidthProperty().bind(widthProperty());
+        imageView.fitHeightProperty().bind(heightProperty());
 
         layoutBoundsProperty().addListener((observable, oldValue, newValue) -> updateViewport());
 
@@ -75,14 +76,14 @@ public class ImageViewer extends Pane {
         updateViewport();
     }
 
-    private double getImageHeight() {
-        Image image = imageView.getImage();
-        return (image != null) ? image.getHeight() : 0;
-    }
-
     private double getImageWidth() {
         Image image = imageView.getImage();
         return (image != null) ? image.getWidth() : 0;
+    }
+
+    private double getImageHeight() {
+        Image image = imageView.getImage();
+        return (image != null) ? image.getHeight() : 0;
     }
 
     private void changeViewportCenterX(double value) {
@@ -95,12 +96,12 @@ public class ImageViewer extends Pane {
         viewportCenterY = Math.min(Math.max(0, x), getImageHeight());
     }
 
-    private void changeZoom(double value) {
-        setZoom(viewportZoom * (value * ZOOM_FACTOR + 1));
-    }
-
     private void setZoom(double value) {
         viewportZoom = Math.min(Math.max(ZOOM_LIMIT_MIN, value), ZOOM_LIMIT_MAX);
+    }
+
+    private void changeZoom(double value) {
+        setZoom(viewportZoom * (value * ZOOM_FACTOR + 1));
     }
 
     private void updateViewport() {
@@ -108,13 +109,13 @@ public class ImageViewer extends Pane {
             viewportCenterX = getImageWidth() / 2;
             viewportCenterY = getImageHeight() / 2;
 
-            double zoomFitToHeight = getHeight() / getImageHeight();
             double zoomFitToWidth = getWidth() / getImageWidth();
-            setZoom(Math.min(zoomFitToHeight, zoomFitToWidth));
+            double zoomFitToHeight = getHeight() / getImageHeight();
+            setZoom(Math.min(zoomFitToWidth, zoomFitToHeight));
         }
 
-        double height = getHeight() / viewportZoom;
         double width = getWidth() / viewportZoom;
+        double height = getHeight() / viewportZoom;
 
         double x = viewportCenterX - width / 2;
         double y = viewportCenterY - height / 2;
