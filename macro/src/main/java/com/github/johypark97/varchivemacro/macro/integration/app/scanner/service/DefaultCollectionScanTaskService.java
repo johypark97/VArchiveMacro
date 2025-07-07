@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.app.CaptureRegionService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
@@ -17,6 +18,7 @@ import javafx.concurrent.Task;
 
 public class DefaultCollectionScanTaskService implements CollectionScanTaskService {
     private final CaptureImageService captureImageService;
+    private final CaptureRegionService captureRegionService;
     private final CaptureService captureService;
     private final ConfigService configService;
     private final PixImageService pixImageService;
@@ -28,11 +30,12 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
     private final boolean debug;
 
     public DefaultCollectionScanTaskService(CaptureImageService captureImageService,
-            CaptureService captureService, ConfigService configService,
-            PixImageService pixImageService, SongService songService,
+            CaptureRegionService captureRegionService, CaptureService captureService,
+            ConfigService configService, PixImageService pixImageService, SongService songService,
             SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory,
             boolean debug) {
         this.captureImageService = captureImageService;
+        this.captureRegionService = captureRegionService;
         this.captureService = captureService;
         this.configService = configService;
         this.pixImageService = pixImageService;
@@ -54,11 +57,11 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
 
         return TaskManager.getInstance().register(CollectionScanTask.class,
                 debug
-                        ? new FhdDebugCollectionScanTask(captureImageService, captureService,
-                        pixImageService, songService, songTitleService, songTitleOcrServiceFactory,
-                        selectedCategorySet)
-                        : new DefaultCollectionScanTask(captureImageService, captureService,
-                                pixImageService, songService, songTitleService,
+                        ? new FhdDebugCollectionScanTask(captureImageService, captureRegionService,
+                        captureService, pixImageService, songService, songTitleService,
+                        songTitleOcrServiceFactory, selectedCategorySet)
+                        : new DefaultCollectionScanTask(captureImageService, captureRegionService,
+                                captureService, pixImageService, songService, songTitleService,
                                 songTitleOcrServiceFactory, config, selectedCategorySet));
     }
 

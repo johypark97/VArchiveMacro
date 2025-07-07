@@ -1,18 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
 
-import com.github.johypark97.varchivemacro.lib.scanner.Enums;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
-import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
-import com.github.johypark97.varchivemacro.macro.common.converter.CaptureBoundConverter;
-import com.github.johypark97.varchivemacro.macro.common.converter.RecordButtonConverter;
-import com.github.johypark97.varchivemacro.macro.common.converter.RecordPatternConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
-import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureArea;
-import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
@@ -24,7 +17,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.mode
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.CaptureAnalysisTaskResult;
 import com.google.common.base.CharMatcher;
-import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
@@ -77,12 +70,13 @@ public class CaptureAnalysisTask
         imagePreloaderThreadCount = (int) (Math.log(analyzerThreadCount + 1) / Math.log(2));
     }
 
-    private void analyze(OcrService ocrService, CollectionArea area, CaptureEntry captureEntry,
-            byte[] pngByte) throws PixImageException {
+    private void analyze(OcrService ocrService, CaptureEntry captureEntry, byte[] pngByte)
+            throws PixImageException {
         Capture capture = captureEntry.capture();
+        CaptureRegion region = captureEntry.capture().region;
 
-        if (!capture.isCaptureAreaEmpty()) {
-            capture.clearCaptureAreaEmpty();
+        if (!capture.isSongRecordEmpty()) {
+            capture.clearSongRecord();
         }
 
         try (PixImage pix = pixImageService.createPixImage(pngByte)) {
@@ -91,20 +85,14 @@ public class CaptureAnalysisTask
 
             // analyze
             for (RecordButton button : RecordButton.values()) {
-                Enums.Button libButton = RecordButtonConverter.toLib(button);
-
                 for (RecordPattern pattern : RecordPattern.values()) {
-                    Enums.Pattern libPattern = RecordPatternConverter.toLib(pattern);
-
-                    CaptureBound maxComboBound = CaptureBoundConverter.fromRectangle(
-                            area.getComboMark(libButton, libPattern));
-                    CaptureBound rateBound = CaptureBoundConverter.fromRectangle(
-                            area.getRate(libButton, libPattern));
+                    Rectangle rateRectangle = region.getRate(button, pattern);
+                    Rectangle maxComboRectangle = region.getRate(button, pattern);
 
                     boolean maxCombo;
                     float rate;
 
-                    try (PixImage recordPix = pix.crop(rateBound)) {
+                    try (PixImage recordPix = pix.crop(rateRectangle)) {
                         // test whether the image contains enough black pixels using the
                         // histogram. if true, run ocr.
                         float r = recordPix.getGrayRatio(RATE_FACTOR, RATE_THRESHOLD);
@@ -121,16 +109,13 @@ public class CaptureAnalysisTask
                         }
                     }
 
-                    try (PixImage comboMarkPix = pix.crop(maxComboBound)) {
+                    try (PixImage comboMarkPix = pix.crop(maxComboRectangle)) {
                         maxCombo =
                                 comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR, COMBO_MARK_THRESHOLD)
                                         >= COMBO_MARK_RATIO;
                     }
 
-                    SongRecord record = new SongRecord(rate, maxCombo);
-                    CaptureArea captureArea = new CaptureArea(record, rateBound, maxComboBound);
-
-                    capture.setCaptureArea(button, pattern, captureArea);
+                    capture.setSongRecord(button, pattern, new SongRecord(rate, maxCombo));
                 }
             }
         }
@@ -155,15 +140,6 @@ public class CaptureAnalysisTask
     protected Map<Integer, CaptureAnalysisTaskResult> callTask() throws Exception {
         if (captureEntryList.isEmpty()) {
             throw new IllegalArgumentException("captureEntryList is empty.");
-        }
-
-        // prepare CollectionArea using the first capture image
-        CollectionArea area;
-        {
-            int id = captureEntryList.getFirst().entryId();
-            BufferedImage image = captureImageService.findById(id);
-            Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
-            area = CollectionAreaFactory.create(resolution);
         }
 
         // prepare resultMap
@@ -231,7 +207,7 @@ public class CaptureAnalysisTask
                                             preloadedImageQueue.take();
 
                                     try {
-                                        analyze(ocrService, area, queueEntry.getKey(),
+                                        analyze(ocrService, queueEntry.getKey(),
                                                 queueEntry.getValue());
                                         resultMap.get(queueEntry.getKey().entryId())
                                                 .setStatus(CaptureAnalysisTaskResult.Status.DONE);

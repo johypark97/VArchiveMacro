@@ -3,12 +3,11 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
-import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
@@ -160,7 +159,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
 
         if (throwable != null) {
             switch (throwable) {
-                case NotSupportedResolutionException e -> scannerScannerStage.showError(
+                case DisplayResolutionException e -> scannerScannerStage.showError(
                         language.getString("scanner.scanner.dialog.taskRunningExceptionHeader"),
                         language.getFormatString(
                                 "scanner.scanner.dialog.exception.notSupportedResolution",
@@ -251,8 +250,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
             bufferedImage = AwtRobotHelper.captureScreenshot(new Robot());
             Dimension dimension =
                     new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
-            CollectionAreaFactory.create(dimension);
-        } catch (NotSupportedResolutionException e) {
+            globalContext.captureRegionService.create(dimension);
+        } catch (DisplayResolutionException e) {
             scannerScannerStage.showWarning(language.getFormatString(
                     "scanner.scanner.dialog.exception.notSupportedResolution", e.getMessage()));
             return;

@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigStorage
 import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.common.config.infra.repository.DefaultConfigRepository;
 import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataVersionService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.app.CaptureRegionService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordStorageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.repository.SongRecordRepository;
@@ -30,6 +31,8 @@ public class GlobalContext implements Context {
     final SongRepository songRepository = new DefaultSongRepository();
 
     // services
+    public final CaptureRegionService captureRegionService = new CaptureRegionService();
+
     public final ConfigService configService = new ConfigService(configRepository);
     public final ConfigStorageService configStorageService =
             new ConfigStorageService(configRepository, CONFIG_FILE_PATH);

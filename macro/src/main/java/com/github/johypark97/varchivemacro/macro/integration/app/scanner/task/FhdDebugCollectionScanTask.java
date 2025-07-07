@@ -1,12 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
 
-import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
-import com.github.johypark97.varchivemacro.macro.common.converter.CaptureBoundConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.app.CaptureRegionService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
@@ -22,17 +20,20 @@ public class FhdDebugCollectionScanTask extends CollectionScanTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(FhdDebugCollectionScanTask.class);
 
     private final CaptureImageService captureImageService;
+    private final CaptureRegionService captureRegionService;
 
     private int imageIndex;
 
     public FhdDebugCollectionScanTask(CaptureImageService captureImageService,
-            CaptureService captureService, PixImageService pixImageService, SongService songService,
+            CaptureRegionService captureRegionService, CaptureService captureService,
+            PixImageService pixImageService, SongService songService,
             SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory,
             Set<String> selectedCategorySet) {
         super(captureService, pixImageService, songService, songTitleService,
                 songTitleOcrServiceFactory, selectedCategorySet);
 
         this.captureImageService = captureImageService;
+        this.captureRegionService = captureRegionService;
     }
 
     @Override
@@ -49,15 +50,8 @@ public class FhdDebugCollectionScanTask extends CollectionScanTask {
     }
 
     @Override
-    protected CaptureBound getTitleBound() {
-        CollectionArea collectionArea;
-        try {
-            collectionArea = CollectionAreaFactory.create(new Dimension(1920, 1080));
-        } catch (NotSupportedResolutionException e) {
-            throw new RuntimeException(e); // never be thrown
-        }
-
-        return CaptureBoundConverter.fromRectangle(collectionArea.getTitle());
+    protected CaptureRegion getCaptureRegion() throws DisplayResolutionException {
+        return captureRegionService.create(new Dimension(1920, 1080));
     }
 
     @Override

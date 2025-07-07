@@ -2,8 +2,9 @@ package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
 
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
-import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
@@ -13,6 +14,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongServi
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -47,7 +49,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
     protected abstract BufferedImage captureScreen() throws InterruptedException;
 
-    protected abstract CaptureBound getTitleBound();
+    protected abstract CaptureRegion getCaptureRegion() throws DisplayResolutionException;
 
     protected abstract void moveToNextCategory() throws InterruptedException;
 
@@ -71,11 +73,11 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
         return queue;
     }
 
-    private String readTitle(OcrService ocrService, BufferedImage image, CaptureBound titleBound)
+    private String readTitle(OcrService ocrService, BufferedImage image, Rectangle titleRectangle)
             throws IOException, PixImageException {
         BufferedImage titleImage =
-                image.getSubimage(titleBound.x(), titleBound.y(), titleBound.width(),
-                        titleBound.height());
+                image.getSubimage(titleRectangle.x, titleRectangle.y, titleRectangle.width,
+                        titleRectangle.height);
 
         try (PixImage pix = pixImageService.createPixImage(titleImage)) {
             pixImageService.preprocessTitle(pix);
@@ -89,10 +91,11 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
             throw new IllegalStateException();
         }
 
+        // check if the screen resolution is supported using whether an exception occurs
+        CaptureRegion region = getCaptureRegion();
+
         // create a queue that filtered by selectedCategorySet
         Queue<Song.Pack.Category> categoryQueue = createCategoryQueue();
-
-        CaptureBound titleBound = getTitleBound();
 
         // run main task
         try (OcrService ocrService = songTitleOcrServiceFactory.create()) {
@@ -123,11 +126,11 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
                     BufferedImage captureImage = captureScreen();
 
                     // read title
-                    String scannedTitle = readTitle(ocrService, captureImage, titleBound);
+                    String scannedTitle = readTitle(ocrService, captureImage, region.getTitle());
                     scannedTitle = songTitleService.normalizeTitle(scannedTitle);
 
                     // store cache data and image
-                    Capture capture = new Capture(category, scannedTitle, titleBound);
+                    Capture capture = new Capture(category, scannedTitle, region);
                     CaptureEntry captureEntry = captureService.save(capture);
 
                     writeImage(captureEntry.entryId(), captureImage);

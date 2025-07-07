@@ -2,7 +2,6 @@ package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.mo
 
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
-import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.exception.PixImageException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.model.PixImage;
 import java.awt.Rectangle;
@@ -23,10 +22,9 @@ public class DefaultPixImage implements PixImage {
     }
 
     @Override
-    public PixImage crop(CaptureBound bound) throws PixImageException {
+    public PixImage crop(Rectangle rectangle) throws PixImageException {
         try {
-            return new DefaultPixImage(pixWrapper.crop(
-                    new Rectangle(bound.x(), bound.y(), bound.width(), bound.height())));
+            return new DefaultPixImage(pixWrapper.crop(rectangle));
         } catch (PixError e) {
             throw new PixImageException(e);
         }

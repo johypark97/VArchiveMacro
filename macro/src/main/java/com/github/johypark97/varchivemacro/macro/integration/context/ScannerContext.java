@@ -43,9 +43,9 @@ public class ScannerContext implements Context {
         captureImageRepository = new DiskCaptureImageRepository(cacheDirectoryPath);
         captureImageService = new CaptureImageService(captureImageRepository);
 
-        collectionScanTaskService =
-                new DefaultCollectionScanTaskService(captureImageService, captureService,
-                        globalContext.configService, pixImageService, globalContext.songService,
-                        songTitleService, songTitleOcrServiceFactory, debug);
+        collectionScanTaskService = new DefaultCollectionScanTaskService(captureImageService,
+                globalContext.captureRegionService, captureService, globalContext.configService,
+                pixImageService, globalContext.songService, songTitleService,
+                songTitleOcrServiceFactory, debug);
     }
 }

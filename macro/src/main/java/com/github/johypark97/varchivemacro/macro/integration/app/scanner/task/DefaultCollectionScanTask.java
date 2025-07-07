@@ -1,20 +1,18 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
 
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
-import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureBound;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.app.CaptureRegionService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import java.awt.AWTException;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -35,23 +33,25 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     private static final int REJECTED_SLEEP_TIME = 1000;
 
     private final CaptureImageService captureImageService;
+    private final CaptureRegionService captureRegionService;
 
     private final ScannerConfig config;
 
     private final AtomicReference<Exception> imageCachingTaskException = new AtomicReference<>();
     private final Robot robot;
 
-    private CollectionArea collectionArea;
     private ImageCachingService imageCachingService;
 
     public DefaultCollectionScanTask(CaptureImageService captureImageService,
-            CaptureService captureService, PixImageService pixImageService, SongService songService,
+            CaptureRegionService captureRegionService, CaptureService captureService,
+            PixImageService pixImageService, SongService songService,
             SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory,
             ScannerConfig config, Set<String> selectedCategorySet) {
         super(captureService, pixImageService, songService, songTitleService,
                 songTitleOcrServiceFactory, selectedCategorySet);
 
         this.captureImageService = captureImageService;
+        this.captureRegionService = captureRegionService;
 
         this.config = config;
 
@@ -62,13 +62,6 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
         }
     }
 
-    private CollectionArea createCollectionArea() throws NotSupportedResolutionException {
-        BufferedImage image = AwtRobotHelper.captureScreenshot(robot);
-        Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
-
-        return CollectionAreaFactory.create(resolution);
-    }
-
     @Override
     protected BufferedImage captureScreen() throws InterruptedException {
         TimeUnit.MILLISECONDS.sleep(config.captureDelay());
@@ -76,9 +69,11 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     }
 
     @Override
-    protected CaptureBound getTitleBound() {
-        Rectangle r = collectionArea.getTitle();
-        return new CaptureBound(r.x, r.y, r.width, r.height);
+    protected CaptureRegion getCaptureRegion() throws DisplayResolutionException {
+        BufferedImage image = AwtRobotHelper.captureScreenshot(robot);
+        Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
+
+        return captureRegionService.create(resolution);
     }
 
     @Override
@@ -120,9 +115,6 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
 
     @Override
     protected Void callTask() throws Exception {
-        // check if the screen resolution is supported using whether an exception occurs
-        collectionArea = createCollectionArea();
-
         // delete all previous images
         captureImageService.deleteAll();
 
