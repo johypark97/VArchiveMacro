@@ -75,6 +75,7 @@
   <entry key="scanner.recordViewer.scanButton">Start scanning</entry>
   <entry key="scanner.recordViewer.songFilter.label">Filter:</entry>
   <entry key="scanner.recordViewer.songFilter.resetButtonTooltip">Reset</entry>
+  <entry key="scanner.scanner.categoryList.count">Number of selected categories:</entry>
   <entry key="scanner.scanner.categoryList.sectionName">Category list</entry>
   <entry key="scanner.scanner.categoryList.selectAllButton">Select all</entry>
   <entry key="scanner.scanner.categoryList.unselectAllButton">Unselect all</entry>

@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Set;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -82,6 +83,9 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     private ListView<ScannerScannerViewModel.CategoryData> categoryListView;
 
     @FXML
+    private Label categoryCountLabel;
+
+    @FXML
     private Button selectAllCategoryButton;
 
     @FXML
@@ -92,6 +96,8 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
 
     @MvpPresenter
     public ScannerScanner.ScannerScannerPresenter presenter;
+
+    private StringBinding categoryCountStringBinding;
 
     public ScannerScannerViewImpl() {
         URL fxmlUrl = ScannerScannerViewImpl.class.getResource(FXML_PATH);
@@ -117,7 +123,18 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
         imageViewer.setPrefWidth(0);
         checkButton.setOnAction(event -> presenter.checkDisplayAndResolution());
 
-        categoryListView.setCellFactory(CheckBoxListCell.forListView(param -> param.selected));
+        categoryCountStringBinding = Bindings.createStringBinding(() -> {
+            List<ScannerScannerViewModel.CategoryData> list = categoryListView.getItems();
+            long selectedCount = list.stream().filter(x -> x.selected.get()).count();
+            return String.format("%d / %d", selectedCount, list.size());
+        });
+
+        categoryListView.setCellFactory(CheckBoxListCell.forListView(param -> {
+            param.selected.addListener(
+                    (observable, oldValue, newValue) -> categoryCountStringBinding.invalidate());
+            return param.selected;
+        }));
+        categoryCountLabel.textProperty().bind(categoryCountStringBinding);
         selectAllCategoryButton.setOnAction(
                 event -> categoryListView.getItems().forEach(x -> x.selected.set(true)));
         unselectAllCategoryButton.setOnAction(
@@ -173,6 +190,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     @Override
     public void setCategoryList(List<ScannerScannerViewModel.CategoryData> value) {
         categoryListView.setItems(FXCollections.observableList(value));
+        categoryCountStringBinding.invalidate();
     }
 
     @Override
