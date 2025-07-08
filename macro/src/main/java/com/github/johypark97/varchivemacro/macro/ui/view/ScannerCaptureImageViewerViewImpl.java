@@ -4,10 +4,12 @@ import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.component.ImageDisplay;
 import com.github.johypark97.varchivemacro.lib.jfx.component.ImageViewer;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.ui.common.SimpleTransition;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerCaptureImageViewer;
 import com.github.johypark97.varchivemacro.macro.ui.viewmodel.CaptureImageViewerViewModel;
 import java.io.IOException;
 import java.net.URL;
+import javafx.animation.Animation;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -17,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -27,6 +30,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class ScannerCaptureImageViewerViewImpl extends BorderPane
         implements ScannerCaptureImageViewer.ScannerCaptureImageViewerView {
@@ -54,6 +59,9 @@ public class ScannerCaptureImageViewerViewImpl extends BorderPane
 
     @FXML
     private TextField titleTextTextField;
+
+    @FXML
+    private Label notAnalyzedLabel;
 
     @FXML
     private GridPane cellDataGridPane;
@@ -117,6 +125,13 @@ public class ScannerCaptureImageViewerViewImpl extends BorderPane
         titleImageDisplay.setMinHeight(TITLE_IMAGE_HEIGHT / 4);
         titleImageDisplay.setPrefHeight(TITLE_IMAGE_HEIGHT);
 
+        notAnalyzedLabel.setVisible(false);
+        SimpleTransition transition = new SimpleTransition(Duration.seconds(1),
+                x -> notAnalyzedLabel.setTextFill(new Color(x, 0, 0, 1)));
+        transition.setAutoReverse(true);
+        transition.setCycleCount(Animation.INDEFINITE);
+        transition.play();
+
         for (int row = 0; row < 4; row++) {
             for (int column = 0; column < 4; column++) {
                 CellBox cellBox = new CellBox();
@@ -142,6 +157,8 @@ public class ScannerCaptureImageViewerViewImpl extends BorderPane
 
         titleImageDisplay.setImage(value.titleImage);
         titleTextTextField.setText(value.titleText);
+
+        notAnalyzedLabel.setVisible(!value.analyzed);
 
         for (int row = 0; row < 4; row++) {
             for (int column = 0; column < 4; column++) {

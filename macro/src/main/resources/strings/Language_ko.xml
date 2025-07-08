@@ -35,6 +35,7 @@
   <entry key="osl.hyperlinkLabel">라이브러리 링크:</entry>
   <entry key="osl.windowTitle">오픈 소스 라이선스</entry>
   <entry key="scanner.captureImageViewer.analysisData.cell.sectionName">기록</entry>
+  <entry key="scanner.captureImageViewer.analysisData.notAnalyzed">(분석 안됨)</entry>
   <entry key="scanner.captureImageViewer.analysisData.tabName">분석 데이터</entry>
   <entry key="scanner.captureImageViewer.analysisData.title.sectionName">곡 제목</entry>
   <entry key="scanner.captureImageViewer.captureImage.lmb">왼쪽 마우스 버튼: 이동</entry>

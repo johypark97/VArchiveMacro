@@ -97,6 +97,7 @@ public class ScannerCaptureImageViewerPresenterImpl
         CaptureImageViewerViewModel.CaptureImageDetail detail =
                 new CaptureImageViewerViewModel.CaptureImageDetail();
 
+        detail.analyzed = capture.isAnalyzed();
         detail.captureImage = SwingFXUtils.toFXImage(captureImage, null);
 
         detail.titleImage = cropAndConvert(captureImage, capture.region.getTitle());

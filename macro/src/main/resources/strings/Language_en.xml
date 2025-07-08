@@ -35,6 +35,7 @@
   <entry key="osl.hyperlinkLabel">Library Link:</entry>
   <entry key="osl.windowTitle">Open Source License</entry>
   <entry key="scanner.captureImageViewer.analysisData.cell.sectionName">Records</entry>
+  <entry key="scanner.captureImageViewer.analysisData.notAnalyzed">(Not analyzed)</entry>
   <entry key="scanner.captureImageViewer.analysisData.tabName">Analysis data</entry>
   <entry key="scanner.captureImageViewer.analysisData.title.sectionName">Song title</entry>
   <entry key="scanner.captureImageViewer.captureImage.lmb">Left Mouse Button: Move</entry>

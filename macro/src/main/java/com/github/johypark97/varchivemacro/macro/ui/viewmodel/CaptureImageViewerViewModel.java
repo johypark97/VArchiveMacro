@@ -10,6 +10,7 @@ public class CaptureImageViewerViewModel {
         public Image captureImage;
         public Image titleImage;
         public String titleText;
+        public boolean analyzed;
 
 
         public record CellData(Image rateImage, Image maxComboImage, String rateText,

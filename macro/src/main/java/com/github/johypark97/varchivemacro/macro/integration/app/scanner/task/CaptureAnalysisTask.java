@@ -75,7 +75,8 @@ public class CaptureAnalysisTask
         Capture capture = captureEntry.capture();
         CaptureRegion region = captureEntry.capture().region;
 
-        if (!capture.isSongRecordEmpty()) {
+        if (capture.isAnalyzed() || !capture.isSongRecordEmpty()) {
+            capture.setAnalyzed(false);
             capture.clearSongRecord();
         }
 
@@ -119,6 +120,8 @@ public class CaptureAnalysisTask
                 }
             }
         }
+
+        capture.setAnalyzed(true);
     }
 
     private float parseRateText(String text) {

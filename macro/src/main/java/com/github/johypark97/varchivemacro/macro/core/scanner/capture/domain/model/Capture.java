@@ -17,10 +17,20 @@ public class Capture {
     public final Song.Pack.Category category;
     public final String scannedTitle;
 
+    private boolean analyzed;
+
     public Capture(Song.Pack.Category category, String scannedTitle, CaptureRegion region) {
         this.category = category;
         this.region = region;
         this.scannedTitle = scannedTitle;
+    }
+
+    public boolean isAnalyzed() {
+        return analyzed;
+    }
+
+    public void setAnalyzed(boolean value) {
+        analyzed = value;
     }
 
     public boolean isSongRecordEmpty() {
