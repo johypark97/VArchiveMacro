@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.infra.repository;
 
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.model.PngImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.DirectoryStream;
@@ -13,7 +13,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import javax.imageio.ImageIO;
 
 public class DiskCaptureImageRepository implements CaptureImageRepository {
     private static final String IMAGE_FORMAT = "png";
@@ -118,15 +117,15 @@ public class DiskCaptureImageRepository implements CaptureImageRepository {
     }
 
     @Override
-    public void save(int id, BufferedImage image) throws IOException {
+    public void save(int id, PngImage pngImage) throws IOException {
         Path path = createImageFilePath(id);
 
         Files.deleteIfExists(path);
-        ImageIO.write(image, IMAGE_FORMAT, path.toFile());
+        Files.write(path, pngImage.data());
     }
 
     @Override
-    public BufferedImage findById(int id) throws IOException {
-        return ImageIO.read(createImageFilePath(id).toFile());
+    public PngImage findById(int id) throws IOException {
+        return new PngImage(Files.readAllBytes(createImageFilePath(id)));
     }
 }

@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository;
 
-import java.awt.image.BufferedImage;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.model.PngImage;
 import java.io.IOException;
 
 public interface CaptureImageRepository {
@@ -8,7 +8,7 @@ public interface CaptureImageRepository {
 
     void deleteAll() throws IOException;
 
-    void save(int id, BufferedImage image) throws IOException;
+    void save(int id, PngImage pngImage) throws IOException;
 
-    BufferedImage findById(int id) throws IOException;
+    PngImage findById(int id) throws IOException;
 }

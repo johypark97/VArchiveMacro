@@ -2,8 +2,10 @@ package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
 
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.common.converter.PngImageConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.model.PngImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.app.CaptureRegionService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
@@ -63,9 +65,14 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     }
 
     @Override
-    protected BufferedImage captureScreen() throws InterruptedException {
+    protected void sleepCaptureDelay() throws InterruptedException {
         TimeUnit.MILLISECONDS.sleep(config.captureDelay());
-        return AwtRobotHelper.captureScreenshot(robot);
+    }
+
+    @Override
+    protected PngImage captureScreen() throws IOException {
+        BufferedImage captureImage = AwtRobotHelper.captureScreenshot(robot);
+        return PngImageConverter.from(captureImage);
     }
 
     @Override
@@ -87,8 +94,7 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     }
 
     @Override
-    protected void writeImage(int captureId, BufferedImage captureImage)
-            throws InterruptedException {
+    protected void writeCaptureImage(int captureId, PngImage pngImage) throws InterruptedException {
         while (true) {
             // interrupt the main task when an exception has occurred while caching images
             if (imageCachingTaskException.get() != null) {
@@ -98,7 +104,7 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
             try {
                 imageCachingService.execute(() -> {
                     try {
-                        captureImageService.save(captureId, captureImage);
+                        captureImageService.save(captureId, pngImage);
                     } catch (IOException e) {
                         LOGGER.atError().setCause(e).log("writeImage() Exception");
                         imageCachingTaskException.compareAndSet(null, e);

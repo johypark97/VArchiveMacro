@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.model.PngImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService;
@@ -15,7 +16,6 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -47,7 +47,9 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
         this.selectedCategorySet = selectedCategorySet;
     }
 
-    protected abstract BufferedImage captureScreen() throws InterruptedException;
+    protected abstract void sleepCaptureDelay() throws InterruptedException;
+
+    protected abstract PngImage captureScreen() throws IOException;
 
     protected abstract CaptureRegion getCaptureRegion() throws DisplayResolutionException;
 
@@ -55,7 +57,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
     protected abstract void moveToNextSong() throws InterruptedException;
 
-    protected abstract void writeImage(int captureId, BufferedImage captureImage)
+    protected abstract void writeCaptureImage(int captureId, PngImage pngImage)
             throws InterruptedException;
 
     private Queue<Song.Pack.Category> createCategoryQueue() {
@@ -73,15 +75,13 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
         return queue;
     }
 
-    private String readTitle(OcrService ocrService, BufferedImage image, Rectangle titleRectangle)
-            throws IOException, PixImageException {
-        BufferedImage titleImage =
-                image.getSubimage(titleRectangle.x, titleRectangle.y, titleRectangle.width,
-                        titleRectangle.height);
-
-        try (PixImage pix = pixImageService.createPixImage(titleImage)) {
-            pixImageService.preprocessTitle(pix);
-            return ocrService.run(pix);
+    private String readTitle(OcrService ocrService, PngImage image, Rectangle titleRectangle)
+            throws PixImageException {
+        try (PixImage pix = pixImageService.createPixImage(image.data())) {
+            try (PixImage titlePix = pix.crop(titleRectangle)) {
+                pixImageService.preprocessTitle(titlePix);
+                return ocrService.run(titlePix);
+            }
         }
     }
 
@@ -122,8 +122,11 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
                         moveToNextSong();
                     }
 
+                    // wait as long as captureDelay before capture
+                    sleepCaptureDelay();
+
                     // capture the screen
-                    BufferedImage captureImage = captureScreen();
+                    PngImage captureImage = captureScreen();
 
                     // read title
                     String scannedTitle = readTitle(ocrService, captureImage, region.getTitle());
@@ -133,7 +136,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
                     Capture capture = new Capture(category, scannedTitle, region);
                     CaptureEntry captureEntry = captureService.save(capture);
 
-                    writeImage(captureEntry.entryId(), captureImage);
+                    writeCaptureImage(captureEntry.entryId(), captureImage);
 
                     // check duplication and break the loop
                     if (!scannedTitle.equals(previousTitle)) {

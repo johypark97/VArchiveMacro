@@ -1,10 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
 
-import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.model.PngImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
@@ -18,7 +18,6 @@ import com.github.johypark97.varchivemacro.macro.integration.app.common.Interrup
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.CaptureAnalysisTaskResult;
 import com.google.common.base.CharMatcher;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public class CaptureAnalysisTask
         imagePreloaderThreadCount = (int) (Math.log(analyzerThreadCount + 1) / Math.log(2));
     }
 
-    private void analyze(OcrService ocrService, CaptureEntry captureEntry, byte[] pngByte)
+    private void analyze(OcrService ocrService, CaptureEntry captureEntry, PngImage pngImage)
             throws PixImageException {
         Capture capture = captureEntry.capture();
         CaptureRegion region = captureEntry.capture().region;
@@ -80,7 +79,7 @@ public class CaptureAnalysisTask
             capture.clearSongRecord();
         }
 
-        try (PixImage pix = pixImageService.createPixImage(pngByte)) {
+        try (PixImage pix = pixImageService.createPixImage(pngImage.data())) {
             // preprocessing
             pixImageService.preprocessCell(pix);
 
@@ -170,7 +169,7 @@ public class CaptureAnalysisTask
             try (ExecutorService analyzerExecutorService = Executors.newFixedThreadPool(
                     analyzerThreadCount)) {
                 // prepare data structures
-                BlockingQueue<Map.Entry<CaptureEntry, byte[]>> preloadedImageQueue =
+                BlockingQueue<Map.Entry<CaptureEntry, PngImage>> preloadedImageQueue =
                         new ArrayBlockingQueue<>(imagePreloaderQueueCapacity);
 
                 // prepare an ExecutorService for image preloading
@@ -188,9 +187,8 @@ public class CaptureAnalysisTask
                     for (CaptureEntry entry : captureEntryList) {
                         imagePreloaderExecutorService.submit(() -> {
                             try {
-                                BufferedImage image = captureImageService.findById(entry.entryId());
-                                byte[] imagePngByte = ImageConverter.imageToPngBytes(image);
-                                preloadedImageQueue.put(Map.entry(entry, imagePngByte));
+                                PngImage pngImage = captureImageService.findById(entry.entryId());
+                                preloadedImageQueue.put(Map.entry(entry, pngImage));
                             } catch (InterruptedException ignored) {
                             } catch (Exception e) {
                                 LOGGER.atError().setCause(e).log("ImagePreloader Exception");
@@ -206,7 +204,7 @@ public class CaptureAnalysisTask
                                 // this loop will break out by shutdownNow() invoked after emptying
                                 // the preloadedImageQueue
                                 while (true) {
-                                    Map.Entry<CaptureEntry, byte[]> queueEntry =
+                                    Map.Entry<CaptureEntry, PngImage> queueEntry =
                                             preloadedImageQueue.take();
 
                                     try {

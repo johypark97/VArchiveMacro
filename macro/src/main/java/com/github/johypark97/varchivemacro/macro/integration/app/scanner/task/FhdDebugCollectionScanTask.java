@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
 
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.model.PngImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.app.CaptureRegionService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
@@ -10,7 +11,6 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixIm
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import java.awt.Dimension;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -37,16 +37,16 @@ public class FhdDebugCollectionScanTask extends CollectionScanTask {
     }
 
     @Override
-    protected BufferedImage captureScreen() {
-        try {
-            if (imageIndex % 50 == 0) {
-                LOGGER.atDebug().log("Loading capture image: {}", imageIndex);
-            }
+    protected void sleepCaptureDelay() {
+    }
 
-            return captureImageService.findById(imageIndex++);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    @Override
+    protected PngImage captureScreen() throws IOException {
+        if (imageIndex % 50 == 0) {
+            LOGGER.atDebug().log("Loading capture image: {}", imageIndex);
         }
+
+        return captureImageService.findById(imageIndex++);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class FhdDebugCollectionScanTask extends CollectionScanTask {
     }
 
     @Override
-    protected void writeImage(int captureId, BufferedImage captureImage) {
+    protected void writeCaptureImage(int captureId, PngImage pngImage) {
     }
 
     @Override
