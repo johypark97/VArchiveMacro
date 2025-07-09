@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.value.ObservableStringValue;
@@ -130,8 +131,8 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
         });
 
         categoryListView.setCellFactory(CheckBoxListCell.forListView(param -> {
-            param.selected.addListener(
-                    (observable, oldValue, newValue) -> categoryCountStringBinding.invalidate());
+            param.selected.addListener((observable, oldValue, newValue) -> Platform.runLater(
+                    categoryCountStringBinding::invalidate));
             return param.selected;
         }));
         categoryCountLabel.textProperty().bind(categoryCountStringBinding);
@@ -190,7 +191,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     @Override
     public void setCategoryList(List<ScannerScannerViewModel.CategoryData> value) {
         categoryListView.setItems(FXCollections.observableList(value));
-        categoryCountStringBinding.invalidate();
+        Platform.runLater(categoryCountStringBinding::invalidate);
     }
 
     @Override
