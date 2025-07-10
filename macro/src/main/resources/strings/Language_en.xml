@@ -80,9 +80,6 @@
   <entry key="scanner.scanner.categoryList.selectAllButton">Select all</entry>
   <entry key="scanner.scanner.categoryList.unselectAllButton">Unselect all</entry>
   <entry key="scanner.scanner.checkButton">Check the monitor display and resolution</entry>
-  <entry key="scanner.scanner.checker.sectionName">Test image viewer</entry>
-  <entry key="scanner.scanner.dialog.checkerOkHeader">This is a scanable resolution</entry>
-  <entry key="scanner.scanner.dialog.checkerOkMessage">Please make sure that the Test image viewer displays the screen of the monitor that will run the game.</entry>
   <entry key="scanner.scanner.dialog.exception.cacheDirectoryNotEmpty">The cache directory is not empty.</entry>
   <entry key="scanner.scanner.dialog.exception.notSupportedResolution">Not supported resolution: %s</entry>
   <entry key="scanner.scanner.dialog.taskDone">Completed the collection scanning</entry>
@@ -97,6 +94,11 @@
   <entry key="scanner.scanner.setting.startKeyLabel">Start key</entry>
   <entry key="scanner.scanner.setting.stopKeyLabel">Stop key</entry>
   <entry key="scanner.scanner.windowTitle">Collection Scanner - Scanner</entry>
+  <entry key="scanner.tester.closeButton">Close (ESC)</entry>
+  <entry key="scanner.tester.dialog.exception.notSupportedResolution">Not supported resolution: %s</entry>
+  <entry key="scanner.tester.dialog.testHeader">It is a scannable resolution</entry>
+  <entry key="scanner.tester.dialog.testMessage">Please make sure that the image viewer displays the screen of the monitor that will run the game.</entry>
+  <entry key="scanner.tester.windowTitle">Collection Scanner - Tester</entry>
   <entry key="scanner.toolBar.homeButton">Home menu</entry>
   <entry key="setting.apply">Apply</entry>
   <entry key="setting.close">Close</entry>

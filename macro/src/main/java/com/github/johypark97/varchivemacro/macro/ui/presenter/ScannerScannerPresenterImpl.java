@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
-import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
@@ -22,9 +21,6 @@ import com.github.johypark97.varchivemacro.macro.ui.viewmodel.ScannerScannerView
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import io.reactivex.rxjava3.disposables.Disposable;
-import java.awt.Dimension;
-import java.awt.Robot;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;
 import java.util.Set;
@@ -35,8 +31,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -241,31 +235,6 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
 
     @Override
     public void checkDisplayAndResolution() {
-        // TODO: Refactoring required.
-
-        Language language = Language.INSTANCE;
-
-        BufferedImage bufferedImage;
-        try {
-            bufferedImage = AwtRobotHelper.captureScreenshot(new Robot());
-            Dimension dimension =
-                    new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
-            globalContext.captureRegionService.create(dimension);
-        } catch (DisplayResolutionException e) {
-            scannerScannerStage.showWarning(language.getFormatString(
-                    "scanner.scanner.dialog.exception.notSupportedResolution", e.getMessage()));
-            return;
-        } catch (Exception e) {
-            String message = "Unexpected exception";
-            scannerScannerStage.showError(message, e);
-            return;
-        }
-
-        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-        view.setCheckerImageViewImage(image);
-
-        scannerScannerStage.showInformation(
-                language.getFormatString("scanner.scanner.dialog.checkerOkHeader"),
-                language.getFormatString("scanner.scanner.dialog.checkerOkMessage"));
+        scannerScannerStage.showScannerTester();
     }
 }

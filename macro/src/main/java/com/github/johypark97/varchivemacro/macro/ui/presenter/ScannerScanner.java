@@ -5,7 +5,6 @@ import com.github.johypark97.varchivemacro.macro.ui.viewmodel.ScannerScannerView
 import java.util.List;
 import java.util.Set;
 import javafx.beans.value.ObservableStringValue;
-import javafx.scene.image.Image;
 
 public interface ScannerScanner {
     interface ScannerScannerPresenter
@@ -32,8 +31,6 @@ public interface ScannerScanner {
         void setDebugCheckBoxVisible(boolean value);
 
         boolean getDebugCheckBoxValue();
-
-        void setCheckerImageViewImage(Image value);
 
         void setCategoryList(List<ScannerScannerViewModel.CategoryData> value);
 

@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
+import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScanner;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScannerPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
@@ -18,12 +19,17 @@ public class ScannerScannerStageImpl extends AbstractTreeableStage implements Sc
     private static final int STAGE_HEIGHT = 600;
     private static final int STAGE_WIDTH = 800;
 
+    private final StageManager stageManager;
+
     private final Runnable onStop;
 
     private ScannerScanner.ScannerScannerPresenter presenter;
 
-    public ScannerScannerStageImpl(AbstractTreeableStage parent, Runnable onStop) {
+    public ScannerScannerStageImpl(AbstractTreeableStage parent, StageManager stageManager,
+            Runnable onStop) {
         super(parent);
+
+        this.stageManager = stageManager;
 
         this.onStop = onStop;
 
@@ -64,26 +70,10 @@ public class ScannerScannerStageImpl extends AbstractTreeableStage implements Sc
     }
 
     @Override
-    public void showError(String content, Throwable throwable) {
-        showError(null, content, throwable);
-    }
-
-    @Override
     public void showError(String header, String content, Throwable throwable) {
-        Alert alert = AlertBuilder.error().setOwner(stage).setContentText(content)
-                .setThrowable(throwable).alert;
-
-        if (header != null) {
-            alert.setHeaderText(header);
-        }
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
-    }
-
-    @Override
-    public void showWarning(String content) {
-        Alert alert = AlertBuilder.warning().setOwner(stage).setContentText(content).alert;
+        Alert alert =
+                AlertBuilder.error().setOwner(stage).setHeaderText(header).setContentText(content)
+                        .setThrowable(throwable).alert;
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
@@ -91,19 +81,15 @@ public class ScannerScannerStageImpl extends AbstractTreeableStage implements Sc
 
     @Override
     public void showInformation(String content) {
-        showInformation(null, content);
-    }
-
-    @Override
-    public void showInformation(String header, String content) {
         Alert alert = AlertBuilder.information().setOwner(stage).setContentText(content).alert;
-
-        if (header != null) {
-            alert.setHeaderText(header);
-        }
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
+    }
+
+    @Override
+    public void showScannerTester() {
+        stageManager.showScannerTester(this);
     }
 
     @Override

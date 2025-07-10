@@ -80,9 +80,6 @@
   <entry key="scanner.scanner.categoryList.selectAllButton">모두 선택</entry>
   <entry key="scanner.scanner.categoryList.unselectAllButton">모두 선택 해제</entry>
   <entry key="scanner.scanner.checkButton">모니터 디스플레이 및 해상도 검사</entry>
-  <entry key="scanner.scanner.checker.sectionName">테스트 이미지 뷰어</entry>
-  <entry key="scanner.scanner.dialog.checkerOkHeader">스캔 가능 해상도입니다</entry>
-  <entry key="scanner.scanner.dialog.checkerOkMessage">테스트 이미지 뷰어에 게임을 실행할 모니터의 화면이 출력되는지 확인해주세요.</entry>
   <entry key="scanner.scanner.dialog.exception.cacheDirectoryNotEmpty">캐시 디렉토리가 비어있지 않습니다.</entry>
   <entry key="scanner.scanner.dialog.exception.notSupportedResolution">지원하지 않는 해상도입니다: %s</entry>
   <entry key="scanner.scanner.dialog.taskDone">컬렉션 스캔을 완료하였습니다</entry>
@@ -97,6 +94,11 @@
   <entry key="scanner.scanner.setting.startKeyLabel">시작 키</entry>
   <entry key="scanner.scanner.setting.stopKeyLabel">중지 키</entry>
   <entry key="scanner.scanner.windowTitle">컬렉션 스캐너 - 스캐너</entry>
+  <entry key="scanner.tester.closeButton">닫기 (ESC)</entry>
+  <entry key="scanner.tester.dialog.exception.notSupportedResolution">지원하지 않는 해상도입니다: %s</entry>
+  <entry key="scanner.tester.dialog.testHeader">스캔 가능 해상도입니다</entry>
+  <entry key="scanner.tester.dialog.testMessage">이미지 뷰어에 게임을 실행할 모니터의 화면이 출력되는지 확인해주세요.</entry>
+  <entry key="scanner.tester.windowTitle">컬렉션 스캐너 - 테스터</entry>
   <entry key="scanner.toolBar.homeButton">홈 메뉴</entry>
   <entry key="setting.apply">적용</entry>
   <entry key="setting.close">닫기</entry>

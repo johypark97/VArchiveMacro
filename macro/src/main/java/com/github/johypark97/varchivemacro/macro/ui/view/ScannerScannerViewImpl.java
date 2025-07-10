@@ -4,7 +4,6 @@ import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.common.SimpleTransition;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScanner;
-import com.github.johypark97.varchivemacro.macro.ui.view.component.ImageViewerBox;
 import com.github.johypark97.varchivemacro.macro.ui.viewmodel.ScannerScannerViewModel;
 import java.io.IOException;
 import java.net.URL;
@@ -21,11 +20,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -36,8 +33,6 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
 
     private static final Duration PROGRESS_TRANSITION_DURATION = Duration.millis(500);
     private static final int PROGRESS_TRANSITION_BLUR_RADIUS = 4;
-
-    private final ImageViewerBox imageViewerBox = new ImageViewerBox();
 
     private final GaussianBlur scannerBoxBlur = new GaussianBlur(0);
 
@@ -73,9 +68,6 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
 
     @FXML
     private CheckBox debugCheckBox;
-
-    @FXML
-    private TitledPane checkerTitledPane;
 
     @FXML
     private Button checkButton;
@@ -118,7 +110,6 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
         cacheDirectoryTextFieldTooltip.textProperty().bind(cacheDirectoryTextField.textProperty());
         debugCheckBox.setVisible(false);
 
-        checkerTitledPane.setContent(imageViewerBox);
         checkButton.setOnAction(event -> presenter.checkDisplayAndResolution());
 
         categoryCountStringBinding = Bindings.createStringBinding(() -> {
@@ -178,11 +169,6 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     @Override
     public boolean getDebugCheckBoxValue() {
         return debugCheckBox.isSelected();
-    }
-
-    @Override
-    public void setCheckerImageViewImage(Image value) {
-        imageViewerBox.setImage(value);
     }
 
     @Override

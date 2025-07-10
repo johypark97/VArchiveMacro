@@ -78,7 +78,6 @@
                 </FlowPane>
               </content>
             </TitledPane>
-            <TitledPane VBox.vgrow="ALWAYS" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="%scanner.scanner.checker.sectionName" fx:id="checkerTitledPane"/>
             <Button maxWidth="1.7976931348623157E308" minHeight="64.0" text="%scanner.scanner.checkButton" fx:id="checkButton"/>
           </children>
         </VBox>

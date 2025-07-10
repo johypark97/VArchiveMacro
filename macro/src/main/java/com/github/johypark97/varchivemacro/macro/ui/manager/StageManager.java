@@ -11,6 +11,7 @@ import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerTesterStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
@@ -71,7 +72,7 @@ public class StageManager {
             return;
         }
 
-        scannerScannerStage = new ScannerScannerStageImpl(parent, () -> {
+        scannerScannerStage = new ScannerScannerStageImpl(parent, this, () -> {
             scannerScannerStage = null; // NOPMD
         });
 
@@ -97,6 +98,10 @@ public class StageManager {
 
     public boolean isScannerScannerStageOpened() {
         return scannerScannerStage != null;
+    }
+
+    public void showScannerTester(AbstractTreeableStage parent) {
+        new ScannerTesterStageImpl(parent).startStage();
     }
 
     public void showCaptureImageViewer(AbstractTreeableStage parent,
