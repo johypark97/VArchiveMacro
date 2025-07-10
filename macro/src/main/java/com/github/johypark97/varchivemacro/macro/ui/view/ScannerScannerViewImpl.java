@@ -1,10 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.ui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
-import com.github.johypark97.varchivemacro.lib.jfx.component.ImageViewer;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.common.SimpleTransition;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScanner;
+import com.github.johypark97.varchivemacro.macro.ui.view.component.ImageViewerBox;
 import com.github.johypark97.varchivemacro.macro.ui.viewmodel.ScannerScannerViewModel;
 import java.io.IOException;
 import java.net.URL;
@@ -37,7 +37,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     private static final Duration PROGRESS_TRANSITION_DURATION = Duration.millis(500);
     private static final int PROGRESS_TRANSITION_BLUR_RADIUS = 4;
 
-    private final ImageViewer imageViewer = new ImageViewer();
+    private final ImageViewerBox imageViewerBox = new ImageViewerBox();
 
     private final GaussianBlur scannerBoxBlur = new GaussianBlur(0);
 
@@ -118,10 +118,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
         cacheDirectoryTextFieldTooltip.textProperty().bind(cacheDirectoryTextField.textProperty());
         debugCheckBox.setVisible(false);
 
-        checkerTitledPane.setContent(imageViewer);
-        imageViewer.getStyleClass().add("image-viewer");
-        imageViewer.setPrefHeight(0);
-        imageViewer.setPrefWidth(0);
+        checkerTitledPane.setContent(imageViewerBox);
         checkButton.setOnAction(event -> presenter.checkDisplayAndResolution());
 
         categoryCountStringBinding = Bindings.createStringBinding(() -> {
@@ -185,7 +182,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
 
     @Override
     public void setCheckerImageViewImage(Image value) {
-        imageViewer.setImage(value);
+        imageViewerBox.setImage(value);
     }
 
     @Override

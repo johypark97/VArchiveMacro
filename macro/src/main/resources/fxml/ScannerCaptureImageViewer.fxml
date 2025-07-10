@@ -40,24 +40,7 @@
   <center>
     <TabPane tabClosingPolicy="UNAVAILABLE">
       <tabs>
-        <Tab text="%scanner.captureImageViewer.captureImage.tabName">
-          <content>
-            <VBox fx:id="captureImageBox">
-              <children>
-                <HBox alignment="TOP_CENTER" spacing="20.0">
-                  <children>
-                    <Label text="%scanner.captureImageViewer.captureImage.lmb"/>
-                    <Label text="%scanner.captureImageViewer.captureImage.mmb"/>
-                    <Label text="%scanner.captureImageViewer.captureImage.rmb"/>
-                  </children>
-                  <padding>
-                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                  </padding>
-                </HBox>
-              </children>
-            </VBox>
-          </content>
-        </Tab>
+        <Tab text="%scanner.captureImageViewer.captureImage.tabName" fx:id="captureImageTab"/>
         <Tab text="%scanner.captureImageViewer.analysisData.tabName">
           <content>
             <VBox>

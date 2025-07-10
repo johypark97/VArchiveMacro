@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="component.imageViewerBox.lmb">Left Mouse Button: Move</entry>
+  <entry key="component.imageViewerBox.mmb">Middle Mouse Button: Zoom in/out</entry>
+  <entry key="component.imageViewerBox.rmb">Right Mouse Button: Reset</entry>
   <entry key="home.about.buildDate">Build date: %s</entry>
   <entry key="home.about.exception">Unable to fetch the program data version.</entry>
   <entry key="home.about.programDataVersion">Program data version: %s</entry>
@@ -38,9 +41,6 @@
   <entry key="scanner.captureImageViewer.analysisData.notAnalyzed">(Not analyzed)</entry>
   <entry key="scanner.captureImageViewer.analysisData.tabName">Analysis data</entry>
   <entry key="scanner.captureImageViewer.analysisData.title.sectionName">Song title</entry>
-  <entry key="scanner.captureImageViewer.captureImage.lmb">Left Mouse Button: Move</entry>
-  <entry key="scanner.captureImageViewer.captureImage.mmb">Middle Mouse Button: Zoom in/out</entry>
-  <entry key="scanner.captureImageViewer.captureImage.rmb">Right Mouse Button: Reset</entry>
   <entry key="scanner.captureImageViewer.captureImage.tabName">Capture image</entry>
   <entry key="scanner.captureImageViewer.closeButton">Close (ESC)</entry>
   <entry key="scanner.captureImageViewer.filter.label">Filter:</entry>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="component.imageViewerBox.lmb">왼쪽 마우스 버튼: 이동</entry>
+  <entry key="component.imageViewerBox.mmb">가운데 마우스 버튼: 확대/축소</entry>
+  <entry key="component.imageViewerBox.rmb">오른쪽 마우스 버튼: 초기화</entry>
   <entry key="home.about.buildDate">빌드 날짜: %s</entry>
   <entry key="home.about.exception">프로그램 데이터 버전을 가져올 수 없습니다.</entry>
   <entry key="home.about.programDataVersion">데이터 버전: %s</entry>
@@ -38,9 +41,6 @@
   <entry key="scanner.captureImageViewer.analysisData.notAnalyzed">(분석 안됨)</entry>
   <entry key="scanner.captureImageViewer.analysisData.tabName">분석 데이터</entry>
   <entry key="scanner.captureImageViewer.analysisData.title.sectionName">곡 제목</entry>
-  <entry key="scanner.captureImageViewer.captureImage.lmb">왼쪽 마우스 버튼: 이동</entry>
-  <entry key="scanner.captureImageViewer.captureImage.mmb">가운데 마우스 버튼: 확대/축소</entry>
-  <entry key="scanner.captureImageViewer.captureImage.rmb">오른쪽 마우스 버튼: 초기화</entry>
   <entry key="scanner.captureImageViewer.captureImage.tabName">캡처 이미지</entry>
   <entry key="scanner.captureImageViewer.closeButton">닫기 (ESC)</entry>
   <entry key="scanner.captureImageViewer.filter.label">필터:</entry>

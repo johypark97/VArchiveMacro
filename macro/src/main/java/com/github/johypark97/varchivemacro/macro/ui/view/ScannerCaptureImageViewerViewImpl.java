@@ -2,10 +2,10 @@ package com.github.johypark97.varchivemacro.macro.ui.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.component.ImageDisplay;
-import com.github.johypark97.varchivemacro.lib.jfx.component.ImageViewer;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.common.SimpleTransition;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerCaptureImageViewer;
+import com.github.johypark97.varchivemacro.macro.ui.view.component.ImageViewerBox;
 import com.github.johypark97.varchivemacro.macro.ui.viewmodel.CaptureImageViewerViewModel;
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +22,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -40,7 +41,7 @@ public class ScannerCaptureImageViewerViewImpl extends BorderPane
 
     private final CellBox[][] cellBoxArray = new CellBox[4][4];
     private final ImageDisplay titleImageDisplay = new BlackImageDisplay();
-    private final ImageViewer captureImageViewer = new ImageViewer();
+    private final ImageViewerBox captureImageViewerBox = new ImageViewerBox();
 
     @FXML
     private TextField filterTextField;
@@ -52,7 +53,7 @@ public class ScannerCaptureImageViewerViewImpl extends BorderPane
     private ListView<CaptureImageViewerViewModel.CaptureImage> captureImageListView;
 
     @FXML
-    private VBox captureImageBox;
+    private Tab captureImageTab;
 
     @FXML
     private VBox titleImageBox;
@@ -117,9 +118,7 @@ public class ScannerCaptureImageViewerViewImpl extends BorderPane
                     }
                 });
 
-        captureImageBox.getChildren().add(captureImageViewer);
-        captureImageViewer.getStyleClass().add("image-viewer");
-        VBox.setVgrow(captureImageViewer, Priority.ALWAYS);
+        captureImageTab.setContent(captureImageViewerBox);
 
         titleImageBox.getChildren().addFirst(titleImageDisplay);
         titleImageDisplay.setMinHeight(TITLE_IMAGE_HEIGHT / 4);
@@ -153,7 +152,7 @@ public class ScannerCaptureImageViewerViewImpl extends BorderPane
 
     @Override
     public void showCaptureImage(CaptureImageViewerViewModel.CaptureImageDetail value) {
-        captureImageViewer.setImage(value.captureImage);
+        captureImageViewerBox.setImage(value.captureImage);
 
         titleImageDisplay.setImage(value.titleImage);
         titleTextTextField.setText(value.titleText);
