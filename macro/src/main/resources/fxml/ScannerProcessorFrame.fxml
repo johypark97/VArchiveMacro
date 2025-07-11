@@ -17,9 +17,7 @@
           <children>
             <FlowPane HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" hgap="10.0">
               <children>
-                <Label text="%scanner.processor.frame.conflictLabel" fx:id="conflictLabel"/>
-                <Label text="❭"/>
-                <Label text="%scanner.processor.frame.selectLabel" fx:id="selectLabel"/>
+                <Label text="%scanner.processor.frame.reviewLabel" fx:id="reviewLabel"/>
                 <Label text="❭"/>
                 <Label text="%scanner.processor.frame.analysisLabel" fx:id="analysisLabel"/>
                 <Label text="❭"/>

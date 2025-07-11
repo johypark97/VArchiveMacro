@@ -48,8 +48,7 @@
   <entry key="scanner.captureImageViewer.windowTitle">Collection Scanner - Capture Image Viewer</entry>
   <entry key="scanner.processor.frame.analysisLabel">Analysis</entry>
   <entry key="scanner.processor.frame.captureImageViewerButton">Show all capture images</entry>
-  <entry key="scanner.processor.frame.conflictLabel">Conflict</entry>
-  <entry key="scanner.processor.frame.selectLabel">Select</entry>
+  <entry key="scanner.processor.frame.reviewLabel">Review</entry>
   <entry key="scanner.processor.frame.uploadLabel">Upload</entry>
   <entry key="scanner.processor.windowTitle">Collection Scanner - Processor</entry>
   <entry key="scanner.recordLoader.accountFile.label">Account file</entry>

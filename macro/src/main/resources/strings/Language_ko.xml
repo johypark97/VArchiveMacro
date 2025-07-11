@@ -48,8 +48,7 @@
   <entry key="scanner.captureImageViewer.windowTitle">컬렉션 스캐너 - 캡처 이미지 뷰어</entry>
   <entry key="scanner.processor.frame.analysisLabel">분석</entry>
   <entry key="scanner.processor.frame.captureImageViewerButton">모든 캡처 이미지 보기</entry>
-  <entry key="scanner.processor.frame.conflictLabel">충돌</entry>
-  <entry key="scanner.processor.frame.selectLabel">선택</entry>
+  <entry key="scanner.processor.frame.reviewLabel">검토</entry>
   <entry key="scanner.processor.frame.uploadLabel">업로드</entry>
   <entry key="scanner.processor.windowTitle">컬렉션 스캐너 - 처리기</entry>
   <entry key="scanner.recordLoader.accountFile.label">계정 파일</entry>
