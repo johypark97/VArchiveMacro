@@ -79,10 +79,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     private Label categoryCountLabel;
 
     @FXML
-    private Button selectAllCategoryButton;
-
-    @FXML
-    private Button unselectAllCategoryButton;
+    private Button toggleAllCategoryButton;
 
     @FXML
     private VBox progressBox;
@@ -124,10 +121,11 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
             return param.selected;
         }));
         categoryCountLabel.textProperty().bind(categoryCountStringBinding);
-        selectAllCategoryButton.setOnAction(
-                event -> categoryListView.getItems().forEach(x -> x.selected.set(true)));
-        unselectAllCategoryButton.setOnAction(
-                event -> categoryListView.getItems().forEach(x -> x.selected.set(false)));
+        toggleAllCategoryButton.setOnAction(event -> {
+            List<ScannerScannerViewModel.CategoryData> list = categoryListView.getItems();
+            boolean value = list.stream().filter(x -> x.selected.get()).count() != list.size();
+            list.forEach(x -> x.selected.set(value));
+        });
 
         progressBox.setVisible(false);
     }

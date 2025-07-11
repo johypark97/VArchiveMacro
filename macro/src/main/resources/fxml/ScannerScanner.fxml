@@ -94,12 +94,7 @@
                 <Label fx:id="categoryCountLabel"/>
               </children>
             </HBox>
-            <HBox spacing="10.0">
-              <children>
-                <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%scanner.scanner.categoryList.selectAllButton" fx:id="selectAllCategoryButton"/>
-                <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%scanner.scanner.categoryList.unselectAllButton" fx:id="unselectAllCategoryButton"/>
-              </children>
-            </HBox>
+            <Button HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308" text="%scanner.scanner.categoryList.toggleAllButton" fx:id="toggleAllCategoryButton"/>
           </children>
         </VBox>
       </children>

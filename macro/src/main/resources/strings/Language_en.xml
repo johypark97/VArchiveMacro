@@ -77,8 +77,7 @@
   <entry key="scanner.recordViewer.songFilter.resetButtonTooltip">Reset</entry>
   <entry key="scanner.scanner.categoryList.count">Number of selected categories:</entry>
   <entry key="scanner.scanner.categoryList.sectionName">Category list</entry>
-  <entry key="scanner.scanner.categoryList.selectAllButton">Select all</entry>
-  <entry key="scanner.scanner.categoryList.unselectAllButton">Unselect all</entry>
+  <entry key="scanner.scanner.categoryList.toggleAllButton">Toggle all</entry>
   <entry key="scanner.scanner.checkButton">Check the monitor display and resolution</entry>
   <entry key="scanner.scanner.dialog.exception.cacheDirectoryNotEmpty">The cache directory is not empty.</entry>
   <entry key="scanner.scanner.dialog.exception.notSupportedResolution">Not supported resolution: %s</entry>

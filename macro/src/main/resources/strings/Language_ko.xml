@@ -77,8 +77,7 @@
   <entry key="scanner.recordViewer.songFilter.resetButtonTooltip">초기화</entry>
   <entry key="scanner.scanner.categoryList.count">선택된 카테고리 개수:</entry>
   <entry key="scanner.scanner.categoryList.sectionName">카테고리 리스트</entry>
-  <entry key="scanner.scanner.categoryList.selectAllButton">모두 선택</entry>
-  <entry key="scanner.scanner.categoryList.unselectAllButton">모두 선택 해제</entry>
+  <entry key="scanner.scanner.categoryList.toggleAllButton">전체 선택/해제</entry>
   <entry key="scanner.scanner.checkButton">모니터 디스플레이 및 해상도 검사</entry>
   <entry key="scanner.scanner.dialog.exception.cacheDirectoryNotEmpty">캐시 디렉토리가 비어있지 않습니다.</entry>
   <entry key="scanner.scanner.dialog.exception.notSupportedResolution">지원하지 않는 해상도입니다: %s</entry>
