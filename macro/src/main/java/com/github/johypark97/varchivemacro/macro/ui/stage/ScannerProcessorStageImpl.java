@@ -6,9 +6,12 @@ import com.github.johypark97.varchivemacro.macro.integration.context.ScannerCont
 import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorFrame;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorFramePresenterImpl;
+import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorReview;
+import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorReviewPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerProcessorFrameViewImpl;
+import com.github.johypark97.varchivemacro.macro.ui.view.ScannerProcessorReviewViewImpl;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
@@ -24,6 +27,8 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
     private final Runnable onStop;
 
     private ScannerProcessorFrame.Presenter framePresenter;
+    private ViewPresenterPair<ScannerProcessorReviewViewImpl, ScannerProcessorReview.Presenter>
+            review;
 
     public ScannerProcessorStageImpl(AbstractTreeableStage parent, StageManager stageManager,
             ScannerContext scannerContext, Runnable onStop) {
@@ -76,6 +81,18 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
     }
 
     @Override
+    public void changeCenterView_review() {
+        if (review == null) {
+            review = new ViewPresenterPair<>(new ScannerProcessorReviewViewImpl(),
+                    new ScannerProcessorReviewPresenterImpl());
+
+            Mvp.linkViewAndPresenter(review.view, review.presenter);
+        }
+
+        framePresenter.setCenterView(review.view);
+    }
+
+    @Override
     protected boolean onStopStage() {
         if (!framePresenter.stopView()) {
             return false;
@@ -84,5 +101,8 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
         onStop.run();
 
         return true;
+    }
+
+    private record ViewPresenterPair<V, P>(V view, P presenter) {
     }
 }

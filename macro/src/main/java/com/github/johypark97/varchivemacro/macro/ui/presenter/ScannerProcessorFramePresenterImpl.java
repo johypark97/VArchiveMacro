@@ -15,6 +15,7 @@ public class ScannerProcessorFramePresenterImpl implements ScannerProcessorFrame
 
     @Override
     public void startView() {
+        scannerProcessorStage.changeCenterView_review();
     }
 
     @Override
