@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
+import javafx.scene.Node;
 
 public class ScannerProcessorFramePresenterImpl implements ScannerProcessorFrame.Presenter {
     private final ScannerProcessorStage scannerProcessorStage;
@@ -24,5 +25,13 @@ public class ScannerProcessorFramePresenterImpl implements ScannerProcessorFrame
     @Override
     public void showCaptureImageViewer() {
         scannerProcessorStage.showCaptureImageViewer();
+    }
+
+    @Override
+    public <T extends Node & ScannerProcessorFrame.ViewButtonController> void setCenterView(
+            T value) {
+        view.setCenterNode(value);
+        view.setLeftButtonFunction(value.getLeftButtonFunction());
+        view.setRightButtonFunction(value.getRightButtonFunction());
     }
 }

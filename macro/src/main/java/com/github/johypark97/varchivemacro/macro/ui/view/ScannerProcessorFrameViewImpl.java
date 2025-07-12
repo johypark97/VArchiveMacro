@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorFr
 import java.io.IOException;
 import java.net.URL;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -48,5 +49,22 @@ public class ScannerProcessorFrameViewImpl extends BorderPane
     @FXML
     public void initialize() {
         captureImageViewerButton.setOnAction(event -> presenter.showCaptureImageViewer());
+    }
+
+    @Override
+    public void setCenterNode(Node value) {
+        setCenter(value);
+    }
+
+    @Override
+    public void setLeftButtonFunction(ScannerProcessorFrame.ButtonFunction value) {
+        leftButton.setOnAction(value.eventHandler());
+        leftButton.setText(value.text());
+    }
+
+    @Override
+    public void setRightButtonFunction(ScannerProcessorFrame.ButtonFunction value) {
+        rightButton.setOnAction(value.eventHandler());
+        rightButton.setText(value.text());
     }
 }
