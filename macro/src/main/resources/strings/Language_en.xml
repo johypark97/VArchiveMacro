@@ -43,8 +43,8 @@
   <entry key="scanner.captureImageViewer.analysisData.title.sectionName">Song title</entry>
   <entry key="scanner.captureImageViewer.captureImage.tabName">Capture image</entry>
   <entry key="scanner.captureImageViewer.closeButton">Close (ESC)</entry>
-  <entry key="scanner.captureImageViewer.filter.label">Filter:</entry>
   <entry key="scanner.captureImageViewer.filter.resetButtonTooltip">Reset</entry>
+  <entry key="scanner.captureImageViewer.filter.textFieldPromptText">Search capture images</entry>
   <entry key="scanner.captureImageViewer.windowTitle">Collection Scanner - Capture Image Viewer</entry>
   <entry key="scanner.processor.frame.analysisLabel">Analysis</entry>
   <entry key="scanner.processor.frame.captureImageViewerButton">Show all capture images</entry>
@@ -72,8 +72,8 @@
   <entry key="scanner.recordViewer.recordGrid.transposeButtonTooltip">Transpose rows and columns</entry>
   <entry key="scanner.recordViewer.reloadRecordButton">Reload records</entry>
   <entry key="scanner.recordViewer.scanButton">Start scanning</entry>
-  <entry key="scanner.recordViewer.songFilter.label">Filter:</entry>
   <entry key="scanner.recordViewer.songFilter.resetButtonTooltip">Reset</entry>
+  <entry key="scanner.recordViewer.songFilter.textFieldPromptText">Search songs</entry>
   <entry key="scanner.scanner.categoryList.count">Number of selected categories:</entry>
   <entry key="scanner.scanner.categoryList.sectionName">Category list</entry>
   <entry key="scanner.scanner.categoryList.toggleAllButton">Toggle all</entry>

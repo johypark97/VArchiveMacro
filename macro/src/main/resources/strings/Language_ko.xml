@@ -43,8 +43,8 @@
   <entry key="scanner.captureImageViewer.analysisData.title.sectionName">곡 제목</entry>
   <entry key="scanner.captureImageViewer.captureImage.tabName">캡처 이미지</entry>
   <entry key="scanner.captureImageViewer.closeButton">닫기 (ESC)</entry>
-  <entry key="scanner.captureImageViewer.filter.label">필터:</entry>
   <entry key="scanner.captureImageViewer.filter.resetButtonTooltip">초기화</entry>
+  <entry key="scanner.captureImageViewer.filter.textFieldPromptText">캡처 이미지 검색</entry>
   <entry key="scanner.captureImageViewer.windowTitle">컬렉션 스캐너 - 캡처 이미지 뷰어</entry>
   <entry key="scanner.processor.frame.analysisLabel">분석</entry>
   <entry key="scanner.processor.frame.captureImageViewerButton">모든 캡처 이미지 보기</entry>
@@ -72,8 +72,8 @@
   <entry key="scanner.recordViewer.recordGrid.transposeButtonTooltip">행렬 전치</entry>
   <entry key="scanner.recordViewer.reloadRecordButton">기록 다시 불러오기</entry>
   <entry key="scanner.recordViewer.scanButton">스캔 시작하기</entry>
-  <entry key="scanner.recordViewer.songFilter.label">필터:</entry>
   <entry key="scanner.recordViewer.songFilter.resetButtonTooltip">초기화</entry>
+  <entry key="scanner.recordViewer.songFilter.textFieldPromptText">곡 검색</entry>
   <entry key="scanner.scanner.categoryList.count">선택된 카테고리 개수:</entry>
   <entry key="scanner.scanner.categoryList.sectionName">카테고리 리스트</entry>
   <entry key="scanner.scanner.categoryList.toggleAllButton">전체 선택/해제</entry>

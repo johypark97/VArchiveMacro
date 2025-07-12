@@ -31,8 +31,7 @@
               <children>
                 <HBox alignment="CENTER" spacing="5.0">
                   <children>
-                    <Label text="%scanner.recordViewer.songFilter.label"/>
-                    <TextField HBox.hgrow="ALWAYS" prefColumnCount="0" fx:id="recordViewerSongFilterTextField"/>
+                    <TextField HBox.hgrow="ALWAYS" prefColumnCount="0" promptText="%scanner.recordViewer.songFilter.textFieldPromptText" fx:id="recordViewerSongFilterTextField"/>
                     <Button text="↺" fx:id="recordViewerSongFilterResetButton">
                       <tooltip>
                         <Tooltip text="%scanner.recordViewer.songFilter.resetButtonTooltip"/>

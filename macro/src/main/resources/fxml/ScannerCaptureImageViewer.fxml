@@ -21,8 +21,7 @@
       <children>
         <HBox alignment="CENTER_LEFT" spacing="5.0">
           <children>
-            <Label text="%scanner.captureImageViewer.filter.label"/>
-            <TextField HBox.hgrow="ALWAYS" fx:id="filterTextField"/>
+            <TextField HBox.hgrow="ALWAYS" promptText="%scanner.captureImageViewer.filter.textFieldPromptText" fx:id="filterTextField"/>
             <Button text="↺" fx:id="filterResetButton">
               <tooltip>
                 <Tooltip text="%scanner.captureImageViewer.filter.resetButtonTooltip"/>
