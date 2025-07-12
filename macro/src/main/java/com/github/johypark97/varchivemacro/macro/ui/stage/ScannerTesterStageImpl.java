@@ -19,7 +19,7 @@ public class ScannerTesterStageImpl extends AbstractTreeableStage implements Sca
     private static final int STAGE_HEIGHT = 900;
     private static final int STAGE_WIDTH = 1600;
 
-    private ScannerTester.ScannerTesterPresenter presenter;
+    private ScannerTester.Presenter presenter;
 
     public ScannerTesterStageImpl(AbstractTreeableStage parent) {
         super(parent);

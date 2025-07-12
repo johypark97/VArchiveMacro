@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 
-public class ScannerTesterViewImpl extends BorderPane implements ScannerTester.ScannerTesterView {
+public class ScannerTesterViewImpl extends BorderPane implements ScannerTester.View {
     private static final String FXML_PATH = "/fxml/ScannerTester.fxml";
 
     private final ImageViewerBox imageViewerBox = new ImageViewerBox();
@@ -20,7 +20,7 @@ public class ScannerTesterViewImpl extends BorderPane implements ScannerTester.S
     private Button closeButton;
 
     @MvpPresenter
-    public ScannerTester.ScannerTesterPresenter presenter;
+    public ScannerTester.Presenter presenter;
 
     public ScannerTesterViewImpl() {
         URL fxmlUrl = ScannerTesterViewImpl.class.getResource(FXML_PATH);

@@ -5,7 +5,7 @@ import java.util.Locale;
 import javafx.scene.Node;
 
 public interface Home {
-    interface HomePresenter extends Mvp.MvpPresenter<HomeView, HomePresenter> {
+    interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
         boolean stopView();
@@ -24,7 +24,7 @@ public interface Home {
     }
 
 
-    interface HomeView extends Mvp.MvpView<HomeView, HomePresenter> {
+    interface View extends Mvp.MvpView<View, Presenter> {
         void setCenterNode(Node value);
 
         void setSelectedLanguage(Locale locale);

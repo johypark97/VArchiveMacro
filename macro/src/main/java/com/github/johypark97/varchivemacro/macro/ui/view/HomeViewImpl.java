@@ -12,7 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.BorderPane;
 
-public class HomeViewImpl extends BorderPane implements Home.HomeView {
+public class HomeViewImpl extends BorderPane implements Home.View {
     private static final String FXML_PATH = "/fxml/Home.fxml";
 
     @FXML
@@ -34,7 +34,7 @@ public class HomeViewImpl extends BorderPane implements Home.HomeView {
     private MenuItem aboutMenuItem;
 
     @MvpPresenter
-    public Home.HomePresenter presenter;
+    public Home.Presenter presenter;
 
     public HomeViewImpl() {
         URL fxmlUrl = HomeViewImpl.class.getResource(FXML_PATH);

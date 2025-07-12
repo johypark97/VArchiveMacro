@@ -5,7 +5,7 @@ import com.github.johypark97.varchivemacro.macro.ui.viewmodel.ScannerHomeViewMod
 import javafx.scene.control.TreeItem;
 
 public interface ScannerHome {
-    interface ScannerHomePresenter extends Mvp.MvpPresenter<ScannerHomeView, ScannerHomePresenter> {
+    interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
         boolean stopView();
@@ -26,7 +26,7 @@ public interface ScannerHome {
     }
 
 
-    interface ScannerHomeView extends Mvp.MvpView<ScannerHomeView, ScannerHomePresenter> {
+    interface View extends Mvp.MvpView<View, Presenter> {
         void showViewer();
 
         void showLoader();

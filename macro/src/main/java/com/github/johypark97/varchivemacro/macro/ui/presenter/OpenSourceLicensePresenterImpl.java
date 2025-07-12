@@ -5,13 +5,12 @@ import com.github.johypark97.varchivemacro.macro.integration.context.GlobalConte
 import com.github.johypark97.varchivemacro.macro.integration.context.OpenSourceLicenseContext;
 import java.io.IOException;
 
-public class OpenSourceLicensePresenterImpl
-        implements OpenSourceLicense.OpenSourceLicensePresenter {
+public class OpenSourceLicensePresenterImpl implements OpenSourceLicense.Presenter {
     private final GlobalContext globalContext;
     private final OpenSourceLicenseContext openSourceLicenseContext;
 
     @MvpView
-    public OpenSourceLicense.OpenSourceLicenseView view;
+    public OpenSourceLicense.View view;
 
     public OpenSourceLicensePresenterImpl(GlobalContext globalContext,
             OpenSourceLicenseContext openSourceLicenseContext) {

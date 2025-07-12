@@ -6,7 +6,7 @@ import javafx.beans.value.ObservableBooleanValue;
 import javafx.scene.input.KeyEvent;
 
 public interface Setting {
-    interface SettingPresenter extends Mvp.MvpPresenter<SettingView, SettingPresenter> {
+    interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
         boolean stopView();
@@ -55,7 +55,7 @@ public interface Setting {
     }
 
 
-    interface SettingView extends Mvp.MvpView<SettingView, SettingPresenter> {
+    interface View extends Mvp.MvpView<View, Presenter> {
         void bindApplyButtonEnable(ObservableBooleanValue value);
 
         void bindRevertButtonEnable(ObservableBooleanValue value);

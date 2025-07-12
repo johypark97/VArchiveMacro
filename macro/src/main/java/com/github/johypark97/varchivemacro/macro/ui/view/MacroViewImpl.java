@@ -20,7 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-public class MacroViewImpl extends BorderPane implements Macro.MacroView {
+public class MacroViewImpl extends BorderPane implements Macro.View {
     private static final String FXML_PATH = "/fxml/Macro.fxml";
 
     private static final Duration PROGRESS_TRANSITION_DURATION = Duration.millis(500);
@@ -77,7 +77,7 @@ public class MacroViewImpl extends BorderPane implements Macro.MacroView {
     private Button homeButton;
 
     @MvpPresenter
-    public Macro.MacroPresenter presenter;
+    public Macro.Presenter presenter;
 
     private SliderTextFieldLinker countLinker;
 

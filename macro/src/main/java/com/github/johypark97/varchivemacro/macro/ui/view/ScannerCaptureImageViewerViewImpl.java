@@ -35,7 +35,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class ScannerCaptureImageViewerViewImpl extends BorderPane
-        implements ScannerCaptureImageViewer.ScannerCaptureImageViewerView {
+        implements ScannerCaptureImageViewer.View {
     private static final String FXML_PATH = "/fxml/ScannerCaptureImageViewer.fxml";
     private static final double TITLE_IMAGE_HEIGHT = 128;
 
@@ -71,7 +71,7 @@ public class ScannerCaptureImageViewerViewImpl extends BorderPane
     private Button closeButton;
 
     @MvpPresenter
-    public ScannerCaptureImageViewer.ScannerCaptureImageViewerPresenter presenter;
+    public ScannerCaptureImageViewer.Presenter presenter;
 
     public ScannerCaptureImageViewerViewImpl() {
         URL fxmlUrl = ScannerCaptureImageViewerViewImpl.class.getResource(FXML_PATH);

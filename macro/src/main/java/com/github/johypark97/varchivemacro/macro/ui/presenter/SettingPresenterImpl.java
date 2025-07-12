@@ -29,7 +29,7 @@ import javafx.scene.input.KeyEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SettingPresenterImpl implements Setting.SettingPresenter {
+public class SettingPresenterImpl implements Setting.Presenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(SettingPresenterImpl.class);
 
     private static final EnumSet<InputKey> INVALID_INPUT_KEY_SET =
@@ -47,7 +47,7 @@ public class SettingPresenterImpl implements Setting.SettingPresenter {
     private boolean invalidCacheDirectory;
 
     @MvpView
-    public Setting.SettingView view;
+    public Setting.View view;
 
     public SettingPresenterImpl(SettingStage settingStage, GlobalContext globalContext) {
         this.settingStage = settingStage;

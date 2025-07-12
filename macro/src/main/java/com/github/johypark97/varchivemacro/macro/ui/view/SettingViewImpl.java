@@ -19,7 +19,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
-public class SettingViewImpl extends VBox implements Setting.SettingView {
+public class SettingViewImpl extends VBox implements Setting.View {
     private static final String FXML_PATH = "/fxml/Setting.fxml";
 
     @FXML
@@ -114,7 +114,7 @@ public class SettingViewImpl extends VBox implements Setting.SettingView {
     private SliderTextFieldLinker scannerKeyHoldTimeLinker;
 
     @MvpPresenter
-    public Setting.SettingPresenter presenter;
+    public Setting.Presenter presenter;
 
     public SettingViewImpl() {
         URL fxmlUrl = SettingViewImpl.class.getResource(FXML_PATH);

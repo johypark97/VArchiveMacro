@@ -27,7 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class ScannerHomeViewImpl extends BorderPane implements ScannerHome.ScannerHomeView {
+public class ScannerHomeViewImpl extends BorderPane implements ScannerHome.View {
     private static final String FXML_PATH = "/fxml/ScannerHome.fxml";
 
     @FXML
@@ -93,7 +93,7 @@ public class ScannerHomeViewImpl extends BorderPane implements ScannerHome.Scann
     private RecordGridController recordGridController;
 
     @MvpPresenter
-    public ScannerHome.ScannerHomePresenter presenter;
+    public ScannerHome.Presenter presenter;
 
     public ScannerHomeViewImpl() {
         URL fxmlUrl = ScannerHomeViewImpl.class.getResource(FXML_PATH);

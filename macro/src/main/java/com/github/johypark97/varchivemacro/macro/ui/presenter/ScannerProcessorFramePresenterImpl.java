@@ -2,12 +2,11 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
 
-public class ScannerProcessorFramePresenterImpl
-        implements ScannerProcessorFrame.ScannerProcessorFramePresenter {
+public class ScannerProcessorFramePresenterImpl implements ScannerProcessorFrame.Presenter {
     private final ScannerProcessorStage scannerProcessorStage;
 
     @MvpView
-    public ScannerProcessorFrame.ScannerProcessorFrameView view;
+    public ScannerProcessorFrame.View view;
 
     public ScannerProcessorFramePresenterImpl(ScannerProcessorStage scannerProcessorStage) {
         this.scannerProcessorStage = scannerProcessorStage;

@@ -2,11 +2,11 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 
-public class ModeSelectorPresenterImpl implements ModeSelector.ModeSelectorPresenter {
+public class ModeSelectorPresenterImpl implements ModeSelector.Presenter {
     private final HomeStage homeStage;
 
     @MvpView
-    public ModeSelector.ModeSelectorView view;
+    public ModeSelector.View view;
 
     public ModeSelectorPresenterImpl(HomeStage homeStage) {
         this.homeStage = homeStage;

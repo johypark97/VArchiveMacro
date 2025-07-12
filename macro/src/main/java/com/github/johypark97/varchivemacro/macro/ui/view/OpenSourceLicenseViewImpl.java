@@ -13,8 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 
-public class OpenSourceLicenseViewImpl extends HBox
-        implements OpenSourceLicense.OpenSourceLicenseView {
+public class OpenSourceLicenseViewImpl extends HBox implements OpenSourceLicense.View {
     private static final String FXML_PATH = "/fxml/OpenSourceLicense.fxml";
 
     @FXML
@@ -27,7 +26,7 @@ public class OpenSourceLicenseViewImpl extends HBox
     private Hyperlink libraryUrlHyperlink;
 
     @MvpPresenter
-    public OpenSourceLicense.OpenSourceLicensePresenter presenter;
+    public OpenSourceLicense.Presenter presenter;
 
     public OpenSourceLicenseViewImpl() {
         URL fxmlUrl = OpenSourceLicenseViewImpl.class.getResource(FXML_PATH);

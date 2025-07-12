@@ -50,10 +50,10 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
 
     private final StageManager stageManager;
 
-    private Home.HomePresenter homePresenter;
-    private Macro.MacroPresenter macroPresenter;
-    private ModeSelector.ModeSelectorPresenter modeSelectorPresenter;
-    private ScannerHome.ScannerHomePresenter scannerHomePresenter;
+    private Home.Presenter homePresenter;
+    private Macro.Presenter macroPresenter;
+    private ModeSelector.Presenter modeSelectorPresenter;
+    private ScannerHome.Presenter scannerHomePresenter;
 
     private Disposable disposableGlobalEvent;
 

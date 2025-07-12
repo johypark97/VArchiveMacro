@@ -3,8 +3,7 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 
 public interface ModeSelector {
-    interface ModeSelectorPresenter
-            extends Mvp.MvpPresenter<ModeSelectorView, ModeSelectorPresenter> {
+    interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
         boolean stopView();
@@ -15,6 +14,6 @@ public interface ModeSelector {
     }
 
 
-    interface ModeSelectorView extends Mvp.MvpView<ModeSelectorView, ModeSelectorPresenter> {
+    interface View extends Mvp.MvpView<View, Presenter> {
     }
 }

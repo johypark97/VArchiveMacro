@@ -4,8 +4,7 @@ import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import java.util.List;
 
 public interface OpenSourceLicense {
-    interface OpenSourceLicensePresenter
-            extends Mvp.MvpPresenter<OpenSourceLicenseView, OpenSourceLicensePresenter> {
+    interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
         void showLicense(String value);
@@ -14,8 +13,7 @@ public interface OpenSourceLicense {
     }
 
 
-    interface OpenSourceLicenseView
-            extends Mvp.MvpView<OpenSourceLicenseView, OpenSourceLicensePresenter> {
+    interface View extends Mvp.MvpView<View, Presenter> {
         void showLibraryList(List<String> value);
 
         void showLicenseText(String value);

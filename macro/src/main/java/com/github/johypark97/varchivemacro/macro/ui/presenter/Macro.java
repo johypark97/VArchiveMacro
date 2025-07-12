@@ -3,7 +3,7 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 
 public interface Macro {
-    interface MacroPresenter extends Mvp.MvpPresenter<MacroView, MacroPresenter> {
+    interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
         boolean stopView();
@@ -22,7 +22,7 @@ public interface Macro {
     }
 
 
-    interface MacroView extends Mvp.MvpView<MacroView, MacroPresenter> {
+    interface View extends Mvp.MvpView<View, Presenter> {
         void setupCountSlider(int value, int defaultValue, int min, int max);
 
         void setCount(int value);

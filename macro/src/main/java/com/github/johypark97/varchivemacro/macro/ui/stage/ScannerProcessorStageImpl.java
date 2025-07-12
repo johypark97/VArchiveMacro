@@ -23,7 +23,7 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
 
     private final Runnable onStop;
 
-    private ScannerProcessorFrame.ScannerProcessorFramePresenter framePresenter;
+    private ScannerProcessorFrame.Presenter framePresenter;
 
     public ScannerProcessorStageImpl(AbstractTreeableStage parent, StageManager stageManager,
             ScannerContext scannerContext, Runnable onStop) {

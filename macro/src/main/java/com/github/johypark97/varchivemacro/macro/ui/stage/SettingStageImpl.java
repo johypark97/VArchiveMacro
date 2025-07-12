@@ -30,7 +30,7 @@ public class SettingStageImpl extends AbstractTreeableStage implements SettingSt
 
     private final Runnable onStop;
 
-    private Setting.SettingPresenter presenter;
+    private Setting.Presenter presenter;
 
     public SettingStageImpl(AbstractTreeableStage parent, Runnable onStop) {
         super(parent);

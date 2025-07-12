@@ -3,8 +3,7 @@ package com.github.johypark97.varchivemacro.macro.ui.presenter;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 
 public interface ScannerProcessorFrame {
-    interface ScannerProcessorFramePresenter
-            extends Mvp.MvpPresenter<ScannerProcessorFrameView, ScannerProcessorFramePresenter> {
+    interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
         boolean stopView();
@@ -13,7 +12,6 @@ public interface ScannerProcessorFrame {
     }
 
 
-    interface ScannerProcessorFrameView
-            extends Mvp.MvpView<ScannerProcessorFrameView, ScannerProcessorFramePresenter> {
+    interface View extends Mvp.MvpView<View, Presenter> {
     }
 }

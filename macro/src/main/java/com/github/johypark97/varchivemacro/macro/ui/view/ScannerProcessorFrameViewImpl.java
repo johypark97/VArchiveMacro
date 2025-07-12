@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
 public class ScannerProcessorFrameViewImpl extends BorderPane
-        implements ScannerProcessorFrame.ScannerProcessorFrameView {
+        implements ScannerProcessorFrame.View {
     private static final String FXML_PATH = "/fxml/ScannerProcessorFrame.fxml";
 
     @FXML
@@ -33,7 +33,7 @@ public class ScannerProcessorFrameViewImpl extends BorderPane
     private Button rightButton;
 
     @MvpPresenter
-    public ScannerProcessorFrame.ScannerProcessorFramePresenter presenter;
+    public ScannerProcessorFrame.Presenter presenter;
 
     public ScannerProcessorFrameViewImpl() {
         URL fxmlUrl = ScannerProcessorFrameViewImpl.class.getResource(FXML_PATH);

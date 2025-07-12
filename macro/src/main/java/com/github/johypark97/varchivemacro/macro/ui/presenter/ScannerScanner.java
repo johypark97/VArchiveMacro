@@ -7,8 +7,7 @@ import java.util.Set;
 import javafx.beans.value.ObservableStringValue;
 
 public interface ScannerScanner {
-    interface ScannerScannerPresenter
-            extends Mvp.MvpPresenter<ScannerScannerView, ScannerScannerPresenter> {
+    interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
         boolean stopView();
@@ -17,7 +16,7 @@ public interface ScannerScanner {
     }
 
 
-    interface ScannerScannerView extends Mvp.MvpView<ScannerScannerView, ScannerScannerPresenter> {
+    interface View extends Mvp.MvpView<View, Presenter> {
         void bindAccountFileText(ObservableStringValue value);
 
         void bindCacheDirectoryText(ObservableStringValue value);

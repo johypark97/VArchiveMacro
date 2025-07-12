@@ -20,8 +20,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
-public class ScannerCaptureImageViewerPresenterImpl
-        implements ScannerCaptureImageViewer.ScannerCaptureImageViewerPresenter {
+public class ScannerCaptureImageViewerPresenterImpl implements ScannerCaptureImageViewer.Presenter {
     private final ScannerCaptureImageViewerStage scannerCaptureImageViewerStage;
 
     private final ScannerContext scannerContext;
@@ -29,7 +28,7 @@ public class ScannerCaptureImageViewerPresenterImpl
     private FilteredList<CaptureImageViewerViewModel.CaptureImage> captureImageFilteredList;
 
     @MvpView
-    public ScannerCaptureImageViewer.ScannerCaptureImageViewerView view;
+    public ScannerCaptureImageViewer.View view;
 
     public ScannerCaptureImageViewerPresenterImpl(
             ScannerCaptureImageViewerStage scannerCaptureImageViewerStage,

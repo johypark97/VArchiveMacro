@@ -23,7 +23,7 @@ public class ScannerScannerStageImpl extends AbstractTreeableStage implements Sc
 
     private final Runnable onStop;
 
-    private ScannerScanner.ScannerScannerPresenter presenter;
+    private ScannerScanner.Presenter presenter;
 
     public ScannerScannerStageImpl(AbstractTreeableStage parent, StageManager stageManager,
             Runnable onStop) {

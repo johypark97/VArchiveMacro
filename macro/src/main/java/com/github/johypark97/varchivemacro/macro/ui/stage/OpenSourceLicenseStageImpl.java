@@ -18,7 +18,7 @@ public class OpenSourceLicenseStageImpl extends AbstractTreeableStage
 
     private final Runnable onStop;
 
-    private OpenSourceLicense.OpenSourceLicensePresenter presenter;
+    private OpenSourceLicense.Presenter presenter;
 
     public OpenSourceLicenseStageImpl(AbstractTreeableStage parent, Runnable onStop) {
         super(parent);

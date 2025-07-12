@@ -5,8 +5,7 @@ import com.github.johypark97.varchivemacro.macro.ui.viewmodel.CaptureImageViewer
 import javafx.collections.ObservableList;
 
 public interface ScannerCaptureImageViewer {
-    interface ScannerCaptureImageViewerPresenter extends
-            Mvp.MvpPresenter<ScannerCaptureImageViewerView, ScannerCaptureImageViewerPresenter> {
+    interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
         void requestStopStage();
@@ -17,8 +16,7 @@ public interface ScannerCaptureImageViewer {
     }
 
 
-    interface ScannerCaptureImageViewerView
-            extends Mvp.MvpView<ScannerCaptureImageViewerView, ScannerCaptureImageViewerPresenter> {
+    interface View extends Mvp.MvpView<View, Presenter> {
         void setCaptureImageList(ObservableList<CaptureImageViewerViewModel.CaptureImage> value);
 
         void showCaptureImage(CaptureImageViewerViewModel.CaptureImageDetail value);

@@ -25,7 +25,7 @@ import javafx.concurrent.WorkerStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MacroPresenterImpl implements Macro.MacroPresenter {
+public class MacroPresenterImpl implements Macro.Presenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(MacroPresenterImpl.class);
 
     private final HomeStage homeStage;
@@ -37,7 +37,7 @@ public class MacroPresenterImpl implements Macro.MacroPresenter {
     private NativeKeyListener nativeKeyListener;
 
     @MvpView
-    public Macro.MacroView view;
+    public Macro.View view;
 
     public MacroPresenterImpl(HomeStage homeStage, GlobalContext globalContext,
             MacroContext macroContext) {

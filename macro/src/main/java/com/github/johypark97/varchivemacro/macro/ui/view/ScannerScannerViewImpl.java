@@ -28,7 +28,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.ScannerScannerView {
+public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.View {
     private static final String FXML_PATH = "/fxml/ScannerScanner.fxml";
 
     private static final Duration PROGRESS_TRANSITION_DURATION = Duration.millis(500);
@@ -85,7 +85,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     private VBox progressBox;
 
     @MvpPresenter
-    public ScannerScanner.ScannerScannerPresenter presenter;
+    public ScannerScanner.Presenter presenter;
 
     private StringBinding categoryCountStringBinding;
 

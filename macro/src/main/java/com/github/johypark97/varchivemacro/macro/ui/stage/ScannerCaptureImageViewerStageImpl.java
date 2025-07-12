@@ -20,7 +20,7 @@ public class ScannerCaptureImageViewerStageImpl extends AbstractTreeableStage
 
     private final Runnable onStop;
 
-    private ScannerCaptureImageViewer.ScannerCaptureImageViewerPresenter presenter;
+    private ScannerCaptureImageViewer.Presenter presenter;
 
     public ScannerCaptureImageViewerStageImpl(AbstractTreeableStage parent,
             ScannerContext scannerContext, Runnable onStop) {

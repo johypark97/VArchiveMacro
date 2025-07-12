@@ -34,7 +34,7 @@ import javafx.concurrent.WorkerStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScannerPresenter {
+public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScannerScannerPresenterImpl.class);
 
     private final ScannerScannerStage scannerScannerStage;
@@ -49,7 +49,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.ScannerScanne
     private ScannerContext scannerContext;
 
     @MvpView
-    public ScannerScanner.ScannerScannerView view;
+    public ScannerScanner.View view;
 
     public ScannerScannerPresenterImpl(ScannerScannerStage scannerScannerStage,
             GlobalContext globalContext) {

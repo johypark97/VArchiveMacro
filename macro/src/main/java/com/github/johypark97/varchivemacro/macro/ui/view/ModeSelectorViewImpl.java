@@ -25,7 +25,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class ModeSelectorViewImpl extends GridPane implements ModeSelector.ModeSelectorView {
+public class ModeSelectorViewImpl extends GridPane implements ModeSelector.View {
     private static final Duration ANIMATION_DURATION = Duration.millis(200);
     private static final String FXML_PATH = "/fxml/ModeSelector.fxml";
 
@@ -60,7 +60,7 @@ public class ModeSelectorViewImpl extends GridPane implements ModeSelector.ModeS
     private Button rightButton;
 
     @MvpPresenter
-    public ModeSelector.ModeSelectorPresenter presenter;
+    public ModeSelector.Presenter presenter;
 
     public ModeSelectorViewImpl() {
         URL fxmlUrl = ModeSelectorViewImpl.class.getResource(FXML_PATH);

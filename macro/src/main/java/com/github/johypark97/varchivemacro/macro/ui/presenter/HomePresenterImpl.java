@@ -9,7 +9,7 @@ import javafx.scene.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HomePresenterImpl implements Home.HomePresenter {
+public class HomePresenterImpl implements Home.Presenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomePresenterImpl.class);
 
     private final HomeStage homeStage;
@@ -17,7 +17,7 @@ public class HomePresenterImpl implements Home.HomePresenter {
     private final GlobalContext globalContext;
 
     @MvpView
-    public Home.HomeView view;
+    public Home.View view;
 
     public HomePresenterImpl(HomeStage homeStage, GlobalContext globalContext) {
         this.homeStage = homeStage;

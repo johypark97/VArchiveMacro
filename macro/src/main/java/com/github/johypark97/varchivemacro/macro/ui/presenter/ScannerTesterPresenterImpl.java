@@ -11,13 +11,13 @@ import java.awt.image.BufferedImage;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
-public class ScannerTesterPresenterImpl implements ScannerTester.ScannerTesterPresenter {
+public class ScannerTesterPresenterImpl implements ScannerTester.Presenter {
     private final ScannerTesterStage scannerTesterStage;
 
     private final GlobalContext globalContext;
 
     @MvpView
-    public ScannerTester.ScannerTesterView view;
+    public ScannerTester.View view;
 
     public ScannerTesterPresenterImpl(ScannerTesterStage scannerTesterStage,
             GlobalContext globalContext) {

@@ -24,7 +24,7 @@ import javafx.scene.control.TreeItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresenter {
+public class ScannerHomePresenterImpl implements ScannerHome.Presenter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScannerHomePresenterImpl.class);
 
     private final HomeStage homeStage;
@@ -32,7 +32,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.ScannerHomePresente
     private final GlobalContext globalContext;
 
     @MvpView
-    public ScannerHome.ScannerHomeView view;
+    public ScannerHome.View view;
 
     public ScannerHomePresenterImpl(HomeStage homeStage, GlobalContext globalContext) {
         this.homeStage = homeStage;
