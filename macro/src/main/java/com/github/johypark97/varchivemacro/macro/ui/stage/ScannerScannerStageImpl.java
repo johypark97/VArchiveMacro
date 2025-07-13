@@ -80,6 +80,14 @@ public class ScannerScannerStageImpl extends AbstractTreeableStage implements Sc
     }
 
     @Override
+    public void showWarning(String content) {
+        Alert alert = AlertBuilder.warning().setOwner(stage).setContentText(content).alert;
+
+        Toolkit.getDefaultToolkit().beep();
+        alert.showAndWait();
+    }
+
+    @Override
     public void showInformation(String content) {
         Alert alert = AlertBuilder.information().setOwner(stage).setContentText(content).alert;
 

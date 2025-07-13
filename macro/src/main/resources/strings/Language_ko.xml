@@ -108,6 +108,7 @@
   <entry key="scanner.scanner.categoryList.sectionName">카테고리 리스트</entry>
   <entry key="scanner.scanner.categoryList.toggleAllButton">전체 선택/해제</entry>
   <entry key="scanner.scanner.checkButton">모니터 디스플레이 및 해상도 검사</entry>
+  <entry key="scanner.scanner.dialog.categoryNotSelected">스캔할 카테고리가 선택되지 않았습니다. 최소 1개 이상 선택해주세요.</entry>
   <entry key="scanner.scanner.dialog.exception.cacheDirectoryNotEmpty">캐시 디렉토리가 비어있지 않습니다.</entry>
   <entry key="scanner.scanner.dialog.exception.notSupportedResolution">지원하지 않는 해상도입니다: %s</entry>
   <entry key="scanner.scanner.dialog.taskDone">컬렉션 스캔을 완료하였습니다</entry>

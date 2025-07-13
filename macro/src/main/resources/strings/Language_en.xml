@@ -108,6 +108,7 @@
   <entry key="scanner.scanner.categoryList.sectionName">Category list</entry>
   <entry key="scanner.scanner.categoryList.toggleAllButton">Toggle all</entry>
   <entry key="scanner.scanner.checkButton">Check the monitor display and resolution</entry>
+  <entry key="scanner.scanner.dialog.categoryNotSelected">No categories were selected to scan. Please select at least one.</entry>
   <entry key="scanner.scanner.dialog.exception.cacheDirectoryNotEmpty">The cache directory is not empty.</entry>
   <entry key="scanner.scanner.dialog.exception.notSupportedResolution">Not supported resolution: %s</entry>
   <entry key="scanner.scanner.dialog.taskDone">Completed the collection scanning</entry>

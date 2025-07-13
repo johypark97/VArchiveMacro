@@ -75,6 +75,13 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     }
 
     private synchronized void startScan() {
+        Set<String> selectedCategorySet = getSelectedCategorySet();
+        if (selectedCategorySet.isEmpty()) {
+            scannerScannerStage.showWarning(
+                    Language.INSTANCE.getString("scanner.scanner.dialog.categoryNotSelected"));
+            return;
+        }
+
         try {
             boolean debug = globalContext.configService.isDebug() && view.getDebugCheckBoxValue();
             scannerContext = ContextManager.INSTANCE.createScannerContext(debug);
@@ -91,7 +98,6 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
             return;
         }
 
-        Set<String> selectedCategorySet = getSelectedCategorySet();
         Task<Void> task = scannerContext.collectionScanTaskService.createTask(selectedCategorySet);
         if (task == null) {
             return;
