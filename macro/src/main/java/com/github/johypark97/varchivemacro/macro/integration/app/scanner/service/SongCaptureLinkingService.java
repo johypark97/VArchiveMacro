@@ -40,11 +40,9 @@ public class SongCaptureLinkingService {
     }
 
     public void link() {
-        if (captureService.isEmpty()) {
+        if (!songCaptureLinkService.isEmpty()) {
             throw new IllegalStateException();
         }
-
-        songCaptureLinkService.deleteAll();
 
         captureService.findAll().forEach(captureEntry -> {
             Map<String, List<Song>> lookup =

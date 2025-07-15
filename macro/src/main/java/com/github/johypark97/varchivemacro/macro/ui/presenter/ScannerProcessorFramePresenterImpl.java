@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.presenter;
 
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
+import javafx.application.Platform;
 import javafx.scene.Node;
 
 public class ScannerProcessorFramePresenterImpl implements ScannerProcessorFrame.Presenter {
@@ -16,6 +17,7 @@ public class ScannerProcessorFramePresenterImpl implements ScannerProcessorFrame
     @Override
     public void startView() {
         scannerProcessorStage.changeCenterView_review();
+        Platform.runLater(view::runLeftButtonAction);
     }
 
     @Override

@@ -7,11 +7,16 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.infra.repo
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.infra.repository.DiskCaptureImageRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptureLinkService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.repository.SongCaptureLinkRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.link.infra.repository.DefaultSongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
+import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.ScannerReviewService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.CollectionScanTaskService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.DefaultCollectionScanTaskService;
+import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.SongCaptureLinkingService;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -24,6 +29,8 @@ public class ScannerContext implements Context {
     // repositories
     final CaptureImageRepository captureImageRepository;
     final CaptureRepository captureRepository = new DefaultCaptureRepository();
+    final SongCaptureLinkRepository songCaptureLinkRepository =
+            new DefaultSongCaptureLinkRepository();
 
     // services
     public final CaptureImageService captureImageService;
@@ -31,10 +38,16 @@ public class ScannerContext implements Context {
     public final OcrServiceFactory songTitleOcrServiceFactory =
             new OcrServiceFactory(TRAINEDDATA_DIRECTORY_PATH, SONG_TITLE_LANGUAGE);
     public final PixImageService pixImageService = new PixImageService();
+    public final SongCaptureLinkService songCaptureLinkService =
+            new SongCaptureLinkService(songCaptureLinkRepository);
     public final SongTitleService songTitleService = new SongTitleService(SONG_TITLE_FILE_PATH);
 
     // integrations
     public final CollectionScanTaskService collectionScanTaskService;
+    public final SongCaptureLinkingService songCaptureLinkingService;
+
+    // use cases
+    public final ScannerReviewService scannerReviewService;
 
     public ScannerContext(GlobalContext globalContext, boolean debug) throws IOException {
         Path cacheDirectoryPath = PathValidator.validateAndConvert(
@@ -47,5 +60,12 @@ public class ScannerContext implements Context {
                 globalContext.captureRegionService, captureService, globalContext.configService,
                 pixImageService, globalContext.songService, songTitleService,
                 songTitleOcrServiceFactory, debug);
+
+        songCaptureLinkingService =
+                new SongCaptureLinkingService(captureService, songCaptureLinkService,
+                        globalContext.songService, songTitleService);
+
+        scannerReviewService = new ScannerReviewService(captureImageService, captureService,
+                songCaptureLinkService, songCaptureLinkingService, globalContext.songService);
     }
 }

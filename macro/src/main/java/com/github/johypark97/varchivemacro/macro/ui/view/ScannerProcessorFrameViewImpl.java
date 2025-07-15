@@ -67,4 +67,9 @@ public class ScannerProcessorFrameViewImpl extends BorderPane
         rightButton.setOnAction(value.eventHandler());
         rightButton.setText(value.text());
     }
+
+    @Override
+    public void runLeftButtonAction() {
+        leftButton.fire();
+    }
 }

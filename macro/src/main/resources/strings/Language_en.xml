@@ -50,6 +50,12 @@
   <entry key="scanner.processor.frame.captureImageViewerButton">Show all capture images</entry>
   <entry key="scanner.processor.frame.reviewLabel">Review</entry>
   <entry key="scanner.processor.frame.uploadLabel">Upload</entry>
+  <entry key="scanner.processor.review.accuracy.conflict">Conflict</entry>
+  <entry key="scanner.processor.review.accuracy.duplicated">Duplicated</entry>
+  <entry key="scanner.processor.review.accuracy.exact">Exact</entry>
+  <entry key="scanner.processor.review.accuracy.notDetected">Not detected</entry>
+  <entry key="scanner.processor.review.accuracy.similar">Similar</entry>
+  <entry key="scanner.processor.review.dialog.exception.captureImageLoading">An error occurred while loading the capture image.</entry>
   <entry key="scanner.processor.review.frameButton.analyze">Analyze</entry>
   <entry key="scanner.processor.review.frameButton.reset">Reset</entry>
   <entry key="scanner.processor.review.linkEditor.cancelButton">Cancel</entry>
@@ -76,10 +82,14 @@
   <entry key="scanner.processor.review.linkTable.filter.label">Accuracy filter:</entry>
   <entry key="scanner.processor.review.linkTable.filter.notDetected">Not detected</entry>
   <entry key="scanner.processor.review.linkTable.filter.similar">Similar</entry>
+  <entry key="scanner.processor.review.linkTable.placeholder">There are no songs that meet the accuracy filter conditions.</entry>
   <entry key="scanner.processor.review.linkTable.toggleEditedButton">Toggle all edited</entry>
   <entry key="scanner.processor.review.linkTable.toggleExactButton">Toggle all exact</entry>
   <entry key="scanner.processor.review.linkTable.toggleSimilarButton">Toggle all similar</entry>
   <entry key="scanner.processor.review.linkTable.unselectAllButton">Unselect all</entry>
+  <entry key="scanner.processor.review.problem.deleted">Deleted</entry>
+  <entry key="scanner.processor.review.problem.editNeeded">Edit needed</entry>
+  <entry key="scanner.processor.review.problem.edited">Edited</entry>
   <entry key="scanner.processor.windowTitle">Collection Scanner - Processor</entry>
   <entry key="scanner.recordLoader.accountFile.label">Account file</entry>
   <entry key="scanner.recordLoader.accountFile.selectButton">Select</entry>

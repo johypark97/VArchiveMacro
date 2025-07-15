@@ -50,6 +50,12 @@
   <entry key="scanner.processor.frame.captureImageViewerButton">모든 캡처 이미지 보기</entry>
   <entry key="scanner.processor.frame.reviewLabel">검토</entry>
   <entry key="scanner.processor.frame.uploadLabel">업로드</entry>
+  <entry key="scanner.processor.review.accuracy.conflict">충돌</entry>
+  <entry key="scanner.processor.review.accuracy.duplicated">중복</entry>
+  <entry key="scanner.processor.review.accuracy.exact">정확</entry>
+  <entry key="scanner.processor.review.accuracy.notDetected">미인식</entry>
+  <entry key="scanner.processor.review.accuracy.similar">유사</entry>
+  <entry key="scanner.processor.review.dialog.exception.captureImageLoading">캡처 이미지를 불러오는 도중 오류가 발생하였습니다.</entry>
   <entry key="scanner.processor.review.frameButton.analyze">분석 시작</entry>
   <entry key="scanner.processor.review.frameButton.reset">초기화</entry>
   <entry key="scanner.processor.review.linkEditor.cancelButton">취소</entry>
@@ -76,10 +82,14 @@
   <entry key="scanner.processor.review.linkTable.filter.label">정확도 필터:</entry>
   <entry key="scanner.processor.review.linkTable.filter.notDetected">미인식</entry>
   <entry key="scanner.processor.review.linkTable.filter.similar">유사</entry>
+  <entry key="scanner.processor.review.linkTable.placeholder">정확도 필터 조건에 해당되는 곡이 없습니다.</entry>
   <entry key="scanner.processor.review.linkTable.toggleEditedButton">수정함 전체 선택/해제</entry>
   <entry key="scanner.processor.review.linkTable.toggleExactButton">정확함 전체 선택/해제</entry>
   <entry key="scanner.processor.review.linkTable.toggleSimilarButton">유사함 전체 선택/해제</entry>
   <entry key="scanner.processor.review.linkTable.unselectAllButton">전체 선택 해제</entry>
+  <entry key="scanner.processor.review.problem.deleted">삭제됨</entry>
+  <entry key="scanner.processor.review.problem.editNeeded">수정 필요</entry>
+  <entry key="scanner.processor.review.problem.edited">수정됨</entry>
   <entry key="scanner.processor.windowTitle">컬렉션 스캐너 - 처리기</entry>
   <entry key="scanner.recordLoader.accountFile.label">계정 파일</entry>
   <entry key="scanner.recordLoader.accountFile.selectButton">선택</entry>

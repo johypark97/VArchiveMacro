@@ -7,6 +7,8 @@ public interface ScannerProcessorStage extends TreeableStage {
 
     void focusStage();
 
+    void showError(String content, Throwable throwable);
+
     void showCaptureImageViewer();
 
     void changeCenterView_review();

@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage;
 
+import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
@@ -12,7 +13,9 @@ import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerProcessorFrameViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerProcessorReviewViewImpl;
+import java.awt.Toolkit;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
 public class ScannerProcessorStageImpl extends AbstractTreeableStage
@@ -63,6 +66,7 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
 
         Scene scene = new Scene(view);
         scene.getStylesheets().add(UiResource.GLOBAL_CSS.url().toExternalForm());
+        scene.getStylesheets().add(UiResource.TABLE_COLOR_CSS.url().toExternalForm());
 
         stage.setScene(scene);
         stage.setOnShown(event -> framePresenter.startView());
@@ -76,6 +80,15 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
     }
 
     @Override
+    public void showError(String content, Throwable throwable) {
+        Alert alert = AlertBuilder.error().setOwner(stage).setContentText(content)
+                .setThrowable(throwable).alert;
+
+        Toolkit.getDefaultToolkit().beep();
+        alert.showAndWait();
+    }
+
+    @Override
     public void showCaptureImageViewer() {
         stageManager.showCaptureImageViewer(this, scannerContext);
     }
@@ -84,7 +97,7 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
     public void changeCenterView_review() {
         if (review == null) {
             review = new ViewPresenterPair<>(new ScannerProcessorReviewViewImpl(),
-                    new ScannerProcessorReviewPresenterImpl());
+                    new ScannerProcessorReviewPresenterImpl(this, scannerContext));
 
             Mvp.linkViewAndPresenter(review.view, review.presenter);
         }

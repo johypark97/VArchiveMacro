@@ -17,6 +17,7 @@ module varchivemacro.macro {
     requires javafx.swing;
 
     opens com.github.johypark97.varchivemacro.macro.ui.view to javafx.fxml;
+    opens com.github.johypark97.varchivemacro.macro.ui.viewmodel to javafx.base;
 
     // libraries
     requires com.github.kwhat.jnativehook;

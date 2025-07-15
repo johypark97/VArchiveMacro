@@ -43,7 +43,7 @@
           <columns>
             <TableColumn text="%scanner.processor.review.linkTable.column.song">
               <columns>
-                <TableColumn prefWidth="50.0" text="%scanner.processor.review.linkTable.column.song.id" fx:id="linkTableColumnSongId"/>
+                <TableColumn style="-fx-alignment: center-right;" prefWidth="50.0" text="%scanner.processor.review.linkTable.column.song.id" fx:id="linkTableColumnSongId"/>
                 <TableColumn prefWidth="250.0" text="%scanner.processor.review.linkTable.column.song.title" fx:id="linkTableColumnSongTitle"/>
                 <TableColumn prefWidth="150.0" text="%scanner.processor.review.linkTable.column.song.composer" fx:id="linkTableColumnSongComposer"/>
                 <TableColumn prefWidth="100.0" text="%scanner.processor.review.linkTable.column.song.pack" fx:id="linkTableColumnSongPack"/>
@@ -56,7 +56,7 @@
                 <TableColumn prefWidth="100.0" text="%scanner.processor.review.linkTable.column.status.problem" fx:id="linkTableColumnStatusProblem"/>
               </columns>
             </TableColumn>
-            <TableColumn prefWidth="100.0" text="%scanner.processor.review.linkTable.column.edit" fx:id="linkTableColumnEdit"/>
+            <TableColumn style="-fx-alignment: center;" prefWidth="100.0" text="%scanner.processor.review.linkTable.column.edit" fx:id="linkTableColumnEdit"/>
             <TableColumn prefWidth="100.0" text="%scanner.processor.review.linkTable.column.select" fx:id="linkTableColumnSelect"/>
           </columns>
         </TableView>

@@ -23,6 +23,8 @@ public interface ScannerProcessorFrame {
         void setLeftButtonFunction(ButtonFunction value);
 
         void setRightButtonFunction(ButtonFunction value);
+
+        void runLeftButtonAction();
     }
 
 

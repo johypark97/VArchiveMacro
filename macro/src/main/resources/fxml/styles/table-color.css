@@ -21,6 +21,20 @@
     -fx-background-color: #E0E0E0;
 }
 
+.table-view .check-box {
+    -fx-scale-x: 1.4;
+    -fx-scale-y: 1.4;
+}
+
+.table-view .hyperlink {
+    -fx-text-fill: -fx-text-background-color;
+    -fx-underline: false;
+}
+
+.table-view .hyperlink:hover {
+    -fx-text-fill: -fx-accent;
+}
+
 // ==================================
 // -------- Additional color --------
 // ==================================
@@ -47,6 +61,14 @@
 
 .table-row-cell:selected.table-row-color-red {
     -fx-background-color: #FF8080;
+}
+
+.table-row-cell.table-row-color-purple {
+    -fx-background-color: #FFC0FF;
+}
+
+.table-row-cell:selected.table-row-color-purple {
+    -fx-background-color: #FF80FF;
 }
 
 .table-row-cell.table-row-color-yellow {
