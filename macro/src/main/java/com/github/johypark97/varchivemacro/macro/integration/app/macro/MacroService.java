@@ -1,23 +1,17 @@
-package com.github.johypark97.varchivemacro.macro.integration.app.macro.service;
+package com.github.johypark97.varchivemacro.macro.integration.app.macro;
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
-import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.MacroDirection;
-import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.MacroProgress;
-import com.github.johypark97.varchivemacro.macro.integration.app.macro.task.AbstractMacroTask;
-import com.github.johypark97.varchivemacro.macro.integration.app.macro.task.AtOnceMacroTask;
-import com.github.johypark97.varchivemacro.macro.integration.app.macro.task.SeparatelyMacroTask;
 import javafx.concurrent.Task;
 
-public class DefaultMacroService implements MacroService {
+public class MacroService {
     private final ConfigService configService;
 
-    public DefaultMacroService(ConfigService configService) {
+    public MacroService(ConfigService configService) {
         this.configService = configService;
     }
 
-    @Override
     public Task<MacroProgress> createMacroTask(MacroDirection direction) {
         if (TaskManager.getInstance().isRunningAny()) {
             return null;
@@ -33,7 +27,6 @@ public class DefaultMacroService implements MacroService {
         return TaskManager.getInstance().register(AbstractMacroTask.class, task);
     }
 
-    @Override
     public boolean stopMacroTask() {
         return TaskManager.Helper.cancel(AbstractMacroTask.class);
     }

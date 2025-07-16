@@ -99,7 +99,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
             return;
         }
 
-        Task<Void> task = scannerContext.collectionScanTaskService.createTask(selectedCategorySet);
+        Task<Void> task = scannerContext.scannerScannerService.createTask(selectedCategorySet);
         if (task == null) {
             return;
         }
@@ -115,7 +115,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
 
     private synchronized void stopScan() {
         if (scannerContext != null) {
-            scannerContext.collectionScanTaskService.stopTask();
+            scannerContext.scannerScannerService.stopTask();
         }
     }
 

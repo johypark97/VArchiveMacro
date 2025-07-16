@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.integration.app.scanner.service;
+package com.github.johypark97.varchivemacro.macro.integration.app.scanner.scanner;
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
@@ -10,13 +10,10 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.CollectionScanTask;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.DefaultCollectionScanTask;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.FhdDebugCollectionScanTask;
 import java.util.Set;
 import javafx.concurrent.Task;
 
-public class DefaultCollectionScanTaskService implements CollectionScanTaskService {
+public class ScannerScannerService {
     private final CaptureImageService captureImageService;
     private final CaptureRegionService captureRegionService;
     private final CaptureService captureService;
@@ -29,7 +26,7 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
 
     private final boolean debug;
 
-    public DefaultCollectionScanTaskService(CaptureImageService captureImageService,
+    public ScannerScannerService(CaptureImageService captureImageService,
             CaptureRegionService captureRegionService, CaptureService captureService,
             ConfigService configService, PixImageService pixImageService, SongService songService,
             SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory,
@@ -47,7 +44,6 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
         this.debug = debug;
     }
 
-    @Override
     public Task<Void> createTask(Set<String> selectedCategorySet) {
         if (TaskManager.getInstance().isRunningAny()) {
             return null;
@@ -65,7 +61,6 @@ public class DefaultCollectionScanTaskService implements CollectionScanTaskServi
                                 songTitleOcrServiceFactory, config, selectedCategorySet));
     }
 
-    @Override
     public boolean stopTask() {
         return TaskManager.Helper.cancel(CollectionScanTask.class);
     }

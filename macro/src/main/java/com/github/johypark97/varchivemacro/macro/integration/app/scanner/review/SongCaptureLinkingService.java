@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.integration.app.scanner.service;
+package com.github.johypark97.varchivemacro.macro.integration.app.scanner.review;
 
 import com.github.johypark97.varchivemacro.lib.scanner.StringUtils;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;

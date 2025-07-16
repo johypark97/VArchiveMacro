@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.integration.app.scanner.service;
+package com.github.johypark97.varchivemacro.macro.integration.app.scanner.analysis;
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
@@ -7,20 +7,18 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.mod
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.CaptureAnalysisTaskResult;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.CaptureAnalysisTask;
 import java.util.List;
 import java.util.Map;
 import javafx.concurrent.Task;
 
-public class DefaultCaptureAnalysisTaskService implements CaptureAnalysisTaskService {
+public class ScannerAnalysisService {
     private final CaptureImageService captureImageService;
     private final ConfigService configService;
     private final PixImageService pixImageService;
 
     private final OcrServiceFactory commonOcrServiceFactory;
 
-    public DefaultCaptureAnalysisTaskService(CaptureImageService captureImageService,
+    public ScannerAnalysisService(CaptureImageService captureImageService,
             ConfigService configService, PixImageService pixImageService,
             OcrServiceFactory commonOcrServiceFactory) {
         this.captureImageService = captureImageService;
@@ -30,7 +28,6 @@ public class DefaultCaptureAnalysisTaskService implements CaptureAnalysisTaskSer
         this.commonOcrServiceFactory = commonOcrServiceFactory;
     }
 
-    @Override
     public Task<Map<Integer, CaptureAnalysisTaskResult>> createTask(
             List<CaptureEntry> captureEntryList) {
         if (TaskManager.getInstance().isRunningAny()) {
@@ -44,7 +41,6 @@ public class DefaultCaptureAnalysisTaskService implements CaptureAnalysisTaskSer
                         commonOcrServiceFactory, config, captureEntryList));
     }
 
-    @Override
     public boolean stopTask() {
         return TaskManager.Helper.cancel(CaptureAnalysisTask.class);
     }

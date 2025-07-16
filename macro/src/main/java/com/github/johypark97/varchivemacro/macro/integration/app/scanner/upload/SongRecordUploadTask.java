@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
+package com.github.johypark97.varchivemacro.macro.integration.app.scanner.upload;
 
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.SongRecordUploadService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordService;
@@ -11,7 +11,6 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongServi
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.SongRecordUploadTaskResult;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

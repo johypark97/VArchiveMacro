@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
+package com.github.johypark97.varchivemacro.macro.integration.app.scanner.analysis;
 
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
@@ -15,7 +15,6 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.mode
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordPattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecord;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.CaptureAnalysisTaskResult;
 import com.google.common.base.CharMatcher;
 import java.awt.Rectangle;
 import java.time.Duration;

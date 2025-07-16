@@ -1,11 +1,9 @@
-package com.github.johypark97.varchivemacro.macro.integration.app.macro.task;
+package com.github.johypark97.varchivemacro.macro.integration.app.macro;
 
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
-import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.MacroDirection;
-import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.MacroProgress;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.util.concurrent.TimeUnit;

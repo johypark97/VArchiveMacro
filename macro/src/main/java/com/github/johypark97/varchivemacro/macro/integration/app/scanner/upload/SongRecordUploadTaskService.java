@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.integration.app.scanner.service;
+package com.github.johypark97.varchivemacro.macro.integration.app.scanner.upload;
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.SongRecordUploadService;
@@ -8,21 +8,19 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.mode
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.model.SongRecordUploadTaskResult;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.task.SongRecordUploadTask;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javafx.concurrent.Task;
 
-public class DefaultSongRecordUploadTaskService implements SongRecordUploadTaskService {
+public class SongRecordUploadTaskService {
     private final SongRecordService songRecordService;
     private final SongRecordUploadService songRecordUploadService;
     private final SongService songService;
     private final SongTitleService songTitleService;
     private final UpdatedSongRecordService updatedSongRecordService;
 
-    public DefaultSongRecordUploadTaskService(SongRecordService songRecordService,
+    public SongRecordUploadTaskService(SongRecordService songRecordService,
             SongRecordUploadService songRecordUploadService, SongService songService,
             SongTitleService songTitleService, UpdatedSongRecordService updatedSongRecordService) {
         this.songRecordService = songRecordService;
@@ -32,7 +30,6 @@ public class DefaultSongRecordUploadTaskService implements SongRecordUploadTaskS
         this.updatedSongRecordService = updatedSongRecordService;
     }
 
-    @Override
     public Task<Map<Integer, SongRecordUploadTaskResult>> createTask(
             List<Integer> selectedEntryIdList) {
         if (TaskManager.getInstance().isRunningAny()) {
@@ -49,7 +46,6 @@ public class DefaultSongRecordUploadTaskService implements SongRecordUploadTaskS
                         songTitleService, entryList, duplicateTitleSongSet));
     }
 
-    @Override
     public boolean stopTask() {
         return TaskManager.Helper.cancel(SongRecordUploadTask.class);
     }

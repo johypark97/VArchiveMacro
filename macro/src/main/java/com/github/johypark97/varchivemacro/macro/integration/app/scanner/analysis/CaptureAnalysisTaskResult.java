@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.integration.app.scanner.model;
+package com.github.johypark97.varchivemacro.macro.integration.app.scanner.analysis;
 
 public class CaptureAnalysisTaskResult {
     private Exception exception;

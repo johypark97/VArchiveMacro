@@ -9,7 +9,6 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptu
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.model.SongCaptureLink;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.SongCaptureLinkingService;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;

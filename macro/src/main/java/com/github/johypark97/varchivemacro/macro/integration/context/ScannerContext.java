@@ -14,9 +14,8 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.ScannerReviewService;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.CollectionScanTaskService;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.DefaultCollectionScanTaskService;
-import com.github.johypark97.varchivemacro.macro.integration.app.scanner.service.SongCaptureLinkingService;
+import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.SongCaptureLinkingService;
+import com.github.johypark97.varchivemacro.macro.integration.app.scanner.scanner.ScannerScannerService;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -43,27 +42,33 @@ public class ScannerContext implements Context {
     public final SongTitleService songTitleService = new SongTitleService(SONG_TITLE_FILE_PATH);
 
     // integrations
-    public final CollectionScanTaskService collectionScanTaskService;
     public final SongCaptureLinkingService songCaptureLinkingService;
 
     // use cases
     public final ScannerReviewService scannerReviewService;
+    public final ScannerScannerService scannerScannerService;
 
     public ScannerContext(GlobalContext globalContext, boolean debug) throws IOException {
+        // repositories
         Path cacheDirectoryPath = PathValidator.validateAndConvert(
                 globalContext.configService.findScannerConfig().cacheDirectory());
 
         captureImageRepository = new DiskCaptureImageRepository(cacheDirectoryPath);
+
+        // services
         captureImageService = new CaptureImageService(captureImageRepository);
 
-        collectionScanTaskService = new DefaultCollectionScanTaskService(captureImageService,
-                globalContext.captureRegionService, captureService, globalContext.configService,
-                pixImageService, globalContext.songService, songTitleService,
-                songTitleOcrServiceFactory, debug);
-
+        // integrations
         songCaptureLinkingService =
                 new SongCaptureLinkingService(captureService, songCaptureLinkService,
                         globalContext.songService, songTitleService);
+
+        // use cases
+        scannerScannerService =
+                new ScannerScannerService(captureImageService, globalContext.captureRegionService,
+                        captureService, globalContext.configService, pixImageService,
+                        globalContext.songService, songTitleService, songTitleOcrServiceFactory,
+                        debug);
 
         scannerReviewService = new ScannerReviewService(captureImageService, captureService,
                 songCaptureLinkService, songCaptureLinkingService, globalContext.songService);

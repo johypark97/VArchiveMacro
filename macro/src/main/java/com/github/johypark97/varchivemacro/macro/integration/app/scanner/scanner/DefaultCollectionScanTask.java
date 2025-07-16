@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.integration.app.scanner.task;
+package com.github.johypark97.varchivemacro.macro.integration.app.scanner.scanner;
 
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;

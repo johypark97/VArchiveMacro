@@ -6,8 +6,8 @@ import com.github.johypark97.varchivemacro.macro.common.config.domain.model.Inpu
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
-import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.MacroDirection;
-import com.github.johypark97.varchivemacro.macro.integration.app.macro.model.MacroProgress;
+import com.github.johypark97.varchivemacro.macro.integration.app.macro.MacroDirection;
+import com.github.johypark97.varchivemacro.macro.integration.app.macro.MacroProgress;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.MacroContext;
 import com.github.johypark97.varchivemacro.macro.ui.event.SettingUpdatedUiEvent;
