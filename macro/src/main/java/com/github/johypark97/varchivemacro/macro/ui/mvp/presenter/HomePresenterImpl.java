@@ -1,0 +1,98 @@
+package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
+
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
+import com.github.johypark97.varchivemacro.macro.ui.mvp.Home;
+import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
+import java.io.IOException;
+import java.util.Locale;
+import javafx.scene.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class HomePresenterImpl implements Home.Presenter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomePresenterImpl.class);
+
+    private final HomeStage homeStage;
+
+    private final GlobalContext globalContext;
+
+    @MvpView
+    public Home.View view;
+
+    public HomePresenterImpl(HomeStage homeStage, GlobalContext globalContext) {
+        this.homeStage = homeStage;
+
+        this.globalContext = globalContext;
+    }
+
+    @Override
+    public void startView() {
+        view.setSelectedLanguage(Language.INSTANCE.getLocale());
+
+        homeStage.changeCenterView_modeSelector();
+
+        try {
+            if (!globalContext.configStorageService.load()) {
+                globalContext.configStorageService.save();
+            }
+        } catch (IOException e) {
+            LOGGER.atError().setCause(e).log("Config loading exception.");
+            homeStage.showError(Language.INSTANCE.getString("home.config.loadingException"), e);
+        }
+    }
+
+    @Override
+    public boolean stopView() {
+        try {
+            globalContext.configStorageService.save();
+        } catch (IOException e) {
+            LOGGER.atError().setCause(e).log("Config saving exception.");
+        }
+
+        return true;
+    }
+
+    @Override
+    public void requestStopStage() {
+        homeStage.stopStage();
+    }
+
+    @Override
+    public void setCenterView(Node value) {
+        view.setCenterNode(value);
+    }
+
+    @Override
+    public void changeLanguage(Locale locale) {
+        Language language = Language.INSTANCE;
+
+        try {
+            language.changeLocale(locale);
+        } catch (IOException e) {
+            LOGGER.atError().setCause(e).log("Language changing error");
+            homeStage.showError(language.getString("home.dialog.languageChange.error"), e);
+
+            return;
+        }
+
+        String header = language.getString("home.dialog.languageChange.done.header");
+        String content = language.getString("home.dialog.languageChange.done.content");
+        homeStage.showInformation(header, content);
+    }
+
+    @Override
+    public void showSetting() {
+        homeStage.showSetting();
+    }
+
+    @Override
+    public void showOpenSourceLicense() {
+        homeStage.showOpenSourceLicense();
+    }
+
+    @Override
+    public void showAbout() {
+        homeStage.showAbout();
+    }
+}

@@ -2,19 +2,19 @@ package com.github.johypark97.varchivemacro.macro.ui.manager;
 
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
-import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.OpenSourceLicenseStage;
-import com.github.johypark97.varchivemacro.macro.ui.stage.OpenSourceLicenseStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerCaptureImageViewerStage;
-import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerCaptureImageViewerStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
-import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStage;
-import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStageImpl;
-import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerTesterStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStage;
-import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
+import com.github.johypark97.varchivemacro.macro.ui.stage.impl.HomeStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.impl.OpenSourceLicenseStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.impl.ScannerCaptureImageViewerStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.impl.ScannerProcessorStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.impl.ScannerScannerStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.impl.ScannerTesterStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.impl.SettingStageImpl;
 import javafx.stage.Stage;
 
 public class StageManager {
