@@ -13,6 +13,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.link.infra.reposit
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
+import com.github.johypark97.varchivemacro.macro.integration.app.scanner.analysis.ScannerAnalysisService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.ScannerReviewService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.SongCaptureLinkingService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.scanner.ScannerScannerService;
@@ -23,6 +24,7 @@ public class ScannerContext implements Context {
     // constants
     private static final Path SONG_TITLE_FILE_PATH = Path.of("data/titles.json");
     private static final Path TRAINEDDATA_DIRECTORY_PATH = Path.of("data");
+    private static final String ENG_LANGUAGE = "eng";
     private static final String SONG_TITLE_LANGUAGE = "djmax";
 
     // repositories
@@ -34,6 +36,8 @@ public class ScannerContext implements Context {
     // services
     public final CaptureImageService captureImageService;
     public final CaptureService captureService = new CaptureService(captureRepository);
+    public final OcrServiceFactory commonOcrServiceFactory =
+            new OcrServiceFactory(TRAINEDDATA_DIRECTORY_PATH, ENG_LANGUAGE);
     public final OcrServiceFactory songTitleOcrServiceFactory =
             new OcrServiceFactory(TRAINEDDATA_DIRECTORY_PATH, SONG_TITLE_LANGUAGE);
     public final PixImageService pixImageService = new PixImageService();
@@ -45,6 +49,7 @@ public class ScannerContext implements Context {
     public final SongCaptureLinkingService songCaptureLinkingService;
 
     // use cases
+    public final ScannerAnalysisService scannerAnalysisService;
     public final ScannerReviewService scannerReviewService;
     public final ScannerScannerService scannerScannerService;
 
@@ -72,5 +77,9 @@ public class ScannerContext implements Context {
 
         scannerReviewService = new ScannerReviewService(captureImageService, captureService,
                 songCaptureLinkService, songCaptureLinkingService, globalContext.songService);
+
+        scannerAnalysisService = new ScannerAnalysisService(captureImageService, captureService,
+                globalContext.configService, pixImageService, songCaptureLinkService,
+                globalContext.songService, commonOcrServiceFactory);
     }
 }

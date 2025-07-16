@@ -22,6 +22,8 @@ public interface ScannerProcessorReview {
         void linkSongAndCapture(int captureEntryId);
 
         void unlinkSongAndCapture();
+
+        void showAnalysisView();
     }
 
 

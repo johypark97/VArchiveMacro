@@ -3,38 +3,57 @@ package com.github.johypark97.varchivemacro.macro.integration.app.scanner.analys
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptureLinkService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.model.SongCaptureLink;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javafx.concurrent.Task;
 
 public class ScannerAnalysisService {
     private final CaptureImageService captureImageService;
+    private final CaptureService captureService;
     private final ConfigService configService;
     private final PixImageService pixImageService;
+    private final SongCaptureLinkService songCaptureLinkService;
+    private final SongService songService;
 
     private final OcrServiceFactory commonOcrServiceFactory;
 
     public ScannerAnalysisService(CaptureImageService captureImageService,
-            ConfigService configService, PixImageService pixImageService,
-            OcrServiceFactory commonOcrServiceFactory) {
+            CaptureService captureService, ConfigService configService,
+            PixImageService pixImageService, SongCaptureLinkService songCaptureLinkService,
+            SongService songService, OcrServiceFactory commonOcrServiceFactory) {
         this.captureImageService = captureImageService;
+        this.captureService = captureService;
         this.configService = configService;
         this.pixImageService = pixImageService;
+        this.songCaptureLinkService = songCaptureLinkService;
+        this.songService = songService;
 
         this.commonOcrServiceFactory = commonOcrServiceFactory;
     }
 
     public Task<Map<Integer, CaptureAnalysisTaskResult>> createTask(
-            List<CaptureEntry> captureEntryList) {
+            Set<Integer> captureEntryIdSet) {
         if (TaskManager.getInstance().isRunningAny()) {
             return null;
         }
 
         ScannerConfig config = configService.findScannerConfig();
+
+        List<CaptureEntry> captureEntryList = captureService.findAll().stream()
+                .filter(x -> captureEntryIdSet.contains(x.entryId())).toList();
 
         return TaskManager.getInstance().register(CaptureAnalysisTask.class,
                 new CaptureAnalysisTask(captureImageService, pixImageService,
@@ -43,5 +62,28 @@ public class ScannerAnalysisService {
 
     public boolean stopTask() {
         return TaskManager.Helper.cancel(CaptureAnalysisTask.class);
+    }
+
+    public Set<Integer> getAllCaptureEntryIdSet() {
+        return captureService.findAll().stream().map(CaptureEntry::entryId)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Integer> getCaptureEntryIdSetFromSongIdList(List<Integer> songIdList) {
+        List<Integer> captureList = new LinkedList<>();
+
+        Map<Song, Map<CaptureEntry, SongCaptureLink>> linkMapGroupedBySong =
+                songCaptureLinkService.groupBySong();
+
+        songIdList.stream().map(songService::findSongById).forEach(song -> {
+            Map<CaptureEntry, SongCaptureLink> linkedCaptureMap = linkMapGroupedBySong.get(song);
+
+            if (linkedCaptureMap != null) {
+                linkedCaptureMap.keySet().stream().findFirst()
+                        .ifPresent(captureEntry -> captureList.add(captureEntry.entryId()));
+            }
+        });
+
+        return new HashSet<>(captureList);
     }
 }

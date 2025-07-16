@@ -228,4 +228,13 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
         hideLinkEditor();
     }
+
+    @Override
+    public void showAnalysisView() {
+        List<Integer> selectedSongIdList =
+                linkTableDataLookup.values().stream().filter(x -> x.selectedProperty().get())
+                        .map(x -> x.songIdProperty().get()).toList();
+
+        scannerProcessorStage.changeCenterView_analysis(selectedSongIdList);
+    }
 }

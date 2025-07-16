@@ -462,7 +462,6 @@ public class ScannerProcessorReviewViewImpl extends StackPane
     public ScannerProcessorFrame.ButtonFunction getRightButtonFunction() {
         return new ScannerProcessorFrame.ButtonFunction(
                 Language.INSTANCE.getString("scanner.processor.review.frameButton.analyze"),
-                event -> {
-                });
+                event -> presenter.showAnalysisView());
     }
 }

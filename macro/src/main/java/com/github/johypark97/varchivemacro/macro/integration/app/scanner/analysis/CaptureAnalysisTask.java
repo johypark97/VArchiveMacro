@@ -53,6 +53,9 @@ public class CaptureAnalysisTask
     private final int imagePreloaderQueueCapacity;
     private final int imagePreloaderThreadCount;
 
+    private int analyzedCaptureImageCount;
+    private int queuedCaptureImageCount;
+
     public CaptureAnalysisTask(CaptureImageService captureImageService,
             PixImageService pixImageService, OcrServiceFactory commonOcrServiceFactory,
             ScannerConfig config, List<CaptureEntry> captureEntryList) {
@@ -137,16 +140,24 @@ public class CaptureAnalysisTask
         }
     }
 
+    private synchronized void increaseProgress() {
+        updateProgress(++analyzedCaptureImageCount, queuedCaptureImageCount);
+    }
+
     @Override
     protected Map<Integer, CaptureAnalysisTaskResult> callTask() throws Exception {
         if (captureEntryList.isEmpty()) {
             throw new IllegalArgumentException("captureEntryList is empty.");
         }
 
+        updateProgress(0, 1);
+
         // prepare resultMap
         Map<Integer, CaptureAnalysisTaskResult> resultMap = captureEntryList.stream().collect(
                 Collectors.toMap(CaptureEntry::entryId,
                         x -> new CaptureAnalysisTaskResult(x.entryId())));
+
+        queuedCaptureImageCount = resultMap.size();
 
         // prepare a list for ocr services
         List<OcrService> ocrServiceList = new ArrayList<>(analyzerThreadCount);
@@ -192,6 +203,8 @@ public class CaptureAnalysisTask
                             } catch (Exception e) {
                                 LOGGER.atError().setCause(e).log("ImagePreloader Exception");
                                 resultMap.get(entry.entryId()).setException(e);
+
+                                increaseProgress();
                             }
                         });
                     }
@@ -216,6 +229,8 @@ public class CaptureAnalysisTask
                                         resultMap.get(queueEntry.getKey().entryId())
                                                 .setException(e);
                                     }
+
+                                    increaseProgress();
                                 }
                             } catch (InterruptedException ignored) {
                             }

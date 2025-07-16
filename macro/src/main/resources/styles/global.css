@@ -7,3 +7,7 @@
     -fx-background-color: #404040;
     -fx-cursor: MOVE;
 }
+
+.progress-indicator .percentage {
+    -fx-fill: transparent;
+}
