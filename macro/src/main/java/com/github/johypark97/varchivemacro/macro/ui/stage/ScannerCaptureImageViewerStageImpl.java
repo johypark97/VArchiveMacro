@@ -6,12 +6,13 @@ import com.github.johypark97.varchivemacro.macro.integration.context.ScannerCont
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerCaptureImageViewer;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerCaptureImageViewerPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractBaseStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerCaptureImageViewerViewImpl;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
-public class ScannerCaptureImageViewerStageImpl extends AbstractTreeableStage
+public class ScannerCaptureImageViewerStageImpl extends AbstractBaseStage
         implements ScannerCaptureImageViewerStage {
     private static final int STAGE_HEIGHT = 900;
     private static final int STAGE_WIDTH = 1600;
@@ -58,11 +59,6 @@ public class ScannerCaptureImageViewerStageImpl extends AbstractTreeableStage
         stage.setOnShown(event -> presenter.startView());
 
         stage.show();
-    }
-
-    @Override
-    public void focusStage() {
-        stage.requestFocus();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage;
 
-import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
@@ -10,16 +9,14 @@ import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorFr
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorReview;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerProcessorReviewPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractBaseStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerProcessorFrameViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerProcessorReviewViewImpl;
-import java.awt.Toolkit;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
-public class ScannerProcessorStageImpl extends AbstractTreeableStage
-        implements ScannerProcessorStage {
+public class ScannerProcessorStageImpl extends AbstractBaseStage implements ScannerProcessorStage {
     private static final int STAGE_HEIGHT = 720;
     private static final int STAGE_WIDTH = 1280;
 
@@ -72,20 +69,6 @@ public class ScannerProcessorStageImpl extends AbstractTreeableStage
         stage.setOnShown(event -> framePresenter.startView());
 
         stage.show();
-    }
-
-    @Override
-    public void focusStage() {
-        stage.requestFocus();
-    }
-
-    @Override
-    public void showError(String content, Throwable throwable) {
-        Alert alert = AlertBuilder.error().setOwner(stage).setContentText(content)
-                .setThrowable(throwable).alert;
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
     }
 
     @Override

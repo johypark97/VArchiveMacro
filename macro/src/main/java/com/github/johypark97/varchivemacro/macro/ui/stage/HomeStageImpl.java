@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage;
 
-import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.resource.BuildInfo;
@@ -21,26 +20,23 @@ import com.github.johypark97.varchivemacro.macro.ui.presenter.ModeSelectorPresen
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerHome;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerHomePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
-import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractBaseStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.HomeViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.MacroViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ModeSelectorViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerHomeViewImpl;
 import io.reactivex.rxjava3.disposables.Disposable;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
+public class HomeStageImpl extends AbstractBaseStage implements HomeStage {
     private static final Logger LOGGER = LoggerFactory.getLogger(HomeStageImpl.class);
 
     private static final String TITLE = "VArchive Macro";
@@ -122,52 +118,6 @@ public class HomeStageImpl extends AbstractTreeableStage implements HomeStage {
         stage.show();
 
         disposableGlobalEvent = UiEventBus.INSTANCE.subscribe(this::onUiEvent);
-    }
-
-    @Override
-    public void showError(String content, Throwable throwable) {
-        showError(null, content, throwable);
-    }
-
-    @Override
-    public void showError(String header, String content, Throwable throwable) {
-        Alert alert = AlertBuilder.error().setOwner(stage).setContentText(content)
-                .setThrowable(throwable).alert;
-
-        if (header != null) {
-            alert.setHeaderText(header);
-        }
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
-    }
-
-    @Override
-    public void showWarning(String content) {
-        Alert alert = AlertBuilder.warning().setOwner(stage).setContentText(content).alert;
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
-    }
-
-    @Override
-    public void showInformation(String header, String content) {
-        Alert alert = AlertBuilder.information().setOwner(stage).setHeaderText(header)
-                .setContentText(content).alert;
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
-    }
-
-    @Override
-    public boolean showConfirmation(String header, String content) {
-        Alert alert = AlertBuilder.confirmation().setOwner(stage).setHeaderText(header)
-                .setContentText(content).alert;
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
-
-        return ButtonType.OK.equals(alert.getResult());
     }
 
     @Override

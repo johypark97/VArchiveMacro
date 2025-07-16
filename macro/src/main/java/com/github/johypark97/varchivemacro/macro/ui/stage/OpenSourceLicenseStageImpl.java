@@ -6,12 +6,13 @@ import com.github.johypark97.varchivemacro.macro.integration.context.ContextMana
 import com.github.johypark97.varchivemacro.macro.ui.presenter.OpenSourceLicense;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.OpenSourceLicensePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractBaseStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.OpenSourceLicenseViewImpl;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
-public class OpenSourceLicenseStageImpl extends AbstractTreeableStage
+public class OpenSourceLicenseStageImpl extends AbstractBaseStage
         implements OpenSourceLicenseStage {
     private static final int STAGE_HEIGHT = 720;
     private static final int STAGE_WIDTH = 1280;
@@ -54,11 +55,6 @@ public class OpenSourceLicenseStageImpl extends AbstractTreeableStage
         stage.setOnShown(event -> presenter.startView());
 
         stage.show();
-    }
-
-    @Override
-    public void focusStage() {
-        stage.requestFocus();
     }
 
     @Override

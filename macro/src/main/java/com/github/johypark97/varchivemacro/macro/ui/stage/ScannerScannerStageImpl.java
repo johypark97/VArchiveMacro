@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage;
 
-import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
@@ -8,14 +7,13 @@ import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScanner;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerScannerPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractBaseStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerScannerViewImpl;
-import java.awt.Toolkit;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
-public class ScannerScannerStageImpl extends AbstractTreeableStage implements ScannerScannerStage {
+public class ScannerScannerStageImpl extends AbstractBaseStage implements ScannerScannerStage {
     private static final int STAGE_HEIGHT = 600;
     private static final int STAGE_WIDTH = 800;
 
@@ -62,37 +60,6 @@ public class ScannerScannerStageImpl extends AbstractTreeableStage implements Sc
         stage.setOnShown(event -> presenter.startView());
 
         stage.show();
-    }
-
-    @Override
-    public void focusStage() {
-        stage.requestFocus();
-    }
-
-    @Override
-    public void showError(String header, String content, Throwable throwable) {
-        Alert alert =
-                AlertBuilder.error().setOwner(stage).setHeaderText(header).setContentText(content)
-                        .setThrowable(throwable).alert;
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
-    }
-
-    @Override
-    public void showWarning(String content) {
-        Alert alert = AlertBuilder.warning().setOwner(stage).setContentText(content).alert;
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
-    }
-
-    @Override
-    public void showInformation(String content) {
-        Alert alert = AlertBuilder.information().setOwner(stage).setContentText(content).alert;
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
     }
 
     @Override

@@ -1,13 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage;
 
-import com.github.johypark97.varchivemacro.macro.ui.stage.base.TreeableStage;
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.BaseStage;
 
-public interface ScannerTesterStage extends TreeableStage {
+public interface ScannerTesterStage extends BaseStage {
     void startStage();
-
-    void showError(String content, Throwable throwable);
-
-    void showWarning(String content);
-
-    void showInformation(String header, String content);
 }

@@ -10,6 +10,7 @@ import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.Setting;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.SettingPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractBaseStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.SettingViewImpl;
 import java.awt.Toolkit;
@@ -24,7 +25,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 
-public class SettingStageImpl extends AbstractTreeableStage implements SettingStage {
+public class SettingStageImpl extends AbstractBaseStage implements SettingStage {
     private static final int STAGE_HEIGHT = 540;
     private static final int STAGE_WIDTH = 960;
 
@@ -68,24 +69,6 @@ public class SettingStageImpl extends AbstractTreeableStage implements SettingSt
         stage.show();
 
         UiEventBus.INSTANCE.fire(new SettingWindowOpenedUiEvent());
-    }
-
-    @Override
-    public void showError(String content, Throwable throwable) {
-        showError(null, content, throwable);
-    }
-
-    @Override
-    public void showError(String header, String content, Throwable throwable) {
-        Alert alert = AlertBuilder.error().setOwner(stage).setContentText(content)
-                .setThrowable(throwable).alert;
-
-        if (header != null) {
-            alert.setHeaderText(header);
-        }
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
     }
 
     @Override

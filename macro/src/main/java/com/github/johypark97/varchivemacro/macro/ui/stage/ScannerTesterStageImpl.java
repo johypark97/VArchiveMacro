@@ -1,21 +1,19 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage;
 
-import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerTester;
 import com.github.johypark97.varchivemacro.macro.ui.presenter.ScannerTesterPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractBaseStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.view.ScannerTesterViewImpl;
-import java.awt.Toolkit;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 
-public class ScannerTesterStageImpl extends AbstractTreeableStage implements ScannerTesterStage {
+public class ScannerTesterStageImpl extends AbstractBaseStage implements ScannerTesterStage {
     private static final int STAGE_HEIGHT = 900;
     private static final int STAGE_WIDTH = 1600;
 
@@ -54,32 +52,6 @@ public class ScannerTesterStageImpl extends AbstractTreeableStage implements Sca
         stage.setOnShown(event -> presenter.startView());
 
         stage.show();
-    }
-
-    @Override
-    public void showError(String content, Throwable throwable) {
-        Alert alert = AlertBuilder.error().setOwner(stage).setContentText(content)
-                .setThrowable(throwable).alert;
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
-    }
-
-    @Override
-    public void showWarning(String content) {
-        Alert alert = AlertBuilder.warning().setOwner(stage).setContentText(content).alert;
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
-    }
-
-    @Override
-    public void showInformation(String header, String content) {
-        Alert alert = AlertBuilder.information().setOwner(stage).setHeaderText(header)
-                .setContentText(content).alert;
-
-        Toolkit.getDefaultToolkit().beep();
-        alert.showAndWait();
     }
 
     @Override

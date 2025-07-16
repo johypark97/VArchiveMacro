@@ -1,20 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage;
 
-import com.github.johypark97.varchivemacro.macro.ui.stage.base.TreeableStage;
+import com.github.johypark97.varchivemacro.macro.ui.stage.base.BaseStage;
 import java.io.File;
 
-public interface HomeStage extends TreeableStage {
+public interface HomeStage extends BaseStage {
     void startStage();
-
-    void showError(String content, Throwable throwable);
-
-    void showError(String header, String content, Throwable throwable);
-
-    void showWarning(String content);
-
-    void showInformation(String header, String content);
-
-    boolean showConfirmation(String header, String content);
 
     void changeCenterView_modeSelector();
 
