@@ -131,6 +131,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
                     // read title
                     String scannedTitle = readTitle(ocrService, captureImage, region.getTitle());
                     scannedTitle = songTitleService.normalizeTitle(scannedTitle);
+                    scannedTitle = songTitleService.remapScannedTitle(scannedTitle);
 
                     // store cache data and image
                     Capture capture = new Capture(category, scannedTitle, region);
