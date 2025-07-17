@@ -42,9 +42,7 @@ public class FhdDebugCollectionScanTask extends CollectionScanTask {
 
     @Override
     protected PngImage captureScreen() throws IOException {
-        if (imageIndex % 50 == 0) {
-            LOGGER.atDebug().log("Loading capture image: {}", imageIndex);
-        }
+        LOGGER.atTrace().log("Loading capture image: {}", imageIndex);
 
         return captureImageService.findById(imageIndex++);
     }
