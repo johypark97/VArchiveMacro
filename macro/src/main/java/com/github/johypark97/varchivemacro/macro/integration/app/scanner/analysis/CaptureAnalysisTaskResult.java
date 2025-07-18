@@ -4,10 +4,10 @@ public class CaptureAnalysisTaskResult {
     private Exception exception;
     private Status status = Status.SUSPENDED;
 
-    public final int entryId;
+    public final int captureEntryId;
 
-    public CaptureAnalysisTaskResult(int entryId) {
-        this.entryId = entryId;
+    public CaptureAnalysisTaskResult(int captureEntryId) {
+        this.captureEntryId = captureEntryId;
     }
 
     public Exception getException() {

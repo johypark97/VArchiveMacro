@@ -4,12 +4,15 @@ import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.analysis.CaptureAnalysisTaskResult;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorAnalysis;
+import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerAnalysisViewModel;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import org.slf4j.Logger;
@@ -25,6 +28,7 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
 
     private final AtomicBoolean analysisCompleted = new AtomicBoolean();
 
+    private Map<Integer, ScannerAnalysisViewModel.AnalysisResult> analysisResultMap;
     private Set<Integer> captureEntryIdSetForAnalysis = Set.of();
 
     @MvpView
@@ -39,13 +43,13 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
 
     private void setFunctionButtonToStart() {
         view.setFunctionButton(
-                Language.INSTANCE.getString("scanner.processor.analysis.startAnalysis"),
+                Language.INSTANCE.getString("scanner.processor.analysis.progress.startAnalysis"),
                 this::startAnalysisTask);
     }
 
     private void setFunctionButtonToStop() {
         view.setFunctionButton(
-                Language.INSTANCE.getString("scanner.processor.analysis.stopAnalysis"),
+                Language.INSTANCE.getString("scanner.processor.analysis.progress.stopAnalysis"),
                 this::stopAnalysisTask);
     }
 
@@ -62,7 +66,7 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
         task.setOnCancelled(this::onTaskCancelled);
         task.setOnFailed(this::onTaskFailed);
         task.setOnRunning(this::onTaskRunning);
-        task.setOnSucceeded(this::onTaskSucceeded);
+        task.setOnSucceeded(event -> onTaskSucceeded(task.getValue()));
 
         CompletableFuture.runAsync(task);
     }
@@ -74,28 +78,46 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     private void onTaskRunning(WorkerStateEvent ignored) {
         analysisCompleted.set(false);
 
+        analysisResultMap = null; // NOPMD
+
         Language language = Language.INSTANCE;
 
-        view.setMessageText(language.getString("scanner.processor.analysis.analyzing"));
+        view.setMessageText(language.getString("scanner.processor.analysis.progress.analyzing"));
         setFunctionButtonToStop();
+        view.enableShowResultButton(false);
     }
 
-    private void onTaskSucceeded(WorkerStateEvent ignored) {
+    private void onTaskSucceeded(Map<Integer, CaptureAnalysisTaskResult> taskValue) {
         analysisCompleted.set(true);
+
+        analysisResultMap = taskValue.entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey,
+                        x -> ScannerAnalysisViewModel.AnalysisResult.from(x.getValue())));
+
+        setFunctionButtonToStart();
+        view.enableShowResultButton(true);
 
         Language language = Language.INSTANCE;
 
-        view.setMessageText(language.getString("scanner.processor.analysis.analysisDone"));
-        setFunctionButtonToStart();
-
-        scannerProcessorStage.showInformation(
-                language.getString("scanner.processor.analysis.dialog.taskCompleted"));
+        if (analysisResultMap.values().stream()
+                .anyMatch(ScannerAnalysisViewModel.AnalysisResult::hasException)) {
+            view.setMessageText(language.getString(
+                    "scanner.processor.analysis.progress.analysisDoneWithException"));
+            scannerProcessorStage.showWarning(language.getString(
+                    "scanner.processor.analysis.dialog.taskCompletedWithException"));
+        } else {
+            view.setMessageText(
+                    language.getString("scanner.processor.analysis.progress.analysisDone"));
+            scannerProcessorStage.showInformation(
+                    language.getString("scanner.processor.analysis.dialog.taskCompleted"));
+        }
     }
 
     private void onTaskCancelled(WorkerStateEvent ignored) {
         Language language = Language.INSTANCE;
 
-        view.setMessageText(language.getString("scanner.processor.analysis.analysisCancelled"));
+        view.setMessageText(
+                language.getString("scanner.processor.analysis.progress.analysisCancelled"));
         setFunctionButtonToStart();
 
         scannerProcessorStage.showInformation(
@@ -105,7 +127,8 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     private void onTaskFailed(WorkerStateEvent event) {
         Language language = Language.INSTANCE;
 
-        view.setMessageText(language.getString("scanner.processor.analysis.analysisSuspended"));
+        view.setMessageText(
+                language.getString("scanner.processor.analysis.progress.analysisSuspended"));
         setFunctionButtonToStart();
 
         Throwable throwable = event.getSource().getException();
@@ -146,6 +169,26 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
         }
 
         startAnalysisTask();
+    }
+
+    @Override
+    public void showResult() {
+        if (analysisResultMap == null) {
+            return;
+        }
+
+        view.setResultTableItemList(FXCollections.observableArrayList(analysisResultMap.values()));
+        view.showResult();
+    }
+
+    @Override
+    public void hideResult() {
+        view.hideResult();
+    }
+
+    @Override
+    public void showResultException(Exception exception) {
+        scannerProcessorStage.showError(exception.toString(), exception);
     }
 
     @Override
