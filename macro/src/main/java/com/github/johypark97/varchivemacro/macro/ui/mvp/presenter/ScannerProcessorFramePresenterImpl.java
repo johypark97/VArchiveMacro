@@ -32,11 +32,6 @@ public class ScannerProcessorFramePresenterImpl implements ScannerProcessorFrame
     }
 
     @Override
-    public boolean stopView() {
-        return true;
-    }
-
-    @Override
     public void showCaptureImageViewer() {
         scannerProcessorStage.showCaptureImageViewer();
     }

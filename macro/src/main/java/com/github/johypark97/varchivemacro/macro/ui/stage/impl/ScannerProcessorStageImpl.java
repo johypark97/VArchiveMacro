@@ -128,10 +128,6 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
 
     @Override
     protected boolean onStopStage() {
-        if (!framePresenter.stopView()) {
-            return false;
-        }
-
         if (TaskManager.getInstance().isRunningAny()) {
             return false;
         }

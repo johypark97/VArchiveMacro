@@ -9,8 +9,6 @@ public interface ScannerProcessorFrame {
     interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
-        boolean stopView();
-
         void showCaptureImageViewer();
 
         <T extends Node & ViewButtonController> void setCenterView(T value);
