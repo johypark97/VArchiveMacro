@@ -12,7 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
@@ -68,7 +68,7 @@ public class MacroViewImpl extends BorderPane implements Macro.View {
     private VBox progressBox;
 
     @FXML
-    private ProgressBar progressBar;
+    private ProgressIndicator progressIndicator;
 
     @FXML
     private Label progressLabel;
@@ -180,7 +180,7 @@ public class MacroViewImpl extends BorderPane implements Macro.View {
     public void setProgress(int value, int max) {
         double x = (double) value / max;
 
-        progressBar.setProgress(x);
+        progressIndicator.setProgress(x);
         progressLabel.setText(String.format("%.02f%% (%d / %d)", x * 100, value, max));
     }
 }

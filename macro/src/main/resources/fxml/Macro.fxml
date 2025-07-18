@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
@@ -38,12 +37,12 @@
               </children>
             </VBox>
             <Separator/>
-            <GridPane hgap="20.0" maxWidth="512.0" vgap="10.0">
+            <GridPane alignment="TOP_CENTER" hgap="20.0" vgap="10.0">
               <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS"/>
-                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
-                <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS"/>
-                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
+                <ColumnConstraints halignment="RIGHT"/>
+                <ColumnConstraints halignment="LEFT"/>
+                <ColumnConstraints halignment="RIGHT"/>
+                <ColumnConstraints halignment="LEFT"/>
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints/>
@@ -68,10 +67,9 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
           </padding>
         </VBox>
-        <VBox alignment="CENTER" spacing="10.0" fx:id="progressBox">
+        <VBox alignment="CENTER" fx:id="progressBox">
           <children>
-            <ProgressIndicator/>
-            <ProgressBar fx:id="progressBar"/>
+            <ProgressIndicator progress="0.0" scaleX="2.0" scaleY="2.0" fx:id="progressIndicator"/>
             <Label fx:id="progressLabel"/>
           </children>
         </VBox>
