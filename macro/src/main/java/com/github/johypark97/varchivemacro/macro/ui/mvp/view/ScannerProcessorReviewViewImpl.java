@@ -10,9 +10,9 @@ import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerReviewV
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -50,6 +50,9 @@ public class ScannerProcessorReviewViewImpl extends StackPane
     private VBox linkTableBox;
 
     @FXML
+    private Label linkTableFilterLabel;
+
+    @FXML
     private CheckBox linkTableFilterExactCheckBox;
 
     @FXML
@@ -63,6 +66,9 @@ public class ScannerProcessorReviewViewImpl extends StackPane
 
     @FXML
     private CheckBox linkTableFilterNotDetectedCheckBox;
+
+    @FXML
+    private Label linkTableSelectedCountLabel;
 
     @FXML
     private Button linkTableToggleExactButton;
@@ -167,6 +173,9 @@ public class ScannerProcessorReviewViewImpl extends StackPane
         linkTableFilterDuplicatedCheckBox.setSelected(true);
         linkTableFilterSimilarCheckBox.setSelected(true);
 
+        setupLinkTableFilterText(FXCollections.emptyObservableList());
+        updateLinkTableSelectedCountText(0, 0, 0, 0, 0, 0);
+
         EventHandler<ActionEvent> eventHandler = event -> presenter.updateLinkTableViewFilter();
         linkTableFilterConflictCheckBox.setOnAction(eventHandler);
         linkTableFilterDuplicatedCheckBox.setOnAction(eventHandler);
@@ -175,34 +184,18 @@ public class ScannerProcessorReviewViewImpl extends StackPane
         linkTableFilterSimilarCheckBox.setOnAction(eventHandler);
     }
 
-    private void toggleLinkTableData(Predicate<ScannerReviewViewModel.LinkTableData> predicate) {
-        List<ScannerReviewViewModel.LinkTableData> list =
-                linkTableView.getItems().stream().filter(predicate).toList();
-
-        boolean value =
-                list.stream().filter(x -> x.selectedProperty().get()).count() != list.size();
-        list.forEach(x -> x.selectedProperty().set(value));
-    }
-
     private void setupLinkTableButton() {
-        linkTableToggleExactButton.setOnAction(event -> toggleLinkTableData(
-                x -> ScannerReviewViewModel.LinkTableData.Accuracy.EXACT.equals(
-                        x.accuracyProperty().get())
-                        && ScannerReviewViewModel.LinkTableData.Problem.NONE.equals(
-                        x.problemProperty().get())));
+        linkTableToggleExactButton.setOnAction(event -> presenter.toggleLinkTableSelected(
+                ScannerProcessorReview.LinkTableToggleType.EXACT));
 
-        linkTableToggleSimilarButton.setOnAction(event -> toggleLinkTableData(
-                x -> ScannerReviewViewModel.LinkTableData.Accuracy.SIMILAR.equals(
-                        x.accuracyProperty().get())
-                        && ScannerReviewViewModel.LinkTableData.Problem.EDIT_NEEDED.equals(
-                        x.problemProperty().get())));
+        linkTableToggleSimilarButton.setOnAction(event -> presenter.toggleLinkTableSelected(
+                ScannerProcessorReview.LinkTableToggleType.SIMILAR));
 
-        linkTableToggleEditedButton.setOnAction(event -> toggleLinkTableData(
-                x -> ScannerReviewViewModel.LinkTableData.Problem.EDITED.equals(
-                        x.problemProperty().get())));
+        linkTableToggleEditedButton.setOnAction(event -> presenter.toggleLinkTableSelected(
+                ScannerProcessorReview.LinkTableToggleType.EDITED));
 
-        linkTableUnselectAllButton.setOnAction(
-                event -> linkTableView.getItems().forEach(x -> x.selectedProperty().set(false)));
+        linkTableUnselectAllButton.setOnAction(event -> presenter.toggleLinkTableSelected(
+                ScannerProcessorReview.LinkTableToggleType.UNSELECT_ALL));
     }
 
     private void setupLinkTableView() {
@@ -351,9 +344,60 @@ public class ScannerProcessorReviewViewImpl extends StackPane
         linkEditorCancelButton.setOnAction(event -> presenter.hideLinkEditor());
     }
 
+    private void setupLinkTableFilterText(
+            ObservableList<ScannerReviewViewModel.LinkTableData> value) {
+        String format =
+                Language.INSTANCE.getFormatString("scanner.processor.review.linkTable.filter.label",
+                        value.size());
+        linkTableFilterLabel.textProperty()
+                .bind(Bindings.createStringBinding(() -> String.format(format, value.size()),
+                        value));
+
+        linkTableFilterExactCheckBox.setText(String.format("%s (%d)",
+                Language.INSTANCE.getString("scanner.processor.review.linkTable.filter.exact"),
+                value.stream()
+                        .filter(x -> ScannerReviewViewModel.LinkTableData.Accuracy.EXACT.equals(
+                                x.accuracyProperty().get())).count()));
+
+        linkTableFilterDuplicatedCheckBox.setText(String.format("%s (%d)",
+                Language.INSTANCE.getString("scanner.processor.review.linkTable.filter.duplicated"),
+                value.stream()
+                        .filter(x -> ScannerReviewViewModel.LinkTableData.Accuracy.DUPLICATED.equals(
+                                x.accuracyProperty().get())).count()));
+
+        linkTableFilterSimilarCheckBox.setText(String.format("%s (%d)",
+                Language.INSTANCE.getString("scanner.processor.review.linkTable.filter.similar"),
+                value.stream()
+                        .filter(x -> ScannerReviewViewModel.LinkTableData.Accuracy.SIMILAR.equals(
+                                x.accuracyProperty().get())).count()));
+
+        linkTableFilterConflictCheckBox.setText(String.format("%s (%d)",
+                Language.INSTANCE.getString("scanner.processor.review.linkTable.filter.conflict"),
+                value.stream()
+                        .filter(x -> ScannerReviewViewModel.LinkTableData.Accuracy.CONFLICT.equals(
+                                x.accuracyProperty().get())).count()));
+
+        linkTableFilterNotDetectedCheckBox.setText(String.format("%s (%d)",
+                Language.INSTANCE.getString(
+                        "scanner.processor.review.linkTable.filter.notDetected"), value.stream()
+                        .filter(x -> ScannerReviewViewModel.LinkTableData.Accuracy.NOT_DETECTED.equals(
+                                x.accuracyProperty().get())).count()));
+    }
+
     @Override
     public void setLinkTableItemList(ObservableList<ScannerReviewViewModel.LinkTableData> value) {
         linkTableView.setItems(value);
+
+        // Due to the setupLinkTableFilterText(), the value must be a non-filtered list.
+        setupLinkTableFilterText(value);
+    }
+
+    @Override
+    public void updateLinkTableSelectedCountText(int exactSelected, int exactTotal,
+            int similarSelected, int similarTotal, int editedSelected, int editedTotal) {
+        linkTableSelectedCountLabel.setText(Language.INSTANCE.getFormatString(
+                "scanner.processor.review.linkEditor.selectedCountLabel", exactSelected, exactTotal,
+                similarSelected, similarTotal, editedSelected, editedTotal));
     }
 
     @Override

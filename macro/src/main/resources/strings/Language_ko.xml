@@ -87,6 +87,7 @@
   <entry key="scanner.processor.review.linkEditor.filter.resetButtonTooltip">초기화</entry>
   <entry key="scanner.processor.review.linkEditor.filter.textFieldPromptText">캡처 이미지 검색</entry>
   <entry key="scanner.processor.review.linkEditor.linkButton">연결</entry>
+  <entry key="scanner.processor.review.linkEditor.selectedCountLabel">선택됨: 정확함 (%d / %d), 유사함 (%d / %d), 수정함 (%d / %d)</entry>
   <entry key="scanner.processor.review.linkEditor.selectedSongLabel">선택된 곡:</entry>
   <entry key="scanner.processor.review.linkEditor.unlinkButton">연결 해제</entry>
   <entry key="scanner.processor.review.linkTable.column.captureImage">연결된 캡처 이미지</entry>
@@ -103,7 +104,7 @@
   <entry key="scanner.processor.review.linkTable.filter.conflict">충돌</entry>
   <entry key="scanner.processor.review.linkTable.filter.duplicated">중복</entry>
   <entry key="scanner.processor.review.linkTable.filter.exact">정확</entry>
-  <entry key="scanner.processor.review.linkTable.filter.label">정확도 필터:</entry>
+  <entry key="scanner.processor.review.linkTable.filter.label">정확도 필터: %%d / %d</entry>
   <entry key="scanner.processor.review.linkTable.filter.notDetected">미인식</entry>
   <entry key="scanner.processor.review.linkTable.filter.similar">유사</entry>
   <entry key="scanner.processor.review.linkTable.placeholder">정확도 필터 조건에 해당되는 곡이 없습니다.</entry>

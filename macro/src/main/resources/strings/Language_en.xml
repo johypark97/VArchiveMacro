@@ -87,6 +87,7 @@
   <entry key="scanner.processor.review.linkEditor.filter.resetButtonTooltip">Reset</entry>
   <entry key="scanner.processor.review.linkEditor.filter.textFieldPromptText">Search capture images</entry>
   <entry key="scanner.processor.review.linkEditor.linkButton">Link</entry>
+  <entry key="scanner.processor.review.linkEditor.selectedCountLabel">Selected: Exact (%d / %d), Similar (%d / %d), Edited (%d / %d)</entry>
   <entry key="scanner.processor.review.linkEditor.selectedSongLabel">Selected song:</entry>
   <entry key="scanner.processor.review.linkEditor.unlinkButton">Unlink</entry>
   <entry key="scanner.processor.review.linkTable.column.captureImage">Linked capture images</entry>
@@ -103,7 +104,7 @@
   <entry key="scanner.processor.review.linkTable.filter.conflict">Conflict</entry>
   <entry key="scanner.processor.review.linkTable.filter.duplicated">Duplicated</entry>
   <entry key="scanner.processor.review.linkTable.filter.exact">Exact</entry>
-  <entry key="scanner.processor.review.linkTable.filter.label">Accuracy filter:</entry>
+  <entry key="scanner.processor.review.linkTable.filter.label">Accuracy filter: %%d / %d</entry>
   <entry key="scanner.processor.review.linkTable.filter.notDetected">Not detected</entry>
   <entry key="scanner.processor.review.linkTable.filter.similar">Similar</entry>
   <entry key="scanner.processor.review.linkTable.placeholder">There are no songs that meet the accuracy filter conditions.</entry>

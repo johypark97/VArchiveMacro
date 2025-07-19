@@ -23,12 +23,21 @@
       <children>
         <HBox alignment="CENTER_LEFT" spacing="10.0">
           <children>
-            <Label text="%scanner.processor.review.linkTable.filter.label"/>
-            <CheckBox text="%scanner.processor.review.linkTable.filter.exact" fx:id="linkTableFilterExactCheckBox"/>
-            <CheckBox text="%scanner.processor.review.linkTable.filter.duplicated" fx:id="linkTableFilterDuplicatedCheckBox"/>
-            <CheckBox text="%scanner.processor.review.linkTable.filter.similar" fx:id="linkTableFilterSimilarCheckBox"/>
-            <CheckBox text="%scanner.processor.review.linkTable.filter.conflict" fx:id="linkTableFilterConflictCheckBox"/>
-            <CheckBox text="%scanner.processor.review.linkTable.filter.notDetected" fx:id="linkTableFilterNotDetectedCheckBox"/>
+            <Label fx:id="linkTableFilterLabel"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <CheckBox text="CheckBox" fx:id="linkTableFilterExactCheckBox"/>
+            <CheckBox text="CheckBox" fx:id="linkTableFilterDuplicatedCheckBox"/>
+            <CheckBox text="CheckBox" fx:id="linkTableFilterSimilarCheckBox"/>
+            <CheckBox text="CheckBox" fx:id="linkTableFilterConflictCheckBox"/>
+            <CheckBox text="CheckBox" fx:id="linkTableFilterNotDetectedCheckBox"/>
+          </children>
+          <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+          </padding>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+          <children>
+            <Label text="Label" fx:id="linkTableSelectedCountLabel"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <Button text="%scanner.processor.review.linkTable.toggleExactButton" fx:id="linkTableToggleExactButton"/>
             <Button text="%scanner.processor.review.linkTable.toggleSimilarButton" fx:id="linkTableToggleSimilarButton"/>
@@ -36,7 +45,7 @@
             <Button text="%scanner.processor.review.linkTable.unselectAllButton" fx:id="linkTableUnselectAllButton"/>
           </children>
           <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            <Insets bottom="10.0" left="10.0" right="10.0"/>
           </padding>
         </HBox>
         <TableView VBox.vgrow="ALWAYS" fx:id="linkTableView">

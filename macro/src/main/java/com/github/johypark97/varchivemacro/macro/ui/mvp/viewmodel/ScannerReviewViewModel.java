@@ -44,6 +44,8 @@ public class ScannerReviewViewModel {
                 new SimpleListProperty<>();
         private final ObjectProperty<Problem> problem = new SimpleObjectProperty<>(Problem.NONE);
 
+        private Runnable onSelectedChange;
+
         public LinkTableData(int songId, String songTitle, String songComposer, String songPack,
                 ScannerReviewViewModel.LinkedCaptureData... linkedCaptureDataArray) {
             this.songComposer.set(songComposer);
@@ -74,10 +76,18 @@ public class ScannerReviewViewModel {
                 }
             }
 
-            // constraints
             selected.addListener((observable, oldValue, newValue) -> {
-                if (!oldValue && newValue && linkedCaptureDataList.size() != 1) {
-                    selected.set(false);
+                // constraints
+                if (linkedCaptureDataList.size() != 1) {
+                    if (!oldValue && newValue) {
+                        selected.set(false);
+                    }
+
+                    return;
+                }
+
+                if (onSelectedChange != null) {
+                    onSelectedChange.run();
                 }
             });
         }
@@ -120,6 +130,10 @@ public class ScannerReviewViewModel {
 
         public BooleanProperty selectedProperty() {
             return selected;
+        }
+
+        public void setOnSelectedChange(Runnable value) {
+            onSelectedChange = value;
         }
 
         public enum Accuracy {

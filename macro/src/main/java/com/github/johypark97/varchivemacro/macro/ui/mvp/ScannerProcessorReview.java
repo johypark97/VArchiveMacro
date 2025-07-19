@@ -6,10 +6,20 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 
 public interface ScannerProcessorReview {
+    enum LinkTableToggleType {
+        EDITED,
+        EXACT,
+        SIMILAR,
+        UNSELECT_ALL
+    }
+
+
     interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void runLinking();
 
         void updateLinkTableViewFilter();
+
+        void toggleLinkTableSelected(LinkTableToggleType type);
 
         void showLinkEditor(int songId);
 
@@ -29,7 +39,14 @@ public interface ScannerProcessorReview {
 
     interface View
             extends Mvp.MvpView<View, Presenter>, ScannerProcessorFrame.ViewButtonController {
+        /**
+         * @param value A non-filtered list. If not, the element counts displayed on the filter
+         *              checkboxes will not be set properly.
+         */
         void setLinkTableItemList(ObservableList<ScannerReviewViewModel.LinkTableData> value);
+
+        void updateLinkTableSelectedCountText(int exactSelected, int exactTotal,
+                int similarSelected, int similarTotal, int editedSelected, int editedTotal);
 
         boolean getLinkTableFilter_exact();
 

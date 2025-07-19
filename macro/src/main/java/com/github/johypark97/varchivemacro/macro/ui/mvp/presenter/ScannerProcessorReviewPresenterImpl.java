@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.UnicodeFilter;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.SongData;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
+import com.github.johypark97.varchivemacro.macro.ui.common.EventDebouncer;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorReview;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerReviewViewModel;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
@@ -29,6 +30,9 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
     private final ScannerContext scannerContext;
 
+    private final EventDebouncer updateLinkTableSelectedCountTextEventDebouncer =
+            new EventDebouncer();
+
     private FilteredList<ScannerReviewViewModel.CaptureData> filteredCaptureDataList;
     private FilteredList<ScannerReviewViewModel.LinkTableData> filteredLinkTableDataList;
     private Map<Integer, ScannerReviewViewModel.LinkTableData> linkTableDataLookup;
@@ -49,13 +53,17 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
                 scannerContext.scannerReviewService.getAllSongDataList().stream()
                         .map(ScannerReviewViewModel.LinkTableData::form).toList();
 
+        updateLinkTableSelectedCountTextEventDebouncer.setCallback(
+                this::updateLinkTableSelectedCountText);
         linkTableDataLookup = list.stream()
                 .collect(Collectors.toMap(x -> x.songIdProperty().get(), Function.identity()));
+        linkTableDataLookup.values().forEach(x -> x.setOnSelectedChange(
+                updateLinkTableSelectedCountTextEventDebouncer::trigger));
+        updateLinkTableSelectedCountTextEventDebouncer.trigger();
 
         filteredLinkTableDataList = new FilteredList<>(FXCollections.observableList(list));
-        updateLinkTableViewFilter();
-
         view.setLinkTableItemList(filteredLinkTableDataList);
+        updateLinkTableViewFilter();
     }
 
     private void prepareLinkEditorData() {
@@ -66,6 +74,64 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
         filteredCaptureDataList = new FilteredList<>(FXCollections.observableList(list));
 
         view.setLinkEditorCaptureImageItemList(filteredCaptureDataList);
+    }
+
+    private void updateLinkTableSelectedCountText() {
+        int editedSelected = 0;
+        int editedTotal = 0;
+        int exactSelected = 0;
+        int exactTotal = 0;
+        int similarSelected = 0;
+        int similarTotal = 0;
+
+        for (ScannerProcessorReview.LinkTableToggleType type : ScannerProcessorReview.LinkTableToggleType.values()) {
+            List<ScannerReviewViewModel.LinkTableData> list;
+
+            switch (type) {
+                case EDITED -> {
+                    list = findLinkTableDataToggleTarget(type);
+                    editedTotal = list.size();
+                    editedSelected =
+                            (int) list.stream().filter(x -> x.selectedProperty().get()).count();
+                }
+                case EXACT -> {
+                    list = findLinkTableDataToggleTarget(type);
+                    exactTotal = list.size();
+                    exactSelected =
+                            (int) list.stream().filter(x -> x.selectedProperty().get()).count();
+                }
+                case SIMILAR -> {
+                    list = findLinkTableDataToggleTarget(type);
+                    similarTotal = list.size();
+                    similarSelected =
+                            (int) list.stream().filter(x -> x.selectedProperty().get()).count();
+                }
+                case UNSELECT_ALL -> {
+                }
+            }
+        }
+
+        view.updateLinkTableSelectedCountText(exactSelected, exactTotal, similarSelected,
+                similarTotal, editedSelected, editedTotal);
+    }
+
+    private List<ScannerReviewViewModel.LinkTableData> findLinkTableDataToggleTarget(
+            ScannerProcessorReview.LinkTableToggleType type) {
+        Predicate<ScannerReviewViewModel.LinkTableData> predicate = switch (type) {
+            case EDITED -> x -> ScannerReviewViewModel.LinkTableData.Problem.EDITED.equals(
+                    x.problemProperty().get());
+            case EXACT -> x -> ScannerReviewViewModel.LinkTableData.Accuracy.EXACT.equals(
+                    x.accuracyProperty().get())
+                    && ScannerReviewViewModel.LinkTableData.Problem.NONE.equals(
+                    x.problemProperty().get());
+            case SIMILAR -> x -> ScannerReviewViewModel.LinkTableData.Accuracy.SIMILAR.equals(
+                    x.accuracyProperty().get())
+                    && ScannerReviewViewModel.LinkTableData.Problem.EDIT_NEEDED.equals(
+                    x.problemProperty().get());
+            case UNSELECT_ALL -> x -> true;
+        };
+
+        return linkTableDataLookup.values().stream().filter(predicate).toList();
     }
 
     private void updateLinkTableDataLink(ScannerReviewViewModel.LinkTableData linkTableData,
@@ -80,6 +146,7 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
         linkEditorSelectedLinkTableData.selectedProperty().set(selected);
 
+        updateLinkTableSelectedCountTextEventDebouncer.trigger();
         view.refreshLinkTable();
     }
 
@@ -117,6 +184,20 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
         }
 
         filteredLinkTableDataList.setPredicate(x -> filterSet.contains(x.accuracyProperty().get()));
+    }
+
+    @Override
+    public void toggleLinkTableSelected(ScannerProcessorReview.LinkTableToggleType type) {
+        List<ScannerReviewViewModel.LinkTableData> list = findLinkTableDataToggleTarget(type);
+
+        if (ScannerProcessorReview.LinkTableToggleType.UNSELECT_ALL.equals(type)) {
+            list.forEach(x -> x.selectedProperty().set(false));
+            return;
+        }
+
+        boolean value =
+                list.stream().filter(x -> x.selectedProperty().get()).count() != list.size();
+        list.forEach(x -> x.selectedProperty().set(value));
     }
 
     @Override
