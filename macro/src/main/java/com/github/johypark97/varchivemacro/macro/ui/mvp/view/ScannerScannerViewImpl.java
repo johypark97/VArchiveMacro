@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.ui.common.EventDebouncer;
 import com.github.johypark97.varchivemacro.macro.ui.common.SimpleTransition;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerScanner;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerScannerViewModel;
@@ -9,9 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
 import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -33,6 +32,8 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
 
     private static final Duration PROGRESS_TRANSITION_DURATION = Duration.millis(500);
     private static final int PROGRESS_TRANSITION_BLUR_RADIUS = 4;
+
+    private final EventDebouncer categoryCountLabelEventDebouncer = new EventDebouncer();
 
     private final GaussianBlur scannerBoxBlur = new GaussianBlur(0);
 
@@ -87,8 +88,6 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     @MvpPresenter
     public ScannerScanner.Presenter presenter;
 
-    private StringBinding categoryCountStringBinding;
-
     public ScannerScannerViewImpl() {
         URL fxmlUrl = ScannerScannerViewImpl.class.getResource(FXML_PATH);
 
@@ -109,18 +108,16 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
 
         checkButton.setOnAction(event -> presenter.checkDisplayAndResolution());
 
-        categoryCountStringBinding = Bindings.createStringBinding(() -> {
-            List<ScannerScannerViewModel.CategoryData> list = categoryListView.getItems();
-            long selectedCount = list.stream().filter(x -> x.selected.get()).count();
-            return String.format("%d / %d", selectedCount, list.size());
-        });
-
         categoryListView.setCellFactory(CheckBoxListCell.forListView(param -> {
-            param.selected.addListener((observable, oldValue, newValue) -> Platform.runLater(
-                    categoryCountStringBinding::invalidate));
+            param.selected.addListener(
+                    (observable, oldValue, newValue) -> categoryCountLabelEventDebouncer.trigger());
             return param.selected;
         }));
-        categoryCountLabel.textProperty().bind(categoryCountStringBinding);
+        categoryCountLabelEventDebouncer.setCallback(() -> {
+            List<ScannerScannerViewModel.CategoryData> list = categoryListView.getItems();
+            long selectedCount = list.stream().filter(x -> x.selected.get()).count();
+            categoryCountLabel.setText(String.format("%d / %d", selectedCount, list.size()));
+        });
         toggleAllCategoryButton.setOnAction(event -> {
             List<ScannerScannerViewModel.CategoryData> list = categoryListView.getItems();
             boolean value = list.stream().filter(x -> x.selected.get()).count() != list.size();
@@ -172,7 +169,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
     @Override
     public void setCategoryList(List<ScannerScannerViewModel.CategoryData> value) {
         categoryListView.setItems(FXCollections.observableList(value));
-        Platform.runLater(categoryCountStringBinding::invalidate);
+        categoryCountLabelEventDebouncer.trigger();
     }
 
     @Override
