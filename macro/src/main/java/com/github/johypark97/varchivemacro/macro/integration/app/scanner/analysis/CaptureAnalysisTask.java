@@ -76,8 +76,7 @@ public class CaptureAnalysisTask
         Capture capture = captureEntry.capture();
         CaptureRegion region = captureEntry.capture().region;
 
-        if (capture.isAnalyzed() || !capture.isSongRecordEmpty()) {
-            capture.setAnalyzed(false);
+        if (!capture.isSongRecordEmpty()) {
             capture.clearSongRecord();
         }
 
@@ -195,6 +194,14 @@ public class CaptureAnalysisTask
 
                     // run image preloader
                     for (CaptureEntry entry : captureEntryList) {
+                        if (entry.capture().isAnalyzed()) {
+                            resultMap.get(entry.entryId())
+                                    .setStatus(CaptureAnalysisTaskResult.Status.ALREADY_DONE);
+                            increaseProgress();
+
+                            continue;
+                        }
+
                         imagePreloaderExecutorService.submit(() -> {
                             try {
                                 PngImage pngImage = captureImageService.findById(entry.entryId());

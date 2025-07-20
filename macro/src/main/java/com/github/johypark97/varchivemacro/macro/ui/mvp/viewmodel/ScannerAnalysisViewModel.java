@@ -21,6 +21,7 @@ public class ScannerAnalysisViewModel {
 
         public static AnalysisResult from(CaptureAnalysisTaskResult result) {
             Status s = switch (result.getStatus()) {
+                case ALREADY_DONE -> Status.ALREADY_DONE;
                 case DONE -> Status.DONE;
                 case ERROR -> Status.ERROR;
                 case SUSPENDED -> Status.SUSPENDED;
@@ -46,6 +47,7 @@ public class ScannerAnalysisViewModel {
         }
 
         public enum Status {
+            ALREADY_DONE("scanner.processor.analysis.result.status.alreadyDone"),
             DONE("scanner.processor.analysis.result.status.done"),
             ERROR("scanner.processor.analysis.result.status.error"),
             SUSPENDED("scanner.processor.analysis.result.status.suspended");

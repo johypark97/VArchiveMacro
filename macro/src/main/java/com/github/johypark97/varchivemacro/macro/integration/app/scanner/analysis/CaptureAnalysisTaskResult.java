@@ -29,6 +29,7 @@ public class CaptureAnalysisTaskResult {
     }
 
     public enum Status {
+        ALREADY_DONE,
         DONE,
         ERROR,
         SUSPENDED

@@ -67,6 +67,7 @@
   <entry key="scanner.processor.analysis.result.resultTable.column.exception.message">Message</entry>
   <entry key="scanner.processor.analysis.result.resultTable.column.exception.show">Show</entry>
   <entry key="scanner.processor.analysis.result.resultTable.column.status">Status</entry>
+  <entry key="scanner.processor.analysis.result.status.alreadyDone">Already analyzed</entry>
   <entry key="scanner.processor.analysis.result.status.done">Analyzed</entry>
   <entry key="scanner.processor.analysis.result.status.error">Error occurred</entry>
   <entry key="scanner.processor.analysis.result.status.suspended">Suspended</entry>

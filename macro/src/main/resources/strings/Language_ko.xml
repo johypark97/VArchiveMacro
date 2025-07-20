@@ -67,6 +67,7 @@
   <entry key="scanner.processor.analysis.result.resultTable.column.exception.message">메시지</entry>
   <entry key="scanner.processor.analysis.result.resultTable.column.exception.show">보기</entry>
   <entry key="scanner.processor.analysis.result.resultTable.column.status">상태</entry>
+  <entry key="scanner.processor.analysis.result.status.alreadyDone">이미 분석함</entry>
   <entry key="scanner.processor.analysis.result.status.done">분석 완료</entry>
   <entry key="scanner.processor.analysis.result.status.error">에러 발생함</entry>
   <entry key="scanner.processor.analysis.result.status.suspended">중단됨</entry>
