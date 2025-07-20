@@ -28,8 +28,8 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
 
     private final AtomicBoolean analysisCompleted = new AtomicBoolean();
 
+    private List<Integer> selectedSongIdList;
     private Map<Integer, ScannerAnalysisViewModel.AnalysisResult> analysisResultMap;
-    private Set<Integer> captureEntryIdSetForAnalysis = Set.of();
 
     @MvpView
     public ScannerProcessorAnalysis.View view;
@@ -44,7 +44,7 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     private void setFunctionButtonToStart() {
         view.setFunctionButton(
                 Language.INSTANCE.getString("scanner.processor.analysis.progress.startAnalysis"),
-                this::startAnalysisTask);
+                this::startAnalysisTask_selectedSongList);
     }
 
     private void setFunctionButtonToStop() {
@@ -53,9 +53,14 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
                 this::stopAnalysisTask);
     }
 
-    private void startAnalysisTask() {
+    private void startAnalysisTask_selectedSongList() {
+        startAnalysisTask(scannerContext.scannerAnalysisService.getCaptureEntryIdSetFromSongIdList(
+                selectedSongIdList));
+    }
+
+    private void startAnalysisTask(Set<Integer> captureEntryIdSet) {
         Task<Map<Integer, CaptureAnalysisTaskResult>> task =
-                scannerContext.scannerAnalysisService.createTask(captureEntryIdSetForAnalysis);
+                scannerContext.scannerAnalysisService.createTask(captureEntryIdSet);
         if (task == null) {
             return;
         }
@@ -132,43 +137,31 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
         setFunctionButtonToStart();
 
         Throwable throwable = event.getSource().getException();
-        if (throwable instanceof IllegalArgumentException) {
-            scannerProcessorStage.showWarning(
-                    Language.INSTANCE.getString("scanner.processor.analysis.dialog.queueIsEmpty"));
-        } else {
-            LOGGER.atError().setCause(throwable).log("Analysis exception.");
-            scannerProcessorStage.showError(
-                    language.getString("scanner.processor.analysis.dialog.taskException"),
-                    throwable);
-        }
+
+        LOGGER.atError().setCause(throwable).log("Analysis exception.");
+        scannerProcessorStage.showError(
+                language.getString("scanner.processor.analysis.dialog.taskException"), throwable);
     }
 
     @Override
     public void runAnalysis_allCapture() {
-        captureEntryIdSetForAnalysis =
-                scannerContext.scannerAnalysisService.getAllCaptureEntryIdSet();
-        if (captureEntryIdSetForAnalysis.isEmpty()) {
+        Set<Integer> set = scannerContext.scannerAnalysisService.getAllCaptureEntryIdSet();
+        if (set.isEmpty()) {
             return;
         }
 
-        if (analysisCompleted.get()) {
-            return;
-        }
-
-        startAnalysisTask();
+        startAnalysisTask(set);
     }
 
     @Override
     public void runAnalysis_selectedSong(List<Integer> selectedSongIdList) {
-        captureEntryIdSetForAnalysis =
-                scannerContext.scannerAnalysisService.getCaptureEntryIdSetFromSongIdList(
-                        selectedSongIdList);
+        this.selectedSongIdList = selectedSongIdList;
 
         if (analysisCompleted.get()) {
             return;
         }
 
-        startAnalysisTask();
+        startAnalysisTask_selectedSongList();
     }
 
     @Override

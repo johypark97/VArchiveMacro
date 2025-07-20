@@ -46,7 +46,6 @@
   <entry key="scanner.captureImageViewer.filter.resetButtonTooltip">Reset</entry>
   <entry key="scanner.captureImageViewer.filter.textFieldPromptText">Search capture images</entry>
   <entry key="scanner.captureImageViewer.windowTitle">Collection Scanner - Capture Image Viewer</entry>
-  <entry key="scanner.processor.analysis.dialog.queueIsEmpty">No selected songs. Please select at least one.</entry>
   <entry key="scanner.processor.analysis.dialog.taskCancelled">Analysis cancelled.</entry>
   <entry key="scanner.processor.analysis.dialog.taskCompleted">Analysis completed.</entry>
   <entry key="scanner.processor.analysis.dialog.taskCompletedWithException">Analysis completed with some errors.</entry>
@@ -81,6 +80,7 @@
   <entry key="scanner.processor.review.accuracy.notDetected">Not detected</entry>
   <entry key="scanner.processor.review.accuracy.similar">Similar</entry>
   <entry key="scanner.processor.review.dialog.exception.captureImageLoading">An error occurred while loading the capture image.</entry>
+  <entry key="scanner.processor.review.dialog.noSongSelected">No selected songs. Please select at least one.</entry>
   <entry key="scanner.processor.review.frameButton.analyze">Analyze</entry>
   <entry key="scanner.processor.review.frameButton.reset">Reset</entry>
   <entry key="scanner.processor.review.linkEditor.cancelButton">Cancel</entry>

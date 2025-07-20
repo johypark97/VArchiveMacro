@@ -46,7 +46,6 @@
   <entry key="scanner.captureImageViewer.filter.resetButtonTooltip">초기화</entry>
   <entry key="scanner.captureImageViewer.filter.textFieldPromptText">캡처 이미지 검색</entry>
   <entry key="scanner.captureImageViewer.windowTitle">컬렉션 스캐너 - 캡처 이미지 뷰어</entry>
-  <entry key="scanner.processor.analysis.dialog.queueIsEmpty">선택된 곡이 없습니다. 최소 1개 이상 선택해주세요.</entry>
   <entry key="scanner.processor.analysis.dialog.taskCancelled">분석이 중지되었습니다.</entry>
   <entry key="scanner.processor.analysis.dialog.taskCompleted">분석이 완료되었습니다.</entry>
   <entry key="scanner.processor.analysis.dialog.taskCompletedWithException">일부 오류와 함께 분석이 완료되었습니다.</entry>
@@ -81,6 +80,7 @@
   <entry key="scanner.processor.review.accuracy.notDetected">미인식</entry>
   <entry key="scanner.processor.review.accuracy.similar">유사</entry>
   <entry key="scanner.processor.review.dialog.exception.captureImageLoading">캡처 이미지를 불러오는 도중 오류가 발생하였습니다.</entry>
+  <entry key="scanner.processor.review.dialog.noSongSelected">선택된 곡이 없습니다. 최소 1개 이상 선택해주세요.</entry>
   <entry key="scanner.processor.review.frameButton.analyze">분석 시작</entry>
   <entry key="scanner.processor.review.frameButton.reset">초기화</entry>
   <entry key="scanner.processor.review.linkEditor.cancelButton">취소</entry>

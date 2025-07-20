@@ -316,6 +316,12 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
                 linkTableDataLookup.values().stream().filter(x -> x.selectedProperty().get())
                         .map(x -> x.songIdProperty().get()).toList();
 
+        if (selectedSongIdList.isEmpty()) {
+            scannerProcessorStage.showWarning(
+                    Language.INSTANCE.getString("scanner.processor.review.dialog.noSongSelected"));
+            return;
+        }
+
         scannerProcessorStage.changeCenterView_analysis(selectedSongIdList);
     }
 }
