@@ -108,15 +108,22 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
     }
 
     @Override
-    public void showCaptureImageViewer() {
-        stageManager.showCaptureImageViewer(this, scannerContext);
-    }
-
-    @Override
     public void runAutoAnalysis() {
         prepareAnalysisView();
 
         analysis.presenter.runAnalysis_allCapture();
+    }
+
+    @Override
+    public void runAnalysis(List<Integer> selectedSongIdList) {
+        prepareAnalysisView();
+
+        analysis.presenter.runAnalysis_selectedSong(selectedSongIdList);
+    }
+
+    @Override
+    public void showCaptureImageViewer() {
+        stageManager.showCaptureImageViewer(this, scannerContext);
     }
 
     @Override
@@ -127,12 +134,10 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
     }
 
     @Override
-    public void changeCenterView_analysis(List<Integer> selectedSongIdList) {
+    public void changeCenterView_analysis() {
         prepareAnalysisView();
 
         framePresenter.setCenterView(analysis.view);
-
-        analysis.presenter.runAnalysis_selectedSong(selectedSongIdList);
     }
 
     @Override

@@ -336,6 +336,7 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
             return;
         }
 
-        scannerProcessorStage.changeCenterView_analysis(selectedSongIdList);
+        scannerProcessorStage.changeCenterView_analysis();
+        scannerProcessorStage.runAnalysis(selectedSongIdList);
     }
 }

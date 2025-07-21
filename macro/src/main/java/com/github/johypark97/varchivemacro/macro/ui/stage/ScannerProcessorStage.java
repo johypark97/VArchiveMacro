@@ -6,11 +6,13 @@ import java.util.List;
 public interface ScannerProcessorStage extends BaseStage {
     void startStage();
 
-    void showCaptureImageViewer();
-
     void runAutoAnalysis();
+
+    void runAnalysis(List<Integer> selectedSongIdList);
+
+    void showCaptureImageViewer();
 
     void changeCenterView_review();
 
-    void changeCenterView_analysis(List<Integer> selectedSongIdList);
+    void changeCenterView_analysis();
 }
