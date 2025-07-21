@@ -144,6 +144,13 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     }
 
     @Override
+    public void startView() {
+        view.setProgress(0);
+        view.setMessageText("");
+        setFunctionButtonToStart();
+    }
+
+    @Override
     public void runAnalysis_allCapture() {
         Set<Integer> set = scannerContext.scannerAnalysisService.getAllCaptureEntryIdSet();
         if (set.isEmpty()) {

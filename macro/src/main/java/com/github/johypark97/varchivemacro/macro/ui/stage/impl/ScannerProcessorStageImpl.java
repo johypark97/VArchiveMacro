@@ -20,7 +20,6 @@ import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractBaseStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import java.util.List;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
@@ -64,6 +63,20 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
         stage.setMinWidth(STAGE_WIDTH / 2.0);
     }
 
+    private void prepareReviewView() {
+        if (review != null) {
+            return;
+        }
+
+        review = new ViewPresenterPair<>(new ScannerProcessorReviewViewImpl(),
+                new ScannerProcessorReviewPresenterImpl(this,
+                        ContextManager.INSTANCE.getGlobalContext(), scannerContext));
+
+        Mvp.linkViewAndPresenter(review.view, review.presenter);
+
+        review.presenter.startView();
+    }
+
     private void prepareAnalysisView() {
         if (analysis != null) {
             return;
@@ -73,12 +86,13 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
                 new ScannerProcessorAnalysisPresenterImpl(this, scannerContext));
 
         Mvp.linkViewAndPresenter(analysis.view, analysis.presenter);
+
+        analysis.presenter.startView();
     }
 
     @Override
     public void startStage() {
-        framePresenter = new ScannerProcessorFramePresenterImpl(this,
-                ContextManager.INSTANCE.getGlobalContext());
+        framePresenter = new ScannerProcessorFramePresenterImpl(this);
 
         ScannerProcessorFrameViewImpl view = new ScannerProcessorFrameViewImpl();
         Mvp.linkViewAndPresenter(view, framePresenter);
@@ -88,7 +102,7 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
         scene.getStylesheets().add(UiResource.TABLE_COLOR_CSS.url().toExternalForm());
 
         stage.setScene(scene);
-        stage.setOnShown(event -> framePresenter.startView());
+        stage.setOnShown(event -> changeCenterView_review());
 
         stage.show();
     }
@@ -102,17 +116,12 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
     public void runAutoAnalysis() {
         prepareAnalysisView();
 
-        Platform.runLater(() -> analysis.presenter.runAnalysis_allCapture());
+        analysis.presenter.runAnalysis_allCapture();
     }
 
     @Override
     public void changeCenterView_review() {
-        if (review == null) {
-            review = new ViewPresenterPair<>(new ScannerProcessorReviewViewImpl(),
-                    new ScannerProcessorReviewPresenterImpl(this, scannerContext));
-
-            Mvp.linkViewAndPresenter(review.view, review.presenter);
-        }
+        prepareReviewView();
 
         framePresenter.setCenterView(review.view);
     }
@@ -121,9 +130,9 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
     public void changeCenterView_analysis(List<Integer> selectedSongIdList) {
         prepareAnalysisView();
 
-        Platform.runLater(() -> analysis.presenter.runAnalysis_selectedSong(selectedSongIdList));
-
         framePresenter.setCenterView(analysis.view);
+
+        analysis.presenter.runAnalysis_selectedSong(selectedSongIdList);
     }
 
     @Override

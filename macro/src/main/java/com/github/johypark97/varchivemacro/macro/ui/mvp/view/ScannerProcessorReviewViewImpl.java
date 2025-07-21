@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -172,9 +171,6 @@ public class ScannerProcessorReviewViewImpl extends StackPane
         linkTableFilterConflictCheckBox.setSelected(true);
         linkTableFilterDuplicatedCheckBox.setSelected(true);
         linkTableFilterSimilarCheckBox.setSelected(true);
-
-        setupLinkTableFilterText(FXCollections.emptyObservableList());
-        updateLinkTableSelectedCountText(0, 0, 0, 0, 0, 0);
 
         EventHandler<ActionEvent> eventHandler = event -> presenter.updateLinkTableViewFilter();
         linkTableFilterConflictCheckBox.setOnAction(eventHandler);

@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.UnicodeFilter;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.SongData;
+import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
 import com.github.johypark97.varchivemacro.macro.ui.common.EventDebouncer;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorReview;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.image.Image;
@@ -28,6 +30,7 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
     private final ScannerProcessorStage scannerProcessorStage;
 
+    private final GlobalContext globalContext;
     private final ScannerContext scannerContext;
 
     private final EventDebouncer updateLinkTableSelectedCountTextEventDebouncer =
@@ -42,10 +45,14 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
     public ScannerProcessorReview.View view;
 
     public ScannerProcessorReviewPresenterImpl(ScannerProcessorStage scannerProcessorStage,
-            ScannerContext scannerContext) {
+            GlobalContext globalContext, ScannerContext scannerContext) {
         this.scannerProcessorStage = scannerProcessorStage;
 
+        this.globalContext = globalContext;
         this.scannerContext = scannerContext;
+
+        updateLinkTableSelectedCountTextEventDebouncer.setCallback(
+                this::updateLinkTableSelectedCountText);
     }
 
     private void prepareLinkTableData() {
@@ -53,8 +60,6 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
                 scannerContext.scannerReviewService.getAllSongDataList().stream()
                         .map(ScannerReviewViewModel.LinkTableData::form).toList();
 
-        updateLinkTableSelectedCountTextEventDebouncer.setCallback(
-                this::updateLinkTableSelectedCountText);
         linkTableDataLookup = list.stream()
                 .collect(Collectors.toMap(x -> x.songIdProperty().get(), Function.identity()));
         linkTableDataLookup.values().forEach(x -> x.setOnSelectedChange(
@@ -148,6 +153,15 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
         updateLinkTableSelectedCountTextEventDebouncer.trigger();
         view.refreshLinkTable();
+    }
+
+    @Override
+    public void startView() {
+        runLinking();
+
+        if (globalContext.configService.findScannerConfig().autoAnalysis()) {
+            Platform.runLater(scannerProcessorStage::runAutoAnalysis);
+        }
     }
 
     @Override

@@ -15,6 +15,8 @@ public interface ScannerProcessorReview {
 
 
     interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
+        void startView();
+
         void runLinking();
 
         void updateLinkTableViewFilter();
