@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -21,6 +22,12 @@
   <children>
     <VBox fx:id="linkTableBox">
       <children>
+        <Label text="%scanner.processor.review.guideLabel">
+          <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+          </padding>
+        </Label>
+        <Separator/>
         <HBox alignment="CENTER_LEFT" spacing="10.0">
           <children>
             <Label fx:id="linkTableFilterLabel"/>
@@ -53,9 +60,9 @@
             <TableColumn text="%scanner.processor.review.linkTable.column.song">
               <columns>
                 <TableColumn style="-fx-alignment: center-right;" prefWidth="50.0" text="%scanner.processor.review.linkTable.column.song.id" fx:id="linkTableColumnSongId"/>
-                <TableColumn prefWidth="250.0" text="%scanner.processor.review.linkTable.column.song.title" fx:id="linkTableColumnSongTitle"/>
-                <TableColumn prefWidth="150.0" text="%scanner.processor.review.linkTable.column.song.composer" fx:id="linkTableColumnSongComposer"/>
                 <TableColumn prefWidth="100.0" text="%scanner.processor.review.linkTable.column.song.pack" fx:id="linkTableColumnSongPack"/>
+                <TableColumn prefWidth="150.0" text="%scanner.processor.review.linkTable.column.song.composer" fx:id="linkTableColumnSongComposer"/>
+                <TableColumn prefWidth="250.0" text="%scanner.processor.review.linkTable.column.song.title" fx:id="linkTableColumnSongTitle"/>
               </columns>
             </TableColumn>
             <TableColumn prefWidth="250.0" text="%scanner.processor.review.linkTable.column.captureImage" fx:id="linkTableColumnCaptureImage"/>

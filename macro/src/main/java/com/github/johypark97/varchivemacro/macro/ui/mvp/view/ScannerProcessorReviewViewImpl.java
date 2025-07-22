@@ -88,13 +88,13 @@ public class ScannerProcessorReviewViewImpl extends StackPane
     private TableColumn<ScannerReviewViewModel.LinkTableData, Integer> linkTableColumnSongId;
 
     @FXML
-    private TableColumn<ScannerReviewViewModel.LinkTableData, String> linkTableColumnSongTitle;
+    private TableColumn<ScannerReviewViewModel.LinkTableData, String> linkTableColumnSongPack;
 
     @FXML
     private TableColumn<ScannerReviewViewModel.LinkTableData, String> linkTableColumnSongComposer;
 
     @FXML
-    private TableColumn<ScannerReviewViewModel.LinkTableData, String> linkTableColumnSongPack;
+    private TableColumn<ScannerReviewViewModel.LinkTableData, String> linkTableColumnSongTitle;
 
     @FXML
     private TableColumn<ScannerReviewViewModel.LinkTableData, List<ScannerReviewViewModel.LinkedCaptureData>>
@@ -238,9 +238,9 @@ public class ScannerProcessorReviewViewImpl extends StackPane
         });
 
         linkTableColumnSongId.setCellValueFactory(new PropertyValueFactory<>("songId"));
-        linkTableColumnSongTitle.setCellValueFactory(new PropertyValueFactory<>("songTitle"));
-        linkTableColumnSongComposer.setCellValueFactory(new PropertyValueFactory<>("songComposer"));
         linkTableColumnSongPack.setCellValueFactory(new PropertyValueFactory<>("songPack"));
+        linkTableColumnSongComposer.setCellValueFactory(new PropertyValueFactory<>("songComposer"));
+        linkTableColumnSongTitle.setCellValueFactory(new PropertyValueFactory<>("songTitle"));
 
         linkTableColumnCaptureImage.setCellValueFactory(new PropertyValueFactory<>("captureImage"));
         linkTableColumnCaptureImage.setCellFactory(param -> new TableCell<>() {

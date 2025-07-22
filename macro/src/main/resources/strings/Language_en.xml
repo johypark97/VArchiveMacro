@@ -83,6 +83,7 @@
   <entry key="scanner.processor.review.dialog.noSongSelected">No selected songs. Please select at least one.</entry>
   <entry key="scanner.processor.review.frameButton.analyze">Analyze</entry>
   <entry key="scanner.processor.review.frameButton.reset">Reset</entry>
+  <entry key="scanner.processor.review.guideLabel">This is a review step to check if the Collection Scanner has recognized the songs correctly. If there are any songs that are not recognized correctly, please correct them.</entry>
   <entry key="scanner.processor.review.linkEditor.cancelButton">Cancel</entry>
   <entry key="scanner.processor.review.linkEditor.filter.findAllCheckBox">Find all</entry>
   <entry key="scanner.processor.review.linkEditor.filter.resetButtonTooltip">Reset</entry>

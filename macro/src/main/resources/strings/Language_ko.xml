@@ -83,6 +83,7 @@
   <entry key="scanner.processor.review.dialog.noSongSelected">선택된 곡이 없습니다. 최소 1개 이상 선택해주세요.</entry>
   <entry key="scanner.processor.review.frameButton.analyze">분석 시작</entry>
   <entry key="scanner.processor.review.frameButton.reset">초기화</entry>
+  <entry key="scanner.processor.review.guideLabel">컬렉션 스캐너가 곡들을 정확하게 인식하였는지 확인할 수 있는 검토 단계입니다. 잘못 인식한 곡이 있는지 확인 및 수정해주세요.</entry>
   <entry key="scanner.processor.review.linkEditor.cancelButton">취소</entry>
   <entry key="scanner.processor.review.linkEditor.filter.findAllCheckBox">전체 검색</entry>
   <entry key="scanner.processor.review.linkEditor.filter.resetButtonTooltip">초기화</entry>
