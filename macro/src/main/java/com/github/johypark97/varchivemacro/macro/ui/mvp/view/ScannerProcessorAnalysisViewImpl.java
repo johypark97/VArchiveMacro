@@ -206,7 +206,6 @@ public class ScannerProcessorAnalysisViewImpl extends StackPane
     public ScannerProcessorFrame.ButtonFunction getRightButtonFunction() {
         return new ScannerProcessorFrame.ButtonFunction(
                 Language.INSTANCE.getString("scanner.processor.analysis.frameButton.upload"),
-                event -> {
-                });
+                event -> presenter.showUploadView());
     }
 }

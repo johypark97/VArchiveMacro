@@ -12,8 +12,6 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -69,21 +67,24 @@ public class ScannerAnalysisService {
                 .collect(Collectors.toSet());
     }
 
+    public int getFirstLinkedCaptureEntryId(int songId) {
+        Song song = songService.findSongById(songId);
+        if (song == null) {
+            return -1;
+        }
+
+        Map<CaptureEntry, SongCaptureLink> linkedCaptureEntryMap =
+                songCaptureLinkService.groupBySong().get(song);
+        if (linkedCaptureEntryMap == null) {
+            return -1;
+        }
+
+        return linkedCaptureEntryMap.keySet().stream().findFirst().map(CaptureEntry::entryId)
+                .orElse(-1);
+    }
+
     public Set<Integer> getCaptureEntryIdSetFromSongIdList(List<Integer> songIdList) {
-        List<Integer> captureList = new LinkedList<>();
-
-        Map<Song, Map<CaptureEntry, SongCaptureLink>> linkMapGroupedBySong =
-                songCaptureLinkService.groupBySong();
-
-        songIdList.stream().map(songService::findSongById).forEach(song -> {
-            Map<CaptureEntry, SongCaptureLink> linkedCaptureMap = linkMapGroupedBySong.get(song);
-
-            if (linkedCaptureMap != null) {
-                linkedCaptureMap.keySet().stream().findFirst()
-                        .ifPresent(captureEntry -> captureList.add(captureEntry.entryId()));
-            }
-        });
-
-        return new HashSet<>(captureList);
+        return songIdList.stream().map(this::getFirstLinkedCaptureEntryId)
+                .collect(Collectors.toSet());
     }
 }

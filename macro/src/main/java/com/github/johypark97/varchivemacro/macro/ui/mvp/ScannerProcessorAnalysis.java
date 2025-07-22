@@ -20,6 +20,8 @@ public interface ScannerProcessorAnalysis {
         void showResultException(Exception exception);
 
         void showReviewView();
+
+        void showUploadView();
     }
 
 

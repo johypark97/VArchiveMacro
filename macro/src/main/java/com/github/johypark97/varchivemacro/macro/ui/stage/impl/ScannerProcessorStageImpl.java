@@ -9,12 +9,15 @@ import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorAnalysis;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorFrame;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorReview;
+import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorUpload;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.presenter.ScannerProcessorAnalysisPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.presenter.ScannerProcessorFramePresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.presenter.ScannerProcessorReviewPresenterImpl;
+import com.github.johypark97.varchivemacro.macro.ui.mvp.presenter.ScannerProcessorUploadPresenterImpl;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.view.ScannerProcessorAnalysisViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.view.ScannerProcessorFrameViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.view.ScannerProcessorReviewViewImpl;
+import com.github.johypark97.varchivemacro.macro.ui.mvp.view.ScannerProcessorUploadViewImpl;
 import com.github.johypark97.varchivemacro.macro.ui.resource.UiResource;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractBaseStage;
@@ -38,6 +41,8 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
             analysis;
     private ViewPresenterPair<ScannerProcessorReviewViewImpl, ScannerProcessorReview.Presenter>
             review;
+    private ViewPresenterPair<ScannerProcessorUploadViewImpl, ScannerProcessorUpload.Presenter>
+            upload;
 
     public ScannerProcessorStageImpl(AbstractTreeableStage parent, StageManager stageManager,
             ScannerContext scannerContext, Runnable onStop) {
@@ -90,6 +95,19 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
         analysis.presenter.startView();
     }
 
+    private void prepareUploadView() {
+        if (upload != null) {
+            return;
+        }
+
+        upload = new ViewPresenterPair<>(new ScannerProcessorUploadViewImpl(),
+                new ScannerProcessorUploadPresenterImpl(this));
+
+        Mvp.linkViewAndPresenter(upload.view, upload.presenter);
+
+        upload.presenter.startView();
+    }
+
     @Override
     public void startStage() {
         framePresenter = new ScannerProcessorFramePresenterImpl(this);
@@ -122,6 +140,13 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
     }
 
     @Override
+    public void collectNewRecord(List<Integer> selectedSongIdList) {
+        prepareUploadView();
+
+        upload.presenter.collectNewRecord(selectedSongIdList);
+    }
+
+    @Override
     public void showCaptureImageViewer() {
         stageManager.showCaptureImageViewer(this, scannerContext);
     }
@@ -138,6 +163,13 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
         prepareAnalysisView();
 
         framePresenter.setCenterView(analysis.view);
+    }
+
+    @Override
+    public void changeCenterView_upload() {
+        prepareUploadView();
+
+        framePresenter.setCenterView(upload.view);
     }
 
     @Override

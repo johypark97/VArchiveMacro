@@ -6,11 +6,13 @@ import com.github.johypark97.varchivemacro.macro.integration.context.ScannerCont
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorAnalysis;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerAnalysisViewModel;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
@@ -194,5 +196,31 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     @Override
     public void showReviewView() {
         scannerProcessorStage.changeCenterView_review();
+    }
+
+    @Override
+    public void showUploadView() {
+        EnumSet<ScannerAnalysisViewModel.AnalysisResult.Status> allowed =
+                EnumSet.of(ScannerAnalysisViewModel.AnalysisResult.Status.ALREADY_DONE,
+                        ScannerAnalysisViewModel.AnalysisResult.Status.DONE);
+
+        Predicate<Integer> isReadyToUpload = songId -> {
+            int captureEntryId =
+                    scannerContext.scannerAnalysisService.getFirstLinkedCaptureEntryId(songId);
+
+            ScannerAnalysisViewModel.AnalysisResult result = analysisResultMap.get(captureEntryId);
+
+            return result != null && allowed.contains(result.statusProperty().get());
+        };
+
+        if (selectedSongIdList == null || analysisResultMap == null || !selectedSongIdList.stream()
+                .allMatch(isReadyToUpload)) {
+            scannerProcessorStage.showWarning(Language.INSTANCE.getString(
+                    "scanner.processor.analysis.dialog.notAllAnalyzed"));
+            return;
+        }
+
+        scannerProcessorStage.changeCenterView_upload();
+        scannerProcessorStage.collectNewRecord(selectedSongIdList);
     }
 }
