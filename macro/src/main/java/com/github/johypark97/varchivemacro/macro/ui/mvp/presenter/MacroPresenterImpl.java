@@ -21,6 +21,7 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import io.reactivex.rxjava3.disposables.Disposable;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import org.slf4j.Logger;
@@ -33,6 +34,8 @@ public class MacroPresenterImpl implements Macro.Presenter {
 
     private final GlobalContext globalContext;
     private final MacroContext macroContext;
+
+    private final AtomicBoolean taskRunning = new AtomicBoolean();
 
     private Disposable disposableGlobalEvent;
     private NativeKeyListener nativeKeyListener;
@@ -65,6 +68,34 @@ public class MacroPresenterImpl implements Macro.Presenter {
         view.setStopKeyText(config.stopKey().toString());
     }
 
+    private synchronized void startMacro(MacroDirection direction) {
+        if (taskRunning.get()) {
+            return;
+        }
+
+        Task<MacroProgress> task = macroContext.macroService.createMacroTask(direction);
+        if (task == null) {
+            return;
+        }
+
+        task.setOnRunning(event -> view.showProgressBox());
+
+        task.setOnCancelled(MacroPresenterImpl.this::onStopTask);
+        task.setOnFailed(MacroPresenterImpl.this::onStopTask);
+        task.setOnSucceeded(MacroPresenterImpl.this::onStopTask);
+
+        task.valueProperty().addListener(
+                (observable, oldValue, newValue) -> view.setProgress(newValue.value(),
+                        newValue.count()));
+
+        taskRunning.set(true);
+        CompletableFuture.runAsync(task);
+    }
+
+    private void stopMacro() {
+        macroContext.macroService.stopMacroTask();
+    }
+
     private void registerKeyboardHook() {
         MacroConfig config = globalContext.configService.findMacroConfig();
 
@@ -77,7 +108,7 @@ public class MacroPresenterImpl implements Macro.Presenter {
             public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
                 NativeInputKey nativeInputKey = new NativeInputKey(nativeEvent);
                 if (nativeInputKey.isInteroperable() && nativeInputKey.isEqual(stopKey)) {
-                    macroContext.macroService.stopMacroTask();
+                    stopMacro();
                 }
             }
 
@@ -88,28 +119,11 @@ public class MacroPresenterImpl implements Macro.Presenter {
                     return;
                 }
 
-                Task<MacroProgress> task = null;
                 if (nativeInputKey.isEqual(startUpKey)) {
-                    task = macroContext.macroService.createMacroTask(MacroDirection.UP);
+                    startMacro(MacroDirection.UP);
                 } else if (nativeInputKey.isEqual(startDownKey)) {
-                    task = macroContext.macroService.createMacroTask(MacroDirection.DOWN);
+                    startMacro(MacroDirection.DOWN);
                 }
-
-                if (task == null) {
-                    return;
-                }
-
-                task.setOnRunning(event -> view.showProgressBox());
-
-                task.setOnCancelled(MacroPresenterImpl.this::onStopTask);
-                task.setOnFailed(MacroPresenterImpl.this::onStopTask);
-                task.setOnSucceeded(MacroPresenterImpl.this::onStopTask);
-
-                task.valueProperty().addListener(
-                        (observable, oldValue, newValue) -> view.setProgress(newValue.value(),
-                                newValue.count()));
-
-                CompletableFuture.runAsync(task);
             }
         };
 
@@ -124,6 +138,8 @@ public class MacroPresenterImpl implements Macro.Presenter {
     }
 
     private void onStopTask(WorkerStateEvent event) {
+        taskRunning.set(false);
+
         Throwable throwable = event.getSource().getException();
 
         if (throwable != null) {

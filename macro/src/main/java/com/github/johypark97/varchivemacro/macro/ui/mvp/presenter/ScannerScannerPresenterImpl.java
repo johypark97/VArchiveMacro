@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -42,6 +43,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
 
     private final GlobalContext globalContext;
 
+    private final AtomicBoolean taskRunning = new AtomicBoolean();
     private final StringProperty accountFileText = new SimpleStringProperty();
     private final StringProperty cacheDirectoryText = new SimpleStringProperty();
 
@@ -76,6 +78,10 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     }
 
     private synchronized void startScan() {
+        if (taskRunning.get()) {
+            return;
+        }
+
         Set<String> selectedCategorySet = getSelectedCategorySet();
         if (selectedCategorySet.isEmpty()) {
             scannerScannerStage.showWarning(
@@ -110,6 +116,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
         task.setOnFailed(ScannerScannerPresenterImpl.this::onStopTask);
         task.setOnSucceeded(ScannerScannerPresenterImpl.this::onStopTask);
 
+        taskRunning.set(true);
         CompletableFuture.runAsync(task);
     }
 
@@ -154,6 +161,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     }
 
     private void onStopTask(WorkerStateEvent event) {
+        taskRunning.set(false);
+
         Throwable throwable = event.getSource().getException();
 
         Language language = Language.INSTANCE;
