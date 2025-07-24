@@ -88,7 +88,7 @@ public class CaptureAnalysisTask
             for (RecordButton button : RecordButton.values()) {
                 for (RecordPattern pattern : RecordPattern.values()) {
                     Rectangle rateRectangle = region.getRate(button, pattern);
-                    Rectangle maxComboRectangle = region.getRate(button, pattern);
+                    Rectangle maxComboRectangle = region.getMaxCombo(button, pattern);
 
                     boolean maxCombo;
                     float rate;
