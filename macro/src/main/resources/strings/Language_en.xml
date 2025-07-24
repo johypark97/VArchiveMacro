@@ -132,6 +132,7 @@
   <entry key="scanner.processor.upload.recordTable.column.song.id">No.</entry>
   <entry key="scanner.processor.upload.recordTable.column.song.pack">Pack</entry>
   <entry key="scanner.processor.upload.recordTable.column.song.title">Title</entry>
+  <entry key="scanner.processor.upload.selectedRecordCountLabel">Selected: %%d / %d</entry>
   <entry key="scanner.processor.upload.selector.entire.sectionName">Entire selector</entry>
   <entry key="scanner.processor.upload.selector.entire.toggleAllButton">Toggle all records</entry>
   <entry key="scanner.processor.upload.selector.filter.button.allCheckBox">(All)</entry>

@@ -101,7 +101,7 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
         }
 
         upload = new ViewPresenterPair<>(new ScannerProcessorUploadViewImpl(),
-                new ScannerProcessorUploadPresenterImpl(this));
+                new ScannerProcessorUploadPresenterImpl(this, scannerContext));
 
         Mvp.linkViewAndPresenter(upload.view, upload.presenter);
 

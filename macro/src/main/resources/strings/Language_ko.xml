@@ -132,6 +132,7 @@
   <entry key="scanner.processor.upload.recordTable.column.song.id">번호</entry>
   <entry key="scanner.processor.upload.recordTable.column.song.pack">팩</entry>
   <entry key="scanner.processor.upload.recordTable.column.song.title">제목</entry>
+  <entry key="scanner.processor.upload.selectedRecordCountLabel">선택됨: %%d / %d</entry>
   <entry key="scanner.processor.upload.selector.entire.sectionName">전체 선택기</entry>
   <entry key="scanner.processor.upload.selector.entire.toggleAllButton">기록 전체 선택/해제</entry>
   <entry key="scanner.processor.upload.selector.filter.button.allCheckBox">(모두)</entry>

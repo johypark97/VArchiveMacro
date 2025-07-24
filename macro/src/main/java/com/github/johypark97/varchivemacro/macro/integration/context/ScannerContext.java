@@ -1,6 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.integration.context;
 
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.SongRecordUploadService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.InvalidAccountFileException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.repository.CaptureRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.infra.repository.DefaultCaptureRepository;
@@ -12,13 +14,18 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.reposi
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.infra.repository.DefaultSongCaptureLinkRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app.PixImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.UpdatedSongRecordService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.repository.UpdatedSongRecordRepository;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.repository.DefaultUpdatedSongRecordRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.analysis.ScannerAnalysisService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.ScannerReviewService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.SongCaptureLinkingService;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.scanner.ScannerScannerService;
+import com.github.johypark97.varchivemacro.macro.integration.app.scanner.upload.ScannerUploadService;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.security.GeneralSecurityException;
 
 public class ScannerContext implements Context {
     // constants
@@ -32,6 +39,8 @@ public class ScannerContext implements Context {
     final CaptureRepository captureRepository = new DefaultCaptureRepository();
     final SongCaptureLinkRepository songCaptureLinkRepository =
             new DefaultSongCaptureLinkRepository();
+    final UpdatedSongRecordRepository updatedSongRecordRepository =
+            new DefaultUpdatedSongRecordRepository();
 
     // services
     public final CaptureImageService captureImageService;
@@ -43,7 +52,10 @@ public class ScannerContext implements Context {
     public final PixImageService pixImageService = new PixImageService();
     public final SongCaptureLinkService songCaptureLinkService =
             new SongCaptureLinkService(songCaptureLinkRepository);
+    public final SongRecordUploadService songRecordUploadService;
     public final SongTitleService songTitleService = new SongTitleService(SONG_TITLE_FILE_PATH);
+    public final UpdatedSongRecordService updatedSongRecordService =
+            new UpdatedSongRecordService(updatedSongRecordRepository);
 
     // integrations
     public final SongCaptureLinkingService songCaptureLinkingService;
@@ -52,8 +64,10 @@ public class ScannerContext implements Context {
     public final ScannerAnalysisService scannerAnalysisService;
     public final ScannerReviewService scannerReviewService;
     public final ScannerScannerService scannerScannerService;
+    public final ScannerUploadService scannerUploadService;
 
-    public ScannerContext(GlobalContext globalContext, boolean debug) throws IOException {
+    public ScannerContext(GlobalContext globalContext, boolean debug)
+            throws IOException, GeneralSecurityException, InvalidAccountFileException {
         // repositories
         Path cacheDirectoryPath = PathValidator.validateAndConvert(
                 globalContext.configService.findScannerConfig().cacheDirectory());
@@ -62,6 +76,10 @@ public class ScannerContext implements Context {
 
         // services
         captureImageService = new CaptureImageService(captureImageRepository);
+
+        Path accountFilePath = PathValidator.validateAndConvert(
+                globalContext.configRepository.findScannerConfig().accountFile());
+        songRecordUploadService = new SongRecordUploadService(accountFilePath);
 
         // integrations
         songCaptureLinkingService =
@@ -81,5 +99,10 @@ public class ScannerContext implements Context {
         scannerAnalysisService = new ScannerAnalysisService(captureImageService, captureService,
                 globalContext.configService, pixImageService, songCaptureLinkService,
                 globalContext.songService, commonOcrServiceFactory);
+
+        scannerUploadService =
+                new ScannerUploadService(songCaptureLinkService, globalContext.songRecordService,
+                        songRecordUploadService, globalContext.songService, songTitleService,
+                        updatedSongRecordService);
     }
 }
