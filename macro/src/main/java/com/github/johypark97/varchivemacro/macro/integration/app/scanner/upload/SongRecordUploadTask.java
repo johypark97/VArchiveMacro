@@ -16,8 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SongRecordUploadTask
-        extends InterruptibleTask<Map<Integer, SongRecordUploadTaskResult>> {
+public class SongRecordUploadTask extends InterruptibleTask<List<SongRecordUploadTaskResult>> {
     private final SongRecordService songRecordService;
     private final SongRecordUploadService songRecordUploadService;
     private final SongService songService;
@@ -40,35 +39,54 @@ public class SongRecordUploadTask
     }
 
     @Override
-    protected Map<Integer, SongRecordUploadTaskResult> callTask() throws Exception {
+    protected List<SongRecordUploadTaskResult> callTask() throws Exception {
+        updateProgress(0, 1);
+
         Map<Integer, SongRecordUploadTaskResult> resultMap = entryList.stream().collect(
                 Collectors.toMap(UpdatedSongRecordEntry::entryId,
                         x -> new SongRecordUploadTaskResult(x.entryId())));
 
-        for (UpdatedSongRecordEntry entry : entryList) {
-            if (Thread.currentThread().isInterrupted()) {
-                throw new InterruptedException();
+        int count = 0;
+        int total = resultMap.size();
+
+        Exception exception = null;
+        try {
+            for (UpdatedSongRecordEntry entry : entryList) {
+                if (Thread.currentThread().isInterrupted()) {
+                    throw new InterruptedException();
+                }
+
+                Song song = songService.findSongById(entry.record().songId());
+
+                String title = songTitleService.getRemoteTitleOrDefault(song);
+                String composer = duplicateTitleSongSet.contains(song) ? song.composer() : null;
+                RecordButton button = entry.record().button();
+                RecordPattern pattern = entry.record().pattern();
+                SongRecord newRecord = entry.record().newRecord();
+
+                boolean updated =
+                        songRecordUploadService.upload(title, composer, button, pattern, newRecord);
+
+                SongRecordTable table = songRecordService.findById(song.songId());
+                table.setSongRecord(button, pattern, newRecord);
+
+                resultMap.get(entry.entryId()).setStatus(updated
+                        ? SongRecordUploadTaskResult.Status.UPDATED
+                        : SongRecordUploadTaskResult.Status.HIGHER_RECORD_EXISTS);
+
+                updateProgress(++count, total);
             }
-
-            Song song = songService.findSongById(entry.record().songId());
-
-            String title = songTitleService.getRemoteTitleOrDefault(song);
-            String composer = duplicateTitleSongSet.contains(song) ? song.composer() : null;
-            RecordButton button = entry.record().button();
-            RecordPattern pattern = entry.record().pattern();
-            SongRecord newRecord = entry.record().newRecord();
-
-            boolean updated =
-                    songRecordUploadService.upload(title, composer, button, pattern, newRecord);
-
-            SongRecordTable table = songRecordService.findById(song.songId());
-            table.setSongRecord(button, pattern, newRecord);
-
-            resultMap.get(entry.entryId()).setStatus(updated
-                    ? SongRecordUploadTaskResult.Status.UPDATED
-                    : SongRecordUploadTaskResult.Status.HIGHER_RECORD_EXISTS);
+        } catch (Exception e) {
+            exception = e;
         }
 
-        return resultMap;
+        List<SongRecordUploadTaskResult> resultList = resultMap.values().stream().toList();
+
+        if (exception != null) {
+            updateValue(resultList);
+            throw exception;
+        }
+
+        return resultList;
     }
 }

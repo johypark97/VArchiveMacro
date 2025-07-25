@@ -1,8 +1,11 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel;
 
+import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.upload.NewRecordEntry;
+import com.github.johypark97.varchivemacro.macro.integration.app.scanner.upload.SongRecordUploadTaskResult;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class ScannerUploadViewModel {
     public enum RecordButton {
@@ -52,6 +55,33 @@ public class ScannerUploadViewModel {
     }
 
 
+    public enum Result {
+        HIGHER_RECORD_EXISTS("scanner.processor.upload.result.higherRecordExists"),
+        NONE(""),
+        SUSPENDED("scanner.processor.upload.result.suspended"),
+        UPLOADED("scanner.processor.upload.result.uploaded");
+
+        private final String languageKey;
+
+        Result(String languageKey) {
+            this.languageKey = languageKey;
+        }
+
+        public static Result from(SongRecordUploadTaskResult.Status status) {
+            return switch (status) {
+                case HIGHER_RECORD_EXISTS -> HIGHER_RECORD_EXISTS;
+                case SUSPENDED -> SUSPENDED;
+                case UPDATED -> UPLOADED;
+            };
+        }
+
+        @Override
+        public String toString() {
+            return languageKey.isEmpty() ? "" : Language.INSTANCE.getString(languageKey);
+        }
+    }
+
+
     public static class NewRecordData {
         private final int updatedSongRecordEntryId;
 
@@ -67,6 +97,7 @@ public class ScannerUploadViewModel {
         private final SongRecord newRecord;
 
         private final BooleanProperty selected = new SimpleBooleanProperty();
+        private final SimpleObjectProperty<Result> result = new SimpleObjectProperty<>(Result.NONE);
 
         private Runnable onSelectedChange;
 
@@ -138,6 +169,10 @@ public class ScannerUploadViewModel {
 
         public BooleanProperty selectedProperty() {
             return selected;
+        }
+
+        public SimpleObjectProperty<Result> resultProperty() {
+            return result;
         }
 
         public void setOnSelectedChange(Runnable value) {

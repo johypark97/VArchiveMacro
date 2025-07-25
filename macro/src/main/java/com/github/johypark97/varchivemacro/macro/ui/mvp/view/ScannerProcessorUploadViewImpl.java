@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.view;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.common.EventDebouncer;
+import com.github.johypark97.varchivemacro.macro.ui.common.SimpleTransition;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorFrame;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorUpload;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerUploadViewModel;
@@ -19,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -26,11 +28,23 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
-public class ScannerProcessorUploadViewImpl extends BorderPane
+public class ScannerProcessorUploadViewImpl extends StackPane
         implements ScannerProcessorUpload.View {
     private static final String FXML_PATH = "/fxml/ScannerProcessorUpload.fxml";
+
+    private static final Duration PROGRESS_TRANSITION_DURATION = Duration.millis(500);
+    private static final int PROGRESS_TRANSITION_BLUR_RADIUS = 4;
+
+    private final GaussianBlur uploadBorderPaneBlur = new GaussianBlur(0);
+
+    @FXML
+    private BorderPane uploadBorderPane;
 
     @FXML
     private TableView<ScannerUploadViewModel.NewRecordData> recordTableView;
@@ -65,6 +79,10 @@ public class ScannerProcessorUploadViewImpl extends BorderPane
 
     @FXML
     private TableColumn<ScannerUploadViewModel.NewRecordData, Boolean> recordTableColumnSelect;
+
+    @FXML
+    private TableColumn<ScannerUploadViewModel.NewRecordData, ScannerUploadViewModel.Result>
+            recordTableColumnResult;
 
     @FXML
     private TitledPane entireSelectorTitledPane;
@@ -120,6 +138,15 @@ public class ScannerProcessorUploadViewImpl extends BorderPane
     @FXML
     private Button uploadButton;
 
+    @FXML
+    private VBox progressBox;
+
+    @FXML
+    private ProgressIndicator progressIndicator;
+
+    @FXML
+    private Label progressLabel;
+
     @MvpPresenter
     public ScannerProcessorUpload.Presenter presenter;
 
@@ -146,6 +173,8 @@ public class ScannerProcessorUploadViewImpl extends BorderPane
         setupFilterSelector();
 
         uploadButton.setOnAction(event -> presenter.upload());
+
+        progressBox.setVisible(false);
     }
 
     private void setupRecordTableView() {
@@ -170,6 +199,8 @@ public class ScannerProcessorUploadViewImpl extends BorderPane
         recordTableColumnSelect.setCellValueFactory(new PropertyValueFactory<>("selected"));
         recordTableColumnSelect.setCellFactory(param -> new CheckBoxTableCell<>());
         recordTableColumnSelect.setEditable(true);
+
+        recordTableColumnResult.setCellValueFactory(new PropertyValueFactory<>("result"));
     }
 
     private void setupEntireSelector() {
@@ -284,6 +315,39 @@ public class ScannerProcessorUploadViewImpl extends BorderPane
         if (selectedRecordCountTextStringBinding != null) {
             selectedRecordCountTextStringBinding.invalidate();
         }
+    }
+
+    @Override
+    public void showProgressBox() {
+        uploadBorderPane.setDisable(true);
+
+        progressBox.setVisible(true);
+
+        new SimpleTransition(PROGRESS_TRANSITION_DURATION, x -> {
+            uploadBorderPane.setOpacity(1 - 0.8 * x);
+            progressBox.setOpacity(x);
+            uploadBorderPaneBlur.setRadius(x * PROGRESS_TRANSITION_BLUR_RADIUS);
+        }).play();
+    }
+
+    @Override
+    public void hideProgressBox() {
+        uploadBorderPane.setDisable(false);
+
+        SimpleTransition transition = new SimpleTransition(PROGRESS_TRANSITION_DURATION, x -> {
+            uploadBorderPane.setOpacity(0.2 + 0.8 * x);
+            progressBox.setOpacity(1 - x);
+            uploadBorderPaneBlur.setRadius(PROGRESS_TRANSITION_BLUR_RADIUS * (1 - x));
+        });
+        transition.setOnFinished(event -> progressBox.setVisible(false));
+
+        transition.play();
+    }
+
+    @Override
+    public void setProgress(double value) {
+        progressIndicator.setProgress(value);
+        progressLabel.setText(String.format("%.2f%%", value * 100));
     }
 
     @Override

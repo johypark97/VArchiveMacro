@@ -76,8 +76,7 @@ public class ScannerUploadService {
         }
     }
 
-    public Task<Map<Integer, SongRecordUploadTaskResult>> createTask(
-            List<Integer> selectedEntryIdList) {
+    public Task<List<SongRecordUploadTaskResult>> createTask(List<Integer> selectedEntryIdList) {
         if (TaskManager.getInstance().isRunningAny()) {
             return null;
         }

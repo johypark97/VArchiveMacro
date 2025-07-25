@@ -24,5 +24,11 @@ public interface ScannerProcessorUpload {
         void setRecordTableItemList(ObservableList<ScannerUploadViewModel.NewRecordData> value);
 
         void updateSelectedCountText();
+
+        void showProgressBox();
+
+        void hideProgressBox();
+
+        void setProgress(double value);
     }
 }
