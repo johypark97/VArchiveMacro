@@ -7,11 +7,9 @@ import javafx.collections.ObservableList;
 
 public interface ScannerProcessorUpload {
     interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
-        void startView();
+        void startView(List<Integer> selectedSongIdList);
 
         void collectNewRecord();
-
-        void collectNewRecord(List<Integer> selectedSongIdList);
 
         void upload();
 

@@ -7,8 +7,6 @@ import javafx.collections.ObservableList;
 
 public interface ScannerProcessorAnalysis {
     interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
-        void startView();
-
         void runAnalysis_allCapture();
 
         void runAnalysis_selectedSong(List<Integer> selectedSongIdList);

@@ -7,13 +7,14 @@ import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorAnalysis
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerAnalysisViewModel;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
 import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -28,10 +29,12 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
 
     private final ScannerContext scannerContext;
 
-    private final AtomicBoolean analysisCompleted = new AtomicBoolean();
+    private final AtomicBoolean taskRunning = new AtomicBoolean();
+    private final List<Integer> selectedSongIdList = new LinkedList<>();
+    private final Map<Integer, ScannerAnalysisViewModel.AnalysisResult> analysisResultMap =
+            new LinkedHashMap<>();
 
-    private List<Integer> selectedSongIdList;
-    private Map<Integer, ScannerAnalysisViewModel.AnalysisResult> analysisResultMap;
+    private boolean backgroundAnalysis;
 
     @MvpView
     public ScannerProcessorAnalysis.View view;
@@ -75,6 +78,7 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
         task.setOnRunning(this::onTaskRunning);
         task.setOnSucceeded(event -> onTaskSucceeded(task.getValue()));
 
+        taskRunning.set(true);
         CompletableFuture.runAsync(task);
     }
 
@@ -83,9 +87,9 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     }
 
     private void onTaskRunning(WorkerStateEvent ignored) {
-        analysisCompleted.set(false);
+        taskRunning.set(false);
 
-        analysisResultMap = null; // NOPMD
+        analysisResultMap.clear();
 
         Language language = Language.INSTANCE;
 
@@ -95,11 +99,10 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     }
 
     private void onTaskSucceeded(Map<Integer, CaptureAnalysisTaskResult> taskValue) {
-        analysisCompleted.set(true);
+        taskRunning.set(false);
 
-        analysisResultMap = taskValue.entrySet().stream().collect(
-                Collectors.toMap(Map.Entry::getKey,
-                        x -> ScannerAnalysisViewModel.AnalysisResult.from(x.getValue())));
+        taskValue.forEach((key, value) -> analysisResultMap.put(key,
+                ScannerAnalysisViewModel.AnalysisResult.from(value)));
 
         setFunctionButtonToStart();
         view.enableShowResultButton(true);
@@ -121,6 +124,8 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     }
 
     private void onTaskCancelled(WorkerStateEvent ignored) {
+        taskRunning.set(false);
+
         Language language = Language.INSTANCE;
 
         view.setMessageText(
@@ -132,6 +137,8 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     }
 
     private void onTaskFailed(WorkerStateEvent event) {
+        taskRunning.set(false);
+
         Language language = Language.INSTANCE;
 
         view.setMessageText(
@@ -146,27 +153,22 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     }
 
     @Override
-    public void startView() {
-        view.setProgress(0);
-        view.setMessageText("");
-        setFunctionButtonToStart();
-    }
-
-    @Override
     public void runAnalysis_allCapture() {
         Set<Integer> set = scannerContext.scannerAnalysisService.getAllCaptureEntryIdSet();
         if (set.isEmpty()) {
             return;
         }
 
+        backgroundAnalysis = true;
+
         startAnalysisTask(set);
     }
 
     @Override
     public void runAnalysis_selectedSong(List<Integer> selectedSongIdList) {
-        this.selectedSongIdList = selectedSongIdList;
+        this.selectedSongIdList.addAll(selectedSongIdList);
 
-        if (analysisCompleted.get()) {
+        if (backgroundAnalysis) {
             return;
         }
 
@@ -175,10 +177,6 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
 
     @Override
     public void showResult() {
-        if (analysisResultMap == null) {
-            return;
-        }
-
         view.setResultTableItemList(FXCollections.observableArrayList(analysisResultMap.values()));
         view.showResult();
     }
@@ -195,11 +193,19 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
 
     @Override
     public void showReviewView() {
+        if (taskRunning.get()) {
+            return;
+        }
+
         scannerProcessorStage.changeCenterView_review();
     }
 
     @Override
     public void showUploadView() {
+        if (taskRunning.get()) {
+            return;
+        }
+
         EnumSet<ScannerAnalysisViewModel.AnalysisResult.Status> allowed =
                 EnumSet.of(ScannerAnalysisViewModel.AnalysisResult.Status.ALREADY_DONE,
                         ScannerAnalysisViewModel.AnalysisResult.Status.DONE);
@@ -213,14 +219,12 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
             return result != null && allowed.contains(result.statusProperty().get());
         };
 
-        if (selectedSongIdList == null || analysisResultMap == null || !selectedSongIdList.stream()
-                .allMatch(isReadyToUpload)) {
+        if (!selectedSongIdList.stream().allMatch(isReadyToUpload)) {
             scannerProcessorStage.showWarning(Language.INSTANCE.getString(
                     "scanner.processor.analysis.dialog.notAllAnalyzed"));
             return;
         }
 
-        scannerProcessorStage.changeCenterView_upload();
-        scannerProcessorStage.collectNewRecord(selectedSongIdList);
+        scannerProcessorStage.changeCenterView_upload(selectedSongIdList);
     }
 }

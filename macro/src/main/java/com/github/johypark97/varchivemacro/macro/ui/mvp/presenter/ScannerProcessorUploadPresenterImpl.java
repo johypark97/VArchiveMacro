@@ -7,14 +7,13 @@ import com.github.johypark97.varchivemacro.macro.ui.common.EventDebouncer;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorUpload;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerUploadViewModel;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import org.slf4j.Logger;
@@ -30,10 +29,9 @@ public class ScannerProcessorUploadPresenterImpl implements ScannerProcessorUplo
 
     private final AtomicBoolean taskRunning = new AtomicBoolean();
     private final EventDebouncer updateSelectedCountTextEventDebouncer = new EventDebouncer();
-
-    private List<Integer> selectedSongIdList;
-    private Map<Integer, ScannerUploadViewModel.NewRecordData> newRecordDataLookup;
-    private ObservableList<ScannerUploadViewModel.NewRecordData> observableNewRecordDataList;
+    private final List<Integer> selectedSongIdList = new LinkedList<>();
+    private final Map<Integer, ScannerUploadViewModel.NewRecordData> newRecordDataLookup =
+            new HashMap<>();
 
     @MvpView
     public ScannerProcessorUpload.View view;
@@ -45,12 +43,6 @@ public class ScannerProcessorUploadPresenterImpl implements ScannerProcessorUplo
         this.scannerContext = scannerContext;
 
         updateSelectedCountTextEventDebouncer.setCallback(() -> view.updateSelectedCountText());
-    }
-
-    private void onTaskRunning(WorkerStateEvent ignored) {
-        taskRunning.set(true);
-
-        view.showProgressBox();
     }
 
     private void onTaskStopped(WorkerStateEvent event) {
@@ -87,7 +79,10 @@ public class ScannerProcessorUploadPresenterImpl implements ScannerProcessorUplo
     }
 
     @Override
-    public void startView() {
+    public void startView(List<Integer> selectedSongIdList) {
+        this.selectedSongIdList.addAll(selectedSongIdList);
+
+        collectNewRecord();
     }
 
     @Override
@@ -99,32 +94,27 @@ public class ScannerProcessorUploadPresenterImpl implements ScannerProcessorUplo
         scannerContext.scannerUploadService.clear();
         scannerContext.scannerUploadService.collect(selectedSongIdList);
 
-        observableNewRecordDataList =
-                scannerContext.scannerUploadService.getAllNewRecordList().stream()
-                        .map(ScannerUploadViewModel.NewRecordData::from)
-                        .collect(Collectors.toCollection(FXCollections::observableArrayList));
-        observableNewRecordDataList.forEach(
-                x -> x.setOnSelectedChange(updateSelectedCountTextEventDebouncer::trigger));
-        view.setRecordTableItemList(observableNewRecordDataList);
+        newRecordDataLookup.clear();
+        scannerContext.scannerUploadService.getAllNewRecordList().stream()
+                .map(ScannerUploadViewModel.NewRecordData::from).forEach(x -> {
+                    newRecordDataLookup.put(x.getUpdatedSongRecordEntryId(), x);
+                    x.setOnSelectedChange(updateSelectedCountTextEventDebouncer::trigger);
+                });
 
-        newRecordDataLookup = observableNewRecordDataList.stream().collect(
-                Collectors.toMap(ScannerUploadViewModel.NewRecordData::getUpdatedSongRecordEntryId,
-                        Function.identity()));
-    }
-
-    @Override
-    public void collectNewRecord(List<Integer> selectedSongIdList) {
-        this.selectedSongIdList = selectedSongIdList;
-
-        collectNewRecord();
+        view.setRecordTableItemList(
+                FXCollections.observableArrayList(newRecordDataLookup.values()));
     }
 
     @Override
     public void upload() {
+        if (taskRunning.get()) {
+            return;
+        }
+
         Language language = Language.INSTANCE;
 
         List<Integer> selectedUpdatedSongRecordEntryIdList =
-                observableNewRecordDataList.stream().filter(x -> x.selectedProperty().get())
+                newRecordDataLookup.values().stream().filter(x -> x.selectedProperty().get())
                         .map(ScannerUploadViewModel.NewRecordData::getUpdatedSongRecordEntryId)
                         .toList();
 
@@ -150,11 +140,13 @@ public class ScannerProcessorUploadPresenterImpl implements ScannerProcessorUplo
         task.progressProperty().addListener(
                 (observable, oldValue, newValue) -> view.setProgress(newValue.doubleValue()));
 
+        task.setOnRunning(event -> view.showProgressBox());
+
         task.setOnCancelled(this::onTaskStopped);
         task.setOnFailed(this::onTaskStopped);
-        task.setOnRunning(this::onTaskRunning);
         task.setOnSucceeded(this::onTaskStopped);
 
+        taskRunning.set(true);
         CompletableFuture.runAsync(task);
     }
 

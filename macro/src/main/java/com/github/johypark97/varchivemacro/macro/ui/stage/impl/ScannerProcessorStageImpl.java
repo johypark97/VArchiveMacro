@@ -91,21 +91,6 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
                 new ScannerProcessorAnalysisPresenterImpl(this, scannerContext));
 
         Mvp.linkViewAndPresenter(analysis.view, analysis.presenter);
-
-        analysis.presenter.startView();
-    }
-
-    private void prepareUploadView() {
-        if (upload != null) {
-            return;
-        }
-
-        upload = new ViewPresenterPair<>(new ScannerProcessorUploadViewImpl(),
-                new ScannerProcessorUploadPresenterImpl(this, scannerContext));
-
-        Mvp.linkViewAndPresenter(upload.view, upload.presenter);
-
-        upload.presenter.startView();
     }
 
     @Override
@@ -140,13 +125,6 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
     }
 
     @Override
-    public void collectNewRecord(List<Integer> selectedSongIdList) {
-        prepareUploadView();
-
-        upload.presenter.collectNewRecord(selectedSongIdList);
-    }
-
-    @Override
     public void showCaptureImageViewer() {
         stageManager.showCaptureImageViewer(this, scannerContext);
     }
@@ -155,6 +133,10 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
     public void changeCenterView_review() {
         prepareReviewView();
 
+        if (analysis != null) {
+            analysis = null; // NOPMD
+        }
+
         framePresenter.setCenterView(review.view);
     }
 
@@ -162,12 +144,25 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
     public void changeCenterView_analysis() {
         prepareAnalysisView();
 
+        if (upload != null) {
+            upload = null; // NOPMD
+        }
+
         framePresenter.setCenterView(analysis.view);
     }
 
     @Override
-    public void changeCenterView_upload() {
-        prepareUploadView();
+    public void changeCenterView_upload(List<Integer> selectedSongIdList) {
+        if (upload != null) {
+            return;
+        }
+
+        upload = new ViewPresenterPair<>(new ScannerProcessorUploadViewImpl(),
+                new ScannerProcessorUploadPresenterImpl(this, scannerContext));
+
+        Mvp.linkViewAndPresenter(upload.view, upload.presenter);
+
+        upload.presenter.startView(selectedSongIdList);
 
         framePresenter.setCenterView(upload.view);
     }

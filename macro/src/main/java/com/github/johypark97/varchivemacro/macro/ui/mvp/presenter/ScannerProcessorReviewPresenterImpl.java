@@ -11,10 +11,10 @@ import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerReviewV
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
 import java.io.IOException;
 import java.util.EnumSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
@@ -35,10 +35,11 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
     private final EventDebouncer updateLinkTableSelectedCountTextEventDebouncer =
             new EventDebouncer();
+    private final Map<Integer, ScannerReviewViewModel.LinkTableData> linkTableDataLookup =
+            new LinkedHashMap<>();
 
     private FilteredList<ScannerReviewViewModel.CaptureData> filteredCaptureDataList;
     private FilteredList<ScannerReviewViewModel.LinkTableData> filteredLinkTableDataList;
-    private Map<Integer, ScannerReviewViewModel.LinkTableData> linkTableDataLookup;
     private ScannerReviewViewModel.LinkTableData linkEditorSelectedLinkTableData;
 
     @MvpView
@@ -56,27 +57,27 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
     }
 
     private void prepareLinkTableData() {
-        List<ScannerReviewViewModel.LinkTableData> list =
-                scannerContext.scannerReviewService.getAllSongDataList().stream()
-                        .map(ScannerReviewViewModel.LinkTableData::form).toList();
+        linkTableDataLookup.clear();
+        scannerContext.scannerReviewService.getAllSongDataList().stream()
+                .map(ScannerReviewViewModel.LinkTableData::form).forEach(x -> {
+                    linkTableDataLookup.put(x.songIdProperty().get(), x);
+                    x.setOnSelectedChange(updateLinkTableSelectedCountTextEventDebouncer::trigger);
+                });
 
-        linkTableDataLookup = list.stream()
-                .collect(Collectors.toMap(x -> x.songIdProperty().get(), Function.identity()));
-        linkTableDataLookup.values().forEach(x -> x.setOnSelectedChange(
-                updateLinkTableSelectedCountTextEventDebouncer::trigger));
-        updateLinkTableSelectedCountTextEventDebouncer.trigger();
+        filteredLinkTableDataList =
+                new FilteredList<>(FXCollections.observableArrayList(linkTableDataLookup.values()));
 
-        filteredLinkTableDataList = new FilteredList<>(FXCollections.observableList(list));
         view.setLinkTableItemList(filteredLinkTableDataList);
         updateLinkTableViewFilter();
+
+        updateLinkTableSelectedCountTextEventDebouncer.trigger();
     }
 
     private void prepareLinkEditorData() {
-        List<ScannerReviewViewModel.CaptureData> list =
+        filteredCaptureDataList = new FilteredList<>(
                 scannerContext.scannerReviewService.getAllCaptureDataList().stream()
-                        .map(ScannerReviewViewModel.CaptureData::from).toList();
-
-        filteredCaptureDataList = new FilteredList<>(FXCollections.observableList(list));
+                        .map(ScannerReviewViewModel.CaptureData::from)
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList)));
 
         view.setLinkEditorCaptureImageItemList(filteredCaptureDataList);
     }
@@ -146,9 +147,7 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
         linkTableData.captureImageProperty().setAll(songData.getAllLinkedCaptureData().stream()
                 .map(ScannerReviewViewModel.LinkedCaptureData::from).toList());
-
         linkEditorSelectedLinkTableData.problemProperty().set(problem);
-
         linkEditorSelectedLinkTableData.selectedProperty().set(selected);
 
         updateLinkTableSelectedCountTextEventDebouncer.trigger();
@@ -174,6 +173,10 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
     @Override
     public void updateLinkTableViewFilter() {
+        if (filteredLinkTableDataList == null) {
+            return;
+        }
+
         EnumSet<ScannerReviewViewModel.LinkTableData.Accuracy> filterSet =
                 EnumSet.noneOf(ScannerReviewViewModel.LinkTableData.Accuracy.class);
 
@@ -259,7 +262,7 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
     @Override
     public void updateLinkEditorCaptureImageFilter() {
-        if (linkEditorSelectedLinkTableData == null) {
+        if (linkEditorSelectedLinkTableData == null || filteredCaptureDataList == null) {
             return;
         }
 
