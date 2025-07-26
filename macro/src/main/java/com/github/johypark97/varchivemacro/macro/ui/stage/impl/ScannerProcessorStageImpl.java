@@ -181,6 +181,11 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
     }
 
     @Override
+    public void showAutoAnalysisMessage(String text) {
+        framePresenter.showHeaderMessage(text);
+    }
+
+    @Override
     protected boolean onStopStage() {
         if (TaskManager.getInstance().isRunningAny()) {
             return false;

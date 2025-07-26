@@ -6,24 +6,24 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21.0.6">
   <top>
     <VBox>
       <children>
-        <HBox spacing="10.0">
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
           <children>
-            <FlowPane HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" hgap="10.0">
+            <Label text="%scanner.processor.frame.reviewLabel" fx:id="reviewLabel"/>
+            <Label text="❭"/>
+            <Label text="%scanner.processor.frame.analysisLabel" fx:id="analysisLabel"/>
+            <Label text="❭"/>
+            <Label text="%scanner.processor.frame.uploadLabel" fx:id="uploadLabel"/>
+            <HBox HBox.hgrow="ALWAYS" alignment="CENTER" fx:id="headerBox">
               <children>
-                <Label text="%scanner.processor.frame.reviewLabel" fx:id="reviewLabel"/>
-                <Label text="❭"/>
-                <Label text="%scanner.processor.frame.analysisLabel" fx:id="analysisLabel"/>
-                <Label text="❭"/>
-                <Label text="%scanner.processor.frame.uploadLabel" fx:id="uploadLabel"/>
+                <Label text="Label" fx:id="headerLabel"/>
               </children>
-            </FlowPane>
+            </HBox>
             <Button text="%scanner.processor.frame.captureImageViewerButton" fx:id="captureImageViewerButton"/>
           </children>
           <padding>

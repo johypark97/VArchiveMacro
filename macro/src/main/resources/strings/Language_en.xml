@@ -53,6 +53,8 @@
   <entry key="scanner.processor.analysis.dialog.taskException">An error occurred while analyzing.</entry>
   <entry key="scanner.processor.analysis.frameButton.back">Back</entry>
   <entry key="scanner.processor.analysis.frameButton.upload">Upload</entry>
+  <entry key="scanner.processor.analysis.header.autoAnalysisDone">Auto analysis done</entry>
+  <entry key="scanner.processor.analysis.header.runAutoAnalysis">Start auto analysis</entry>
   <entry key="scanner.processor.analysis.progress.analysisCancelled">Analysis cancelled</entry>
   <entry key="scanner.processor.analysis.progress.analysisDone">Analysis completed. Please continue to the upload step.</entry>
   <entry key="scanner.processor.analysis.progress.analysisDoneWithException">Analysis completed with some errors. Please check the analysis results.</entry>

@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.integration.context.ScannerCont
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorAnalysis;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerAnalysisViewModel;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
+import java.awt.Toolkit;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -29,12 +30,12 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
 
     private final ScannerContext scannerContext;
 
+    private final AtomicBoolean backgroundAnalysis = new AtomicBoolean();
     private final AtomicBoolean taskRunning = new AtomicBoolean();
     private final List<Integer> selectedSongIdList = new LinkedList<>();
     private final Map<Integer, ScannerAnalysisViewModel.AnalysisResult> analysisResultMap =
             new LinkedHashMap<>();
 
-    private boolean backgroundAnalysis;
 
     @MvpView
     public ScannerProcessorAnalysis.View view;
@@ -56,6 +57,13 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
         view.setFunctionButton(
                 Language.INSTANCE.getString("scanner.processor.analysis.progress.stopAnalysis"),
                 this::stopAnalysisTask);
+    }
+
+    private void showAutoAnalysisDoneHeaderMessage() {
+        Toolkit.getDefaultToolkit().beep();
+
+        scannerProcessorStage.showAutoAnalysisMessage(
+                Language.INSTANCE.getString("scanner.processor.analysis.header.autoAnalysisDone"));
     }
 
     private void startAnalysisTask_selectedSongList() {
@@ -113,13 +121,23 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
                 .anyMatch(ScannerAnalysisViewModel.AnalysisResult::hasException)) {
             view.setMessageText(language.getString(
                     "scanner.processor.analysis.progress.analysisDoneWithException"));
-            scannerProcessorStage.showWarning(language.getString(
-                    "scanner.processor.analysis.dialog.taskCompletedWithException"));
+
+            if (backgroundAnalysis.get()) {
+                showAutoAnalysisDoneHeaderMessage();
+            } else {
+                scannerProcessorStage.showWarning(language.getString(
+                        "scanner.processor.analysis.dialog.taskCompletedWithException"));
+            }
         } else {
             view.setMessageText(
                     language.getString("scanner.processor.analysis.progress.analysisDone"));
-            scannerProcessorStage.showInformation(
-                    language.getString("scanner.processor.analysis.dialog.taskCompleted"));
+
+            if (backgroundAnalysis.get()) {
+                showAutoAnalysisDoneHeaderMessage();
+            } else {
+                scannerProcessorStage.showInformation(
+                        language.getString("scanner.processor.analysis.dialog.taskCompleted"));
+            }
 
             scannerProcessorStage.setCaptureAnalyzed();
         }
@@ -161,7 +179,9 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
             return;
         }
 
-        backgroundAnalysis = true;
+        backgroundAnalysis.set(true);
+        scannerProcessorStage.showAutoAnalysisMessage(
+                Language.INSTANCE.getString("scanner.processor.analysis.header.runAutoAnalysis"));
 
         startAnalysisTask(set);
     }
@@ -170,7 +190,7 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     public void runAnalysis_selectedSong(List<Integer> selectedSongIdList) {
         this.selectedSongIdList.addAll(selectedSongIdList);
 
-        if (backgroundAnalysis) {
+        if (backgroundAnalysis.getAndSet(false)) {
             return;
         }
 

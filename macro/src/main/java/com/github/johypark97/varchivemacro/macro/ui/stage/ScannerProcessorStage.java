@@ -21,4 +21,6 @@ public interface ScannerProcessorStage extends BaseStage {
     void setCaptureAnalyzed();
 
     void setRecordUploaded();
+
+    void showAutoAnalysisMessage(String text);
 }

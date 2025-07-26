@@ -15,6 +15,11 @@ public class ScannerProcessorFramePresenterImpl implements ScannerProcessorFrame
     }
 
     @Override
+    public void showHeaderMessage(String text) {
+        view.setHeaderMessage(text);
+    }
+
+    @Override
     public void showCaptureImageViewer() {
         scannerProcessorStage.showCaptureImageViewer();
     }

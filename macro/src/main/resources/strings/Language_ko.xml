@@ -53,6 +53,8 @@
   <entry key="scanner.processor.analysis.dialog.taskException">분석 중 오류가 발생하였습니다.</entry>
   <entry key="scanner.processor.analysis.frameButton.back">뒤로</entry>
   <entry key="scanner.processor.analysis.frameButton.upload">업로드</entry>
+  <entry key="scanner.processor.analysis.header.autoAnalysisDone">자동 분석 완료</entry>
+  <entry key="scanner.processor.analysis.header.runAutoAnalysis">자동 분석 시작</entry>
   <entry key="scanner.processor.analysis.progress.analysisCancelled">분석 중지됨</entry>
   <entry key="scanner.processor.analysis.progress.analysisDone">분석이 완료되었습니다. 업로드 단계로 진행하세요.</entry>
   <entry key="scanner.processor.analysis.progress.analysisDoneWithException">일부 오류와 함께 분석이 완료되었습니다. 분석 결과를 확인하세요.</entry>

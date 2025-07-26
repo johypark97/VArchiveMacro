@@ -7,6 +7,8 @@ import javafx.scene.Node;
 
 public interface ScannerProcessorFrame {
     interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
+        void showHeaderMessage(String text);
+
         void showCaptureImageViewer();
 
         <T extends Node & ViewButtonController> void setCenterView(T value);
@@ -14,6 +16,8 @@ public interface ScannerProcessorFrame {
 
 
     interface View extends Mvp.MvpView<View, Presenter> {
+        void setHeaderMessage(String text);
+
         void setCenterNode(Node value);
 
         void setLeftButtonFunction(ButtonFunction value);
