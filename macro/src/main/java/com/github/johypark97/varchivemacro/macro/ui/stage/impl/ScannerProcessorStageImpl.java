@@ -36,6 +36,9 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
 
     private final Runnable onStop;
 
+    private boolean captureAnalyzed;
+    private boolean recordUploaded;
+
     private ScannerProcessorFrame.Presenter framePresenter;
     private ViewPresenterPair<ScannerProcessorAnalysisViewImpl, ScannerProcessorAnalysis.Presenter>
             analysis;
@@ -168,9 +171,32 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
     }
 
     @Override
+    public void setCaptureAnalyzed() {
+        captureAnalyzed = true;
+    }
+
+    @Override
+    public void setRecordUploaded() {
+        recordUploaded = true;
+    }
+
+    @Override
     protected boolean onStopStage() {
         if (TaskManager.getInstance().isRunningAny()) {
             return false;
+        }
+
+        Language language = Language.INSTANCE;
+        if (!captureAnalyzed) {
+            if (!showConfirmation(
+                    language.getString("scanner.processor.closeConfirmation.captureNotAnalyzed"))) {
+                return false;
+            }
+        } else if (!recordUploaded) {
+            if (!showConfirmation(
+                    language.getString("scanner.processor.closeConfirmation.recordNotUploaded"))) {
+                return false;
+            }
         }
 
         onStop.run();

@@ -17,4 +17,8 @@ public interface ScannerProcessorStage extends BaseStage {
     void changeCenterView_analysis();
 
     void changeCenterView_upload(List<Integer> selectedSongIdList);
+
+    void setCaptureAnalyzed();
+
+    void setRecordUploaded();
 }

@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.macro.ui.common.EventDebouncer;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorUpload;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerUploadViewModel;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,6 +76,14 @@ public class ScannerProcessorUploadPresenterImpl implements ScannerProcessorUplo
             });
         }
 
+        EnumSet<ScannerUploadViewModel.Result> allowed =
+                EnumSet.of(ScannerUploadViewModel.Result.UPLOADED,
+                        ScannerUploadViewModel.Result.HIGHER_RECORD_EXISTS);
+        if (newRecordDataLookup.values().stream()
+                .allMatch(x -> allowed.contains(x.resultProperty().get()))) {
+            scannerProcessorStage.setRecordUploaded();
+        }
+
         view.hideProgressBox();
     }
 
@@ -103,6 +112,10 @@ public class ScannerProcessorUploadPresenterImpl implements ScannerProcessorUplo
 
         view.setRecordTableItemList(
                 FXCollections.observableArrayList(newRecordDataLookup.values()));
+
+        if (newRecordDataLookup.isEmpty()) {
+            scannerProcessorStage.setRecordUploaded();
+        }
     }
 
     @Override

@@ -71,6 +71,8 @@
   <entry key="scanner.processor.analysis.result.status.done">분석 완료</entry>
   <entry key="scanner.processor.analysis.result.status.error">에러 발생함</entry>
   <entry key="scanner.processor.analysis.result.status.suspended">중단됨</entry>
+  <entry key="scanner.processor.closeConfirmation.captureNotAnalyzed">처리되지 않은 캡처 이미지들이 있습니다. 버리시겠습니까?</entry>
+  <entry key="scanner.processor.closeConfirmation.recordNotUploaded">업로드되지 않은 기록들이 있습니다. 버리시겠습니까?</entry>
   <entry key="scanner.processor.frame.analysisLabel">분석</entry>
   <entry key="scanner.processor.frame.captureImageViewerButton">모든 캡처 이미지 보기</entry>
   <entry key="scanner.processor.frame.reviewLabel">검토</entry>

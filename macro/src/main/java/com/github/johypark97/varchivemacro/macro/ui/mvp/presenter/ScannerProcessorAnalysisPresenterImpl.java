@@ -120,6 +120,8 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
                     language.getString("scanner.processor.analysis.progress.analysisDone"));
             scannerProcessorStage.showInformation(
                     language.getString("scanner.processor.analysis.dialog.taskCompleted"));
+
+            scannerProcessorStage.setCaptureAnalyzed();
         }
     }
 
