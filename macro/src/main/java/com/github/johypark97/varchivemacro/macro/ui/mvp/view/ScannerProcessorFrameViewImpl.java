@@ -81,6 +81,27 @@ public class ScannerProcessorFrameViewImpl extends BorderPane
     }
 
     @Override
+    public void setStepDisplay_review() {
+        reviewLabel.setDisable(false);
+        analysisLabel.setDisable(true);
+        uploadLabel.setDisable(true);
+    }
+
+    @Override
+    public void setStepDisplay_analysis() {
+        reviewLabel.setDisable(true);
+        analysisLabel.setDisable(false);
+        uploadLabel.setDisable(true);
+    }
+
+    @Override
+    public void setStepDisplay_upload() {
+        reviewLabel.setDisable(true);
+        analysisLabel.setDisable(true);
+        uploadLabel.setDisable(false);
+    }
+
+    @Override
     public void setHeaderMessage(String text) {
         headerBoxTransition.playFromStart();
         headerLabel.setText(text);

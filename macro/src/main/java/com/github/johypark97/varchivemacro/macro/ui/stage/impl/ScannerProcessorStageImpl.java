@@ -141,6 +141,8 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
         }
 
         framePresenter.setCenterView(review.view);
+
+        framePresenter.changeStepDisplay(ScannerProcessorFrame.Step.REVIEW);
     }
 
     @Override
@@ -152,6 +154,8 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
         }
 
         framePresenter.setCenterView(analysis.view);
+
+        framePresenter.changeStepDisplay(ScannerProcessorFrame.Step.ANALYSIS);
     }
 
     @Override
@@ -168,6 +172,8 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
         upload.presenter.startView(selectedSongIdList);
 
         framePresenter.setCenterView(upload.view);
+
+        framePresenter.changeStepDisplay(ScannerProcessorFrame.Step.UPLOAD);
     }
 
     @Override

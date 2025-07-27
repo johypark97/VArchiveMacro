@@ -6,7 +6,16 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 public interface ScannerProcessorFrame {
+    enum Step {
+        REVIEW,
+        ANALYSIS,
+        UPLOAD
+    }
+
+
     interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
+        void changeStepDisplay(Step step);
+
         void showHeaderMessage(String text);
 
         void showCaptureImageViewer();
@@ -16,6 +25,12 @@ public interface ScannerProcessorFrame {
 
 
     interface View extends Mvp.MvpView<View, Presenter> {
+        void setStepDisplay_review();
+
+        void setStepDisplay_analysis();
+
+        void setStepDisplay_upload();
+
         void setHeaderMessage(String text);
 
         void setCenterNode(Node value);

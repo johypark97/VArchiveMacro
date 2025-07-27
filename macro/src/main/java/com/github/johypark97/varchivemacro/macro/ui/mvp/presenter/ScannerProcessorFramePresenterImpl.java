@@ -15,6 +15,15 @@ public class ScannerProcessorFramePresenterImpl implements ScannerProcessorFrame
     }
 
     @Override
+    public void changeStepDisplay(ScannerProcessorFrame.Step step) {
+        switch (step) {
+            case REVIEW -> view.setStepDisplay_review();
+            case ANALYSIS -> view.setStepDisplay_analysis();
+            case UPLOAD -> view.setStepDisplay_upload();
+        }
+    }
+
+    @Override
     public void showHeaderMessage(String text) {
         view.setHeaderMessage(text);
     }
