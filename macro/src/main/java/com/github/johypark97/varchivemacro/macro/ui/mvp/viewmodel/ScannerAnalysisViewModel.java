@@ -46,6 +46,10 @@ public class ScannerAnalysisViewModel {
             return Status.ERROR.equals(status.get());
         }
 
+        public boolean isAlreadyAnalyzed() {
+            return Status.ALREADY_DONE.equals(status.get());
+        }
+
         public enum Status {
             ALREADY_DONE("scanner.processor.analysis.result.status.alreadyDone"),
             DONE("scanner.processor.analysis.result.status.done"),

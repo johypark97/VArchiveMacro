@@ -117,28 +117,27 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
 
         Language language = Language.INSTANCE;
 
-        if (analysisResultMap.values().stream()
-                .anyMatch(ScannerAnalysisViewModel.AnalysisResult::hasException)) {
-            view.setMessageText(language.getString(
-                    "scanner.processor.analysis.progress.analysisDoneWithException"));
+        boolean completedWithException = analysisResultMap.values().stream()
+                .anyMatch(ScannerAnalysisViewModel.AnalysisResult::hasException);
 
-            if (backgroundAnalysis.get()) {
-                showAutoAnalysisDoneHeaderMessage();
-            } else {
+        view.setMessageText(language.getString(completedWithException
+                ? "scanner.processor.analysis.progress.analysisDoneWithException"
+                : "scanner.processor.analysis.progress.analysisDone"));
+
+        if (backgroundAnalysis.get()) {
+            showAutoAnalysisDoneHeaderMessage();
+        } else if (!analysisResultMap.values().stream()
+                .allMatch(ScannerAnalysisViewModel.AnalysisResult::isAlreadyAnalyzed)) {
+            if (completedWithException) {
                 scannerProcessorStage.showWarning(language.getString(
                         "scanner.processor.analysis.dialog.taskCompletedWithException"));
-            }
-        } else {
-            view.setMessageText(
-                    language.getString("scanner.processor.analysis.progress.analysisDone"));
-
-            if (backgroundAnalysis.get()) {
-                showAutoAnalysisDoneHeaderMessage();
             } else {
                 scannerProcessorStage.showInformation(
                         language.getString("scanner.processor.analysis.dialog.taskCompleted"));
             }
+        }
 
+        if (!completedWithException) {
             scannerProcessorStage.setCaptureAnalyzed();
         }
     }
