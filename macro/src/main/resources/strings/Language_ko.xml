@@ -140,6 +140,7 @@
   <entry key="scanner.processor.upload.recordTable.column.song.id">번호</entry>
   <entry key="scanner.processor.upload.recordTable.column.song.pack">팩</entry>
   <entry key="scanner.processor.upload.recordTable.column.song.title">제목</entry>
+  <entry key="scanner.processor.upload.recordTable.placeholder">갱신한 기록이 없습니다.</entry>
   <entry key="scanner.processor.upload.result.higherRecordExists">높은 기록 존재</entry>
   <entry key="scanner.processor.upload.result.suspended">업로드 중단됨</entry>
   <entry key="scanner.processor.upload.result.uploaded">업로드 완료</entry>

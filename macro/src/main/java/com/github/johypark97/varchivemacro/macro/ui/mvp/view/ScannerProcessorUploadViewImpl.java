@@ -179,6 +179,8 @@ public class ScannerProcessorUploadViewImpl extends StackPane
 
     private void setupRecordTableView() {
         recordTableView.setEditable(true);
+        recordTableView.setPlaceholder(new Label(
+                Language.INSTANCE.getString("scanner.processor.upload.recordTable.placeholder")));
 
         recordTableColumnSongId.setCellValueFactory(new PropertyValueFactory<>("songId"));
         recordTableColumnSongPack.setCellValueFactory(new PropertyValueFactory<>("songPack"));
