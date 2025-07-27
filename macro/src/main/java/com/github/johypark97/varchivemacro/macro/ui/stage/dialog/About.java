@@ -33,7 +33,7 @@ public class About extends Alert {
 
             box.getChildren().add(new Label(
                     language.getFormatString("home.about.programDataVersion",
-                            globalContext.programDataVersionService.getVersion())));
+                            globalContext.programDataService.readLocalVersion().version())));
 
             box.getChildren().add(new Label(
                     language.getFormatString("home.about.buildDate", BuildInfo.date)));

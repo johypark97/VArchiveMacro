@@ -13,8 +13,13 @@ import java.util.HexFormat;
 public class Sha256FileHash {
     public static final String HASH_ALGORITHM = "SHA-256";
 
-    public static String calculate(Path path) throws NoSuchAlgorithmException, IOException {
-        MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
+    public static String calculate(Path path) throws IOException {
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance(HASH_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
 
         try (InputStream stream = new BufferedInputStream(Files.newInputStream(path));
                 DigestInputStream x = new DigestInputStream(stream, digest)) {

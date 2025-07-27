@@ -1,11 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.common.github.infra.model;
 
-import com.github.johypark97.varchivemacro.lib.common.GsonWrapper;
-import com.google.gson.Gson;
+import com.github.johypark97.varchivemacro.macro.common.github.domain.GitHubContent;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public record GitHubContent(
+public record GitHubContentJson(
         // @formatter:off
         @Expose @SerializedName("download_url") String downloadUrl,
         @Expose String content,
@@ -13,8 +12,7 @@ public record GitHubContent(
         @Expose String type
         // @formatter:on
 ) {
-    public static GitHubContent from(String json) {
-        Gson gson = GsonWrapper.newGsonBuilder_general().create();
-        return gson.fromJson(json, GitHubContent.class);
+    public GitHubContent toDomain() {
+        return new GitHubContent(downloadUrl, content, name, type);
     }
 }

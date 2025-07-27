@@ -4,7 +4,8 @@ import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService
 import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigStorageService;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
 import com.github.johypark97.varchivemacro.macro.common.config.infra.repository.DefaultConfigRepository;
-import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataVersionService;
+import com.github.johypark97.varchivemacro.macro.common.github.app.GitHubApiService;
+import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.app.CaptureRegionService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordStorageService;
@@ -24,6 +25,8 @@ public class GlobalContext implements Context {
     private final Path PROGRAM_DATA_DIRECTORY_PATH = Path.of("data");
     private final Path RECORD_FILE_PATH = Path.of("records.json");
     private final Path SONG_DATABASE_FILE_PATH = Path.of("data/song.db");
+    private final String GITHUB_OWNER = "johypark97";
+    private final String GITHUB_REPOSITORY = "VArchiveMacro";
 
     // repositories
     final ConfigRepository configRepository = new DefaultConfigRepository();
@@ -37,8 +40,10 @@ public class GlobalContext implements Context {
     public final ConfigStorageService configStorageService =
             new ConfigStorageService(configRepository, CONFIG_FILE_PATH);
 
-    public final ProgramDataVersionService programDataVersionService =
-            new ProgramDataVersionService(PROGRAM_DATA_DIRECTORY_PATH);
+    public final GitHubApiService gitHubApiService =
+            new GitHubApiService(GITHUB_OWNER, GITHUB_REPOSITORY);
+    public final ProgramDataService programDataService =
+            new ProgramDataService(gitHubApiService, PROGRAM_DATA_DIRECTORY_PATH);
 
     public final SongRecordService songRecordService = new SongRecordService(songRecordRepository);
     public final SongRecordStorageService songRecordStorageService =

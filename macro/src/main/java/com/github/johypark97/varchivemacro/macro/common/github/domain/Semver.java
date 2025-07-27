@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.common.github.infra.model;
+package com.github.johypark97.varchivemacro.macro.common.github.domain;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
