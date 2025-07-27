@@ -102,7 +102,7 @@ public class ScannerContext implements Context {
 
         scannerUploadService =
                 new ScannerUploadService(songCaptureLinkService, globalContext.songRecordService,
-                        songRecordUploadService, globalContext.songService, songTitleService,
-                        updatedSongRecordService);
+                        globalContext.songRecordStorageService, songRecordUploadService,
+                        globalContext.songService, songTitleService, updatedSongRecordService);
     }
 }

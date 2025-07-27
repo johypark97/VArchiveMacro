@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.mod
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptureLinkService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.model.SongCaptureLink;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordStorageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.UpdatedSongRecordService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecord;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecordTable;
@@ -14,6 +15,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.mode
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.app.SongTitleService;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,17 +24,19 @@ import javafx.concurrent.Task;
 public class ScannerUploadService {
     private final SongCaptureLinkService songCaptureLinkService;
     private final SongRecordService songRecordService;
+    private final SongRecordStorageService songRecordStorageService;
     private final SongRecordUploadService songRecordUploadService;
     private final SongService songService;
     private final SongTitleService songTitleService;
     private final UpdatedSongRecordService updatedSongRecordService;
 
     public ScannerUploadService(SongCaptureLinkService songCaptureLinkService,
-            SongRecordService songRecordService, SongRecordUploadService songRecordUploadService,
-            SongService songService, SongTitleService songTitleService,
-            UpdatedSongRecordService updatedSongRecordService) {
+            SongRecordService songRecordService, SongRecordStorageService songRecordStorageService,
+            SongRecordUploadService songRecordUploadService, SongService songService,
+            SongTitleService songTitleService, UpdatedSongRecordService updatedSongRecordService) {
         this.songCaptureLinkService = songCaptureLinkService;
         this.songRecordService = songRecordService;
+        this.songRecordStorageService = songRecordStorageService;
         this.songRecordUploadService = songRecordUploadService;
         this.songService = songService;
         this.songTitleService = songTitleService;
@@ -107,5 +111,9 @@ public class ScannerUploadService {
 
             return NewRecordEntry.from(updatedSongRecordEntry, song, previousRecord);
         }).toList();
+    }
+
+    public void storeRecord() throws IOException {
+        songRecordStorageService.saveToLocal();
     }
 }

@@ -84,6 +84,14 @@ public class ScannerProcessorUploadPresenterImpl implements ScannerProcessorUplo
             scannerProcessorStage.setRecordUploaded();
         }
 
+        try {
+            scannerContext.scannerUploadService.storeRecord();
+        } catch (Exception e) {
+            LOGGER.atError().setCause(e).log("Record saving exception.");
+            scannerProcessorStage.showError(
+                    language.getString("scanner.processor.upload.dialog.save.exception"), e);
+        }
+
         view.hideProgressBox();
     }
 

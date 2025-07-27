@@ -122,6 +122,7 @@
   <entry key="scanner.processor.review.problem.deleted">Deleted</entry>
   <entry key="scanner.processor.review.problem.editNeeded">Edit needed</entry>
   <entry key="scanner.processor.review.problem.edited">Edited</entry>
+  <entry key="scanner.processor.upload.dialog.save.exception">An error occurred while saving records. Please reupload, or reload the records from the server if the problem continues.</entry>
   <entry key="scanner.processor.upload.dialog.upload.done">Upload completed.</entry>
   <entry key="scanner.processor.upload.dialog.upload.exception">An error occurred while uploading records.</entry>
   <entry key="scanner.processor.upload.frameButton.back">Back</entry>

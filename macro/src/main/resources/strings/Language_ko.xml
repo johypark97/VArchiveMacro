@@ -122,6 +122,7 @@
   <entry key="scanner.processor.review.problem.deleted">삭제됨</entry>
   <entry key="scanner.processor.review.problem.editNeeded">수정 필요</entry>
   <entry key="scanner.processor.review.problem.edited">수정됨</entry>
+  <entry key="scanner.processor.upload.dialog.save.exception">기록 파일을 저장하는 중 오류가 발생하였습니다. 다시 업로드하거나 문제가 지속될 경우 서버에서 기록을 다시 불러와주세요.</entry>
   <entry key="scanner.processor.upload.dialog.upload.done">업로드를 완료하였습니다.</entry>
   <entry key="scanner.processor.upload.dialog.upload.exception">업로드 중 오류가 발생하였습니다.</entry>
   <entry key="scanner.processor.upload.frameButton.back">뒤로</entry>
