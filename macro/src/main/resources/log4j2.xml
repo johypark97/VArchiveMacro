@@ -12,6 +12,11 @@
     <Property name="infoLogFile_rolloverDeleteGlob">info-*.log</Property>
     <Property name="debugLogFile_filePath">${logDirectoryPath}/debug.log</Property>
     <Property name="debugLogFile_filePathPattern">${logDirectoryPath}/debug-%i.log</Property>
+    <Property name="recordUploadLogFile_filePath">${logDirectoryPath}/recordUpload.log</Property>
+    <Property name="recordUploadLogFile_filePathPattern">${logDirectoryPath}/recordUpload-%d{yyyy-MM-dd}-%i.log</Property>
+    <Property name="recordUploadLogFile_logPattern">[%d{yyyy-MM-dd HH:mm:ss.SSS}] %m%n</Property>
+    <Property name="recordUploadLogFile_rolloverDeleteAge">P7D</Property>
+    <Property name="recordUploadLogFile_rolloverDeleteGlob">recordUpload-*.log</Property>
   </Properties>
   <Appenders>
     <Console name="consoleAppender_STDOUT" target="SYSTEM_OUT">
@@ -46,6 +51,19 @@
       <LevelMatchFilter level="DEBUG"/>
       <SizeBasedTriggeringPolicy size="${logFileSize}"/>
     </RollingFile>
+    <RollingFile createOnDemand="true" fileName="${recordUploadLogFile_filePath}" filePattern="${recordUploadLogFile_filePathPattern}" name="fileAppender_recordUpload">
+      <PatternLayout pattern="${recordUploadLogFile_logPattern}"/>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="${logFileSize}"/>
+        <TimeBasedTriggeringPolicy/>
+      </Policies>
+      <DefaultRolloverStrategy fileIndex="nomax">
+        <Delete basePath="${logDirectoryPath}">
+          <IfFileName glob="${recordUploadLogFile_rolloverDeleteGlob}"/>
+          <IfLastModified age="${recordUploadLogFile_rolloverDeleteAge}"/>
+        </Delete>
+      </DefaultRolloverStrategy>
+    </RollingFile>
   </Appenders>
   <Loggers>
     <Root level="${sys:log.level:-INFO}">
@@ -55,5 +73,8 @@
       <AppenderRef ref="fileAppender_info"/>
       <AppenderRef ref="fileAppender_debug"/>
     </Root>
+    <Logger additivity="false" name="recordUpload">
+      <AppenderRef ref="fileAppender_recordUpload"/>
+    </Logger>
   </Loggers>
 </Configuration>

@@ -15,8 +15,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SongRecordUploadTask extends InterruptibleTask<List<SongRecordUploadTaskResult>> {
+    private static final Logger LOGGER = LoggerFactory.getLogger("recordUpload");
+
     private final SongRecordService songRecordService;
     private final SongRecordUploadService songRecordUploadService;
     private final SongService songService;
@@ -66,6 +70,11 @@ public class SongRecordUploadTask extends InterruptibleTask<List<SongRecordUploa
 
                 boolean updated =
                         songRecordUploadService.upload(title, composer, button, pattern, newRecord);
+
+                LOGGER.atInfo()
+                        .log("[{}] {} - {} {} {} {} ({})", song.pack().name(), song.composer(),
+                                song.title(), button, pattern, newRecord.rate(),
+                                newRecord.maxCombo() ? "MaxCombo" : "");
 
                 SongRecordTable table = songRecordService.findById(song.songId());
                 table.setSongRecord(button, pattern, newRecord);
