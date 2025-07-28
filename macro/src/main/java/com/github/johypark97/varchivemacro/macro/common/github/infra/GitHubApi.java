@@ -6,8 +6,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GitHubApi implements AutoCloseable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GitHubApi.class);
+
     protected final HttpClient httpClient;
 
     public GitHubApi() {
@@ -19,6 +23,8 @@ public class GitHubApi implements AutoCloseable {
     }
 
     public HttpResponse<String> request(URI uri) throws IOException, InterruptedException {
+        LOGGER.atDebug().log("GitHubApi request: {}", uri);
+
         HttpRequest.Builder builder = HttpRequest.newBuilder();
 
         builder.header("Accept", "application/vnd.github+json");

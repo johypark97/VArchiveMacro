@@ -28,6 +28,7 @@ module varchivemacro.macro {
 
     exports com.github.johypark97.varchivemacro.macro.common.config.domain.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.common.config.infra.model to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.common.github.infra.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.common.license.infra.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.common.programdata.infra.model to com.google.gson;
 

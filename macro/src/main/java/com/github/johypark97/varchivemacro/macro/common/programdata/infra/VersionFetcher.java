@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.util.Base64;
 
 public class VersionFetcher {
-    private static final String DATA_VERSION_REQUEST_BASE_PATH = "macro/";
+    private static final Path DATA_VERSION_REQUEST_BASE_PATH = Path.of("macro");
 
     private final GitHubApiService gitHubApiService;
 
@@ -29,9 +29,10 @@ public class VersionFetcher {
     }
 
     public DataVersion fetchRemoteDataVersion() throws IOException, InterruptedException {
-        GitHubContent content =
-                gitHubApiService.fetchContent(DATA_VERSION_REQUEST_BASE_PATH + dataVersionFilename);
+        String path = DATA_VERSION_REQUEST_BASE_PATH.resolve(dataDirectoryPath)
+                .resolve(dataVersionFilename).toString().replace('\\', '/');
 
+        GitHubContent content = gitHubApiService.fetchContent(path);
         byte[] data = Base64.getMimeDecoder().decode(content.content());
 
         return DataVersionJson.from(new String(data)).toDomain();
