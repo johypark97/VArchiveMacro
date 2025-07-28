@@ -20,5 +20,7 @@ public interface HomeStage extends BaseStage {
 
     void showAbout();
 
+    void showUpdateCheck();
+
     void showScanner();
 }

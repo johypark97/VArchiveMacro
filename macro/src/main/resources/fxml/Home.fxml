@@ -32,6 +32,11 @@
             <MenuItem text="%home.menu.about.about" fx:id="aboutMenuItem"/>
           </items>
         </Menu>
+        <Menu text="%home.menu.updateCheck" fx:id="updateCheckMenu">
+          <items>
+            <MenuItem mnemonicParsing="false" text="%home.menu.updateCheck.viewDetail" fx:id="updateCheckViewDetailMenuItem"/>
+          </items>
+        </Menu>
       </menus>
     </MenuBar>
   </top>

@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerCaptureImageVie
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.SettingStage;
+import com.github.johypark97.varchivemacro.macro.ui.stage.UpdateCheckStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.base.AbstractTreeableStage;
 import com.github.johypark97.varchivemacro.macro.ui.stage.impl.HomeStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.impl.OpenSourceLicenseStageImpl;
@@ -15,6 +16,7 @@ import com.github.johypark97.varchivemacro.macro.ui.stage.impl.ScannerProcessorS
 import com.github.johypark97.varchivemacro.macro.ui.stage.impl.ScannerScannerStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.impl.ScannerTesterStageImpl;
 import com.github.johypark97.varchivemacro.macro.ui.stage.impl.SettingStageImpl;
+import com.github.johypark97.varchivemacro.macro.ui.stage.impl.UpdateCheckStageImpl;
 import javafx.stage.Stage;
 
 public class StageManager {
@@ -26,6 +28,7 @@ public class StageManager {
     private ScannerProcessorStage scannerProcessorStage;
     private ScannerScannerStage scannerScannerStage;
     private SettingStage settingStage;
+    private UpdateCheckStage updateCheckStage;
 
     public StageManager(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -51,6 +54,18 @@ public class StageManager {
         });
 
         openSourceLicenseStage.startStage();
+    }
+
+    public void showUpdateCheckStage(AbstractTreeableStage parent) {
+        if (updateCheckStage != null) {
+            updateCheckStage.focusStage();
+        }
+
+        updateCheckStage = new UpdateCheckStageImpl(parent, () -> {
+            updateCheckStage = null; // NOPMD
+        });
+
+        updateCheckStage.startStage();
     }
 
     public void showSettingStage(AbstractTreeableStage parent) {

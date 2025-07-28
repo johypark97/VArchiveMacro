@@ -1,11 +1,18 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.integration.app.app.ProgramVersionService;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
+import com.github.johypark97.varchivemacro.macro.integration.context.UpdateCheckContext;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.Home;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +23,20 @@ public class HomePresenterImpl implements Home.Presenter {
     private final HomeStage homeStage;
 
     private final GlobalContext globalContext;
+    private final UpdateCheckContext updateCheckContext;
+
+    private final AtomicReference<Throwable> backgroundUpdateCheckException =
+            new AtomicReference<>();
 
     @MvpView
     public Home.View view;
 
-    public HomePresenterImpl(HomeStage homeStage, GlobalContext globalContext) {
+    public HomePresenterImpl(HomeStage homeStage, GlobalContext globalContext,
+            UpdateCheckContext updateCheckContext) {
         this.homeStage = homeStage;
 
         this.globalContext = globalContext;
+        this.updateCheckContext = updateCheckContext;
     }
 
     @Override
@@ -40,6 +53,29 @@ public class HomePresenterImpl implements Home.Presenter {
             LOGGER.atError().setCause(e).log("Config loading exception.");
             homeStage.showError(Language.INSTANCE.getString("home.config.loadingException"), e);
         }
+
+        // background update checking
+        Single.fromCallable(() -> {
+            ProgramVersionService service = updateCheckContext.programVersionService;
+
+            service.fetchLatestRelease();
+            if (service.isNewVersionReleased()) {
+                return true;
+            }
+
+            service.fetchLatestProgramDataVersion();
+            return service.isProgramDataUpdated();
+        }).subscribeOn(Schedulers.single()).subscribe(updated -> {
+            if (updated) {
+                Platform.runLater(
+                        () -> view.highlightUpdateCheck(Home.UpdateCheckHightlightColor.GREEN));
+            }
+        }, throwable -> {
+            backgroundUpdateCheckException.set(throwable);
+
+            LOGGER.atError().setCause(throwable).log("Background update check exception.");
+            Platform.runLater(() -> view.highlightUpdateCheck(Home.UpdateCheckHightlightColor.RED));
+        });
     }
 
     @Override
@@ -94,5 +130,13 @@ public class HomePresenterImpl implements Home.Presenter {
     @Override
     public void showAbout() {
         homeStage.showAbout();
+    }
+
+    @Override
+    public void showUpdateCheck() {
+        Optional.ofNullable(backgroundUpdateCheckException.getAndSet(null))
+                .ifPresent(x -> homeStage.showError("", x));
+
+        homeStage.showUpdateCheck();
     }
 }

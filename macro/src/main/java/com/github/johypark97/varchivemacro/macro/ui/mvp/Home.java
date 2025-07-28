@@ -5,6 +5,12 @@ import java.util.Locale;
 import javafx.scene.Node;
 
 public interface Home {
+    enum UpdateCheckHightlightColor {
+        GREEN,
+        RED
+    }
+
+
     interface Presenter extends Mvp.MvpPresenter<View, Presenter> {
         void startView();
 
@@ -21,6 +27,8 @@ public interface Home {
         void showOpenSourceLicense();
 
         void showAbout();
+
+        void showUpdateCheck();
     }
 
 
@@ -28,5 +36,7 @@ public interface Home {
         void setCenterNode(Node value);
 
         void setSelectedLanguage(Locale locale);
+
+        void highlightUpdateCheck(UpdateCheckHightlightColor color);
     }
 }

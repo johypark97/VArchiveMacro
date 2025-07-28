@@ -105,7 +105,8 @@ public class HomeStageImpl extends AbstractBaseStage implements HomeStage {
 
     @Override
     public void startStage() {
-        homePresenter = new HomePresenterImpl(this, ContextManager.INSTANCE.getGlobalContext());
+        homePresenter = new HomePresenterImpl(this, ContextManager.INSTANCE.getGlobalContext(),
+                ContextManager.INSTANCE.getUpdateCheckContext());
 
         HomeViewImpl view = new HomeViewImpl();
         Mvp.linkViewAndPresenter(view, homePresenter);
@@ -209,6 +210,11 @@ public class HomeStageImpl extends AbstractBaseStage implements HomeStage {
             LOGGER.atError().setCause(e).log("Opening the About alert exception.");
             showError(Language.INSTANCE.getString("home.about.exception"), e);
         }
+    }
+
+    @Override
+    public void showUpdateCheck() {
+        stageManager.showUpdateCheckStage(this);
     }
 
     @Override

@@ -23,6 +23,8 @@
   <entry key="home.menu.language">언어 (Language)</entry>
   <entry key="home.menu.language.en">영어 (English)</entry>
   <entry key="home.menu.language.ko">한국어</entry>
+  <entry key="home.menu.updateCheck">업데이트 확인</entry>
+  <entry key="home.menu.updateCheck.viewDetail">자세히 보기</entry>
   <entry key="macro.clientMode.atOnce">캡처 + 업로드 한번에</entry>
   <entry key="macro.clientMode.separately">캡처 / 업로드 따로</entry>
   <entry key="macro.clientModeLabel">분석 모드</entry>
@@ -259,4 +261,20 @@
   <entry key="setting.scanner.shortcut.stopKeyLabel">중지 키</entry>
   <entry key="setting.scanner.tabName">컬렉션 스캐너 설정</entry>
   <entry key="setting.windowTitle">설정</entry>
+  <entry key="updateCheck.button.checkAgain">다시 확인</entry>
+  <entry key="updateCheck.button.close">닫기 (ESC)</entry>
+  <entry key="updateCheck.button.detail">자세히 보기</entry>
+  <entry key="updateCheck.button.update">업데이트</entry>
+  <entry key="updateCheck.exception.checking">업데이트 확인 오류</entry>
+  <entry key="updateCheck.exception.programDataUpdating">컬렉션 스캐너 데이터 업데이트 오류</entry>
+  <entry key="updateCheck.newVersionReleased">새로운 버전이 업데이트 되었습니다.</entry>
+  <entry key="updateCheck.programDataUpdated">컬렉션 스캐너 데이터가 업데이트 되었습니다.</entry>
+  <entry key="updateCheck.up-to-date">최신 버전입니다.</entry>
+  <entry key="updateCheck.updateChecking">업데이트 확인중...</entry>
+  <entry key="updateCheck.updateComplete.message0">업데이트 완료.</entry>
+  <entry key="updateCheck.updateComplete.message1">프로그램을 재시작해주세요.</entry>
+  <entry key="updateCheck.updateComplete.message2">컬렉션 스캐너 사용 전 스캔할 카테고리를 다시 확인해주세요.</entry>
+  <entry key="updateCheck.updatingProgramData">컬렉션 스캐너 데이터 업데이트 중...</entry>
+  <entry key="updateCheck.versionCompare">현재 버전: %s%n최신 버전: %s</entry>
+  <entry key="updateCheck.windowTitle">업데이트 확인</entry>
 </properties>

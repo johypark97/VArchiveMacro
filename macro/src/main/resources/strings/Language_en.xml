@@ -23,6 +23,8 @@
   <entry key="home.menu.language">Language</entry>
   <entry key="home.menu.language.en">English</entry>
   <entry key="home.menu.language.ko">Korean (한국어)</entry>
+  <entry key="home.menu.updateCheck">Update Check</entry>
+  <entry key="home.menu.updateCheck.viewDetail">View Details</entry>
   <entry key="macro.clientMode.atOnce">Capture + Upload at once</entry>
   <entry key="macro.clientMode.separately">Capture / Upload separately</entry>
   <entry key="macro.clientModeLabel">Analysis mode</entry>
@@ -259,4 +261,20 @@
   <entry key="setting.scanner.shortcut.stopKeyLabel">Stop key</entry>
   <entry key="setting.scanner.tabName">Collection scanner settings</entry>
   <entry key="setting.windowTitle">Settings</entry>
+  <entry key="updateCheck.button.checkAgain">Check again</entry>
+  <entry key="updateCheck.button.close">Close (ESC)</entry>
+  <entry key="updateCheck.button.detail">View Details</entry>
+  <entry key="updateCheck.button.update">Update</entry>
+  <entry key="updateCheck.exception.checking">Update checking error</entry>
+  <entry key="updateCheck.exception.programDataUpdating">Collection Scanner data updating error</entry>
+  <entry key="updateCheck.newVersionReleased">A new version has been released.</entry>
+  <entry key="updateCheck.programDataUpdated">The collection scanner data have been updated.</entry>
+  <entry key="updateCheck.up-to-date">Up-to-date.</entry>
+  <entry key="updateCheck.updateChecking">Update checking...</entry>
+  <entry key="updateCheck.updateComplete.message0">Update complete.</entry>
+  <entry key="updateCheck.updateComplete.message1">Please restart the program.</entry>
+  <entry key="updateCheck.updateComplete.message2">컬렉션 스캐너 사용 전 스캔할 카테고리를 다시 확인해주세요.</entry>
+  <entry key="updateCheck.updatingProgramData">Updating the Collection Scanner data...</entry>
+  <entry key="updateCheck.versionCompare">Current version: %s%nLatest version: %s</entry>
+  <entry key="updateCheck.windowTitle">Update Check</entry>
 </properties>
