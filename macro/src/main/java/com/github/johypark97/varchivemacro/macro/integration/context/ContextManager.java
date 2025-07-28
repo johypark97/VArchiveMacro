@@ -21,6 +21,7 @@ public enum ContextManager {
         }
 
         instanceManager.setInstance(GlobalContext.class, new GlobalContext(hostServices));
+        instanceManager.setInstance(UpdateCheckContext.class, new UpdateCheckContext());
 
         initialized.set(true);
     }
@@ -29,6 +30,12 @@ public enum ContextManager {
         checkInitialization();
 
         return getInstance(GlobalContext.class);
+    }
+
+    public UpdateCheckContext getUpdateCheckContext() {
+        checkInitialization();
+
+        return getInstance(UpdateCheckContext.class);
     }
 
     public MacroContext createMacroContext() {

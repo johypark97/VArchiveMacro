@@ -203,8 +203,8 @@ public class HomeStageImpl extends AbstractBaseStage implements HomeStage {
     @Override
     public void showAbout() {
         try {
-            new About(stage, UrlProvider.GITHUB_URL,
-                    ContextManager.INSTANCE.getGlobalContext()).showAndWait();
+            new About(stage, UrlProvider.GITHUB_URL, ContextManager.INSTANCE.getGlobalContext(),
+                    ContextManager.INSTANCE.getUpdateCheckContext()).showAndWait();
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Opening the About alert exception.");
             showError(Language.INSTANCE.getString("home.about.exception"), e);

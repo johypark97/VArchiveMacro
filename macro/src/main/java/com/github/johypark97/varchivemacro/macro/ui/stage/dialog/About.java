@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.ui.stage.dialog;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
+import com.github.johypark97.varchivemacro.macro.integration.context.UpdateCheckContext;
 import java.io.IOException;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,8 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 
 public class About extends Alert {
-    public About(Window parent, String sourceCodeUrl, GlobalContext globalContext)
-            throws IOException {
+    public About(Window parent, String sourceCodeUrl, GlobalContext globalContext,
+            UpdateCheckContext updateCheckContext) throws IOException {
         super(AlertType.INFORMATION);
 
         Language language = Language.INSTANCE;
@@ -33,7 +34,7 @@ public class About extends Alert {
 
             box.getChildren().add(new Label(
                     language.getFormatString("home.about.programDataVersion",
-                            globalContext.programDataService.readLocalVersion().version())));
+                            updateCheckContext.programVersionService.getProgramDataVersion())));
 
             box.getChildren().add(new Label(
                     language.getFormatString("home.about.buildDate", BuildInfo.date)));
