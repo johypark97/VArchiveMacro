@@ -14,6 +14,7 @@
   <entry key="home.dialog.languageChange.done.content">변경한 언어는 프로그램 재시작 후 적용됩니다.</entry>
   <entry key="home.dialog.languageChange.done.header">언어 변경됨</entry>
   <entry key="home.dialog.languageChange.error">언어 변경 중 오류가 발생하였습니다.</entry>
+  <entry key="home.dialog.updateCheck.exception">업데이트 확인 오류</entry>
   <entry key="home.menu.about">정보</entry>
   <entry key="home.menu.about.about">정보</entry>
   <entry key="home.menu.about.osl">오픈 소스 라이선스</entry>

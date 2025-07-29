@@ -134,8 +134,9 @@ public class HomePresenterImpl implements Home.Presenter {
 
     @Override
     public void showUpdateCheck() {
-        Optional.ofNullable(backgroundUpdateCheckException.getAndSet(null))
-                .ifPresent(x -> homeStage.showError("", x));
+        Optional.ofNullable(backgroundUpdateCheckException.getAndSet(null)).ifPresent(
+                x -> homeStage.showError(
+                        Language.INSTANCE.getString("home.dialog.updateCheck.exception"), x));
 
         homeStage.showUpdateCheck();
     }
