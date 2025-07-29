@@ -230,6 +230,31 @@
             </ScrollPane>
           </content>
         </Tab>
+        <Tab text="%setting.program.tabName">
+          <content>
+            <ScrollPane fitToWidth="true" vbarPolicy="ALWAYS">
+              <content>
+                <VBox spacing="10.0">
+                  <children>
+                    <TitledPane animated="false" collapsible="false" text="%setting.program.updateCheck.sectionName">
+                      <content>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                          <children>
+                            <Label text="%setting.program.updateCheck.prereleaseLabel"/>
+                            <ToggleButton text="ToggleButton" fx:id="programPrereleaseNotificationToggleButton"/>
+                          </children>
+                        </HBox>
+                      </content>
+                    </TitledPane>
+                  </children>
+                  <padding>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                  </padding>
+                </VBox>
+              </content>
+            </ScrollPane>
+          </content>
+        </Tab>
       </tabs>
     </TabPane>
     <Separator/>

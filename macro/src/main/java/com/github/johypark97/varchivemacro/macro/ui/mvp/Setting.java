@@ -52,6 +52,8 @@ public interface Setting {
         void scanner_onChangeCaptureDelay(int value);
 
         void scanner_onChangeKeyHoldTime(int value);
+
+        void program_onChangePrereleaseNotification(boolean value);
     }
 
 
@@ -91,5 +93,7 @@ public interface Setting {
         void setupScannerCaptureDelaySlider(int value, int defaultValue, int min, int max);
 
         void setupScannerKeyHoldTimeSlider(int value, int defaultValue, int min, int max);
+
+        void setProgramPrereleaseNotification(boolean value);
     }
 }

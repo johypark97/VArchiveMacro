@@ -29,6 +29,7 @@ public class ConfigLoadService {
 
         configRepository.saveMacroConfig(configJson.macroConfig);
         configRepository.saveScannerConfig(configJson.scannerConfig);
+        configRepository.saveProgramConfig(configJson.programConfig);
 
         return true;
     }

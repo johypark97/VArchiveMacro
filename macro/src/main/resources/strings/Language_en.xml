@@ -244,6 +244,9 @@
   <entry key="setting.macro.shortcut.startUpKeyLabel">Start upward key</entry>
   <entry key="setting.macro.shortcut.stopKeyLabel">Stop key</entry>
   <entry key="setting.macro.tabName">Freestyle macro settings</entry>
+  <entry key="setting.program.tabName">Program settings</entry>
+  <entry key="setting.program.updateCheck.prereleaseLabel">Pre-release version notification</entry>
+  <entry key="setting.program.updateCheck.sectionName">Update check settings</entry>
   <entry key="setting.revert">Revert changes</entry>
   <entry key="setting.scanner.account.accountFile.label">Account file</entry>
   <entry key="setting.scanner.account.accountFile.selectButton">Select</entry>

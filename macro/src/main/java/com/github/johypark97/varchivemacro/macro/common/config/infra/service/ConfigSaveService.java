@@ -20,6 +20,7 @@ public class ConfigSaveService {
 
         configJson.macroConfig = configRepository.findMacroConfig();
         configJson.scannerConfig = configRepository.findScannerConfig();
+        configJson.programConfig = configRepository.findProgramConfig();
 
         Gson gson = GsonWrapper.newGsonBuilder_dump().create();
         Files.writeString(configFilePath, gson.toJson(configJson));

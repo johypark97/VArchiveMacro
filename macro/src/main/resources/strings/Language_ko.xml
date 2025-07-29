@@ -244,6 +244,9 @@
   <entry key="setting.macro.shortcut.startUpKeyLabel">위로 시작 키</entry>
   <entry key="setting.macro.shortcut.stopKeyLabel">중지 키</entry>
   <entry key="setting.macro.tabName">프리스타일 매크로 설정</entry>
+  <entry key="setting.program.tabName">프로그램 설정</entry>
+  <entry key="setting.program.updateCheck.prereleaseLabel">선공개 버전 알림</entry>
+  <entry key="setting.program.updateCheck.sectionName">업데이트 확인 설정</entry>
   <entry key="setting.revert">변경 취소</entry>
   <entry key="setting.scanner.account.accountFile.label">계정 파일</entry>
   <entry key="setting.scanner.account.accountFile.selectButton">선택</entry>

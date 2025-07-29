@@ -98,6 +98,9 @@ public class SettingViewImpl extends VBox implements Setting.View {
     private TextField scannerKeyHoldTimeTextField;
 
     @FXML
+    private ToggleButton programPrereleaseNotificationToggleButton;
+
+    @FXML
     private Button applyButton;
 
     @FXML
@@ -130,6 +133,7 @@ public class SettingViewImpl extends VBox implements Setting.View {
     public void initialize() {
         setupMacro();
         setupScanner();
+        setupProgram();
         setupButtonBar();
     }
 
@@ -235,6 +239,15 @@ public class SettingViewImpl extends VBox implements Setting.View {
         scannerKeyHoldTimeLinker.valueProperty().addListener(
                 (observable, oldValue, newValue) -> presenter.scanner_onChangeKeyHoldTime(
                         newValue.intValue()));
+    }
+
+    private void setupProgram() {
+        programPrereleaseNotificationToggleButton.setOnAction(
+                event -> presenter.program_onChangePrereleaseNotification(
+                        programPrereleaseNotificationToggleButton.isSelected()));
+        programPrereleaseNotificationToggleButton.textProperty()
+                .bind(Bindings.when(programPrereleaseNotificationToggleButton.selectedProperty())
+                        .then("ON").otherwise("OFF"));
     }
 
     private void setupButtonBar() {
@@ -355,6 +368,11 @@ public class SettingViewImpl extends VBox implements Setting.View {
         scannerKeyHoldTimeLinker.setLimitMax(max);
         scannerKeyHoldTimeLinker.setLimitMin(min);
         scannerKeyHoldTimeLinker.setValue(value);
+    }
+
+    @Override
+    public void setProgramPrereleaseNotification(boolean value) {
+        programPrereleaseNotificationToggleButton.setSelected(value);
     }
 
     public static class ThreadCountSliderSetter extends StringConverter<Double> {

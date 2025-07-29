@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.common.config.domain.repository;
 
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
+import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ProgramConfig;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 
 public interface ConfigRepository {
@@ -11,4 +12,8 @@ public interface ConfigRepository {
     ScannerConfig findScannerConfig();
 
     void saveScannerConfig(ScannerConfig value);
+
+    ProgramConfig findProgramConfig();
+
+    void saveProgramConfig(ProgramConfig value);
 }

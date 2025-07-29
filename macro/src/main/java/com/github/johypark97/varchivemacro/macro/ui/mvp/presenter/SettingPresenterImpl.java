@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroClientMode;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
+import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ProgramConfig;
 import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.converter.InputKeyConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
@@ -44,6 +45,7 @@ public class SettingPresenterImpl implements Setting.Presenter {
 
     private MacroConfig.Builder macroConfigBuilder;
     private ScannerConfig.Builder scannerConfigBuilder;
+    private ProgramConfig.Builder programConfigBuilder;
     private boolean invalidAccountFile;
     private boolean invalidCacheDirectory;
 
@@ -59,6 +61,7 @@ public class SettingPresenterImpl implements Setting.Presenter {
     private void showConfig() {
         showConfig_macro();
         showConfig_scanner();
+        showConfig_program();
 
         changed.set(false);
         invalidAccountFile = false;
@@ -113,6 +116,12 @@ public class SettingPresenterImpl implements Setting.Presenter {
                 ScannerConfig.KEY_HOLD_TIME_MAX);
     }
 
+    private void showConfig_program() {
+        programConfigBuilder = globalContext.configService.findProgramConfig().toBuilder();
+
+        view.setProgramPrereleaseNotification(programConfigBuilder.prereleaseNotification);
+    }
+
     private boolean applyConfig() {
         if (invalidAccountFile) {
             if (!validateAccountFile(scannerConfigBuilder.accountFile)) {
@@ -130,6 +139,7 @@ public class SettingPresenterImpl implements Setting.Presenter {
 
         globalContext.configService.saveMacroConfig(macroConfigBuilder.build());
         globalContext.configService.saveScannerConfig(scannerConfigBuilder.build());
+        globalContext.configService.saveProgramConfig(programConfigBuilder.build());
 
         try {
             globalContext.configStorageService.save();
@@ -398,6 +408,12 @@ public class SettingPresenterImpl implements Setting.Presenter {
     @Override
     public void scanner_onChangeKeyHoldTime(int value) {
         scannerConfigBuilder.keyHoldTime = value;
+        changed.set(true);
+    }
+
+    @Override
+    public void program_onChangePrereleaseNotification(boolean value) {
+        programConfigBuilder.prereleaseNotification = value;
         changed.set(true);
     }
 }
