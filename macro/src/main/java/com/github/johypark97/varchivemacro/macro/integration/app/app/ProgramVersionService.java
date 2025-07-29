@@ -8,6 +8,9 @@ import com.github.johypark97.varchivemacro.macro.common.programdata.app.UpdatePr
 import com.github.johypark97.varchivemacro.macro.common.programdata.domain.DataVersion;
 import com.github.johypark97.varchivemacro.macro.common.resource.BuildInfo;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 public class ProgramVersionService {
@@ -51,17 +54,18 @@ public class ProgramVersionService {
         latestVersionData.setLatestProgramDataVersion(programDataService.fetchLatestVersion());
     }
 
-    public long getLatestProgramDataVersion() {
+    public ZonedDateTime getLatestProgramDataVersion() {
         DataVersion x = latestVersionData.getLatestProgramDataVersion();
-        return Optional.ofNullable(x).map(DataVersion::version).orElse((long) -1);
+        return Optional.ofNullable(x).map(DataVersion::version)
+                .orElse(ZonedDateTime.of(LocalDateTime.MIN, ZoneOffset.UTC));
     }
 
-    public long getProgramDataVersion() throws IOException {
+    public ZonedDateTime getProgramDataVersion() throws IOException {
         return programDataService.readLocalVersion().version();
     }
 
     public boolean isProgramDataUpdated() throws IOException {
-        return getLatestProgramDataVersion() > getProgramDataVersion();
+        return getLatestProgramDataVersion().isAfter(getProgramDataVersion());
     }
 
     public void updateProgramData(UpdateProgressHook hook)

@@ -29,7 +29,7 @@ public interface UpdateCheck {
 
         void addNewVersionReleasedMessage(String currentVersion, String latestVersion, String url);
 
-        void addProgramDataUpdatedMessage(long currentVersion, long latestVersion);
+        void addProgramDataUpdatedMessage(String currentVersion, String latestVersion);
 
         DataUpdateProgressController addProgramDataUpdateProgressMessage();
     }

@@ -10,9 +10,10 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.ZonedDateTime;
 import java.util.List;
 
-public record DataVersionJson(@Expose long version,
+public record DataVersionJson(@Expose ZonedDateTime version,
                               @Expose @SerializedName("files") List<DataFile> fileList) {
     public static DataVersionJson from(DataVersion dataVersion) {
         return new DataVersionJson(dataVersion.version(),
@@ -20,17 +21,19 @@ public record DataVersionJson(@Expose long version,
     }
 
     public static DataVersionJson from(Path path) throws IOException {
-        Gson gson = GsonWrapper.newGsonBuilder_general().create();
-
         try (BufferedReader reader = Files.newBufferedReader(path)) {
-            return gson.fromJson(reader, DataVersionJson.class);
+            return createGson().fromJson(reader, DataVersionJson.class);
         }
     }
 
     public static DataVersionJson from(String data) {
-        Gson gson = GsonWrapper.newGsonBuilder_general().create();
+        return createGson().fromJson(data, DataVersionJson.class);
+    }
 
-        return gson.fromJson(data, DataVersionJson.class);
+    private static Gson createGson() {
+        return GsonWrapper.newGsonBuilder_dump()
+                .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeJsonTypeAdapter())
+                .create();
     }
 
     public DataVersion toDomain() {
@@ -38,10 +41,8 @@ public record DataVersionJson(@Expose long version,
     }
 
     public void write(Path path) throws IOException {
-        Gson gson = GsonWrapper.newGsonBuilder_dump().create();
-
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-            writer.write(gson.toJson(this));
+            writer.write(createGson().toJson(this));
             writer.write('\n');
         }
     }

@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage.dialog;
 
+import com.github.johypark97.varchivemacro.macro.common.converter.ZonedDateTimeConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
@@ -34,7 +35,8 @@ public class About extends Alert {
 
             box.getChildren().add(new Label(
                     language.getFormatString("home.about.programDataVersion",
-                            updateCheckContext.programVersionService.getProgramDataVersion())));
+                            ZonedDateTimeConverter.format(
+                                    updateCheckContext.programVersionService.getProgramDataVersion()))));
 
             box.getChildren().add(new Label(
                     language.getFormatString("home.about.buildDate", BuildInfo.date)));

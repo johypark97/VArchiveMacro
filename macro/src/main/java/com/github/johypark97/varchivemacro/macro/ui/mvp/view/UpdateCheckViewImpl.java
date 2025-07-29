@@ -149,7 +149,7 @@ public class UpdateCheckViewImpl extends VBox implements UpdateCheck.View {
     }
 
     @Override
-    public void addProgramDataUpdatedMessage(long currentVersion, long latestVersion) {
+    public void addProgramDataUpdatedMessage(String currentVersion, String latestVersion) {
         addContent(adder -> {
             Language language = Language.INSTANCE;
 

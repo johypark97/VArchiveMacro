@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
+import com.github.johypark97.varchivemacro.macro.common.converter.ZonedDateTimeConverter;
 import com.github.johypark97.varchivemacro.macro.common.github.domain.Semver;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.app.app.ProgramVersionService;
@@ -10,6 +11,7 @@ import com.github.johypark97.varchivemacro.macro.ui.stage.UpdateCheckStage;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.nio.file.Path;
+import java.time.ZonedDateTime;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.application.Platform;
 import org.slf4j.Logger;
@@ -89,11 +91,12 @@ public class UpdateCheckPresenterImpl implements UpdateCheck.Presenter {
 
             service.fetchLatestProgramDataVersion();
             if (service.isProgramDataUpdated()) {
-                long currentVersion = service.getProgramDataVersion();
-                long latestVersion = service.getLatestProgramDataVersion();
+                ZonedDateTime currentVersion = service.getProgramDataVersion();
+                ZonedDateTime latestVersion = service.getLatestProgramDataVersion();
 
-                Platform.runLater(
-                        () -> view.addProgramDataUpdatedMessage(currentVersion, latestVersion));
+                Platform.runLater(() -> view.addProgramDataUpdatedMessage(
+                        ZonedDateTimeConverter.format(currentVersion),
+                        ZonedDateTimeConverter.format(latestVersion)));
 
                 return 0;
             }
