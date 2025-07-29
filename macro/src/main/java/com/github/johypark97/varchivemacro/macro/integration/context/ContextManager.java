@@ -20,8 +20,11 @@ public enum ContextManager {
             throw new IllegalStateException("ContextManager is already initialized.");
         }
 
-        instanceManager.setInstance(GlobalContext.class, new GlobalContext(hostServices));
-        instanceManager.setInstance(UpdateCheckContext.class, new UpdateCheckContext());
+        GlobalContext globalContext = new GlobalContext(hostServices);
+        instanceManager.setInstance(GlobalContext.class, globalContext);
+
+        instanceManager.setInstance(UpdateCheckContext.class,
+                new UpdateCheckContext(globalContext));
 
         initialized.set(true);
     }

@@ -21,6 +21,7 @@ module varchivemacro.macro {
 
     // libraries
     requires com.github.kwhat.jnativehook;
+    requires com.github.zafarkhaja.semver;
     requires com.google.common;
     requires com.google.gson;
     requires io.reactivex.rxjava3;

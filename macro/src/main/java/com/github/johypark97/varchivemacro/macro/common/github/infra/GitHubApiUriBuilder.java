@@ -20,6 +20,10 @@ public class GitHubApiUriBuilder {
         return new GitHubApiUriBuilder(owner, repository).append("releases/latest").build();
     }
 
+    public static URI create_releaseList(String owner, String repository) {
+        return new GitHubApiUriBuilder(owner, repository).append("releases").build();
+    }
+
     public final GitHubApiUriBuilder append(String value) {
         builder.append('/').append(value);
 

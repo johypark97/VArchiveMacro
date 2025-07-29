@@ -8,10 +8,12 @@ import com.github.johypark97.varchivemacro.macro.common.github.infra.GitHubApiUr
 import com.github.johypark97.varchivemacro.macro.common.github.infra.model.GitHubContentJson;
 import com.github.johypark97.varchivemacro.macro.common.github.infra.model.GitHubReleaseJson;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 public class GitHubApiService {
     private final GitHubApi api = new GitHubApi();
@@ -26,22 +28,32 @@ public class GitHubApiService {
     }
 
     public GitHubRelease fetchLatestRelease() throws IOException, InterruptedException {
-        return fetchString(GitHubReleaseJson.class,
-                GitHubApiUriBuilder.create_latestRelease(owner, repository)).toDomain();
+        return gson.fromJson(
+                fetchString(GitHubApiUriBuilder.create_latestRelease(owner, repository)),
+                GitHubReleaseJson.class).toDomain();
+    }
+
+    public List<GitHubRelease> fetchAllReleases() throws IOException, InterruptedException {
+        class GsonTypeToken extends TypeToken<List<GitHubReleaseJson>> {
+        }
+
+        return gson.fromJson(fetchString(GitHubApiUriBuilder.create_releaseList(owner, repository)),
+                new GsonTypeToken()).stream().map(GitHubReleaseJson::toDomain).toList();
     }
 
     public GitHubContent fetchContent(String path) throws IOException, InterruptedException {
-        return fetchString(GitHubContentJson.class,
-                GitHubApiUriBuilder.create_content(owner, repository, path)).toDomain();
+        return gson.fromJson(
+                fetchString(GitHubApiUriBuilder.create_content(owner, repository, path)),
+                GitHubContentJson.class).toDomain();
     }
 
-    private <T> T fetchString(Class<T> cls, URI uri) throws IOException, InterruptedException {
+    private String fetchString(URI uri) throws IOException, InterruptedException {
         HttpResponse<String> httpResponse = api.request(uri);
         if (httpResponse.statusCode() != HttpURLConnection.HTTP_OK) {
             throw new IOException(
                     String.format("[%d] %s", httpResponse.statusCode(), httpResponse.body()));
         }
 
-        return gson.fromJson(httpResponse.body(), cls);
+        return httpResponse.body();
     }
 }

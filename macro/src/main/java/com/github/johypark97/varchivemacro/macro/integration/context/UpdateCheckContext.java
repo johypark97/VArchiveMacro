@@ -22,6 +22,11 @@ public class UpdateCheckContext implements Context {
             new ProgramDataService(gitHubApiService, PROGRAM_DATA_DIRECTORY_PATH);
 
     // integrations
-    public final ProgramVersionService programVersionService =
-            new ProgramVersionService(gitHubApiService, programDataService, versionData);
+    public final ProgramVersionService programVersionService;
+
+    public UpdateCheckContext(GlobalContext globalContext) {
+        programVersionService =
+                new ProgramVersionService(globalContext.configService, gitHubApiService,
+                        programDataService, versionData);
+    }
 }

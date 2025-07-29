@@ -1,13 +1,13 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
 import com.github.johypark97.varchivemacro.macro.common.converter.ZonedDateTimeConverter;
-import com.github.johypark97.varchivemacro.macro.common.github.domain.Semver;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.app.app.ProgramVersionService;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.UpdateCheckContext;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.UpdateCheck;
 import com.github.johypark97.varchivemacro.macro.ui.stage.UpdateCheckStage;
+import com.github.zafarkhaja.semver.Version;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.nio.file.Path;
@@ -79,7 +79,7 @@ public class UpdateCheckPresenterImpl implements UpdateCheck.Presenter {
             if (service.isNewVersionReleased()) {
                 String currentVersion = service.getProgramVersion().toString();
                 String latestVersion =
-                        service.getLatestProgramVersion().map(Semver::toString).orElse("");
+                        service.getLatestProgramVersion().map(Version::toString).orElse("");
                 String url = service.getLatestReleaseHtmlUrl().orElse("");
 
                 Platform.runLater(
