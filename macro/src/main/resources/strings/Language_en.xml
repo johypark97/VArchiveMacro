@@ -274,7 +274,7 @@
   <entry key="updateCheck.updateChecking">Update checking...</entry>
   <entry key="updateCheck.updateComplete.message0">Update complete.</entry>
   <entry key="updateCheck.updateComplete.message1">Please restart the program.</entry>
-  <entry key="updateCheck.updateComplete.message2">컬렉션 스캐너 사용 전 스캔할 카테고리를 다시 확인해주세요.</entry>
+  <entry key="updateCheck.updateComplete.message2">Before using the Collection Scanner, please check the list of categories to scan.</entry>
   <entry key="updateCheck.updatingProgramData">Updating the Collection Scanner data...</entry>
   <entry key="updateCheck.versionCompare">Current version: %s%nLatest version: %s</entry>
   <entry key="updateCheck.windowTitle">Update Check</entry>
