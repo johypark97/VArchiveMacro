@@ -6,7 +6,7 @@
   <entry key="component.imageViewerBox.rmb">오른쪽 마우스 버튼: 초기화</entry>
   <entry key="home.about.buildDate">빌드 날짜: %s</entry>
   <entry key="home.about.exception">프로그램 데이터 버전을 가져올 수 없습니다.</entry>
-  <entry key="home.about.programDataVersion">데이터 버전: %s</entry>
+  <entry key="home.about.programDataVersion">컬렉션 스캐너 데이터 버전: %s</entry>
   <entry key="home.about.programVersion">프로그램 버전: v%s</entry>
   <entry key="home.about.sourceCode">소스 코드:</entry>
   <entry key="home.about.windowTitle">정보</entry>

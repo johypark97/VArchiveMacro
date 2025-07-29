@@ -6,7 +6,7 @@
   <entry key="component.imageViewerBox.rmb">Right Mouse Button: Reset</entry>
   <entry key="home.about.buildDate">Build date: %s</entry>
   <entry key="home.about.exception">Unable to fetch the program data version.</entry>
-  <entry key="home.about.programDataVersion">Program data version: %s</entry>
+  <entry key="home.about.programDataVersion">Collection Scanner data version: %s</entry>
   <entry key="home.about.programVersion">Program version: v%s</entry>
   <entry key="home.about.sourceCode">Source code:</entry>
   <entry key="home.about.windowTitle">About</entry>

@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.common.resource.BuildInfo;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.UpdateCheckContext;
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -38,8 +39,8 @@ public class About extends Alert {
                             ZonedDateTimeConverter.format(
                                     updateCheckContext.programVersionService.getProgramDataVersion()))));
 
-            box.getChildren().add(new Label(
-                    language.getFormatString("home.about.buildDate", BuildInfo.date)));
+            box.getChildren().add(new Label(language.getFormatString("home.about.buildDate",
+                    ZonedDateTimeConverter.format(ZonedDateTime.parse(BuildInfo.date)))));
 
             HBox sourceCodeBox = new HBox();
             sourceCodeBox.setAlignment(Pos.CENTER_LEFT);
