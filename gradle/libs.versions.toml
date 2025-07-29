@@ -9,6 +9,7 @@ jlink-plugin = "3.1.1"
 # -------- Libraries --------
 gson = "2.12.1"
 guava = "33.4.0-jre"
+java-semver = "0.10.2"
 javafx-version = "21.0.6"
 jnativehook = "2.2.2"
 junit-jupiter = "5.11.4"
@@ -28,6 +29,7 @@ javafx-plugin = { module = "org.openjfx:javafx-plugin", version.ref = "javafx-pl
 # -------- Libraries --------
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
+java-semver = { module = "com.github.zafarkhaja:java-semver", version.ref = "java-semver" }
 jnativehook = { module = "com.github.kwhat:jnativehook", version.ref = "jnativehook" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }

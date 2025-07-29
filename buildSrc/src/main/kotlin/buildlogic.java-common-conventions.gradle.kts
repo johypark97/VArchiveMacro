@@ -20,6 +20,7 @@ repositories {
 dependencies {
     implementation(libs.gson)
     implementation(libs.guava)
+    implementation(libs.java.semver)
     implementation(libs.jnativehook)
     implementation(libs.rxjava)
     implementation(libs.sqlite.jdbc)

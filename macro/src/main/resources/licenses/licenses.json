@@ -34,6 +34,11 @@
     "path": "javafx-gradle-plugin.txt",
     "url": "https://github.com/openjfx/javafx-gradle-plugin"
   },
+  "Java SemVer": {
+    "owner": "Zafar Khaja",
+    "path": "jsemver.txt",
+    "url": "https://github.com/zafarkhaja/jsemver"
+  },
   "JNativeHook": {
     "owner": "Alex Barker (kwhat)",
     "path": "jnativehook.txt",
