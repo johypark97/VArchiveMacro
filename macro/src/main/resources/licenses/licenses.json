@@ -1,77 +1,96 @@
 {
   "Badass JLink Plugin": {
+    "owner": "Serban Iordache (Beryx)",
     "path": "badass-jlink-plugin.txt",
     "url": "https://github.com/beryx/badass-jlink-plugin"
   },
   "Gradle JavaCPP": {
+    "owner": "Bytedeco",
     "path": "gradle-javacpp.txt",
     "url": "https://github.com/bytedeco/gradle-javacpp"
   },
   "Gson": {
+    "owner": "Google Inc.",
     "path": "gson.txt",
     "url": "https://github.com/google/gson"
   },
   "Guava": {
+    "owner": "Google Inc.",
     "path": "guava.txt",
     "url": "https://github.com/google/guava"
   },
   "JavaCPP Presets": {
+    "owner": "Bytedeco",
     "path": "javacpp-presets.txt",
     "url": "https://github.com/bytedeco/javacpp-presets"
   },
   "JavaFX": {
+    "owner": "OpenJDK",
     "path": "javafx.txt",
     "url": "https://github.com/openjdk/jfx"
   },
   "JavaFX Gradle Plugin": {
+    "owner": "OpenJDK",
     "path": "javafx-gradle-plugin.txt",
     "url": "https://github.com/openjfx/javafx-gradle-plugin"
   },
   "JNativeHook": {
+    "owner": "Alex Barker (kwhat)",
     "path": "jnativehook.txt",
     "url": "https://github.com/kwhat/jnativehook"
   },
   "JUnit 5": {
+    "owner": "JUnit",
     "path": "junit5.txt",
     "url": "https://junit.org/junit5/"
   },
   "Leptonica": {
+    "owner": "Leptonica",
     "path": "leptonica.txt",
     "url": "https://github.com/danbloomberg/leptonica"
   },
   "Log4j 2": {
+    "owner": "The Apache Software Foundation",
     "path": "log4j2.txt",
     "url": "https://logging.apache.org/log4j/2.x/"
   },
   "Mockito": {
+    "owner": "Mockito contributors",
     "path": "mockito.txt",
     "url": "https://site.mockito.org/"
   },
   "PMD": {
+    "owner": "InfoEther, LLC",
     "path": "pmd.txt",
     "url": "https://pmd.github.io/"
   },
   "RxJava": {
+    "owner": "RxJava Contributors",
     "path": "rxjava.txt",
     "url": "https://reactivex.io/"
   },
   "SLF4J": {
+    "owner": "QOS.CH Sarl (Switzerland)",
     "path": "slf4j.txt",
     "url": "https://www.slf4j.org/"
   },
   "SQLite JDBC": {
+    "owner": "Taro L. Saito (xerial)",
     "path": "sqlite-jdbc.txt",
     "url": "https://github.com/xerial/sqlite-jdbc"
   },
   "tessdata": {
+    "owner": "Google Inc.",
     "path": "tessdata.txt",
     "url": "https://github.com/tesseract-ocr/tessdata_best"
   },
   "Tesseract OCR": {
+    "owner": "Google Inc.",
     "path": "tesseract.txt",
     "url": "https://github.com/tesseract-ocr/tesseract"
   },
   "tesstrain": {
+    "owner": "Google Inc.",
     "path": "tesstrain.txt",
     "url": "https://github.com/tesseract-ocr/tesstrain"
   }

@@ -9,6 +9,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
@@ -21,6 +22,9 @@ public class OpenSourceLicenseViewImpl extends HBox implements OpenSourceLicense
 
     @FXML
     private TextArea licenseTextArea;
+
+    @FXML
+    private Label copyrightOwnerLabel;
 
     @FXML
     private Hyperlink libraryUrlHyperlink;
@@ -54,17 +58,22 @@ public class OpenSourceLicenseViewImpl extends HBox implements OpenSourceLicense
     }
 
     @Override
-    public void showLibraryList(List<String> value) {
+    public void setLibraryList(List<String> value) {
         libraryListView.setItems(FXCollections.observableList(value).sorted());
     }
 
     @Override
-    public void showLicenseText(String value) {
+    public void setLicenseText(String value) {
         licenseTextArea.setText(value);
     }
 
     @Override
-    public void showLibraryUrl(String value) {
+    public void setCopyrightOwner(String value) {
+        copyrightOwnerLabel.setText(value);
+    }
+
+    @Override
+    public void setLibraryUrl(String value) {
         libraryUrlHyperlink.setText(value);
         libraryUrlHyperlink.setVisible(true);
     }

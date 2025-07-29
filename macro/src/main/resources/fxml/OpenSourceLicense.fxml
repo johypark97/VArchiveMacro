@@ -13,6 +13,12 @@
     <VBox HBox.hgrow="ALWAYS" spacing="10.0">
       <children>
         <TextArea VBox.vgrow="ALWAYS" editable="false" fx:id="licenseTextArea"/>
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+          <children>
+            <Label text="%osl.copyrightOwner"/>
+            <Label fx:id="copyrightOwnerLabel"/>
+          </children>
+        </HBox>
         <HBox alignment="CENTER_LEFT">
           <children>
             <Label text="%osl.hyperlinkLabel"/>

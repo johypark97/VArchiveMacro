@@ -31,15 +31,16 @@ public class OpenSourceLicensePresenterImpl implements OpenSourceLicense.Present
     public void startView() {
         loadLicenseList();
 
-        view.showLibraryList(openSourceLicenseContext.openSourceLicenseService.findAllLibrary());
+        view.setLibraryList(openSourceLicenseContext.openSourceLicenseService.findAllLibrary());
     }
 
     @Override
     public void showLicense(String value) {
         License license = openSourceLicenseContext.openSourceLicenseService.findLicense(value);
 
-        view.showLicenseText(license.licenseText());
-        view.showLibraryUrl(license.libraryUrl());
+        view.setLicenseText(license.licenseText());
+        view.setCopyrightOwner(license.copyrightOwner());
+        view.setLibraryUrl(license.libraryUrl());
     }
 
     @Override

@@ -14,10 +14,12 @@ public interface OpenSourceLicense {
 
 
     interface View extends Mvp.MvpView<View, Presenter> {
-        void showLibraryList(List<String> value);
+        void setLibraryList(List<String> value);
 
-        void showLicenseText(String value);
+        void setLicenseText(String value);
 
-        void showLibraryUrl(String value);
+        void setCopyrightOwner(String value);
+
+        void setLibraryUrl(String value);
     }
 }

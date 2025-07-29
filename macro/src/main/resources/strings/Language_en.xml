@@ -38,6 +38,7 @@
   <entry key="macro.uploadKeyLabel">Upload key</entry>
   <entry key="modeSelector.description.left">Automate the V-ARCHIVE Client</entry>
   <entry key="modeSelector.description.right">Scan all records in the Collection Menu</entry>
+  <entry key="osl.copyrightOwner">Copyright Owner:</entry>
   <entry key="osl.hyperlinkLabel">Library Link:</entry>
   <entry key="osl.windowTitle">Open Source License</entry>
   <entry key="scanner.captureImageViewer.analysisData.cell.sectionName">Records</entry>

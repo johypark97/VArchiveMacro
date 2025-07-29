@@ -47,7 +47,8 @@ public class OpenSourceLicenseLoadService {
                 licenseText = String.join(System.lineSeparator(), lineList);
             }
 
-            licenseList.add(new License(entry.getKey(), licenseText, entry.getValue().url()));
+            licenseList.add(new License(entry.getKey(), entry.getValue().owner(), licenseText,
+                    entry.getValue().url()));
         }
 
         return licenseList;
