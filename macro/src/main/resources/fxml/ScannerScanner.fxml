@@ -22,9 +22,9 @@
       <children>
         <VBox HBox.hgrow="ALWAYS" spacing="10.0">
           <children>
-            <TitledPane animated="false" collapsible="false" text="%scanner.scanner.setting.sectionName">
+            <TitledPane VBox.vgrow="ALWAYS" animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="%scanner.scanner.setting.sectionName">
               <content>
-                <FlowPane alignment="TOP_CENTER" hgap="40.0" vgap="20.0">
+                <FlowPane alignment="CENTER" hgap="40.0" vgap="20.0">
                   <children>
                     <GridPane hgap="10.0" vgap="10.0">
                       <columnConstraints>
