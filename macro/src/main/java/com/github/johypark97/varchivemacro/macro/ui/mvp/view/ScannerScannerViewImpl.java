@@ -104,7 +104,8 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
 
         accountFileTextFieldTooltip.textProperty().bind(accountFileTextField.textProperty());
         cacheDirectoryTextFieldTooltip.textProperty().bind(cacheDirectoryTextField.textProperty());
-        debugCheckBox.setVisible(false);
+
+        setDebugCheckBoxVisible(false);
 
         checkButton.setOnAction(event -> presenter.checkDisplayAndResolution());
 
@@ -158,6 +159,7 @@ public class ScannerScannerViewImpl extends StackPane implements ScannerScanner.
 
     @Override
     public void setDebugCheckBoxVisible(boolean value) {
+        debugCheckBox.setManaged(value);
         debugCheckBox.setVisible(value);
     }
 
