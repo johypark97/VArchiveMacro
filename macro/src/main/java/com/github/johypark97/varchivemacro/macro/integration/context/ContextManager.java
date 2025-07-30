@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManage
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.InvalidAccountFileException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.application.HostServices;
 
@@ -49,9 +50,9 @@ public enum ContextManager {
         return new OpenSourceLicenseContext();
     }
 
-    public ScannerContext createScannerContext(boolean debug)
+    public ScannerContext createScannerContext(Set<String> selectedCategorySet, boolean debug)
             throws IOException, GeneralSecurityException, InvalidAccountFileException {
-        return new ScannerContext(getGlobalContext(), debug);
+        return new ScannerContext(getGlobalContext(), selectedCategorySet, debug);
     }
 
     private <T extends Context> T getInstance(Class<T> cls) {

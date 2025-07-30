@@ -58,7 +58,10 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
     private void prepareLinkTableData() {
         linkTableDataLookup.clear();
+
+        Set<String> selectedCategorySet = scannerContext.getSelectedCategorySet();
         scannerContext.scannerReviewService.getAllSongDataList().stream()
+                .filter(x -> selectedCategorySet.contains(x.song.pack().category().name()))
                 .map(ScannerReviewViewModel.LinkTableData::form).forEach(x -> {
                     linkTableDataLookup.put(x.songIdProperty().get(), x);
                     x.setOnSelectedChange(updateLinkTableSelectedCountTextEventDebouncer::trigger);

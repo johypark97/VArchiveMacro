@@ -24,13 +24,14 @@ public class ScannerScannerService {
 
     private final OcrServiceFactory songTitleOcrServiceFactory;
 
+    private final Set<String> selectedCategorySet;
     private final boolean debug;
 
     public ScannerScannerService(CaptureImageService captureImageService,
             CaptureRegionService captureRegionService, CaptureService captureService,
             ConfigService configService, PixImageService pixImageService, SongService songService,
             SongTitleService songTitleService, OcrServiceFactory songTitleOcrServiceFactory,
-            boolean debug) {
+            Set<String> selectedCategorySet, boolean debug) {
         this.captureImageService = captureImageService;
         this.captureRegionService = captureRegionService;
         this.captureService = captureService;
@@ -40,11 +41,12 @@ public class ScannerScannerService {
         this.songTitleService = songTitleService;
 
         this.songTitleOcrServiceFactory = songTitleOcrServiceFactory;
+        this.selectedCategorySet = selectedCategorySet;
 
         this.debug = debug;
     }
 
-    public Task<Void> createTask(Set<String> selectedCategorySet) {
+    public Task<Void> createTask() {
         if (TaskManager.getInstance().isRunningAny()) {
             return null;
         }

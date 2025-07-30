@@ -26,6 +26,7 @@ import com.github.johypark97.varchivemacro.macro.integration.app.scanner.upload.
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
+import java.util.Set;
 
 public class ScannerContext implements Context {
     // constants
@@ -33,6 +34,9 @@ public class ScannerContext implements Context {
     private static final Path TRAINEDDATA_DIRECTORY_PATH = Path.of("data");
     private static final String ENG_LANGUAGE = "eng";
     private static final String SONG_TITLE_LANGUAGE = "djmax";
+
+    // states
+    private final Set<String> selectedCategorySet;
 
     // repositories
     final CaptureImageRepository captureImageRepository;
@@ -66,8 +70,11 @@ public class ScannerContext implements Context {
     public final ScannerScannerService scannerScannerService;
     public final ScannerUploadService scannerUploadService;
 
-    public ScannerContext(GlobalContext globalContext, boolean debug)
+    public ScannerContext(GlobalContext globalContext, Set<String> selectedCategorySet,
+            boolean debug)
             throws IOException, GeneralSecurityException, InvalidAccountFileException {
+        this.selectedCategorySet = selectedCategorySet;
+
         // repositories
         Path cacheDirectoryPath = PathValidator.validateAndConvert(
                 globalContext.configService.findScannerConfig().cacheDirectory());
@@ -91,7 +98,7 @@ public class ScannerContext implements Context {
                 new ScannerScannerService(captureImageService, globalContext.captureRegionService,
                         captureService, globalContext.configService, pixImageService,
                         globalContext.songService, songTitleService, songTitleOcrServiceFactory,
-                        debug);
+                        getSelectedCategorySet(), debug);
 
         scannerReviewService = new ScannerReviewService(captureImageService, captureService,
                 songCaptureLinkService, songCaptureLinkingService, globalContext.songService);
@@ -104,5 +111,9 @@ public class ScannerContext implements Context {
                 new ScannerUploadService(songCaptureLinkService, globalContext.songRecordService,
                         globalContext.songRecordStorageService, songRecordUploadService,
                         globalContext.songService, songTitleService, updatedSongRecordService);
+    }
+
+    public final Set<String> getSelectedCategorySet() {
+        return Set.copyOf(selectedCategorySet);
     }
 }

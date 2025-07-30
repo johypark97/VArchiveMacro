@@ -91,7 +91,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
 
         try {
             boolean debug = globalContext.configService.isDebug() && view.getDebugCheckBoxValue();
-            scannerContext = ContextManager.INSTANCE.createScannerContext(debug);
+            scannerContext =
+                    ContextManager.INSTANCE.createScannerContext(selectedCategorySet, debug);
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Collection task initialization exception.");
             scannerScannerStage.showError(
@@ -105,7 +106,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
             return;
         }
 
-        Task<Void> task = scannerContext.scannerScannerService.createTask(selectedCategorySet);
+        Task<Void> task = scannerContext.scannerScannerService.createTask();
         if (task == null) {
             return;
         }
