@@ -23,10 +23,10 @@ public record MacroConfig(
             new InputKeyCombination(InputKey.OPEN_BRACKET, false, true, false);
 
     public static final InputKeyCombination STOP_KEY_DEFAULT =
-            InputKeyCombination.from(InputKey.DELETE);
+            InputKeyCombination.from(InputKey.BACK_SPACE);
 
     public static final InputKeyCombination UPLOAD_KEY_DEFAULT =
-            InputKeyCombination.from(InputKey.INSERT);
+            new InputKeyCombination(InputKey.INSERT, false, true, false);
 
     public static final MacroClientMode CLIENT_MODE_DEFAULT = MacroClientMode.SEPARATELY;
 

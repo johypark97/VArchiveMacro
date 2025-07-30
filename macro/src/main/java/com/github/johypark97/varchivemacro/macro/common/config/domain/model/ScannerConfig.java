@@ -21,7 +21,7 @@ public record ScannerConfig(
             new InputKeyCombination(InputKey.ENTER, true, false, false);
 
     public static final InputKeyCombination STOP_KEY_DEFAULT =
-            InputKeyCombination.from(InputKey.DELETE);
+            InputKeyCombination.from(InputKey.BACK_SPACE);
 
     public static final Set<String> SELECTED_CATEGORY_DEFAULT = Set.of();
 
