@@ -159,6 +159,10 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
         } catch (InterruptedException ignored) {
         }
 
+        // Clear the interrupt flag to prevent the action of returning to the ALL tab from stopping
+        // immediately.
+        Thread.interrupted();
+
         // return to the ALL tab
         try {
             int count = categoryQueue.size() + 1;
