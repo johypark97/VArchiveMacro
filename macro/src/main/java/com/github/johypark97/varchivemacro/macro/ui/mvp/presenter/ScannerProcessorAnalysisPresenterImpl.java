@@ -95,8 +95,6 @@ public class ScannerProcessorAnalysisPresenterImpl implements ScannerProcessorAn
     }
 
     private void onTaskRunning(WorkerStateEvent ignored) {
-        taskRunning.set(false);
-
         analysisResultMap.clear();
 
         Language language = Language.INSTANCE;
