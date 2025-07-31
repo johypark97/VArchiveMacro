@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.app;
 
-import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.exception.PixImageException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.model.PixImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.service.PixImagePreprocessService;
@@ -15,11 +14,7 @@ public class PixImageService implements PixImagePreprocessService {
 
     public PixImage createPixImage(BufferedImage bufferedImage)
             throws IOException, PixImageException {
-        return new DefaultPixImage(ImageConverter.imageToPngBytes(bufferedImage));
-    }
-
-    public PixImage createPixImage(byte[] pngByteArray) throws PixImageException {
-        return new DefaultPixImage(pngByteArray);
+        return new DefaultPixImage(bufferedImage);
     }
 
     @Override

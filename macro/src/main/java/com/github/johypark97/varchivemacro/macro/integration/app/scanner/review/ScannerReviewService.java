@@ -1,10 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.review;
 
-import com.github.johypark97.varchivemacro.macro.common.converter.PngImageConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.model.PngImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptureLinkService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.domain.model.SongCaptureLink;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.app.SongService;
@@ -68,8 +66,7 @@ public class ScannerReviewService {
     }
 
     public Image getCaptureImage(int captureEntryId) throws IOException {
-        PngImage pngImage = captureImageService.findById(captureEntryId);
-        BufferedImage bufferedImage = PngImageConverter.toBufferedImage(pngImage);
+        BufferedImage bufferedImage = captureImageService.findById(captureEntryId);
         return SwingFXUtils.toFXImage(bufferedImage, null);
     }
 

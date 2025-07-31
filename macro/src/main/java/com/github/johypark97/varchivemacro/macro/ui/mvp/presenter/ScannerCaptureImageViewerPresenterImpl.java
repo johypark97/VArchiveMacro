@@ -1,6 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
-import com.github.johypark97.varchivemacro.macro.common.converter.PngImageConverter;
 import com.github.johypark97.varchivemacro.macro.common.utility.UnicodeFilter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
@@ -90,8 +89,7 @@ public class ScannerCaptureImageViewerPresenterImpl implements ScannerCaptureIma
 
         BufferedImage captureImage;
         try {
-            captureImage = PngImageConverter.toBufferedImage(
-                    scannerContext.captureImageService.findById(entryId));
+            captureImage = scannerContext.captureImageService.findById(entryId);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

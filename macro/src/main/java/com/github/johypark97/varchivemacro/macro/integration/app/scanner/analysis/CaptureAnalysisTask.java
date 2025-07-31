@@ -4,7 +4,6 @@ import com.github.johypark97.varchivemacro.macro.common.config.domain.model.Scan
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.model.PngImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrServiceFactory;
@@ -17,6 +16,8 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.mode
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
 import com.google.common.base.CharMatcher;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -71,8 +72,8 @@ public class CaptureAnalysisTask
         imagePreloaderThreadCount = (int) (Math.log(analyzerThreadCount + 1) / Math.log(2));
     }
 
-    private void analyze(OcrService ocrService, CaptureEntry captureEntry, PngImage pngImage)
-            throws PixImageException {
+    private void analyze(OcrService ocrService, CaptureEntry captureEntry, BufferedImage image)
+            throws PixImageException, IOException {
         Capture capture = captureEntry.capture();
         CaptureRegion region = captureEntry.capture().region;
 
@@ -80,44 +81,50 @@ public class CaptureAnalysisTask
             capture.clearSongRecord();
         }
 
-        try (PixImage pix = pixImageService.createPixImage(pngImage.data())) {
-            // preprocessing
-            pixImageService.preprocessCell(pix);
+        // analyze
+        for (RecordButton button : RecordButton.values()) {
+            for (RecordPattern pattern : RecordPattern.values()) {
+                Rectangle rateRectangle = region.getRate(button, pattern);
+                Rectangle maxComboRectangle = region.getMaxCombo(button, pattern);
 
-            // analyze
-            for (RecordButton button : RecordButton.values()) {
-                for (RecordPattern pattern : RecordPattern.values()) {
-                    Rectangle rateRectangle = region.getRate(button, pattern);
-                    Rectangle maxComboRectangle = region.getMaxCombo(button, pattern);
+                boolean maxCombo;
+                float rate;
 
-                    boolean maxCombo;
-                    float rate;
+                BufferedImage rateImage =
+                        image.getSubimage(rateRectangle.x, rateRectangle.y, rateRectangle.width,
+                                rateRectangle.height);
 
-                    try (PixImage recordPix = pix.crop(rateRectangle)) {
-                        // test whether the image contains enough black pixels using the
-                        // histogram. if true, run ocr.
-                        float r = recordPix.getGrayRatio(RATE_FACTOR, RATE_THRESHOLD);
-                        if (r < RATE_RATIO) {
-                            continue;
-                        }
+                try (PixImage ratePix = pixImageService.createPixImage(rateImage)) {
+                    pixImageService.preprocessCell(ratePix);
 
-                        String text = ocrService.run(recordPix);
-                        text = CharMatcher.whitespace().removeFrom(text);
-
-                        rate = parseRateText(text);
-                        if (rate == -1) {
-                            continue;
-                        }
+                    // test whether the image contains enough black pixels using the
+                    // histogram. if true, run ocr.
+                    float r = ratePix.getGrayRatio(RATE_FACTOR, RATE_THRESHOLD);
+                    if (r < RATE_RATIO) {
+                        continue;
                     }
 
-                    try (PixImage comboMarkPix = pix.crop(maxComboRectangle)) {
-                        maxCombo =
-                                comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR, COMBO_MARK_THRESHOLD)
-                                        >= COMBO_MARK_RATIO;
-                    }
+                    String text = ocrService.run(ratePix);
+                    text = CharMatcher.whitespace().removeFrom(text);
 
-                    capture.setSongRecord(button, pattern, new SongRecord(rate, maxCombo));
+                    rate = parseRateText(text);
+                    if (rate == -1) {
+                        continue;
+                    }
                 }
+
+                BufferedImage comboMarkImage =
+                        image.getSubimage(maxComboRectangle.x, maxComboRectangle.y,
+                                maxComboRectangle.width, maxComboRectangle.height);
+
+                try (PixImage comboMarkPix = pixImageService.createPixImage(comboMarkImage)) {
+                    pixImageService.preprocessCell(comboMarkPix);
+
+                    maxCombo = comboMarkPix.getGrayRatio(COMBO_MARK_FACTOR, COMBO_MARK_THRESHOLD)
+                            >= COMBO_MARK_RATIO;
+                }
+
+                capture.setSongRecord(button, pattern, new SongRecord(rate, maxCombo));
             }
         }
 
@@ -178,7 +185,7 @@ public class CaptureAnalysisTask
             try (ExecutorService analyzerExecutorService = Executors.newFixedThreadPool(
                     analyzerThreadCount)) {
                 // prepare data structures
-                BlockingQueue<Map.Entry<CaptureEntry, PngImage>> preloadedImageQueue =
+                BlockingQueue<Map.Entry<CaptureEntry, BufferedImage>> preloadedImageQueue =
                         new ArrayBlockingQueue<>(imagePreloaderQueueCapacity);
 
                 // prepare an ExecutorService for image preloading
@@ -204,8 +211,8 @@ public class CaptureAnalysisTask
 
                         imagePreloaderExecutorService.submit(() -> {
                             try {
-                                PngImage pngImage = captureImageService.findById(entry.entryId());
-                                preloadedImageQueue.put(Map.entry(entry, pngImage));
+                                BufferedImage image = captureImageService.findById(entry.entryId());
+                                preloadedImageQueue.put(Map.entry(entry, image));
                             } catch (InterruptedException ignored) {
                             } catch (Exception e) {
                                 LOGGER.atError().setCause(e).log("ImagePreloader Exception");
@@ -223,7 +230,7 @@ public class CaptureAnalysisTask
                                 // this loop will break out by shutdownNow() invoked after emptying
                                 // the preloadedImageQueue
                                 while (true) {
-                                    Map.Entry<CaptureEntry, PngImage> queueEntry =
+                                    Map.Entry<CaptureEntry, BufferedImage> queueEntry =
                                             preloadedImageQueue.take();
 
                                     try {

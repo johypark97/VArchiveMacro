@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app;
 
-import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.model.PngImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.domain.repository.CaptureImageRepository;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class CaptureImageService implements CaptureImageRepository {
@@ -22,12 +22,12 @@ public class CaptureImageService implements CaptureImageRepository {
     }
 
     @Override
-    public void save(int id, PngImage pngImage) throws IOException {
-        captureImageRepository.save(id, pngImage);
+    public void save(int id, BufferedImage image) throws IOException {
+        captureImageRepository.save(id, image);
     }
 
     @Override
-    public PngImage findById(int id) throws IOException {
+    public BufferedImage findById(int id) throws IOException {
         return captureImageRepository.findById(id);
     }
 }

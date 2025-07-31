@@ -1,30 +1,19 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.model;
 
+import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
 import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.exception.PixImageException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.model.PixImage;
-import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class DefaultPixImage implements PixImage {
     public final PixWrapper pixWrapper;
 
-    public DefaultPixImage(byte[] pngByteArray) throws PixImageException {
+    public DefaultPixImage(BufferedImage image) throws IOException, PixImageException {
         try {
-            pixWrapper = new PixWrapper(pngByteArray);
-        } catch (PixError e) {
-            throw new PixImageException(e);
-        }
-    }
-
-    protected DefaultPixImage(PixWrapper pixWrapper) {
-        this.pixWrapper = pixWrapper;
-    }
-
-    @Override
-    public PixImage crop(Rectangle rectangle) throws PixImageException {
-        try {
-            return new DefaultPixImage(pixWrapper.crop(rectangle));
+            pixWrapper = new PixWrapper(ImageConverter.imageToPngBytes(image));
         } catch (PixError e) {
             throw new PixImageException(e);
         }
