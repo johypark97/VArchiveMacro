@@ -74,7 +74,7 @@
                   <content>
                     <VBox>
                       <children>
-                        <ScrollPane fitToHeight="true" fitToWidth="true" vbarPolicy="ALWAYS">
+                        <ScrollPane VBox.vgrow="ALWAYS" fitToHeight="true" fitToWidth="true" vbarPolicy="ALWAYS">
                           <content>
                             <VBox spacing="30.0">
                               <children>
