@@ -26,6 +26,8 @@ public interface Home {
 
         void showOpenSourceLicense();
 
+        void openManualPage();
+
         void showAbout();
 
         void showUpdateCheck();

@@ -42,6 +42,9 @@ public class HomeViewImpl extends BorderPane implements Home.View {
     private MenuItem openSourceLicenseMenuItem;
 
     @FXML
+    private MenuItem manualMenuItem;
+
+    @FXML
     private MenuItem aboutMenuItem;
 
     @FXML
@@ -75,6 +78,8 @@ public class HomeViewImpl extends BorderPane implements Home.View {
         langKoRadioMenuItem.setOnAction(event -> presenter.changeLanguage(Locale.KOREAN));
 
         openSourceLicenseMenuItem.setOnAction(event -> presenter.showOpenSourceLicense());
+
+        manualMenuItem.setOnAction(event -> presenter.openManualPage());
 
         aboutMenuItem.setOnAction(event -> presenter.showAbout());
 

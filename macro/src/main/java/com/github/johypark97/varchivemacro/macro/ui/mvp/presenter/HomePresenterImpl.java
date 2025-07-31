@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.app.app.ProgramVersionService;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.UpdateCheckContext;
+import com.github.johypark97.varchivemacro.macro.integration.provider.UrlProvider;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.Home;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import io.reactivex.rxjava3.core.Single;
@@ -125,6 +126,13 @@ public class HomePresenterImpl implements Home.Presenter {
     @Override
     public void showOpenSourceLicense() {
         homeStage.showOpenSourceLicense();
+    }
+
+    @Override
+    public void openManualPage() {
+        if (homeStage.showConfirmation(Language.INSTANCE.getString("home.dialog.openManual"))) {
+            globalContext.webBrowserService.open(UrlProvider.MANUAL_URL);
+        }
     }
 
     @Override
