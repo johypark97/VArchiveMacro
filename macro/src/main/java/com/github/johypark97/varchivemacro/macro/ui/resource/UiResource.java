@@ -11,7 +11,11 @@ public enum UiResource {
     GLOBAL_CSS("/styles/global.css"),
     MODE_SELECTOR_CSS("/styles/mode-selector.css"),
     TABLE_COLOR_CSS("/styles/table-color.css"),
-    TAB_COLOR_CSS("/styles/tab-color.css");
+    TAB_COLOR_CSS("/styles/tab-color.css"),
+
+    // image
+    MODE_SELECTOR_COLLECTION("/images/collection.png"),
+    MODE_SELECTOR_FREESTYLE("/images/freestyle.png");
 
     private final String path;
 

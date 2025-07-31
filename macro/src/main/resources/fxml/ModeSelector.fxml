@@ -19,7 +19,7 @@
   <children>
     <StackPane fx:id="leftStackPane">
       <children>
-        <Pane id="mode-selector-left-background-image-pane" styleClass="mode-selector-background-image" fx:id="leftBackgroundImagePane"/>
+        <Pane styleClass="mode-selector-background-image" fx:id="leftBackgroundImagePane"/>
         <Label styleClass="mode-selector-header" text="Freestyle Macro" fx:id="leftHeader"/>
         <Label styleClass="mode-selector-description" text="%modeSelector.description.left" textAlignment="CENTER" wrapText="true" fx:id="leftDescription"/>
         <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.0" fx:id="leftButton">
@@ -31,7 +31,7 @@
     </StackPane>
     <StackPane GridPane.columnIndex="1" fx:id="rightStackPane">
       <children>
-        <Pane id="mode-selector-right-background-image-pane" styleClass="mode-selector-background-image" fx:id="rightBackgroundImagePane"/>
+        <Pane styleClass="mode-selector-background-image" fx:id="rightBackgroundImagePane"/>
         <Label styleClass="mode-selector-header" text="Collection Scanner" fx:id="rightHeader"/>
         <Label styleClass="mode-selector-description" text="%modeSelector.description.right" textAlignment="CENTER" wrapText="true" fx:id="rightDescription"/>
         <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" opacity="0.0" fx:id="rightButton">

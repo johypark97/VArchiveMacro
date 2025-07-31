@@ -17,7 +17,12 @@ import javafx.scene.effect.Bloom;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -79,6 +84,11 @@ public class ModeSelectorViewImpl extends GridPane implements ModeSelector.View 
         setupClip(leftStackPane);
         setupClip(rightStackPane);
 
+        setBackgroundImage(leftBackgroundImagePane,
+                UiResource.MODE_SELECTOR_FREESTYLE.url().toExternalForm());
+        setBackgroundImage(rightBackgroundImagePane,
+                UiResource.MODE_SELECTOR_COLLECTION.url().toExternalForm());
+
         setupAnimation(leftButton, leftBackgroundImagePane, leftHeader, leftDescription);
         setupAnimation(rightButton, rightBackgroundImagePane, rightHeader, rightDescription);
 
@@ -107,6 +117,12 @@ public class ModeSelectorViewImpl extends GridPane implements ModeSelector.View 
         clip.heightProperty().bind(parent.heightProperty());
 
         parent.setClip(clip);
+    }
+
+    private void setBackgroundImage(Region region, String url) {
+        region.setBackground(new Background(
+                new BackgroundImage(new Image(url), null, null, BackgroundPosition.CENTER,
+                        new BackgroundSize(1600, 900, false, false, false, false))));
     }
 
     private void setupAnimation(Button button, Pane imagePane, Label headerLabel,
