@@ -35,4 +35,4 @@ VArchiveMacro 는 프리스타일 매크로와 컬렉션 스캐너 두 가지 �
 
 - VArchiveMacro 는 [MIT 라이선스](LICENSE) 로 배포됩니다.
 - VArchiveMacro 개발에 사용된 오픈 소스 라이브러리들은 VArchiveMacro 실행 후 상단의 정보 - 오픈 소스 라이선스 메뉴에서 확인할 수 있습니다.
-- VArchiveMacro 는 네오위즈의 DJMAX 게임 IP를 활용하여 제작 되었으며, 이에 대한 저작권은 네오위즈 및 로키 스튜디오 에 있습니다. ( [DJMAX IP를 활용한 2차 창작 가이드라인](https://docs.google.com/document/d/e/2PACX-1vSIv-r4O2G99EmEr1tPFZnxOo1Cp9XQtbGeLVT76l18KnvBuV0gnHz4Gm-oYJP2aADg4wqqVe5WUR2j/pub) )
+- VArchiveMacro 는 네오위즈의 DJMAX 게임 IP를 활용하여 제작되었으며, 이에 대한 저작권은 네오위즈 및 로키 스튜디오에 있습니다. ( [DJMAX IP를 활용한 2차 창작 가이드라인](https://docs.google.com/document/d/e/2PACX-1vSIv-r4O2G99EmEr1tPFZnxOo1Cp9XQtbGeLVT76l18KnvBuV0gnHz4Gm-oYJP2aADg4wqqVe5WUR2j/pub) )
