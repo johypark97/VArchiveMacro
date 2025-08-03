@@ -22,7 +22,7 @@ public class ScannerHomeViewModel {
         public SongRecord() {
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
-                    rate[i][i] = -1;
+                    rate[i][j] = -1;
                 }
             }
         }
