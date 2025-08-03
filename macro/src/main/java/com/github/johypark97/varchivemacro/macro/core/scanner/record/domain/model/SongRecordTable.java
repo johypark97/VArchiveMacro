@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.mod
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class SongRecordTable {
@@ -15,7 +16,8 @@ public class SongRecordTable {
     }
 
     public SongRecord getSongRecord(RecordButton button, RecordPattern pattern) {
-        return recordTable.get(button, pattern);
+        return Optional.ofNullable(recordTable.get(button, pattern))
+                .orElse(new SongRecord(0, false));
     }
 
     public void setSongRecord(RecordButton button, RecordPattern pattern, SongRecord value) {
