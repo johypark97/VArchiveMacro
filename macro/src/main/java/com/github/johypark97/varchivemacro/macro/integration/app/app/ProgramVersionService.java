@@ -78,6 +78,11 @@ public class ProgramVersionService {
                 .map(GitHubRelease::htmlUrl);
     }
 
+    public Optional<Boolean> isLatestReleasePrerelease() {
+        return Optional.ofNullable(latestVersionData.getLatestGitHubRelease())
+                .map(GitHubRelease::prerelease);
+    }
+
     public Version getProgramVersion() {
         return Version.parse(BuildInfo.version);
     }

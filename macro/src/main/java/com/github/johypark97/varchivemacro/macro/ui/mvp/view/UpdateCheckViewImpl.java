@@ -149,6 +149,23 @@ public class UpdateCheckViewImpl extends VBox implements UpdateCheck.View {
     }
 
     @Override
+    public void addNewPrereleaseVersionReleasedMessage(String currentVersion, String latestVersion,
+            String url) {
+        addContent(adder -> {
+            Language language = Language.INSTANCE;
+
+            adder.apply(new Text(language.getString("updateCheck.newPrereleaseVersionReleased")));
+            adder.apply(new Text(
+                    language.getFormatString("updateCheck.versionCompare", currentVersion,
+                            latestVersion)));
+
+            Hyperlink hyperlink = new Hyperlink(url);
+            hyperlink.setOnAction(event -> presenter.openBrowser(url));
+            adder.apply(hyperlink);
+        });
+    }
+
+    @Override
     public void addProgramDataUpdatedMessage(String currentVersion, String latestVersion) {
         addContent(adder -> {
             Language language = Language.INSTANCE;

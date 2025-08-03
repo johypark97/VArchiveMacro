@@ -29,6 +29,9 @@ public interface UpdateCheck {
 
         void addNewVersionReleasedMessage(String currentVersion, String latestVersion, String url);
 
+        void addNewPrereleaseVersionReleasedMessage(String currentVersion, String latestVersion,
+                String url);
+
         void addProgramDataUpdatedMessage(String currentVersion, String latestVersion);
 
         DataUpdateProgressController addProgramDataUpdateProgressMessage();

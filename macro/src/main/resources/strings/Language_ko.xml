@@ -274,6 +274,7 @@
   <entry key="updateCheck.button.update">업데이트</entry>
   <entry key="updateCheck.exception.checking">업데이트 확인 오류</entry>
   <entry key="updateCheck.exception.programDataUpdating">컬렉션 스캐너 데이터 업데이트 오류</entry>
+  <entry key="updateCheck.newPrereleaseVersionReleased">새로운 선공개 버전이 업데이트 되었습니다.</entry>
   <entry key="updateCheck.newVersionReleased">새로운 버전이 업데이트 되었습니다.</entry>
   <entry key="updateCheck.programDataUpdated">컬렉션 스캐너 데이터가 업데이트 되었습니다.</entry>
   <entry key="updateCheck.up-to-date">최신 버전입니다.</entry>

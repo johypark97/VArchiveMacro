@@ -274,6 +274,7 @@
   <entry key="updateCheck.button.update">Update</entry>
   <entry key="updateCheck.exception.checking">Update checking error</entry>
   <entry key="updateCheck.exception.programDataUpdating">Collection Scanner data updating error</entry>
+  <entry key="updateCheck.newPrereleaseVersionReleased">A new prerelease version has been released.</entry>
   <entry key="updateCheck.newVersionReleased">A new version has been released.</entry>
   <entry key="updateCheck.programDataUpdated">The collection scanner data have been updated.</entry>
   <entry key="updateCheck.up-to-date">Up-to-date.</entry>

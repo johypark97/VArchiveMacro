@@ -81,10 +81,16 @@ public class UpdateCheckPresenterImpl implements UpdateCheck.Presenter {
                 String latestVersion =
                         service.getLatestProgramVersion().map(Version::toString).orElse("");
                 String url = service.getLatestReleaseHtmlUrl().orElse("");
+                boolean isPrerelease = service.isLatestReleasePrerelease().orElse(false);
 
-                Platform.runLater(
-                        () -> view.addNewVersionReleasedMessage(currentVersion, latestVersion,
-                                url));
+                Platform.runLater(() -> {
+                    if (!isPrerelease) {
+                        view.addNewVersionReleasedMessage(currentVersion, latestVersion, url);
+                    } else {
+                        view.addNewPrereleaseVersionReleasedMessage(currentVersion, latestVersion,
+                                url);
+                    }
+                });
 
                 return 0;
             }
