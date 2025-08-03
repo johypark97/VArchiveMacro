@@ -31,7 +31,7 @@ public class DefaultSongRecordRepository implements SongRecordRepository {
 
     @Override
     public SongRecordTable findById(int songId) {
-        return recordTableMap.get(songId);
+        return recordTableMap.computeIfAbsent(songId, SongRecordTable::new);
     }
 
     @Override
