@@ -17,7 +17,7 @@ class CollectionAreaWFHD extends AbstractCollectionArea {
     private static final Dimension NEXT_PATTERN = new Dimension(0, 24);
 
     private static final Rectangle CELL = new Rectangle(0, 0, 120, 22);
-    private static final Rectangle CELL_RATE = new Rectangle(35, 0, 53, 22);
+    private static final Rectangle CELL_RATE = new Rectangle(0, 0, 90, 22);
     private static final Rectangle CELL_COMBO_MARK = new Rectangle(88, 0, 28, 22);
 
     private final int scaleFactorA;

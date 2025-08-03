@@ -132,18 +132,19 @@ public class CaptureAnalysisTask
     }
 
     private float parseRateText(String text) {
-        int index = text.indexOf('%');
-        if (index == -1) {
-            return -1;
-        }
+        int value;
 
         try {
-            String s = text.substring(0, index);
-            float value = Float.parseFloat(s);
-            return (value >= 0 && value <= 100) ? value : -1;
+            value = Integer.parseInt(text);
         } catch (NumberFormatException e) {
             return -1;
         }
+
+        if (value < 0 || value > 1000000) {
+            return -1;
+        }
+
+        return (float) (Math.floor(value / 100.0) / 100.0);
     }
 
     private synchronized void increaseProgress() {

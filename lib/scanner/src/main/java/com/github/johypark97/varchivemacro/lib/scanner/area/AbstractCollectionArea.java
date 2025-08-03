@@ -73,7 +73,7 @@ abstract class AbstractCollectionArea implements CollectionArea {
 
     @Override
     public Rectangle getRate(Button button, Pattern pattern) {
-        Point p = getAnchor(Section.RATE, button, pattern);
+        Point p = getAnchor(Section.SCORE, button, pattern);
 
         Rectangle r = (Rectangle) cellRateRectangle().clone();
         r.translate(p.x, p.y);
