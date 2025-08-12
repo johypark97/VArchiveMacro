@@ -3,7 +3,7 @@
   <Properties>
     <Property name="logDirectoryPath">log</Property>
     <Property name="logFileSize">8M</Property>
-    <Property name="logPattern">[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5p] [%t] %c - %m%n</Property>
+    <Property name="logPattern">[%d{yyyy-MM-dd HH:mm:ss.SSS Z}] [%-5p] [%t] %c{1.} - %m%n</Property>
     <Property name="errorLogFile_filePath">${logDirectoryPath}/error.log</Property>
     <Property name="errorLogFile_filePathPattern">${logDirectoryPath}/error-%i.log</Property>
     <Property name="infoLogFile_filePath">${logDirectoryPath}/info.log</Property>
@@ -14,7 +14,7 @@
     <Property name="debugLogFile_filePathPattern">${logDirectoryPath}/debug-%i.log</Property>
     <Property name="recordUploadLogFile_filePath">${logDirectoryPath}/recordUpload.log</Property>
     <Property name="recordUploadLogFile_filePathPattern">${logDirectoryPath}/recordUpload-%d{yyyy-MM-dd}-%i.log</Property>
-    <Property name="recordUploadLogFile_logPattern">[%d{yyyy-MM-dd HH:mm:ss.SSS}] %m%n</Property>
+    <Property name="recordUploadLogFile_logPattern">[%d{yyyy-MM-dd HH:mm:ss.SSS Z}] %m%n</Property>
     <Property name="recordUploadLogFile_rolloverDeleteAge">P7D</Property>
     <Property name="recordUploadLogFile_rolloverDeleteGlob">recordUpload-*.log</Property>
   </Properties>
