@@ -1,5 +1,5 @@
 {
-  "version": "2025-08-01 21:00 +09",
+  "version": "2025-08-14 21:00 +09",
   "files": [
     {
       "path": "data/djmax.traineddata",
@@ -14,7 +14,7 @@
     {
       "path": "data/song.db",
       "request_path": "macro/data/song.db",
-      "hash": "d05a64425ba4d7e09a9e780be5aef9b1b0fe9875ca259c589431823b633c5daf"
+      "hash": "56cbbee76172ad7f16f810dadc326569907581e6b85ca7fc99a2894d036a5e78"
     },
     {
       "path": "data/titles.json",
