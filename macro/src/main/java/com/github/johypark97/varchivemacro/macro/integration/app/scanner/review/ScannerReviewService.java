@@ -45,12 +45,34 @@ public class ScannerReviewService {
 
         SongData data = new SongData(song);
 
-        Map<CaptureEntry, SongCaptureLink> linkedCaptrueMap =
+        // find all captures linked with the song
+        Map<CaptureEntry, SongCaptureLink> linkedCaptureMap =
                 songCaptureLinkService.groupBySong().get(song);
-        if (linkedCaptrueMap != null) {
-            linkedCaptrueMap.values().forEach(
-                    x -> data.addLinkedCaptureData(CaptureData.from(x.captureEntry()),
-                            x.distance()));
+        if (linkedCaptureMap != null) {
+            data.setLinkedCaptureDataList(
+                    linkedCaptureMap.values().stream().map(LinkedCaptureData::from).toList());
+
+            // find all secondary song links related to the capture linked with the song
+            List<SongCaptureLink> linkList = linkedCaptureMap.keySet().stream()
+                    .map(x -> songCaptureLinkService.groupByCaptureEntry().get(x).values())
+                    .flatMap(Collection::stream).toList();
+
+            if (linkList.size() == 1) {
+                data.setLinkStatus(linkList.getFirst().distance() == 0
+                        ? LinkStatus.EXACT
+                        : LinkStatus.SIMILAR);
+            } else {
+                long songCount = linkList.stream().map(SongCaptureLink::song).distinct().count();
+                long songTitleCount =
+                        linkList.stream().map(x -> x.song().title()).distinct().count();
+                long scannedTitleCount =
+                        linkList.stream().map(x -> x.captureEntry().capture().scannedTitle)
+                                .distinct().count();
+
+                data.setLinkStatus(songCount > 1 && songTitleCount == 1 && scannedTitleCount == 1
+                        ? LinkStatus.DUPLICATED
+                        : LinkStatus.CONFLICT);
+            }
         }
 
         return data;

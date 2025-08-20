@@ -2,6 +2,7 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel;
 
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.SongData;
+import java.util.EnumSet;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
@@ -26,13 +27,17 @@ public class ScannerReviewViewModel {
 
 
     public record LinkedCaptureData(CaptureData captureData, int distance) {
-        public static LinkedCaptureData from(SongData.LinkedCaptureData data) {
+        public static LinkedCaptureData from(
+                com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.LinkedCaptureData data) {
             return new LinkedCaptureData(CaptureData.from(data.captureData()), data.distance());
         }
     }
 
 
     public static class LinkTableData {
+        private static final EnumSet<Accuracy> SELECTED_ACCURACY_CONSTRAINT =
+                EnumSet.of(Accuracy.EXACT, Accuracy.SIMILAR);
+
         private final ReadOnlyIntegerWrapper songId = new ReadOnlyIntegerWrapper();
         private final ReadOnlyObjectWrapper<Accuracy> accuracy = new ReadOnlyObjectWrapper<>();
         private final ReadOnlyStringWrapper songComposer = new ReadOnlyStringWrapper();
@@ -40,14 +45,14 @@ public class ScannerReviewViewModel {
         private final ReadOnlyStringWrapper songTitle = new ReadOnlyStringWrapper();
 
         private final BooleanProperty selected = new SimpleBooleanProperty();
-        private final ListProperty<ScannerReviewViewModel.LinkedCaptureData> linkedCaptureDataList =
+        private final ListProperty<LinkedCaptureData> linkedCaptureDataList =
                 new SimpleListProperty<>();
         private final ObjectProperty<Problem> problem = new SimpleObjectProperty<>(Problem.NONE);
 
         private Runnable onSelectedChange;
 
         public LinkTableData(int songId, String songTitle, String songComposer, String songPack,
-                ScannerReviewViewModel.LinkedCaptureData... linkedCaptureDataArray) {
+                Accuracy accuracyValue, LinkedCaptureData... linkedCaptureDataArray) {
             this.songComposer.set(songComposer);
             this.songId.set(songId);
             this.songPack.set(songPack);
@@ -55,30 +60,17 @@ public class ScannerReviewViewModel {
 
             linkedCaptureDataList.set(FXCollections.observableArrayList(linkedCaptureDataArray));
 
-            switch (linkedCaptureDataList.size()) {
-                case 0 -> accuracy.set(Accuracy.NOT_DETECTED);
-                case 1 -> {
-                    if (linkedCaptureDataList.getFirst().distance() == 0) {
-                        accuracy.set(Accuracy.EXACT);
-                        selected.set(true);
-                    } else {
-                        accuracy.set(Accuracy.SIMILAR);
-                        problem.set(Problem.EDIT_NEEDED);
-                    }
-                }
-                default -> {
-                    accuracy.set(
-                            linkedCaptureDataList.stream().map(x -> x.captureData().scannedTitle())
-                                    .distinct().count() == 1
-                                    ? Accuracy.DUPLICATED
-                                    : Accuracy.CONFLICT);
-                    problem.set(Problem.EDIT_NEEDED);
-                }
+            accuracy.set(accuracyValue);
+            if (Accuracy.EXACT.equals(accuracy.get())) {
+                selected.set(true);
+            } else {
+                problem.set(Problem.EDIT_NEEDED);
             }
 
             selected.addListener((observable, oldValue, newValue) -> {
                 // constraints
-                if (linkedCaptureDataList.size() != 1) {
+                if (!SELECTED_ACCURACY_CONSTRAINT.contains(accuracy.get())
+                        && !Problem.EDITED.equals(problem.get())) {
                     if (!oldValue && newValue) {
                         selected.set(false);
                     }
@@ -93,11 +85,18 @@ public class ScannerReviewViewModel {
         }
 
         public static LinkTableData form(SongData data) {
-            return new ScannerReviewViewModel.LinkTableData(data.song.songId(), data.song.title(),
-                    data.song.composer(), data.song.pack().name(),
-                    data.getAllLinkedCaptureData().stream()
-                            .map(ScannerReviewViewModel.LinkedCaptureData::from)
-                            .toArray(ScannerReviewViewModel.LinkedCaptureData[]::new));
+            Accuracy accuracyValue = switch (data.getLinkStatus()) {
+                case CONFLICT -> Accuracy.CONFLICT;
+                case DUPLICATED -> Accuracy.DUPLICATED;
+                case EXACT -> Accuracy.EXACT;
+                case NOT_DETECTED -> Accuracy.NOT_DETECTED;
+                case SIMILAR -> Accuracy.SIMILAR;
+            };
+
+            return new LinkTableData(data.getSong().songId(), data.getSong().title(),
+                    data.getSong().composer(), data.getSong().pack().name(), accuracyValue,
+                    data.getLinkedCaptureDataList().stream().map(LinkedCaptureData::from)
+                            .toArray(LinkedCaptureData[]::new));
         }
 
         public ReadOnlyIntegerProperty songIdProperty() {
@@ -116,7 +115,7 @@ public class ScannerReviewViewModel {
             return songPack.getReadOnlyProperty();
         }
 
-        public ListProperty<ScannerReviewViewModel.LinkedCaptureData> captureImageProperty() {
+        public ListProperty<LinkedCaptureData> captureImageProperty() {
             return linkedCaptureDataList;
         }
 

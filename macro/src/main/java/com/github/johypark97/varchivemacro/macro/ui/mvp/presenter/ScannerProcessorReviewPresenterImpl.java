@@ -61,7 +61,7 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
         Set<String> selectedCategorySet = scannerContext.getSelectedCategorySet();
         scannerContext.scannerReviewService.getAllSongDataList().stream()
-                .filter(x -> selectedCategorySet.contains(x.song.pack().category().name()))
+                .filter(x -> selectedCategorySet.contains(x.getSong().pack().category().name()))
                 .map(ScannerReviewViewModel.LinkTableData::form).forEach(x -> {
                     linkTableDataLookup.put(x.songIdProperty().get(), x);
                     x.setOnSelectedChange(updateLinkTableSelectedCountTextEventDebouncer::trigger);
@@ -148,7 +148,7 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
         SongData songData = scannerContext.scannerReviewService.getSongData(
                 linkTableData.songIdProperty().get());
 
-        linkTableData.captureImageProperty().setAll(songData.getAllLinkedCaptureData().stream()
+        linkTableData.captureImageProperty().setAll(songData.getLinkedCaptureDataList().stream()
                 .map(ScannerReviewViewModel.LinkedCaptureData::from).toList());
         linkEditorSelectedLinkTableData.problemProperty().set(problem);
         linkEditorSelectedLinkTableData.selectedProperty().set(selected);
