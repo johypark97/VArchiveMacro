@@ -170,7 +170,6 @@ public class ScannerProcessorReviewViewImpl extends StackPane
     private void setupLinkTableFilterCheckBox() {
         linkTableFilterConflictCheckBox.setSelected(true);
         linkTableFilterDuplicatedCheckBox.setSelected(true);
-        linkTableFilterNotDetectedCheckBox.setSelected(true);
         linkTableFilterSimilarCheckBox.setSelected(true);
 
         EventHandler<ActionEvent> eventHandler = event -> presenter.updateLinkTableViewFilter();
