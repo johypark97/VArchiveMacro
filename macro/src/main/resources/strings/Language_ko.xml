@@ -16,6 +16,7 @@
   <entry key="home.dialog.languageChange.error">언어 변경 중 오류가 발생하였습니다.</entry>
   <entry key="home.dialog.openManual">사용 설명서 페이지를 여시겠습니까?</entry>
   <entry key="home.dialog.updateCheck.exception">업데이트 확인 오류</entry>
+  <entry key="home.dialog.updateCheck.updated">새 업데이트가 있습니다.</entry>
   <entry key="home.menu.about">정보</entry>
   <entry key="home.menu.about.about">정보</entry>
   <entry key="home.menu.about.manual">사용 설명서</entry>

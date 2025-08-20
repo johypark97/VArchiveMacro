@@ -42,7 +42,9 @@ public class HomePresenterImpl implements Home.Presenter {
 
     @Override
     public void startView() {
-        view.setSelectedLanguage(Language.INSTANCE.getLocale());
+        Language language = Language.INSTANCE;
+
+        view.setSelectedLanguage(language.getLocale());
 
         homeStage.changeCenterView_modeSelector();
 
@@ -52,7 +54,7 @@ public class HomePresenterImpl implements Home.Presenter {
             }
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Config loading exception.");
-            homeStage.showError(Language.INSTANCE.getString("home.config.loadingException"), e);
+            homeStage.showError(language.getString("home.config.loadingException"), e);
         }
 
         // background update checking
@@ -68,8 +70,12 @@ public class HomePresenterImpl implements Home.Presenter {
             return service.isProgramDataUpdated();
         }).subscribeOn(Schedulers.single()).subscribe(updated -> {
             if (updated) {
-                Platform.runLater(
-                        () -> view.highlightUpdateCheck(Home.UpdateCheckHightlightColor.GREEN));
+                Platform.runLater(() -> {
+                    view.highlightUpdateCheck(Home.UpdateCheckHightlightColor.GREEN);
+                    homeStage.showInformation(
+                            language.getString("home.dialog.updateCheck.updated"));
+                    showUpdateCheck();
+                });
             }
         }, throwable -> {
             backgroundUpdateCheckException.set(throwable);

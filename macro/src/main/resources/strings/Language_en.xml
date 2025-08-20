@@ -16,6 +16,7 @@
   <entry key="home.dialog.languageChange.error">An error occurred while changing the language.</entry>
   <entry key="home.dialog.openManual">Would you like to open the user manual page?</entry>
   <entry key="home.dialog.updateCheck.exception">Update checking error</entry>
+  <entry key="home.dialog.updateCheck.updated">There is a new update.</entry>
   <entry key="home.menu.about">About</entry>
   <entry key="home.menu.about.about">About</entry>
   <entry key="home.menu.about.manual">User Manual</entry>
