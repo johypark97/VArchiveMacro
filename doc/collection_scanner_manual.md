@@ -131,7 +131,11 @@
 
      ![Collection Scanner - Review Duplicated Edit Button](img/scanner_processor_review_duplicated_edit_button.png)
 
-     이러한 곡들은 우측의 수정 버튼을 클릭 후 올바른 캡처 이미지를 선택하여 연결해주세요.
+     이러한 곡들은 우측의 수정 버튼을 클릭하여 올바른 이미지를 선택하여 연결해주어야 합니다.
+
+     - 두 곡 모두 기록이 있다면 두 곡 모두 수정 버튼을 누른 후 올바른 캡처 이미지를 선택하여 연결해주세요.
+
+     - 둘중 한 곡만 플레이 기록이 있다면 플레이 기록이 있는 곡만 수정하여 연결해주세요.
 
      ![Collection Scanner - Review Duplicated Editing](img/scanner_processor_review_duplicated_editing.png)
 
@@ -153,7 +157,7 @@
 
      ![Collection Scanner - Review Conflict](img/scanner_processor_review_conflict.png)
 
-     정확하게 인식하지 못하였으며 동시에 후보군이 2개 이상인 경우 충돌 (빨간색) 으로 표시됩니다. (사진은 임의로 연출한 예시)
+     정확하게 인식하지 못하였으며, 동시에 후보군이 2개 이상이거나 한 개의 캡처 이미지가 여러 곡과 짝지어진 경우 충돌 (빨간색) 으로 표시됩니다. (사진은 임의로 연출한 예시)
 
      이 경우 후보군에 정확한 캡처 이미지가 있다면 해당 이미지를 선택하거나 없다면 전체 검색하여 올바른 이미지를 연결해주세요.
 
@@ -161,7 +165,7 @@
 
      ![Collection Scanner - Review Not Detected](img/scanner_processor_review_not_detected.png)
 
-     곡의 플레이 기록이 전혀 없어 인식이 되지 않았거나 플레이 기록이 있음에도 제목이 정확히 인식되지 않아 기록이 없는 것으로 인식된 곡에 대해서는 미인식 (흰색) 으로 표시됩니다.
+     곡의 플레이 기록이 전혀 없어 인식이 되지 않았거나 플레이 기록이 있음에도 제목이 정확히 인식되지 않아 기록이 없는 것으로 인식된 곡에 대해서는 미인식 (흰색) 으로 표시됩니다. (사진은 임의로 연출한 예시)
 
      플레이 기록이 있음에도 인식이 되지 않은 것이라면 수정 버튼을 눌러 올바른 캡처 이미지를 찾아 연결해주세요.
 
