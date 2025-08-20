@@ -191,12 +191,11 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
             return;
         }
 
-        scannerScannerStage.showInformation(
-                Language.INSTANCE.getString("scanner.scanner.dialog.taskDone"));
-
         Platform.runLater(scannerScannerStage::stopStage);
         Platform.runLater(
                 () -> UiEventBus.INSTANCE.fire(new ScannerScanDoneUiEvent(scannerContext)));
+        Platform.runLater(() -> scannerScannerStage.showInformation(
+                Language.INSTANCE.getString("scanner.scanner.dialog.taskDone")));
     }
 
     private void onUiEvent(UiEvent uiEvent) {
