@@ -94,6 +94,20 @@
       ]
     },
     {
+      // id: 636
+      "to": "Petunia",
+      "from": [
+        "Petunia)"
+      ]
+    },
+    {
+      // id: 689
+      "to": "GoaIWoNerae!",
+      "from": [
+        "GoaIWoNerze!"
+      ]
+    },
+    {
       // id: 690
       "to": "Gregorius|Symphony",
       "from": [
@@ -113,6 +127,20 @@
       "to": "Operation☆DOTABATA!",
       "from": [
         "Operation☆DOTABATAI!"
+      ]
+    },
+    {
+      // id: 702
+      "to": "小緋縅(kohiodoshi)",
+      "from": [
+        "小緋((kohiodoshi)"
+      ]
+    },
+    {
+      // id: 726
+      "to": "IWTEYI",
+      "from": [
+        "IWTEYVI"
       ]
     }
   ],
