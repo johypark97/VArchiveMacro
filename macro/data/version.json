@@ -1,5 +1,5 @@
 {
-  "version": "2025-10-24 17:20 +0900",
+  "version": "2025-11-07 01:00 +0900",
   "files": [
     {
       "path": "data/djmax.traineddata",
@@ -14,12 +14,12 @@
     {
       "path": "data/song.db",
       "request_path": "macro/data/song.db",
-      "hash": "54c40cedabc0ebca696667ec57c1af258f66144b8284c7b106c2937c086bdf5e"
+      "hash": "af2b74b1a195e48171cdab04b8d1ad43e8b6a08cda4c945cee38fba367dd7c6e"
     },
     {
       "path": "data/titles.json",
       "request_path": "macro/data/titles.json",
-      "hash": "3f8588832bddc4b9c7c9dde99fc55850926d992acb5162bea1e2a1b5790ae84b"
+      "hash": "0765bfbd9fc1768218b1b881cb1705aef9da35b2ed6f54aba435c6924ab82e24"
     }
   ]
 }

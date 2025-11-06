@@ -142,13 +142,17 @@
       "from": [
         "IWTEYVI"
       ]
+    },
+    {
+      // id: 732
+      "to": "WeaIIwanttobeIoved(feat.BIRA)",
+      "from": [
+        "WeaIIwanttobeIoved(feat.BIRA)",
+        "WeaaIIwanttobeIoved(feat.BIRA)"
+      ]
     }
   ],
   "remoteTitle": [
-    {
-      "id": 346,
-      "value": "Thor (Extended Mix)"
-    },
     {
       "id": 442,
       "value": "꿈의 기억 (feat. Jisun)"
