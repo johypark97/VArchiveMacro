@@ -133,13 +133,16 @@
       // id: 702
       "to": "小緋縅(kohiodoshi)",
       "from": [
-        "小緋((kohiodoshi)"
+        "小((kohiodoshi)",
+        "小緋((kohiodoshi)",
+        "小緋(kohiodoshi)"
       ]
     },
     {
       // id: 726
       "to": "IWTEYI",
       "from": [
+        "IWTEVI",
         "IWTEYVI"
       ]
     },
@@ -149,6 +152,20 @@
       "from": [
         "WeaIIwanttobeIoved(feat.BIRA)",
         "WeaaIIwanttobeIoved(feat.BIRA)"
+      ]
+    },
+    {
+      // id: 751
+      "to": "ALTER/ƏgØ",
+      "from": [
+        "ALTER/Bg"
+      ]
+    },
+    {
+      // id: 767
+      "to": "TheCastIeofBáthory",
+      "from": [
+        "TheCastIeofB4thory"
       ]
     }
   ],
