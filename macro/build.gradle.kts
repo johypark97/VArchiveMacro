@@ -42,6 +42,9 @@ jlink {
         // Fixes javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure.
         requires("jdk.crypto.ec")
 
+        // Allow changing the certificate store via javax.net.ssl.trustStoreType system property.
+        requires("jdk.crypto.mscapi")
+
         // slf4j - log4j2
         run {
             requires("java.naming") // Fixes the JNDI lookup class warning.
