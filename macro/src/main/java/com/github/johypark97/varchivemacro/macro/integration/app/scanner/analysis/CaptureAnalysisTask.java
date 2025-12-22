@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.analysis;
 
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.common.config.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.Capture;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
@@ -67,7 +67,7 @@ public class CaptureAnalysisTask
 
         this.captureEntryList = captureEntryList;
 
-        analyzerThreadCount = Math.max(1, config.analyzerThreadCount());
+        analyzerThreadCount = Math.max(1, config.analyzerThreadCount().value());
         imagePreloaderQueueCapacity = analyzerThreadCount * 3 / 2;
         imagePreloaderThreadCount = (int) (Math.log(analyzerThreadCount + 1) / Math.log(2));
     }

@@ -49,9 +49,7 @@ public class HomePresenterImpl implements Home.Presenter {
         homeStage.changeCenterView_modeSelector();
 
         try {
-            if (!globalContext.configStorageService.load()) {
-                globalContext.configStorageService.save();
-            }
+            globalContext.appConfigService.load();
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Config loading exception.");
             homeStage.showError(language.getString("home.config.loadingException"), e);
@@ -88,7 +86,7 @@ public class HomePresenterImpl implements Home.Presenter {
     @Override
     public boolean stopView() {
         try {
-            globalContext.configStorageService.save();
+            globalContext.appConfigService.save();
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Config saving exception.");
         }

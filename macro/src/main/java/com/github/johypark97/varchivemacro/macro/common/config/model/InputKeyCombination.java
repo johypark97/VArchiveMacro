@@ -1,14 +1,12 @@
-package com.github.johypark97.varchivemacro.macro.common.config.domain.model;
+package com.github.johypark97.varchivemacro.macro.common.config.model;
 
 import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
-import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public record InputKeyCombination(@Expose InputKey key, @Expose boolean ctrl, @Expose boolean alt,
-                                  @Expose boolean shift) {
+public record InputKeyCombination(InputKey key, boolean ctrl, boolean alt, boolean shift) {
     public static InputKeyCombination from(InputKey key) {
         return new InputKeyCombination(key, false, false, false);
     }

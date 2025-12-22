@@ -26,7 +26,7 @@ public class UpdateCheckContext implements Context {
 
     public UpdateCheckContext(GlobalContext globalContext) {
         programVersionService =
-                new ProgramVersionService(globalContext.configService, gitHubApiService,
+                new ProgramVersionService(globalContext.appConfigService, gitHubApiService,
                         programDataService, versionData);
     }
 }

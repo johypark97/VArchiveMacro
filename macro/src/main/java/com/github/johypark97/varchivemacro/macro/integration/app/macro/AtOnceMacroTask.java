@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.macro;
 
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
+import com.github.johypark97.varchivemacro.macro.common.config.model.MacroConfig;
 
 public class AtOnceMacroTask extends AbstractMacroTask {
     public AtOnceMacroTask(MacroConfig config, MacroDirection direction) {

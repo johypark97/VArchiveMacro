@@ -161,7 +161,7 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
     public void startView() {
         runLinking();
 
-        if (globalContext.configService.findScannerConfig().autoAnalysis()) {
+        if (globalContext.appConfigService.getConfig().scannerConfig().autoAnalysis().value()) {
             Platform.runLater(scannerProcessorStage::runAutoAnalysis);
         }
     }

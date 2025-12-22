@@ -77,7 +77,8 @@ public class ScannerContext implements Context {
 
         // repositories
         Path cacheDirectoryPath = PathValidator.validateAndConvert(
-                globalContext.configService.findScannerConfig().cacheDirectory());
+                globalContext.appConfigService.getConfig().scannerConfig().cacheDirectory()
+                        .value());
 
         captureImageRepository = new DiskCaptureImageRepository(cacheDirectoryPath);
 
@@ -85,7 +86,7 @@ public class ScannerContext implements Context {
         captureImageService = new CaptureImageService(captureImageRepository);
 
         Path accountFilePath = PathValidator.validateAndConvert(
-                globalContext.configRepository.findScannerConfig().accountFile());
+                globalContext.appConfigService.getConfig().scannerConfig().accountFile().value());
         songRecordUploadService = new SongRecordUploadService(accountFilePath);
 
         // integrations
@@ -95,17 +96,18 @@ public class ScannerContext implements Context {
 
         // use cases
         scannerScannerService =
-                new ScannerScannerService(captureImageService, globalContext.captureRegionService,
-                        captureService, globalContext.configService, pixImageService,
+                new ScannerScannerService(globalContext.appConfigService, captureImageService,
+                        globalContext.captureRegionService, captureService, pixImageService,
                         globalContext.songService, songTitleService, songTitleOcrServiceFactory,
                         getSelectedCategorySet(), debug);
 
         scannerReviewService = new ScannerReviewService(captureImageService, captureService,
                 songCaptureLinkService, songCaptureLinkingService, globalContext.songService);
 
-        scannerAnalysisService = new ScannerAnalysisService(captureImageService, captureService,
-                globalContext.configService, pixImageService, songCaptureLinkService,
-                globalContext.songService, commonOcrServiceFactory);
+        scannerAnalysisService =
+                new ScannerAnalysisService(globalContext.appConfigService, captureImageService,
+                        captureService, pixImageService, songCaptureLinkService,
+                        globalContext.songService, commonOcrServiceFactory);
 
         scannerUploadService =
                 new ScannerUploadService(songCaptureLinkService, globalContext.songRecordService,

@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroClientMode;
+import com.github.johypark97.varchivemacro.macro.common.config.model.MacroClientMode;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.Setting;
 import java.io.IOException;

@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro.integration.app.macro;
 
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
+import com.github.johypark97.varchivemacro.macro.common.config.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -28,18 +28,18 @@ public abstract class AbstractMacroTask extends InterruptibleTask<MacroProgress>
             throw new RuntimeException(e);
         }
 
-        count = config.count();
-        keyHoldTime = config.keyHoldTime();
-        postCaptureDelay = config.postCaptureDelay();
-        songSwitchingTime = config.songSwitchingTime();
+        count = config.count().value();
+        keyHoldTime = config.keyHoldTime().value();
+        postCaptureDelay = config.postCaptureDelay().value();
+        songSwitchingTime = config.songSwitchingTime().value();
 
         nextSongKey_keyCode = switch (direction) {
             case UP -> InputKey.UP.toAwtKeyCode();
             case DOWN -> InputKey.DOWN.toAwtKeyCode();
         };
 
-        uploadKey_keyCode = config.uploadKey().key().toAwtKeyCode();
-        uploadKey_modifier = config.uploadKey().modifierKeyCodeArray();
+        uploadKey_keyCode = config.uploadKey().value().key().toAwtKeyCode();
+        uploadKey_modifier = config.uploadKey().value().modifierKeyCodeArray();
     }
 
     protected abstract void runMacro_forSong() throws InterruptedException;

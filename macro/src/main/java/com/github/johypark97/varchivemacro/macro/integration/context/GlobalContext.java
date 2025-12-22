@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.integration.context;
 
-import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
-import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigStorageService;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.repository.ConfigRepository;
-import com.github.johypark97.varchivemacro.macro.common.config.infra.repository.DefaultConfigRepository;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigRepository;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
+import com.github.johypark97.varchivemacro.macro.common.config.DefaultAppConfigRepository;
+import com.github.johypark97.varchivemacro.macro.common.config.DefaultAppConfigService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.app.CaptureRegionService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.app.SongRecordStorageService;
@@ -24,16 +24,17 @@ public class GlobalContext implements Context {
     private final Path SONG_DATABASE_FILE_PATH = Path.of("data/song.db");
 
     // repositories
-    final ConfigRepository configRepository = new DefaultConfigRepository();
+    final AppConfigRepository appConfigRepository =
+            new DefaultAppConfigRepository(CONFIG_FILE_PATH);
+
     final SongRecordRepository songRecordRepository = new DefaultSongRecordRepository();
     final SongRepository songRepository = new DefaultSongRepository();
 
     // services
-    public final CaptureRegionService captureRegionService = new CaptureRegionService();
+    public final AppConfigService appConfigService =
+            new DefaultAppConfigService(appConfigRepository);
 
-    public final ConfigService configService = new ConfigService(configRepository);
-    public final ConfigStorageService configStorageService =
-            new ConfigStorageService(configRepository, CONFIG_FILE_PATH);
+    public final CaptureRegionService captureRegionService = new CaptureRegionService();
 
     public final SongRecordService songRecordService = new SongRecordService(songRecordRepository);
     public final SongRecordStorageService songRecordStorageService =

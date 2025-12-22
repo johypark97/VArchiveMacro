@@ -6,6 +6,6 @@ public class MacroContext implements Context {
     public final MacroService macroService;
 
     public MacroContext(GlobalContext globalContext) {
-        macroService = new MacroService(globalContext.configService);
+        macroService = new MacroService(globalContext.appConfigService);
     }
 }
