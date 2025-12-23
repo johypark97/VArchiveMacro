@@ -2,13 +2,13 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
 import com.github.johypark97.varchivemacro.macro.integration.app.macro.MacroDirection;
 import com.github.johypark97.varchivemacro.macro.integration.app.macro.MacroProgress;
-import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.MacroContext;
 import com.github.johypark97.varchivemacro.macro.ui.event.SettingUpdatedUiEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.SettingWindowClosedUiEvent;
@@ -32,7 +32,6 @@ public class MacroPresenterImpl implements Macro.Presenter {
 
     private final HomeStage homeStage;
 
-    private final GlobalContext globalContext;
     private final MacroContext macroContext;
 
     private final AtomicBoolean taskRunning = new AtomicBoolean();
@@ -43,16 +42,15 @@ public class MacroPresenterImpl implements Macro.Presenter {
     @MvpView
     public Macro.View view;
 
-    public MacroPresenterImpl(HomeStage homeStage, GlobalContext globalContext,
-            MacroContext macroContext) {
+    public MacroPresenterImpl(HomeStage homeStage, MacroContext macroContext) {
         this.homeStage = homeStage;
 
-        this.globalContext = globalContext;
         this.macroContext = macroContext;
     }
 
     private void showConfig() {
-        MacroConfig config = globalContext.appConfigService.getConfig().macroConfig();
+        MacroConfig config =
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().macroConfig();
 
         view.setupCountSlider(config.count().value(), config.count().defaultValue(),
                 config.count().min(), config.count().max());
@@ -97,7 +95,8 @@ public class MacroPresenterImpl implements Macro.Presenter {
     }
 
     private void registerKeyboardHook() {
-        MacroConfig config = globalContext.appConfigService.getConfig().macroConfig();
+        MacroConfig config =
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().macroConfig();
 
         InputKeyCombination startUpKey = config.startUpKey().value();
         InputKeyCombination startDownKey = config.startDownKey().value();
@@ -187,30 +186,36 @@ public class MacroPresenterImpl implements Macro.Presenter {
 
     @Override
     public void updateCount(int value) {
-        globalContext.appConfigService.editConfig(
+        AppConfigManager.INSTANCE.getAppConfigService().editConfig(
                 appConfig -> appConfig.editMacroConfig(macroConfig -> macroConfig.setCount(value)));
     }
 
     @Override
     public void decreaseCount10() {
         view.setCount(
-                globalContext.appConfigService.getConfig().macroConfig().count().value() - 10);
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().macroConfig().count()
+                        .value() - 10);
     }
 
     @Override
     public void decreaseCount1() {
-        view.setCount(globalContext.appConfigService.getConfig().macroConfig().count().value() - 1);
+        view.setCount(
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().macroConfig().count()
+                        .value() - 1);
     }
 
     @Override
     public void increaseCount1() {
-        view.setCount(globalContext.appConfigService.getConfig().macroConfig().count().value() + 1);
+        view.setCount(
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().macroConfig().count()
+                        .value() + 1);
     }
 
     @Override
     public void increaseCount10() {
         view.setCount(
-                globalContext.appConfigService.getConfig().macroConfig().count().value() + 10);
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().macroConfig().count()
+                        .value() + 10);
     }
 
     @Override

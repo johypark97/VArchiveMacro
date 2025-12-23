@@ -149,8 +149,7 @@ public class HomeStageImpl extends AbstractBaseStage implements HomeStage {
             return;
         }
 
-        macroPresenter = new MacroPresenterImpl(this, ContextManager.INSTANCE.getGlobalContext(),
-                ContextManager.INSTANCE.createMacroContext());
+        macroPresenter = new MacroPresenterImpl(this, ContextManager.INSTANCE.createMacroContext());
 
         MacroViewImpl view = new MacroViewImpl();
         Mvp.linkViewAndPresenter(view, macroPresenter);

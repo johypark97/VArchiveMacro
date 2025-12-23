@@ -1,6 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.UnicodeFilter;
 import com.github.johypark97.varchivemacro.macro.common.validator.AccountFileValidator;
@@ -179,7 +180,8 @@ public class ScannerHomePresenterImpl implements ScannerHome.Presenter {
     @Override
     public void showRecordLoader() {
         view.setAccountFileText(
-                globalContext.appConfigService.getConfig().scannerConfig().accountFile().value());
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().scannerConfig()
+                        .accountFile().value());
         view.showLoader();
     }
 
@@ -221,8 +223,9 @@ public class ScannerHomePresenterImpl implements ScannerHome.Presenter {
             return;
         }
 
-        globalContext.appConfigService.editConfig(appConfig -> appConfig.editScannerConfig(
-                scannerConfig -> scannerConfig.setAccountFile(accountFile)));
+        AppConfigManager.INSTANCE.getAppConfigService().editConfig(
+                appConfig -> appConfig.editScannerConfig(
+                        scannerConfig -> scannerConfig.setAccountFile(accountFile)));
 
         Platform.runLater(() -> view.showProgress(
                 language.getString("scanner.recordLoader.progressBox.loadingRecord")));

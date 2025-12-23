@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
@@ -62,7 +64,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     }
 
     private void showConfig() {
-        ScannerConfig config = globalContext.appConfigService.getConfig().scannerConfig();
+        ScannerConfig config =
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().scannerConfig();
 
         accountFileText.set(config.accountFile().value());
         cacheDirectoryText.set(config.cacheDirectory().value());
@@ -90,7 +93,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
         }
 
         try {
-            boolean debug = globalContext.appConfigService.getConfig().debug()
+            boolean debug = AppConfigManager.INSTANCE.getAppConfigService().getConfig().debug()
                     && view.getDebugCheckBoxValue();
             scannerContext =
                     ContextManager.INSTANCE.createScannerContext(selectedCategorySet, debug);
@@ -129,7 +132,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     }
 
     private void registerKeyboardHook() {
-        ScannerConfig config = globalContext.appConfigService.getConfig().scannerConfig();
+        ScannerConfig config =
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().scannerConfig();
 
         InputKeyCombination startKey = config.startKey().value();
         InputKeyCombination stopKey = config.stopKey().value();
@@ -218,19 +222,20 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     public void startView() {
         disposableGlobalEvent = UiEventBus.INSTANCE.subscribe(this::onUiEvent);
 
+        AppConfigService appConfigService = AppConfigManager.INSTANCE.getAppConfigService();
+
         view.bindAccountFileText(accountFileText);
         view.bindCacheDirectoryText(cacheDirectoryText);
 
         view.setCategoryList(globalContext.songService.findAllCategory().stream()
                 .map(ScannerScannerViewModel.CategoryData::new).toList());
         view.setSelectedCategory(
-                globalContext.appConfigService.getConfig().scannerConfig().selectedCategory()
-                        .value());
+                appConfigService.getConfig().scannerConfig().selectedCategory().value());
 
         showConfig();
         registerKeyboardHook();
 
-        if (globalContext.appConfigService.getConfig().debug()) {
+        if (appConfigService.getConfig().debug()) {
             view.setDebugCheckBoxVisible(true);
         }
     }
@@ -244,8 +249,10 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
         unregisterKeyboardHook();
         disposableGlobalEvent.dispose();
 
-        globalContext.appConfigService.editConfig(appConfig -> appConfig.editScannerConfig(
-                scannerConfig -> scannerConfig.setSelectedCategory(getSelectedCategorySet())));
+        AppConfigManager.INSTANCE.getAppConfigService().editConfig(
+                appConfig -> appConfig.editScannerConfig(
+                        scannerConfig -> scannerConfig.setSelectedCategory(
+                                getSelectedCategorySet())));
 
         return true;
     }

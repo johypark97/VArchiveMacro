@@ -2,6 +2,8 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
 import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.model.AppConfig;
 import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.model.MacroClientMode;
@@ -11,7 +13,6 @@ import com.github.johypark97.varchivemacro.macro.common.validator.AccountFileVal
 import com.github.johypark97.varchivemacro.macro.common.validator.DiskCaptureImageCacheDirectoryValidator;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.InvalidAccountFileException;
-import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.ui.event.SettingUpdatedUiEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.Setting;
@@ -37,8 +38,6 @@ public class SettingPresenterImpl implements Setting.Presenter {
 
     private final SettingStage settingStage;
 
-    private final GlobalContext globalContext;
-
     private final SimpleBooleanProperty changed = new SimpleBooleanProperty();
 
     private AppConfig.Editor appConfigEditor;
@@ -48,14 +47,12 @@ public class SettingPresenterImpl implements Setting.Presenter {
     @MvpView
     public Setting.View view;
 
-    public SettingPresenterImpl(SettingStage settingStage, GlobalContext globalContext) {
+    public SettingPresenterImpl(SettingStage settingStage) {
         this.settingStage = settingStage;
-
-        this.globalContext = globalContext;
     }
 
     private void showConfig() {
-        appConfigEditor = globalContext.appConfigService.getConfig().edit();
+        appConfigEditor = AppConfigManager.INSTANCE.getAppConfigService().getConfig().edit();
 
         showConfig_macro();
         showConfig_scanner();
@@ -145,10 +142,12 @@ public class SettingPresenterImpl implements Setting.Presenter {
             invalidCacheDirectory = false;
         }
 
-        globalContext.appConfigService.editConfig(x -> appConfigEditor);
+        AppConfigService appConfigService = AppConfigManager.INSTANCE.getAppConfigService();
+
+        appConfigService.editConfig(x -> appConfigEditor);
 
         try {
-            globalContext.appConfigService.save();
+            appConfigService.save();
         } catch (Exception e) {
             LOGGER.atError().setCause(e).log("Config flush exception.");
             settingStage.showError(Language.INSTANCE.getString("setting.dialog.applyException"), e);

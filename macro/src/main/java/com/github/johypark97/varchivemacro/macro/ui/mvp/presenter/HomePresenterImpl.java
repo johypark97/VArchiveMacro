@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.app.app.ProgramVersionService;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
@@ -48,12 +49,8 @@ public class HomePresenterImpl implements Home.Presenter {
 
         homeStage.changeCenterView_modeSelector();
 
-        try {
-            globalContext.appConfigService.load();
-        } catch (IOException e) {
-            LOGGER.atError().setCause(e).log("Config loading exception.");
-            homeStage.showError(language.getString("home.config.loadingException"), e);
-        }
+        AppConfigManager.INSTANCE.getInitializationException().ifPresent(
+                e -> homeStage.showError(language.getString("home.config.loadingException"), e));
 
         // background update checking
         Single.fromCallable(() -> {
@@ -86,7 +83,7 @@ public class HomePresenterImpl implements Home.Presenter {
     @Override
     public boolean stopView() {
         try {
-            globalContext.appConfigService.save();
+            AppConfigManager.INSTANCE.getAppConfigService().save();
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Config saving exception.");
         }

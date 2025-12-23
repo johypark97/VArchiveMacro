@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.macro.ui.stage.impl;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.ui.event.SettingWindowClosedUiEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.SettingWindowOpenedUiEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
@@ -56,7 +55,7 @@ public class SettingStageImpl extends AbstractBaseStage implements SettingStage 
 
     @Override
     public void startStage() {
-        presenter = new SettingPresenterImpl(this, ContextManager.INSTANCE.getGlobalContext());
+        presenter = new SettingPresenterImpl(this);
 
         SettingViewImpl view = new SettingViewImpl();
         Mvp.linkViewAndPresenter(view, presenter);
