@@ -59,6 +59,7 @@ jlink {
     }
 
     jpackage {
+        appVersion = version.toString().split("+", "-")[0]
         icon = "jlink/icon.ico"
     }
 }
