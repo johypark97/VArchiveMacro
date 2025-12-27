@@ -2,7 +2,9 @@ package com.github.johypark97.varchivemacro.macro.common.config.model;
 
 import com.github.johypark97.varchivemacro.macro.common.config.model.value.SettingValue;
 
-public record ProgramConfig(SettingValue<Boolean> prereleaseNotification)
+public record ProgramConfig(SettingValue<Boolean> prereleaseNotification,
+                            SettingValue<Boolean> useSystemProxy,
+                            SettingValue<Boolean> useSystemCertificateStore)
         implements ConfigEditorModel.Config<ProgramConfig, ProgramConfig.Editor> {
     public static ProgramConfig ofDefault() {
         return editDefault().commit();
@@ -21,6 +23,12 @@ public record ProgramConfig(SettingValue<Boolean> prereleaseNotification)
         @ConfigField
         private SettingValue<Boolean> prereleaseNotification = SettingValue.of(false);
 
+        @ConfigField
+        private SettingValue<Boolean> useSystemProxy = SettingValue.of(false);
+
+        @ConfigField
+        private SettingValue<Boolean> useSystemCertificateStore = SettingValue.of(false);
+
         private Editor() {
         }
 
@@ -37,9 +45,28 @@ public record ProgramConfig(SettingValue<Boolean> prereleaseNotification)
             return this;
         }
 
+        public SettingValue<Boolean> getUseSystemProxy() {
+            return useSystemProxy;
+        }
+
+        public Editor setUseSystemProxy(boolean value) {
+            useSystemProxy = useSystemProxy.with(value);
+            return this;
+        }
+
+        public SettingValue<Boolean> getUseSystemCertificateStore() {
+            return useSystemCertificateStore;
+        }
+
+        public Editor setUseSystemCertificateStore(boolean value) {
+            useSystemCertificateStore = useSystemCertificateStore.with(value);
+            return this;
+        }
+
         @Override
         public ProgramConfig commit() {
-            return new ProgramConfig(prereleaseNotification);
+            return new ProgramConfig(prereleaseNotification, useSystemProxy,
+                    useSystemCertificateStore);
         }
     }
 }

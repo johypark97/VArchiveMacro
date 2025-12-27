@@ -54,6 +54,10 @@ public interface Setting {
         void scanner_onChangeKeyHoldTime(int value);
 
         void program_onChangePrereleaseNotification(boolean value);
+
+        void program_onUseSystemProxy(boolean value);
+
+        void program_onUseSystemCertificateStore(boolean value);
     }
 
 
@@ -95,5 +99,9 @@ public interface Setting {
         void setupScannerKeyHoldTimeSlider(int value, int defaultValue, int min, int max);
 
         void setProgramPrereleaseNotification(boolean value);
+
+        void setUseSystemProxy(boolean value);
+
+        void setUseSystemCertificateStore(boolean value);
     }
 }

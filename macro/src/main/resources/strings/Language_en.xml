@@ -247,6 +247,10 @@
   <entry key="setting.macro.shortcut.startUpKeyLabel">Start upward key</entry>
   <entry key="setting.macro.shortcut.stopKeyLabel">Stop key</entry>
   <entry key="setting.macro.tabName">Freestyle macro settings</entry>
+  <entry key="setting.program.network.restartRequiredLabel">A program restart is required after the change.</entry>
+  <entry key="setting.program.network.sectionName">Network Settings</entry>
+  <entry key="setting.program.network.useSystemCertificateStoreLabel">Use system Root CA certificate</entry>
+  <entry key="setting.program.network.useSystemProxyLabel">Use system proxy settings</entry>
   <entry key="setting.program.tabName">Program settings</entry>
   <entry key="setting.program.updateCheck.prereleaseLabel">Pre-release version notification</entry>
   <entry key="setting.program.updateCheck.sectionName">Update check settings</entry>

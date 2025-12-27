@@ -101,6 +101,12 @@ public class SettingViewImpl extends VBox implements Setting.View {
     private ToggleButton programPrereleaseNotificationToggleButton;
 
     @FXML
+    private ToggleButton useSystemProxyToggleButton;
+
+    @FXML
+    private ToggleButton useSystemCertificateStoreToggleButton;
+
+    @FXML
     private Button applyButton;
 
     @FXML
@@ -248,6 +254,19 @@ public class SettingViewImpl extends VBox implements Setting.View {
         programPrereleaseNotificationToggleButton.textProperty()
                 .bind(Bindings.when(programPrereleaseNotificationToggleButton.selectedProperty())
                         .then("ON").otherwise("OFF"));
+
+        useSystemProxyToggleButton.setOnAction(event -> presenter.program_onUseSystemProxy(
+                useSystemProxyToggleButton.isSelected()));
+        useSystemProxyToggleButton.textProperty()
+                .bind(Bindings.when(useSystemProxyToggleButton.selectedProperty()).then("ON")
+                        .otherwise("OFF"));
+
+        useSystemCertificateStoreToggleButton.setOnAction(
+                event -> presenter.program_onUseSystemCertificateStore(
+                        useSystemCertificateStoreToggleButton.isSelected()));
+        useSystemCertificateStoreToggleButton.textProperty()
+                .bind(Bindings.when(useSystemCertificateStoreToggleButton.selectedProperty())
+                        .then("ON").otherwise("OFF"));
     }
 
     private void setupButtonBar() {
@@ -373,6 +392,16 @@ public class SettingViewImpl extends VBox implements Setting.View {
     @Override
     public void setProgramPrereleaseNotification(boolean value) {
         programPrereleaseNotificationToggleButton.setSelected(value);
+    }
+
+    @Override
+    public void setUseSystemProxy(boolean value) {
+        useSystemProxyToggleButton.setSelected(value);
+    }
+
+    @Override
+    public void setUseSystemCertificateStore(boolean value) {
+        useSystemCertificateStoreToggleButton.setSelected(value);
     }
 
     public static class ThreadCountSliderSetter extends StringConverter<Double> {

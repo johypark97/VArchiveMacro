@@ -124,6 +124,9 @@ public class SettingPresenterImpl implements Setting.Presenter {
     private void showConfig_program() {
         view.setProgramPrereleaseNotification(
                 appConfigEditor.getProgramConfig().prereleaseNotification().value());
+        view.setUseSystemProxy(appConfigEditor.getProgramConfig().useSystemProxy().value());
+        view.setUseSystemCertificateStore(
+                appConfigEditor.getProgramConfig().useSystemCertificateStore().value());
     }
 
     private boolean applyConfig() {
@@ -425,6 +428,18 @@ public class SettingPresenterImpl implements Setting.Presenter {
     @Override
     public void program_onChangePrereleaseNotification(boolean value) {
         appConfigEditor.editProgramConfig(x -> x.setPrereleaseNotification(value));
+        changed.set(true);
+    }
+
+    @Override
+    public void program_onUseSystemProxy(boolean value) {
+        appConfigEditor.editProgramConfig(x -> x.setUseSystemProxy(value));
+        changed.set(true);
+    }
+
+    @Override
+    public void program_onUseSystemCertificateStore(boolean value) {
+        appConfigEditor.editProgramConfig(x -> x.setUseSystemCertificateStore(value));
         changed.set(true);
     }
 }

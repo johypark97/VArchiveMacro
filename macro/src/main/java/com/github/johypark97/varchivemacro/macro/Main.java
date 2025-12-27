@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
+import com.github.johypark97.varchivemacro.macro.common.config.model.ProgramConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
@@ -29,6 +30,8 @@ public class Main extends Application {
 
         AppConfigManager.INSTANCE.initialize();
 
+        setNetworkProperties();
+
         launch(args);
     }
 
@@ -43,6 +46,19 @@ public class Main extends Application {
 
         Toolkit.getDefaultToolkit().beep();
         alert.showAndWait();
+    }
+
+    private static void setNetworkProperties() {
+        ProgramConfig programConfig =
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().programConfig();
+
+        if (programConfig.useSystemProxy().value()) {
+            System.setProperty("java.net.useSystemProxies", "true");
+        }
+
+        if (programConfig.useSystemCertificateStore().value()) {
+            System.setProperty("javax.net.ssl.trustStoreType", "Windows-ROOT");
+        }
     }
 
     @Override

@@ -247,6 +247,10 @@
   <entry key="setting.macro.shortcut.startUpKeyLabel">위로 시작 키</entry>
   <entry key="setting.macro.shortcut.stopKeyLabel">중지 키</entry>
   <entry key="setting.macro.tabName">프리스타일 매크로 설정</entry>
+  <entry key="setting.program.network.restartRequiredLabel">변경 후 프로그램 재시작이 필요합니다.</entry>
+  <entry key="setting.program.network.sectionName">네트워크 설정</entry>
+  <entry key="setting.program.network.useSystemCertificateStoreLabel">시스템 루트 CA 인증서 사용</entry>
+  <entry key="setting.program.network.useSystemProxyLabel">시스템 프록시 설정 사용</entry>
   <entry key="setting.program.tabName">프로그램 설정</entry>
   <entry key="setting.program.updateCheck.prereleaseLabel">선공개 버전 알림</entry>
   <entry key="setting.program.updateCheck.sectionName">업데이트 확인 설정</entry>
