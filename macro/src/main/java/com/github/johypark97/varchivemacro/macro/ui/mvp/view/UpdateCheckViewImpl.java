@@ -27,7 +27,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 
 public class UpdateCheckViewImpl extends VBox implements UpdateCheck.View {
@@ -113,20 +112,27 @@ public class UpdateCheckViewImpl extends VBox implements UpdateCheck.View {
     }
 
     @Override
-    public void addErrorMessage(String message, Throwable throwable) {
+    public void addErrorMessage(String content, Throwable throwable) {
+        addErrorMessage(null, content, throwable);
+    }
+
+    @Override
+    public void addErrorMessage(String header, String content, Throwable throwable) {
+        Font.getFamilies().forEach(System.out::println);
         addContent(adder -> {
-            Text messageText = new Text(message);
+            if (header != null) {
+                Text headerText = new Text(header);
+                headerText.setFill(Color.RED);
+                adder.apply(headerText);
+            }
+
+            Text messageText = new Text(content);
             messageText.setFill(Color.RED);
             adder.apply(messageText);
 
-            Text exceptionText = new Text(throwable.getMessage());
-            exceptionText.setFill(Color.RED);
-            exceptionText.setFont(Font.font("Monospaced", FontPosture.ITALIC, 14));
-            adder.apply(exceptionText);
-
             Button detailButton =
                     new Button(Language.INSTANCE.getString("updateCheck.button.detail"));
-            detailButton.setOnAction(event -> presenter.showError(message, throwable));
+            detailButton.setOnAction(event -> presenter.showError(header, content, throwable));
             adder.apply(detailButton);
         });
     }

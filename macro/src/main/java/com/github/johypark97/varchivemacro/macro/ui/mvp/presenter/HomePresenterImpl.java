@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.integration.app.app.ProgramVers
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.UpdateCheckContext;
 import com.github.johypark97.varchivemacro.macro.integration.provider.UrlProvider;
+import com.github.johypark97.varchivemacro.macro.ui.common.ExceptionTranslator;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.Home;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import io.reactivex.rxjava3.core.Single;
@@ -143,9 +144,15 @@ public class HomePresenterImpl implements Home.Presenter {
 
     @Override
     public void showUpdateCheck() {
-        Optional.ofNullable(backgroundUpdateCheckException.getAndSet(null)).ifPresent(
-                x -> homeStage.showError(
-                        Language.INSTANCE.getString("home.dialog.updateCheck.exception"), x));
+        Optional.ofNullable(backgroundUpdateCheckException.getAndSet(null)).ifPresent(throwable -> {
+            ExceptionTranslator.translate(throwable).ifPresentOrElse(e -> {
+                homeStage.showError(e.header(), e.content(), e.throwable());
+            }, () -> {
+                homeStage.showError(
+                        Language.INSTANCE.getString("home.dialog.updateCheck.exception"),
+                        throwable);
+            });
+        });
 
         homeStage.showUpdateCheck();
     }

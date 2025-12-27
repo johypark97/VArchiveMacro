@@ -4,6 +4,8 @@
   <entry key="component.imageViewerBox.lmb">Left Mouse Button: Move</entry>
   <entry key="component.imageViewerBox.mmb">Middle Mouse Button: Zoom in/out</entry>
   <entry key="component.imageViewerBox.rmb">Right Mouse Button: Reset</entry>
+  <entry key="exceptionTranslator.SSLHandshakeException.invalidCert.content">Security certificate verification failed.%n%nIf you are using a proxy or security software that scans HTTPS, change the network settings in the Settings > Program Settings > Network Settings menu.</entry>
+  <entry key="exceptionTranslator.SSLHandshakeException.invalidCert.header">Secure connection failed</entry>
   <entry key="home.about.buildDate">Build date: %s</entry>
   <entry key="home.about.exception">Unable to fetch the program data version.</entry>
   <entry key="home.about.programDataVersion">Collection Scanner data version: %s</entry>

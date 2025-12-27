@@ -4,6 +4,8 @@
   <entry key="component.imageViewerBox.lmb">왼쪽 마우스 버튼: 이동</entry>
   <entry key="component.imageViewerBox.mmb">가운데 마우스 버튼: 확대/축소</entry>
   <entry key="component.imageViewerBox.rmb">오른쪽 마우스 버튼: 초기화</entry>
+  <entry key="exceptionTranslator.SSLHandshakeException.invalidCert.content">보안 인증서 검증에 실패하였습니다.%n%n프록시를 사용하거나 HTTPS를 스캔하는 보안 소프트웨어가 있다면 설정 - 프로그램 설정 - 네트워크 설정을 변경하세요.</entry>
+  <entry key="exceptionTranslator.SSLHandshakeException.invalidCert.header">보안 연결 실패</entry>
   <entry key="home.about.buildDate">빌드 날짜: %s</entry>
   <entry key="home.about.exception">프로그램 데이터 버전을 가져올 수 없습니다.</entry>
   <entry key="home.about.programDataVersion">컬렉션 스캐너 데이터 버전: %s</entry>
