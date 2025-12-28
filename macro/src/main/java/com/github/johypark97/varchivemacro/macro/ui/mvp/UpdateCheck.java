@@ -10,7 +10,7 @@ public interface UpdateCheck {
 
         void requestStopStage();
 
-        void showError(String message, Throwable throwable);
+        void showError(String header, String content, Throwable throwable);
 
         void openBrowser(String url);
 
@@ -25,7 +25,9 @@ public interface UpdateCheck {
 
         void addMessage(String... message);
 
-        void addErrorMessage(String message, Throwable throwable);
+        void addErrorMessage(String content, Throwable throwable);
+
+        void addErrorMessage(String header, String content, Throwable throwable);
 
         void addNewVersionReleasedMessage(String currentVersion, String latestVersion, String url);
 

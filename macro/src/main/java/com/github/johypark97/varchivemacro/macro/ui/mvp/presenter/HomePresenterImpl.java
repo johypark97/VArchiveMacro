@@ -1,10 +1,12 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.app.app.ProgramVersionService;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.UpdateCheckContext;
 import com.github.johypark97.varchivemacro.macro.integration.provider.UrlProvider;
+import com.github.johypark97.varchivemacro.macro.ui.common.ExceptionTranslator;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.Home;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
 import io.reactivex.rxjava3.core.Single;
@@ -48,14 +50,8 @@ public class HomePresenterImpl implements Home.Presenter {
 
         homeStage.changeCenterView_modeSelector();
 
-        try {
-            if (!globalContext.configStorageService.load()) {
-                globalContext.configStorageService.save();
-            }
-        } catch (IOException e) {
-            LOGGER.atError().setCause(e).log("Config loading exception.");
-            homeStage.showError(language.getString("home.config.loadingException"), e);
-        }
+        AppConfigManager.INSTANCE.getInitializationException().ifPresent(
+                e -> homeStage.showError(language.getString("home.config.loadingException"), e));
 
         // background update checking
         Single.fromCallable(() -> {
@@ -88,7 +84,7 @@ public class HomePresenterImpl implements Home.Presenter {
     @Override
     public boolean stopView() {
         try {
-            globalContext.configStorageService.save();
+            AppConfigManager.INSTANCE.getAppConfigService().save();
         } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Config saving exception.");
         }
@@ -148,9 +144,15 @@ public class HomePresenterImpl implements Home.Presenter {
 
     @Override
     public void showUpdateCheck() {
-        Optional.ofNullable(backgroundUpdateCheckException.getAndSet(null)).ifPresent(
-                x -> homeStage.showError(
-                        Language.INSTANCE.getString("home.dialog.updateCheck.exception"), x));
+        Optional.ofNullable(backgroundUpdateCheckException.getAndSet(null)).ifPresent(throwable -> {
+            ExceptionTranslator.translate(throwable).ifPresentOrElse(e -> {
+                homeStage.showError(e.header(), e.content(), e.throwable());
+            }, () -> {
+                homeStage.showError(
+                        Language.INSTANCE.getString("home.dialog.updateCheck.exception"),
+                        throwable);
+            });
+        });
 
         homeStage.showUpdateCheck();
     }

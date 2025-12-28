@@ -21,11 +21,9 @@ public enum ContextManager {
             throw new IllegalStateException("ContextManager is already initialized.");
         }
 
-        GlobalContext globalContext = new GlobalContext(hostServices);
-        instanceManager.setInstance(GlobalContext.class, globalContext);
+        instanceManager.setInstance(GlobalContext.class, new GlobalContext(hostServices));
 
-        instanceManager.setInstance(UpdateCheckContext.class,
-                new UpdateCheckContext(globalContext));
+        instanceManager.setConstructor(UpdateCheckContext.class, UpdateCheckContext::new);
 
         initialized.set(true);
     }
@@ -43,7 +41,7 @@ public enum ContextManager {
     }
 
     public MacroContext createMacroContext() {
-        return new MacroContext(getGlobalContext());
+        return new MacroContext();
     }
 
     public OpenSourceLicenseContext createOpenSourceLicenseContext() {

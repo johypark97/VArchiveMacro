@@ -2,18 +2,17 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
 import com.github.johypark97.varchivemacro.lib.common.PathHelper;
 import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroClientMode;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroConfig;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ProgramConfig;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
+import com.github.johypark97.varchivemacro.macro.common.config.model.AppConfig;
+import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCombination;
+import com.github.johypark97.varchivemacro.macro.common.config.model.MacroClientMode;
 import com.github.johypark97.varchivemacro.macro.common.converter.InputKeyConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.validator.AccountFileValidator;
 import com.github.johypark97.varchivemacro.macro.common.validator.DiskCaptureImageCacheDirectoryValidator;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.InvalidAccountFileException;
-import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.ui.event.SettingUpdatedUiEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.Setting;
@@ -39,26 +38,22 @@ public class SettingPresenterImpl implements Setting.Presenter {
 
     private final SettingStage settingStage;
 
-    private final GlobalContext globalContext;
-
     private final SimpleBooleanProperty changed = new SimpleBooleanProperty();
 
-    private MacroConfig.Builder macroConfigBuilder;
-    private ScannerConfig.Builder scannerConfigBuilder;
-    private ProgramConfig.Builder programConfigBuilder;
+    private AppConfig.Editor appConfigEditor;
     private boolean invalidAccountFile;
     private boolean invalidCacheDirectory;
 
     @MvpView
     public Setting.View view;
 
-    public SettingPresenterImpl(SettingStage settingStage, GlobalContext globalContext) {
+    public SettingPresenterImpl(SettingStage settingStage) {
         this.settingStage = settingStage;
-
-        this.globalContext = globalContext;
     }
 
     private void showConfig() {
+        appConfigEditor = AppConfigManager.INSTANCE.getAppConfigService().getConfig().edit();
+
         showConfig_macro();
         showConfig_scanner();
         showConfig_program();
@@ -69,80 +64,93 @@ public class SettingPresenterImpl implements Setting.Presenter {
     }
 
     private void showConfig_macro() {
-        macroConfigBuilder = globalContext.configService.findMacroConfig().toBuilder();
+        view.setMacroClientMode(appConfigEditor.getMacroConfig().clientMode().value());
+        view.setMacroUploadKeyText(appConfigEditor.getMacroConfig().uploadKey().value().toString());
 
-        view.setMacroClientMode(macroConfigBuilder.clientMode);
-        view.setMacroUploadKeyText(macroConfigBuilder.uploadKey.toString());
+        view.setMacroStartUpKeyText(
+                appConfigEditor.getMacroConfig().startUpKey().value().toString());
+        view.setMacroStartDownKeyText(
+                appConfigEditor.getMacroConfig().startDownKey().value().toString());
+        view.setMacroStopKeyText(appConfigEditor.getMacroConfig().stopKey().value().toString());
 
-        view.setMacroStartUpKeyText(macroConfigBuilder.startUpKey.toString());
-        view.setMacroStartDownKeyText(macroConfigBuilder.startDownKey.toString());
-        view.setMacroStopKeyText(macroConfigBuilder.stopKey.toString());
+        view.setupMacroSongSwitchingTimeSlider(
+                appConfigEditor.getMacroConfig().songSwitchingTime().value(),
+                appConfigEditor.getMacroConfig().songSwitchingTime().defaultValue(),
+                appConfigEditor.getMacroConfig().songSwitchingTime().min(),
+                appConfigEditor.getMacroConfig().songSwitchingTime().max());
 
-        view.setupMacroSongSwitchingTimeSlider(macroConfigBuilder.songSwitchingTime,
-                MacroConfig.SONG_SWITCHING_TIME_DEFAULT, MacroConfig.SONG_SWITCHING_TIME_MIN,
-                MacroConfig.SONG_SWITCHING_TIME_MAX);
+        view.setupMacroPostCaptureDelaySlider(
+                appConfigEditor.getMacroConfig().postCaptureDelay().value(),
+                appConfigEditor.getMacroConfig().postCaptureDelay().defaultValue(),
+                appConfigEditor.getMacroConfig().postCaptureDelay().min(),
+                appConfigEditor.getMacroConfig().postCaptureDelay().max());
 
-        view.setupMacroPostCaptureDelaySlider(macroConfigBuilder.postCaptureDelay,
-                MacroConfig.POST_CAPTURE_DELAY_DEFAULT, MacroConfig.POST_CAPTURE_DELAY_MIN,
-                MacroConfig.POST_CAPTURE_DELAY_MAX);
-
-        view.setupMacroKeyHoldTimeSlider(macroConfigBuilder.keyHoldTime,
-                MacroConfig.KEY_HOLD_TIME_DEFAULT, MacroConfig.KEY_HOLD_TIME_MIN,
-                MacroConfig.KEY_HOLD_TIME_MAX);
+        view.setupMacroKeyHoldTimeSlider(appConfigEditor.getMacroConfig().keyHoldTime().value(),
+                appConfigEditor.getMacroConfig().keyHoldTime().defaultValue(),
+                appConfigEditor.getMacroConfig().keyHoldTime().min(),
+                appConfigEditor.getMacroConfig().keyHoldTime().max());
     }
 
     private void showConfig_scanner() {
-        scannerConfigBuilder = globalContext.configService.findScannerConfig().toBuilder();
+        view.setScannerAccountFileText(appConfigEditor.getScannerConfig().accountFile().value());
 
-        view.setScannerAccountFileText(scannerConfigBuilder.accountFile);
+        view.setScannerStartKeyText(
+                appConfigEditor.getScannerConfig().startKey().value().toString());
+        view.setScannerStopKeyText(appConfigEditor.getScannerConfig().stopKey().value().toString());
 
-        view.setScannerStartKeyText(scannerConfigBuilder.startKey.toString());
-        view.setScannerStopKeyText(scannerConfigBuilder.stopKey.toString());
+        view.setScannerCacheDirectoryText(
+                appConfigEditor.getScannerConfig().cacheDirectory().value());
 
-        view.setScannerCacheDirectoryText(scannerConfigBuilder.cacheDirectory);
+        view.setScannerAutoAnalysis(appConfigEditor.getScannerConfig().autoAnalysis().value());
 
-        view.setScannerAutoAnalysis(scannerConfigBuilder.autoAnalysis);
+        view.setupScannerAnalyzerThreadCountSlider(
+                appConfigEditor.getScannerConfig().analyzerThreadCount().value(),
+                appConfigEditor.getScannerConfig().analyzerThreadCount().defaultValue(),
+                appConfigEditor.getScannerConfig().analyzerThreadCount().min(),
+                appConfigEditor.getScannerConfig().analyzerThreadCount().max());
 
-        view.setupScannerAnalyzerThreadCountSlider(scannerConfigBuilder.analyzerThreadCount,
-                ScannerConfig.ANALYZER_THREAD_COUNT_DEFAULT,
-                ScannerConfig.ANALYZER_THREAD_COUNT_MIN, ScannerConfig.ANALYZER_THREAD_COUNT_MAX);
+        view.setupScannerCaptureDelaySlider(
+                appConfigEditor.getScannerConfig().captureDelay().value(),
+                appConfigEditor.getScannerConfig().captureDelay().defaultValue(),
+                appConfigEditor.getScannerConfig().captureDelay().min(),
+                appConfigEditor.getScannerConfig().captureDelay().max());
 
-        view.setupScannerCaptureDelaySlider(scannerConfigBuilder.captureDelay,
-                ScannerConfig.CAPTURE_DELAY_DEFAULT, ScannerConfig.CAPTURE_DELAY_MIN,
-                ScannerConfig.CAPTURE_DELAY_MAX);
-
-        view.setupScannerKeyHoldTimeSlider(scannerConfigBuilder.keyHoldTime,
-                ScannerConfig.KEY_HOLD_TIME_DEFAULT, ScannerConfig.KEY_HOLD_TIME_MIN,
-                ScannerConfig.KEY_HOLD_TIME_MAX);
+        view.setupScannerKeyHoldTimeSlider(appConfigEditor.getScannerConfig().keyHoldTime().value(),
+                appConfigEditor.getScannerConfig().keyHoldTime().defaultValue(),
+                appConfigEditor.getScannerConfig().keyHoldTime().min(),
+                appConfigEditor.getScannerConfig().keyHoldTime().max());
     }
 
     private void showConfig_program() {
-        programConfigBuilder = globalContext.configService.findProgramConfig().toBuilder();
-
-        view.setProgramPrereleaseNotification(programConfigBuilder.prereleaseNotification);
+        view.setProgramPrereleaseNotification(
+                appConfigEditor.getProgramConfig().prereleaseNotification().value());
+        view.setUseSystemProxy(appConfigEditor.getProgramConfig().useSystemProxy().value());
+        view.setUseSystemCertificateStore(
+                appConfigEditor.getProgramConfig().useSystemCertificateStore().value());
     }
 
     private boolean applyConfig() {
         if (invalidAccountFile) {
-            if (!validateAccountFile(scannerConfigBuilder.accountFile)) {
+            if (!validateAccountFile(appConfigEditor.getScannerConfig().accountFile().value())) {
                 return false;
             }
             invalidAccountFile = false;
         }
 
         if (invalidCacheDirectory) {
-            if (!validateCacheDirectory(scannerConfigBuilder.cacheDirectory)) {
+            if (!validateCacheDirectory(
+                    appConfigEditor.getScannerConfig().cacheDirectory().value())) {
                 return false;
             }
             invalidCacheDirectory = false;
         }
 
-        globalContext.configService.saveMacroConfig(macroConfigBuilder.build());
-        globalContext.configService.saveScannerConfig(scannerConfigBuilder.build());
-        globalContext.configService.saveProgramConfig(programConfigBuilder.build());
+        AppConfigService appConfigService = AppConfigManager.INSTANCE.getAppConfigService();
+
+        appConfigService.editConfig(x -> appConfigEditor);
 
         try {
-            globalContext.configStorageService.save();
+            appConfigService.save();
         } catch (Exception e) {
             LOGGER.atError().setCause(e).log("Config flush exception.");
             settingStage.showError(Language.INSTANCE.getString("setting.dialog.applyException"), e);
@@ -289,51 +297,55 @@ public class SettingPresenterImpl implements Setting.Presenter {
 
     @Override
     public void macro_onChangeClientMode(MacroClientMode value) {
-        macroConfigBuilder.clientMode = value;
+        appConfigEditor.editMacroConfig(x -> x.setClientMode(value));
         changed.set(true);
     }
 
     @Override
     public void macro_onChangeUploadKey(KeyEvent event) {
-        updateKey(event, x -> macroConfigBuilder.uploadKey = x, view::setMacroUploadKeyText);
+        updateKey(event, key -> appConfigEditor.editMacroConfig(x -> x.setUploadKey(key)),
+                view::setMacroUploadKeyText);
     }
 
     @Override
     public void macro_onChangeStartUpKey(KeyEvent event) {
-        updateKey(event, x -> macroConfigBuilder.startUpKey = x, view::setMacroStartUpKeyText);
+        updateKey(event, key -> appConfigEditor.editMacroConfig(x -> x.setStartUpKey(key)),
+                view::setMacroStartUpKeyText);
     }
 
     @Override
     public void macro_onChangeStartDownKey(KeyEvent event) {
-        updateKey(event, x -> macroConfigBuilder.startDownKey = x, view::setMacroStartDownKeyText);
+        updateKey(event, key -> appConfigEditor.editMacroConfig(x -> x.setStartDownKey(key)),
+                view::setMacroStartDownKeyText);
     }
 
     @Override
     public void macro_onChangeStopKey(KeyEvent event) {
-        updateKey(event, x -> macroConfigBuilder.stopKey = x, view::setMacroStopKeyText);
+        updateKey(event, key -> appConfigEditor.editMacroConfig(x -> x.setStopKey(key)),
+                view::setMacroStopKeyText);
     }
 
     @Override
     public void macro_onChangeSongSwitchingTime(int value) {
-        macroConfigBuilder.songSwitchingTime = value;
+        appConfigEditor.editMacroConfig(x -> x.setSongSwitchingTime(value));
         changed.set(true);
     }
 
     @Override
     public void macro_onChangePostCaptureDelay(int value) {
-        macroConfigBuilder.postCaptureDelay = value;
+        appConfigEditor.editMacroConfig(x -> x.setPostCaptureDelay(value));
         changed.set(true);
     }
 
     @Override
     public void macro_onChangeKeyHoldTime(int value) {
-        macroConfigBuilder.keyHoldTime = value;
+        appConfigEditor.editMacroConfig(x -> x.setKeyHoldTime(value));
         changed.set(true);
     }
 
     @Override
     public void scanner_onChangeAccountFile(String value) {
-        scannerConfigBuilder.accountFile = value;
+        appConfigEditor.editScannerConfig(x -> x.setAccountFile(value));
         invalidAccountFile = true;
         changed.set(true);
     }
@@ -356,17 +368,19 @@ public class SettingPresenterImpl implements Setting.Presenter {
 
     @Override
     public void scanner_onChangeStartKey(KeyEvent event) {
-        updateKey(event, x -> scannerConfigBuilder.startKey = x, view::setScannerStartKeyText);
+        updateKey(event, key -> appConfigEditor.editScannerConfig(x -> x.setStartKey(key)),
+                view::setScannerStartKeyText);
     }
 
     @Override
     public void scanner_onChangeStopKey(KeyEvent event) {
-        updateKey(event, x -> scannerConfigBuilder.stopKey = x, view::setScannerStopKeyText);
+        updateKey(event, key -> appConfigEditor.editScannerConfig(x -> x.setStopKey(key)),
+                view::setScannerStopKeyText);
     }
 
     @Override
     public void scanner_onChangeCacheDirectory(String value) {
-        scannerConfigBuilder.cacheDirectory = value;
+        appConfigEditor.editScannerConfig(x -> x.setCacheDirectory(value));
         invalidCacheDirectory = true;
         changed.set(true);
     }
@@ -389,31 +403,43 @@ public class SettingPresenterImpl implements Setting.Presenter {
 
     @Override
     public void scanner_onChangeAutoAnalysis(boolean value) {
-        scannerConfigBuilder.autoAnalysis = value;
+        appConfigEditor.editScannerConfig(x -> x.setAutoAnalysis(value));
         changed.set(true);
     }
 
     @Override
     public void scanner_onChangeAnalyzerThreadCount(int value) {
-        scannerConfigBuilder.analyzerThreadCount = value;
+        appConfigEditor.editScannerConfig(x -> x.setAnalyzerThreadCount(value));
         changed.set(true);
     }
 
     @Override
     public void scanner_onChangeCaptureDelay(int value) {
-        scannerConfigBuilder.captureDelay = value;
+        appConfigEditor.editScannerConfig(x -> x.setCaptureDelay(value));
         changed.set(true);
     }
 
     @Override
     public void scanner_onChangeKeyHoldTime(int value) {
-        scannerConfigBuilder.keyHoldTime = value;
+        appConfigEditor.editScannerConfig(x -> x.setKeyHoldTime(value));
         changed.set(true);
     }
 
     @Override
     public void program_onChangePrereleaseNotification(boolean value) {
-        programConfigBuilder.prereleaseNotification = value;
+        appConfigEditor.editProgramConfig(x -> x.setPrereleaseNotification(value));
+        changed.set(true);
+    }
+
+    @Override
+    public void program_onUseSystemProxy(boolean value) {
+        appConfigEditor.editProgramConfig(x -> x.setUseSystemProxy(value));
+        changed.set(true);
+    }
+
+    @Override
+    public void program_onUseSystemCertificateStore(boolean value) {
+        appConfigEditor.editProgramConfig(x -> x.setUseSystemCertificateStore(value));
         changed.set(true);
     }
 }

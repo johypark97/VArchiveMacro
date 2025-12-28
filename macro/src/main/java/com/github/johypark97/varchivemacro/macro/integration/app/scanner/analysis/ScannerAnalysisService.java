@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.analysis;
 
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
-import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
+import com.github.johypark97.varchivemacro.macro.common.config.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
@@ -19,22 +19,22 @@ import java.util.stream.Collectors;
 import javafx.concurrent.Task;
 
 public class ScannerAnalysisService {
+    private final AppConfigService appConfigService;
     private final CaptureImageService captureImageService;
     private final CaptureService captureService;
-    private final ConfigService configService;
     private final PixImageService pixImageService;
     private final SongCaptureLinkService songCaptureLinkService;
     private final SongService songService;
 
     private final OcrServiceFactory commonOcrServiceFactory;
 
-    public ScannerAnalysisService(CaptureImageService captureImageService,
-            CaptureService captureService, ConfigService configService,
+    public ScannerAnalysisService(AppConfigService appConfigService,
+            CaptureImageService captureImageService, CaptureService captureService,
             PixImageService pixImageService, SongCaptureLinkService songCaptureLinkService,
             SongService songService, OcrServiceFactory commonOcrServiceFactory) {
+        this.appConfigService = appConfigService;
         this.captureImageService = captureImageService;
         this.captureService = captureService;
-        this.configService = configService;
         this.pixImageService = pixImageService;
         this.songCaptureLinkService = songCaptureLinkService;
         this.songService = songService;
@@ -48,7 +48,7 @@ public class ScannerAnalysisService {
             return null;
         }
 
-        ScannerConfig config = configService.findScannerConfig();
+        ScannerConfig config = appConfigService.getConfig().scannerConfig();
 
         List<CaptureEntry> captureEntryList = captureService.findAll().stream()
                 .filter(x -> captureEntryIdSet.contains(x.entryId())).toList();

@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.app.app.ProgramVersionService;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.UpdateCheckContext;
+import com.github.johypark97.varchivemacro.macro.ui.common.ExceptionTranslator;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.UpdateCheck;
 import com.github.johypark97.varchivemacro.macro.ui.stage.UpdateCheckStage;
 import com.github.zafarkhaja.semver.Version;
@@ -54,8 +55,8 @@ public class UpdateCheckPresenterImpl implements UpdateCheck.Presenter {
     }
 
     @Override
-    public void showError(String message, Throwable throwable) {
-        updateCheckStage.showError(message, throwable.getMessage(), throwable);
+    public void showError(String header, String content, Throwable throwable) {
+        updateCheckStage.showError(header, content, throwable);
     }
 
     @Override
@@ -114,8 +115,12 @@ public class UpdateCheckPresenterImpl implements UpdateCheck.Presenter {
             taskRunning.set(false);
 
             LOGGER.atError().setCause(throwable).log("Update checking exception.");
-            Platform.runLater(() -> view.addErrorMessage(
-                    Language.INSTANCE.getString("updateCheck.exception.checking"), throwable));
+            Platform.runLater(() -> ExceptionTranslator.translate(throwable).ifPresentOrElse(e -> {
+                view.addErrorMessage(e.header(), e.content(), e.throwable());
+            }, () -> {
+                view.addErrorMessage(Language.INSTANCE.getString("updateCheck.exception.checking"),
+                        throwable);
+            }));
         });
     }
 

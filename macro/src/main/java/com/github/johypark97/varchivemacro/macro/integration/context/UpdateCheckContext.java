@@ -1,5 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.integration.context;
 
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
 import com.github.johypark97.varchivemacro.macro.common.github.app.GitHubApiService;
 import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataService;
 import com.github.johypark97.varchivemacro.macro.integration.app.app.ProgramVersionService;
@@ -24,9 +26,11 @@ public class UpdateCheckContext implements Context {
     // integrations
     public final ProgramVersionService programVersionService;
 
-    public UpdateCheckContext(GlobalContext globalContext) {
+    public UpdateCheckContext() {
+        AppConfigService appConfigService = AppConfigManager.INSTANCE.getAppConfigService();
+
         programVersionService =
-                new ProgramVersionService(globalContext.configService, gitHubApiService,
-                        programDataService, versionData);
+                new ProgramVersionService(appConfigService, gitHubApiService, programDataService,
+                        versionData);
     }
 }

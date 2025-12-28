@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.macro.ui.stage.impl;
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
 import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorAnalysis;
@@ -77,8 +76,7 @@ public class ScannerProcessorStageImpl extends AbstractBaseStage implements Scan
         }
 
         review = new ViewPresenterPair<>(new ScannerProcessorReviewViewImpl(),
-                new ScannerProcessorReviewPresenterImpl(this,
-                        ContextManager.INSTANCE.getGlobalContext(), scannerContext));
+                new ScannerProcessorReviewPresenterImpl(this, scannerContext));
 
         Mvp.linkViewAndPresenter(review.view, review.presenter);
 

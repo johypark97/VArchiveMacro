@@ -2,8 +2,10 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
 import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
+import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCombination;
+import com.github.johypark97.varchivemacro.macro.common.config.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
@@ -62,14 +64,15 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     }
 
     private void showConfig() {
-        ScannerConfig config = globalContext.configService.findScannerConfig();
+        ScannerConfig config =
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().scannerConfig();
 
-        accountFileText.set(config.accountFile());
-        cacheDirectoryText.set(config.cacheDirectory());
+        accountFileText.set(config.accountFile().value());
+        cacheDirectoryText.set(config.cacheDirectory().value());
 
-        view.setAutoAnalysis(config.autoAnalysis());
-        view.setStartKeyText(config.startKey().toString());
-        view.setStopKeyText(config.stopKey().toString());
+        view.setAutoAnalysis(config.autoAnalysis().value());
+        view.setStartKeyText(config.startKey().value().toString());
+        view.setStopKeyText(config.stopKey().value().toString());
     }
 
     private Set<String> getSelectedCategorySet() {
@@ -90,7 +93,8 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
         }
 
         try {
-            boolean debug = globalContext.configService.isDebug() && view.getDebugCheckBoxValue();
+            boolean debug = AppConfigManager.INSTANCE.getAppConfigService().getConfig().debug()
+                    && view.getDebugCheckBoxValue();
             scannerContext =
                     ContextManager.INSTANCE.createScannerContext(selectedCategorySet, debug);
         } catch (IOException e) {
@@ -128,10 +132,11 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     }
 
     private void registerKeyboardHook() {
-        ScannerConfig config = globalContext.configService.findScannerConfig();
+        ScannerConfig config =
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().scannerConfig();
 
-        InputKeyCombination startKey = config.startKey();
-        InputKeyCombination stopKey = config.stopKey();
+        InputKeyCombination startKey = config.startKey().value();
+        InputKeyCombination stopKey = config.stopKey().value();
 
         nativeKeyListener = new NativeKeyListener() {
             @Override
@@ -217,18 +222,20 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     public void startView() {
         disposableGlobalEvent = UiEventBus.INSTANCE.subscribe(this::onUiEvent);
 
+        AppConfigService appConfigService = AppConfigManager.INSTANCE.getAppConfigService();
+
         view.bindAccountFileText(accountFileText);
         view.bindCacheDirectoryText(cacheDirectoryText);
 
         view.setCategoryList(globalContext.songService.findAllCategory().stream()
                 .map(ScannerScannerViewModel.CategoryData::new).toList());
         view.setSelectedCategory(
-                globalContext.configService.findScannerConfig().selectedCategory());
+                appConfigService.getConfig().scannerConfig().selectedCategory().value());
 
         showConfig();
         registerKeyboardHook();
 
-        if (globalContext.configService.isDebug()) {
+        if (appConfigService.getConfig().debug()) {
             view.setDebugCheckBoxVisible(true);
         }
     }
@@ -242,9 +249,10 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
         unregisterKeyboardHook();
         disposableGlobalEvent.dispose();
 
-        ScannerConfig.Builder builder = globalContext.configService.findScannerConfig().toBuilder();
-        builder.selectedCategory = getSelectedCategorySet();
-        globalContext.configService.saveScannerConfig(builder.build());
+        AppConfigManager.INSTANCE.getAppConfigService().editConfig(
+                appConfig -> appConfig.editScannerConfig(
+                        scannerConfig -> scannerConfig.setSelectedCategory(
+                                getSelectedCategorySet())));
 
         return true;
     }

@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.scanner;
 
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.common.config.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.app.CaptureRegionService;
@@ -64,7 +64,7 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
 
     @Override
     protected void sleepCaptureDelay() throws InterruptedException {
-        TimeUnit.MILLISECONDS.sleep(config.captureDelay());
+        TimeUnit.MILLISECONDS.sleep(config.captureDelay().value());
     }
 
     @Override
@@ -82,12 +82,12 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
 
     @Override
     protected void moveToNextCategory() throws InterruptedException {
-        AwtRobotHelper.tabKey(robot, config.keyHoldTime(), KeyEvent.VK_SPACE);
+        AwtRobotHelper.tabKey(robot, config.keyHoldTime().value(), KeyEvent.VK_SPACE);
     }
 
     @Override
     protected void moveToNextSong() throws InterruptedException {
-        AwtRobotHelper.tabKey(robot, config.keyHoldTime(), KeyEvent.VK_DOWN);
+        AwtRobotHelper.tabKey(robot, config.keyHoldTime().value(), KeyEvent.VK_DOWN);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.app;
 
-import com.github.johypark97.varchivemacro.macro.common.config.app.ConfigService;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
 import com.github.johypark97.varchivemacro.macro.common.github.app.GitHubApiService;
 import com.github.johypark97.varchivemacro.macro.common.github.domain.GitHubRelease;
 import com.github.johypark97.varchivemacro.macro.common.programdata.app.ProgramDataService;
@@ -20,15 +20,16 @@ import org.slf4j.LoggerFactory;
 public class ProgramVersionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProgramVersionService.class);
 
-    private final ConfigService configService;
+    private final AppConfigService appConfigService;
     private final GitHubApiService gitHubApiService;
     private final ProgramDataService programDataService;
 
     private final VersionData latestVersionData;
 
-    public ProgramVersionService(ConfigService configService, GitHubApiService gitHubApiService,
-            ProgramDataService programDataService, VersionData latestVersionData) {
-        this.configService = configService;
+    public ProgramVersionService(AppConfigService appConfigService,
+            GitHubApiService gitHubApiService, ProgramDataService programDataService,
+            VersionData latestVersionData) {
+        this.appConfigService = appConfigService;
         this.gitHubApiService = gitHubApiService;
         this.programDataService = programDataService;
 
@@ -36,7 +37,8 @@ public class ProgramVersionService {
     }
 
     public void fetchLatestRelease() throws IOException, InterruptedException {
-        boolean prereleaseNotification = configService.findProgramConfig().prereleaseNotification();
+        boolean prereleaseNotification =
+                appConfigService.getConfig().programConfig().prereleaseNotification().value();
 
         GitHubRelease release = null;
 

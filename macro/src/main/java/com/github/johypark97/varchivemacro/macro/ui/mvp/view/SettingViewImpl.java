@@ -2,7 +2,7 @@ package com.github.johypark97.varchivemacro.macro.ui.mvp.view;
 
 import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
 import com.github.johypark97.varchivemacro.lib.jfx.fxgui.SliderTextFieldLinker;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.MacroClientMode;
+import com.github.johypark97.varchivemacro.macro.common.config.model.MacroClientMode;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.Setting;
 import java.io.IOException;
@@ -99,6 +99,12 @@ public class SettingViewImpl extends VBox implements Setting.View {
 
     @FXML
     private ToggleButton programPrereleaseNotificationToggleButton;
+
+    @FXML
+    private ToggleButton useSystemProxyToggleButton;
+
+    @FXML
+    private ToggleButton useSystemCertificateStoreToggleButton;
 
     @FXML
     private Button applyButton;
@@ -248,6 +254,19 @@ public class SettingViewImpl extends VBox implements Setting.View {
         programPrereleaseNotificationToggleButton.textProperty()
                 .bind(Bindings.when(programPrereleaseNotificationToggleButton.selectedProperty())
                         .then("ON").otherwise("OFF"));
+
+        useSystemProxyToggleButton.setOnAction(event -> presenter.program_onUseSystemProxy(
+                useSystemProxyToggleButton.isSelected()));
+        useSystemProxyToggleButton.textProperty()
+                .bind(Bindings.when(useSystemProxyToggleButton.selectedProperty()).then("ON")
+                        .otherwise("OFF"));
+
+        useSystemCertificateStoreToggleButton.setOnAction(
+                event -> presenter.program_onUseSystemCertificateStore(
+                        useSystemCertificateStoreToggleButton.isSelected()));
+        useSystemCertificateStoreToggleButton.textProperty()
+                .bind(Bindings.when(useSystemCertificateStoreToggleButton.selectedProperty())
+                        .then("ON").otherwise("OFF"));
     }
 
     private void setupButtonBar() {
@@ -373,6 +392,16 @@ public class SettingViewImpl extends VBox implements Setting.View {
     @Override
     public void setProgramPrereleaseNotification(boolean value) {
         programPrereleaseNotificationToggleButton.setSelected(value);
+    }
+
+    @Override
+    public void setUseSystemProxy(boolean value) {
+        useSystemProxyToggleButton.setSelected(value);
+    }
+
+    @Override
+    public void setUseSystemCertificateStore(boolean value) {
+        useSystemCertificateStoreToggleButton.setSelected(value);
     }
 
     public static class ThreadCountSliderSetter extends StringConverter<Double> {

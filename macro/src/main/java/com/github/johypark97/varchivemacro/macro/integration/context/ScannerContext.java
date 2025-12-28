@@ -1,5 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.integration.context;
 
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
 import com.github.johypark97.varchivemacro.macro.common.validator.PathValidator;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.SongRecordUploadService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.InvalidAccountFileException;
@@ -75,9 +77,11 @@ public class ScannerContext implements Context {
             throws IOException, GeneralSecurityException, InvalidAccountFileException {
         this.selectedCategorySet = selectedCategorySet;
 
+        AppConfigService appConfigService = AppConfigManager.INSTANCE.getAppConfigService();
+
         // repositories
         Path cacheDirectoryPath = PathValidator.validateAndConvert(
-                globalContext.configService.findScannerConfig().cacheDirectory());
+                appConfigService.getConfig().scannerConfig().cacheDirectory().value());
 
         captureImageRepository = new DiskCaptureImageRepository(cacheDirectoryPath);
 
@@ -85,7 +89,7 @@ public class ScannerContext implements Context {
         captureImageService = new CaptureImageService(captureImageRepository);
 
         Path accountFilePath = PathValidator.validateAndConvert(
-                globalContext.configRepository.findScannerConfig().accountFile());
+                appConfigService.getConfig().scannerConfig().accountFile().value());
         songRecordUploadService = new SongRecordUploadService(accountFilePath);
 
         // integrations
@@ -94,18 +98,18 @@ public class ScannerContext implements Context {
                         globalContext.songService, songTitleService);
 
         // use cases
-        scannerScannerService =
-                new ScannerScannerService(captureImageService, globalContext.captureRegionService,
-                        captureService, globalContext.configService, pixImageService,
-                        globalContext.songService, songTitleService, songTitleOcrServiceFactory,
-                        getSelectedCategorySet(), debug);
+        scannerScannerService = new ScannerScannerService(appConfigService, captureImageService,
+                globalContext.captureRegionService, captureService, pixImageService,
+                globalContext.songService, songTitleService, songTitleOcrServiceFactory,
+                getSelectedCategorySet(), debug);
 
         scannerReviewService = new ScannerReviewService(captureImageService, captureService,
                 songCaptureLinkService, songCaptureLinkingService, globalContext.songService);
 
-        scannerAnalysisService = new ScannerAnalysisService(captureImageService, captureService,
-                globalContext.configService, pixImageService, songCaptureLinkService,
-                globalContext.songService, commonOcrServiceFactory);
+        scannerAnalysisService =
+                new ScannerAnalysisService(appConfigService, captureImageService, captureService,
+                        pixImageService, songCaptureLinkService, globalContext.songService,
+                        commonOcrServiceFactory);
 
         scannerUploadService =
                 new ScannerUploadService(songCaptureLinkService, globalContext.songRecordService,

@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.common.utility;
 
 import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
-import com.github.johypark97.varchivemacro.macro.common.config.domain.model.InputKeyCombination;
+import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.converter.InputKeyConverter;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 

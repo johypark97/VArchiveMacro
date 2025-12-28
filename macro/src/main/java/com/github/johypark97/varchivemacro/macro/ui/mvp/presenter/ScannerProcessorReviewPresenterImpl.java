@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.common.utility.UnicodeFilter;
 import com.github.johypark97.varchivemacro.macro.integration.app.scanner.review.SongData;
-import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.integration.context.ScannerContext;
 import com.github.johypark97.varchivemacro.macro.ui.common.EventDebouncer;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorReview;
@@ -30,7 +30,6 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
 
     private final ScannerProcessorStage scannerProcessorStage;
 
-    private final GlobalContext globalContext;
     private final ScannerContext scannerContext;
 
     private final EventDebouncer updateLinkTableSelectedCountTextEventDebouncer =
@@ -46,10 +45,9 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
     public ScannerProcessorReview.View view;
 
     public ScannerProcessorReviewPresenterImpl(ScannerProcessorStage scannerProcessorStage,
-            GlobalContext globalContext, ScannerContext scannerContext) {
+            ScannerContext scannerContext) {
         this.scannerProcessorStage = scannerProcessorStage;
 
-        this.globalContext = globalContext;
         this.scannerContext = scannerContext;
 
         updateLinkTableSelectedCountTextEventDebouncer.setCallback(
@@ -161,7 +159,8 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
     public void startView() {
         runLinking();
 
-        if (globalContext.configService.findScannerConfig().autoAnalysis()) {
+        if (AppConfigManager.INSTANCE.getAppConfigService().getConfig().scannerConfig()
+                .autoAnalysis().value()) {
             Platform.runLater(scannerProcessorStage::runAutoAnalysis);
         }
     }
