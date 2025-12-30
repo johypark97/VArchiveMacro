@@ -35,7 +35,7 @@
         </Menu>
         <Menu text="%home.menu.updateCheck" fx:id="updateCheckMenu">
           <items>
-            <MenuItem mnemonicParsing="false" text="%home.menu.updateCheck.viewDetail" fx:id="updateCheckViewDetailMenuItem"/>
+            <MenuItem text="%home.menu.updateCheck.viewDetail" fx:id="updateCheckViewDetailMenuItem"/>
           </items>
         </Menu>
       </menus>

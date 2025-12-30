@@ -4,6 +4,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane" xmlns="http://javafx.com/javafx/21.0.6">
   <bottom>
-    <Button cancelButton="true" maxWidth="1.7976931348623157E308" minHeight="64.0" mnemonicParsing="false" text="%scanner.tester.closeButton" fx:id="closeButton"/>
+    <Button cancelButton="true" maxWidth="1.7976931348623157E308" minHeight="64.0" text="%scanner.tester.closeButton" fx:id="closeButton"/>
   </bottom>
 </fx:root>
