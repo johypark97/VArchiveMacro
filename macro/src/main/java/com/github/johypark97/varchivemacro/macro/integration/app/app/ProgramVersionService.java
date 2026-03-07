@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -42,10 +43,11 @@ public class ProgramVersionService {
 
         GitHubRelease release = null;
 
-        if (prereleaseNotification) {
+        if (!prereleaseNotification) {
             release = gitHubApiService.fetchLatestRelease();
         } else {
-            List<GitHubRelease> list = gitHubApiService.fetchAllReleases();
+            List<GitHubRelease> list = gitHubApiService.fetchAllReleases().stream()
+                    .sorted(Comparator.comparing(GitHubRelease::createdAt).reversed()).toList();
 
             if (LOGGER.isTraceEnabled()) {
                 LOGGER.trace("All fetched releases' version: {}", list.stream()
@@ -53,7 +55,7 @@ public class ProgramVersionService {
             }
 
             for (GitHubRelease x : list) {
-                if (!x.prerelease()) {
+                if (!x.draft()) {
                     release = x;
                     break;
                 }
@@ -64,7 +66,7 @@ public class ProgramVersionService {
             throw new RuntimeException("No release found.");
         }
 
-        LOGGER.atTrace().log("Found latest release: {} (isPrerelease: {})", release.version(),
+        LOGGER.atTrace().log("Found the latest release: {} (isPrerelease: {})", release.version(),
                 release.prerelease());
 
         latestVersionData.setLatestGitHubRelease(release);

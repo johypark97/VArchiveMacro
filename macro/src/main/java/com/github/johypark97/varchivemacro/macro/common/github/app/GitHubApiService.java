@@ -27,18 +27,35 @@ public class GitHubApiService {
         this.repository = repository;
     }
 
+    /**
+     * Fetches the latest release. It is the most recent non-prerelease, non-draft release, sorted
+     * by the `created_at` attribute.
+     *
+     * <p>Note: The `created_at` attribute is the date of the commit used for the release, and not
+     * the date when the release was drafted or published.
+     *
+     * @return The latest release.
+     */
     public GitHubRelease fetchLatestRelease() throws IOException, InterruptedException {
-        return gson.fromJson(
-                fetchString(GitHubApiUriBuilder.create_latestRelease(owner, repository)),
-                GitHubReleaseJson.class).toDomain();
+        String data = fetchString(GitHubApiUriBuilder.create_latestRelease(owner, repository));
+
+        return gson.fromJson(data, GitHubReleaseJson.class).toDomain();
     }
 
+    /**
+     * Fetches and returns a list of recent releases. The list is unsorted and contains the
+     * prereleases. Also, drafts may be included if the request meets the permission.
+     *
+     * @return An unsorted list of recent releases.
+     */
     public List<GitHubRelease> fetchAllReleases() throws IOException, InterruptedException {
         class GsonTypeToken extends TypeToken<List<GitHubReleaseJson>> {
         }
 
-        return gson.fromJson(fetchString(GitHubApiUriBuilder.create_releaseList(owner, repository)),
-                new GsonTypeToken()).stream().map(GitHubReleaseJson::toDomain).toList();
+        String data = fetchString(GitHubApiUriBuilder.create_releaseList(owner, repository));
+
+        return gson.fromJson(data, new GsonTypeToken()).stream().map(GitHubReleaseJson::toDomain)
+                .toList();
     }
 
     public GitHubContent fetchContent(String path) throws IOException, InterruptedException {
