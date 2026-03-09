@@ -9,7 +9,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
-import com.github.johypark97.varchivemacro.lib.scanner.api.Api.Board;
 import com.github.johypark97.varchivemacro.lib.scanner.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.scanner.api.RecordFetcher.FailureJson;
 import com.github.johypark97.varchivemacro.lib.scanner.api.RecordFetcher.SuccessJson;
@@ -61,15 +60,14 @@ class RecordFetcherImplTest {
 
     @Test
     void test_createUri() {
-        String boardPlaceholder = "__board__";
         String buttonPlaceholder = "__button__";
         String encoded = URLEncoder.encode(dummyDjName, StandardCharsets.UTF_8);
 
-        String urlFormat = "https://v-archive.net/api/archive/%s/board/%s/%s";
-        String urlString = String.format(urlFormat, encoded, buttonPlaceholder, boardPlaceholder);
+        String urlFormat = "https://v-archive.net/api/v2/archive/%s/button/%s";
+        String urlString = String.format(urlFormat, encoded, buttonPlaceholder);
 
         URI expected = URI.create(urlString);
-        URI actual = recordFetcher.createUri(buttonPlaceholder, boardPlaceholder);
+        URI actual = recordFetcher.createUri(buttonPlaceholder);
         assertEquals(expected, actual);
     }
 
@@ -102,15 +100,15 @@ class RecordFetcherImplTest {
         when(httpResponseMock.body()).thenReturn(gson.toJson(data));
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
-        recordFetcher.fetch(Button._4, Board._1);
+        recordFetcher.fetch(Button._4);
 
         boolean condition = recordFetcher.getResult().success;
         assertTrue(condition);
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {404, 500})
-    void test_fetch_404_500(int statusCode) throws Exception {
+    @ValueSource(ints = {400, 404, 500})
+    void test_fetch_400_404_500(int statusCode) throws Exception {
         stubHttpClientSend().thenReturn(httpResponseMock);
 
         String expected = "exception message" + statusCode;
@@ -122,7 +120,7 @@ class RecordFetcherImplTest {
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
         Throwable throwable =
-                assertThrows(ApiException.class, () -> recordFetcher.fetch(Button._4, Board._1));
+                assertThrows(ApiException.class, () -> recordFetcher.fetch(Button._4));
 
         String actual = throwable.getMessage();
         assertEquals(expected, actual);
@@ -135,11 +133,16 @@ class RecordFetcherImplTest {
 
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
-        assertThrows(ApiException.class, () -> recordFetcher.fetch(Button._4, Board._1));
+        Throwable throwable =
+                assertThrows(ApiException.class, () -> recordFetcher.fetch(Button._4));
+
+        String expected = "Network Error: " + statusCode;
+        String actual = throwable.getMessage();
+        assertEquals(expected, actual);
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {200, 404, 500})
+    @ValueSource(ints = {200, 400, 404, 500})
     void test_fetch_jsonSyntaxException(int statusCode) throws Exception {
         stubHttpClientSend().thenReturn(httpResponseMock);
 
@@ -148,21 +151,21 @@ class RecordFetcherImplTest {
         when(httpResponseMock.body()).thenReturn(data);
         when(httpResponseMock.statusCode()).thenReturn(statusCode);
 
-        assertThrows(JsonSyntaxException.class, () -> recordFetcher.fetch(Button._4, Board._1));
+        assertThrows(JsonSyntaxException.class, () -> recordFetcher.fetch(Button._4));
     }
 
     @Test
     void test_fetch_ioException() throws Exception {
         stubHttpClientSend().thenThrow(new IOException());
 
-        assertThrows(IOException.class, () -> recordFetcher.fetch(Button._4, Board._1));
+        assertThrows(IOException.class, () -> recordFetcher.fetch(Button._4));
     }
 
     @Test
     void test_fetch_interruptedException() throws Exception {
         stubHttpClientSend().thenThrow(new InterruptedException());
 
-        assertThrows(InterruptedException.class, () -> recordFetcher.fetch(Button._4, Board._1));
+        assertThrows(InterruptedException.class, () -> recordFetcher.fetch(Button._4));
     }
 
     private OngoingStubbing<HttpResponse<String>> stubHttpClientSend() throws Exception {

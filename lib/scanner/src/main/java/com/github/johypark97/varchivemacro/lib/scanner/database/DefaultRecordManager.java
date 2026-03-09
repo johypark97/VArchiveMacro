@@ -3,7 +3,6 @@ package com.github.johypark97.varchivemacro.lib.scanner.database;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
 import com.github.johypark97.varchivemacro.lib.scanner.api.Api;
-import com.github.johypark97.varchivemacro.lib.scanner.api.Api.Board;
 import com.github.johypark97.varchivemacro.lib.scanner.api.ApiException;
 import com.github.johypark97.varchivemacro.lib.scanner.api.RecordFetcher;
 import com.github.johypark97.varchivemacro.lib.scanner.database.datastruct.RecordData;
@@ -11,9 +10,7 @@ import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,9 +20,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.BiConsumer;
 
 public class DefaultRecordManager implements RecordManager {
-    private static final List<Board> BOARDS = Arrays.stream(Board.values())
-            .filter((x) -> !EnumSet.of(Board.SC5, Board.SC10, Board.SC15).contains(x)).toList();
-
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     private final RecordMap recordMap;
@@ -47,20 +41,16 @@ public class DefaultRecordManager implements RecordManager {
 
         RecordFetcher fetcher = Api.newRecordFetcher(djName);
         for (Button button : Button.values()) {
-            for (Board board : BOARDS) {
-                fetcher.fetch(button, board);
+            fetcher.fetch(button);
 
-                Button b = fetcher.getResult().button;
-                for (RecordFetcher.FloorJson floor : fetcher.getResult().floors) {
-                    for (RecordFetcher.PatternJson pattern : floor.patterns) {
-                        int id = pattern.id;
-                        Pattern p = pattern.pattern;
-                        float rate = pattern.rate;
-                        boolean maxCombo = pattern.maxCombo == 1;
+            Button b = fetcher.getResult().button;
+            for (RecordFetcher.RecordJson record : fetcher.getResult().records) {
+                int id = record.id;
+                Pattern p = record.pattern;
+                float rate = record.score;
+                boolean maxCombo = record.maxCombo;
 
-                        recordMap.add(new LocalRecord(id, b, p, rate, maxCombo));
-                    }
-                }
+                recordMap.add(new LocalRecord(id, b, p, rate, maxCombo));
             }
         }
     }

@@ -4,7 +4,6 @@ import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGson
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;
-import com.github.johypark97.varchivemacro.lib.scanner.api.Api.Board;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -14,23 +13,24 @@ import java.util.List;
 public interface RecordFetcher {
     SuccessJson getResult();
 
-    void fetch(Button button, Board board) throws IOException, InterruptedException, ApiException;
+    void fetch(Button button) throws IOException, InterruptedException, ApiException;
 
     class SuccessJson {
         @Expose
         public boolean success;
 
         @Expose
-        public Board board;
+        @SerializedName("nickname")
+        public String djName;
 
         @Expose
         public Button button;
 
         @Expose
-        public int totalCount;
+        public int count;
 
         @Expose
-        public List<FloorJson> floors;
+        public List<RecordJson> records;
 
         public static SuccessJson fromJson(String json) {
             Gson gson = newGsonBuilder_general().create();
@@ -38,47 +38,82 @@ public interface RecordFetcher {
         }
     }
 
-
-    class FloorJson {
-        @Expose
-        public float floorNumber;
-
-        @Expose
-        public List<PatternJson> patterns;
-    }
-
-
-    class PatternJson {
+    class RecordJson {
         @Expose
         @SerializedName("title")
         public int id;
 
         @Expose
-        @SerializedName("name")
-        public String title;
+        public String name;
 
         @Expose
-        public String composer;
+        public String dlcCode;
 
         @Expose
         public Pattern pattern;
 
         @Expose
-        @SerializedName("score")
-        public float rate;
+        public int level;
+
+        /**
+         * nullable
+         */
+        @Expose
+        public Integer floor;
+
+        /**
+         * nullable
+         */
+        @Expose
+        public String floorName;
 
         @Expose
-        public int maxCombo;
+        public boolean newTab;
 
         @Expose
-        public String dlc;
+        public int maxRating;
 
         @Expose
-        public String dlcCode;
+        public float score;
+
+        @Expose
+        public boolean maxCombo;
+
+        /**
+         * nullable
+         */
+        @Expose
+        public Double rating;
+
+        @Expose
+        public double djpower;
+
+        /**
+         * nullable
+         */
+        @Expose
+        public Double maxDjpower;
+
+        /**
+         * nullable
+         */
+        @Expose
+        public String updatedAt;
     }
 
-
     class FailureJson {
+        /**
+         * nullable
+         */
+        @Expose
+        public Boolean success;
+
+        /**
+         * nullable
+         */
+        @Expose
+        public Integer errorCode;
+
         @Expose
         public String message;
 
