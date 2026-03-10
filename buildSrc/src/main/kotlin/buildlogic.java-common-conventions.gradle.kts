@@ -57,6 +57,7 @@ pmd {
 }
 
 tasks.named<Test>("test") {
+    jvmArgs("-Xshare:off")
     jvmArgs("-javaagent:${mockitoAgent.asPath}")
     useJUnitPlatform()
 }
