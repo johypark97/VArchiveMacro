@@ -4,22 +4,22 @@
 # -------- Gradle Plugins --------
 gradle-javacpp = "1.5.10"
 javafx-plugin = "0.1.0"
-jlink-plugin = "3.1.1"
+jlink-plugin = "3.2.1"
 
 # -------- Libraries --------
-gson = "2.12.1"
-guava = "33.4.0-jre"
+gson = "2.13.2"
+guava = "33.5.0-jre"
 java-semver = "0.10.2"
-javafx-version = "21.0.6"
+javafx-version = "25.0.2"
 jnativehook = "2.2.2"
-junit-jupiter = "5.11.4"
-log4j = "2.24.3"
-mockito = "5.15.2"
-pmd = "7.10.0"
-rxjava = "3.1.10"
-slf4j-api = "2.0.16"
-sqlite-jdbc = "3.49.1.0"
-tesseract-platform = "5.5.0-1.5.11"
+junit-jupiter = "6.0.3"
+log4j = "2.25.3"
+mockito = "5.22.0"
+pmd = "7.22.0"
+rxjava = "3.1.12"
+slf4j-api = "2.0.17"
+sqlite-jdbc = "3.51.2.0"
+tesseract-platform = "5.5.2-1.5.13"
 
 [libraries]
 # -------- Gradle Plugins --------
