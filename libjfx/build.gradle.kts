@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":lib:common"))
+    implementation(project(":libcommon"))
 }
 
 tasks.jar {

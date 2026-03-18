@@ -4,10 +4,10 @@ plugins {
 
 rootProject.name = "VArchiveMacro"
 
-include("macro")
+include("libcommon")
+include("libdesktop")
+include("libhook")
+include("libjfx")
+include("libscanner")
 
-include("lib:common")
-include("lib:desktop")
-include("lib:hook")
-include("lib:jfx")
-include("lib:scanner")
+include("macro")

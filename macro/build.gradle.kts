@@ -15,11 +15,11 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":lib:common"))
-    implementation(project(":lib:desktop"))
-    implementation(project(":lib:hook"))
-    implementation(project(":lib:jfx"))
-    implementation(project(":lib:scanner"))
+    implementation(project(":libcommon"))
+    implementation(project(":libdesktop"))
+    implementation(project(":libhook"))
+    implementation(project(":libjfx"))
+    implementation(project(":libscanner"))
 }
 
 application {
