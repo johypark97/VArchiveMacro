@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
-import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
+import com.github.johypark97.varchivemacro.libdesktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;

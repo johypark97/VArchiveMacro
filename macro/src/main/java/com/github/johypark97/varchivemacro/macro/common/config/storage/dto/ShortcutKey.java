@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.common.config.storage.dto;
 
-import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
+import com.github.johypark97.varchivemacro.libdesktop.InputKey;
 import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCombination;
 import com.google.gson.annotations.Expose;
 

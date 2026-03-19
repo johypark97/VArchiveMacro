@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.desktop;
+package com.github.johypark97.varchivemacro.libdesktop;
 
 import java.awt.event.KeyEvent;
 

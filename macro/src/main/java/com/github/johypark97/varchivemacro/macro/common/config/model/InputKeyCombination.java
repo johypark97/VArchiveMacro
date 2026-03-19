@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.common.config.model;
 
-import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
+import com.github.johypark97.varchivemacro.libdesktop.InputKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

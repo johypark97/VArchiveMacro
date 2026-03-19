@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.common.converter;
 
-import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
+import com.github.johypark97.varchivemacro.libdesktop.InputKey;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import java.util.EnumSet;
 import javafx.scene.input.KeyCode;

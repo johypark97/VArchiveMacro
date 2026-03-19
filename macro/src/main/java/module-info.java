@@ -6,7 +6,7 @@ module varchivemacro.macro {
     requires java.sql;
 
     requires varchivemacro.libcommon;
-    requires varchivemacro.lib.desktop;
+    requires varchivemacro.libdesktop;
     requires varchivemacro.lib.hook;
     requires varchivemacro.lib.jfx;
     requires varchivemacro.lib.scanner;

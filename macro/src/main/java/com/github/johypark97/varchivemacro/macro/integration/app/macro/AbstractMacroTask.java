@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.macro;
 
-import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
-import com.github.johypark97.varchivemacro.lib.desktop.InputKey;
+import com.github.johypark97.varchivemacro.libdesktop.AwtRobotHelper;
+import com.github.johypark97.varchivemacro.libdesktop.InputKey;
 import com.github.johypark97.varchivemacro.macro.common.config.model.MacroConfig;
 import com.github.johypark97.varchivemacro.macro.integration.app.common.InterruptibleTask;
 import java.awt.AWTException;
