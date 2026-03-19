@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
-import com.github.johypark97.varchivemacro.lib.hook.FxHookWrapper;
+import com.github.johypark97.varchivemacro.libhook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;

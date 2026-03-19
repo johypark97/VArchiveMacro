@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.hook;
+package com.github.johypark97.varchivemacro.libhook;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;

@@ -1,4 +1,4 @@
-module varchivemacro.lib.hook {
+module varchivemacro.libhook {
     // javafx
     requires javafx.graphics;
 
@@ -7,5 +7,5 @@ module varchivemacro.lib.hook {
     requires org.slf4j;
 
     // exports
-    exports com.github.johypark97.varchivemacro.lib.hook;
+    exports com.github.johypark97.varchivemacro.libhook;
 }

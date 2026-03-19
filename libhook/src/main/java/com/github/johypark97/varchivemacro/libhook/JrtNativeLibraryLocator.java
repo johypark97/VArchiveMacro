@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.hook;
+package com.github.johypark97.varchivemacro.libhook;
 
 import com.github.kwhat.jnativehook.NativeLibraryLocator;
 import com.github.kwhat.jnativehook.NativeSystem;

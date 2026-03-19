@@ -7,7 +7,7 @@ module varchivemacro.macro {
 
     requires varchivemacro.libcommon;
     requires varchivemacro.libdesktop;
-    requires varchivemacro.lib.hook;
+    requires varchivemacro.libhook;
     requires varchivemacro.lib.jfx;
     requires varchivemacro.lib.scanner;
 
