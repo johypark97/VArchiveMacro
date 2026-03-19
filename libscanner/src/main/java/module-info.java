@@ -1,4 +1,4 @@
-module varchivemacro.lib.scanner {
+module varchivemacro.libscanner {
     requires java.desktop;
     requires java.net.http;
 
@@ -15,12 +15,12 @@ module varchivemacro.lib.scanner {
     requires org.bytedeco.tesseract.windows.x86_64;
 
     // exports
-    exports com.github.johypark97.varchivemacro.lib.scanner.api;
-    exports com.github.johypark97.varchivemacro.lib.scanner.area;
-    exports com.github.johypark97.varchivemacro.lib.scanner.database.comparator;
-    exports com.github.johypark97.varchivemacro.lib.scanner.database.datastruct to com.google.gson;
-    exports com.github.johypark97.varchivemacro.lib.scanner.database;
-    exports com.github.johypark97.varchivemacro.lib.scanner.ocr;
-    exports com.github.johypark97.varchivemacro.lib.scanner.recognizer;
-    exports com.github.johypark97.varchivemacro.lib.scanner;
+    exports com.github.johypark97.varchivemacro.libscanner.api;
+    exports com.github.johypark97.varchivemacro.libscanner.area;
+    exports com.github.johypark97.varchivemacro.libscanner.database.comparator;
+    exports com.github.johypark97.varchivemacro.libscanner.database.datastruct to com.google.gson;
+    exports com.github.johypark97.varchivemacro.libscanner.database;
+    exports com.github.johypark97.varchivemacro.libscanner.ocr;
+    exports com.github.johypark97.varchivemacro.libscanner.recognizer;
+    exports com.github.johypark97.varchivemacro.libscanner;
 }

@@ -1,9 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.factory;
 
-import com.github.johypark97.varchivemacro.lib.scanner.Enums;
-import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionArea;
-import com.github.johypark97.varchivemacro.lib.scanner.area.CollectionAreaFactory;
-import com.github.johypark97.varchivemacro.lib.scanner.area.NotSupportedResolutionException;
+import com.github.johypark97.varchivemacro.libscanner.Enums;
+import com.github.johypark97.varchivemacro.libscanner.area.CollectionArea;
+import com.github.johypark97.varchivemacro.libscanner.area.CollectionAreaFactory;
+import com.github.johypark97.varchivemacro.libscanner.area.NotSupportedResolutionException;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordButtonConverter;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordPatternConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;

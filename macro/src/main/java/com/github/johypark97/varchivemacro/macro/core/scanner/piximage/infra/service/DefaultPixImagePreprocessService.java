@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.service;
 
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixPreprocessor;
+import com.github.johypark97.varchivemacro.libscanner.ocr.PixError;
+import com.github.johypark97.varchivemacro.libscanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.exception.PixImageException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.model.PixImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.service.PixImagePreprocessService;

@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.model;
 
-import com.github.johypark97.varchivemacro.lib.scanner.ImageConverter;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixError;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.PixWrapper;
+import com.github.johypark97.varchivemacro.libscanner.ImageConverter;
+import com.github.johypark97.varchivemacro.libscanner.ocr.PixError;
+import com.github.johypark97.varchivemacro.libscanner.ocr.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.exception.PixImageException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.model.PixImage;
 import java.awt.image.BufferedImage;

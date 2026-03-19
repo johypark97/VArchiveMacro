@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.title.app;
 
-import com.github.johypark97.varchivemacro.lib.scanner.database.TitleTool;
+import com.github.johypark97.varchivemacro.libscanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.SongTitleMapper;
 import java.io.IOException;

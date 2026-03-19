@@ -9,7 +9,7 @@ module varchivemacro.macro {
     requires varchivemacro.libdesktop;
     requires varchivemacro.libhook;
     requires varchivemacro.libjfx;
-    requires varchivemacro.lib.scanner;
+    requires varchivemacro.libscanner;
 
     // javafx
     requires javafx.controls;

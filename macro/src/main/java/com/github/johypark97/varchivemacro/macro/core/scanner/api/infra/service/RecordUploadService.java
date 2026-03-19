@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.service;
 
-import com.github.johypark97.varchivemacro.lib.scanner.api.Api;
-import com.github.johypark97.varchivemacro.lib.scanner.api.ApiException;
-import com.github.johypark97.varchivemacro.lib.scanner.api.RecordUploader;
+import com.github.johypark97.varchivemacro.libscanner.api.Api;
+import com.github.johypark97.varchivemacro.libscanner.api.ApiException;
+import com.github.johypark97.varchivemacro.libscanner.api.RecordUploader;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordButtonConverter;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordPatternConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.model.Account;

@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.ocr.infra.service;
 
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.DefaultOcrWrapper;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrInitializationError;
-import com.github.johypark97.varchivemacro.lib.scanner.ocr.OcrWrapper;
+import com.github.johypark97.varchivemacro.libscanner.ocr.DefaultOcrWrapper;
+import com.github.johypark97.varchivemacro.libscanner.ocr.OcrInitializationError;
+import com.github.johypark97.varchivemacro.libscanner.ocr.OcrWrapper;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.app.OcrService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.infra.exception.OcrInitializationException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.model.PixImage;
