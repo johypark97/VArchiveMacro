@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.common.programdata.infra.model;
 
-import com.github.johypark97.varchivemacro.lib.common.GsonWrapper;
+import com.github.johypark97.varchivemacro.libcommon.GsonWrapper;
 import com.github.johypark97.varchivemacro.macro.common.programdata.domain.DataVersion;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;

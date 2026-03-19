@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.common.i18n.loader;
 
-import com.github.johypark97.varchivemacro.lib.common.service.XmlResourceBundleControl;
+import com.github.johypark97.varchivemacro.libcommon.service.XmlResourceBundleControl;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.spi.LanguageProviderImpl;
 import java.util.Locale;

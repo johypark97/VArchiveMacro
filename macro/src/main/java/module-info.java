@@ -5,7 +5,7 @@ module varchivemacro.macro {
     requires java.net.http;
     requires java.sql;
 
-    requires varchivemacro.lib.common;
+    requires varchivemacro.libcommon;
     requires varchivemacro.lib.desktop;
     requires varchivemacro.lib.hook;
     requires varchivemacro.lib.jfx;

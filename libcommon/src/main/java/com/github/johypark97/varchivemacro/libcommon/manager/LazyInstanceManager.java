@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.common.manager;
+package com.github.johypark97.varchivemacro.libcommon.manager;
 
 import java.util.HashMap;
 import java.util.Map;

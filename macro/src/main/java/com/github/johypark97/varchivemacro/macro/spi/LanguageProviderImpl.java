@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.spi;
 
-import com.github.johypark97.varchivemacro.lib.common.service.AbstractXmlResourceBundleProvider;
+import com.github.johypark97.varchivemacro.libcommon.service.AbstractXmlResourceBundleProvider;
 import java.io.InputStream;
 
 public class LanguageProviderImpl extends AbstractXmlResourceBundleProvider

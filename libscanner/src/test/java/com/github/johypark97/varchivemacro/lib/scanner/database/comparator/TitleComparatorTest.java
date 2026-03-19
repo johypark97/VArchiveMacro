@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.scanner.database.comparator;
 
-import static com.github.johypark97.varchivemacro.lib.common.resource.ResourceUtil.readAllLines;
+import static com.github.johypark97.varchivemacro.libcommon.resource.ResourceUtil.readAllLines;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 

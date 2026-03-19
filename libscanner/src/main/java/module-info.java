@@ -2,7 +2,7 @@ module varchivemacro.lib.scanner {
     requires java.desktop;
     requires java.net.http;
 
-    requires varchivemacro.lib.common;
+    requires varchivemacro.libcommon;
 
     // libraries
     requires com.google.common;

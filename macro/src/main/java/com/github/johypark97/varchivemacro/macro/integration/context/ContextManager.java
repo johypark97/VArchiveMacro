@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.integration.context;
 
-import com.github.johypark97.varchivemacro.lib.common.manager.InstanceManager;
-import com.github.johypark97.varchivemacro.lib.common.manager.LazyInstanceManager;
+import com.github.johypark97.varchivemacro.libcommon.manager.InstanceManager;
+import com.github.johypark97.varchivemacro.libcommon.manager.LazyInstanceManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.InvalidAccountFileException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;

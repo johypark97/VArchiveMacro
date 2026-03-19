@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.lib.scanner.database.datastruct;
 
-import static com.github.johypark97.varchivemacro.lib.common.GsonWrapper.newGsonBuilder_dump;
+import static com.github.johypark97.varchivemacro.libcommon.GsonWrapper.newGsonBuilder_dump;
 
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Button;
 import com.github.johypark97.varchivemacro.lib.scanner.Enums.Pattern;

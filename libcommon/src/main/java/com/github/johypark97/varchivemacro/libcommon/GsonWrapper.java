@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.common;
+package com.github.johypark97.varchivemacro.libcommon;
 
 import com.google.gson.GsonBuilder;
 
