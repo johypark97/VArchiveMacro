@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage.base;
 
-import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import com.github.johypark97.varchivemacro.libjfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.ui.common.Treeable;
 import javafx.stage.Stage;
 

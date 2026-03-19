@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp;
 
-import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import com.github.johypark97.varchivemacro.libjfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerUploadViewModel;
 import java.util.List;
 import javafx.collections.ObservableList;

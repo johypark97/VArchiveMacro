@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.jfx.fxgui;
+package com.github.johypark97.varchivemacro.libjfx.fxgui;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;

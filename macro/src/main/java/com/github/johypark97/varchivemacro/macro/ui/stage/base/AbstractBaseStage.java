@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.stage.base;
 
-import com.github.johypark97.varchivemacro.lib.jfx.AlertBuilder;
+import com.github.johypark97.varchivemacro.libjfx.AlertBuilder;
 import java.awt.Toolkit;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.jfx.component;
+package com.github.johypark97.varchivemacro.libjfx.component;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;

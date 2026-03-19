@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.view.component;
 
-import com.github.johypark97.varchivemacro.lib.jfx.component.ImageViewer;
+import com.github.johypark97.varchivemacro.libjfx.component.ImageViewer;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp;
 
-import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import com.github.johypark97.varchivemacro.libjfx.Mvp;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;

@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.scanner;
 
-import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
+import com.github.johypark97.varchivemacro.libjfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;

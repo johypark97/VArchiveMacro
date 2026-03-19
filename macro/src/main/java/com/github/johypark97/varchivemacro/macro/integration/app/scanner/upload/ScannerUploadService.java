@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.upload;
 
-import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
+import com.github.johypark97.varchivemacro.libjfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.SongRecordUploadService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptureLinkService;

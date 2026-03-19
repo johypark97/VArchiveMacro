@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp;
 
-import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import com.github.johypark97.varchivemacro.libjfx.Mvp;
 
 public interface Macro {
     interface Presenter extends Mvp.MvpPresenter<View, Presenter> {

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.jfx.mvp;
+package com.github.johypark97.varchivemacro.libjfx.mvp;
 
 public interface MvpPresenter<T extends MvpView<?>> {
     boolean isLinked();

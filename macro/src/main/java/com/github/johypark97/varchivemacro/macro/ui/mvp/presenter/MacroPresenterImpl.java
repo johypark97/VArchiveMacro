@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
 import com.github.johypark97.varchivemacro.libhook.FxHookWrapper;
-import com.github.johypark97.varchivemacro.lib.jfx.TaskManager;
+import com.github.johypark97.varchivemacro.libjfx.TaskManager;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.model.MacroConfig;

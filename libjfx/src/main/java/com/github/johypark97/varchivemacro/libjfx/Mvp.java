@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.jfx;
+package com.github.johypark97.varchivemacro.libjfx;
 
 import com.github.johypark97.varchivemacro.libcommon.ObjectInjector;
 import java.io.IOException;

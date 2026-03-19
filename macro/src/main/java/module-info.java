@@ -8,7 +8,7 @@ module varchivemacro.macro {
     requires varchivemacro.libcommon;
     requires varchivemacro.libdesktop;
     requires varchivemacro.libhook;
-    requires varchivemacro.lib.jfx;
+    requires varchivemacro.libjfx;
     requires varchivemacro.lib.scanner;
 
     // javafx
@@ -37,7 +37,7 @@ module varchivemacro.macro {
     uses LanguageProvider;
 
     // exports
-    exports com.github.johypark97.varchivemacro.macro.ui.mvp.presenter to varchivemacro.lib.jfx;
-    exports com.github.johypark97.varchivemacro.macro.ui.mvp.view to varchivemacro.lib.jfx;
+    exports com.github.johypark97.varchivemacro.macro.ui.mvp.presenter to varchivemacro.libjfx;
+    exports com.github.johypark97.varchivemacro.macro.ui.mvp.view to varchivemacro.libjfx;
     exports com.github.johypark97.varchivemacro.macro;
 }

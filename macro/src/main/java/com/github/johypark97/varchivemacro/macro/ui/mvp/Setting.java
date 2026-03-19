@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp;
 
-import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import com.github.johypark97.varchivemacro.libjfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.config.model.MacroClientMode;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.scene.input.KeyEvent;

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.jfx;
+package com.github.johypark97.varchivemacro.libjfx;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;

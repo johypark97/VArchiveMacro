@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.view;
 
-import com.github.johypark97.varchivemacro.lib.jfx.Mvp;
+import com.github.johypark97.varchivemacro.libjfx.Mvp;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.ui.common.SimpleTransition;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorFrame;

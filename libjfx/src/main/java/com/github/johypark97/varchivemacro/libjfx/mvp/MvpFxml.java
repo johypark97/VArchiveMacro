@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.lib.jfx.mvp;
+package com.github.johypark97.varchivemacro.libjfx.mvp;
 
 import java.io.IOException;
 import java.net.URL;
