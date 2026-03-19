@@ -19,7 +19,6 @@ dependencies {
     implementation(project(":libdesktop"))
     implementation(project(":libhook"))
     implementation(project(":libjfx"))
-    implementation(project(":libscanner"))
 }
 
 application {

@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.integration.app.scanner.review;
 
-import com.github.johypark97.varchivemacro.libscanner.StringUtils;
+import com.github.johypark97.varchivemacro.macro.libscanner.StringUtils;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model.CaptureEntry;
 import com.github.johypark97.varchivemacro.macro.core.scanner.link.app.SongCaptureLinkService;

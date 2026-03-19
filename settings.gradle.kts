@@ -8,6 +8,5 @@ include("libcommon")
 include("libdesktop")
 include("libhook")
 include("libjfx")
-include("libscanner")
 
 include("macro")

@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.service;
 
-import com.github.johypark97.varchivemacro.libscanner.Enums;
-import com.github.johypark97.varchivemacro.libscanner.database.DefaultRecordManager;
-import com.github.johypark97.varchivemacro.libscanner.database.RecordManager;
+import com.github.johypark97.varchivemacro.macro.libscanner.Enums;
+import com.github.johypark97.varchivemacro.macro.libscanner.database.DefaultRecordManager;
+import com.github.johypark97.varchivemacro.macro.libscanner.database.RecordManager;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordButtonConverter;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordPatternConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecordTable;

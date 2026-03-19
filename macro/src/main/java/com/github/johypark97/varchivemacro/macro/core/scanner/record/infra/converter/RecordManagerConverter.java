@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.converter;
 
-import com.github.johypark97.varchivemacro.libscanner.database.RecordManager;
+import com.github.johypark97.varchivemacro.macro.libscanner.database.RecordManager;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordButtonConverter;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordPatternConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordButton;

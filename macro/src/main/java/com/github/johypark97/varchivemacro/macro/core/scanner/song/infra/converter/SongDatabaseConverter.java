@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.converter;
 
-import com.github.johypark97.varchivemacro.libscanner.database.SongDatabase;
+import com.github.johypark97.varchivemacro.macro.libscanner.database.SongDatabase;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 
 public class SongDatabaseConverter {

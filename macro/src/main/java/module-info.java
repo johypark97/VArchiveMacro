@@ -9,7 +9,6 @@ module varchivemacro.macro {
     requires varchivemacro.libdesktop;
     requires varchivemacro.libhook;
     requires varchivemacro.libjfx;
-    requires varchivemacro.libscanner;
 
     // javafx
     requires javafx.controls;
@@ -26,11 +25,19 @@ module varchivemacro.macro {
     requires com.google.gson;
     requires io.reactivex.rxjava3;
     requires org.slf4j;
+    requires org.xerial.sqlitejdbc;
+
+    // tesseract-platform
+    requires org.bytedeco.javacpp.windows.x86_64;
+    requires org.bytedeco.leptonica.windows.x86_64;
+    requires org.bytedeco.tesseract.windows.x86_64;
 
     exports com.github.johypark97.varchivemacro.macro.common.config.storage.dto to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.common.github.infra.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.common.license.infra.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.common.programdata.infra.model to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.libscanner to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.libscanner.database.datastruct to com.google.gson;
 
     // xml language resource bundle provider
     provides LanguageProvider with LanguageProviderImpl;
