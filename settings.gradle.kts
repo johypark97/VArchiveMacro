@@ -6,7 +6,7 @@ rootProject.name = "VArchiveMacro"
 
 include("libcommon")
 include("libdesktop")
-include("libhook")
 include("libjfx")
+include("libjfxhook")
 
 include("macro")

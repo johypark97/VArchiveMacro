@@ -7,8 +7,8 @@ module varchivemacro.macro {
 
     requires varchivemacro.libcommon;
     requires varchivemacro.libdesktop;
-    requires varchivemacro.libhook;
     requires varchivemacro.libjfx;
+    requires varchivemacro.libjfxhook;
 
     // javafx
     requires javafx.controls;

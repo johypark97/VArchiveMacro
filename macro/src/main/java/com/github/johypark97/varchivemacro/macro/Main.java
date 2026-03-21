@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro;
 
-import com.github.johypark97.varchivemacro.libhook.FxHookWrapper;
+import com.github.johypark97.varchivemacro.libjfxhook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.libjfx.AlertBuilder;
 import com.github.johypark97.varchivemacro.macro.libscanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;

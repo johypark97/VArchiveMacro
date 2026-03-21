@@ -9,6 +9,6 @@ tasks.jar {
         attributes["Implementation-Version"] = version
     }
 
-    archiveBaseName = "libhook"
+    archiveBaseName = "libjfxhook"
     archiveVersion = version.toString()
 }

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.libhook;
+package com.github.johypark97.varchivemacro.libjfxhook;
 
 import com.github.kwhat.jnativehook.DefaultLibraryLocator;
 import com.github.kwhat.jnativehook.NativeLibraryLocator;
