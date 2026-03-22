@@ -10,7 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Window;
 
 public class AlertBuilder {
-    private static final String STACK_PREFIX = "\tat ";
+    private static final String STACK_PREFIX = "    at ";
 
     public final Alert alert;
 
