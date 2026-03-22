@@ -63,7 +63,7 @@ public class AwtRobotHelper {
         MultiResolutionImage multiResolutionImage =
                 robot.createMultiResolutionScreenCapture(new Rectangle(screenSize));
         List<Image> variantList = multiResolutionImage.getResolutionVariants();
-        Image image = variantList.get(variantList.size() - 1);
+        Image image = variantList.getLast();
 
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
                 BufferedImage.TYPE_INT_RGB);

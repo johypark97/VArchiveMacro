@@ -77,7 +77,7 @@ public class ObjectInjector {
                             instance.getClass()));
         }
 
-        return map.entrySet().stream().filter(x -> x.getValue().get(0).key().equals(key))
+        return map.entrySet().stream().filter(x -> x.getValue().getFirst().key().equals(key))
                 .map(Entry::getKey).toList();
     }
 
@@ -95,7 +95,7 @@ public class ObjectInjector {
                             InjectedObject.class.getName(), key, instance.getClass()));
         }
 
-        return list.get(0);
+        return list.getFirst();
     }
 
     @SafeVarargs
