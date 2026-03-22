@@ -1,7 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.common.license.infra.service;
 
-import static com.github.johypark97.varchivemacro.libcommon.GsonWrapper.newGsonBuilder_general;
-import static com.github.johypark97.varchivemacro.libcommon.resource.ResourceUtil.readAllLines;
+import static com.github.johypark97.varchivemacro.macro.common.GsonWrapper.newGsonBuilder_general;
+import static com.github.johypark97.varchivemacro.macro.common.utility.ResourceUtil.readAllLines;
 
 import com.github.johypark97.varchivemacro.macro.common.license.domain.model.License;
 import com.github.johypark97.varchivemacro.macro.common.license.infra.model.LicenseJson;

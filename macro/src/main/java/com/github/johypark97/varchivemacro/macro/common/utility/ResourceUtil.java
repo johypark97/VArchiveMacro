@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.libcommon.resource;
+package com.github.johypark97.varchivemacro.macro.common.utility;
 
 import java.io.BufferedReader;
 import java.io.IOException;

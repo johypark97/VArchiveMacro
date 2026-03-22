@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.libcommon;
+package com.github.johypark97.varchivemacro.macro.common;
 
 import java.nio.file.Path;
 

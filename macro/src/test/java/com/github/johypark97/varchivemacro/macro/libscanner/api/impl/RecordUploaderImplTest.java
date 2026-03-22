@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.libscanner.api.impl;
 
-import static com.github.johypark97.varchivemacro.libcommon.GsonWrapper.newGsonBuilder_general;
+import static com.github.johypark97.varchivemacro.macro.common.GsonWrapper.newGsonBuilder_general;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;

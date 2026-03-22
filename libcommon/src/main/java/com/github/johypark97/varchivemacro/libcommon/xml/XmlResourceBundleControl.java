@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.libcommon.service;
+package com.github.johypark97.varchivemacro.libcommon.xml;
 
 import java.io.IOException;
 import java.io.InputStream;

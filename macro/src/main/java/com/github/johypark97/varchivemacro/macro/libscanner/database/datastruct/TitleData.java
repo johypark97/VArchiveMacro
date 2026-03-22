@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.libscanner.database.datastruct;
 
-import static com.github.johypark97.varchivemacro.libcommon.GsonWrapper.newGsonBuilder_dump;
+import static com.github.johypark97.varchivemacro.macro.common.GsonWrapper.newGsonBuilder_dump;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;

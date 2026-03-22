@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
-import com.github.johypark97.varchivemacro.libcommon.PathHelper;
+import com.github.johypark97.varchivemacro.macro.common.PathHelper;
 import com.github.johypark97.varchivemacro.libdesktop.InputKey;
 import com.github.johypark97.varchivemacro.libjfxhook.converter.InputKeyConverter;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;

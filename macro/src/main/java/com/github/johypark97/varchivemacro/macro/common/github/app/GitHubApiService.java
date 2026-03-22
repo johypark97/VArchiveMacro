@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.common.github.app;
 
-import com.github.johypark97.varchivemacro.libcommon.GsonWrapper;
+import com.github.johypark97.varchivemacro.macro.common.GsonWrapper;
 import com.github.johypark97.varchivemacro.macro.common.github.domain.GitHubContent;
 import com.github.johypark97.varchivemacro.macro.common.github.domain.GitHubRelease;
 import com.github.johypark97.varchivemacro.macro.common.github.infra.GitHubApi;
