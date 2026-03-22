@@ -1,12 +1,15 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
-import com.github.johypark97.varchivemacro.libjfxhook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.libjfx.TaskManager;
+import com.github.johypark97.varchivemacro.libjfxhook.JfxHook;
+import com.github.johypark97.varchivemacro.libjfxhook.domain.event.JfxHookEventSubscription;
+import com.github.johypark97.varchivemacro.libjfxhook.domain.event.JfxHookKeyEvent;
+import com.github.johypark97.varchivemacro.libjfxhook.domain.event.JfxHookKeyListener;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.model.MacroConfig;
+import com.github.johypark97.varchivemacro.macro.common.converter.JfxHookKeyEventConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
 import com.github.johypark97.varchivemacro.macro.integration.app.macro.MacroDirection;
 import com.github.johypark97.varchivemacro.macro.integration.app.macro.MacroProgress;
 import com.github.johypark97.varchivemacro.macro.integration.context.MacroContext;
@@ -17,8 +20,6 @@ import com.github.johypark97.varchivemacro.macro.ui.event.UiEvent;
 import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.Macro;
 import com.github.johypark97.varchivemacro.macro.ui.stage.HomeStage;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import io.reactivex.rxjava3.disposables.Disposable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -37,7 +38,7 @@ public class MacroPresenterImpl implements Macro.Presenter {
     private final AtomicBoolean taskRunning = new AtomicBoolean();
 
     private Disposable disposableGlobalEvent;
-    private NativeKeyListener nativeKeyListener;
+    private JfxHookEventSubscription keyEventSubscription;
 
     @MvpView
     public Macro.View view;
@@ -102,37 +103,38 @@ public class MacroPresenterImpl implements Macro.Presenter {
         InputKeyCombination startDownKey = config.startDownKey().value();
         InputKeyCombination stopKey = config.stopKey().value();
 
-        nativeKeyListener = new NativeKeyListener() {
+        keyEventSubscription = JfxHook.subscribe(new JfxHookKeyListener() {
             @Override
-            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-                NativeInputKey nativeInputKey = new NativeInputKey(nativeEvent);
-                if (nativeInputKey.isInteroperable() && nativeInputKey.isEqual(stopKey)) {
+            public void onKeyPressed(JfxHookKeyEvent event) {
+                if (event.otherMod() || !event.isInteroperable()) {
+                    return;
+                }
+
+                if (JfxHookKeyEventConverter.toInputKeyCombination(event).equals(stopKey)) {
                     stopMacro();
                 }
             }
 
             @Override
-            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
-                NativeInputKey nativeInputKey = new NativeInputKey(nativeEvent);
-                if (!nativeInputKey.isInteroperable()) {
+            public void onKeyReleased(JfxHookKeyEvent event) {
+                if (event.otherMod() || !event.isInteroperable()) {
                     return;
                 }
 
-                if (nativeInputKey.isEqual(startUpKey)) {
+                InputKeyCombination key = JfxHookKeyEventConverter.toInputKeyCombination(event);
+                if (key.equals(startUpKey)) {
                     startMacro(MacroDirection.UP);
-                } else if (nativeInputKey.isEqual(startDownKey)) {
+                } else if (key.equals(startDownKey)) {
                     startMacro(MacroDirection.DOWN);
                 }
             }
-        };
-
-        FxHookWrapper.addKeyListener(nativeKeyListener);
+        });
     }
 
     private void unregisterKeyboardHook() {
-        if (nativeKeyListener != null) {
-            FxHookWrapper.removeKeyListener(nativeKeyListener);
-            nativeKeyListener = null; // NOPMD
+        if (keyEventSubscription != null) {
+            keyEventSubscription.unsubscribe();
+            keyEventSubscription = null; // NOPMD
         }
     }
 

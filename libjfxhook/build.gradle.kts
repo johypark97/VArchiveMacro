@@ -4,6 +4,10 @@ plugins {
     id("buildlogic.java-library-conventions")
 }
 
+dependencies {
+    implementation(project(":libdesktop"))
+}
+
 tasks.jar {
     manifest {
         attributes["Implementation-Version"] = version

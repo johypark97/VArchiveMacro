@@ -1,12 +1,12 @@
 package com.github.johypark97.varchivemacro.macro;
 
-import com.github.johypark97.varchivemacro.libjfxhook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.libjfx.AlertBuilder;
-import com.github.johypark97.varchivemacro.macro.libscanner.ImageConverter;
+import com.github.johypark97.varchivemacro.libjfxhook.JfxHook;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.config.model.ProgramConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
+import com.github.johypark97.varchivemacro.macro.libscanner.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import java.awt.Toolkit;
 import javafx.application.Application;
@@ -63,10 +63,10 @@ public class Main extends Application {
 
     @Override
     public void init() throws Exception {
-        FxHookWrapper.disableLogging();
-        FxHookWrapper.useJLinkNativeLibraryLocator();
-        FxHookWrapper.setEventDispatcher();
-        FxHookWrapper.register();
+        JfxHook.disableLogging();
+        JfxHook.useJLinkNativeLibraryLocator();
+        JfxHook.setEventDispatcher();
+        JfxHook.register();
     }
 
     @Override
@@ -85,6 +85,6 @@ public class Main extends Application {
 
     @Override
     public void stop() throws Exception {
-        FxHookWrapper.unregister();
+        JfxHook.unregister();
     }
 }

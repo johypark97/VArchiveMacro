@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.common.converter;
+package com.github.johypark97.varchivemacro.libjfxhook.converter;
 
 import com.github.johypark97.varchivemacro.libdesktop.InputKey;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;

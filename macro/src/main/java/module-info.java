@@ -19,7 +19,6 @@ module varchivemacro.macro {
     opens com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel to javafx.base;
 
     // libraries
-    requires com.github.kwhat.jnativehook;
     requires com.github.zafarkhaja.semver;
     requires com.google.common;
     requires com.google.gson;

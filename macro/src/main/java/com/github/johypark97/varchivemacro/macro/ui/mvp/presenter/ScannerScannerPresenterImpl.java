@@ -1,13 +1,16 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
-import com.github.johypark97.varchivemacro.libjfxhook.FxHookWrapper;
 import com.github.johypark97.varchivemacro.libjfx.TaskManager;
+import com.github.johypark97.varchivemacro.libjfxhook.JfxHook;
+import com.github.johypark97.varchivemacro.libjfxhook.domain.event.JfxHookEventSubscription;
+import com.github.johypark97.varchivemacro.libjfxhook.domain.event.JfxHookKeyEvent;
+import com.github.johypark97.varchivemacro.libjfxhook.domain.event.JfxHookKeyListener;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCombination;
 import com.github.johypark97.varchivemacro.macro.common.config.model.ScannerConfig;
+import com.github.johypark97.varchivemacro.macro.common.converter.JfxHookKeyEventConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
-import com.github.johypark97.varchivemacro.macro.common.utility.NativeInputKey;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
@@ -21,8 +24,6 @@ import com.github.johypark97.varchivemacro.macro.ui.event.UiEventBus;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerScanner;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerScannerViewModel;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStage;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import io.reactivex.rxjava3.disposables.Disposable;
 import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;
@@ -50,7 +51,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
     private final StringProperty cacheDirectoryText = new SimpleStringProperty();
 
     private Disposable disposableGlobalEvent;
-    private NativeKeyListener nativeKeyListener;
+    private JfxHookEventSubscription keyEventSubscription;
     private ScannerContext scannerContext;
 
     @MvpView
@@ -138,31 +139,35 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
         InputKeyCombination startKey = config.startKey().value();
         InputKeyCombination stopKey = config.stopKey().value();
 
-        nativeKeyListener = new NativeKeyListener() {
+        keyEventSubscription = JfxHook.subscribe(new JfxHookKeyListener() {
             @Override
-            public void nativeKeyPressed(NativeKeyEvent nativeEvent) {
-                NativeInputKey nativeInputKey = new NativeInputKey(nativeEvent);
-                if (nativeInputKey.isInteroperable() && nativeInputKey.isEqual(stopKey)) {
+            public void onKeyPressed(JfxHookKeyEvent event) {
+                if (event.otherMod() || !event.isInteroperable()) {
+                    return;
+                }
+
+                if (JfxHookKeyEventConverter.toInputKeyCombination(event).equals(stopKey)) {
                     stopScan();
                 }
             }
 
             @Override
-            public void nativeKeyReleased(NativeKeyEvent nativeEvent) {
-                NativeInputKey nativeInputKey = new NativeInputKey(nativeEvent);
-                if (nativeInputKey.isInteroperable() && nativeInputKey.isEqual(startKey)) {
+            public void onKeyReleased(JfxHookKeyEvent event) {
+                if (event.otherMod() || !event.isInteroperable()) {
+                    return;
+                }
+
+                if (JfxHookKeyEventConverter.toInputKeyCombination(event).equals(startKey)) {
                     startScan();
                 }
             }
-        };
-
-        FxHookWrapper.addKeyListener(nativeKeyListener);
+        });
     }
 
     private void unregisterKeyboardHook() {
-        if (nativeKeyListener != null) {
-            FxHookWrapper.removeKeyListener(nativeKeyListener);
-            nativeKeyListener = null; // NOPMD
+        if (keyEventSubscription != null) {
+            keyEventSubscription.unsubscribe();
+            keyEventSubscription = null; // NOPMD
         }
     }
 
