@@ -24,6 +24,8 @@ dependencies {
 application {
     mainClass = "com.github.johypark97.varchivemacro.macro.Main"
     mainModule = "varchivemacro.macro"
+
+    applicationDefaultJvmArgs += "--enable-native-access=com.github.kwhat.jnativehook,javafx.graphics,org.xerial.sqlitejdbc"
 }
 
 jlink {
