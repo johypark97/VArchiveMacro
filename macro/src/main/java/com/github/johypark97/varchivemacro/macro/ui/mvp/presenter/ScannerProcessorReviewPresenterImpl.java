@@ -252,11 +252,6 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
             scannerProcessorStage.showError(Language.INSTANCE.getString(
                     "scanner.processor.review.dialog.exception.captureImageLoading"), e);
             return;
-        } catch (Exception e) {
-            String message = "Unexpected exception";
-            LOGGER.atError().setCause(e).log(message);
-            scannerProcessorStage.showError(message, e);
-            return;
         }
 
         view.setLinkEditorImage(captureImage);

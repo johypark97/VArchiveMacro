@@ -85,7 +85,7 @@ public class SongRecordUploadTask extends InterruptibleTask<List<SongRecordUploa
 
                 updateProgress(++count, total);
             }
-        } catch (Exception e) {
+        } catch (Exception e) { // NOPMD
             exception = e;
         }
 

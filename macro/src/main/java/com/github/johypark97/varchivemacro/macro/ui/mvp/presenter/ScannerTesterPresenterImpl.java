@@ -6,6 +6,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infr
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerTester;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerTesterStage;
+import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
@@ -43,7 +44,7 @@ public class ScannerTesterPresenterImpl implements ScannerTester.Presenter {
             scannerTesterStage.showWarning(language.getFormatString(
                     "scanner.tester.dialog.exception.notSupportedResolution", e.getMessage()));
             return;
-        } catch (Exception e) {
+        } catch (AWTException e) {
             String message = "Unexpected exception";
             scannerTesterStage.showError(message, e);
             return;

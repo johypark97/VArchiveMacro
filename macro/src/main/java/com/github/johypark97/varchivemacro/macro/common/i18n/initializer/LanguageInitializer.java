@@ -43,7 +43,7 @@ public class LanguageInitializer implements Supplier<ResourceBundle> {
         } catch (NoSuchFileException e) {
             LOGGER.atInfo()
                     .log("Locale configuration file not found. Use the system locale: {}", locale);
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.atError().setCause(e)
                     .log("An exception occurred while loading locale configuration file. Use the system locale: {}",
                             locale);

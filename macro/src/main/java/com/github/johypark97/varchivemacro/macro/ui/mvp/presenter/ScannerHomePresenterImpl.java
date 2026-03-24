@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
@@ -67,7 +68,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.Presenter {
                     language.getString("scanner.recordLoader.dialog.accountFile.invalidFile"), e);
 
             return false;
-        } catch (Exception e) {
+        } catch (IOException e) {
             String message = "Account file validation exception.";
             LOGGER.atError().setCause(e).log(message);
             homeStage.showError(message, e);
@@ -136,7 +137,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.Presenter {
 
                 try {
                     globalContext.songStorageService.load();
-                } catch (Exception e) {
+                } catch (SQLException e) {
                     LOGGER.atError().setCause(e).log("Song loading exception.");
                     Platform.runLater(() -> {
                         homeStage.showError(language.getString(
@@ -160,7 +161,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.Presenter {
 
                     return;
                 } catch (NoSuchFileException ignored) {
-                } catch (Exception e) {
+                } catch (Exception e) { // NOPMD
                     LOGGER.atError().setCause(e).log("Local records loading exception.");
                     Platform.runLater(() -> homeStage.showError(
                             language.getString("scanner.recordLoader.dialog.unexpectedError"),
@@ -234,7 +235,7 @@ public class ScannerHomePresenterImpl implements ScannerHome.Presenter {
             try {
                 globalContext.songRecordStorageService.loadFromRemote(djName);
                 globalContext.songRecordStorageService.saveToLocal();
-            } catch (Exception e) {
+            } catch (Exception e) { // NOPMD
                 LOGGER.atError().setCause(e).log("Remote records loading exception.");
                 Platform.runLater(() -> {
                     homeStage.showError(

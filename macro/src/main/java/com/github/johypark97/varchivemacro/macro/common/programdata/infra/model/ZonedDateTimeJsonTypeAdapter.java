@@ -22,10 +22,6 @@ public class ZonedDateTimeJsonTypeAdapter
     @Override
     public ZonedDateTime deserialize(JsonElement jsonElement, Type type,
             JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-        try {
-            return ZonedDateTimeConverter.parse(jsonElement.getAsString());
-        } catch (Exception e) {
-            throw new JsonParseException(e);
-        }
+        return ZonedDateTimeConverter.parse(jsonElement.getAsString());
     }
 }

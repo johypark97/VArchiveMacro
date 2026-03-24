@@ -1,8 +1,8 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
-import com.github.johypark97.varchivemacro.macro.common.PathHelper;
 import com.github.johypark97.varchivemacro.libdesktop.InputKey;
 import com.github.johypark97.varchivemacro.libjfxhook.converter.InputKeyConverter;
+import com.github.johypark97.varchivemacro.macro.common.PathHelper;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.config.AppConfigService;
 import com.github.johypark97.varchivemacro.macro.common.config.model.AppConfig;
@@ -151,7 +151,7 @@ public class SettingPresenterImpl implements Setting.Presenter {
 
         try {
             appConfigService.save();
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Config flush exception.");
             settingStage.showError(Language.INSTANCE.getString("setting.dialog.applyException"), e);
         }
@@ -204,7 +204,7 @@ public class SettingPresenterImpl implements Setting.Presenter {
                     language.getString("setting.dialog.accountFile.invalidFile"), e);
 
             return false;
-        } catch (Exception e) {
+        } catch (IOException e) {
             String message = "Account file validation exception.";
             LOGGER.atError().setCause(e).log(message);
             settingStage.showError(message, e);
@@ -241,7 +241,7 @@ public class SettingPresenterImpl implements Setting.Presenter {
                     language.getString("setting.dialog.cacheDirectory.notEmptyDirectory"), e);
 
             return false;
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Cache directory validation exception.");
 
             settingStage.showError(language.getString("setting.dialog.cacheDirectory.header"),

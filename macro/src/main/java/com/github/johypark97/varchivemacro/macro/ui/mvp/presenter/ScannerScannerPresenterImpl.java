@@ -11,6 +11,7 @@ import com.github.johypark97.varchivemacro.macro.common.config.model.InputKeyCom
 import com.github.johypark97.varchivemacro.macro.common.config.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.converter.JfxHookKeyEventConverter;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.InvalidAccountFileException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
@@ -27,6 +28,7 @@ import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerScannerStage;
 import io.reactivex.rxjava3.disposables.Disposable;
 import java.io.IOException;
 import java.nio.file.DirectoryNotEmptyException;
+import java.security.GeneralSecurityException;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -104,7 +106,7 @@ public class ScannerScannerPresenterImpl implements ScannerScanner.Presenter {
                     Language.INSTANCE.getString("scanner.scanner.dialog.taskInitException"),
                     e.toString(), e);
             return;
-        } catch (Exception e) {
+        } catch (GeneralSecurityException | InvalidAccountFileException e) {
             String message = "Unexpected collection task initialization exception.";
             LOGGER.atError().setCause(e).log(message);
             scannerScannerStage.showError(message, e.toString(), e);

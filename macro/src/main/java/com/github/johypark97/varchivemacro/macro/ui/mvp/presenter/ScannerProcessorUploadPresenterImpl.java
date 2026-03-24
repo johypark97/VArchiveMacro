@@ -7,6 +7,7 @@ import com.github.johypark97.varchivemacro.macro.ui.common.EventDebouncer;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerProcessorUpload;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.viewmodel.ScannerUploadViewModel;
 import com.github.johypark97.varchivemacro.macro.ui.stage.ScannerProcessorStage;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -86,7 +87,7 @@ public class ScannerProcessorUploadPresenterImpl implements ScannerProcessorUplo
 
         try {
             scannerContext.scannerUploadService.storeRecord();
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.atError().setCause(e).log("Record saving exception.");
             scannerProcessorStage.showError(
                     language.getString("scanner.processor.upload.dialog.save.exception"), e);

@@ -215,7 +215,7 @@ public class CaptureAnalysisTask
                                 BufferedImage image = captureImageService.findById(entry.entryId());
                                 preloadedImageQueue.put(Map.entry(entry, image));
                             } catch (InterruptedException ignored) {
-                            } catch (Exception e) {
+                            } catch (IOException e) {
                                 LOGGER.atError().setCause(e).log("ImagePreloader Exception");
                                 resultMap.get(entry.entryId()).setException(e);
 
@@ -239,7 +239,7 @@ public class CaptureAnalysisTask
                                                 queueEntry.getValue());
                                         resultMap.get(queueEntry.getKey().entryId())
                                                 .setStatus(CaptureAnalysisTaskResult.Status.DONE);
-                                    } catch (Exception e) {
+                                    } catch (IOException | PixImageException e) {
                                         LOGGER.atError().setCause(e).log("ImageAnalyzer Exception");
                                         resultMap.get(queueEntry.getKey().entryId())
                                                 .setException(e);
