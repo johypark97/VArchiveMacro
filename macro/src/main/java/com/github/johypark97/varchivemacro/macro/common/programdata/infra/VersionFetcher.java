@@ -5,6 +5,7 @@ import com.github.johypark97.varchivemacro.macro.common.github.domain.GitHubCont
 import com.github.johypark97.varchivemacro.macro.common.programdata.domain.DataVersion;
 import com.github.johypark97.varchivemacro.macro.common.programdata.infra.model.DataVersionJson;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Base64;
 
@@ -35,6 +36,6 @@ public class VersionFetcher {
         GitHubContent content = gitHubApiService.fetchContent(path);
         byte[] data = Base64.getMimeDecoder().decode(content.content());
 
-        return DataVersionJson.from(new String(data)).toDomain();
+        return DataVersionJson.from(new String(data, StandardCharsets.UTF_8)).toDomain();
     }
 }

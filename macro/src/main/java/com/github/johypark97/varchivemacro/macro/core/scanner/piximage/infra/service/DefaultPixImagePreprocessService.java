@@ -1,17 +1,17 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.service;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.ocr.PixError;
-import com.github.johypark97.varchivemacro.macro.libscanner.ocr.PixPreprocessor;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.exception.PixImageException;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.model.PixImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.service.PixImagePreprocessService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.model.DefaultPixImage;
+import com.github.johypark97.varchivemacro.macro.libscanner.ocr.PixError;
+import com.github.johypark97.varchivemacro.macro.libscanner.ocr.PixPreprocessor;
 
 public class DefaultPixImagePreprocessService implements PixImagePreprocessService {
     @Override
     public void preprocessCell(PixImage pixImage) throws PixImageException {
         try {
-            if (pixImage instanceof DefaultPixImage image) { // NOPMD
+            if (pixImage instanceof DefaultPixImage image) {
                 PixPreprocessor.preprocessCell(image.pixWrapper);
             } else {
                 throw new UnsupportedOperationException(pixImage.getClass().getName());
@@ -24,7 +24,7 @@ public class DefaultPixImagePreprocessService implements PixImagePreprocessServi
     @Override
     public void preprocessTitle(PixImage pixImage) throws PixImageException {
         try {
-            if (pixImage instanceof DefaultPixImage image) { // NOPMD
+            if (pixImage instanceof DefaultPixImage image) {
                 PixPreprocessor.preprocessTitle(image.pixWrapper);
             } else {
                 throw new UnsupportedOperationException(pixImage.getClass().getName());
