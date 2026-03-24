@@ -3,6 +3,7 @@ package com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.serv
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecordTable;
 import java.util.List;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface SongRecordLoadService {
     List<SongRecordTable> load() throws Exception;
 }

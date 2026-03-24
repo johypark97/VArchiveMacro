@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ConfigEditorModel {
+    @SuppressWarnings("PMD.ImplicitFunctionalInterface")
     public interface Config<C extends Record & Config<C, E>, E extends Editor<C, E>> {
         E edit();
     }

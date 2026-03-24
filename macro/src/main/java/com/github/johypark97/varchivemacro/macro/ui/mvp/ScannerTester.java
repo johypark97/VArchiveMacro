@@ -10,7 +10,7 @@ public interface ScannerTester {
         void requestStopStage();
     }
 
-
+    @SuppressWarnings("PMD.ImplicitFunctionalInterface")
     interface View extends Mvp.MvpView<View, Presenter> {
         void setImage(Image image);
     }
