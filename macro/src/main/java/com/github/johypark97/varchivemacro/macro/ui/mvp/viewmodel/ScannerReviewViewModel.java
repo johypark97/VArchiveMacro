@@ -61,7 +61,7 @@ public class ScannerReviewViewModel {
             linkedCaptureDataList.set(FXCollections.observableArrayList(linkedCaptureDataArray));
 
             accuracy.set(accuracyValue);
-            if (Accuracy.EXACT.equals(accuracy.get())) {
+            if (accuracy.get() == Accuracy.EXACT) {
                 selected.set(true);
             } else {
                 problem.set(Problem.EDIT_NEEDED);
@@ -70,7 +70,7 @@ public class ScannerReviewViewModel {
             selected.addListener((observable, oldValue, newValue) -> {
                 // constraints
                 if (!SELECTED_ACCURACY_CONSTRAINT.contains(accuracy.get())
-                        && !Problem.EDITED.equals(problem.get())) {
+                        && problem.get() != Problem.EDITED) {
                     if (!oldValue && newValue) {
                         selected.set(false);
                     }

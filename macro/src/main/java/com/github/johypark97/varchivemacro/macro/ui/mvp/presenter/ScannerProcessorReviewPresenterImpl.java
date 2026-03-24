@@ -125,16 +125,16 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
     private List<ScannerReviewViewModel.LinkTableData> findLinkTableDataToggleTarget(
             ScannerProcessorReview.LinkTableToggleType type) {
         Predicate<ScannerReviewViewModel.LinkTableData> predicate = switch (type) {
-            case EDITED -> x -> ScannerReviewViewModel.LinkTableData.Problem.EDITED.equals(
-                    x.problemProperty().get());
-            case EXACT -> x -> ScannerReviewViewModel.LinkTableData.Accuracy.EXACT.equals(
-                    x.accuracyProperty().get())
-                    && ScannerReviewViewModel.LinkTableData.Problem.NONE.equals(
-                    x.problemProperty().get());
-            case SIMILAR -> x -> ScannerReviewViewModel.LinkTableData.Accuracy.SIMILAR.equals(
-                    x.accuracyProperty().get())
-                    && ScannerReviewViewModel.LinkTableData.Problem.EDIT_NEEDED.equals(
-                    x.problemProperty().get());
+            case EDITED -> x -> x.problemProperty().get()
+                    == ScannerReviewViewModel.LinkTableData.Problem.EDITED;
+            case EXACT -> x -> x.accuracyProperty().get()
+                    == ScannerReviewViewModel.LinkTableData.Accuracy.EXACT
+                    && x.problemProperty().get()
+                    == ScannerReviewViewModel.LinkTableData.Problem.NONE;
+            case SIMILAR -> x -> x.accuracyProperty().get()
+                    == ScannerReviewViewModel.LinkTableData.Accuracy.SIMILAR
+                    && x.problemProperty().get()
+                    == ScannerReviewViewModel.LinkTableData.Problem.EDIT_NEEDED;
             case UNSELECT_ALL -> x -> true;
         };
 
@@ -209,7 +209,7 @@ public class ScannerProcessorReviewPresenterImpl implements ScannerProcessorRevi
     public void toggleLinkTableSelected(ScannerProcessorReview.LinkTableToggleType type) {
         List<ScannerReviewViewModel.LinkTableData> list = findLinkTableDataToggleTarget(type);
 
-        if (ScannerProcessorReview.LinkTableToggleType.UNSELECT_ALL.equals(type)) {
+        if (type == ScannerProcessorReview.LinkTableToggleType.UNSELECT_ALL) {
             list.forEach(x -> x.selectedProperty().set(false));
             return;
         }

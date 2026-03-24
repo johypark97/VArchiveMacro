@@ -37,7 +37,7 @@ public record InputKeyCombination(InputKey key, boolean ctrl, boolean alt, boole
     public String toString() {
         String keyString;
 
-        if (InputKey.PLUS.equals(key)) {
+        if (key == InputKey.PLUS) {
             keyString = "'+'";
         } else if (!key.toChar().isEmpty()) {
             keyString = key.toChar();

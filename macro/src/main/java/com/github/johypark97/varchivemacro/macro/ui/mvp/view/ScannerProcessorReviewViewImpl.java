@@ -217,12 +217,12 @@ public class ScannerProcessorReviewViewImpl extends StackPane
                     return;
                 }
 
-                if (ScannerReviewViewModel.LinkTableData.Problem.EDITED.equals(
-                        item.problemProperty().get())) {
+                if (item.problemProperty().get()
+                        == ScannerReviewViewModel.LinkTableData.Problem.EDITED) {
                     getStyleClass().add(STYLE_CLASS_EDITED);
                     return;
-                } else if (ScannerReviewViewModel.LinkTableData.Problem.DELETED.equals(
-                        item.problemProperty().get())) {
+                } else if (item.problemProperty().get()
+                        == ScannerReviewViewModel.LinkTableData.Problem.DELETED) {
                     return;
                 }
 
@@ -351,33 +351,30 @@ public class ScannerProcessorReviewViewImpl extends StackPane
 
         linkTableFilterExactCheckBox.setText(String.format("%s (%d)",
                 Language.INSTANCE.getString("scanner.processor.review.linkTable.filter.exact"),
-                value.stream()
-                        .filter(x -> ScannerReviewViewModel.LinkTableData.Accuracy.EXACT.equals(
-                                x.accuracyProperty().get())).count()));
+                value.stream().filter(x -> x.accuracyProperty().get()
+                        == ScannerReviewViewModel.LinkTableData.Accuracy.EXACT).count()));
 
         linkTableFilterDuplicatedCheckBox.setText(String.format("%s (%d)",
                 Language.INSTANCE.getString("scanner.processor.review.linkTable.filter.duplicated"),
-                value.stream()
-                        .filter(x -> ScannerReviewViewModel.LinkTableData.Accuracy.DUPLICATED.equals(
-                                x.accuracyProperty().get())).count()));
+                value.stream().filter(x -> x.accuracyProperty().get()
+                        == ScannerReviewViewModel.LinkTableData.Accuracy.DUPLICATED).count()));
 
         linkTableFilterSimilarCheckBox.setText(String.format("%s (%d)",
                 Language.INSTANCE.getString("scanner.processor.review.linkTable.filter.similar"),
-                value.stream()
-                        .filter(x -> ScannerReviewViewModel.LinkTableData.Accuracy.SIMILAR.equals(
-                                x.accuracyProperty().get())).count()));
+                value.stream().filter(x -> x.accuracyProperty().get()
+                        == ScannerReviewViewModel.LinkTableData.Accuracy.SIMILAR).count()));
 
         linkTableFilterConflictCheckBox.setText(String.format("%s (%d)",
                 Language.INSTANCE.getString("scanner.processor.review.linkTable.filter.conflict"),
-                value.stream()
-                        .filter(x -> ScannerReviewViewModel.LinkTableData.Accuracy.CONFLICT.equals(
-                                x.accuracyProperty().get())).count()));
+                value.stream().filter(x -> x.accuracyProperty().get()
+                        == ScannerReviewViewModel.LinkTableData.Accuracy.CONFLICT).count()));
 
         linkTableFilterNotDetectedCheckBox.setText(String.format("%s (%d)",
                 Language.INSTANCE.getString(
                         "scanner.processor.review.linkTable.filter.notDetected"), value.stream()
-                        .filter(x -> ScannerReviewViewModel.LinkTableData.Accuracy.NOT_DETECTED.equals(
-                                x.accuracyProperty().get())).count()));
+                        .filter(x -> x.accuracyProperty().get()
+                                == ScannerReviewViewModel.LinkTableData.Accuracy.NOT_DETECTED)
+                        .count()));
     }
 
     @Override

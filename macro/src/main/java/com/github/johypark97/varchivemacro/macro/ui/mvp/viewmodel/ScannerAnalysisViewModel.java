@@ -43,11 +43,11 @@ public class ScannerAnalysisViewModel {
         }
 
         public boolean hasException() {
-            return Status.ERROR.equals(status.get());
+            return status.get() == Status.ERROR;
         }
 
         public boolean isAlreadyAnalyzed() {
-            return Status.ALREADY_DONE.equals(status.get());
+            return status.get() == Status.ALREADY_DONE;
         }
 
         public enum Status {
