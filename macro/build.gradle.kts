@@ -3,8 +3,6 @@ import java.time.temporal.ChronoUnit
 
 val appName = "VArchive Macro"
 
-var isRelease = false
-
 version = findProperty("version") as String
 
 plugins {
@@ -65,13 +63,6 @@ jlink {
     }
 }
 
-tasks.jar.get().doLast {
-    if (!isRelease) {
-        application.applicationDefaultJvmArgs += "-Ddebug=true"
-        application.applicationDefaultJvmArgs += "-Dlog.level=ALL"
-    }
-}
-
 tasks.processResources {
     dependsOn("buildProperties")
 }
@@ -100,13 +91,20 @@ tasks.jpackageImage.get().doLast {
     }
 }
 
+tasks.register("runDebug") {
+    description = "Runs this project as a JVM application with debug flags"
+    group = "application"
+
+    finalizedBy("run")
+
+    application.applicationDefaultJvmArgs += listOf("-Ddebug=true", "-Dlog.level=ALL")
+}
+
 tasks.register<Zip>("release") {
     description = "Creates an archive file to release."
     group = "distribution"
 
     dependsOn(tasks.jpackageImage)
-
-    isRelease = true
 
     archiveBaseName = appName
     archiveVersion = version.toString()
