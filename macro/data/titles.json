@@ -38,6 +38,13 @@
   ],
   "remap": [
     {
+      //id : 3
+      "to": "AIways",
+      "from": [
+        "AIways!"
+      ]
+    },
+    {
       // id: 19
       "to": "Liar",
       "from": [
@@ -52,10 +59,80 @@
       ]
     },
     {
+      // id: 74
+      "to": "MiIes",
+      "from": [
+        "MiIes!"
+      ]
+    },
+    {
+      // id: 87
+      "to": "Seeker",
+      "from": [
+        "Seeker!"
+      ]
+    },
+    {
       // id: 187
       "to": "StarFish",
       "from": [
         "StarFish)"
+      ]
+    },
+    {
+      // id: 218
+      "to": "VentiIator",
+      "from": [
+        "VentiIator!"
+      ]
+    },
+    {
+      // id: 212
+      "to": "Someday",
+      "from": [
+        "SomedayI"
+      ]
+    },
+    {
+      // id: 242
+      "to": "ReadyNow",
+      "from": [
+        "ReadyNow!"
+      ]
+    },
+    {
+      // id: 255
+      "to": "EIectronics",
+      "from": [
+        "EIectronics!"
+      ]
+    },
+    {
+      // id: 293
+      "to": "Myosotis",
+      "from": [
+        "Myosotis!"
+      ]
+    },
+    {
+      // id: 295
+      "to": "Shootout",
+      "from": [
+        "Shootout!"
+      ]
+    },
+    {
+      // id: 318
+      "to": "OvertheRainbow",
+      "from": [
+        "OvertheRainbow!"
+      ]
+    },
+    {
+      // id: 325
+      "to": "Xeus",
+      "from": [
+        "Xeus!"
       ]
     },
     {
@@ -73,6 +150,34 @@
       ]
     },
     {
+      // id: 453
+      "to": "Odysseus",
+      "from": [
+        "Odysseus!"
+      ]
+    },
+    {
+      // id: 458
+      "to": "VerticaIFIoating",
+      "from": [
+        "VerticaIFIoating!"
+      ]
+    },
+    {
+      // id: 477
+      "to": "tape/stop/night",
+      "from": [
+        "tape/stop/night!"
+      ]
+    },
+    {
+      // id: 498
+      "to": "SiIentCIarity",
+      "from": [
+        "SiIentCIarity!"
+      ]
+    },
+    {
       // id: 533
       "to": "LieLie",
       "from": [
@@ -87,6 +192,20 @@
       ]
     },
     {
+      // id: 568
+      "to": "FromHeIItoBreakfast",
+      "from": [
+        "FromHeIItoBreakfast!"
+      ]
+    },
+    {
+      // id: 600
+      "to": "Pitter-patter",
+      "from": [
+        "Pitter-patter!"
+      ]
+    },
+    {
       // id: 622
       "to": "The90'sDecision",
       "from": [
@@ -98,6 +217,27 @@
       "to": "Petunia",
       "from": [
         "Petunia)"
+      ]
+    },
+    {
+      // id: 672
+      "to": "SagaScript",
+      "from": [
+        "SagaScript!"
+      ]
+    },
+    {
+      // id: 685
+      "to": "aIIiance",
+      "from": [
+        "aIIiance!"
+      ]
+    },
+    {
+      // id: 687
+      "to": "AfterSchooIDessert",
+      "from": [
+        "AfterSchooIDessert!"
       ]
     },
     {
@@ -126,7 +266,16 @@
       // id: 694
       "to": "Operation☆DOTABATA!",
       "from": [
-        "Operation☆DOTABATAI!"
+        "Operation☆DOTABATAI!",
+        "Operation☆ZDOTABATA!",
+        "OperationtZDOTABATA!"
+      ]
+    },
+    {
+      // id: 701
+      "to": "UsagiFIap",
+      "from": [
+        "UsagiFIap!"
       ]
     },
     {
@@ -135,7 +284,18 @@
       "from": [
         "小((kohiodoshi)",
         "小緋((kohiodoshi)",
-        "小緋(kohiodoshi)"
+        "小緋(kohiodoshi)",
+        "小緋縅kohiodoshi",
+        "小緋縅kohiodoshi)",
+        "小緋縅kohiodoshi))",
+        "小緋縅kohiodoshii)"
+      ]
+    },
+    {
+      // id: 709
+      "to": "LabyrinthofTears",
+      "from": [
+        "LabyrinthofTears!"
       ]
     },
     {
@@ -143,7 +303,9 @@
       "to": "IWTEYI",
       "from": [
         "IWTEVI",
-        "IWTEYVI"
+        "IWTEYVI",
+        "IWTEXYI",
+        "IWTEXYVI"
       ]
     },
     {
@@ -172,7 +334,22 @@
       // id: 770
       "to": "DATAMOSH++",
       "from": [
-        "DATAMOSH"
+        "DATAMOSH",
+        "DATAMOSH~"
+      ]
+    },
+    {
+      // id: 787
+      "to": "EtaBetaEta",
+      "from": [
+        "EtaBetaEta)"
+      ]
+    },
+    {
+      // id: 790
+      "to": "LiftOff",
+      "from": [
+        "LiftOff!"
       ]
     }
   ],
