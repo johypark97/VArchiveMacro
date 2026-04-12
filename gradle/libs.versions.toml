@@ -4,7 +4,7 @@
 # -------- Gradle Plugins --------
 gradle-javacpp = "1.5.10"
 javafx-plugin = "0.1.0"
-jlink-plugin = "3.2.1"
+jlink-plugin = "3.2.1" # v4+ conflicts with the JavaFX Gradle Plugin
 
 # -------- Libraries --------
 gson = "2.13.2"
@@ -13,13 +13,16 @@ java-semver = "0.10.2"
 javafx-version = "25.0.2"
 jnativehook = "2.2.2"
 junit-jupiter = "6.0.3"
-log4j = "2.25.3"
-mockito = "5.22.0"
-pmd = "7.22.0"
+log4j = "2.25.4"
+mockito = "5.23.0"
+pmd = "7.23.0"
 rxjava = "3.1.12"
 slf4j-api = "2.0.17"
-sqlite-jdbc = "3.51.2.0"
+sqlite-jdbc = "3.51.3.0"
 tesseract-platform = "5.5.2-1.5.13"
+
+[plugins]
+jlink-plugin = { id = "org.beryx.jlink", version.ref = "jlink-plugin" }
 
 [libraries]
 # -------- Gradle Plugins --------
@@ -40,6 +43,3 @@ rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
 sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc" }
 tesseract-platform = { module = "org.bytedeco:tesseract-platform", version.ref = "tesseract-platform" }
-
-[plugins]
-jlink-plugin = { id = "org.beryx.jlink", version.ref = "jlink-plugin" }
