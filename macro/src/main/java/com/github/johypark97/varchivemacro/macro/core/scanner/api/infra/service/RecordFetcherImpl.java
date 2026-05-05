@@ -1,8 +1,10 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.api.impl;
+package com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.service;
 
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.model.record.fetcher.FailureJson;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.model.record.fetcher.SuccessJson;
 import com.github.johypark97.varchivemacro.macro.libscanner.Enums.Button;
-import com.github.johypark97.varchivemacro.macro.libscanner.api.ApiException;
-import com.github.johypark97.varchivemacro.macro.libscanner.api.RecordFetcher;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.ApiException;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.RecordFetcher;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;

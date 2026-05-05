@@ -1,7 +1,10 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.api.impl;
+package com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.service;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.api.ApiException;
-import com.github.johypark97.varchivemacro.macro.libscanner.api.RecordUploader;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.model.record.uploader.FailureJson;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.model.record.uploader.RequestJson;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.model.record.uploader.SuccessJson;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.ApiException;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.RecordUploader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;

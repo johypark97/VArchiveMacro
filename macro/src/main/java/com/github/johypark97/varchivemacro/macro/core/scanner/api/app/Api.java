@@ -1,8 +1,8 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.api;
+package com.github.johypark97.varchivemacro.macro.core.scanner.api.app;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.api.impl.RecordFetcherImpl;
-import com.github.johypark97.varchivemacro.macro.libscanner.api.impl.RecordUploaderImpl;
-import com.github.johypark97.varchivemacro.macro.libscanner.api.impl.StaticFetcherImpl;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.service.RecordFetcherImpl;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.service.RecordUploaderImpl;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.service.StaticFetcherImpl;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Version;
 import java.security.GeneralSecurityException;

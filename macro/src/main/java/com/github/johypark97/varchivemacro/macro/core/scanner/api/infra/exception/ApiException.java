@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.api;
+package com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception;
 
 import java.io.Serial;
 

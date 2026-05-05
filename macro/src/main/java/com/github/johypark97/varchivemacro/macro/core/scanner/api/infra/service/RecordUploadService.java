@@ -1,8 +1,9 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.service;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.api.Api;
-import com.github.johypark97.varchivemacro.macro.libscanner.api.ApiException;
-import com.github.johypark97.varchivemacro.macro.libscanner.api.RecordUploader;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.model.record.uploader.RequestJson;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.Api;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.exception.ApiException;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.RecordUploader;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordButtonConverter;
 import com.github.johypark97.varchivemacro.macro.common.converter.RecordPatternConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.model.Account;
@@ -21,8 +22,8 @@ public class RecordUploadService {
 
     public boolean upload(String title, String composer, RecordButton button, RecordPattern pattern,
             SongRecord record) throws IOException, InterruptedException, ApiException {
-        RecordUploader.RequestJson json =
-                new RecordUploader.RequestJson(title, RecordButtonConverter.toLib(button),
+        RequestJson json =
+                new RequestJson(title, RecordButtonConverter.toLib(button),
                         RecordPatternConverter.toLib(pattern), record.rate(), record.maxCombo());
 
         if (composer != null) {

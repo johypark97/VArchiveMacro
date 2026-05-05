@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.api.impl;
+package com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.service;
 
 import java.net.URI;
 import java.net.http.HttpRequest;

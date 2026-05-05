@@ -1,6 +1,7 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.api.impl;
+package com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.service;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.api.StaticFetcher;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.infra.model.RemoteSong;
+import com.github.johypark97.varchivemacro.macro.core.scanner.api.app.StaticFetcher;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
