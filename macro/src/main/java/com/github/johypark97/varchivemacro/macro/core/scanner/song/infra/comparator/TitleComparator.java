@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.database.comparator;
+package com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.comparator;
 
 import java.io.Serial;
 import java.io.Serializable;

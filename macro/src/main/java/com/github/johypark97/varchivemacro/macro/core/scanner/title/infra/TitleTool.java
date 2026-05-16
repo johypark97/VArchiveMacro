@@ -1,6 +1,6 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.database;
+package com.github.johypark97.varchivemacro.macro.core.scanner.title.infra;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.database.SongDatabase.Song;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.model.Song;
 import com.google.common.base.CharMatcher;
 
 public interface TitleTool {

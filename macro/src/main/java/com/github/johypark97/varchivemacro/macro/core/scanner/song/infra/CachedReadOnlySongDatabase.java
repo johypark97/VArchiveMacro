@@ -1,7 +1,10 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.database;
+package com.github.johypark97.varchivemacro.macro.core.scanner.song.infra;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.database.comparator.SongPackComparator;
-import com.github.johypark97.varchivemacro.macro.libscanner.database.comparator.SongTitleComparator;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.model.Category;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.model.Pack;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.model.Song;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.comparator.SongPackComparator;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.comparator.SongTitleComparator;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.ResultSet;

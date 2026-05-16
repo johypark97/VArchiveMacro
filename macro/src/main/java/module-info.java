@@ -35,8 +35,9 @@ module varchivemacro.macro {
     exports com.github.johypark97.varchivemacro.macro.common.github.infra.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.common.license.infra.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.common.programdata.infra.model to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.model to com.google.gson;
+    exports com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.model to com.google.gson;
     exports com.github.johypark97.varchivemacro.macro.libscanner to com.google.gson;
-    exports com.github.johypark97.varchivemacro.macro.libscanner.database.datastruct to com.google.gson;
 
     // xml language resource bundle provider
     provides LanguageProvider with LanguageProviderImpl;

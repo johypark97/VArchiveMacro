@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.database;
+package com.github.johypark97.varchivemacro.macro.core.scanner.record.infra;
 
 import com.github.johypark97.varchivemacro.macro.libscanner.Enums.Button;
 import com.github.johypark97.varchivemacro.macro.libscanner.Enums.Pattern;

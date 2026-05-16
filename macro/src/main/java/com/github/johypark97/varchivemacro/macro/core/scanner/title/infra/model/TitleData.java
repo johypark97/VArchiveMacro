@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.database.datastruct;
+package com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.model;
 
 import static com.github.johypark97.varchivemacro.macro.common.GsonWrapper.newGsonBuilder_dump;
 

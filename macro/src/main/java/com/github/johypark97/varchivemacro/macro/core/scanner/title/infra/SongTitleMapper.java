@@ -1,8 +1,5 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.title.infra;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.database.DefaultTitleTool;
-import com.github.johypark97.varchivemacro.macro.libscanner.database.SongDatabase;
-import com.github.johypark97.varchivemacro.macro.libscanner.database.TitleTool;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -27,7 +24,7 @@ public class SongTitleMapper {
     }
 
     // TODO: Temporary converting method. Needs to refactoring.
-    protected SongDatabase.Song convertSong(Song song) {
-        return new SongDatabase.Song(song.songId(), song.title(), null, 0, null);
+    protected com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.model.Song convertSong(Song song) {
+        return new com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.model.Song(song.songId(), song.title(), null, 0, null);
     }
 }

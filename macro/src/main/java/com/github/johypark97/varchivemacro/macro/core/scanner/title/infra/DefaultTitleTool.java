@@ -1,7 +1,7 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.database;
+package com.github.johypark97.varchivemacro.macro.core.scanner.title.infra;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.database.SongDatabase.Song;
-import com.github.johypark97.varchivemacro.macro.libscanner.database.datastruct.TitleData;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.model.Song;
+import com.github.johypark97.varchivemacro.macro.core.scanner.title.infra.model.TitleData;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;

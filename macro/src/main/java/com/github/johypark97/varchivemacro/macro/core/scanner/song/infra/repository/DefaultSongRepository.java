@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.repository;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.database.SongDatabase;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.SongDatabase;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository.SongRepository;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.converter.SongDatabaseConverter;
@@ -66,7 +66,7 @@ public class DefaultSongRepository implements SongRepository {
     @Override
     public List<Song> filterSongByDuplicateTitle() {
         return songDatabase.songList().stream()
-                .collect(Collectors.groupingBy(SongDatabase.Song::title)).entrySet().stream()
+                .collect(Collectors.groupingBy(com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.model.Song::title)).entrySet().stream()
                 .filter(entry -> entry.getValue().size() > 1)
                 .flatMap(entry -> entry.getValue().stream())
                 .map(SongDatabaseConverter::toDomainSong).toList();

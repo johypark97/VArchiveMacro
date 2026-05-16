@@ -1,10 +1,10 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.database.datastruct;
+package com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.model;
 
 import static com.github.johypark97.varchivemacro.macro.common.GsonWrapper.newGsonBuilder_dump;
 
 import com.github.johypark97.varchivemacro.macro.libscanner.Enums.Button;
 import com.github.johypark97.varchivemacro.macro.libscanner.Enums.Pattern;
-import com.github.johypark97.varchivemacro.macro.libscanner.database.RecordManager.LocalRecord;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.RecordManager.LocalRecord;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
