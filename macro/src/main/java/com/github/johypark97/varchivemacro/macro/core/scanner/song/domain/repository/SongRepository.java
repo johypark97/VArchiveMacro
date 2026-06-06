@@ -1,5 +1,7 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.repository;
 
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Category;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Pack;
 import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import java.util.List;
 import java.util.Map;
@@ -7,17 +9,21 @@ import java.util.Map;
 public interface SongRepository {
     boolean isEmpty();
 
+    void deleteAll();
+
+    void saveAll(List<Song> songList);
+
     Song findSongById(int songId);
 
     List<Song> findAllSong();
 
-    List<Song.Pack> findAllPack();
+    List<Pack> findAllPack();
 
-    List<Song.Pack.Category> findAllCategory();
+    List<Category> findAllCategory();
 
-    Map<Song.Pack, List<Song>> groupSongByPack();
+    Map<Pack, List<Song>> groupSongByPack();
 
-    Map<Song.Pack.Category, List<Song>> groupSongByCategory();
+    Map<Category, List<Song>> groupSongByCategory();
 
     List<Song> filterSongByDuplicateTitle();
 }

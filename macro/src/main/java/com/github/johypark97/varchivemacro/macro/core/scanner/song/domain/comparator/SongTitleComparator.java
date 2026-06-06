@@ -1,6 +1,6 @@
-package com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.comparator;
+package com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.comparator;
 
-import com.github.johypark97.varchivemacro.macro.core.scanner.song.infra.model.Song;
+import com.github.johypark97.varchivemacro.macro.core.scanner.song.domain.model.Song;
 import java.util.Comparator;
 
 public class SongTitleComparator implements Comparator<Song> {
