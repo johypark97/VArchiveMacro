@@ -2,39 +2,30 @@ package com.github.johypark97.varchivemacro.macro.core.scanner.record.app;
 
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecordTable;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.repository.SongRecordRepository;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.service.LocalSongRecordLoadService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.service.LocalSongRecordSaveService;
-import com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.service.RemoteSongRecordLoadService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.record.infra.storage.RecordStorage;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 
 public class SongRecordStorageService {
     private final SongRecordRepository songRecordRepository;
+    private final RecordStorage recordStorage;
 
-    private final Path songRecordFilePath;
-
-    public SongRecordStorageService(SongRecordRepository songRecordRepository,
-            Path songRecordFilePath) {
-        this.songRecordFilePath = songRecordFilePath;
+    public SongRecordStorageService(
+            SongRecordRepository songRecordRepository,
+            RecordStorage recordStorage
+    ) {
+        this.recordStorage = recordStorage;
         this.songRecordRepository = songRecordRepository;
     }
 
-    public void loadFromLocal() throws Exception {
-        List<SongRecordTable> list = new LocalSongRecordLoadService(songRecordFilePath).load();
-
-        songRecordRepository.deleteAll();
-        songRecordRepository.saveAll(list);
-    }
-
-    public void loadFromRemote(String djName) throws Exception {
-        List<SongRecordTable> list = new RemoteSongRecordLoadService(djName).load();
+    public void loadFromLocal() throws IOException {
+        List<SongRecordTable> list = recordStorage.load();
 
         songRecordRepository.deleteAll();
         songRecordRepository.saveAll(list);
     }
 
     public void saveToLocal() throws IOException {
-        new LocalSongRecordSaveService(songRecordFilePath).save(songRecordRepository.findAll());
+        recordStorage.save(songRecordRepository.findAll());
     }
 }
