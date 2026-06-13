@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.area;
+package com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.area;
 
 import com.google.common.math.IntMath;
 import java.awt.Dimension;
