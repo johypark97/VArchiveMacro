@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.capture.domain.model;
 
-import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.model.CaptureRegion;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordButton;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.RecordPattern;
 import com.github.johypark97.varchivemacro.macro.core.scanner.record.domain.model.SongRecord;
