@@ -6,3 +6,6 @@ build
 
 # Ignore IntelliJ IDEA files
 .idea
+
+# Ignore WGC build output directory
+capture-helper
