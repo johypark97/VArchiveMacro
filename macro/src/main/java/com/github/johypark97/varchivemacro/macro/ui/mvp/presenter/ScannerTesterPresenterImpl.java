@@ -1,7 +1,10 @@
 package com.github.johypark97.varchivemacro.macro.ui.mvp.presenter;
 
 import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
+import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
+import com.github.johypark97.varchivemacro.macro.common.config.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.infra.service.WindowsGraphicsCaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
 import com.github.johypark97.varchivemacro.macro.integration.context.GlobalContext;
 import com.github.johypark97.varchivemacro.macro.ui.mvp.ScannerTester;
@@ -35,7 +38,8 @@ public class ScannerTesterPresenterImpl implements ScannerTester.Presenter {
 
         BufferedImage bufferedImage;
         try {
-            bufferedImage = AwtRobotHelper.captureScreenshot(new Robot());
+            bufferedImage = captureScreenshot();
+
             Dimension dimension =
                     new Dimension(bufferedImage.getWidth(), bufferedImage.getHeight());
             globalContext.captureRegionService.create(dimension);
@@ -55,6 +59,22 @@ public class ScannerTesterPresenterImpl implements ScannerTester.Presenter {
         scannerTesterStage.showInformation(
                 language.getFormatString("scanner.tester.dialog.testHeader"),
                 language.getFormatString("scanner.tester.dialog.testMessage"));
+    }
+
+    private BufferedImage captureScreenshot() throws Exception {
+        ScannerConfig config =
+                AppConfigManager.INSTANCE.getAppConfigService().getConfig().scannerConfig();
+        BufferedImage image;
+        if (!config.windowsGraphicsCapture().value()) {
+            image = AwtRobotHelper.captureScreenshot(new Robot());
+        } else {
+            try (WindowsGraphicsCaptureService service =
+                    new WindowsGraphicsCaptureService(config.hdrSdrToneMapping().value())) {
+                image = service.capture();
+            }
+        }
+
+        return image;
     }
 
     @Override

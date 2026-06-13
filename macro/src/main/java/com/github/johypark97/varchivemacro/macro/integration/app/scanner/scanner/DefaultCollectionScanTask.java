@@ -4,6 +4,7 @@ import com.github.johypark97.varchivemacro.lib.desktop.AwtRobotHelper;
 import com.github.johypark97.varchivemacro.macro.common.config.model.ScannerConfig;
 import com.github.johypark97.varchivemacro.macro.core.scanner.capture.app.CaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.app.CaptureImageService;
+import com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.infra.service.WindowsGraphicsCaptureService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.app.CaptureRegionService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.domain.model.CaptureRegion;
 import com.github.johypark97.varchivemacro.macro.core.scanner.captureregion.infra.exception.DisplayResolutionException;
@@ -41,6 +42,7 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     private final Robot robot;
 
     private ImageCachingService imageCachingService;
+    private WindowsGraphicsCaptureService windowsGraphicsCaptureService;
 
     public DefaultCollectionScanTask(CaptureImageService captureImageService,
             CaptureRegionService captureRegionService, CaptureService captureService,
@@ -69,12 +71,16 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
 
     @Override
     protected BufferedImage captureScreen() throws IOException {
+        if (config.windowsGraphicsCapture().value()) {
+            return windowsGraphicsCaptureService.capture();
+        }
+
         return AwtRobotHelper.captureScreenshot(robot);
     }
 
     @Override
-    protected CaptureRegion getCaptureRegion() throws DisplayResolutionException {
-        BufferedImage image = AwtRobotHelper.captureScreenshot(robot);
+    protected CaptureRegion getCaptureRegion() throws DisplayResolutionException, IOException {
+        BufferedImage image = captureScreen();
         Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
 
         return captureRegionService.create(resolution);
@@ -122,9 +128,12 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
         // delete all previous images
         captureImageService.deleteAll();
 
-        try {
-            imageCachingService = new ImageCachingService();
+        imageCachingService = new ImageCachingService();
 
+        try (WindowsGraphicsCaptureService service = config.windowsGraphicsCapture().value()
+                ? new WindowsGraphicsCaptureService(config.hdrSdrToneMapping().value())
+                : null) {
+            windowsGraphicsCaptureService = service;
             // run super task
             super.callTask();
         } finally {

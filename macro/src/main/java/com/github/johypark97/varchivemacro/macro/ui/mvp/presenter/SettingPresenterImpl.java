@@ -102,6 +102,10 @@ public class SettingPresenterImpl implements Setting.Presenter {
                 appConfigEditor.getScannerConfig().cacheDirectory().value());
 
         view.setScannerAutoAnalysis(appConfigEditor.getScannerConfig().autoAnalysis().value());
+        view.setScannerWindowsGraphicsCapture(
+                appConfigEditor.getScannerConfig().windowsGraphicsCapture().value());
+        view.setScannerHdrSdrToneMapping(
+                appConfigEditor.getScannerConfig().hdrSdrToneMapping().value());
 
         view.setupScannerAnalyzerThreadCountSlider(
                 appConfigEditor.getScannerConfig().analyzerThreadCount().value(),
@@ -404,6 +408,18 @@ public class SettingPresenterImpl implements Setting.Presenter {
     @Override
     public void scanner_onChangeAutoAnalysis(boolean value) {
         appConfigEditor.editScannerConfig(x -> x.setAutoAnalysis(value));
+        changed.set(true);
+    }
+
+    @Override
+    public void scanner_onChangeWindowsGraphicsCapture(boolean value) {
+        appConfigEditor.editScannerConfig(x -> x.setWindowsGraphicsCapture(value));
+        changed.set(true);
+    }
+
+    @Override
+    public void scanner_onChangeHdrSdrToneMapping(boolean value) {
+        appConfigEditor.editScannerConfig(x -> x.setHdrSdrToneMapping(value));
         changed.set(true);
     }
 

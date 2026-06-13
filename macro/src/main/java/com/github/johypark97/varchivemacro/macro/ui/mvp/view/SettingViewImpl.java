@@ -80,6 +80,12 @@ public class SettingViewImpl extends VBox implements Setting.View {
     private ToggleButton scannerAutoAnalysisToggleButton;
 
     @FXML
+    private ToggleButton scannerWindowsGraphicsCaptureToggleButton;
+
+    @FXML
+    private ToggleButton scannerHdrSdrToneMappingToggleButton;
+
+    @FXML
     private Slider scannerAnalyzerThreadCountSlider;
 
     @FXML
@@ -225,6 +231,18 @@ public class SettingViewImpl extends VBox implements Setting.View {
         scannerAutoAnalysisToggleButton.textProperty()
                 .bind(Bindings.when(scannerAutoAnalysisToggleButton.selectedProperty()).then("ON")
                         .otherwise("OFF"));
+        scannerWindowsGraphicsCaptureToggleButton.setOnAction(
+                event -> presenter.scanner_onChangeWindowsGraphicsCapture(
+                        scannerWindowsGraphicsCaptureToggleButton.isSelected()));
+        scannerWindowsGraphicsCaptureToggleButton.textProperty()
+                .bind(Bindings.when(scannerWindowsGraphicsCaptureToggleButton.selectedProperty())
+                        .then("ON").otherwise("OFF"));
+        scannerHdrSdrToneMappingToggleButton.setOnAction(
+                event -> presenter.scanner_onChangeHdrSdrToneMapping(
+                        scannerHdrSdrToneMappingToggleButton.isSelected()));
+        scannerHdrSdrToneMappingToggleButton.textProperty()
+                .bind(Bindings.when(scannerHdrSdrToneMappingToggleButton.selectedProperty())
+                        .then("ON").otherwise("OFF"));
 
         // advanced
         scannerAnalyzerThreadCountLinker =
@@ -360,6 +378,16 @@ public class SettingViewImpl extends VBox implements Setting.View {
     @Override
     public void setScannerAutoAnalysis(boolean value) {
         scannerAutoAnalysisToggleButton.setSelected(value);
+    }
+
+    @Override
+    public void setScannerWindowsGraphicsCapture(boolean value) {
+        scannerWindowsGraphicsCaptureToggleButton.setSelected(value);
+    }
+
+    @Override
+    public void setScannerHdrSdrToneMapping(boolean value) {
+        scannerHdrSdrToneMappingToggleButton.setSelected(value);
     }
 
     @Override

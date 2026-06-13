@@ -47,6 +47,10 @@ public interface Setting {
 
         void scanner_onChangeAutoAnalysis(boolean value);
 
+        void scanner_onChangeWindowsGraphicsCapture(boolean value);
+
+        void scanner_onChangeHdrSdrToneMapping(boolean value);
+
         void scanner_onChangeAnalyzerThreadCount(int value);
 
         void scanner_onChangeCaptureDelay(int value);
@@ -91,6 +95,10 @@ public interface Setting {
         void setScannerCacheDirectoryText(String value);
 
         void setScannerAutoAnalysis(boolean value);
+
+        void setScannerWindowsGraphicsCapture(boolean value);
+
+        void setScannerHdrSdrToneMapping(boolean value);
 
         void setupScannerAnalyzerThreadCountSlider(int value, int defaultValue, int min, int max);
 
