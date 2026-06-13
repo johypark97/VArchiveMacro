@@ -6,7 +6,6 @@ using Windows.Graphics.Capture;
 using Windows.Graphics.DirectX;
 using Windows.Graphics.DirectX.Direct3D11;
 using Windows.Graphics.Imaging;
-using Windows.Storage;
 using Windows.Storage.Streams;
 
 namespace VArchive.WgcCapture;
@@ -15,6 +14,7 @@ internal static class Program
 {
     private const string ExitCommand = "exit";
     private const string ServerCommand = "--server";
+    private const string SizeCommand = "size";
     private const string ToneMapCommand = "--tone-map";
 
     private static async Task<int> Main(string[] args)
@@ -41,7 +41,7 @@ internal static class Program
             else
             {
                 Console.Error.WriteLine("Usage: VArchive.WgcCapture.exe [--tone-map] --server");
-                Console.Error.WriteLine("Usage: VArchive.WgcCapture.exe [--tone-map] <output.png>");
+                Console.Error.WriteLine("Usage: VArchive.WgcCapture.exe [--tone-map] <output.bmp>");
                 return 2;
             }
 
@@ -67,6 +67,12 @@ internal static class Program
             if (line == ExitCommand)
             {
                 break;
+            }
+            if (line == SizeCommand)
+            {
+                Console.WriteLine($"SIZE {host.Width} {host.Height}");
+                Console.Out.Flush();
+                continue;
             }
 
             try
@@ -94,6 +100,12 @@ internal static class Program
         private const int BgraGreenOffset = 1;
         private const int BgraRedOffset = 2;
         private const int BgraAlphaOffset = 3;
+        private const int BitmapFileHeaderSize = 14;
+        private const int BitmapInfoHeaderSize = 40;
+        private const short BitmapPlanes = 1;
+        private const short BitmapBitsPerPixel = 24;
+        private const int BitmapCompressionRgb = 0;
+        private const int BgrBytesPerPixel = 3;
         private const float Exposure = 0.55f;
         private const float Saturation = 0.82f;
         private const float Contrast = 1.08f;
@@ -112,6 +124,10 @@ internal static class Program
             this.item = item;
             this.device = device;
         }
+
+        public int Width => item.Size.Width;
+
+        public int Height => item.Size.Height;
 
         public static CaptureHost CreatePrimaryMonitor()
         {
@@ -173,7 +189,7 @@ internal static class Program
             }
 
             byte[] pixels = ToneMapRgba16(bitmap);
-            await SaveBgra8Async(pixels, bitmap.PixelWidth, bitmap.PixelHeight, outputPath);
+            await SaveBgra8BmpAsync(pixels, bitmap.PixelWidth, bitmap.PixelHeight, outputPath);
         }
 
         private static async Task SaveSurfaceAsync(IDirect3DSurface surface, string outputPath)
@@ -182,19 +198,19 @@ internal static class Program
             using SoftwareBitmap converted =
                     SoftwareBitmap.Convert(bitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore);
 
-            string directory = Path.GetDirectoryName(outputPath)
-                    ?? throw new ArgumentException("The output path has no directory.");
-            Directory.CreateDirectory(directory);
+            byte[] pixels = CopyBgra8(converted);
+            await SaveBgra8BmpAsync(pixels, converted.PixelWidth, converted.PixelHeight,
+                    outputPath);
+        }
 
-            StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(directory);
-            StorageFile file = await folder.CreateFileAsync(Path.GetFileName(outputPath),
-                    CreationCollisionOption.ReplaceExisting);
+        private static byte[] CopyBgra8(SoftwareBitmap bitmap)
+        {
+            byte[] pixels = new byte[bitmap.PixelWidth * bitmap.PixelHeight * BgraBytesPerPixel];
+            Windows.Storage.Streams.Buffer buffer = new((uint)pixels.Length);
+            bitmap.CopyToBuffer(buffer);
+            DataReader.FromBuffer(buffer).ReadBytes(pixels);
 
-            using IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite);
-            BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId,
-                    stream);
-            encoder.SetSoftwareBitmap(converted);
-            await encoder.FlushAsync();
+            return pixels;
         }
 
         private static byte[] ToneMapRgba16(SoftwareBitmap bitmap)
@@ -275,23 +291,55 @@ internal static class Program
             return Math.Max(0, Math.Min(1, value));
         }
 
-        private static async Task SaveBgra8Async(byte[] pixels, int width, int height,
+        private static async Task SaveBgra8BmpAsync(byte[] pixels, int width, int height,
                 string outputPath)
         {
             string directory = Path.GetDirectoryName(outputPath)
                     ?? throw new ArgumentException("The output path has no directory.");
             Directory.CreateDirectory(directory);
 
-            StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(directory);
-            StorageFile file = await folder.CreateFileAsync(Path.GetFileName(outputPath),
-                    CreationCollisionOption.ReplaceExisting);
+            await using FileStream stream = new(outputPath, FileMode.Create, FileAccess.Write,
+                    FileShare.Read);
+            using BinaryWriter writer = new(stream);
 
-            using IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite);
-            BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId,
-                    stream);
-            encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore, (uint)width,
-                    (uint)height, 96, 96, pixels);
-            await encoder.FlushAsync();
+            int rowStride = ((width * BgrBytesPerPixel) + 3) & ~3;
+            int imageSize = rowStride * height;
+            int fileSize = BitmapFileHeaderSize + BitmapInfoHeaderSize + imageSize;
+
+            writer.Write((byte)'B');
+            writer.Write((byte)'M');
+            writer.Write(fileSize);
+            writer.Write(0);
+            writer.Write(BitmapFileHeaderSize + BitmapInfoHeaderSize);
+
+            writer.Write(BitmapInfoHeaderSize);
+            writer.Write(width);
+            writer.Write(-height);
+            writer.Write(BitmapPlanes);
+            writer.Write(BitmapBitsPerPixel);
+            writer.Write(BitmapCompressionRgb);
+            writer.Write(imageSize);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(0);
+            writer.Write(0);
+
+            byte[] row = new byte[rowStride];
+            for (int y = 0; y < height; y++)
+            {
+                Array.Clear(row);
+                int sourceRowOffset = y * width * BgraBytesPerPixel;
+                for (int x = 0; x < width; x++)
+                {
+                    int sourceOffset = sourceRowOffset + (x * BgraBytesPerPixel);
+                    int targetOffset = x * BgrBytesPerPixel;
+                    row[targetOffset] = pixels[sourceOffset + BgraBlueOffset];
+                    row[targetOffset + 1] = pixels[sourceOffset + BgraGreenOffset];
+                    row[targetOffset + 2] = pixels[sourceOffset + BgraRedOffset];
+                }
+
+                await stream.WriteAsync(row);
+            }
         }
 
         public ValueTask DisposeAsync()

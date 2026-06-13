@@ -80,10 +80,17 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
 
     @Override
     protected CaptureRegion getCaptureRegion() throws DisplayResolutionException, IOException {
-        BufferedImage image = captureScreen();
-        Dimension resolution = new Dimension(image.getWidth(), image.getHeight());
+        Dimension resolution = config.windowsGraphicsCapture().value()
+                ? windowsGraphicsCaptureService.captureSize()
+                : getAwtCaptureSize();
 
         return captureRegionService.create(resolution);
+    }
+
+    private Dimension getAwtCaptureSize() {
+        BufferedImage image = AwtRobotHelper.captureScreenshot(robot);
+
+        return new Dimension(image.getWidth(), image.getHeight());
     }
 
     @Override

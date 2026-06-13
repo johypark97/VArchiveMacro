@@ -1,5 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.captureimage.infra.service;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,10 +20,12 @@ public final class WindowsGraphicsCaptureService implements AutoCloseable {
             List.of(Path.of("capture-helper"), Path.of("macro", "capture-helper"));
     private static final String HELPER_EXE = "VArchive.WgcCapture.exe";
     private static final String HELPER_PROJECT = "VArchive.WgcCapture.csproj";
+    private static final String SIZE_COMMAND = "size";
 
     private final Process process;
     private final BufferedReader reader;
     private final BufferedWriter writer;
+    private final Dimension screenSize;
 
     public WindowsGraphicsCaptureService(boolean toneMapping) throws IOException {
         process = new ProcessBuilder(createCommand(toneMapping)).start();
@@ -45,6 +48,8 @@ public final class WindowsGraphicsCaptureService implements AutoCloseable {
             stopProcess();
             throw new IOException("Failed to start Windows Graphics Capture helper: " + line);
         }
+
+        screenSize = requestSize();
     }
 
     private static List<String> createCommand(boolean toneMapping) {
@@ -73,8 +78,12 @@ public final class WindowsGraphicsCaptureService implements AutoCloseable {
         return command;
     }
 
+    public Dimension captureSize() {
+        return new Dimension(screenSize);
+    }
+
     public synchronized BufferedImage capture() throws IOException {
-        Path tempFile = Files.createTempFile("vamacro-wgc-", ".png");
+        Path tempFile = Files.createTempFile("vamacro-wgc-", ".bmp");
         try {
             writer.write(tempFile.toAbsolutePath().toString());
             writer.newLine();
@@ -97,6 +106,24 @@ public final class WindowsGraphicsCaptureService implements AutoCloseable {
         } finally {
             Files.deleteIfExists(tempFile);
         }
+    }
+
+    private synchronized Dimension requestSize() throws IOException {
+        writer.write(SIZE_COMMAND);
+        writer.newLine();
+        writer.flush();
+
+        String line = reader.readLine();
+        if (line == null) {
+            throw new IOException("Windows Graphics Capture helper has stopped.");
+        }
+
+        String[] tokens = line.split(" ");
+        if (tokens.length != 3 || !"SIZE".equals(tokens[0])) {
+            throw new IOException("Unexpected Windows Graphics Capture helper size: " + line);
+        }
+
+        return new Dimension(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]));
     }
 
     @Override
