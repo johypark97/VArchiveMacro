@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Graphics.Capture;
 using Windows.Graphics.DirectX;
@@ -35,7 +36,7 @@ internal static class Program
             }
             else if (positionalArgs.Length == 1)
             {
-                await using CaptureHost host = CaptureHost.CreatePrimaryMonitor();
+                await using CaptureHost host = CaptureHost.CreatePrimaryMonitor(toneMap);
                 await host.CaptureAsync(Path.GetFullPath(positionalArgs[0]), toneMap);
             }
             else
@@ -56,7 +57,7 @@ internal static class Program
 
     private static async Task RunServerAsync(bool toneMap)
     {
-        await using CaptureHost host = CaptureHost.CreatePrimaryMonitor();
+        await using CaptureHost host = CaptureHost.CreatePrimaryMonitor(toneMap);
 
         Console.WriteLine("READY");
         Console.Out.Flush();
@@ -106,6 +107,7 @@ internal static class Program
         private const short BitmapBitsPerPixel = 24;
         private const int BitmapCompressionRgb = 0;
         private const int BgrBytesPerPixel = 3;
+        private static readonly TimeSpan CachedFrameWaitTimeout = TimeSpan.FromMilliseconds(20);
         private const float Exposure = 0.55f;
         private const float Saturation = 0.82f;
         private const float Contrast = 1.08f;
@@ -118,41 +120,55 @@ internal static class Program
 
         private readonly GraphicsCaptureItem item;
         private readonly IDirect3DDevice device;
+        private readonly Direct3D11CaptureFramePool framePool;
+        private readonly GraphicsCaptureSession session;
+        private readonly object frameLock = new();
+        private Direct3D11CaptureFrame? latestFrame;
 
-        private CaptureHost(GraphicsCaptureItem item, IDirect3DDevice device)
+        private CaptureHost(GraphicsCaptureItem item, IDirect3DDevice device, bool toneMap)
         {
             this.item = item;
             this.device = device;
+
+            DirectXPixelFormat pixelFormat = toneMap
+                    ? DirectXPixelFormat.R16G16B16A16Float
+                    : DirectXPixelFormat.B8G8R8A8UIntNormalized;
+            framePool = Direct3D11CaptureFramePool.CreateFreeThreaded(device, pixelFormat, 2,
+                    item.Size);
+            framePool.FrameArrived += OnFrameArrived;
+            session = framePool.CreateCaptureSession(item);
+            session.IsCursorCaptureEnabled = false;
+            session.StartCapture();
         }
 
         public int Width => item.Size.Width;
 
         public int Height => item.Size.Height;
 
-        public static CaptureHost CreatePrimaryMonitor()
+        public static CaptureHost CreatePrimaryMonitor(bool toneMap)
         {
             IntPtr monitor = NativeMethods.MonitorFromPoint(new NativeMethods.Point(), 1);
             GraphicsCaptureItem item = NativeMethods.CreateItemForMonitor(monitor);
             IDirect3DDevice device = NativeMethods.CreateDirect3DDevice();
 
-            return new CaptureHost(item, device);
+            return new CaptureHost(item, device, toneMap);
         }
 
         public async Task CaptureAsync(string outputPath, bool toneMap)
         {
-            DirectXPixelFormat pixelFormat = toneMap
-                    ? DirectXPixelFormat.R16G16B16A16Float
-                    : DirectXPixelFormat.B8G8R8A8UIntNormalized;
-            using Direct3D11CaptureFramePool framePool =
-                    Direct3D11CaptureFramePool.CreateFreeThreaded(device, pixelFormat, 2,
-                            item.Size);
-            using GraphicsCaptureSession session = framePool.CreateCaptureSession(item);
-            session.IsCursorCaptureEnabled = false;
+            using Direct3D11CaptureFrame? frame = await TakeLatestFrameAsync();
+            if (frame == null)
+            {
+                await CaptureSingleFrameAsync(outputPath, toneMap);
+                return;
+            }
 
-            Task<Direct3D11CaptureFrame> nextFrame = NextFrameAsync(framePool);
-            session.StartCapture();
+            await SaveFrameAsync(frame, outputPath, toneMap);
+        }
 
-            using Direct3D11CaptureFrame frame = await nextFrame;
+        private async Task SaveFrameAsync(Direct3D11CaptureFrame frame, string outputPath,
+                bool toneMap)
+        {
             if (toneMap)
             {
                 await SaveToneMappedSurfaceAsync(frame.Surface, outputPath);
@@ -161,6 +177,52 @@ internal static class Program
             {
                 await SaveSurfaceAsync(frame.Surface, outputPath);
             }
+        }
+
+        private void OnFrameArrived(Direct3D11CaptureFramePool sender, object args)
+        {
+            Direct3D11CaptureFrame frame = sender.TryGetNextFrame();
+            lock (frameLock)
+            {
+                latestFrame?.Dispose();
+                latestFrame = frame;
+                Monitor.PulseAll(frameLock);
+            }
+        }
+
+        private Task<Direct3D11CaptureFrame?> TakeLatestFrameAsync()
+        {
+            lock (frameLock)
+            {
+                if (latestFrame == null)
+                {
+                    Monitor.Wait(frameLock, CachedFrameWaitTimeout);
+                }
+
+                Direct3D11CaptureFrame? frame = latestFrame;
+                latestFrame = null;
+
+                return Task.FromResult(frame);
+            }
+        }
+
+        private async Task CaptureSingleFrameAsync(string outputPath, bool toneMap)
+        {
+            DirectXPixelFormat pixelFormat = toneMap
+                    ? DirectXPixelFormat.R16G16B16A16Float
+                    : DirectXPixelFormat.B8G8R8A8UIntNormalized;
+            using Direct3D11CaptureFramePool fallbackFramePool =
+                    Direct3D11CaptureFramePool.CreateFreeThreaded(device, pixelFormat, 2,
+                            item.Size);
+            using GraphicsCaptureSession fallbackSession =
+                    fallbackFramePool.CreateCaptureSession(item);
+            fallbackSession.IsCursorCaptureEnabled = false;
+
+            Task<Direct3D11CaptureFrame> nextFrame = NextFrameAsync(fallbackFramePool);
+            fallbackSession.StartCapture();
+
+            using Direct3D11CaptureFrame frame = await nextFrame;
+            await SaveFrameAsync(frame, outputPath, toneMap);
         }
 
         private static Task<Direct3D11CaptureFrame> NextFrameAsync(
@@ -224,7 +286,7 @@ internal static class Program
             bitmap.CopyToBuffer(sourceBuffer);
             Windows.Storage.Streams.DataReader.FromBuffer(sourceBuffer).ReadBytes(source);
 
-            for (int y = 0; y < height; y++)
+            Parallel.For(0, height, y =>
             {
                 int sourceRowOffset = y * width * RgbaFloatBytesPerPixel;
                 int outputRowOffset = y * width * BgraBytesPerPixel;
@@ -244,7 +306,7 @@ internal static class Program
                     output[outputOffset + BgraRedOffset] = ToByte(red);
                     output[outputOffset + BgraAlphaOffset] = OpaqueAlpha;
                 }
-            }
+            });
 
             return output;
         }
@@ -344,6 +406,10 @@ internal static class Program
 
         public ValueTask DisposeAsync()
         {
+            framePool.FrameArrived -= OnFrameArrived;
+            session.Dispose();
+            framePool.Dispose();
+            latestFrame?.Dispose();
             device.Dispose();
 
             return ValueTask.CompletedTask;

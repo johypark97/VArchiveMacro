@@ -266,8 +266,8 @@
   <entry key="setting.scanner.advanced.keyHoldTime">키 누름 시간 [ms]</entry>
   <entry key="setting.scanner.advanced.sectionName">고급 설정</entry>
   <entry key="setting.scanner.analyzer.autoAnalysisLabel">자동 분석</entry>
-  <entry key="setting.scanner.analyzer.hdrSdrToneMappingLabel">HDR/SDR 톤 매핑</entry>
-  <entry key="setting.scanner.analyzer.windowsGraphicsCaptureLabel">Windows Graphics Capture 사용</entry>
+  <entry key="setting.scanner.analyzer.hdrSdrToneMappingLabel">HDR/SDR 톤 매핑 (실험적)</entry>
+  <entry key="setting.scanner.analyzer.windowsGraphicsCaptureLabel">Windows Graphics Capture 사용 (실험적)</entry>
   <entry key="setting.scanner.analyzer.sectionName">분석기 설정</entry>
   <entry key="setting.scanner.cache.cacheDirectory.label">캐시 디렉토리</entry>
   <entry key="setting.scanner.cache.cacheDirectory.selectButton">선택</entry>

@@ -266,8 +266,8 @@
   <entry key="setting.scanner.advanced.keyHoldTime">Key hold time [ms]</entry>
   <entry key="setting.scanner.advanced.sectionName">Advanced settings</entry>
   <entry key="setting.scanner.analyzer.autoAnalysisLabel">Automatic analysis</entry>
-  <entry key="setting.scanner.analyzer.hdrSdrToneMappingLabel">HDR/SDR tone mapping</entry>
-  <entry key="setting.scanner.analyzer.windowsGraphicsCaptureLabel">Use Windows Graphics Capture</entry>
+  <entry key="setting.scanner.analyzer.hdrSdrToneMappingLabel">HDR/SDR tone mapping (Experimental)</entry>
+  <entry key="setting.scanner.analyzer.windowsGraphicsCaptureLabel">Use Windows Graphics Capture (Experimental)</entry>
   <entry key="setting.scanner.analyzer.sectionName">Analyzer settings</entry>
   <entry key="setting.scanner.cache.cacheDirectory.label">Cache directory</entry>
   <entry key="setting.scanner.cache.cacheDirectory.selectButton">Select</entry>
