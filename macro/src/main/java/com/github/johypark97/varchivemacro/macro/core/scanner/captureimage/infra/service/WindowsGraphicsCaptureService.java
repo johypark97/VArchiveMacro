@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
 
 public final class WindowsGraphicsCaptureService implements AutoCloseable {
     private static final List<Path> HELPER_DIRECTORIES =
-            List.of(Path.of("capture-helper"), Path.of("macro", "capture-helper"));
+            List.of(Path.of("wgc-capture-helper"), Path.of("macro", "wgc-capture-helper"));
     private static final String HELPER_EXE = "VArchive.WgcCapture.exe";
     private static final String HELPER_PROJECT = "VArchive.WgcCapture.csproj";
     private static final String SIZE_COMMAND = "size";

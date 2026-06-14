@@ -29,7 +29,7 @@ val publishWindowsGraphicsCaptureHelper by tasks.registering(Exec::class) {
     commandLine(
             "dotnet",
             "publish",
-            "capture-helper/VArchive.WgcCapture.csproj",
+            "wgc-capture-helper/VArchive.WgcCapture.csproj",
             "-c",
             "Release",
             "-r",
@@ -38,7 +38,7 @@ val publishWindowsGraphicsCaptureHelper by tasks.registering(Exec::class) {
             "true",
             "-p:PublishSingleFile=true",
             "-o",
-            layout.buildDirectory.dir("capture-helper").get().asFile.absolutePath)
+            layout.buildDirectory.dir("wgc-capture-helper").get().asFile.absolutePath)
 }
 
 application {
@@ -118,9 +118,9 @@ tasks.jpackageImage.get().doLast {
     }
 
     copy {
-        from(layout.buildDirectory.dir("capture-helper"))
+        from(layout.buildDirectory.dir("wgc-capture-helper"))
         include("*.exe")
-        into("$jPackageImageDir/capture-helper")
+        into("$jPackageImageDir/wgc-capture-helper")
     }
 }
 
