@@ -1,6 +1,6 @@
-package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.service;
+package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.model;
 
-import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.exception.PixError;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.exception.PixError;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,14 +16,14 @@ import org.bytedeco.leptonica.PIX;
 import org.bytedeco.leptonica.SEL;
 import org.bytedeco.leptonica.global.leptonica;
 
-public class PixWrapper implements AutoCloseable {
+public class PixImage implements AutoCloseable {
     public final PIX pixInstance;
 
-    protected PixWrapper(PIX pixInstance) {
+    protected PixImage(PIX pixInstance) {
         this.pixInstance = pixInstance;
     }
 
-    public PixWrapper(Path path) throws IOException {
+    public PixImage(Path path) throws IOException {
         if (!Files.exists(path)) {
             throw new IOException(path + " (File not found)");
         }
@@ -34,7 +34,7 @@ public class PixWrapper implements AutoCloseable {
         }
     }
 
-    public PixWrapper(byte[] pngBytes) throws PixError {
+    public PixImage(byte[] pngBytes) throws PixError {
         pixInstance = leptonica.pixReadMemPng(pngBytes, pngBytes.length);
         if (pixInstance == null) {
             throw new PixError("Error: pixReadMemPng()");
@@ -72,16 +72,16 @@ public class PixWrapper implements AutoCloseable {
     // -------- Create new instance --------
     // -------------------------------------
 
-    public PixWrapper copy() throws PixError {
+    public PixImage copy() throws PixError {
         PIX pix = leptonica.pixCopy(null, pixInstance);
         if (pix == null) {
             throw new PixError("Error: pixCopy()");
         }
 
-        return new PixWrapper(pix);
+        return new PixImage(pix);
     }
 
-    public PixWrapper crop(Rectangle rect) throws PixError {
+    public PixImage crop(Rectangle rect) throws PixError {
         try (BOX box = leptonica.boxCreate(rect.x, rect.y, rect.width, rect.height)) {
             if (box == null) {
                 throw new PixError("Error: boxCreate()");
@@ -94,7 +94,7 @@ public class PixWrapper implements AutoCloseable {
                 throw new PixError("Error: pixClipRectangle()");
             }
 
-            return new PixWrapper(pix);
+            return new PixImage(pix);
         }
     }
 
@@ -165,7 +165,11 @@ public class PixWrapper implements AutoCloseable {
 
     public void scaleGeneral(float scalex, float scaley, float sharpfract, int sharpwidth)
             throws PixError {
-        try (PIX p = leptonica.pixScaleGeneral(pixInstance, scalex, scaley, sharpfract,
+        try (PIX p = leptonica.pixScaleGeneral(
+                pixInstance,
+                scalex,
+                scaley,
+                sharpfract,
                 sharpwidth)) {
             if (p == null) {
                 throw new PixError("Error: pixScale()");

@@ -1,22 +1,23 @@
-package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.service;
+package com.github.johypark97.varchivemacro.macro.core.scanner.piximage;
 
-import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.exception.PixError;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.exception.PixError;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.model.PixImage;
 import java.util.List;
 
 public class PixPreprocessor {
     private static final List<List<Integer>> KERNEL33 =
             List.of(List.of(1, 1, 1), List.of(1, 1, 1), List.of(1, 1, 1));
 
-    public static void thresholdWhite(PixWrapper pix) throws PixError {
+    public static void thresholdWhite(PixImage pix) throws PixError {
         pix.convertRGBToLuminance();
         pix.thresholdToBinary(192);
     }
 
-    public static void preprocessTitle(PixWrapper pix) throws PixError {
+    public static void preprocessTitle(PixImage pix) throws PixError {
         preprocessTitle(pix, 2, 1, 1);
     }
 
-    public static void preprocessTitle(PixWrapper pix, int dilation, float sx, float sy)
+    public static void preprocessTitle(PixImage pix, int dilation, float sx, float sy)
             throws PixError {
         thresholdWhite(pix);
         pix.invert();
@@ -30,7 +31,7 @@ public class PixPreprocessor {
         }
     }
 
-    public static void preprocessCell(PixWrapper pix) throws PixError {
+    public static void preprocessCell(PixImage pix) throws PixError {
         pix.convertRGBToLuminance();
         pix.gammaTRC(0.2f, 0, 255);
         pix.invert();

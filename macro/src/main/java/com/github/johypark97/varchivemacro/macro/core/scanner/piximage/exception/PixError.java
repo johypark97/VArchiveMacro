@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.exception;
+package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.exception;
 
 import java.io.Serial;
 
