@@ -6,7 +6,7 @@ import com.github.johypark97.varchivemacro.macro.common.config.AppConfigManager;
 import com.github.johypark97.varchivemacro.macro.common.config.model.ProgramConfig;
 import com.github.johypark97.varchivemacro.macro.common.i18n.Language;
 import com.github.johypark97.varchivemacro.macro.integration.context.ContextManager;
-import com.github.johypark97.varchivemacro.macro.libscanner.ImageConverter;
+import com.github.johypark97.varchivemacro.macro.common.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.ui.manager.StageManager;
 import java.awt.Toolkit;
 import javafx.application.Application;

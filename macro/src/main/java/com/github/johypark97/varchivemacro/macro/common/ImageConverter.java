@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.libscanner;
+package com.github.johypark97.varchivemacro.macro.common;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -6,7 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-// TODO: ImageIO is slow. Need to replace to another.
 public class ImageConverter {
     private static final String PNG_FORMAT = "png";
 

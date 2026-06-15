@@ -1,6 +1,6 @@
 package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.model;
 
-import com.github.johypark97.varchivemacro.macro.libscanner.ImageConverter;
+import com.github.johypark97.varchivemacro.macro.common.ImageConverter;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.exception.PixError;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.service.PixWrapper;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.exception.PixImageException;

@@ -1,4 +1,4 @@
-package com.github.johypark97.varchivemacro.macro.libscanner;
+package com.github.johypark97.varchivemacro.macro.common;
 
 public interface StringUtils {
     class StringDiff {
