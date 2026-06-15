@@ -1,5 +1,6 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.ocr;
+package com.github.johypark97.varchivemacro.macro.core.scanner.ocr.infra.service;
 
+import com.github.johypark97.varchivemacro.macro.core.scanner.ocr.infra.exception.OcrInitializationError;
 import java.nio.file.Path;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.leptonica.PIX;

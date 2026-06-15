@@ -4,8 +4,7 @@ import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.ex
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.model.PixImage;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.domain.service.PixImagePreprocessService;
 import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.model.DefaultPixImage;
-import com.github.johypark97.varchivemacro.macro.libscanner.ocr.PixError;
-import com.github.johypark97.varchivemacro.macro.libscanner.ocr.PixPreprocessor;
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.exception.PixError;
 
 public class DefaultPixImagePreprocessService implements PixImagePreprocessService {
     @Override

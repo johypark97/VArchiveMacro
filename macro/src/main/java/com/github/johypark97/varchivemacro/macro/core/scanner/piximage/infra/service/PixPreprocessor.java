@@ -1,5 +1,6 @@
-package com.github.johypark97.varchivemacro.macro.libscanner.ocr;
+package com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.service;
 
+import com.github.johypark97.varchivemacro.macro.core.scanner.piximage.infra.exception.PixError;
 import java.util.List;
 
 public class PixPreprocessor {
