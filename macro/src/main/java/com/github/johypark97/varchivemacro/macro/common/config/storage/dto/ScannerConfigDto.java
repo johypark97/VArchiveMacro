@@ -24,6 +24,12 @@ public class ScannerConfigDto {
     public boolean autoAnalysis;
 
     @Expose
+    public boolean windowsGraphicsCapture;
+
+    @Expose
+    public boolean hdrSdrToneMapping;
+
+    @Expose
     public int analyzerThreadCount;
 
     @Expose
@@ -41,6 +47,8 @@ public class ScannerConfigDto {
         dto.accountFile = model.accountFile().value();
         dto.cacheDirectory = model.cacheDirectory().value();
         dto.autoAnalysis = model.autoAnalysis().value();
+        dto.windowsGraphicsCapture = model.windowsGraphicsCapture().value();
+        dto.hdrSdrToneMapping = model.hdrSdrToneMapping().value();
         dto.analyzerThreadCount = model.analyzerThreadCount().value();
         dto.captureDelay = model.captureDelay().value();
         dto.keyHoldTime = model.keyHoldTime().value();
@@ -52,7 +60,8 @@ public class ScannerConfigDto {
         return ScannerConfig.editDefault().setStartKey(startKey.toModel())
                 .setStopKey(stopKey.toModel()).setSelectedCategory(selectedCategory)
                 .setAccountFile(accountFile).setCacheDirectory(cacheDirectory)
-                .setAutoAnalysis(autoAnalysis).setAnalyzerThreadCount(analyzerThreadCount)
+                .setAutoAnalysis(autoAnalysis).setWindowsGraphicsCapture(windowsGraphicsCapture)
+                .setHdrSdrToneMapping(hdrSdrToneMapping).setAnalyzerThreadCount(analyzerThreadCount)
                 .setCaptureDelay(captureDelay).setKeyHoldTime(keyHoldTime).commit();
     }
 }

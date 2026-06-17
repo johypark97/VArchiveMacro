@@ -172,6 +172,10 @@
                           <children>
                             <Label text="%setting.scanner.analyzer.autoAnalysisLabel"/>
                             <ToggleButton text="ToggleButton" fx:id="scannerAutoAnalysisToggleButton"/>
+                            <Label text="%setting.scanner.analyzer.windowsGraphicsCaptureLabel"/>
+                            <ToggleButton text="ToggleButton" fx:id="scannerWindowsGraphicsCaptureToggleButton"/>
+                            <Label text="%setting.scanner.analyzer.hdrSdrToneMappingLabel"/>
+                            <ToggleButton text="ToggleButton" fx:id="scannerHdrSdrToneMappingToggleButton"/>
                           </children>
                         </HBox>
                       </content>

@@ -6,3 +6,7 @@ build
 
 # Ignore IntelliJ IDEA files
 .idea
+
+# Ignore WGC helper build output directories
+**/wgc-capture-helper/bin/
+**/wgc-capture-helper/obj/

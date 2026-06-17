@@ -11,6 +11,8 @@ public record ScannerConfig(SettingValue<InputKeyCombination> startKey,
                             SettingValue<String> accountFile,
                             SettingValue<String> cacheDirectory,
                             SettingValue<Boolean> autoAnalysis,
+                            SettingValue<Boolean> windowsGraphicsCapture,
+                            SettingValue<Boolean> hdrSdrToneMapping,
                             RangedSettingValue<Integer> analyzerThreadCount,
                             RangedSettingValue<Integer> captureDelay,
                             RangedSettingValue<Integer> keyHoldTime)
@@ -48,6 +50,12 @@ public record ScannerConfig(SettingValue<InputKeyCombination> startKey,
 
         @ConfigField
         private SettingValue<Boolean> autoAnalysis = SettingValue.of(false);
+
+        @ConfigField
+        private SettingValue<Boolean> windowsGraphicsCapture = SettingValue.of(false);
+
+        @ConfigField
+        private SettingValue<Boolean> hdrSdrToneMapping = SettingValue.of(false);
 
         @ConfigField
         private RangedSettingValue<Integer> analyzerThreadCount;
@@ -124,6 +132,24 @@ public record ScannerConfig(SettingValue<InputKeyCombination> startKey,
             return this;
         }
 
+        public SettingValue<Boolean> getWindowsGraphicsCapture() {
+            return windowsGraphicsCapture;
+        }
+
+        public Editor setWindowsGraphicsCapture(boolean value) {
+            windowsGraphicsCapture = windowsGraphicsCapture.with(value);
+            return this;
+        }
+
+        public SettingValue<Boolean> getHdrSdrToneMapping() {
+            return hdrSdrToneMapping;
+        }
+
+        public Editor setHdrSdrToneMapping(boolean value) {
+            hdrSdrToneMapping = hdrSdrToneMapping.with(value);
+            return this;
+        }
+
         public RangedSettingValue<Integer> getAnalyzerThreadCount() {
             return analyzerThreadCount;
         }
@@ -154,7 +180,8 @@ public record ScannerConfig(SettingValue<InputKeyCombination> startKey,
         @Override
         public ScannerConfig commit() {
             return new ScannerConfig(startKey, stopKey, selectedCategory, accountFile,
-                    cacheDirectory, autoAnalysis, analyzerThreadCount, captureDelay, keyHoldTime);
+                    cacheDirectory, autoAnalysis, windowsGraphicsCapture, hdrSdrToneMapping,
+                    analyzerThreadCount, captureDelay, keyHoldTime);
         }
     }
 }

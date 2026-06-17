@@ -22,6 +22,25 @@ dependencies {
     implementation(project(":lib:scanner"))
 }
 
+val publishWindowsGraphicsCaptureHelper by tasks.registering(Exec::class) {
+    description = "Publishes the Windows Graphics Capture helper."
+    group = "build"
+
+    commandLine(
+            "dotnet",
+            "publish",
+            "wgc-capture-helper/VArchive.WgcCapture.csproj",
+            "-c",
+            "Release",
+            "-r",
+            "win-x64",
+            "--self-contained",
+            "true",
+            "-p:PublishSingleFile=true",
+            "-o",
+            layout.buildDirectory.dir("wgc-capture-helper").get().asFile.absolutePath)
+}
+
 application {
     mainClass = "com.github.johypark97.varchivemacro.macro.Main"
     mainModule = "varchivemacro.macro"
@@ -97,6 +116,16 @@ tasks.jpackageImage.get().doLast {
         from("data")
         into("$jPackageImageDir/data")
     }
+
+    copy {
+        from(layout.buildDirectory.dir("wgc-capture-helper"))
+        include("*.exe")
+        into("$jPackageImageDir/wgc-capture-helper")
+    }
+}
+
+tasks.jpackageImage {
+    dependsOn(publishWindowsGraphicsCaptureHelper)
 }
 
 tasks.register<Zip>("release") {
