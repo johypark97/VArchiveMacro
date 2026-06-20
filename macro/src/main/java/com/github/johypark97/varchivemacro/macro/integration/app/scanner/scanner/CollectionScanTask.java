@@ -51,8 +51,7 @@ public abstract class CollectionScanTask extends InterruptibleTask<Void> {
 
     protected abstract BufferedImage captureScreen() throws IOException;
 
-    protected abstract CaptureRegion getCaptureRegion() throws DisplayResolutionException,
-            IOException;
+    protected abstract CaptureRegion getCaptureRegion() throws DisplayResolutionException;
 
     protected abstract void moveToNextCategory() throws InterruptedException;
 
