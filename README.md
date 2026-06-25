@@ -27,6 +27,18 @@ VArchiveMacro 는 프리스타일 매크로와 컬렉션 스캐너 두 가지 �
    - 전체 경로: `C:\Users\[윈도우 계정 이름]\.javacpp`
    - 단축 경로: `%userprofile%\.javacpp`
 
+## 빌드 안내
+
+빌드를 위해서는 JDK 21과 .NET 10 SDK가 필요합니다.
+
+```bash
+# Run macro app
+./gradlew :macro:run
+
+# Build and create an archive file for release
+./gradlew :macro:release
+```
+
 ## 업데이트 내역
 
 [업데이트 내역](https://github.com/johypark97/VArchiveMacro/blob/main/doc/version_history.md) 문서를 참고해주세요.
