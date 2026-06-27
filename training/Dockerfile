@@ -1,8 +1,9 @@
 FROM debian:trixie
 
+RUN apt-get update && apt-get install -y curl make python3 python3-pil tesseract-ocr unzip wget
+
 ARG WORKING_DIR=/training
 WORKDIR $WORKING_DIR
 
-RUN apt update && apt install -y git make python3 python3-pil tesseract-ocr unzip wget
-RUN git clone https://github.com/tesseract-ocr/tesstrain
-RUN cd tesstrain && make tesseract-langdata
+COPY ./init/clone-tesstrain.sh ./init/
+RUN ./init/clone-tesstrain.sh
