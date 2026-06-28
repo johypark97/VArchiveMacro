@@ -73,6 +73,13 @@
       ]
     },
     {
+      // id: 92
+      "to": "WhiteBIue",
+      "from": [
+        "whiteBIue"
+      ]
+    },
+    {
       // id: 187
       "to": "StarFish",
       "from": [
@@ -358,6 +365,41 @@
       "from": [
         "MEGATONiXPHANTØM",
         "MEGATOØNiXPHANTØM"
+      ]
+    },
+    {
+      // id: 795
+      "to": "미래소녀(feat.혜지)",
+      "from": [
+        "미레소녀(feat.해지)"
+      ]
+    },
+    {
+      // id: 796
+      "to": "흑사자",
+      "from": [
+        "자자"
+      ]
+    },
+    {
+      // id: 807
+      "to": "RE;DIEIN",
+      "from": [
+        "RE:DIEIN"
+      ]
+    },
+    {
+      // id: 808
+      "to": "ReboundAIpha",
+      "from": [
+        "ReboundAipha"
+      ]
+    },
+    {
+      // id: 815
+      "to": "Megingjord",
+      "from": [
+        "Megingiord"
       ]
     }
   ],
