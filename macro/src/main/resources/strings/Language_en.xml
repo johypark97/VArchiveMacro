@@ -266,12 +266,12 @@
   <entry key="setting.scanner.advanced.keyHoldTime">Key hold time [ms]</entry>
   <entry key="setting.scanner.advanced.sectionName">Advanced settings</entry>
   <entry key="setting.scanner.analyzer.autoAnalysisLabel">Automatic analysis</entry>
-  <entry key="setting.scanner.analyzer.hdrSdrToneMappingLabel">HDR/SDR tone mapping (Experimental)</entry>
-  <entry key="setting.scanner.analyzer.windowsGraphicsCaptureLabel">Use Windows Graphics Capture (Experimental)</entry>
   <entry key="setting.scanner.analyzer.sectionName">Analyzer settings</entry>
-  <entry key="setting.scanner.cache.cacheDirectory.label">Cache directory</entry>
-  <entry key="setting.scanner.cache.cacheDirectory.selectButton">Select</entry>
-  <entry key="setting.scanner.cache.sectionName">Cache settings</entry>
+  <entry key="setting.scanner.capture.cacheDirectory.label">Cache directory</entry>
+  <entry key="setting.scanner.capture.cacheDirectory.selectButton">Select</entry>
+  <entry key="setting.scanner.capture.hdrSdrToneMappingLabel">HDR/SDR tone mapping (Experimental)</entry>
+  <entry key="setting.scanner.capture.sectionName">Capture settings</entry>
+  <entry key="setting.scanner.capture.windowsGraphicsCaptureLabel">Use Windows Graphics Capture (Experimental)</entry>
   <entry key="setting.scanner.shortcut.sectionName">Shortcut key settings</entry>
   <entry key="setting.scanner.shortcut.startKeyLabel">Start key</entry>
   <entry key="setting.scanner.shortcut.stopKeyLabel">Stop key</entry>

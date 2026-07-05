@@ -79,7 +79,7 @@ public class DefaultCollectionScanTask extends CollectionScanTask {
     }
 
     @Override
-    protected CaptureRegion getCaptureRegion() throws DisplayResolutionException, IOException {
+    protected CaptureRegion getCaptureRegion() throws DisplayResolutionException {
         Dimension resolution = config.windowsGraphicsCapture().value()
                 ? windowsGraphicsCaptureService.captureSize()
                 : getAwtCaptureSize();

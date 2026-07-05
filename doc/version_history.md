@@ -2,6 +2,10 @@
 
 ## 2026
 
+- v2.9.0-alpha.1 (2026-07-05)
+
+  - WGC 및 HDR/SDR 지원 실험적 기능 추가 (Contributed by [@CodeKi0303](https://github.com/CodeKi0303))
+
 - v2.8.0 (2026-03-09)
 
   - V-Archive OPEN API 버전 업데이트
