@@ -416,6 +416,21 @@
       "from": [
         "Megingiord"
       ]
+    },
+    {
+      // id: 824
+      "to": "JustLetItAIIGo(feat.TRIΔNGLE)",
+      "from": [
+        "JustLetItAIIGo(feat.TNANGLE)",
+        "JustLetItAIIGo(feat.TNNANGLE)"
+      ]
+    },
+    {
+      // id: 825
+      "to": "NewArm(feat.RVNBAEK)",
+      "from": [
+        "NewArm(feat.VNBAEK)"
+      ]
     }
   ],
   "remoteTitle": [
