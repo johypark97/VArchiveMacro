@@ -28,7 +28,7 @@
 
 1. 게임 설정
 
-   - 게임은 **전체화면 (Full Screen)** 또는 **보더리스 창 모드 (Borderless Windowed)** 로 실행해주세요.
+   - 게임은 **전체화면 (Full Screen)** 또는 **보더리스 창 모드 (Borderless Windowed)** 로 실행해주세요. (보더리스 창 모드를 우선 권장합니다.)
 
    - 게임 언어 설정은 **한국어 (KOREAN)** 로 설정해주세요.
 
