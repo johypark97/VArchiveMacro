@@ -34,6 +34,11 @@
       // Tekken Tag Tournament Piano Intro -Massive True Mix-
       "id": 650,
       "value": "Tekken Tag Tournament Piano Intro -Ma"
+    },
+    {
+      // 캐릭터 선택창 ~PahNic Remix~ (feat. Funtwo)
+      "id": 844,
+      "value": "캐릭터 선택창 ~PahNic Remix~ (feat. Fun"
     }
   ],
   "remap": [
@@ -122,6 +127,13 @@
       ]
     },
     {
+      // id: 315
+      "to": "MyHeart,MySouI",
+      "from": [
+        "MyHeart,MySoui"
+      ]
+    },
+    {
       // id: 318
       "to": "OvertheRainbow",
       "from": [
@@ -140,6 +152,13 @@
       "to": "Lisrim",
       "from": [
         "Lisrim!"
+      ]
+    },
+    {
+      // id: 405
+      "to": "SuperSonic~Mr.FunkyDirtyPIanetRemi",
+      "from": [
+        "SuperSonic~Mr.FunkyDirtyPianetRemi"
       ]
     },
     {
@@ -280,9 +299,12 @@
       // id: 694
       "to": "Operation☆DOTABATA!",
       "from": [
+        "OperationtZDOTABATA!",
         "Operation☆DOTABATAI!",
         "Operation☆ZDOTABATA!",
-        "OperationtZDOTABATA!"
+        "Operation☆tDOTABATA!",
+        "Operation☆tZDOTABATA!",
+        "Operation☆tfDOTABATA!"
       ]
     },
     {
@@ -299,6 +321,7 @@
         "小((kohiodoshi)",
         "小緋((kohiodoshi)",
         "小緋(kohiodoshi)",
+        "小緋kohiodoshi)",
         "小緋縅kohiodoshi",
         "小緋縅kohiodoshi)",
         "小緋縅kohiodoshi))",
@@ -310,6 +333,13 @@
       "to": "LabyrinthofTears",
       "from": [
         "LabyrinthofTears!"
+      ]
+    },
+    {
+      // id: 716
+      "to": "SummerFIing",
+      "from": [
+        "SummerFiing"
       ]
     },
     {
@@ -326,6 +356,7 @@
       // id: 727
       "to": "MAXPOWER(feat.Larakay)",
       "from": [
+        "MAXPOMER(feat.Larakay)",
         "MAXPOMWER(feat.Larakay)"
       ]
     },
@@ -333,8 +364,8 @@
       // id: 732
       "to": "WeaIIwanttobeIoved(feat.BIRA)",
       "from": [
-        "WeaIIwanttobeIoved(feat.BIRA)",
-        "WeaaIIwanttobeIoved(feat.BIRA)"
+        "WeaaIIwanttobeIoved(feat.BIRA)",
+        "WeaiIwanttobeIoved(feat.BIRA)"
       ]
     },
     {
@@ -357,7 +388,8 @@
       "from": [
         "DATAMOSH",
         "DATAMOSH-",
-        "DATAMOSH~"
+        "DATAMOSH~",
+        "DATAMOSH~~"
       ]
     },
     {
@@ -422,7 +454,10 @@
       "to": "JustLetItAIIGo(feat.TRIΔNGLE)",
       "from": [
         "JustLetItAIIGo(feat.TNANGLE)",
-        "JustLetItAIIGo(feat.TNNANGLE)"
+        "JustLetItAIIGo(feat.TNNANGLE)",
+        "JustLetItAIIGo(feat.TRIANGLE)",
+        "JustLetItAIIGo(feat.TYRIANGLE)",
+        "JustLetItAIIGo(feat.YRIANGLE)"
       ]
     },
     {
@@ -430,6 +465,13 @@
       "to": "NewArm(feat.RVNBAEK)",
       "from": [
         "NewArm(feat.VNBAEK)"
+      ]
+    },
+    {
+      // id: 844
+      "to": "캐릭터선택창~PahNicRemix~(feat.Fun",
+      "from": [
+        "캐릭터선택창~PahNicRemix~(feat.Funt"
       ]
     }
   ],
@@ -449,6 +491,10 @@
     {
       "id": 666,
       "value": "MADNESS (feat. 유일(U1))"
+    },
+    {
+      "id": 795,
+      "value": "미래소녀 (feat. 혜지)"
     }
   ]
 }
